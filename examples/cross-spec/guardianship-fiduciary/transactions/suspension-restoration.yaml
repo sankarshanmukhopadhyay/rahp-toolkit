@@ -1,0 +1,87 @@
+case:
+  id: GF-CASE-C
+  title: Suspension and restoration act
+  status: complete
+  purpose: >-
+    Test whether current DTG primitives can resolve a transaction correctly when standing
+    authority has changed after earlier credentials or evidence were issued, including
+    suspension, scope reduction, supersession and restoration.
+  source_pins:
+    credential_spec: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169
+    trust_tasks: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf
+    zkp_companion: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13
+  scenario:
+    principal: A person whose representative authority was previously valid.
+    representative: Still holds an older credential or grant artifact.
+    authority_state: Authority has subsequently been suspended, reduced, superseded or later restored.
+    verifier: Must decide using the authoritative state applicable at transaction time.
+  required_predicates:
+    - id: P-STATE-CURRENT
+      proposition: The verifier has the authoritative current authority state for the transaction time.
+    - id: P-NOT-SUSPENDED
+      proposition: The authority required for this act is not suspended or superseded.
+    - id: P-SCOPE-CURRENT
+      proposition: The relevant scope remains active after any scope reduction.
+    - id: P-RESTORED
+      proposition: If authority was restored, the restoration is authoritative and supersedes stale suspension evidence.
+    - id: P-PRECEDENCE
+      proposition: Conflicting historical artifacts are ordered under an explicit lifecycle/precedence rule.
+    - id: P-PRINCIPAL-AGENCY
+      proposition: Restoration or retained principal agency is not hidden by stale representative-state artifacts.
+  construction:
+    credential_layer:
+      reuse:
+        - validFrom and validUntil
+        - verifier requirement to apply applicable revocation/status checks
+      limitation: >-
+        Credential validity alone does not provide cross-artifact precedence among suspension,
+        supersession, scope reduction and later restoration events.
+    trust_task_layer:
+      reuse:
+        - acl/revoke full removal and scope reduction
+        - acl/grant as a recoverable re-grant/restoration pattern
+        - authoritative post-state returned by the ACL maintainer
+        - issuedAt, proof, unique id and persisted evidentiary records
+      limitation: >-
+        The reviewed generic framework does not define constrained-authority lifecycle semantics
+        that say when a later re-grant represents restoration, replacement, supersession or a new
+        authority relationship, nor how every relying presentation discovers that current state.
+    privacy_layer:
+      reuse:
+        - private composed-presentation principles in the companion ZKP work
+      limitation: >-
+        A privacy-preserving current-state proof still needs an authoritative source and freshness
+        contract; hiding the lookup cannot compensate for ambiguous lifecycle precedence.
+  adversarial_checks:
+    - attack: Present an older still-cryptographically-valid authority artifact after revocation.
+      result: blocked when applicable revocation/current-state evaluation is mandatory; stale standalone verification is unsafe.
+    - attack: Present a pre-suspension approval after a material state change.
+      result: unsafe unless the approval profile binds freshness/current-authority state at decision time.
+    - attack: Continue to deny the principal after authority has been restored or representative authority narrowed.
+      result: existing grant/revoke mechanics can record new state, but retained/restored agency semantics are governance-profile dependent.
+    - attack: Treat a later grant as automatically restoring the exact earlier legal authority.
+      result: not justified by generic ACL semantics; the governing profile must define restoration versus new appointment.
+  disposition:
+    existing_primitives_sufficient:
+      - expiry and applicable revocation checks
+      - verifiable removal and scope reduction
+      - recoverable grant/re-grant pattern
+      - authoritative ACL post-state
+      - attributable lifecycle evidence
+    profile_clarification_required:
+      - suspension, supersession and restoration state vocabulary
+      - lifecycle precedence and effective-time rules
+      - discovery of authoritative transaction-time state
+      - binding approvals to current authority state
+    genuine_missing_primitive: []
+    governance_only:
+      - retained principal agency and restoration semantics
+      - legal effect of restoration versus new appointment
+    unresolved:
+      - cross-artifact current-state proof contract across Credential and Trust Task evidence
+      - privacy-preserving status proof/freshness interface
+  conclusion: >-
+    Case C shows that existing lifecycle primitives are substantial but not sufficient on their
+    own to close constrained-authority state. The defensible residual is a lifecycle/profile gap:
+    explicit state vocabulary, precedence, effective-time resolution and restoration semantics.
+    The evidence does not require a new generic revocation primitive.
