@@ -52,6 +52,14 @@ The canonical v1.5 pressure-test examples currently include:
 
 Each canonical record directly declares `reviewed_against.rahp_version: v1.5.0` and includes v1.5 evidence-lineage and assurance-posture fields.
 
+## Exploratory cross-spec examples
+
+Exploratory examples can apply the same portable RAHP method before they have the source pinning, maintainer disposition and regression obligations required for the canonical maintained-example registry.
+
+- [`cross-spec/guardianship-fiduciary/`](./cross-spec/guardianship-fiduciary/) pressure-tests guardianship, fiduciary and other constrained-authority relationships across credential, transaction, privacy/proof and governance surfaces. It uses DTG as a worked instance, starts from explicit discussion hypotheses, and keeps downstream issue creation gated on source-pinned evidence and maintainer disposition.
+
+Exploratory examples are intentionally **not** added to `current-baselines.yaml` merely because they exist. Promotion requires the evidence and maintenance commitments described by the canonical policy above.
+
 ## Maintainer-feedback resilience exemplar
 
 `examples/resilience/openvtc-cypress/` is maintained as a different kind of example: it demonstrates how DRARM evidence is dispositioned after a target maintainer supplies counter-evidence, sharper implementation evidence, ownership information, and remediation records.
