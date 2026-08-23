@@ -1,0 +1,89 @@
+case:
+  id: GF-CASE-B
+  title: Threshold and co-approval act
+  status: complete
+  purpose: >-
+    Test a higher-risk transaction that requires an additional authorized approver or
+    threshold condition, while preventing approval replay and unnecessary disclosure of
+    the full representative set or sensitive relationship details.
+  source_pins:
+    credential_spec: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169
+    trust_tasks: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf
+    zkp_companion: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13
+  scenario:
+    principal: A person whose governing arrangement requires additional approval for higher-value acts.
+    representative: Has standing authority but cannot perform this transaction alone.
+    coapprover: A second authorized party whose approval is required for the specific transaction.
+    verifier: Must establish standing authority, threshold applicability and valid co-approval.
+  required_predicates:
+    - id: P-AUTH-CURRENT
+      proposition: The acting representative is currently authorized.
+    - id: P-THRESHOLD
+      proposition: The transaction falls into a class that requires additional approval.
+    - id: P-COAPPROVER-AUTH
+      proposition: The additional approver is authorized for the required approval role.
+    - id: P-APPROVAL-BOUND
+      proposition: The approval is bound to the exact decision-relevant transaction context.
+    - id: P-APPROVAL-FRESH
+      proposition: The approval is current, unrevoked and not replayed.
+    - id: P-PRIVATE-COMPOSITION
+      proposition: The verifier learns only the approval predicates needed for the decision, not the full representative graph.
+  construction:
+    credential_layer:
+      reuse:
+        - validity and issuer authorization checks for standing-authority evidence
+        - taskContext for exchange binding
+        - selective disclosure / pairwise relationship proof capability where applicable
+      limitation: >-
+        The Credential layer does not define threshold policy or the semantics of who counts
+        as a valid co-approver for a particular constrained-authority profile.
+    trust_task_layer:
+      reuse:
+        - proof, issuer/recipient audience binding and unique task IDs
+        - challenge/response and single-use approval patterns demonstrated by consent/decision
+        - authorized-approver registry pattern demonstrated by consent/approver-set
+        - scope and expiry patterns in ACL grants
+      limitation: >-
+        Existing approval machinery is task-specific. The reviewed sources do not define a
+        generic constrained-authority composition contract for N-of-M, joint, sequential or
+        threshold approvals tied to the same decision object.
+    privacy_layer:
+      reuse:
+        - composed-presentation privacy rules in the companion ZKP work
+        - pairwise identifiers and selective disclosure in Credential work
+      limitation: >-
+        No reviewed upstream interface defines a predicate-level proof that the required approval
+        policy was satisfied without revealing the entire approver set, durable appointment IDs or
+        sensitive relationship ancestry.
+  adversarial_checks:
+    - attack: Replay a prior valid approval onto a different transaction.
+      result: challenge/task-context patterns provide a sufficient construction when the profile binds the challenge to decision-critical transaction fields.
+    - attack: Use an approver who is cryptographically valid but not authorized for this threshold rule.
+      result: existing proof does not establish approver authority; the consuming profile must verify the approver registry/governance rule.
+    - attack: Collect two valid approvals for different transaction versions and combine them.
+      result: prevented only if both approvals commit to the same canonical decision object/version.
+    - attack: Reveal the full co-guardian or representative list to prove threshold satisfaction.
+      result: unnecessary in principle; a private threshold-satisfaction predicate is preferable, but its upstream input/composition contract is not yet demonstrated.
+  disposition:
+    existing_primitives_sufficient:
+      - authenticated approval evidence
+      - authorized-approver checking pattern
+      - challenge and single-use replay protection pattern
+      - expiry, scope, audience and task-context binding building blocks
+    profile_clarification_required:
+      - canonical decision object and fields covered by every approval
+      - threshold policy semantics such as N-of-M, joint or sequential approval
+      - authoritative approver-set state and freshness
+    genuine_missing_primitive: []
+    governance_only:
+      - policy defining when co-approval is legally or procedurally required
+      - conflict and fiduciary-duty evaluation beyond approval validity
+    unresolved:
+      - generic cross-spec threshold/co-approval composition profile
+      - upstream privacy-preserving proof-input contract for threshold satisfaction
+  conclusion: >-
+    Case B substantially weakens the claim that DTG lacks approval machinery. Existing Trust Task
+    patterns are enough to construct authenticated, challenge-bound approvals. The residual is a
+    reusable constrained-authority profile defining common decision binding, threshold semantics,
+    authoritative approver state and private proof composition; this is not evidence of a missing
+    generic cryptographic or messaging primitive.
