@@ -15,15 +15,15 @@ This v1.5 worked example exercises the portable assurance catalogue against a **
 | Review ID | `SR-XSP-001` |
 | Status | complete |
 | Title | Trust Tasks × DTG Credential Specification cross-specification pressure test |
-| Reviewed on | 2026-08-22 |
+| Reviewed on | 2026-08-23 |
 | Target repository | `trustoverip/dtgwg-trust-tasks-tf + trustoverip/dtgwg-cred-spec` |
-| Target version | Composition of Trust Tasks 2a40f6bd and Credentials b89f389a |
-| Target commit | `2a40f6bd3b13c85c49123174fdbe4354b3c48d81` |
+| Target version | Composition of Trust Tasks 4937c70d and Credentials b89f389a |
+| Target commit | `4937c70df95e56ed6404b8c004106ecb121a23cf` |
 | Target source paths | `Trust Tasks SPEC.md and VTA lifecycle specifications`, `DTG Credential Spec spec/body.md`, `corpora/trust-tasks-credspec-composed.yaml` |
 | RAHP repository | `sankarshanmukhopadhyay/rahp-toolkit` |
 | RAHP version | `v1.5.0` |
 | Engine contract | `rahp-engine-contract-v1` |
-| RAHP corpus date | 2026-08-17 |
+| RAHP corpus date | 2026-08-23 |
 
 ### Method
 
@@ -55,7 +55,7 @@ This v1.5 worked example exercises the portable assurance catalogue against a **
 
 **Overall assessment**
 
-The refreshed composition is materially stronger than the 2026-08-17 baseline, but three cross-specification assurance seams remain open. The six prior findings are consolidated into authority/lifecycle, execution/outcome/replay, and privacy/contestability themes with explicit ownership and retest conditions.
+Current Trust Tasks and Credential Spec primitives are materially stronger than the earlier baseline, including ACL lifecycle, approval, adverse-decision evidence and VWC edge binding. The expanded source-pinned corpus nevertheless retains three narrower cross-spec seams: action-time authority/lifecycle coherence, decision/replay/evidence closure, and privacy/contestability across composed evidence.
 
 ### Finding index
 
@@ -75,7 +75,7 @@ The refreshed composition is materially stronger than the 2026-08-17 baseline, b
 | Status | open |
 | Primary disposition | Companion Specification |
 | Secondary dispositions | Governance, Implementation Guidance |
-| Scenarios | `XSP-002`, `XSP-007`, `XSP-009`, `XSP-010` |
+| Scenarios | `XSP-002`, `XSP-007`, `XSP-009`, `XSP-010`, `XSP-013`, `XSP-014`, `XSP-016`, `XSP-019`, `XSP-020` |
 | Scenario patterns | `SP-AUTH-02`, `SP-DEL-01`, `SP-DEL-02`, `SP-OPS-01`, `SP-OPS-02`, `SP-COMP-02` |
 | Personas | [P1 — Principal / Rights-Bearing Party](../../../build/site/catalogue.html#P1), [P3 — Relying Party / Verifier](../../../build/site/catalogue.html#P3), [P5 — Delegated Service / Agent Operator](../../../build/site/catalogue.html#P5), [P6 — Registry / Discovery / Trust-Service Operator](../../../build/site/catalogue.html#P6) |
 | Risks | [RK-AI01 — Agent Credential Scope Creep](../../../build/site/catalogue.html#RK-AI01) |
@@ -100,6 +100,8 @@ The refreshed composition is materially stronger than the 2026-08-17 baseline, b
 |---|---|
 | `instances/dtg/reviews/2026-08-trust-tasks.md` | Trust Tasks through 2a40f6bd explicitly separates proof from role/scope authorization and strengthens lifecycle semantics, but does not define a universal cross-system delegation model or synchronized credential/status policy. |
 | `corpora/trust-tasks-credspec-composed.yaml#xsp-002` | Individually valid task and credential facts can still be combined beyond a principal's current mandate unless delegated authority is evaluated at action time. |
+| `trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/grant/0.1/spec.md` | Current Trust Tasks supplies scoped, expiring and authoritative ACL post-state mechanics, but role/scope semantics remain profile-defined and cross-artifact authority must still be evaluated at action time. |
+| `corpora/trust-tasks-credspec-composed.yaml#xsp-013-xsp-020` | Expanded seam cases show authority revocation, restoration, removal and fiduciary non-inference can diverge across otherwise valid task and credential evidence. |
 
 **Potential harm**
 
@@ -107,7 +109,7 @@ A consumer can execute a consequential task using valid component evidence while
 
 **Recommended treatment**
 
-Define a cross-spec authority and lifecycle contract carrying bounded delegation, authority scope, status-as-of evidence, revocation semantics and safe-degradation rules, and require evaluation at consequential execution time.
+Define the narrowest cross-spec authority/lifecycle profile needed to align current task authority, credential/governance state, effective-time precedence and non-inference at consequential action time; reuse existing ACL/credential primitives rather than adding a parallel base authority object.
 
 **Retest when**
 
@@ -122,7 +124,7 @@ Define a cross-spec authority and lifecycle contract carrying bounded delegation
 | Status | open |
 | Primary disposition | Companion Specification |
 | Secondary dispositions | Implementation Guidance |
-| Scenarios | `XSP-001`, `XSP-003` |
+| Scenarios | `XSP-001`, `XSP-003`, `XSP-014`, `XSP-015`, `XSP-017` |
 | Scenario patterns | `SP-COMP-01`, `SP-REPLAY-01` |
 | Personas | [P1 — Principal / Rights-Bearing Party](../../../build/site/catalogue.html#P1), [P3 — Relying Party / Verifier](../../../build/site/catalogue.html#P3), [P5 — Delegated Service / Agent Operator](../../../build/site/catalogue.html#P5), [P6 — Registry / Discovery / Trust-Service Operator](../../../build/site/catalogue.html#P6) |
 | Risks | [RK-EX05 — Organisational Identity Architecture Gap](../../../build/site/catalogue.html#RK-EX05) |
@@ -147,6 +149,9 @@ Define a cross-spec authority and lifecycle contract carrying bounded delegation
 |---|---|
 | `https://github.com/trustoverip/dtgwg-cred-spec/commit/b89f389abbdae77ba60b673c0836c781c2b54169` | The VWC digest is now required and strengthens edge binding, but it does not itself prove task completion or one-time execution. |
 | `corpora/trust-tasks-credspec-composed.yaml#xsp-003` | A valid credential and valid task can still be replayed together unless the composition binds freshness, task identity, credential use and side-effect execution. |
+| `trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/consent/decision/1.0/spec.md` | Current consent decisions provide stronger challenge binding, authorization and consumption semantics, weakening any claim that Trust Tasks lacks approval machinery. |
+| `trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169:spec/body.md` | VWC digest binding now requires the referenced VRC to identify the witnessed edge, sharpening the evidence-closure boundary rather than eliminating it. |
+| `corpora/trust-tasks-credspec-composed.yaml#xsp-015-xsp-017` | Residual composition concerns are mixed-version quorum/decision binding and incomplete referenced evidence, not absence of generic approval or integrity primitives. |
 
 **Potential harm**
 
@@ -154,7 +159,7 @@ A credential can be correctly bound to an edge yet still be misinterpreted as pr
 
 **Recommended treatment**
 
-Define a cross-spec execution contract that separates task context, authority, completion and outcome evidence, and bind credential use to the task instance and consequential execution with freshness and idempotency semantics.
+Retain task-level replay and outcome controls, but define reusable decision/evidence-closure composition rules for canonical transaction binding, threshold policy, authoritative approver state, freshness and referenced credential evidence.
 
 **Retest when**
 
@@ -168,7 +173,7 @@ Define a cross-spec execution contract that separates task context, authority, c
 | Status | open |
 | Primary disposition | Governance |
 | Secondary dispositions | Companion Specification, Implementation Guidance |
-| Scenarios | `XSP-005`, `XSP-006`, `XSP-011`, `XSP-012` |
+| Scenarios | `XSP-005`, `XSP-006`, `XSP-011`, `XSP-012`, `XSP-016`, `XSP-018`, `XSP-020` |
 | Scenario patterns | `SP-PRIV-01`, `SP-PRIV-02`, `SP-COMP-01`, `SP-GOV-03`, `SP-RED-01` |
 | Personas | [P1 — Principal / Rights-Bearing Party](../../../build/site/catalogue.html#P1), [P3 — Relying Party / Verifier](../../../build/site/catalogue.html#P3), [P5 — Delegated Service / Agent Operator](../../../build/site/catalogue.html#P5), [P6 — Registry / Discovery / Trust-Service Operator](../../../build/site/catalogue.html#P6) |
 | Risks | [RK-EX05 — Organisational Identity Architecture Gap](../../../build/site/catalogue.html#RK-EX05) |
@@ -193,6 +198,8 @@ Define a cross-spec execution contract that separates task context, authority, c
 |---|---|
 | `instances/dtg/reviews/2026-08-trust-tasks.md` | New VTA lifecycle and HTTPS discovery surfaces improve explicitness but add observable artifacts whose combined privacy impact is not bounded by either component specification alone. |
 | `corpora/trust-tasks-credspec-composed.yaml#xsp-012` | Adverse outcomes can still span task policy, credential status and registry governance without a single accountable contestability boundary. |
+| `trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/vtc/members/removal-notice/0.1/spec.md` | The new removal notice materially improves adverse-decision evidence and appealability, narrowing but not eliminating cross-system redress obligations. |
+| `corpora/trust-tasks-credspec-composed.yaml#xsp-018-xsp-020` | Composed status lookup/task metadata can still create correlation, and technical authorization evidence must not be over-read as retained-agency or fiduciary-propriety proof. |
 
 **Potential harm**
 
@@ -200,7 +207,7 @@ Individually minimal proofs, task identifiers, endpoint metadata, status checks,
 
 **Recommended treatment**
 
-Require composed disclosure analysis and define a cross-boundary evidence and responsibility contract covering recipient scoping, privacy-safe errors, retention, explanation evidence, responsible authority and contest/remedy routing.
+Define privacy and contestability requirements across the complete evidence closure: minimize stable correlation surfaces, retain portable adverse-decision evidence, and preserve explicit non-inference between authorization proof and broader governance judgments.
 
 **Retest when**
 

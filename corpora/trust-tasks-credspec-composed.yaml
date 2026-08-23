@@ -3,8 +3,8 @@ corpus:
   title: Trust Tasks × Credential Spec composed scenario corpus
   source_repository: trustoverip/dtgwg-trust-tasks-tf + trustoverip/dtgwg-cred-spec
   source_path: SPEC.md + spec/body.md
-  source_commit: archive-snapshot
-  adapter_version: '1.1'
+  source_commit: derived-from-pinned-dependencies
+  adapter_version: '1.2'
   description: RAHP-authored cross-specification scenarios that pressure-test the seam where Trust Tasks consume,
     convey, contextualize or rely upon DTG credentials. XSP-* identifiers are owned by this RAHP adapter.
   scenarios:
@@ -455,16 +455,202 @@ corpus:
       evidence_patterns:
       - EVP-RED-01
       - EVP-COMP-01
+  - id: XSP-013
+    title: ACL authority changes while a still-valid credential continues to support task execution
+    domain: Cross-spec / authority
+    primary_goal: Reconcile task authorization state with credential authority at the decision boundary
+    primary_pressure: Cross-layer authority divergence
+    priority: P0
+    scenario_patterns:
+    - SP-AUTH-01
+    - SP-COMP-01
+    source_anchor: Trust Tasks acl/grant+revoke + CredSpec verifier authorization
+    portable_assurance: &id001
+      harm_patterns:
+      - HRM-AUT-04
+      - HRM-SEC-02
+      - HRM-INF-01
+      - HRM-GOV-02
+      risk_patterns:
+      - RKP-AUTH-01
+      - RKP-COMP-01
+      control_patterns:
+      - CTP-AUTH-01
+      - CTP-COMP-01
+      guardrail_patterns:
+      - GRP-AUTH-01
+      - GRP-COMP-01
+      assurance_patterns:
+      - ATP-AUTH-01
+      - ATP-COMP-01
+      evidence_patterns:
+      - EVP-AUTH-01
+      - EVP-COMP-01
+  - id: XSP-014
+    title: Approval remains valid after the credential authority supporting the approver changes
+    domain: Cross-spec / consent
+    primary_goal: Couple approval freshness to current credential/governance authority
+    primary_pressure: Stale approval authority
+    priority: P0
+    scenario_patterns:
+    - SP-AUTH-01
+    - SP-OPS-01
+    source_anchor: Trust Tasks consent/decision + CredSpec Trust Registries
+    portable_assurance: *id001
+  - id: XSP-015
+    title: Threshold approvals are combined across different transaction or credential-state versions
+    domain: Cross-spec / composition
+    primary_goal: Bind quorum satisfaction to one canonical decision and evidence snapshot
+    primary_pressure: Mixed-version quorum
+    priority: P0
+    scenario_patterns:
+    - SP-COMP-01
+    - SP-REPLAY-01
+    source_anchor: Trust Tasks consent approver-set/decision + CredSpec validity/state
+    portable_assurance: *id001
+  - id: XSP-016
+    title: Removal notice conflicts with a still-cryptographically-valid membership credential
+    domain: Cross-spec / lifecycle
+    primary_goal: Define which authoritative state controls after adverse membership action
+    primary_pressure: Removal-state conflict
+    priority: P0
+    scenario_patterns:
+    - SP-GOV-01
+    - SP-OPS-01
+    source_anchor: Trust Tasks vtc/members/removal-notice + CredSpec VMC lifecycle
+    portable_assurance: &id002
+      harm_patterns:
+      - HRM-GOV-02
+      - HRM-ECO-02
+      - HRM-AUT-04
+      risk_patterns:
+      - RKP-RED-01
+      - RKP-COMP-01
+      control_patterns:
+      - CTP-RED-01
+      - CTP-COMP-01
+      guardrail_patterns:
+      - GRP-RED-01
+      - GRP-COMP-01
+      assurance_patterns:
+      - ATP-RED-01
+      - ATP-COMP-01
+      evidence_patterns:
+      - EVP-RED-01
+      - EVP-COMP-01
+  - id: XSP-017
+    title: Witness credential digest is used inside a task without the referenced VRC needed to identify the edge
+    domain: Cross-spec / evidence
+    primary_goal: Require complete edge evidence when a task relies on VWC binding
+    primary_pressure: Opaque digest dependency
+    priority: P0
+    scenario_patterns:
+    - SP-COMP-01
+    - SP-OPS-01
+    source_anchor: Trust Tasks evidence/citation + CredSpec VWC digest binding
+    portable_assurance: *id001
+  - id: XSP-018
+    title: Status lookup and task metadata jointly create a durable relationship correlator
+    domain: Cross-spec / privacy
+    primary_goal: Evaluate privacy across external status resolution and task context together
+    primary_pressure: Composed observer correlation
+    priority: P0
+    scenario_patterns:
+    - SP-PRIV-01
+    - SP-PRIV-02
+    source_anchor: Trust Tasks thread/context + CredSpec status/privacy
+    portable_assurance:
+      harm_patterns:
+      - HRM-SEC-02
+      - HRM-INF-01
+      - HRM-PRV-02
+      - HRM-PRV-03
+      risk_patterns:
+      - RKP-PRV-02
+      - RKP-COMP-01
+      control_patterns:
+      - CTP-PRV-02
+      - CTP-COMP-01
+      guardrail_patterns:
+      - GRP-PRV-01
+      - GRP-COMP-01
+      assurance_patterns:
+      - ATP-PRV-01
+      - ATP-COMP-01
+      evidence_patterns:
+      - EVP-PRV-01
+      - EVP-COMP-01
+  - id: XSP-019
+    title: Authority is restored in one layer while stale suspension or revocation remains effective in another
+    domain: Cross-spec / lifecycle
+    primary_goal: Require explicit restoration and precedence semantics across composed evidence
+    primary_pressure: Partial restoration propagation
+    priority: P0
+    scenario_patterns:
+    - SP-GOV-01
+    - SP-COMP-01
+    source_anchor: Trust Tasks ACL lifecycle + CredSpec lifecycle/governance
+    portable_assurance: *id001
+  - id: XSP-020
+    title: All task and credential artifacts verify but fiduciary or constrained-action propriety is inferred without
+      governance evidence
+    domain: Cross-spec / governance
+    primary_goal: Keep technical authorization distinct from duties, conflicts, retained agency and redress
+    primary_pressure: Proof-to-propriety collapse
+    priority: P0
+    scenario_patterns:
+    - SP-AUTH-01
+    - SP-GOV-03
+    source_anchor: Trust Tasks authorization boundary + CredSpec verifier authorization/governance
+    portable_assurance: *id002
   source_urls:
   - https://github.com/trustoverip/dtgwg-trust-tasks-tf
   - https://github.com/trustoverip/dtgwg-cred-spec
-  provenance_status: derived-unpinned-dependencies
+  provenance_status: derived-pinned-dependencies
   depends_on:
   - corpus_id: CORPUS-TRUST-TASKS
-    source_commit: archive-snapshot
-    adapter_version: '1.0'
+    source_commit: 4937c70df95e56ed6404b8c004106ecb121a23cf
+    adapter_version: '1.1'
   - corpus_id: CORPUS-DTG-CREDSPEC
-    source_commit: archive-snapshot
-    adapter_version: '1.0'
-  provenance_note: Derived corpus must be recomposed after either dependency is semantically re-baselined.
+    source_commit: b89f389abbdae77ba60b673c0836c781c2b54169
+    adapter_version: '1.1'
+  provenance_note: Recomposed on 2026-08-23 after both dependencies were source-pinned and expanded.
   assurance_catalogue: method/catalogue/
+  coverage:
+    identity_authority:
+    - XSP-002
+    - XSP-004
+    - XSP-007
+    - XSP-008
+    - XSP-013
+    - XSP-014
+    - XSP-020
+    lifecycle:
+    - XSP-002
+    - XSP-009
+    - XSP-016
+    - XSP-019
+    replay_freshness:
+    - XSP-003
+    - XSP-014
+    - XSP-015
+    privacy_correlation:
+    - XSP-005
+    - XSP-006
+    - XSP-011
+    - XSP-018
+    approval_threshold:
+    - XSP-014
+    - XSP-015
+    evidence_closure:
+    - XSP-001
+    - XSP-017
+    - XSP-020
+    redress:
+    - XSP-012
+    - XSP-016
+    - XSP-020
+    interoperability:
+    - XSP-004
+    - XSP-008
+    - XSP-010
