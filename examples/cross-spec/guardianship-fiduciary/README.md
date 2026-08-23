@@ -15,19 +15,7 @@ The case deliberately separates exploratory inputs from formal RAHP assessment r
 
 Keeping these stages separate is intentional. A pressure test should be able to weaken its own starting claims rather than silently rewriting them after evidence appears, while files named `pressure-test.yaml` must remain valid executable RAHP records.
 
-## Discussion record
-
-The public GitHub Discussion is intended to remain the umbrella research thread for this case. Because the connected GitHub tooling does not currently expose Discussion create/update operations, the exact public-post text is retained here so that the public thread and repository evidence cannot drift apart:
-
-- [`discussion-opening.md`](./discussion-opening.md) — opening post: hypotheses, scenarios, questions and disposition boundary;
-- [`discussion-evidence-update.md`](./discussion-evidence-update.md) — first source-pinned evidence-pass update;
-- [`discussion-next-updates.md`](./discussion-next-updates.md) — synchronized structure for the three evidence-closure case updates and the final consolidated disposition.
-
-The intended sequence is:
-
-`Discussion hypotheses -> RAHP pressure test -> source-pinned evidence -> evidence-closure cases -> consolidated maintainer disposition -> downstream work only where justified`
-
-A downstream DTG Issue is therefore an output of demonstrated residual evidence, not a substitute for the exploratory Discussion.
+Maintainer discussion and disposition are tracked in [GitHub Discussion #51](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/51); this directory retains only the reproducible assessment and evidence artifacts.
 
 ## What the evidence pass changed
 
