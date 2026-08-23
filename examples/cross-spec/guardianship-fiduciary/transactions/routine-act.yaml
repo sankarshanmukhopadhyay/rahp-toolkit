@@ -1,0 +1,89 @@
+case:
+  id: GF-CASE-A
+  title: Routine bounded-authority act
+  status: complete
+  purpose: >-
+    Test whether current DTG primitives can support an ordinary act that is clearly
+    inside an active representative's authority without inferring incapacity or
+    disclosing unnecessary legal-status information.
+  source_pins:
+    credential_spec: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169
+    trust_tasks: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf
+    zkp_companion: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13
+  scenario:
+    principal: A person who has appointed a representative for a bounded transaction domain.
+    representative: Holds current authority for routine transactions in that domain.
+    verifier: Must decide whether one ordinary transaction may proceed.
+    transaction: Below any special threshold; no co-approval or emergency rule applies.
+  required_predicates:
+    - id: P-AUTH-CURRENT
+      proposition: Representative authority is current at decision time.
+    - id: P-AUTH-SCOPE
+      proposition: The requested action lies inside the representative's permitted domain/scope.
+    - id: P-ACT-BOUND
+      proposition: The evidence is bound to this transaction/exchange rather than reusable as a generic permission token.
+    - id: P-SOURCE-AUTH
+      proposition: Appointment/status evidence comes from an authority accepted by the relying profile.
+    - id: P-NON-INFERENCE
+      proposition: Successful representative authorization does not imply that the principal lacks capacity or retained authority.
+    - id: P-MIN-DISCLOSE
+      proposition: Verification does not require disclosure of unnecessary guardianship, family, medical or legal-status detail.
+  construction:
+    credential_layer:
+      reuse:
+        - validFrom / validUntil for temporal validity
+        - issuer authorization checks under the applicable governance framework
+        - taskContext where a credential is issued or relied upon in a Trust Task exchange
+        - VRC / selective-disclosure capability where relationship evidence is appropriate
+      limitation: >-
+        Current credential primitives do not themselves define the legal/governance semantics
+        that turn an appointment into permission for a particular act.
+    trust_task_layer:
+      reuse:
+        - acl/grant role and scopes as an existing pattern for bounded, expiring authority
+        - authoritative post-state returned by the ACL maintainer
+        - proof, issuer/recipient and audience binding
+        - unique id, threadId and citation/context machinery
+      limitation: >-
+        ACL role/scope vocabulary is intentionally opaque to the framework. A constrained-authority
+        profile must therefore define how domain/action semantics map into those scopes and how the
+        verifier obtains current state.
+    privacy_layer:
+      reuse:
+        - pairwise relationship identifiers and selective disclosure in the Credential work
+        - composed-presentation privacy and non-correlation guidance in the companion ZKP work
+      limitation: >-
+        The upstream cross-spec interface does not yet define the concrete private proof inputs for
+        current authority plus action scope while preserving the principal non-inference boundary.
+  adversarial_checks:
+    - attack: Reuse a valid appointment artifact for an out-of-scope action.
+      result: blocked only when the relying profile evaluates action-specific scope; proof validity alone is insufficient.
+    - attack: Present expired authority.
+      result: existing temporal checks are sufficient when the profile requires current-state evaluation.
+    - attack: Infer principal incapacity from successful representative authorization.
+      result: not cryptographically prevented; requires an explicit governance/non-inference rule.
+    - attack: Demand full appointment/legal-status record when a narrow authority predicate would suffice.
+      result: privacy design can avoid this, but the constrained-authority profile must make minimization normative.
+  disposition:
+    existing_primitives_sufficient:
+      - cryptographic attribution and proof integrity
+      - credential validity windows
+      - scoped and expiring authorization representation
+      - audience and exchange-context binding
+      - issuer/source authorization checks
+    profile_clarification_required:
+      - mapping appointment semantics to domain/action scope
+      - transaction-time current-state evaluation
+      - authoritative source classes for appointment/status
+      - narrow disclosure requirements
+    genuine_missing_primitive: []
+    governance_only:
+      - non-inference of incapacity or loss of retained principal agency
+      - fiduciary propriety beyond authorization
+    unresolved:
+      - concrete upstream private-proof input contract for authority-plus-scope composition
+  conclusion: >-
+    Case A is constructible with current DTG primitives, but only under a constrained-authority
+    profile that supplies legal/governance semantics, authoritative-source rules, current-state
+    evaluation and privacy/non-inference requirements. The case does not demonstrate a missing
+    base credential or Trust Task primitive.
