@@ -2,105 +2,110 @@
 
 This exploratory worked example applies the portable RAHP method to a composed digital-trust problem: how a system represents, proves, exercises, reviews and terminates **guardianship, fiduciary and other constrained authority** without collapsing legal or governance distinctions into a single credential or cryptographic proof.
 
-The example uses the Trust over IP Digital Trust Graph (DTG) work as the first worked instance. It is deliberately **not** a DTG-specific extension to the RAHP method and is not listed in `examples/current-baselines.yaml` as a canonical maintained example.
+The Trust over IP Digital Trust Graph (DTG) is the first worked instance. This is not a DTG-specific extension to RAHP and is intentionally not listed in `examples/current-baselines.yaml` as a canonical maintained example.
 
-## Why this case exists
+## Assessment lifecycle
 
-A guardianship or fiduciary relationship is not adequately represented by proving only that an appointment exists. A decision may also depend on the authority's scope, activation conditions, duration, duties, conflicts, transaction thresholds, co-approval requirements, retained agency of the represented person, current status, oversight, redress and jurisdiction.
+The case now preserves two distinct stages:
 
-The pressure test therefore asks a broader question:
+1. [`pressure-test.yaml`](./pressure-test.yaml) records the **initial hypotheses and adversarial findings**.
+2. [`evidence-pass.yaml`](./evidence-pass.yaml) records the **source-pinned reassessment** against current DTG revisions.
+3. [`evidence-review.md`](./evidence-review.md) explains the evidence and hypothesis deltas for human review.
 
-> Can a composed trust system distinguish valid authority from permissible exercise of that authority, while exposing enough evidence for oversight and redress without forcing disclosure of unnecessary sensitive status?
+Keeping these stages separate is intentional. A pressure test should be able to weaken its own starting claims rather than silently rewriting them after evidence appears.
 
-That distinction is the core hypothesis under test. Cryptographic validity is necessary evidence, but it is not by itself proof of fiduciary propriety.
+## What the evidence pass changed
+
+The first source-pinned pass materially narrowed the original problem.
+
+Current DTG sources already provide substantial reusable machinery for:
+
+- distinguishing cryptographic proof from authorization;
+- validity, expiry and applicable revocation checks;
+- scoped and expiring authorization grants;
+- explicit revocation and scope reduction;
+- audience binding and exchange/citation context;
+- task-context binding;
+- source/issuer authorization checks.
+
+The companion ZKP fork additionally provides explicit controls for composed-presentation privacy, low-entropy/enumerable hiding constructions, task-context non-inference, external-evidence governance, and the separation of proof assurance from governance assurance.
+
+Those companion controls are evidence of a viable design direction; they are **not treated as upstream DTG adoption**.
+
+The revised residual question is therefore:
+
+> Can existing DTG primitives be composed into an interoperable constrained-authority profile that establishes appointment, current scope, transaction permission, duties/conflicts and retained agency at decision time, while preserving privacy and redress boundaries?
+
+That is a smaller and more actionable question than “does DTG support guardianship?”
 
 ## Baseline hypotheses
 
-The assessment begins with five hypotheses that map to likely DTG work surfaces. These are **inputs to the assessment, not pre-decided issue conclusions**.
+The initial assessment tested five hypotheses:
 
-1. **Cross-DTG / general:** guardianship, fiduciary duties and constrained authority need a shared cross-spec model rather than isolated treatment in one credential type.
-2. **Credential semantics:** credentials need to express bounded authority and its lifecycle without requiring unnecessary disclosure of sensitive status.
-3. **Trust Tasks:** transaction execution needs evidence for approvals, conflicts, thresholds, co-approval, oversight and the authority state that applied at decision time.
-4. **Privacy / ZKP:** presentations need privacy-preserving predicates and relationship proofs for authority, scope and approval composition rather than durable correlators or ancestry disclosure.
-5. **Governance / assurance:** retained agency, least-restrictive authority, oversight, review, restoration and redress remain governance and assurance properties even when cryptographic evidence is valid.
+1. constrained authority needs a cross-spec composition model;
+2. credential semantics must support bounded authority without unnecessary sensitive-status disclosure;
+3. Trust Tasks must carry decision-relevant transaction and authority evidence;
+4. privacy must hold over composed authority/approval proofs rather than individual credentials alone;
+5. governance and assurance properties such as retained agency, restoration, oversight and fiduciary propriety cannot be inferred from cryptographic validity.
 
-A finding is useful only where evidence supports it. The assessment may confirm, narrow, split or reject any of these hypotheses.
+The evidence pass classifies these respectively as **refined**, **refined**, **weakened**, **confirmed/partially controlled**, and **confirmed/narrowed**.
 
-## Predicate-first case model
+## Predicate-first model
 
-The worked case decomposes the authority relationship into independently testable predicates and lifecycle properties:
+The case decomposes constrained authority into independently testable properties rather than introducing one omnibus credential:
 
-- authority and appointment;
-- scope;
-- duration and activation;
-- duty;
-- conflict;
-- transaction thresholds;
-- co-approval;
+- appointment and authority;
+- scope, duration and activation;
+- duty and conflict;
+- transaction thresholds and co-approval;
 - retained agency;
 - privacy and disclosure minimization;
 - status, suspension and supersession;
 - cross-credential / cross-task composition;
-- resolution and authoritative source discovery;
-- audit and periodic review;
-- redress;
+- authoritative-source resolution;
+- audit, periodic review and redress;
 - emergency authority;
-- jurisdiction;
-- interoperability;
-- revocation and restoration;
-- liability and accountability.
+- jurisdiction and interoperability;
+- revocation, restoration, liability and accountability.
 
-The purpose of the decomposition is to prevent semantic collapse. For example, proving `appointment = valid` must not silently imply `transaction = permitted`, and proving a threshold condition must not silently prove that conflicts or approval duties were satisfied.
-
-## Adversarial scenarios
-
-The pressure test explicitly challenges the composed system with failure modes including:
-
-- replay of an old approval in a new Trust Task;
-- use of an approval after the underlying authority has become stale, suspended or superseded;
-- privacy leakage caused by proving co-approval or relationship ancestry;
-- emergency authority that remains effective after the emergency condition ends;
-- restoration of a represented person's authority that does not propagate to credentials, tasks or verifier decisions;
-- supposedly confidential digests that are enumerable and therefore reveal sensitive status;
-- cross-context linkability created by durable identifiers or reusable proof material;
-- proofs constructed from unauthenticated or weakly governed source assertions;
-- semantic collapse between appointment, authority, delegation, approval, duty and transaction permission;
-- acceptance of cryptographic validity as sufficient evidence of fiduciary propriety.
+The central non-inference remains: `appointment = valid` must not silently imply `transaction = permitted`.
 
 ## Evidence-closure rule
 
-The example uses an evidence-closure discipline:
+For a constrained-authority decision, the example asks implementers to identify:
 
-1. identify the decision or harm-relevant claim;
-2. identify the predicates required to justify it;
-3. identify the authoritative source and lifecycle state for each predicate;
-4. identify the composition rule connecting those predicates to the decision;
-5. identify privacy constraints on the evidence presentation;
-6. identify retained uncertainty, governance judgment and redress obligations;
-7. record the evidence needed to move a finding from hypothesis to disposition.
+1. the decision or harm-relevant claim;
+2. predicates required to justify it;
+3. the authoritative source and lifecycle state for each predicate;
+4. the composition rule connecting those predicates to the decision;
+5. privacy constraints on the presentation;
+6. retained governance judgment and redress obligations;
+7. evidence needed before a finding can be dispositioned.
 
-A missing predicate, missing source, missing lifecycle rule or missing composition rule remains an explicit assurance gap. The example does not infer closure merely because every individual credential verifies cryptographically.
+Cryptographic verification of all component artifacts is not, by itself, evidence closure.
 
-## Initial work map
+## Current work map
 
-The machine-readable companion file records the initial findings and likely control-plane ownership. At this stage the map is advisory:
+After source review, the findings group more usefully as follows:
 
-| Surface | Primary question |
-| --- | --- |
-| DTG General / cross-spec model | What common semantics distinguish appointment, bounded authority, duty, retained agency and exercise? |
-| Credential Specification | What must be expressed or provable about authority, scope, lifecycle and status? |
-| Trust Tasks | What transaction-bound evidence proves approvals, thresholds, conflicts and current authority? |
-| ZKP / privacy | Which predicates and composed relationships must be provable without unnecessary correlators or sensitive-status disclosure? |
-| Governance / assurance | What rules govern least-restrictive authority, oversight, periodic review, restoration, redress and liability? |
+| Work class | Findings | Next move |
+| --- | --- | --- |
+| Composition/profile construction | F01, F02, F03, F04, F08 | Construct concrete transactions using current primitives before proposing normative changes. |
+| Proof-construction guardrail | F05 | Preserve enumeration and correlation resistance for future hidden-status constructions. |
+| Governance/profile first | F06, F07, F09, F10 | Define policy semantics and evidence expectations before assigning specification ownership. |
 
-This table is not an instruction to open five downstream issues. The assessment should first produce source-pinned evidence and a hypothesis-delta analysis. Maintainers can then determine which concerns belong in existing work, require new work, or are out of scope.
+This is **not** an instruction to open downstream DTG issues.
+
+## Next gate
+
+The next useful RAHP step is executable case construction around three flows:
+
+- a routine constrained-authority act;
+- a threshold/co-approval act;
+- a suspension/restoration act.
+
+For each flow, current Credential and Trust Task primitives should be reused first. Only predicates that cannot be represented or privately proven with the pinned interfaces should graduate into candidate specification work.
 
 ## Intended use
 
-This case is useful beyond guardianship. The same RAHP decomposition can pressure-test constrained authority involving trustees, attorneys-in-fact, executors, organizational representatives, regulated fiduciaries, delegated agents and other relationships where **being authorized** and **acting permissibly under that authority** are distinct propositions.
-
-The DTG instance is therefore a worked deployment of a portable assessment pattern rather than the definition of the pattern itself.
-
-## Machine-readable assessment
-
-See [`pressure-test.yaml`](./pressure-test.yaml) for the exploratory findings, hypothesis deltas, evidence requirements and cross-spec disposition map.
+The pattern extends beyond guardianship to trustees, attorneys-in-fact, executors, organizational representatives, regulated fiduciaries, delegated agents and similar relationships where **being authorized** and **acting permissibly under that authority** are distinct propositions.
