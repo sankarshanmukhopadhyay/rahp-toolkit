@@ -6,13 +6,14 @@ The Trust over IP Digital Trust Graph (DTG) is the first worked instance. This i
 
 ## Assessment lifecycle
 
-The case now preserves two distinct stages:
+The case deliberately separates exploratory inputs from formal RAHP assessment records:
 
-1. [`pressure-test.yaml`](./pressure-test.yaml) records the **initial hypotheses and adversarial findings**.
-2. [`evidence-pass.yaml`](./evidence-pass.yaml) records the **source-pinned reassessment** against current DTG revisions.
-3. [`evidence-review.md`](./evidence-review.md) explains the evidence and hypothesis deltas for human review.
+1. [`hypothesis-baseline.yaml`](./hypothesis-baseline.yaml) preserves the **initial hypotheses and candidate findings** before source review. It is intentionally not a formal `pressure-test.yaml` contract.
+2. [`pressure-test.yaml`](./pressure-test.yaml) is the **conformant in-progress RAHP pressure-test wrapper**. Findings enter this record only after they satisfy the repository's finding/evidence contract.
+3. [`evidence-pass.yaml`](./evidence-pass.yaml) records the **source-pinned reassessment** against current DTG revisions.
+4. [`evidence-review.md`](./evidence-review.md) explains the evidence and hypothesis deltas for human review.
 
-Keeping these stages separate is intentional. A pressure test should be able to weaken its own starting claims rather than silently rewriting them after evidence appears.
+Keeping these stages separate is intentional. A pressure test should be able to weaken its own starting claims rather than silently rewriting them after evidence appears, while files named `pressure-test.yaml` must remain valid executable RAHP records.
 
 ## Discussion record
 
@@ -123,3 +124,70 @@ For each flow, current Credential and Trust Task primitives should be reused fir
 ## Intended use
 
 The pattern extends beyond guardianship to trustees, attorneys-in-fact, executors, organizational representatives, regulated fiduciaries, delegated agents and similar relationships where **being authorized** and **acting permissibly under that authority** are distinct propositions.
+
+<!-- BEGIN GENERATED PRESSURE TEST -->
+
+## Generated pressure-test record
+
+> This section is generated from [`pressure-test.yaml`](pressure-test.yaml). Do not edit it by hand. The YAML is the canonical review record; run `python3 tools/render_pressure_tests.py` after changing it.
+
+### Review metadata
+
+| Field | Value |
+|---|---|
+| Review ID | `XSP-GF-001` |
+| Status | in-progress |
+| Title | Guardianship and fiduciary constrained-authority cross-spec pressure test |
+| Reviewed on | 2026-08-23 |
+| Target repository | `trustoverip/dtgwg-general` |
+| Target version | cross-spec exploratory baseline 2026-08-23 |
+| Target commit | `fa15044225ff447ad6564983a5ce0732b80cbdc1` |
+| Target source paths | `README.md` |
+| RAHP repository | `sankarshanmukhopadhyay/rahp-toolkit` |
+| RAHP version | `v1.5.0` |
+| Engine contract | `rahp-engine-contract-v1` |
+| RAHP corpus date | — |
+
+### Method
+
+| Field | Value |
+|---|---|
+| Workflow | `docs/pressure-testing-a-spec.md` |
+| Rule | Preserve exploratory hypotheses separately, then admit findings to the formal pressure-test record only when they satisfy the RAHP finding contract. |
+
+### Review scope
+
+**Included**
+
+- cross-spec constrained-authority composition
+- credential authority and lifecycle semantics
+- transaction-bound evidence and approval composition
+- privacy-preserving authority and relationship predicates
+- retained agency, oversight, restoration and redress boundaries
+
+**Excluded**
+
+- jurisdiction-specific legal advice
+- selection of a specific proof construction
+- automatic creation of downstream DTG issues
+
+### Summary
+
+| Measure | Value |
+|---|---:|
+| Findings | 0 |
+| Open findings | 0 |
+
+**Overall assessment**
+
+Formal RAHP pressure-test record opened for the cross-spec constrained-authority case. Initial hypotheses are preserved in hypothesis-baseline.yaml and the first source-pinned reassessment is preserved in evidence-pass.yaml. Findings will be promoted into this contract only after the planned evidence-closure constructions demonstrate a dispositionable residual gap.
+
+### Finding index
+
+| ID | Finding | Severity | Status | Primary disposition | RAHP risks |
+|---|---|---|---|---|---|
+
+### Detailed findings
+
+<!-- END GENERATED PRESSURE TEST -->
+
