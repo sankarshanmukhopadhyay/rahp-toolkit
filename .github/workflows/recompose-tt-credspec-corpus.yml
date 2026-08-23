@@ -1,0 +1,89 @@
+name: recompose TT CredSpec corpus
+on:
+  pull_request:
+    paths:
+      - 'corpora/trust-tasks.yaml'
+      - 'corpora/credential-spec.yaml'
+      - 'corpora/trust-tasks-credspec-composed.yaml'
+      - '.github/workflows/recompose-tt-credspec-corpus.yml'
+permissions:
+  contents: write
+jobs:
+  recompose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install PyYAML
+      - name: Recompose pinned seam corpus
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import yaml
+          p=Path('corpora/trust-tasks-credspec-composed.yaml')
+          d=yaml.safe_load(p.read_text())
+          c=d['corpus']
+          c['source_commit']='derived-from-pinned-dependencies'
+          c['adapter_version']='1.2'
+          c['provenance_status']='derived-pinned-dependencies'
+          c['depends_on']=[
+            {'corpus_id':'CORPUS-TRUST-TASKS','source_commit':'4937c70df95e56ed6404b8c004106ecb121a23cf','adapter_version':'1.1'},
+            {'corpus_id':'CORPUS-DTG-CREDSPEC','source_commit':'b89f389abbdae77ba60b673c0836c781c2b54169','adapter_version':'1.1'}]
+          c['provenance_note']='Recomposed on 2026-08-23 after both dependencies were source-pinned and expanded.'
+          base={
+            'harm_patterns':['HRM-AUT-04','HRM-SEC-02','HRM-INF-01','HRM-GOV-02'],
+            'risk_patterns':['RKP-AUTH-01','RKP-COMP-01'],
+            'control_patterns':['CTP-AUTH-01','CTP-COMP-01'],
+            'guardrail_patterns':['GRP-AUTH-01','GRP-COMP-01'],
+            'assurance_patterns':['ATP-AUTH-01','ATP-COMP-01'],
+            'evidence_patterns':['EVP-AUTH-01','EVP-COMP-01']}
+          privacy={
+            'harm_patterns':['HRM-SEC-02','HRM-INF-01','HRM-PRV-02','HRM-PRV-03'],
+            'risk_patterns':['RKP-PRV-02','RKP-COMP-01'],
+            'control_patterns':['CTP-PRV-02','CTP-COMP-01'],
+            'guardrail_patterns':['GRP-PRV-01','GRP-COMP-01'],
+            'assurance_patterns':['ATP-PRV-01','ATP-COMP-01'],
+            'evidence_patterns':['EVP-PRV-01','EVP-COMP-01']}
+          redress={
+            'harm_patterns':['HRM-GOV-02','HRM-ECO-02','HRM-AUT-04'],
+            'risk_patterns':['RKP-RED-01','RKP-COMP-01'],
+            'control_patterns':['CTP-RED-01','CTP-COMP-01'],
+            'guardrail_patterns':['GRP-RED-01','GRP-COMP-01'],
+            'assurance_patterns':['ATP-RED-01','ATP-COMP-01'],
+            'evidence_patterns':['EVP-RED-01','EVP-COMP-01']}
+          rows=[
+            ('XSP-013','ACL authority changes while a still-valid credential continues to support task execution','Cross-spec / authority','Reconcile task authorization state with credential authority at the decision boundary','Cross-layer authority divergence','P0',['SP-AUTH-01','SP-COMP-01'],'Trust Tasks acl/grant+revoke + CredSpec verifier authorization',base),
+            ('XSP-014','Approval remains valid after the credential authority supporting the approver changes','Cross-spec / consent','Couple approval freshness to current credential/governance authority','Stale approval authority','P0',['SP-AUTH-01','SP-OPS-01'],'Trust Tasks consent/decision + CredSpec Trust Registries',base),
+            ('XSP-015','Threshold approvals are combined across different transaction or credential-state versions','Cross-spec / composition','Bind quorum satisfaction to one canonical decision and evidence snapshot','Mixed-version quorum','P0',['SP-COMP-01','SP-REPLAY-01'],'Trust Tasks consent approver-set/decision + CredSpec validity/state',base),
+            ('XSP-016','Removal notice conflicts with a still-cryptographically-valid membership credential','Cross-spec / lifecycle','Define which authoritative state controls after adverse membership action','Removal-state conflict','P0',['SP-GOV-01','SP-OPS-01'],'Trust Tasks vtc/members/removal-notice + CredSpec VMC lifecycle',redress),
+            ('XSP-017','Witness credential digest is used inside a task without the referenced VRC needed to identify the edge','Cross-spec / evidence','Require complete edge evidence when a task relies on VWC binding','Opaque digest dependency','P0',['SP-COMP-01','SP-OPS-01'],'Trust Tasks evidence/citation + CredSpec VWC digest binding',base),
+            ('XSP-018','Status lookup and task metadata jointly create a durable relationship correlator','Cross-spec / privacy','Evaluate privacy across external status resolution and task context together','Composed observer correlation','P0',['SP-PRIV-01','SP-PRIV-02'],'Trust Tasks thread/context + CredSpec status/privacy',privacy),
+            ('XSP-019','Authority is restored in one layer while stale suspension or revocation remains effective in another','Cross-spec / lifecycle','Require explicit restoration and precedence semantics across composed evidence','Partial restoration propagation','P0',['SP-GOV-01','SP-COMP-01'],'Trust Tasks ACL lifecycle + CredSpec lifecycle/governance',base),
+            ('XSP-020','All task and credential artifacts verify but fiduciary or constrained-action propriety is inferred without governance evidence','Cross-spec / governance','Keep technical authorization distinct from duties, conflicts, retained agency and redress','Proof-to-propriety collapse','P0',['SP-AUTH-01','SP-GOV-03'],'Trust Tasks authorization boundary + CredSpec verifier authorization/governance',redress)]
+          existing={s['id'] for s in c.get('scenarios',[])}
+          for sid,title,domain,goal,pressure,prio,pats,anchor,pa in rows:
+            if sid not in existing:
+              c['scenarios'].append({'id':sid,'title':title,'domain':domain,'primary_goal':goal,'primary_pressure':pressure,'priority':prio,'scenario_patterns':pats,'source_anchor':anchor,'portable_assurance':pa})
+          c['coverage']={
+            'identity_authority':['XSP-002','XSP-004','XSP-007','XSP-008','XSP-013','XSP-014','XSP-020'],
+            'lifecycle':['XSP-002','XSP-009','XSP-016','XSP-019'],
+            'replay_freshness':['XSP-003','XSP-014','XSP-015'],
+            'privacy_correlation':['XSP-005','XSP-006','XSP-011','XSP-018'],
+            'approval_threshold':['XSP-014','XSP-015'],
+            'evidence_closure':['XSP-001','XSP-017','XSP-020'],
+            'redress':['XSP-012','XSP-016','XSP-020'],
+            'interoperability':['XSP-004','XSP-008','XSP-010']}
+          p.write_text(yaml.safe_dump(d,sort_keys=False,allow_unicode=True,width=110))
+          PY
+      - name: Commit recomposed corpus
+        run: |
+          if git diff --quiet -- corpora/trust-tasks-credspec-composed.yaml; then exit 0; fi
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add corpora/trust-tasks-credspec-composed.yaml
+          git commit -m 'Recompose Trust Tasks and Credential Spec seam corpus'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
