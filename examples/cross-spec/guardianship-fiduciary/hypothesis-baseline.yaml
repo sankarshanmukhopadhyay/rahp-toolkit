@@ -1,0 +1,104 @@
+hypothesis_baseline:
+  id: XSP-GF-001
+  status: exploratory
+  recorded_on: '2026-08-23'
+  canonical_baseline: false
+  purpose: >-
+    Preserve the initial guardianship/fiduciary constrained-authority hypotheses
+    before source-pinned reassessment. This file is intentionally not a RAHP
+    pressure-test record and is therefore not named pressure-test.yaml or treated
+    as conformant assessment output.
+  portability:
+    method_extension: false
+    deployment_specific_profile: dtg-worked-instance
+    note: >-
+      The constrained-authority problem is portable; DTG is the first worked
+      deployment used to test it.
+  governance_boundary:
+    downstream_issue_creation: false
+    normative_decision: false
+    note: >-
+      These statements are inputs to pressure testing. They do not establish
+      normative DTG gaps or specification ownership.
+  baseline_hypotheses:
+    - id: H-GF-01
+      surface: cross-spec
+      statement: >-
+        Guardianship, fiduciary duties and constrained authority may require
+        shared semantics across multiple digital-trust surfaces.
+    - id: H-GF-02
+      surface: credential
+      statement: >-
+        Credential semantics may need to support bounded authority and lifecycle
+        without unnecessary disclosure of sensitive status.
+    - id: H-GF-03
+      surface: trust-task
+      statement: >-
+        Transaction evidence may need to bind approvals, conflicts, thresholds,
+        co-approval and current authority state to the decision being authorized.
+    - id: H-GF-04
+      surface: privacy-zkp
+      statement: >-
+        Privacy-preserving predicates and composed relationship proofs may be
+        required to avoid durable correlators and unnecessary ancestry disclosure.
+    - id: H-GF-05
+      surface: governance-assurance
+      statement: >-
+        Retained agency, least-restrictive authority, oversight, review,
+        restoration and redress cannot be inferred from cryptographic validity alone.
+  predicate_model:
+    - authority
+    - appointment
+    - scope
+    - duration
+    - activation
+    - duty
+    - conflict
+    - transaction-threshold
+    - co-approval
+    - retained-agency
+    - privacy
+    - status
+    - suspension
+    - supersession
+    - composition
+    - resolution
+    - audit
+    - periodic-review
+    - redress
+    - emergency-authority
+    - jurisdiction
+    - interoperability
+    - revocation
+    - restoration
+    - liability
+  candidate_findings:
+    - id: RAHP-GF-F01
+      title: Appointment validity can be over-read as permission for a specific act
+    - id: RAHP-GF-F02
+      title: Authority lifecycle state can become stale across credentials and Trust Tasks
+    - id: RAHP-GF-F03
+      title: Approval evidence can be replayed outside the transaction or decision context
+    - id: RAHP-GF-F04
+      title: Co-approval and relationship proofs can disclose sensitive status or relationship ancestry
+    - id: RAHP-GF-F05
+      title: Confidential digests may remain enumerable and reveal sensitive authority status
+    - id: RAHP-GF-F06
+      title: Emergency authority can persist after its activating condition ends
+    - id: RAHP-GF-F07
+      title: Proof validity can be confused with fiduciary propriety
+    - id: RAHP-GF-F08
+      title: Proofs can be constructed over unauthenticated or weakly governed source assertions
+    - id: RAHP-GF-F09
+      title: Retained agency and restoration can be invisible to machine-verifiable decision flows
+    - id: RAHP-GF-F10
+      title: Cross-jurisdiction interoperability can flatten materially different authority semantics
+  evidence_closure_questions:
+    - identify the decision or harm-relevant claim
+    - identify predicates required to justify the claim
+    - identify authoritative source and lifecycle state for each predicate
+    - identify the composition rule connecting predicates to the decision
+    - identify privacy constraints on the presentation
+    - identify retained governance judgment and redress obligations
+    - record evidence needed before a hypothesis can be dispositioned
+  next_stage: evidence-pass.yaml
