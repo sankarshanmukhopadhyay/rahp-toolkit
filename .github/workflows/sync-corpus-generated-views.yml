@@ -1,0 +1,30 @@
+name: sync corpus generated views
+on:
+  pull_request:
+    paths:
+      - 'corpora/**'
+      - 'examples/cross-spec/trust-tasks-credspec/**'
+      - '.github/workflows/sync-corpus-generated-views.yml'
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Render pressure-test Markdown
+        run: python3 tools/render_pressure_tests.py
+      - name: Commit canonical generated view
+        run: |
+          if git diff --quiet -- examples/cross-spec/trust-tasks-credspec/README.md; then exit 0; fi
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add examples/cross-spec/trust-tasks-credspec/README.md
+          git commit -m 'Synchronize TT CredSpec pressure-test rendering'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
