@@ -140,10 +140,10 @@ Three concrete evidence closures show that DTG already has substantial mechanics
 
 | ID | Finding | Severity | Status | Primary disposition | RAHP risks |
 |---|---|---|---|---|---|
-| `F-001` | Constrained-authority decisions lack a common cross-spec composition profile | High | open | Implementation Guidance | `CRK-14` |
-| `F-002` | Threshold and co-approval evidence lacks a reusable constrained-authority composition contract | High | open | Specification | `CRK-21` |
-| `F-003` | Suspension, supersession and restoration lack cross-artifact lifecycle precedence semantics | High | open | Specification | `CRK-21` |
-| `F-004` | Private authorization evidence must not collapse retained agency or fiduciary propriety into proof validity | High | open | Governance | `CRK-19`, `CRK-15` |
+| `F-001` | Constrained-authority decisions lack a common cross-spec composition profile | High | open | Implementation Guidance | [CRK-14 — Trust-registry identity binding failure](/rahp-toolkit/docs/cawg-risk-register.html#crk-14) |
+| `F-002` | Threshold and co-approval evidence lacks a reusable constrained-authority composition contract | High | open | Specification | [CRK-21 — Timestamp or status evidence insufficiency](/rahp-toolkit/docs/cawg-risk-register.html#crk-21) |
+| `F-003` | Suspension, supersession and restoration lack cross-artifact lifecycle precedence semantics | High | open | Specification | [CRK-21 — Timestamp or status evidence insufficiency](/rahp-toolkit/docs/cawg-risk-register.html#crk-21) |
+| `F-004` | Private authorization evidence must not collapse retained agency or fiduciary propriety into proof validity | High | open | Governance | [CRK-19 — Selective-disclosure correlation leakage](/rahp-toolkit/docs/cawg-risk-register.html#crk-19), [CRK-15 — Registry and governing-authority availability dependency](/rahp-toolkit/docs/cawg-risk-register.html#crk-15) |
 
 ### Detailed findings
 
@@ -158,7 +158,7 @@ Three concrete evidence closures show that DTG already has substantial mechanics
 | Scenarios | — |
 | Scenario patterns | — |
 | Personas | — |
-| Risks | `CRK-14` |
+| Risks | [CRK-14 — Trust-registry identity binding failure](/rahp-toolkit/docs/cawg-risk-register.html#crk-14) |
 | Controls | — |
 | Guardrails | — |
 | Assurance tests | — |
@@ -205,7 +205,7 @@ Define a constrained-authority cross-spec profile that names authoritative sourc
 | Scenarios | — |
 | Scenario patterns | — |
 | Personas | — |
-| Risks | `CRK-21` |
+| Risks | [CRK-21 — Timestamp or status evidence insufficiency](/rahp-toolkit/docs/cawg-risk-register.html#crk-21) |
 | Controls | — |
 | Guardrails | — |
 | Assurance tests | — |
@@ -252,7 +252,7 @@ Specify a reusable constrained-authority approval profile with a canonical decis
 | Scenarios | — |
 | Scenario patterns | — |
 | Personas | — |
-| Risks | `CRK-21` |
+| Risks | [CRK-21 — Timestamp or status evidence insufficiency](/rahp-toolkit/docs/cawg-risk-register.html#crk-21) |
 | Controls | — |
 | Guardrails | — |
 | Assurance tests | — |
@@ -299,7 +299,7 @@ Define constrained-authority lifecycle vocabulary, effective-time and precedence
 | Scenarios | — |
 | Scenario patterns | — |
 | Personas | — |
-| Risks | `CRK-19`, `CRK-15` |
+| Risks | [CRK-19 — Selective-disclosure correlation leakage](/rahp-toolkit/docs/cawg-risk-register.html#crk-19), [CRK-15 — Registry and governing-authority availability dependency](/rahp-toolkit/docs/cawg-risk-register.html#crk-15) |
 | Controls | — |
 | Guardrails | — |
 | Assurance tests | — |
