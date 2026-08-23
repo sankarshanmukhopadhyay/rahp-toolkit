@@ -6,13 +6,14 @@ The Trust over IP Digital Trust Graph (DTG) is the first worked instance. This i
 
 ## Assessment lifecycle
 
-The case now preserves two distinct stages:
+The case deliberately separates exploratory inputs from formal RAHP assessment records:
 
-1. [`pressure-test.yaml`](./pressure-test.yaml) records the **initial hypotheses and adversarial findings**.
-2. [`evidence-pass.yaml`](./evidence-pass.yaml) records the **source-pinned reassessment** against current DTG revisions.
-3. [`evidence-review.md`](./evidence-review.md) explains the evidence and hypothesis deltas for human review.
+1. [`hypothesis-baseline.yaml`](./hypothesis-baseline.yaml) preserves the **initial hypotheses and candidate findings** before source review. It is intentionally not a formal `pressure-test.yaml` contract.
+2. [`pressure-test.yaml`](./pressure-test.yaml) is the **conformant in-progress RAHP pressure-test wrapper**. Findings enter this record only after they satisfy the repository's finding/evidence contract.
+3. [`evidence-pass.yaml`](./evidence-pass.yaml) records the **source-pinned reassessment** against current DTG revisions.
+4. [`evidence-review.md`](./evidence-review.md) explains the evidence and hypothesis deltas for human review.
 
-Keeping these stages separate is intentional. A pressure test should be able to weaken its own starting claims rather than silently rewriting them after evidence appears.
+Keeping these stages separate is intentional. A pressure test should be able to weaken its own starting claims rather than silently rewriting them after evidence appears, while files named `pressure-test.yaml` must remain valid executable RAHP records.
 
 ## Discussion record
 
