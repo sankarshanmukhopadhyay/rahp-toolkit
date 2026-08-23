@@ -2,11 +2,11 @@ corpus:
   id: CORPUS-TRUST-TASKS
   title: Trust Tasks scenario corpus
   source_repository: trustoverip/dtgwg-trust-tasks-tf
-  source_path: SPEC.md
-  source_commit: archive-snapshot
-  adapter_version: '1.0'
-  description: Scenario adapter derived from the current Trust Tasks Framework, emphasizing identity, proof, replay, versioning,
-    transport, privacy, delegation and error semantics.
+  source_path: SPEC.md + specs/**
+  source_commit: 4937c70df95e56ed6404b8c004106ecb121a23cf
+  adapter_version: '1.1'
+  description: Source-pinned scenario adapter derived from the Trust Tasks Framework and concrete task specifications,
+    emphasizing identity, proof, replay, lifecycle, authorization, consent, redress, privacy, delegation and interoperability.
   scenarios:
   - id: TT-001
     title: Proof omitted because transport is assumed sufficient
@@ -14,9 +14,7 @@ corpus:
     primary_goal: Rely on transport-level integrity without losing end-to-end evidence
     primary_pressure: Transport/proof boundary
     priority: P0
-    scenario_patterns:
-    - SP-AUTH-01
-    - SP-INTEROP-01
+    scenario_patterns: [SP-AUTH-01, SP-INTEROP-01]
     source_anchor: SPEC.md#471-when-to-include-a-proof
   - id: TT-002
     title: Proof-bearing document lacks safe audience binding
@@ -24,9 +22,7 @@ corpus:
     primary_goal: Bind a signed task to its intended recipient
     primary_pressure: Cross-recipient replay
     priority: P0
-    scenario_patterns:
-    - SP-REPLAY-01
-    - SP-AUTH-01
+    scenario_patterns: [SP-REPLAY-01, SP-AUTH-01]
     source_anchor: SPEC.md#482-audience-binding
   - id: TT-003
     title: In-band and transport-derived identities disagree
@@ -34,9 +30,7 @@ corpus:
     primary_goal: Resolve party identity without confused-deputy behavior
     primary_pressure: Identity precedence
     priority: P0
-    scenario_patterns:
-    - SP-AUTH-01
-    - SP-INTEROP-01
+    scenario_patterns: [SP-AUTH-01, SP-INTEROP-01]
     source_anchor: SPEC.md#481-precedence-of-in-band-over-transport-derived-identity
   - id: TT-004
     title: Expired task is acted on after clock or queue delay
@@ -44,9 +38,7 @@ corpus:
     primary_goal: Prevent stale authorization or action
     primary_pressure: Freshness and expiry
     priority: P0
-    scenario_patterns:
-    - SP-REPLAY-01
-    - SP-OPS-01
+    scenario_patterns: [SP-REPLAY-01, SP-OPS-01]
     source_anchor: SPEC.md#42-top-level-members
   - id: TT-005
     title: Retried task causes duplicate side effects
@@ -54,8 +46,7 @@ corpus:
     primary_goal: Retry safely after failure
     primary_pressure: Duplicate action
     priority: P0
-    scenario_patterns:
-    - SP-REPLAY-01
+    scenario_patterns: [SP-REPLAY-01]
     source_anchor: SPEC.md#84-retry-semantics
   - id: TT-006
     title: Thread and parent-thread binding is inconsistent across transports
@@ -63,9 +54,7 @@ corpus:
     primary_goal: Preserve exchange lineage
     primary_pressure: Conversation binding
     priority: P1
-    scenario_patterns:
-    - SP-COMP-01
-    - SP-INTEROP-01
+    scenario_patterns: [SP-COMP-01, SP-INTEROP-01]
     source_anchor: SPEC.md#49-the-threadid-member
   - id: TT-007
     title: Ceremony membership is mistaken for authorization
@@ -73,9 +62,7 @@ corpus:
     primary_goal: Keep workflow membership separate from authority
     primary_pressure: Confused deputy
     priority: P0
-    scenario_patterns:
-    - SP-AGENT-01
-    - SP-GOV-02
+    scenario_patterns: [SP-AGENT-01, SP-GOV-02]
     source_anchor: SPEC.md#4114-membership-is-a-claim-not-a-permission
   - id: TT-008
     title: Bearer specification is used where recipient binding is necessary
@@ -83,9 +70,7 @@ corpus:
     primary_goal: Limit bearer semantics to justified cases
     primary_pressure: Unbounded audience
     priority: P0
-    scenario_patterns:
-    - SP-PRIV-01
-    - SP-REPLAY-01
+    scenario_patterns: [SP-PRIV-01, SP-REPLAY-01]
     source_anchor: SPEC.md#483-bearer-specifications
   - id: TT-009
     title: Capability discovery leaks sensitive supported operations
@@ -93,9 +78,7 @@ corpus:
     primary_goal: Negotiate capabilities without unnecessary disclosure
     primary_pressure: Capability fingerprinting
     priority: P1
-    scenario_patterns:
-    - SP-PRIV-01
-    - SP-SCALE-01
+    scenario_patterns: [SP-PRIV-01, SP-SCALE-01]
     source_anchor: SPEC.md#115-privacy-considerations
   - id: TT-010
     title: Different framework versions produce divergent acceptance
@@ -103,9 +86,7 @@ corpus:
     primary_goal: Migrate task versions without ambiguity
     primary_pressure: Version skew
     priority: P0
-    scenario_patterns:
-    - SP-GOV-02
-    - SP-INTEROP-01
+    scenario_patterns: [SP-GOV-02, SP-INTEROP-01]
     source_anchor: SPEC.md#5-versioning
   - id: TT-011
     title: Transport binding weakens framework security assumptions
@@ -113,9 +94,7 @@ corpus:
     primary_goal: Preserve equivalent guarantees across bindings
     primary_pressure: Binding downgrade
     priority: P0
-    scenario_patterns:
-    - SP-INTEROP-01
-    - SP-CRYPTO-01
+    scenario_patterns: [SP-INTEROP-01, SP-CRYPTO-01]
     source_anchor: SPEC.md#9-transport-bindings
   - id: TT-012
     title: Error response discloses party or task information
@@ -123,8 +102,7 @@ corpus:
     primary_goal: Report failure without unnecessary identity leakage
     primary_pressure: Error-channel leakage
     priority: P1
-    scenario_patterns:
-    - SP-PRIV-01
+    scenario_patterns: [SP-PRIV-01]
     source_anchor: SPEC.md#104-error-response-identity-leakage
   - id: TT-013
     title: Large or adversarial payload causes validation denial of service
@@ -132,9 +110,7 @@ corpus:
     primary_goal: Keep parsing and schema validation bounded
     primary_pressure: Resource exhaustion
     priority: P1
-    scenario_patterns:
-    - SP-INCL-02
-    - SP-SCALE-01
+    scenario_patterns: [SP-INCL-02, SP-SCALE-01]
     source_anchor: SPEC.md#103-schema-validation-dos
   - id: TT-014
     title: Agent executes a task after principal intent is withdrawn
@@ -142,9 +118,7 @@ corpus:
     primary_goal: Keep delegated action aligned with current mandate
     primary_pressure: Intent drift
     priority: P0
-    scenario_patterns:
-    - SP-AGENT-01
-    - SP-AGENT-02
+    scenario_patterns: [SP-AGENT-01, SP-AGENT-02]
     source_anchor: SPEC.md#73-specification-requirements
   - id: TT-015
     title: Exposure class understates delegated data egress
@@ -152,9 +126,7 @@ corpus:
     primary_goal: Make confidentiality and agency impact legible
     primary_pressure: Exposure misclassification
     priority: P0
-    scenario_patterns:
-    - SP-AGENT-01
-    - SP-PRIV-01
+    scenario_patterns: [SP-AGENT-01, SP-PRIV-01]
     source_anchor: SPEC.md#73-specification-requirements
   - id: TT-016
     title: Private or unpublished task type becomes an interoperability island
@@ -162,11 +134,131 @@ corpus:
     primary_goal: Allow private extension without unsafe semantic divergence
     primary_pressure: Private namespace drift
     priority: P1
-    scenario_patterns:
-    - SP-INTEROP-01
-    - SP-FED-01
+    scenario_patterns: [SP-INTEROP-01, SP-FED-01]
     source_anchor: SPEC.md#65-private-and-unpublished-trust-task-specifications
+  - id: TT-017
+    title: ACL grant is accepted from an issuer not permitted to assign the requested role
+    domain: Trust Tasks / authorization
+    primary_goal: Separate authenticated grant evidence from authority to grant
+    primary_pressure: Grant-authority overclaim
+    priority: P0
+    scenario_patterns: [SP-AUTH-01, SP-GOV-01]
+    source_anchor: specs/acl/grant/0.1/spec.md#conformance
+  - id: TT-018
+    title: ACL scope reduction is implemented as a widening update instead of revocation
+    domain: Trust Tasks / lifecycle
+    primary_goal: Preserve monotonic least privilege when authority is narrowed
+    primary_pressure: Scope-transition ambiguity
+    priority: P0
+    scenario_patterns: [SP-AUTH-01, SP-GOV-01]
+    source_anchor: specs/acl/grant/0.1/spec.md#abstract
+  - id: TT-019
+    title: Expired ACL entry is treated as current because retained grant evidence still verifies
+    domain: Trust Tasks / lifecycle
+    primary_goal: Evaluate authoritative post-state and expiry at decision time
+    primary_pressure: Stale grant evidence
+    priority: P0
+    scenario_patterns: [SP-OPS-01, SP-AUTH-01]
+    source_anchor: specs/acl/grant/0.1/spec.md#request
+  - id: TT-020
+    title: ACL allowedKeys empty value is collapsed into unrestricted access
+    domain: Trust Tasks / authorization
+    primary_goal: Preserve empty-versus-absent least-privilege semantics
+    primary_pressure: Authorization widening
+    priority: P0
+    scenario_patterns: [SP-AUTH-01, SP-INTEROP-01]
+    source_anchor: specs/acl/grant/0.1/spec.md#definitions
+  - id: TT-021
+    title: Role change is represented as a fresh grant and obscures authority history
+    domain: Trust Tasks / lifecycle
+    primary_goal: Keep role-transition evidence attributable and ordered
+    primary_pressure: State-history collapse
+    priority: P1
+    scenario_patterns: [SP-GOV-01, SP-OPS-01]
+    source_anchor: specs/acl/change-role/0.1/spec.md
+  - id: TT-022
+    title: Revoked or reduced ACL authority remains effective in a downstream cache
+    domain: Trust Tasks / lifecycle
+    primary_goal: Propagate authoritative revocation state before protected action
+    primary_pressure: Revocation propagation lag
+    priority: P0
+    scenario_patterns: [SP-OPS-01, SP-AUTH-01]
+    source_anchor: specs/acl/revoke/0.1/spec.md
+  - id: TT-023
+    title: Consent decision is replayed against a different or mutated pending request
+    domain: Trust Tasks / consent
+    primary_goal: Bind approval to the exact challenge and decision object
+    primary_pressure: Approval replay
+    priority: P0
+    scenario_patterns: [SP-REPLAY-01, SP-COMP-01]
+    source_anchor: specs/consent/decision/1.0/spec.md
+  - id: TT-024
+    title: Consent decision is accepted after its approver ceased to be authorized
+    domain: Trust Tasks / consent
+    primary_goal: Re-evaluate approver authority and freshness at consumption time
+    primary_pressure: Stale approver authority
+    priority: P0
+    scenario_patterns: [SP-AUTH-01, SP-OPS-01]
+    source_anchor: specs/consent/decision/1.0/spec.md
+  - id: TT-025
+    title: Approver-set update and approval race produce inconsistent quorum conclusions
+    domain: Trust Tasks / consent
+    primary_goal: Bind decisions to an authoritative approver-set version
+    primary_pressure: Approver-set race
+    priority: P0
+    scenario_patterns: [SP-COMP-01, SP-GOV-01]
+    source_anchor: specs/consent/approver-set/1.0/spec.md
+  - id: TT-026
+    title: Multiple individually valid approvals are combined without a defined threshold rule
+    domain: Trust Tasks / consent
+    primary_goal: Make N-of-M, joint and sequential approval semantics explicit
+    primary_pressure: Threshold composition ambiguity
+    priority: P0
+    scenario_patterns: [SP-COMP-01, SP-AUTH-01]
+    source_anchor: specs/consent/approver-set/1.0/spec.md
+  - id: TT-027
+    title: Removal notice cannot be presented as evidence because required proof is absent or invalid
+    domain: Trust Tasks / redress
+    primary_goal: Preserve portable evidence for appeal after membership termination
+    primary_pressure: Redress-evidence failure
+    priority: P0
+    scenario_patterns: [SP-GOV-03, SP-AUTH-01]
+    source_anchor: specs/vtc/members/removal-notice/0.1/spec.md
+  - id: TT-028
+    title: Member removal terminates the only channel capable of delivering the removal reason
+    domain: Trust Tasks / redress
+    primary_goal: Ensure adverse-decision notice survives the state transition it reports
+    primary_pressure: Post-removal reachability
+    priority: P0
+    scenario_patterns: [SP-GOV-03, SP-OPS-01]
+    source_anchor: specs/vtc/members/removal-notice/0.1/spec.md
+  - id: TT-029
+    title: Persistent audit evidence exposes sensitive role or relationship information beyond its purpose
+    domain: Trust Tasks / privacy
+    primary_goal: Retain auditability without turning evidence stores into correlation surfaces
+    primary_pressure: Audit-correlation leakage
+    priority: P1
+    scenario_patterns: [SP-PRIV-01, SP-PRIV-02]
+    source_anchor: specs/audit
+  - id: TT-030
+    title: Different consumers treat the same authoritative post-state response differently
+    domain: Trust Tasks / interoperability
+    primary_goal: Make producer request evidence and maintainer post-state semantics distinguishable
+    primary_pressure: Post-state interpretation drift
+    priority: P1
+    scenario_patterns: [SP-INTEROP-01, SP-COMP-01]
+    source_anchor: specs/acl/grant/0.1/spec.md#response
+  coverage:
+    identity_authority: [TT-001, TT-002, TT-003, TT-007, TT-017, TT-020]
+    lifecycle: [TT-004, TT-018, TT-019, TT-021, TT-022, TT-024, TT-025]
+    replay_freshness: [TT-002, TT-004, TT-005, TT-008, TT-023, TT-024]
+    privacy_correlation: [TT-008, TT-009, TT-012, TT-015, TT-029]
+    delegation_agents: [TT-007, TT-014, TT-015]
+    approval_threshold: [TT-023, TT-024, TT-025, TT-026]
+    redress: [TT-027, TT-028]
+    interoperability: [TT-006, TT-010, TT-011, TT-016, TT-020, TT-030]
+    operations_resilience: [TT-004, TT-005, TT-013, TT-019, TT-022, TT-028]
   source_url: https://github.com/trustoverip/dtgwg-trust-tasks-tf
   source_branch: main
-  provenance_status: unverified-archive-snapshot
-  provenance_note: Existing adapter predates commit pinning. Review against a concrete source commit before replacing source_commit.
+  provenance_status: source-pinned
+  provenance_note: Reviewed against the immutable Trust Tasks source commit on 2026-08-23. Scenario anchors identify the framework or concrete task specification that motivates each pressure case.
