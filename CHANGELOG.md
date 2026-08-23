@@ -9,6 +9,54 @@ parent: Reference
 
 This file records current release-level changes. The complete pre-v1.2 changelog, including accumulated historical `Unreleased` sections, is preserved at `archive/pre-v1.2/CHANGELOG-pre-v1.2.txt`.
 
+## v1.6.0 — 2026-08-23 — Common Earl
+
+### Added
+
+- Source-pinned Trust Tasks and DTG Credential Specification corpora at immutable upstream revisions.
+- Machine-readable coverage maps for the two primary corpora.
+- Expanded Trust Tasks and Credential Specification corpora from 16 to 30 scenarios each.
+- Expanded Trust Tasks × Credential Specification seam corpus from 12 to 20 composed scenarios.
+- Durable pre-expansion assessment history and evidence-backed cross-specification reassessment.
+- Guided documentation hubs for first-run adoption, development/integration and continuous assurance.
+- Machine-verifiable v1.6 release qualification contract, validator and tests.
+- Qualified, commit-bound GitHub tag/release publication workflow.
+
+### Changed
+
+- Packaged corpus coverage increases from 146 to 182 scenario vectors across 14 corpora and 28 portable scenario patterns.
+- The Trust Tasks corpus is pinned to `4937c70df95e56ed6404b8c004106ecb121a23cf`.
+- The DTG Credential Specification corpus is pinned to `b89f389abbdae77ba60b673c0836c781c2b54169`.
+- The Trust Tasks × Credential Specification pressure test was rerun against the expanded current-source corpus; its three residual themes remain but are refined by stronger current ACL lifecycle, approval, redress and VWC binding evidence.
+- The root README is now a concise front door rather than an accumulating handbook.
+- Historical v1.5 qualification validation is release-history aware so later compatible v1 releases do not invalidate preserved v1.5 evidence.
+- Root/workspace package metadata advances to `1.6.0` while the stable v1 engine/result/retention contracts remain unchanged.
+
+### Compatibility
+
+The stable v1 compatibility boundaries remain unchanged:
+
+```text
+rahp-engine-contract-v1
+normalized result schema version 1
+rahp-evidence-retention-v1
+```
+
+v1.6.0 is an additive minor release. Existing normalized results remain valid.
+
+### Assurance and baseline policy
+
+- Corpus growth broadens the pressure surface but is not itself an assurance conclusion.
+- The expanded TT×CredSpec review refines existing residuals rather than manufacturing new findings from scenario count.
+- Maintained example baselines remain at their separately evidenced v1.5 state until independently reassessed; the toolkit release does not silently promote them.
+- Historical assessment records remain immutable lineage evidence.
+
+### Release name
+
+**Common Earl — *Tanaecia julii***, selected on 2026-08-23 from the recorded West Bengal butterfly list under the random-at-release-time naming policy.
+
+See [v1.6.0 release notes](docs/releases/v1.6.0.md).
+
 ## v1.5.0 — 2026-08-22 — Purple Leaf Blue
 
 ### Added

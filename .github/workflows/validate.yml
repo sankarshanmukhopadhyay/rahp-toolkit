@@ -37,10 +37,12 @@ jobs:
         run: python3 tools/validate_evidence_freshness_delta.py
       - name: Validate executable authority and policy gates
         run: python3 tools/validate_authority_policy_gates.py
-      - name: Validate v1.5 capability documentation synchronization
+      - name: Validate capability documentation synchronization
         run: python3 tools/validate_capability_documentation.py
-      - name: Validate v1.5 release qualification
+      - name: Validate preserved v1.5 qualification evidence
         run: python3 tools/validate_v15_release.py
+      - name: Validate v1.6 release qualification
+        run: python3 tools/validate_v16_release.py
       - name: Validate canonical maintained examples
         run: python3 tools/validate_current_examples.py
 
@@ -54,9 +56,9 @@ jobs:
       - name: Validate pressure-test records
         run: python3 tools/validate_pressure_tests.py
 
-      - name: Validate v1.1 project identity
+      - name: Validate project identity
         run: python3 tools/validate_project_identity.py
-      - name: Validate v1.1 release metadata
+      - name: Validate release metadata
         run: python3 tools/validate_release_metadata.py
       - name: Validate documentation information architecture
         run: python3 tools/validate_documentation_ia.py
@@ -68,7 +70,7 @@ jobs:
       - name: Validate combined reviews
         run: python3 tools/validate_combined_reviews.py
 
-      - name: Validate CAWG v1.1 deployment integrity
+      - name: Validate CAWG deployment integrity
         run: python3 tools/validate_cawg_instance.py
 
       - name: Validate selected issue-watch registries
@@ -88,7 +90,7 @@ jobs:
       - name: Validate durable assessment queue state
         run: python3 tools/validate_assessment_queue.py
 
-      - name: Validate v1.1 stable engine and retention contract
+      - name: Validate stable engine and retention contract
         run: python3 tools/validate_engine_contract.py
 
       - uses: actions/setup-node@v6

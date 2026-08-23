@@ -1,6 +1,6 @@
 {
   "name": "@rahp/cli",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "type": "module",
   "main": "dist/cli.js",
   "bin": {
@@ -10,7 +10,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@rahp/core": "1.5.0",
-    "@rahp/graph": "1.5.0"
+    "@rahp/core": "1.6.0",
+    "@rahp/graph": "1.6.0"
   }
 }

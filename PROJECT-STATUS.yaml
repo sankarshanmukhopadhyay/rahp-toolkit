@@ -1,13 +1,14 @@
 project: rahp-toolkit
-stable_release: 1.5.0
-development_target: 1.5.0
+stable_release: 1.6.0
+development_target: 1.6.0
 release_status: released
 qualification_status: qualified
-qualification_contract: method/v1.5-release-qualification.yaml
+qualification_contract: method/v1.6-release-qualification.yaml
 release_name:
-  common_name: Purple Leaf Blue
-  scientific_name: Amblypodia anita
+  common_name: Common Earl
+  scientific_name: Tanaecia julii
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
+  selected_on: '2026-08-23'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -31,6 +32,8 @@ release_naming:
     from the butterfly species listed by the recorded source. The selected
     common name and scientific name SHOULD be recorded in the release notes.
 release_intent: >-
-  v1.5.0 Continuous Governed Assurance is the stable release. Subsequent v1.5.x
-  maintenance releases must preserve the qualified portable contracts and select
-  their own West Bengal butterfly release name at release time.
+  v1.6.0 Source-Pinned Coverage and Guided Adoption is the stable release. It
+  preserves the stable v1 contracts while qualifying expanded source-pinned
+  scenario coverage, composed reassessment lineage and routed adoption/developer
+  documentation. Maintained example baselines advance only through separate
+  evidence-backed reassessment.
