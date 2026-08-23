@@ -5,7 +5,7 @@ Release v1.5.0 (stable) · Purple Leaf Blue · CC-BY 4.0
 
 RAHP Toolkit is a **portable specification-assurance toolkit** for pressure-testing standards, protocols, implementations and composed systems against human harms, governance failures, adversarial conditions and resilience risks.
 
-> **Project identity:** RAHP Toolkit is the portable method and engine contract. DTG, CAWG/C2PA, OpenVTC, ARPA and other portfolios or projects are independently scoped deployments and examples. No deployment defines the portable method for another adopter. The bundled DTG exemplar is project provenance and an exercised deployment, not a core dependency.
+> **Project identity:** RAHP Toolkit is the portable method and engine contract. DTG, CAWG/C2PA, OpenVTC, ARPA and other portfolios or projects are independently scoped deployments and examples. No deployment defines the portable method for another adopter. The **Bundled DTG exemplar** is project provenance and an exercised deployment, not a core dependency.
 
 ## What RAHP does
 
@@ -20,7 +20,7 @@ RAHP helps an implementer, maintainer or reviewer turn a broad question such as 
 
 RAHP is deliberately evidence-conservative: **zero findings is not equivalent to assured**. A target can have no confirmed findings while still carrying assurance gaps, unresolved review obligations or insufficient evidence.
 
-## How it works
+## Current architecture
 
 ```text
 target revision
