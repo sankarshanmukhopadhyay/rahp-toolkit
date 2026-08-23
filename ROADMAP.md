@@ -43,13 +43,26 @@ v1.6 strengthens RAHP's reproducibility and usability without changing the stabl
    - `tools/validate_v16_release.py` verifies source pins, coverage, reassessment lineage, documentation routing, workspace synchronization and compatibility;
    - the qualified publication workflow revalidates the exact main-branch release commit before creating `v1.6.0` and the GitHub Release.
 
+### Retained v1.5 capability contracts
+
+v1.6 retains the previously qualified continuous-assurance capability set unchanged:
+
+- **Durable assessment and finding lineage**;
+- **Governed remediation and retest**;
+- **Assurance graph and impact analysis**;
+- **Evidence provenance, freshness and delta**;
+- **Executable authority and policy gates**; and
+- **Portfolio and deployment presentation**.
+
+These remain registered, documented and executable capability surfaces; v1.6 adds coverage and adoption qualification around them rather than replacing their contracts.
+
 ### Baseline policy
 
 A toolkit release does not automatically requalify maintained external targets. The maintained-example registry remains at its separately evidenced v1.5.0 baselines until each example is independently reassessed or retested. Historical records remain immutable lineage evidence.
 
 ## v1.5.0 — Continuous Governed Assurance
 
-v1.5 turned evidence-driven point-in-time assessment into durable, continuously governed assurance while preserving deployment independence. It delivered durable assessment/finding lineage, governed remediation and retest, assurance graph and impact analysis, evidence provenance/freshness/delta, executable authority and policy gates, portable assurance posture and machine-verifiable release qualification.
+v1.5 turned evidence-driven point-in-time assessment into durable, continuously governed assurance while preserving deployment independence. It delivered the retained capability contracts above plus machine-verifiable v1.5 release qualification.
 
 The v1.5 lifecycle remains part of v1.6:
 
