@@ -1,6 +1,6 @@
 review:
   id: XSP-GF-001
-  status: in-progress
+  status: complete
   title: Guardianship and fiduciary constrained-authority cross-spec pressure test
   reviewed_on: '2026-08-23'
   evidence_grade: source-pinned
@@ -27,19 +27,152 @@ review:
       - selection of a specific proof construction
       - automatic creation of downstream DTG issues
   method:
-    workflow: docs/pressure-testing-a-spec.md
+    workflow: docs/cross-spec-pressure-testing.md
     rule: >-
-      Preserve exploratory hypotheses separately, then admit findings to the
-      formal pressure-test record only when they satisfy the RAHP finding contract.
+      Preserve exploratory hypotheses, construct concrete evidence closures using
+      current primitives first, then promote only residuals that survive the
+      post-construction RAHP retest.
   hypothesis_baseline: hypothesis-baseline.yaml
   evidence_pass: evidence-pass.yaml
+  construction_review: transaction-evidence-closure.md
+  post_construction_retest: post-construction-rahp.yaml
   summary:
-    finding_count: 0
-    open_count: 0
+    finding_count: 4
+    open_count: 4
+    by_primary_disposition:
+      implementation-guidance: 1
+      specification: 2
+      governance: 1
     overall_assessment: >-
-      Formal RAHP pressure-test record opened for the cross-spec constrained-authority
-      case. Initial hypotheses are preserved in hypothesis-baseline.yaml and the
-      first source-pinned reassessment is preserved in evidence-pass.yaml. Findings
-      will be promoted into this contract only after the planned evidence-closure
-      constructions demonstrate a dispositionable residual gap.
-  findings: []
+      Three concrete evidence closures show that DTG already has substantial mechanics
+      for proof, scoped authority, expiry, approval, challenge/replay resistance and
+      revocation. Ten initial candidate findings collapse to four narrower residuals:
+      constrained-authority composition, threshold/co-approval composition, lifecycle
+      precedence/restoration, and the privacy/governance boundary. No case demonstrates
+      a missing generic base Credential, Trust Task approval or revocation primitive.
+  findings:
+    - id: F-001
+      title: Constrained-authority decisions lack a common cross-spec composition profile
+      status: open
+      severity: High
+      primary_disposition: implementation-guidance
+      secondary_dispositions: [specification, governance]
+      risks: [CRK-14]
+      evidence:
+        - source: examples/cross-spec/guardianship-fiduciary/transactions/routine-act.yaml
+          observation: Routine authority can be constructed from current Credential and Trust Task mechanics only when a profile supplies appointment-source, action-scope, current-state and non-inference semantics.
+        - source: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169:spec/body.md
+          observation: Credential validity, taskContext, issuer authorization and relationship-proof mechanisms exist, but they do not define guardianship/fiduciary transaction permission.
+        - source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/grant/0.1/spec.md
+          observation: Scoped and expiring grants with authoritative post-state exist, while role and scope semantics are intentionally opaque to the framework.
+      harm: >-
+        A verifier can either over-read a valid appointment as permission for the specific
+        act or require excessive bespoke evidence because the propositions connecting
+        appointment, scope, current state and transaction permission are not composed consistently.
+      recommendation: >-
+        Define a constrained-authority cross-spec profile that names authoritative source classes,
+        separates appointment from transaction permission, maps action/domain scope, requires
+        transaction-time state evaluation and carries explicit non-inference/minimal-disclosure rules.
+      retest_when:
+        - a constrained-authority composition profile or equivalent cross-spec contract is published
+      portable_assurance:
+        harm_patterns: [HRM-INF-01, HRM-SEC-02]
+        risk_patterns: [RKP-AUTH-01, RKP-COMP-02]
+        control_patterns: [CTP-AUTH-01, CTP-DISC-01]
+        guardrail_patterns: [GRP-AUTH-01]
+        assurance_patterns: [ATP-AUTH-01]
+        evidence_patterns: [EVP-AUTH-01]
+    - id: F-002
+      title: Threshold and co-approval evidence lacks a reusable constrained-authority composition contract
+      status: open
+      severity: High
+      primary_disposition: specification
+      secondary_dispositions: [implementation-guidance]
+      risks: [CRK-21]
+      evidence:
+        - source: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+          observation: Existing Trust Task approval patterns provide authenticated approvers, challenge matching, single-use consumption, scope and expiry, but do not define generic N-of-M/joint/sequential constrained-authority composition.
+        - source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/consent/decision/1.0/spec.md
+          observation: A signed approval can be bound to a pending challenge and consumed single-use after authorization of the approver.
+        - source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/consent/approver-set/1.0/spec.md
+          observation: Trust Tasks already demonstrates an admin-gated authoritative approver binding pattern.
+      harm: >-
+        Independently valid approvals can be combined across different transaction versions, stale
+        approver sets or incompatible threshold rules, or implementations may disclose the full
+        representative graph merely to prove that the threshold was met.
+      recommendation: >-
+        Specify a reusable constrained-authority approval profile with a canonical decision object,
+        threshold-policy semantics, authoritative/fresh approver-set state, common freshness rules and
+        a privacy-preserving threshold-satisfaction interface.
+      retest_when:
+        - a generic threshold/co-approval profile is defined or existing approval tasks gain equivalent composition semantics
+      portable_assurance:
+        harm_patterns: [HRM-INF-01, HRM-SEC-02]
+        risk_patterns: [RKP-AUTH-02, RKP-COMP-02]
+        control_patterns: [CTP-AUTH-02]
+        guardrail_patterns: [GRP-AUTH-02]
+        assurance_patterns: [ATP-AUTH-01]
+        evidence_patterns: [EVP-AUTH-01]
+    - id: F-003
+      title: Suspension, supersession and restoration lack cross-artifact lifecycle precedence semantics
+      status: open
+      severity: High
+      primary_disposition: specification
+      secondary_dispositions: [governance, implementation-guidance]
+      risks: [CRK-21]
+      evidence:
+        - source: examples/cross-spec/guardianship-fiduciary/transactions/suspension-restoration.yaml
+          observation: Credential validity plus ACL revoke/grant mechanics close removal, scope reduction and re-grant mechanics but do not determine lifecycle precedence or legal meaning across artifacts.
+        - source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/revoke/0.1/spec.md
+          observation: Full removal and scope reduction produce attributable evidentiary records and canonical resulting state.
+        - source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/grant/0.1/spec.md
+          observation: Grants can expire and are recoverable via re-grant, but the generic framework does not define constrained-authority restoration versus new appointment.
+      harm: >-
+        A stale yet cryptographically valid authority or approval artifact can dominate a later
+        suspension/restoration event, or a legitimate principal/representative can remain blocked
+        because implementations disagree about which lifecycle event controls at decision time.
+      recommendation: >-
+        Define constrained-authority lifecycle vocabulary, effective-time and precedence rules,
+        authoritative current-state discovery, approval freshness coupling, and explicit restoration
+        versus replacement/new-appointment semantics.
+      retest_when:
+        - lifecycle/status semantics define suspension, supersession, restoration and transaction-time precedence across composed evidence
+      portable_assurance:
+        harm_patterns: [HRM-INF-01, HRM-GOV-02]
+        risk_patterns: [RKP-AUTH-02, RKP-CRD-02, RKP-COMP-02]
+        control_patterns: [CTP-AUTH-02, CTP-DISC-02]
+        guardrail_patterns: [GRP-AUTH-02]
+        assurance_patterns: [ATP-AUTH-01]
+        evidence_patterns: [EVP-AUTH-01, EVP-RED-01]
+    - id: F-004
+      title: Private authorization evidence must not collapse retained agency or fiduciary propriety into proof validity
+      status: open
+      severity: High
+      primary_disposition: governance
+      secondary_dispositions: [specification, implementation-guidance]
+      risks: [CRK-19, CRK-15]
+      evidence:
+        - source: examples/cross-spec/guardianship-fiduciary/transaction-evidence-closure.md
+          observation: All three constructions can authenticate authority-related evidence, but none makes fiduciary propriety, incapacity, retained agency or restoration a consequence of cryptographic validity.
+        - source: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13:docs/implementation-guide/boundaries/composed-presentation-privacy.md
+          observation: The companion ZKP work requires privacy to be assessed across composed evidence and rejects correlation-prone hiding constructions, but this is not upstream adoption.
+        - source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/revoke/0.1/spec.md#authorization
+          observation: Trust Tasks explicitly separates proof of who asked from the consumer's authorization decision.
+      harm: >-
+        A valid private proof of representative authority can become a durable incapacity signal,
+        disclose sensitive relationship structure, or be treated as evidence that duties, conflicts,
+        best-interest/proportionality rules or retained principal rights were satisfied.
+      recommendation: >-
+        Keep incapacity non-inference, retained/restored agency, conflicts and fiduciary propriety as
+        explicit governance/assurance propositions. Where private proof is needed, define upstream
+        predicate/input interfaces that reveal only the authority/current-state facts required by the
+        decision and do not expose durable relationship correlators.
+      retest_when:
+        - upstream privacy proof-input contracts and governance profiles define constrained-authority non-inference, retained agency and composed disclosure requirements
+      portable_assurance:
+        harm_patterns: [HRM-PRV-02, HRM-GOV-02]
+        risk_patterns: [RKP-PRV-01, RKP-GOV-04]
+        control_patterns: [CTP-PRV-01, CTP-GOV-03]
+        guardrail_patterns: [GRP-PRV-01, GRP-RED-01]
+        assurance_patterns: []
+        evidence_patterns: [EVP-RED-01]

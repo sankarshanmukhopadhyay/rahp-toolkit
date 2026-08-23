@@ -1,0 +1,117 @@
+retest:
+  id: XSP-GF-001-R2
+  title: Guardianship and fiduciary constrained-authority post-construction RAHP retest
+  reviewed_on: '2026-08-23'
+  status: complete
+  basis:
+    hypothesis_baseline: hypothesis-baseline.yaml
+    source_pinned_pass: evidence-pass.yaml
+    constructions:
+      - transactions/routine-act.yaml
+      - transactions/threshold-coapproval.yaml
+      - transactions/suspension-restoration.yaml
+  method: >-
+    Re-run RAHP after concrete evidence-closure construction. Retain only residuals
+    that survive reuse of current DTG primitives; collapse overlapping candidate
+    findings and separate specification/profile residuals from governance-only concerns.
+  source_pins:
+    dtg_general: trustoverip/dtgwg-general@fa15044225ff447ad6564983a5ce0732b80cbdc1
+    credential_spec: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169
+    trust_tasks: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf
+    zkp_upstream: trustoverip/dtgwg-zkp-tf@a58569308fcec70e014835555a1f1d8c15f09852
+    zkp_companion: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13
+  original_findings_delta:
+    RAHP-GF-F01:
+      result: confirmed-narrowed
+      disposition: promoted-as-residual-1
+      reason: Appointment validity and transaction permission remain distinct, but existing proof/authorization primitives are sufficient mechanics; the residual is a cross-spec composition profile.
+    RAHP-GF-F02:
+      result: confirmed-narrowed
+      disposition: promoted-as-residual-3
+      reason: Grant/revoke/expiry exist; the unresolved problem is cross-artifact lifecycle precedence, effective time and restoration semantics.
+    RAHP-GF-F03:
+      result: weakened-further
+      disposition: absorbed-into-residual-2
+      reason: Challenge, single-use, audience, task-context and correlation patterns materially control generic replay; decision binding belongs in the approval profile.
+    RAHP-GF-F04:
+      result: confirmed-narrowed
+      disposition: promoted-as-residual-4
+      reason: Composed privacy remains relevant, but the concrete gap is the upstream proof-input/interface contract for authority, threshold and current-state predicates.
+    RAHP-GF-F05:
+      result: weakened-to-guardrail
+      disposition: not-promoted
+      reason: Current VWC digest is an integrity binding, while the companion guidance already rejects enumerable low-entropy hiding constructions.
+    RAHP-GF-F06:
+      result: insufficient-evidence
+      disposition: governance-profile-backlog
+      reason: Emergency activation/deactivation semantics were not necessary to close the three selected transactions and no generic base-spec defect was demonstrated.
+    RAHP-GF-F07:
+      result: confirmed-governance-boundary
+      disposition: absorbed-into-residual-4
+      reason: Existing sources already separate proof from authorization; fiduciary propriety, conflicts and least-restrictive/best-interest duties remain governance/assurance questions.
+    RAHP-GF-F08:
+      result: weakened
+      disposition: absorbed-into-residual-1
+      reason: Generic issuer/proof/source checks exist; constrained-authority profiles still need to name authoritative appointment/status source classes.
+    RAHP-GF-F09:
+      result: confirmed-governance-first
+      disposition: absorbed-into-residual-4
+      reason: Retained/restored principal agency needs governance semantics before any machine-verifiable hook can be standardized.
+    RAHP-GF-F10:
+      result: insufficient-evidence
+      disposition: governance-interoperability-backlog
+      reason: The construction pass did not establish a concrete cross-jurisdiction equivalence defect.
+  residuals:
+    - id: R-GF-01
+      title: Constrained-authority composition profile
+      classification: specification-profile
+      severity: High
+      evidence_cases: [GF-CASE-A, GF-CASE-C]
+      statement: >-
+        Existing DTG primitives can represent proof, validity, scoped grants, revocation,
+        audience/context binding and source authorization, but no reviewed cross-spec profile
+        defines the common propositions connecting appointment, authoritative current state,
+        action scope and permission for the specific act.
+      next_owner: cross-spec-profile
+    - id: R-GF-02
+      title: Threshold and co-approval composition
+      classification: specification-profile
+      severity: High
+      evidence_cases: [GF-CASE-B]
+      statement: >-
+        Trust Tasks contains strong task-specific approval patterns, including authorized
+        approvers, challenges, single-use decisions, scope and expiry. A reusable constrained-
+        authority profile is still needed for canonical decision binding, threshold policy,
+        common approver-state semantics and private threshold satisfaction.
+      next_owner: trust-task-cross-spec-profile
+    - id: R-GF-03
+      title: Lifecycle precedence and restoration
+      classification: governance-profile-with-specification-hooks
+      severity: High
+      evidence_cases: [GF-CASE-C]
+      statement: >-
+        Grant, revoke, scope reduction, expiry and re-grant mechanics exist, but the reviewed
+        sources do not close suspension, supersession, restoration, effective-time precedence
+        and discovery of authoritative transaction-time state across artifacts.
+      next_owner: governance-lifecycle-profile
+    - id: R-GF-04
+      title: Privacy and governance boundary for constrained authority
+      classification: privacy-profile-and-governance
+      severity: High
+      evidence_cases: [GF-CASE-A, GF-CASE-B, GF-CASE-C]
+      statement: >-
+        Upstream concrete proof-input contracts for private authority/co-approval/current-state
+        predicates remain to be demonstrated. Incapacity non-inference, retained principal agency,
+        conflicts and fiduciary propriety remain governance/assurance properties and must not be
+        inferred from cryptographic validity or authorization.
+      next_owner: privacy-zkp-profile-and-governance
+  overall_result: >-
+    The post-construction RAHP retest reduces ten initial candidate findings to four
+    evidence-backed residuals. None of the three cases demonstrates a missing generic base
+    Credential, Trust Task approval, or revocation primitive. The strongest remaining work is
+    profile/composition semantics plus lifecycle and governance boundaries.
+  next_gate:
+    - promote the four evidence-backed residuals into the formal pressure-test record
+    - seek maintainer challenge/disposition in GitHub Discussion #51
+    - create downstream DTG work only for residuals maintainers agree are concrete, owned and actionable
+  create_downstream_issues: false
