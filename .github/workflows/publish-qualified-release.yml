@@ -1,0 +1,79 @@
+name: publish qualified RAHP release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'PROJECT-STATUS.yaml'
+      - 'method/v1.6-release-qualification.yaml'
+      - 'tools/validate_v16_release.py'
+      - 'docs/releases/v1.6.0.md'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'packages/**/package.json'
+      - '.github/workflows/publish-qualified-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-v1-6-0:
+    if: github.repository == 'sankarshanmukhopadhyay/rahp-toolkit'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Requalify exact release commit
+        run: |
+          python3 tools/validate_v16_release.py
+          python3 tools/validate_scenario_corpora.py
+          python3 tools/validate_pressure_tests.py
+          python3 tools/validate_engine_contract.py
+      - name: Verify release state
+        run: |
+          python3 - <<'PY'
+          import yaml
+          from pathlib import Path
+          status=yaml.safe_load(Path('PROJECT-STATUS.yaml').read_text())
+          assert status['stable_release']=='1.6.0'
+          assert status['release_status']=='released'
+          assert status['qualification_status']=='qualified'
+          assert status['release_name']['common_name']=='Common Earl'
+          assert status['release_name']['scientific_name']=='Tanaecia julii'
+          PY
+      - name: Create release tag if absent
+        env:
+          TAG: v1.6.0
+        run: |
+          git fetch --tags --force
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            test "$(git rev-list -n 1 "$TAG")" = "$GITHUB_SHA" || {
+              echo "::error::$TAG already exists but does not point at the qualified release commit"
+              exit 1
+            }
+          else
+            git config user.name github-actions[bot]
+            git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+            git tag -a "$TAG" "$GITHUB_SHA" -m 'RAHP Toolkit v1.6.0 — Common Earl'
+            git push origin "$TAG"
+          fi
+      - name: Publish GitHub Release if absent
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v1.6.0
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "$TAG release already exists; leaving it unchanged."
+          else
+            gh release create "$TAG" \
+              --verify-tag \
+              --target "$GITHUB_SHA" \
+              --title 'RAHP Toolkit v1.6.0 — Common Earl' \
+              --notes-file docs/releases/v1.6.0.md
+          fi
