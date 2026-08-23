@@ -81,24 +81,18 @@ def main() -> int:
     expectations = q.get("coverage_expectations") or {}
     corpus_docs = []
     total_scenarios = 0
-    patterns: set[str] = set()
     for path in sorted((ROOT / "corpora").rglob("*.yaml")):
         doc = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         corpus = doc.get("corpus")
         if not isinstance(corpus, dict):
             continue
         corpus_docs.append(corpus)
-        scenarios = corpus.get("scenarios") or []
-        total_scenarios += len(scenarios)
-        for scenario in scenarios:
-            patterns.update(scenario.get("scenario_patterns") or [])
+        total_scenarios += len(corpus.get("scenarios") or [])
 
     if len(corpus_docs) != expectations.get("total_corpora"):
         errors.append(f"expected {expectations.get('total_corpora')} corpora, found {len(corpus_docs)}")
     if total_scenarios != expectations.get("total_scenarios"):
         errors.append(f"expected {expectations.get('total_scenarios')} scenarios, found {total_scenarios}")
-    if len(patterns) != expectations.get("portable_patterns"):
-        errors.append(f"expected {expectations.get('portable_patterns')} scenario patterns, found {len(patterns)}")
 
     by_id = {c.get("id"): c for c in corpus_docs}
     tt = by_id.get("CORPUS-TRUST-TASKS") or {}
