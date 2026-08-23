@@ -1,0 +1,180 @@
+evidence_pass:
+  id: XSP-GF-001-E1
+  reviewed_on: '2026-08-23'
+  status: complete
+  baseline: pressure-test.yaml
+  canonical_baseline: false
+  downstream_issue_creation: false
+  source_pins:
+    dtg_general: trustoverip/dtgwg-general@fa15044225ff447ad6564983a5ce0732b80cbdc1
+    credential_spec: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169
+    trust_tasks: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf
+    zkp_upstream: trustoverip/dtgwg-zkp-tf@a58569308fcec70e014835555a1f1d8c15f09852
+    zkp_companion: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13
+  evidence_policy:
+    upstream-normative: shared DTG source text at the pinned revision
+    companion-guidance: design or conformance evidence in the ZKP fork; not upstream adoption
+    unresolved-composition: remaining profile/governance question; absence is not a defect claim
+  summary:
+    revised_problem: >-
+      DTG already contains substantial primitives for scoped authority, lifecycle,
+      audience/evidence binding and proof assurance. The residual problem is the
+      absence of an evidence-backed constrained-authority composition profile that
+      demonstrates how appointment, current scope, transaction permission,
+      duties/conflicts, retained agency and privacy-preserving proof inputs combine.
+    disposition_counts:
+      refined: 4
+      weakened: 3
+      partially_controlled: 2
+      evidence_needed_governance_heavy: 3
+    note: Categories overlap where a finding is both refined and partially controlled.
+  hypothesis_delta:
+    H-GF-01:
+      result: refined
+      rationale: Existing primitives reduce the need for new base semantics; the remaining requirement is an explicit composition contract.
+    H-GF-02:
+      result: refined
+      rationale: Validity, task context and issuer authorization already exist; add semantics only where concrete constrained-authority predicates cannot reuse them.
+    H-GF-03:
+      result: weakened
+      rationale: Trust Tasks already supplies identity, proof, audience, correlation and ACL authorization machinery; remaining needs are profile-specific transaction bindings.
+    H-GF-04:
+      result: confirmed-partially-controlled
+      rationale: The companion ZKP fork already applies composed-presentation privacy and enumeration-resistance rules; upstream predicate/input composition remains to be demonstrated.
+    H-GF-05:
+      result: confirmed-narrowed
+      rationale: Current sources already separate proof validity from authorization; fiduciary propriety remains a governance/assurance concern beyond authorization.
+  findings:
+    RAHP-GF-F01:
+      classification: refined
+      residual_severity: High
+      evidence:
+        - class: upstream-normative
+          source: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169:spec/body.md#security-considerations
+          observation: Cryptographic validity is explicitly distinguished from issuer authorization.
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/revoke/0.1/spec.md#authorization
+          observation: Proof establishes who asked; authorization remains the consumer's policy decision.
+        - class: companion-guidance
+          source: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13:docs/implementation-guide/adr/ADR-013-task-context-not-authority.md
+          observation: Task context is binding evidence, not authority, delegation or permission.
+      residual_gap: A guardianship/fiduciary composition rule still needs separate interoperable propositions for appointment, scoped authority and permission for a specific act.
+      next_owner: profile-cross-spec
+    RAHP-GF-F02:
+      classification: refined
+      residual_severity: High
+      evidence:
+        - class: upstream-normative
+          source: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169:spec/body.md
+          observation: Credentials carry validity times and verifier guidance calls for validity and applicable revocation checks.
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/grant/0.1/spec.md
+          observation: Grants support scopes and expiry and return authoritative post-state.
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/revoke/0.1/spec.md
+          observation: Revocation supports full removal and scope reduction with an evidentiary record.
+      residual_gap: Cross-artifact transaction-time propagation for suspension, supersession and restoration is not established by these primitives alone.
+      next_owner: profile-cross-spec
+    RAHP-GF-F03:
+      classification: weakened
+      residual_severity: Medium
+      evidence:
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:SPEC.md#482-audience-binding
+          observation: Proof-carrying non-bearer documents are bound to the intended recipient to prevent cross-consumer replay.
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:SPEC.md#49-the-threadid-member
+          observation: Document IDs, thread correlation and citation rules distinguish evidence of one exchange/event from another.
+        - class: upstream-normative
+          source: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169:spec/body.md#trust-task-context-binding
+          observation: taskContext binds a credential to its Trust Task exchange and security guidance warns against context collapse.
+      residual_gap: A domain approval profile must still state which transaction fields and current-authority state are decision-critical and freshness-bound.
+      next_owner: profile-trust-task
+    RAHP-GF-F04:
+      classification: refined-partially-controlled
+      residual_severity: High
+      evidence:
+        - class: companion-guidance
+          source: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13:docs/implementation-guide/boundaries/composed-presentation-privacy.md
+          observation: Privacy is assessed across complete composed evidence closure, including correlation and reconstruction surfaces.
+      residual_gap: Concrete authority/co-approval predicates and upstream interfaces have not yet demonstrated private composition without durable relationship correlators or unnecessary status/ancestry disclosure.
+      next_owner: profile-privacy-zkp
+    RAHP-GF-F05:
+      classification: weakened-construction-guardrail
+      residual_severity: Medium
+      evidence:
+        - class: upstream-normative
+          source: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169:spec/body.md#security-considerations
+          observation: The VWC digest is described as an integrity binding to a referenced VRC, not a confidentiality construction.
+        - class: companion-guidance
+          source: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13:docs/implementation-guide/boundaries/composed-presentation-privacy.md
+          observation: Deterministic hashes and low-entropy commitments are rejected as hiding mechanisms for enumerable inputs.
+      residual_gap: Future hidden status constructions must demonstrate entropy, domain separation and enumeration resistance.
+      next_owner: construction-guardrail
+    RAHP-GF-F06:
+      classification: evidence-needed-governance-heavy
+      residual_severity: Medium
+      evidence:
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/grant/0.1/spec.md
+          observation: Scoped grants can expire.
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/revoke/0.1/spec.md
+          observation: Authority can be removed or scope-reduced explicitly.
+      residual_gap: No reviewed source establishes a constrained-authority emergency profile with activation, deactivation, review and restoration semantics.
+      next_owner: governance-profile
+    RAHP-GF-F07:
+      classification: refined-partially-controlled
+      residual_severity: High
+      evidence:
+        - class: upstream-normative
+          source: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169:spec/body.md#security-considerations
+          observation: Cryptographic validity is not authorization.
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/revoke/0.1/spec.md#authorization
+          observation: Proof of requester identity is distinct from the authorization decision.
+        - class: companion-guidance
+          source: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13:docs/implementation-guide/adr/ADR-004-assurance-governance.md
+          observation: Proof integrity/privacy assurance is separated from governance-backed assurance.
+      residual_gap: Authorization still does not establish conflicts, duties, proportionality, best-interest or least-restrictive decision requirements.
+      next_owner: governance-assurance-profile
+    RAHP-GF-F08:
+      classification: weakened
+      residual_severity: Medium
+      evidence:
+        - class: upstream-normative
+          source: trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169:spec/body.md#security-considerations
+          observation: Proof verification and issuer authorization are separately required.
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:SPEC.md#47-proof
+          observation: A proof binds content to an issuer whose verification method resolves to material controlled by that party.
+        - class: companion-guidance
+          source: sankarshanmukhopadhyay/dtgwg-zkp-tf@6064c3428ca88471b5ec8271ec03e318c26d2a13:docs/implementation-guide/interoperability/external-evidence-governance.md
+          observation: External evidence receives conformance credit only under explicit provenance and admission rules.
+      residual_gap: A constrained-authority profile must identify authoritative source classes and lifecycle checks for appointment/status predicates.
+      next_owner: profile-cross-spec
+    RAHP-GF-F09:
+      classification: evidence-needed-governance-heavy
+      residual_severity: High
+      evidence:
+        - class: upstream-normative
+          source: trustoverip/dtgwg-trust-tasks-tf@4937c70df95e56ed6404b8c004106ecb121a23cf:specs/acl/revoke/0.1/spec.md
+          observation: Existing authorization machinery can remove or narrow authority but does not itself define precedence between represented-person and representative decision rights.
+      residual_gap: Governance semantics for retained and restored agency must be defined before deciding whether machine-verifiable evidence hooks are required.
+      next_owner: governance-profile
+    RAHP-GF-F10:
+      classification: evidence-needed-governance-heavy
+      residual_severity: Medium
+      evidence:
+        - class: unresolved-composition
+          source: trustoverip/dtgwg-general@fa15044225ff447ad6564983a5ce0732b80cbdc1
+          observation: This pass identified no guardianship/fiduciary cross-jurisdiction equivalence mechanism to test; this is not treated as a defect claim.
+      residual_gap: A future interoperability mapping must preserve governance provenance and explicit equivalence/non-equivalence rules and fail safely when no trusted mapping exists.
+      next_owner: governance-interoperability-profile
+  next_gate:
+    - build a routine constrained-authority transaction evidence closure
+    - build a threshold/co-approval transaction evidence closure
+    - build a suspension/restoration transaction evidence closure
+    - reuse current Credential and Trust Task primitives before proposing new fields
+    - isolate only predicates that cannot be represented or privately proven with current interfaces
+    - seek maintainer disposition before opening downstream DTG issues
