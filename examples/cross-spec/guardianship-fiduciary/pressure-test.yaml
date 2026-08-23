@@ -1,0 +1,356 @@
+review:
+  id: XSP-GF-001
+  status: exploratory
+  title: Guardianship and fiduciary constrained-authority cross-spec pressure test
+  reviewed_on: '2026-08-23'
+  target:
+    ecosystem: Trust over IP Digital Trust Graph
+    repositories:
+      - trustoverip/dtgwg-general
+      - trustoverip/dtgwg-cred-spec
+      - trustoverip/dtgwg-trust-tasks-tf
+      - trustoverip/dtgwg-zkp-tf
+    companion_fork:
+      - sankarshanmukhopadhyay/dtgwg-zkp-tf
+    target_status: discussion-and-working-draft surfaces
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.5.x
+    engine_contract: rahp-engine-contract-v1
+  canonical_baseline: false
+  portability:
+    method_extension: false
+    deployment_specific_profile: dtg-worked-instance
+    note: The case tests a portable constrained-authority pattern; DTG is the first worked deployment.
+  scope:
+    included:
+      - guardianship and fiduciary authority semantics
+      - bounded authority, activation, duration and status
+      - transaction-bound approvals and co-approval
+      - conflicts, duties, thresholds and oversight
+      - retained agency, restoration and least-restrictive authority
+      - privacy-preserving proof of authority and relationship predicates
+      - revocation, suspension, supersession and emergency authority
+      - audit, review, redress, jurisdiction and accountability
+      - cross-credential and cross-task composition
+    excluded:
+      - jurisdiction-specific legal advice
+      - selection of a specific credential format or ZKP construction
+      - defining DTG governance policy on behalf of maintainers
+      - automatic creation of downstream DTG issues
+  method:
+    workflow: docs/pressure-testing-a-spec.md
+    orientation: predicate-first evidence-closure
+    rule: Treat discussion drafts as hypotheses; require evidence before downstream disposition.
+  baseline_hypotheses:
+    - id: H-GF-01
+      surface: cross-spec
+      statement: Guardianship, fiduciary duties and constrained authority require shared semantics across DTG surfaces.
+    - id: H-GF-02
+      surface: credential
+      statement: Credential semantics must support bounded authority without unnecessary sensitive-status disclosure.
+    - id: H-GF-03
+      surface: trust-task
+      statement: Trust Tasks must bind approvals, conflicts, thresholds, co-approval and authority state to the transaction being authorized.
+    - id: H-GF-04
+      surface: privacy-zkp
+      statement: Privacy-preserving predicates and composed relationship proofs are required to avoid durable correlators and ancestry disclosure.
+    - id: H-GF-05
+      surface: governance-assurance
+      statement: Retained agency, least-restrictive authority, oversight, review, restoration and redress cannot be inferred from cryptographic validity alone.
+  predicate_model:
+    - authority
+    - appointment
+    - scope
+    - duration
+    - activation
+    - duty
+    - conflict
+    - transaction-threshold
+    - co-approval
+    - retained-agency
+    - privacy
+    - status
+    - suspension
+    - supersession
+    - composition
+    - resolution
+    - audit
+    - periodic-review
+    - redress
+    - emergency-authority
+    - jurisdiction
+    - interoperability
+    - revocation
+    - restoration
+    - liability
+  summary:
+    finding_count: 10
+    open_count: 10
+    overall_assessment: >-
+      The baseline hypotheses are directionally supported as a cross-spec assurance problem, but the case should not be reduced to a single guardianship credential. The dominant risk is semantic and lifecycle composition failure: a verifier can validate individual artifacts while lacking evidence that the authority was active, sufficiently scoped, properly exercised, privacy-preserving and subject to retained agency, oversight and redress at the transaction time. These findings are exploratory and require source-pinned DTG evidence before maintainers decide whether new downstream issues are justified.
+  findings:
+    - id: RAHP-GF-F01
+      title: Appointment validity can be over-read as permission for a specific act
+      status: open
+      severity: High
+      hypothesis_delta:
+        confirms: [H-GF-01, H-GF-02, H-GF-03]
+        change: Distinguish appointment, authority scope and transaction permission as separate propositions.
+      failure_modes:
+        - semantic collapse
+        - over-broad authority inference
+      harm: >-
+        A system may accept a valid appointment artifact as sufficient authority for an action that exceeds scope, timing, thresholds or duty constraints.
+      required_evidence:
+        - normative source defining appointment semantics
+        - normative source defining authority scope and transaction binding
+        - verifier behavior for absent or ambiguous scope evidence
+      recommended_disposition:
+        primary: cross-spec
+        secondary: [credential, trust-task]
+      retest_when:
+        - Source-pinned semantics distinguish appointment, scoped authority and transaction permission.
+
+    - id: RAHP-GF-F02
+      title: Authority lifecycle state can become stale across credentials and Trust Tasks
+      status: open
+      severity: High
+      hypothesis_delta:
+        confirms: [H-GF-02, H-GF-03, H-GF-05]
+        change: Make current authority state a composed transaction-time requirement, not only a credential property.
+      failure_modes:
+        - stale approval
+        - stale authority
+        - restoration not propagating
+      harm: >-
+        Suspension, supersession, revocation, expiry or restoration may not propagate consistently to all evidence surfaces, allowing obsolete authority to remain actionable or restored agency to remain blocked.
+      required_evidence:
+        - lifecycle/status semantics for relevant credentials
+        - Trust Task rules for authority state at decision time
+        - restoration and supersession propagation behavior
+      recommended_disposition:
+        primary: cross-spec
+        secondary: [credential, trust-task, governance-assurance]
+      retest_when:
+        - Lifecycle transitions and transaction-time validation semantics are explicit and interoperable.
+
+    - id: RAHP-GF-F03
+      title: Approval evidence can be replayed outside the transaction or decision context
+      status: open
+      severity: High
+      hypothesis_delta:
+        confirms: [H-GF-03]
+        change: Require approval evidence to be context-bound, freshness-aware and non-transferable between materially different tasks.
+      failure_modes:
+        - replay
+        - stale approval
+      harm: >-
+        A previously valid approval may be reused for a new amount, beneficiary, resource, task instance or authority state.
+      required_evidence:
+        - Trust Task approval binding fields
+        - replay/freshness rules
+        - verifier rejection behavior for changed transaction context
+      recommended_disposition:
+        primary: trust-task
+        secondary: [cross-spec]
+      retest_when:
+        - Approval evidence is normatively bound to task identity, relevant transaction semantics and freshness conditions.
+
+    - id: RAHP-GF-F04
+      title: Co-approval and relationship proofs can disclose sensitive status or relationship ancestry
+      status: open
+      severity: High
+      hypothesis_delta:
+        confirms: [H-GF-02, H-GF-04]
+        change: Privacy requirements must cover the composed presentation, not only each credential in isolation.
+      failure_modes:
+        - co-approval privacy leakage
+        - ancestry disclosure
+        - linkability
+      harm: >-
+        A verifier can learn sensitive guardianship, incapacity, family or fiduciary relationship information that is unnecessary to determine whether the required approval predicate is satisfied.
+      required_evidence:
+        - minimum disclosure semantics
+        - composed presentation requirements
+        - predicate interfaces exposed by credential and Trust Task layers
+      recommended_disposition:
+        primary: privacy-zkp
+        secondary: [credential, trust-task, cross-spec]
+      retest_when:
+        - Required relationship and co-approval predicates can be proven without mandatory disclosure of durable correlators or unnecessary ancestry.
+
+    - id: RAHP-GF-F05
+      title: Confidential digests may remain enumerable and reveal sensitive authority status
+      status: open
+      severity: Medium
+      hypothesis_delta:
+        confirms: [H-GF-04]
+        change: Treat confidentiality claims as an adversarial property requiring entropy and enumeration analysis.
+      failure_modes:
+        - enumerable confidential digest
+        - offline guessing
+      harm: >-
+        A digest or commitment over a small or predictable status space can reveal the underlying guardianship or authority condition despite not carrying it in plaintext.
+      required_evidence:
+        - construction details for hidden status references
+        - entropy and domain-separation analysis
+        - adversarial enumeration test
+      recommended_disposition:
+        primary: privacy-zkp
+        secondary: [credential]
+      retest_when:
+        - The selected construction demonstrates resistance to practical enumeration and cross-context correlation.
+
+    - id: RAHP-GF-F06
+      title: Emergency authority can persist after its activating condition ends
+      status: open
+      severity: High
+      hypothesis_delta:
+        confirms: [H-GF-02, H-GF-03, H-GF-05]
+        change: Model activation and deactivation conditions explicitly and require automatic review/expiry behavior.
+      failure_modes:
+        - persistent emergency authority
+        - stale authority
+      harm: >-
+        A temporary expansion of authority can become functionally permanent if deactivation, expiry, review or restoration semantics are not propagated through all relying components.
+      required_evidence:
+        - activation and deactivation predicates
+        - expiry/review semantics
+        - relying-party behavior after emergency termination
+      recommended_disposition:
+        primary: governance-assurance
+        secondary: [credential, trust-task]
+      retest_when:
+        - Emergency authority has bounded activation, expiry and restoration semantics with evidence of propagation.
+
+    - id: RAHP-GF-F07
+      title: Proof validity can be confused with fiduciary propriety
+      status: open
+      severity: High
+      hypothesis_delta:
+        confirms: [H-GF-05]
+        change: Add an explicit non-inference boundary between cryptographic validity and governance/legal propriety.
+      failure_modes:
+        - cryptographic-validity semantic collapse
+      harm: >-
+        A verifier or operator may treat a valid proof of appointment, authority or approval as evidence that duties, conflicts, best-interest requirements, proportionality or least-restrictive alternatives were satisfied.
+      required_evidence:
+        - conformance language defining verifier non-inferences
+        - governance evidence required for duty/conflict determinations
+        - assurance tests for over-reading proof semantics
+      recommended_disposition:
+        primary: governance-assurance
+        secondary: [cross-spec, privacy-zkp]
+      retest_when:
+        - Specifications and governance profiles explicitly state what a valid proof does and does not establish.
+
+    - id: RAHP-GF-F08
+      title: Proofs can be constructed over unauthenticated or weakly governed source assertions
+      status: open
+      severity: High
+      hypothesis_delta:
+        confirms: [H-GF-01, H-GF-04, H-GF-05]
+        change: Extend evidence closure through the source-of-truth and governance layer.
+      failure_modes:
+        - unauthenticated-source proof
+        - weak provenance
+      harm: >-
+        Privacy-preserving proof machinery can strongly prove a predicate derived from an assertion whose authority, provenance or lifecycle is not trustworthy.
+      required_evidence:
+        - authoritative source discovery rules
+        - issuer/source authorization semantics
+        - provenance and lifecycle checks performed before proof acceptance
+      recommended_disposition:
+        primary: cross-spec
+        secondary: [credential, privacy-zkp, governance-assurance]
+      retest_when:
+        - Proof verification includes evidence that the proved predicate derives from an authorized and current source.
+
+    - id: RAHP-GF-F09
+      title: Retained agency and restoration can be invisible to machine-verifiable decision flows
+      status: open
+      severity: High
+      hypothesis_delta:
+        confirms: [H-GF-05]
+        change: Treat retained agency and restoration as positive decision inputs, not merely absence of guardian authority.
+      failure_modes:
+        - restoration not propagating
+        - least-restrictive alternative not observable
+      harm: >-
+        A represented person may continue to be excluded from decisions after capacity or authority changes because machine-readable workflows preserve the substitute decision-maker path but lack positive evidence for retained or restored agency.
+      required_evidence:
+        - representation of retained decision rights
+        - restoration/supersession lifecycle
+        - decision-flow precedence when represented-person and representative evidence coexist
+      recommended_disposition:
+        primary: governance-assurance
+        secondary: [credential, trust-task, cross-spec]
+      retest_when:
+        - Retained and restored agency have explicit precedence and lifecycle behavior in composed decision flows.
+
+    - id: RAHP-GF-F10
+      title: Cross-jurisdiction interoperability can flatten materially different authority semantics
+      status: open
+      severity: Medium
+      hypothesis_delta:
+        confirms: [H-GF-01, H-GF-05]
+        change: Interoperability must preserve semantic provenance and jurisdiction/profile constraints rather than normalize all authority labels into one equivalent class.
+      failure_modes:
+        - semantic collapse
+        - jurisdictional overreach
+      harm: >-
+        A relying system may accept superficially similar guardianship or fiduciary evidence from another governance regime while ignoring differences in scope, activation, duties, review, liability or retained agency.
+      required_evidence:
+        - profile/jurisdiction binding
+        - semantic equivalence or non-equivalence rules
+        - relying-party behavior when no trusted mapping exists
+      recommended_disposition:
+        primary: cross-spec
+        secondary: [governance-assurance, credential]
+      retest_when:
+        - Interoperability preserves provenance and fails safely when semantic equivalence is not established.
+
+  evidence_closure:
+    required_steps:
+      - identify the decision or harm-relevant claim
+      - identify predicates required to justify the claim
+      - identify authoritative source and lifecycle state for each predicate
+      - identify composition rule connecting predicates to the decision
+      - identify privacy constraints on the presentation
+      - identify retained uncertainty, governance judgment and redress obligations
+      - record evidence needed for disposition
+    non_closure_conditions:
+      - missing predicate
+      - missing authoritative source
+      - missing lifecycle rule
+      - missing composition rule
+      - missing privacy boundary
+      - cryptographic verification without semantic or governance sufficiency
+
+  cross_spec_work_map:
+    status: advisory
+    create_downstream_issues: false
+    surfaces:
+      cross-spec:
+        repositories: [trustoverip/dtgwg-general]
+        findings: [RAHP-GF-F01, RAHP-GF-F02, RAHP-GF-F08, RAHP-GF-F10]
+      credential:
+        repositories: [trustoverip/dtgwg-cred-spec]
+        findings: [RAHP-GF-F01, RAHP-GF-F02, RAHP-GF-F04, RAHP-GF-F05, RAHP-GF-F06, RAHP-GF-F08, RAHP-GF-F09, RAHP-GF-F10]
+      trust-task:
+        repositories: [trustoverip/dtgwg-trust-tasks-tf]
+        findings: [RAHP-GF-F01, RAHP-GF-F02, RAHP-GF-F03, RAHP-GF-F04, RAHP-GF-F06, RAHP-GF-F09]
+      privacy-zkp:
+        repositories: [trustoverip/dtgwg-zkp-tf, sankarshanmukhopadhyay/dtgwg-zkp-tf]
+        findings: [RAHP-GF-F04, RAHP-GF-F05, RAHP-GF-F07, RAHP-GF-F08]
+      governance-assurance:
+        repositories: [trustoverip/dtgwg-general]
+        findings: [RAHP-GF-F02, RAHP-GF-F06, RAHP-GF-F07, RAHP-GF-F08, RAHP-GF-F09, RAHP-GF-F10]
+
+  next_steps:
+    - Pin current DTG source revisions and replace hypothesis-level evidence requirements with source-pinned observations.
+    - Record a hypothesis-delta analysis showing which baseline hypotheses are confirmed, narrowed, split or rejected.
+    - Re-run relevant RAHP controls, guardrails and assurance tests against the pinned source set.
+    - Update the governing RAHP discussion with evidence-backed findings and residual uncertainty.
+    - Only after maintainer review, decide whether any finding warrants a new downstream DTG issue.
