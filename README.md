@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v1.5.0 (stable) · Purple Leaf Blue · CC-BY 4.0
+Release v1.6.0 (stable) · Common Earl · CC-BY 4.0
 
 RAHP Toolkit is a **portable specification-assurance toolkit** for pressure-testing standards, protocols, implementations and composed systems against human harms, governance failures, adversarial conditions and resilience risks.
 
@@ -36,7 +36,7 @@ target revision
 
 The portable method is shared; deployment context remains independent. Structured method data is authoritative, while Markdown, JSON, JSON-LD and rendered site views are publication surfaces.
 
-For the full conceptual walkthrough, see [How RAHP works](docs/how-rahp-works.md). For the v1.5 operational lifecycle, see [Continuous assurance](docs/continuous-assurance.md).
+For the full conceptual walkthrough, see [How RAHP works](docs/how-rahp-works.md). For the operational lifecycle, see [Continuous assurance](docs/continuous-assurance.md).
 
 ## Quick start
 
@@ -68,13 +68,13 @@ For a guided first run, configuration examples and the wider command set, use [G
 
 The reusable catalogue under `method/catalogue/` currently contains **162 portable assurance patterns** across harms, risks, controls, guardrails, assurance tests and evidence patterns.
 
-The packaged scenario adapters currently expose **182 scenario test vectors**. They include source-pinned Trust Tasks and DTG Credential Specification corpora, their composed seam corpus, DTG ZKP, CAWG/C2PA and smaller interface-baseline/composed adapters. A larger corpus broadens review coverage; it does not by itself establish that a target is safe or conformant.
+The packaged scenario adapters expose **182 scenario test vectors across 14 corpora and 28 portable scenario patterns**. They include source-pinned Trust Tasks and DTG Credential Specification corpora, their composed seam corpus, DTG ZKP, CAWG/C2PA and smaller interface-baseline/composed adapters. A larger corpus broadens review coverage; it does not by itself establish that a target is safe or conformant.
 
 See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps and maintenance rules.
 
 ## Current release
 
-v1.5.0 **Purple Leaf Blue** (*Amblypodia anita*) is the stable release of **Continuous Governed Assurance**. Its stable compatibility boundaries are:
+v1.6.0 **Common Earl** (*Tanaecia julii*) is the stable release of **Source-Pinned Coverage and Guided Adoption**. It preserves the stable v1 compatibility boundaries:
 
 ```text
 rahp-engine-contract-v1
@@ -82,16 +82,20 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
+v1.6.0 qualifies the expanded source-pinned corpora, dependent-corpus recomposition and evidence-backed TT×CredSpec reassessment, while retaining the v1.5 Continuous Governed Assurance contracts. Maintained example baselines are not promoted merely because the toolkit version changes; they advance through their own retest or reassessment evidence.
+
 Useful release surfaces:
 
-- [v1.5.0 release notes](docs/releases/v1.5.0.md)
+- [v1.6.0 release notes](docs/releases/v1.6.0.md)
+- [v1.6 qualification contract](method/v1.6-release-qualification.yaml)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
-- [Assurance posture](docs/assurance-posture.md)
-- [v1.5 release runbook](docs/v1.5-release-runbook.md)
+- [Getting started](docs/getting-started.md)
+- [Developer guide](docs/developer-guide.md)
+- [Continuous assurance](docs/continuous-assurance.md)
 - [Release history](CHANGELOG.md)
 
-From v1.5.x onward, release presentation metadata follows the [West Bengal butterfly naming policy](docs/release-naming.md); semantic versioning remains the compatibility authority.
+From v1.5.0 onward, release presentation metadata follows the [West Bengal butterfly naming policy](docs/release-naming.md); semantic versioning remains the compatibility authority.
 
 ## Repository map
 
