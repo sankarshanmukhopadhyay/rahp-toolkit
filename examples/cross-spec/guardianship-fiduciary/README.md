@@ -14,6 +14,20 @@ The case now preserves two distinct stages:
 
 Keeping these stages separate is intentional. A pressure test should be able to weaken its own starting claims rather than silently rewriting them after evidence appears.
 
+## Discussion record
+
+The public GitHub Discussion is intended to remain the umbrella research thread for this case. Because the connected GitHub tooling does not currently expose Discussion create/update operations, the exact public-post text is retained here so that the public thread and repository evidence cannot drift apart:
+
+- [`discussion-opening.md`](./discussion-opening.md) — opening post: hypotheses, scenarios, questions and disposition boundary;
+- [`discussion-evidence-update.md`](./discussion-evidence-update.md) — first source-pinned evidence-pass update;
+- [`discussion-next-updates.md`](./discussion-next-updates.md) — synchronized structure for the three evidence-closure case updates and the final consolidated disposition.
+
+The intended sequence is:
+
+`Discussion hypotheses -> RAHP pressure test -> source-pinned evidence -> evidence-closure cases -> consolidated maintainer disposition -> downstream work only where justified`
+
+A downstream DTG Issue is therefore an output of demonstrated residual evidence, not a substitute for the exploratory Discussion.
+
 ## What the evidence pass changed
 
 The first source-pinned pass materially narrowed the original problem.
