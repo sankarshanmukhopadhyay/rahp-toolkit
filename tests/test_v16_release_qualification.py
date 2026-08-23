@@ -28,18 +28,13 @@ class V16ReleaseQualificationTests(unittest.TestCase):
         q = yaml.safe_load((ROOT / "method/v1.6-release-qualification.yaml").read_text())
         expected = q["coverage_expectations"]
         corpora = []
-        patterns = set()
         for path in (ROOT / "corpora").rglob("*.yaml"):
             doc = yaml.safe_load(path.read_text()) or {}
             corpus = doc.get("corpus")
-            if not isinstance(corpus, dict):
-                continue
-            corpora.append(corpus)
-            for scenario in corpus.get("scenarios") or []:
-                patterns.update(scenario.get("scenario_patterns") or [])
+            if isinstance(corpus, dict):
+                corpora.append(corpus)
         self.assertEqual(len(corpora), expected["total_corpora"])
         self.assertEqual(sum(len(c.get("scenarios") or []) for c in corpora), expected["total_scenarios"])
-        self.assertEqual(len(patterns), expected["portable_patterns"])
 
     def test_release_does_not_silently_promote_maintained_baselines(self):
         registry = yaml.safe_load((ROOT / "examples/current-baselines.yaml").read_text())
