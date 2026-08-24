@@ -41,6 +41,8 @@ jobs:
         run: python3 tools/validate_authority_policy_gates.py
       - name: Validate capability documentation synchronization
         run: python3 tools/validate_capability_documentation.py
+      - name: Validate generic release declaration
+        run: python3 tools/release.py verify
       - name: Validate preserved v1.5 qualification evidence
         run: python3 tools/validate_v15_release.py
       - name: Validate v1.6 release qualification

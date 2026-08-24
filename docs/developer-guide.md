@@ -13,7 +13,7 @@ This page collects the repository-facing workflow that previously competed for s
 
 RAHP separates the portable method from deployment-specific state. Changes to core schemas, normalized results, engine behavior or portable catalogues must remain usable by an unrelated adopter without inheriting DTG, CAWG/C2PA or another deployment's semantics.
 
-The stable v1.5 compatibility boundaries are:
+The stable v1 compatibility boundaries are:
 
 ```text
 rahp-engine-contract-v1
@@ -49,7 +49,23 @@ python3 tools/build.py
 python3 tools/validate_reference_links.py
 ```
 
-Release qualification has its own version-specific validator, currently `tools/validate_v15_release.py`. A future release should introduce its own qualification boundary rather than silently repurposing the prior release contract.
+See [Performance and execution efficiency](performance.md) for the versioned benchmark profiles used to measure full and cross-specification execution paths.
+
+## Release qualification
+
+`method/release.yaml` is the single current-release declaration. It records the semantic version, tag, presentation name, release notes, compatibility boundary, and the release-specific qualification manifest and validator.
+
+Use the generic release CLI rather than invoking a version-specific release validator from automation:
+
+```bash
+python3 tools/release.py metadata
+python3 tools/release.py verify
+python3 tools/release.py qualify
+```
+
+`verify` checks synchronization across package/workspace metadata, `PROJECT-STATUS.yaml`, `method/versioning.yaml`, human-facing release surfaces and the declared release evidence paths. `qualify` first performs that generic verification and then invokes the version-specific qualification validator declared by `method/release.yaml`.
+
+A new release therefore receives a new immutable qualification manifest/validator when its evidence boundary changes, while the release orchestration itself remains stable. Historical qualification contracts are evidence and must not be repurposed for a later release.
 
 ## Generated content
 
@@ -98,7 +114,7 @@ See [Scenario corpora](scenario-corpora.md) and [Corpus synchronization and prov
 The TypeScript packages are a reference implementation of stable schemas/core/graph/CLI behavior, not a separate source of method semantics.
 
 ```bash
-npm install
+npm ci
 npm run build:ts
 npm run test:ts
 ```
@@ -107,7 +123,7 @@ CI also checks Python/TypeScript conformance so language-specific behavior does 
 
 ## Documentation synchronization
 
-`method/capability-documentation.yaml` binds v1.5 capabilities to implementation, tests and primary documentation. `tools/validate_capability_documentation.py` makes drift testable.
+`method/capability-documentation.yaml` binds implemented capabilities to implementation, tests and primary documentation. `tools/validate_capability_documentation.py` makes drift testable.
 
 Documentation should follow a layered information architecture:
 
