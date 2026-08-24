@@ -1,0 +1,94 @@
+name: Publish qualified RAHP release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'method/release.yaml'
+      - 'method/*release-qualification.yaml'
+      - 'PROJECT-STATUS.yaml'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'packages/**/package.json'
+      - 'docs/releases/**'
+      - 'tools/release.py'
+      - 'tools/validate_v*_release.py'
+      - '.github/workflows/release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.repository == 'sankarshanmukhopadhyay/rahp-toolkit'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - run: pip install -r requirements.txt
+
+      - name: Resolve release declaration
+        id: release
+        run: python3 tools/release.py metadata --github-output "$GITHUB_OUTPUT"
+
+      - name: Verify target branch
+        env:
+          TARGET_BRANCH: ${{ steps.release.outputs.target_branch }}
+        run: |
+          test "$GITHUB_REF_NAME" = "$TARGET_BRANCH" || {
+            echo "::error::release publication must run from declared branch $TARGET_BRANCH"
+            exit 1
+          }
+
+      - name: Requalify current release state
+        run: python3 tools/release.py qualify
+
+      - name: Create or verify declared release tag
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+          VERSION: ${{ steps.release.outputs.version }}
+          TITLE: ${{ steps.release.outputs.title }}
+        run: |
+          set -euo pipefail
+          git fetch --tags --force
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            tagged_version="$(git show "$TAG:package.json" | python3 -c 'import json,sys; print(json.load(sys.stdin)["version"])')"
+            test "$tagged_version" = "$VERSION" || {
+              echo "::error::$TAG exists but tagged package version is $tagged_version, expected $VERSION"
+              exit 1
+            }
+            git show "$TAG:PROJECT-STATUS.yaml" | VERSION="$VERSION" python3 -c 'import os,sys,yaml; d=yaml.safe_load(sys.stdin); assert str(d.get("stable_release")) == os.environ["VERSION"]'
+            echo "$TAG already identifies a release commit for version $VERSION; preserving it."
+          else
+            git config user.name github-actions[bot]
+            git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+            git tag -a "$TAG" "$GITHUB_SHA" -m "$TITLE"
+            git push origin "$TAG"
+          fi
+
+      - name: Publish declared GitHub Release if absent
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          TITLE: ${{ steps.release.outputs.title }}
+          NOTES_PATH: ${{ steps.release.outputs.notes_path }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "$TAG release already exists; leaving it unchanged."
+          else
+            gh release create "$TAG" \
+              --verify-tag \
+              --title "$TITLE" \
+              --notes-file "$NOTES_PATH"
+          fi
+          gh release view "$TAG" >/dev/null

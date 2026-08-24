@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -43,6 +44,7 @@ def metadata(doc: dict) -> dict:
     q = r.get("qualification") or {}
     notes = r.get("notes") or {}
     name = r.get("name") or {}
+    publication = doc.get("publication") or {}
     return {
         "version": str(r.get("version") or ""),
         "tag": str(r.get("tag") or ""),
@@ -55,7 +57,8 @@ def metadata(doc: dict) -> dict:
         "qualification_manifest": str(q.get("manifest") or ""),
         "qualification_validator": str(q.get("validator") or ""),
         "notes_path": str(notes.get("path") or ""),
-        "target_branch": str((doc.get("publication") or {}).get("target_branch") or "main"),
+        "publication_workflow": str(publication.get("workflow") or ""),
+        "target_branch": str(publication.get("target_branch") or "main"),
     }
 
 
@@ -74,7 +77,7 @@ def verify(doc: dict) -> list[str]:
         errors.append("release.status must be candidate or released")
     if meta["qualification_status"] not in {"candidate", "cut-ready", "qualified"}:
         errors.append("release.qualification_status is not permitted")
-    for key in ("title", "qualification_manifest", "qualification_validator", "notes_path"):
+    for key in ("title", "qualification_manifest", "qualification_validator", "notes_path", "publication_workflow"):
         if not meta[key]:
             errors.append(f"release metadata requires {key}")
 
@@ -114,27 +117,33 @@ def verify(doc: dict) -> list[str]:
         if compat.get(key) != expected:
             errors.append(f"compatibility mismatch for {key}")
 
-    resolved: dict[str, Path] = {}
     for key, label in (
         ("qualification_manifest", "qualification manifest"),
         ("qualification_validator", "qualification validator"),
         ("notes_path", "release notes"),
+        ("publication_workflow", "publication workflow"),
     ):
         try:
             path = resolve_repo_path(meta[key], label)
         except ValueError as exc:
             errors.append(str(exc))
             continue
-        resolved[key] = path
         if not path.is_file():
             errors.append(f"{label} does not exist: {meta[key]}")
+
+    for check in (r.get("qualification") or {}).get("checks") or []:
+        try:
+            path = resolve_repo_path(str(check), "qualification check")
+        except ValueError as exc:
+            errors.append(str(exc))
+            continue
+        if not path.is_file():
+            errors.append(f"qualification check does not exist: {check}")
 
     versioning = load_yaml(ROOT / "method" / "versioning.yaml")
     if versioning.get("stable_release") != tag:
         errors.append("method/versioning.yaml stable_release differs from release declaration")
 
-    # Human-facing current-release surfaces remain release-generic: they must
-    # mention the declared tag and route to the declared release notes.
     surface_checks = {
         "README.md": [tag, meta["common_name"], meta["notes_path"]],
         "CHANGELOG.md": [tag, meta["common_name"]],
@@ -159,6 +168,12 @@ def verify(doc: dict) -> list[str]:
     return errors
 
 
+def run_python_file(rel: str, label: str) -> int:
+    path = resolve_repo_path(rel, label)
+    proc = subprocess.run([sys.executable, str(path)], cwd=ROOT)
+    return proc.returncode
+
+
 def run_qualification(doc: dict) -> int:
     errors = verify(doc)
     if errors:
@@ -166,11 +181,12 @@ def run_qualification(doc: dict) -> int:
             print(f"ERROR: {error}")
         return 1
     meta = metadata(doc)
-    validator = resolve_repo_path(meta["qualification_validator"], "qualification validator")
-    proc = subprocess.run([sys.executable, str(validator)], cwd=ROOT)
-    if proc.returncode != 0:
-        return proc.returncode
-    print(f"PASS qualification: {meta['tag']} via {meta['qualification_validator']}")
+    if run_python_file(meta["qualification_validator"], "qualification validator") != 0:
+        return 1
+    for check in (doc["release"].get("qualification") or {}).get("checks") or []:
+        if run_python_file(str(check), "qualification check") != 0:
+            return 1
+    print(f"PASS qualification: {meta['tag']} via declared validator and {len((doc['release'].get('qualification') or {}).get('checks') or [])} generic check(s)")
     return 0
 
 
@@ -185,14 +201,13 @@ def write_github_output(meta: dict, path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
-
     meta_parser = sub.add_parser("metadata", help="Print normalized current-release metadata")
     meta_parser.add_argument("--json", action="store_true")
     meta_parser.add_argument("--github-output", type=Path)
     sub.add_parser("verify", help="Verify generic release declaration and synchronized surfaces")
-    sub.add_parser("qualify", help="Verify declaration then invoke its declared qualification validator")
-
+    sub.add_parser("qualify", help="Verify declaration then invoke its declared qualification checks")
     args = parser.parse_args()
+
     try:
         doc = declaration()
     except (ValueError, OSError, yaml.YAMLError) as exc:
@@ -206,7 +221,6 @@ def main() -> int:
         if args.json or not args.github_output:
             print(json.dumps(meta, indent=2, sort_keys=True))
         return 0
-
     if args.command == "verify":
         errors = verify(doc)
         if errors:
@@ -216,7 +230,6 @@ def main() -> int:
         meta = metadata(doc)
         print(f"PASS release declaration: {meta['tag']} ({meta['title']})")
         return 0
-
     return run_qualification(doc)
 
 
