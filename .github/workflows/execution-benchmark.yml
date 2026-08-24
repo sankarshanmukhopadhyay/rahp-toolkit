@@ -16,7 +16,17 @@ on:
   pull_request:
     paths:
       - 'tools/benchmark_execution.py'
+      - 'tools/portable_catalogue.py'
+      - 'tools/validate_*.py'
+      - 'tools/render_*.py'
+      - 'tools/build.py'
+      - 'tools/cross_spec_*.py'
       - 'method/execution-benchmarks.yaml'
+      - 'corpora/**'
+      - 'examples/**/pressure-test.yaml'
+      - '.github/workflows/validate.yml'
+      - '.github/workflows/pages.yml'
+      - '.github/workflows/cross-spec-pressure-test.yml'
       - '.github/workflows/execution-benchmark.yml'
 
 permissions:
