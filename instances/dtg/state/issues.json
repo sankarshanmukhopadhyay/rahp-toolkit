@@ -1,10 +1,10 @@
 {
   "observed": {
     "trustoverip/dtgwg-cred-spec#11": {
-      "comments": 0,
+      "comments": 1,
       "state": "open",
       "title": "Remove or resolve the normative dependency on the unpublished Trust Task model",
-      "updated_at": "2026-08-04T17:33:42Z"
+      "updated_at": "2026-08-24T00:45:53Z"
     },
     "trustoverip/dtgwg-cred-spec#17": {
       "comments": 0,

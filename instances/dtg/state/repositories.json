@@ -2,9 +2,9 @@
   "version": 1,
   "repositories": {
     "trustoverip/dtgwg-trust-tasks-tf": {
-      "sha": "2a40f6bd3b13c85c49123174fdbe4354b3c48d81",
+      "sha": "9b8fdc032b20be5af6d9baa9394a6c902bed6a47",
       "status": "active",
-      "observed_at": "2026-08-21T04:19:33.946042+00:00"
+      "observed_at": "2026-08-24T04:24:54.729419+00:00"
     },
     "trustoverip/dtgwg-htx-tf": {
       "sha": "0718ff3ba2b0333571f1637e229c313d3545e162",
@@ -13,7 +13,7 @@
     },
     "trustoverip/dtgwg-ux-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-21T04:19:35.201895+00:00"
+      "observed_at": "2026-08-24T04:24:55.560394+00:00"
     },
     "trustoverip/dtgwg-general": {
       "sha": "fa15044225ff447ad6564983a5ce0732b80cbdc1",
@@ -42,7 +42,7 @@
     },
     "trustoverip/dtgwg-rcards-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-21T04:19:38.369145+00:00"
+      "observed_at": "2026-08-24T04:24:57.592336+00:00"
     },
     "trustoverip/dtgwg-vds-tf": {
       "sha": "99eacacedd1729d20528a2ec65ff5288d103ec5e",
@@ -60,14 +60,14 @@
       "observed_at": "2026-08-14T04:58:43.379592+00:00"
     },
     "OpenVTC/openvtc": {
-      "sha": "4fc64d711724cdbd23f94507b4e3743f99f00dcd",
+      "sha": "b81226f174abeb42900ae6ddab32e0d39cc95273",
       "status": "active",
-      "observed_at": "2026-08-21T04:19:41.161266+00:00"
+      "observed_at": "2026-08-24T04:24:59.321903+00:00"
     },
     "OpenVTC/verifiable-trust-infrastructure": {
-      "sha": "97708820c625de2fad7c93d066008f04a1a162d5",
+      "sha": "e296dcabd1d14c87cf27f355197f4519be2f3272",
       "status": "active",
-      "observed_at": "2026-08-21T04:19:42.457194+00:00"
+      "observed_at": "2026-08-24T04:25:00.450867+00:00"
     },
     "sankarshanmukhopadhyay/dtgwg-cred-tf": {
       "sha": "200acbaa47a422b173652ed2c3dc961c4fbc9e7a",
@@ -75,9 +75,9 @@
       "observed_at": "2026-08-14T04:58:44.346523+00:00"
     },
     "sankarshanmukhopadhyay/dtgwg-zkp-tf": {
-      "sha": "546babc471130af751ed3a117a0d476f5e0a7e03",
+      "sha": "6064c3428ca88471b5ec8271ec03e318c26d2a13",
       "status": "active",
-      "observed_at": "2026-08-21T04:19:44.208681+00:00"
+      "observed_at": "2026-08-24T04:25:01.651198+00:00"
     },
     "trustoverip/dtgwg-trust-tasks-spec": {
       "sha": "d81b39a0c3c90ba91c7fa42f03b33629ef84c83e",
