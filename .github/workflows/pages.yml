@@ -24,78 +24,24 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Validate RAHP artefacts
-        run: python3 tools/validate.py
-
-      - name: Validate portable assurance catalogue
-        run: python3 tools/validate_catalogue.py
-      - name: Validate distributed resilience model
-        run: python3 tools/validate_resilience.py
-      - name: Validate RAHP glossary
-        run: python3 tools/validate_glossary.py
-      - name: Validate portable catalogue documentation
-        run: python3 tools/render_portable_catalogue_docs.py --check
-      - name: Validate portable method invariants
-        run: python3 tools/validate_v04_method.py
-      - name: Validate portable assurance lineage
-        run: python3 tools/validate_assurance_lineage.py
-      - name: Validate governed remediation and retest lineage
-        run: python3 tools/validate_remediation_retest_lineage.py
-      - name: Validate portable assurance graph and impact analysis
-        run: python3 tools/validate_assurance_graph.py
-      - name: Validate evidence provenance, freshness and assurance delta
-        run: python3 tools/validate_evidence_freshness_delta.py
-      - name: Validate executable authority and policy gates
-        run: python3 tools/validate_authority_policy_gates.py
-      - name: Validate v1.5 capability documentation synchronization
-        run: python3 tools/validate_capability_documentation.py
-      - name: Validate v1.5 release qualification
-        run: python3 tools/validate_v15_release.py
-
-      - name: Validate persona analytical richness
-        run: python3 tools/validate_persona_quality.py
-
-      - name: Validate scenario corpora
-        run: python3 tools/validate_scenario_corpora.py
-      - name: Validate corpus source registry
-        run: python3 tools/corpus_status.py --offline > /dev/null
-
-      - name: Validate pressure-test records
-        run: python3 tools/validate_pressure_tests.py
-
-      - name: Validate v0.8 project identity
-        run: python3 tools/validate_project_identity.py
-
+      # The repository-wide assurance/method/conformance suite is owned by
+      # validate.yml. Pages intentionally validates only the documentation and
+      # generated-publication surfaces it uniquely consumes. Both workflows
+      # remain required before merge.
       - name: Validate Markdown and Pages source renderability
         run: python3 tools/validate_markdown_pages.py
 
-      - name: Test source-monitor resilience
-        run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Validate documentation information architecture
+        run: python3 tools/validate_documentation_ia.py
 
-      - name: Validate security-hardening reviews
-        run: python3 tools/validate_security_reviews.py
-
-      - name: Validate combined reviews
-        run: python3 tools/validate_combined_reviews.py
-
-      - name: Validate CAWG v0.8 deployment integrity
-        run: python3 tools/validate_cawg_instance.py
-
-      - name: Validate selected issue-watch registries
-        run: python3 tools/validate_issue_watch_registries.py
-
-      - name: Validate RAHP-only issue publication policy
-        run: python3 tools/validate_issue_publication_policy.py
-
-      - name: Validate durable assessment queue state
-        run: python3 tools/validate_assessment_queue.py
-
-      - name: Validate v0.8 engine contract and retention policy
-        run: python3 tools/validate_engine_contract.py
+      - name: Validate portable catalogue documentation
+        run: python3 tools/render_portable_catalogue_docs.py --check
 
       - name: Validate CAWG mandate-readiness rendering
         run: python3 tools/render_cawg_readiness.py --check
