@@ -1,42 +1,27 @@
 #!/usr/bin/env python3
-"""Validate current release surfaces agree with package/release metadata."""
-from pathlib import Path
-import json, re, sys
+"""Validate current release surfaces from the generic release declaration."""
+from __future__ import annotations
 
-ROOT = Path(__file__).resolve().parents[1]
-package = json.loads((ROOT / 'package.json').read_text())
-version = package['version']
-tag = f'v{version}'
-errors = []
+import sys
 
-checks = [
-    ('README release banner', ROOT / 'README.md', rf'Release {re.escape(tag)}\b'),
-    ('README current release link', ROOT / 'README.md', rf'\[{re.escape(tag)} release notes\]\(docs/releases/{re.escape(tag)}\.md\)'),
-    ('release notes', ROOT / 'docs' / 'releases' / f'{tag}.md', None),
-    ('CHANGELOG current release', ROOT / 'CHANGELOG.md', rf'^## {re.escape(tag)}\b'),
-    ('ROADMAP current release', ROOT / 'ROADMAP.md', rf'^## {re.escape(tag)}\b'),
-]
-for label, path, pattern in checks:
-    if not path.exists():
-        errors.append(f'{label}: missing {path.relative_to(ROOT)}')
-        continue
-    if pattern and not re.search(pattern, path.read_text(), re.M):
-        errors.append(f'{label}: expected {tag}')
+from release import declaration, metadata, verify
 
-portable = ROOT / 'examples' / 'portable-instance' / 'data' / 'instance.yaml'
-if portable.exists() and f'toolkit_version: {tag}' not in portable.read_text():
-    errors.append(f'portable instance fixture: expected toolkit_version: {tag}')
 
-for pkg in sorted((ROOT / 'packages').glob('*/package.json')):
-    meta=json.loads(pkg.read_text())
-    if meta.get('version') != version:
-        errors.append(f'{pkg.relative_to(ROOT)}: expected version {version}')
-versioning=ROOT/'method/versioning.yaml'
-if versioning.exists() and f'stable_release: {tag}' not in versioning.read_text():
-    errors.append(f'method/versioning.yaml: expected stable_release: {tag}')
+def main() -> int:
+    try:
+        doc = declaration()
+    except Exception as exc:
+        print(f"ERROR: {exc}")
+        return 1
+    errors = verify(doc)
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}")
+        return 1
+    meta = metadata(doc)
+    print(f"PASS release metadata: {meta['tag']} via method/release.yaml")
+    return 0
 
-if errors:
-    for error in errors:
-        print(f'ERROR: {error}')
-    sys.exit(1)
-print(f'PASS release metadata: {tag}')
+
+if __name__ == "__main__":
+    sys.exit(main())
