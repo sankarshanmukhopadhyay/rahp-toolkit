@@ -1,0 +1,29 @@
+version: 1
+contract: rahp-release-declaration-v1
+release:
+  version: 1.6.0
+  tag: v1.6.0
+  status: released
+  qualification_status: qualified
+  title: RAHP Toolkit v1.6.0 — Common Earl
+  theme: Source-Pinned Coverage and Guided Adoption
+  name:
+    common: Common Earl
+    scientific: Tanaecia julii
+    source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
+    selected_on: '2026-08-23'
+  qualification:
+    manifest: method/v1.6-release-qualification.yaml
+    validator: tools/validate_v16_release.py
+  notes:
+    path: docs/releases/v1.6.0.md
+  compatibility:
+    engine_contract: rahp-engine-contract-v1
+    normalized_result_schema: 1
+    evidence_retention_contract: rahp-evidence-retention-v1
+publication:
+  target_branch: main
+  tag_kind: annotated
+  idempotent: true
+  require_exact_head: true
+  preserve_existing_release: true
