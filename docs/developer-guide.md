@@ -63,9 +63,11 @@ python3 tools/release.py verify
 python3 tools/release.py qualify
 ```
 
-`verify` checks synchronization across package/workspace metadata, `PROJECT-STATUS.yaml`, `method/versioning.yaml`, human-facing release surfaces and the declared release evidence paths. `qualify` first performs that generic verification and then invokes the version-specific qualification validator declared by `method/release.yaml`.
+`verify` checks synchronization across package/workspace metadata, `PROJECT-STATUS.yaml`, `method/versioning.yaml`, human-facing release surfaces and the declared release evidence paths. `qualify` first performs that generic verification and then invokes the version-specific qualification validator plus the generic release checks declared by `method/release.yaml`.
 
-A new release therefore receives a new immutable qualification manifest/validator when its evidence boundary changes, while the release orchestration itself remains stable. Historical qualification contracts are evidence and must not be repurposed for a later release.
+The permanent `.github/workflows/release.yml` publisher reads the same declaration. It contains no release number, release name, qualification-validator filename or release-notes filename. For a new release, the declaration and release-specific evidence change; the publication workflow does not. First publication creates the declared tag only from the qualified current commit. Later idempotent executions preserve an existing tag only after verifying that the tagged commit itself carries the declared release version.
+
+A new release therefore receives a new immutable qualification manifest/validator when its evidence boundary changes, while the release orchestration itself remains stable. Historical qualification contracts retain at-cut provenance and must not be repurposed for a later release.
 
 ## Generated content
 
