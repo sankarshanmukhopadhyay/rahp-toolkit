@@ -1,10 +1,14 @@
 version: 1
 id: rahp-engine-contract-v1
+contract_family: 1
+contract_revision: '1.2'
+status: stable
 title: RAHP language-neutral engine contract
 purpose: >-
   Define the portable execution boundary shared by any conforming RAHP implementation.
-  v1.2 extends the v1 contract additively with evidence classification, residual assurance
-  evaluation, governed remediation manifests, and evidence-based retesting.
+  Revision 1.2 extends the v1 contract family additively with evidence classification,
+  residual assurance evaluation, governed remediation manifests, and evidence-based
+  retesting while preserving the v1 compatibility boundary.
 execution_model:
   stages:
     - source

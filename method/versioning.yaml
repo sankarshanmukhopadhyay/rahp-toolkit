@@ -3,6 +3,8 @@ id: rahp-versioning-v1
 stable_release: v1.6.0
 contracts:
   engine: rahp-engine-contract-v1
+  engine_family: 1
+  engine_revision: '1.2'
   result_schema: 1
   evidence_retention: rahp-evidence-retention-v1
 compatibility:
@@ -11,10 +13,20 @@ compatibility:
     additive_optional_change_requires: minor
     clarification_or_fix_requires: patch
   engine_contract:
+    family_identifier: rahp-engine-contract-v1
+    current_revision: '1.2'
     breaking_change_requires: new_contract_id
-    additive_operation_requires: minor
+    additive_operation_requires: minor_revision
+    additive_invariant_requires: minor_revision
+    clarification_or_nonsemantic_fix_requires: no_revision_change
+    rule: >-
+      Compatible additive evolution stays within the current engine contract family and
+      increments the minor contract revision. A change that invalidates an existing
+      conforming implementation or changes required operation semantics MUST create a
+      new engine contract family identifier.
   normalized_result:
     breaking_change_requires: new_schema_version
+    additive_optional_fields_may_preserve_version: true
   identifiers:
     published_identifiers_are_stable: true
     reuse_after_retirement: forbidden
@@ -27,4 +39,7 @@ conformance:
   reference_implementations:
     - python
     - typescript
-  rule: Implementations MUST agree on shared conformance fixtures for operations they claim.
+  rule: >-
+    Implementations MUST agree on shared conformance fixtures for operations they claim.
+    A claim to support engine revision N.M includes all requirements and fixtures from
+    earlier revisions in the same contract family.
