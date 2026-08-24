@@ -5,266 +5,294 @@ nav_order: 7
 has_toc: true
 parent: Run assessments
 ---
-# AI-assisted RAHP — a worked example
+# AI-assisted RAHP workflows
 
-**RAHP Toolkit · CC-BY 4.0 · originally developed April 2026; generalized for portable use in v0.6**
+RAHP can be operated with an AI assistant such as ChatGPT, Claude, Codex, or another repository-capable language model. The assistant can accelerate source inspection, scenario construction, evidence mapping, tooling execution, finding drafts, reassessment and remediation planning.
 
----
+The assistant is **not** an evidence source and is **not** the final authority for a RAHP finding.
 
-## What this document is
+The governing rule is:
 
-A short, practical walkthrough of how a capable general-purpose AI assistant can be used to accelerate specific steps in the RAHP workflow. It covers five tasks that practitioners have found AI assistance genuinely useful for, with example prompts, the toolkit components each task uses, and honest notes about what requires human judgement regardless.
+> Use the AI assistant to operate and interrogate the RAHP method. Use source-pinned evidence, RAHP contracts, validators and explicit human disposition to determine what the assessment establishes.
 
-This is deliberately not a comprehensive methodology. Different practitioners will work differently, different AI tools have different strengths, and this area is evolving quickly. Treat this as a starting point, not a prescription.
+This guide is vendor-neutral. Product-specific capabilities differ, but the evidence and assurance boundaries below do not.
 
----
+## When AI assistance is useful
 
-## Ground rules before you start
+An AI assistant can help an implementor or reviewer:
 
-**AI assists — it does not decide.** An assistant can draft, synthesise, cross-reference, and suggest. It cannot score risk severity, validate that a guardrail is actually met, make governance decisions, or tell you who is missing from your participant map. Every output needs human review before it goes into the toolkit.
+- inspect a specification, repository or implementation and identify candidate assessment surfaces;
+- locate and pin authoritative source revisions;
+- select or construct personas and scenarios;
+- map source-specific scenarios to portable RAHP patterns;
+- identify positive, negative and adversarial cases;
+- construct cross-specification evidence closures;
+- run RAHP validators and review generated artifacts;
+- distinguish hypotheses from evidence-backed residuals;
+- draft findings, recommendations and retest conditions;
+- compare pre-remediation and post-remediation evidence;
+- prepare issues or pull requests after a finding has been dispositioned; and
+- explain RAHP outputs to maintainers, implementors and governance participants.
 
-**Provide context explicitly.** The assistant does not have access to your working documents unless you paste them in. The prompts below assume you paste the relevant toolkit artefacts — or the relevant sections — directly into the conversation. Work in a single session where possible so the assistant retains the context.
+AI assistance is especially useful when the target spans several repositories or specifications, because the assistant can maintain the evidence chain while RAHP provides the machine-readable contracts and validation gates.
 
-**Check sources.** When the assistant cites threat intelligence or regulatory context for persona narratives, verify the sources. It will sometimes produce plausible-sounding but inaccurate citations. The RAHP toolkit's sourcing standard is: every empirical claim in a persona narrative should link to a verifiable source.
+## What the assistant must not do
 
-**Version your outputs.** Paste the assistant's outputs into your working documents and apply your normal version control and provenance tagging. The AI session itself is not a record — the committed artefact is.
+An AI-assisted RAHP run should not permit the model to:
 
----
+- invent or paraphrase evidence that is not supported by the cited source;
+- silently substitute model knowledge for an authoritative source;
+- treat an unpinned web page or moving branch head as equivalent to source-pinned evidence;
+- promote a hypothesis into a formal finding merely because it sounds plausible;
+- infer authorization, governance legitimacy or substantive propriety from cryptographic validity alone;
+- treat a component-level pass as proof that a composition passes;
+- suppress negative cases because a preferred construction appears to work;
+- bypass RAHP validators or modify generated evidence by hand to make validation pass;
+- automatically create upstream work items before ownership and disposition are established; or
+- claim legal, regulatory, policy or governance meaning that the reviewed sources do not establish.
 
-## Task 1 — Drafting an extreme user profile from interview notes
+When source evidence is incomplete, the correct RAHP result can be **insufficient evidence**, **governance-only**, **profile clarification required**, or another bounded disposition. The assistant should not fill the gap from general knowledge merely to produce a stronger-looking finding.
 
-**Workflow stage:** Phase B (extreme user and bad-actor identification)
+## Canonical AI-assisted workflow
 
-**When to use this:** You have conducted or reviewed qualitative fieldwork with a participant type and need to structure the output as an extreme user profile suitable for Phase C persona synthesis.
+A full source-pinned run should follow the same lifecycle as a human-operated RAHP review:
 
-**Toolkit components used:**
-- Phase B extreme user template (from the workflow reference)
-- Existing persona set (for context on what is already covered)
-
-**Input to the assistant:** Paste your raw notes or a summary of the engagement. Include: who you spoke with or whose perspective you reviewed, the context they operate in, what they said about their needs and fears, and what made their situation distinct from the mainstream case.
-
-**Example prompt:**
-
-```
-I am developing an extreme user profile for the RAHP toolkit. Here are my notes 
-from a review of community feedback from participants in a civic technology VTC 
-operating in a jurisdiction with restricted internet freedom.
-
-[paste notes]
-
-Using this material, draft an extreme user profile in the following format:
-- Name and type (anonymised or composite)
-- Context (jurisdiction, technical environment, social position)
-- Primary objectives (what they need the system to provide)
-- Specific vulnerabilities (what aspects of the VTC architecture could harm them 
-  that would not affect a mainstream user)
-- Key design implications (what this profile suggests the standard must address)
-
-Be specific and grounded in the notes. Do not generalise beyond what the notes 
-support. Flag anything where you are extrapolating rather than reporting.
-```
-
-**Expected output:** A structured extreme user profile draft, 200–350 words, with a flags section noting where the assistant has extrapolated. This feeds directly into Phase C persona synthesis.
-
-**Human review required:** Check that the profile accurately represents the source material. Assess whether the design implications are correctly derived. Add sourcing notes before committing.
-
----
-
-## Task 2 — Synthesising a persona narrative from multiple sources
-
-**Workflow stage:** Phase C (persona synthesis)
-
-**When to use this:** You have an extreme user profile, relevant threat intelligence, and notes from the raw participant map, and need to synthesise them into a full RAHP-format persona narrative.
-
-**Toolkit components used:**
-- Existing persona set — paste D1, D3, D5 as format and tone references
-- Phase B extreme user profile (output from Task 1)
-- Phase A raw participant map extract
-
-**Input to the assistant:** Paste the extreme user profile from Task 1, the relevant section of the raw participant map, and two or three existing RAHP personas as format references.
-
-**Example prompt:**
-
-```
-I need to draft a new RAHP persona in the style of the existing DTG personas. 
-Here are three existing personas for reference:
-
-[paste Daniel Wright D1, Ahmed Khan D3, and Sophie Dubois D5]
-
-Here is the extreme user profile I want to develop into a full persona:
-
-[paste output from Task 1]
-
-Draft a full persona narrative following the same structure as the examples: 
-name, age, location, opening quote, goals and motivations, risk context 
-(pain points), inclusion/exclusion factors, key use cases, and a short insights 
-section with at least two sourced references to documented real-world precedents.
-
-The insights section should cite published sources — if you are uncertain whether 
-a source is accurate, say so and I will verify. Do not invent citations.
+```text
+Target and review question
+        ↓
+Authoritative source discovery
+        ↓
+Immutable source pins
+        ↓
+Personas + scenarios + pressure patterns
+        ↓
+Positive / negative / adversarial cases
+        ↓
+Evidence closure
+        ↓
+RAHP assessment and residual classification
+        ↓
+Machine-readable record
+        ↓
+Repository validators + generated-view checks
+        ↓
+Human interpretation / ownership / disposition
+        ↓
+Remediation or upstream work item when warranted
+        ↓
+RAHP retest
 ```
 
-**Expected output:** A full persona narrative draft in RAHP format, ready for review. The insights section will contain draft citation notes that need verification before the persona is committed.
+The AI assistant may perform many of these operations, but it should preserve the boundaries between them.
 
-**Human review required:** Verify all citations. Assess whether the persona's objectives and vulnerabilities are analytically distinct from existing personas — a new persona that duplicates an existing one adds noise rather than analytical value. Confirm the opening quote feels authentic to the person type rather than generically constructed.
+## Step 1 — define the target and question
 
----
+Give the assistant a bounded assessment target. Prefer a repository, specification, implementation, profile or explicit composition rather than a broad topic.
 
-## Task 3 — Cross-referencing a design decision against the risk register
+Useful inputs include:
 
-**Workflow stage:** Stage 2 (Drafting), Station 2 (Risk assessment)
+- repository URL;
+- specification or document path;
+- relevant branch/tag/version;
+- the concrete review question;
+- known adjacent specifications or dependencies; and
+- whether the assessment is single-specification or cross-specification.
 
-**When to use this:** A spec author or working group member has proposed a design choice and wants to quickly identify which existing risks are affected before bringing it to the group.
+If the target is changing, ask the assistant to resolve and record the immutable source revision used for the review.
 
-**Toolkit components used:**
-- Risk Register v4 — paste the full RK-xx list with identifiers, titles, categories, and short descriptions
-- The design proposal, described precisely
+## Step 2 — require source-pinned evidence
 
-**Input to the assistant:** Paste the risk register and describe the design choice clearly.
+For evidence-backed findings, instruct the assistant to cite the exact source and reviewed revision. A strong evidence record should make it possible for another reviewer to answer:
 
-**Example prompt:**
+- Which repository or authoritative source was reviewed?
+- Which immutable revision was used?
+- Which source path or section supports the observation?
+- Is the observation a quotation, paraphrase, test result or inference?
+- Can the evidence be reproduced independently?
 
-```
-Here is the RAHP risk register for a decentralised trust community system:
+The assistant's own explanation is not evidence. The underlying specification text, implementation behavior, test output, registry state or other declared authoritative artifact is the evidence.
 
-[paste RK-xx list with titles and descriptions]
+## Step 3 — build pressure coverage before conclusions
 
-A spec author has proposed the following design change:
+Ask the assistant to inspect existing RAHP corpora and scenario patterns before inventing new scenarios.
 
-"Revocation status should be published as a publicly readable bitstring status 
-list, with each member's position in the list derived deterministically from 
-their DID."
+A good run should deliberately cover:
 
-For each risk in the register, assess:
-1. Does this design choice increase the severity or likelihood of this risk? 
-   If so, briefly explain how.
-2. Does it decrease the severity or likelihood? If so, how.
-3. Does it have no meaningful effect?
+- expected/positive behavior;
+- misuse and adversarial behavior;
+- stale or conflicting state;
+- composition failures;
+- privacy and correlation surfaces;
+- lifecycle transitions;
+- authorization and authority boundaries;
+- redress or recovery; and
+- accessibility or exclusion where relevant.
 
-Present your assessment as a table:
-Risk ID | Direction (increase / decrease / neutral) | Brief rationale
+New scenarios should be added because a pressure dimension is missing, not to increase a scenario count.
 
-Flag any risks where you are uncertain and note why.
-```
+## Step 4 — construct evidence closure
 
-**Expected output:** A structured table of all 35 risks with direction and rationale. Likely flags include RK-PV01 (M-DID linkability) and RK-HX03 (reputational harm from public revocation) as increases. The table is a rapid first-pass for working group discussion, not a final assessment.
+For cross-specification work, do not assess each artifact in isolation if the claim depends on their composition.
 
-**Human review required:** Risk scoring (severity × likelihood) is a human judgement, not derivable from description alone. The table identifies which risks to discuss — the group scores any changes. New risks surfaced by the design choice that are not in the existing register need to be identified by a human reading the assistant's rationale column.
+Ask the assistant to construct the minimum complete evidence set needed for the proposition under review. Depending on the case, that may include:
 
----
+- credentials;
+- Trust Tasks or transaction evidence;
+- delegation/authority evidence;
+- status or lifecycle state;
+- registry or policy evidence;
+- approvals or supervision;
+- external resolution;
+- transaction context; and
+- privacy/non-correlation constraints.
 
-## Task 4 — Drafting a user story from an objectives map
+Evidence closure does not mean disclose everything. It means identify everything the verifier needs to establish the proposition, including the relationships among the evidence items.
 
-**Workflow stage:** Stage 2 (Drafting)
+## Step 5 — separate hypotheses from findings
 
-**When to use this:** You have a validated objectives map for a persona and need to draft user stories in the standard RAHP format for a specific lifecycle phase.
+An AI assistant is very good at generating plausible failure modes. RAHP should preserve those as hypotheses until evidence closes them.
 
-**Toolkit components used:**
-- Objectives map (Phase D output)
-- Existing user stories — paste US-01 to US-03 as format references
-- Relevant risk register entries for the persona
+Useful classifications during investigation include:
 
-**Input to the assistant:** Paste the objectives map, format reference user stories, and the most relevant risk register entries.
+- confirmed;
+- refined;
+- weakened;
+- contradicted;
+- new finding;
+- governance-only;
+- profile clarification required; and
+- insufficient evidence.
 
-**Example prompt:**
+Only residuals that survive evidence review, construction and retest should normally become formal findings or candidate work items.
 
-```
-Here are three example user stories from the RAHP User Stories Framework, 
-showing the required format:
+## Step 6 — use the repository tooling
 
-[paste US-01, US-02, US-03]
+The assistant should run the toolkit rather than merely describe RAHP conceptually.
 
-Here is the objectives map for persona D3 (Ahmed Khan, new member seeking 
-inclusion), covering Phase 3 and Phase 4 of the VTC bootstrapping lifecycle:
+Typical validation commands include:
 
-[paste objectives map extract for D3]
-
-Here are the risk register entries most relevant to D3:
-
-[paste RK-ID02, RK-HX01, RK-HX02, RK-SC01]
-
-Draft two user stories for D3 covering:
-1. Phase 3: applying for membership through the web-of-trust threshold process
-2. Phase 4: completing identity verification without disclosing more than the 
-   minimum necessary
-
-Each user story should follow the format: "As [persona], I need [capability] 
-so that [objective]. The story must address [specific risk] by [mechanism]." 
-Include acceptance criteria as a short bulleted list.
-```
-
-**Expected output:** Two user story drafts in RAHP format with acceptance criteria. These feed directly into the User Stories Framework as candidate additions, subject to working group review.
-
-**Human review required:** Check that the acceptance criteria are specific and testable — the assistant will sometimes produce acceptance criteria that are aspirational rather than verifiable. Check that the risk linkage is accurate. Working group review required before committing.
-
----
-
-## Task 5 — Identifying gaps in persona coverage
-
-**Workflow stage:** Phase D (context validation) and Stage 5 (Maintenance — periodic extreme user review)
-
-**When to use this:** You want to check whether the current persona set has adequate coverage across lifecycle phases and harm categories, or whether a new working context surfaces participant types not currently represented.
-
-**Toolkit components used:**
-- Full persona set — paste all 11 persona summaries (D1–D6, M1–M2, B1–B3)
-- Risk Register harm categories
-- Lifecycle phase map
-- Description of any new working context if checking for a different system
-
-**Input to the assistant:** Paste the full persona set with brief summaries, the harm category list, the lifecycle phases, and (optionally) a description of the new system context.
-
-**Example prompt:**
-
-```
-Here is the RAHP persona set:
-
-[paste all 11 personas: D1–D6, M1–M2, B1–B3 with brief summaries]
-
-Here are the eight risk categories in the RAHP risk register:
-Identity · Credential · Governance · AI Agent · Privacy · External · 
-Human Experience · Systemic
-
-Here are the VTC bootstrapping lifecycle phases:
-Phase 1 (Genesis) · Phase 2 (Anchor Seeding) · Phase 3 (Member Admission) · 
-Phase 4 (Open Membership) · Revocation & Expiration
-
-Produce a coverage matrix: for each combination of lifecycle phase and risk 
-category, identify which persona(s) have their primary risk exposure there. 
-Where a cell has no persona, flag it as a potential gap.
-
-Then assess: given that this toolkit is intended to be generalisable beyond 
-the DTG context, what participant types are most conspicuously absent? 
-Consider: non-human actors beyond M1 and M2, participants in the Global South, 
-participants with low digital literacy, participants in regulated industries 
-(healthcare, finance) where credential misuse has distinct legal consequences.
+```bash
+python3 tools/validate.py
+python3 tools/validate_scenario_corpora.py
+python3 tools/validate_pressure_tests.py
+python3 tools/build.py
+python3 tools/validate_reference_links.py
 ```
 
-**Expected output:** A coverage matrix (lifecycle phases × risk categories) with gap cells flagged, plus a short prose section identifying the three to five most analytically significant absent participant types. Useful both for Phase D validation and the periodic extreme user review in Stage 5 maintenance.
+For a selected cross-specification composition, use the composition-scoped validation path where available rather than rerunning unrelated corpora.
 
-**Human review required:** The coverage matrix is a mechanical mapping task that the assistant does reliably. The gap assessment is more analytical and requires human judgement about which gaps matter most for the specific system being governed. the assistant's suggestions about absent participant types are starting points for a conversation, not conclusions.
+If the assistant changes a canonical `pressure-test.yaml`, it should regenerate the corresponding human-readable projection and confirm that the repository is clean under the normal validation gates.
 
----
+See [Developer guide](developer-guide.md), [Cross-spec pressure testing](cross-spec-pressure-testing.md), and [Performance and execution efficiency](performance.md).
 
-## What not to use the assistant for
+## Step 7 — require a human disposition checkpoint
 
-**Risk scoring.** Severity and likelihood scores require contextual judgement about the specific system, deployment environment, and threat actors. the assistant will produce numbers if asked, but they are not reliable. Score risks in the working group, not with an AI.
+Before creating an upstream issue, changing governance semantics or asserting normative ownership, review the finding with a human maintainer or responsible decision-maker.
 
-**Guardrail verification.** An assurance test result — pass or fail — is an evidential claim about an operational system. the assistant cannot observe your system. AT-xx results are human-verified or tooling-verified, not AI-assessed.
+The human checkpoint should answer:
 
-**Governance decisions.** Which risks to formally accept, which design choices to adopt, which personas are representative — these are working group decisions with accountability behind them. the assistant can prepare the material for those decisions, not make them.
+1. Is the evidence correctly interpreted?
+2. Is the residual real?
+3. Is its classification correct?
+4. Who owns the remediation?
+5. What constitutes completion?
+6. What evidence should trigger the RAHP retest?
 
-**Fieldwork.** the assistant cannot tell you who is missing from your participant map. It cannot substitute for direct engagement with harm-exposed communities. It can help you structure what you learn from that engagement, but not replace it.
+A Discussion or equivalent research thread can be useful when the interpretation or ownership is still contested. An Issue is more appropriate once the residual is evidence-backed and actionable.
 
-**Source verification.** Always verify citations that the assistant provides in persona insights sections. The practical workflow: ask the assistant to flag uncertain citations explicitly (the prompts above do this), then verify before committing.
+## Step 8 — retest after remediation
 
----
+Do not close the evidence lifecycle when a patch or specification change lands.
 
-## Contributing improvements to this document
+Ask the assistant to:
 
-This is a first draft, written in April 2026, based on practical experience developing the RAHP v1 toolkit. It will need updating as both the toolkit and AI tooling evolve.
+1. preserve the prior assessment as lineage evidence;
+2. inspect the remediation at an immutable revision;
+3. rerun the affected scenarios/evidence closure;
+4. compare old and new findings;
+5. record any residual risk; and
+6. update the formal RAHP record only when the new evidence supports the change.
 
-If you have found a useful prompt pattern not covered here, or found that one of these prompts produces poor results in practice, please open an issue or pull request on the RAHP Toolkit repository. The feedback loop between practitioners and the toolkit is one of the most important things we are trying to build. This document is part of that loop.
+## Copyable prompt — quick assessment
 
----
+```text
+Use the RAHP Toolkit in this repository to perform an initial assessment of <TARGET>.
 
-*RAHP Toolkit · CC-BY 4.0 · portable guidance*
+Do not rely on model knowledge as evidence. Inspect the authoritative target source, record the reviewed revision, reuse existing RAHP personas/scenario patterns/corpora where applicable, and identify candidate pressure points.
+
+Keep hypotheses separate from formal findings. For every candidate finding, show the supporting source evidence and say whether it is confirmed, refined, weakened, contradicted, governance-only, profile clarification required, or insufficient evidence.
+
+Run the applicable RAHP validators before presenting the result. Do not create upstream issues or change the target project automatically.
+```
+
+## Copyable prompt — full source-pinned pressure test
+
+```text
+Perform a full source-pinned RAHP pressure test of <TARGET> using the RAHP Toolkit in this repository.
+
+1. Resolve and record immutable source revisions for every authoritative source used.
+2. Inspect existing RAHP corpora, personas and scenario patterns before adding new material.
+3. Build positive, negative and adversarial cases sufficient to cover the target's important authority, privacy, lifecycle, composition, redress and misuse surfaces.
+4. Where the claim spans multiple artifacts or specifications, construct the complete evidence closure rather than evaluating each component independently.
+5. Map Persona → Scenario → Risk → Harm → Enabler → Control → Guardrail → Assurance evidence → Residual risk → likely owner where supported by the method.
+6. Treat model reasoning as analysis, not evidence. Cite the source path/revision for every evidence-backed observation.
+7. Preserve hypotheses until they survive evidence review and construction. Explicitly classify weakened, contradicted, governance-only and insufficient-evidence cases.
+8. Produce/update the canonical machine-readable RAHP assessment artifacts and regenerate derived human-readable views.
+9. Run all applicable repository validators and report any failure rather than bypassing it.
+10. Do not create upstream work items automatically. First present the evidence-backed residuals, likely ownership and explicit retest/completion criteria for human disposition.
+```
+
+## Copyable prompt — reassess after remediation
+
+```text
+Reassess RAHP finding <FINDING-ID> after the remediation at <REVISION>.
+
+Use the prior assessment as immutable lineage evidence. Inspect the remediation at the stated revision, rerun only the affected scenarios/compositions plus any dependencies required for evidence closure, and compare the new evidence with the original finding and retest condition.
+
+Classify the finding as resolved, refined, still open, superseded, or insufficiently evidenced. Do not mark it resolved merely because a patch exists. Regenerate and validate the canonical RAHP artifacts before recommending any issue closure.
+```
+
+## Focused prompt patterns
+
+For narrower tasks, the same evidence discipline applies. AI assistance is useful for:
+
+- structuring an extreme-user profile from supplied fieldwork or source notes;
+- synthesising a persona from multiple verified inputs;
+- cross-referencing a design decision against an existing risk catalogue;
+- drafting user stories from a validated objectives map; and
+- identifying possible persona/pressure coverage gaps.
+
+For each task, provide the relevant RAHP artifacts as context, require the assistant to flag extrapolation, and treat the output as a draft until the source evidence and interpretation have been reviewed.
+
+The assistant should not assign authoritative risk scores, claim that an operational guardrail passed without observed evidence, make governance decisions, replace participant fieldwork, or be treated as a source-verification mechanism.
+
+## Example: from Discussion to issue to retest
+
+The guardianship/fiduciary constrained-authority example demonstrates the intended discipline:
+
+1. broad hypotheses were first discussed and recorded;
+2. source-pinned evidence weakened or refined several of them;
+3. three concrete evidence-closure cases were constructed;
+4. a post-construction RAHP retest collapsed ten candidate findings to four residuals;
+5. only those four evidence-backed residuals became RAHP issues; and
+6. upstream DTG work items remain a later disposition decision rather than an automatic result of the RAHP run.
+
+See [`examples/cross-spec/guardianship-fiduciary/`](../examples/cross-spec/guardianship-fiduciary/) and [Discussion #51](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/51).
+
+## Review checklist for AI-assisted runs
+
+Before accepting an AI-assisted RAHP assessment, confirm that:
+
+- [ ] authoritative sources are identified and immutable revisions are recorded where required;
+- [ ] model statements are not presented as source evidence;
+- [ ] existing corpora and portable patterns were reused before new ones were introduced;
+- [ ] positive, negative and adversarial cases were considered;
+- [ ] cross-spec claims were evaluated across complete evidence closure;
+- [ ] hypotheses and formal findings remain distinguishable;
+- [ ] governance-only and insufficient-evidence outcomes were not artificially converted into specification defects;
+- [ ] generated files came from canonical structured sources;
+- [ ] applicable RAHP validators passed;
+- [ ] human review occurred before upstream issue creation or normative disposition; and
+- [ ] every open finding has an explicit retest condition.
+
+AI assistance should make RAHP faster and easier to operate. It should not lower the evidentiary threshold that makes the result trustworthy.
