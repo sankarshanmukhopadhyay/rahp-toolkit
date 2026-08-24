@@ -49,21 +49,25 @@ jobs:
             exit 1
           }
 
-      - name: Requalify exact release commit
+      - name: Requalify current release state
         run: python3 tools/release.py qualify
 
-      - name: Create declared release tag if absent
+      - name: Create or verify declared release tag
         env:
           TAG: ${{ steps.release.outputs.tag }}
+          VERSION: ${{ steps.release.outputs.version }}
           TITLE: ${{ steps.release.outputs.title }}
         run: |
           set -euo pipefail
           git fetch --tags --force
           if git rev-parse "$TAG" >/dev/null 2>&1; then
-            test "$(git rev-list -n 1 "$TAG")" = "$GITHUB_SHA" || {
-              echo "::error::$TAG already exists but does not point at the qualified release commit"
+            tagged_version="$(git show "$TAG:package.json" | python3 -c 'import json,sys; print(json.load(sys.stdin)["version"])')"
+            test "$tagged_version" = "$VERSION" || {
+              echo "::error::$TAG exists but tagged package version is $tagged_version, expected $VERSION"
               exit 1
             }
+            git show "$TAG:PROJECT-STATUS.yaml" | VERSION="$VERSION" python3 -c 'import os,sys,yaml; d=yaml.safe_load(sys.stdin); assert str(d.get("stable_release")) == os.environ["VERSION"]'
+            echo "$TAG already identifies a release commit for version $VERSION; preserving it."
           else
             git config user.name github-actions[bot]
             git config user.email 41898282+github-actions[bot]@users.noreply.github.com
@@ -84,7 +88,6 @@ jobs:
           else
             gh release create "$TAG" \
               --verify-tag \
-              --target "$GITHUB_SHA" \
               --title "$TITLE" \
               --notes-file "$NOTES_PATH"
           fi
