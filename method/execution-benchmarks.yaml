@@ -1,0 +1,93 @@
+version: 1
+contract: rahp-execution-benchmark-v1
+purpose: >-
+  Define stable, non-publishing execution paths for measuring RAHP performance.
+  Benchmarking must not weaken assurance gates or change normalized assessment results.
+principles:
+  - measure-before-optimizing
+  - no-network-publication-during-benchmarks
+  - immutable-inputs-where-available
+  - compare-like-for-like-execution-paths
+  - optimization-must-preserve-semantic-output
+profiles:
+  core-validation:
+    description: Portable core validation without documentation-site rendering.
+    commands:
+      - python3 tools/validate.py
+      - python3 tools/validate_catalogue.py
+      - python3 tools/validate_assurance_lineage.py
+      - python3 tools/validate_remediation_retest_lineage.py
+      - python3 tools/validate_assurance_graph.py
+      - python3 tools/validate_evidence_freshness_delta.py
+      - python3 tools/validate_authority_policy_gates.py
+      - python3 tools/validate_engine_contract.py
+  corpus-validation:
+    description: Full packaged corpus and pressure-test evidence validation.
+    commands:
+      - python3 tools/validate_scenario_corpora.py
+      - python3 tools/corpus_status.py --offline
+      - python3 tools/validate_pressure_tests.py
+  cross-spec-dtg-tt-credspec:
+    description: >-
+      Representative source-pinned DTG Trust Tasks × Credential Spec cross-specification
+      execution path, excluding issue publication.
+    commands:
+      - python3 tools/validate_cross_spec_registry.py --registry profiles/dtg/cross-spec-tests.yaml
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition trust-tasks--credential-spec
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/trust-tasks-credspec/pressure-test.yaml
+      - python3 tools/cross_spec_review.py trust-tasks--credential-spec --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-cross-spec-review.md --events build/benchmark-cross-spec-events.json
+  full-validation:
+    description: Repository-wide non-Pages validation representative of the main CI assurance gate.
+    commands:
+      - python3 tools/validate.py
+      - python3 tools/validate_catalogue.py
+      - python3 tools/validate_resilience.py
+      - python3 tools/validate_glossary.py
+      - python3 tools/render_portable_catalogue_docs.py --check
+      - python3 tools/validate_v04_method.py
+      - python3 tools/validate_assurance_lineage.py
+      - python3 tools/validate_remediation_retest_lineage.py
+      - python3 tools/validate_assurance_graph.py
+      - python3 tools/validate_evidence_freshness_delta.py
+      - python3 tools/validate_authority_policy_gates.py
+      - python3 tools/validate_capability_documentation.py
+      - python3 tools/validate_v15_release.py
+      - python3 tools/validate_v16_release.py
+      - python3 tools/validate_current_examples.py
+      - python3 tools/validate_persona_quality.py
+      - python3 tools/validate_scenario_corpora.py
+      - python3 tools/corpus_status.py --offline
+      - python3 tools/validate_pressure_tests.py
+      - python3 tools/validate_project_identity.py
+      - python3 tools/validate_release_metadata.py
+      - python3 tools/validate_documentation_ia.py
+      - python3 -m unittest discover -s tests -p 'test_*.py'
+      - python3 tools/validate_security_reviews.py
+      - python3 tools/validate_combined_reviews.py
+      - python3 tools/validate_cawg_instance.py
+      - python3 tools/validate_issue_watch_registries.py
+      - python3 tools/validate_issue_publication_policy.py
+      - python3 tools/validate_cross_spec_registry.py --registry profiles/dtg/cross-spec-tests.yaml
+      - python3 tools/validate_cross_spec_registry.py --registry profiles/cawg/cross-spec-tests.yaml
+      - python3 tools/validate_cross_spec_workflows.py
+      - python3 tools/validate_assessment_queue.py
+      - python3 tools/validate_engine_contract.py
+      - python3 tools/render_cawg_readiness.py --check
+      - python3 tools/render_cawg_risks.py --check
+      - python3 tools/build.py
+      - python3 tools/validate_reference_links.py
+metrics:
+  required:
+    - wall_seconds
+    - command_seconds
+    - command_exit_code
+    - profile_exit_code
+  optional:
+    - output_digest
+    - peak_rss_kb
+comparison:
+  primary_metric: wall_seconds
+  semantic_invariant: normalized outputs for identical inputs must remain unchanged
+  target_reduction_percent:
+    full-validation: 50
+    cross-spec-dtg-tt-credspec: 50

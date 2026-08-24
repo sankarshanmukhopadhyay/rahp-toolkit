@@ -1,0 +1,66 @@
+name: RAHP execution benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Benchmark profile from method/execution-benchmarks.yaml
+        required: true
+        default: full-validation
+        type: choice
+        options:
+          - core-validation
+          - corpus-validation
+          - cross-spec-dtg-tt-credspec
+          - full-validation
+  pull_request:
+    paths:
+      - 'tools/benchmark_execution.py'
+      - 'method/execution-benchmarks.yaml'
+      - '.github/workflows/execution-benchmark.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Run selected benchmark
+        run: >-
+          python3 tools/benchmark_execution.py
+          "${{ inputs.profile || 'full-validation' }}"
+          --output build/execution-benchmark.json
+      - name: Benchmark summary
+        if: always()
+        run: |
+          if [ -f build/execution-benchmark.json ]; then
+            python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          d=json.loads(Path('build/execution-benchmark.json').read_text())
+          print('## RAHP execution benchmark')
+          print(f"- Profile: `{d['profile']}`")
+          print(f"- Wall time: **{d['wall_seconds']:.3f}s**")
+          print(f"- Peak child RSS: **{d['peak_rss_kb']} KB**")
+          print(f"- Exit code: `{d['profile_exit_code']}`")
+          print('')
+          print('| Seconds | Exit | Command |')
+          print('|---:|---:|---|')
+          for c in d['commands']:
+              print(f"| {c['seconds']:.3f} | {c['exit_code']} | `{c['command']}` |")
+          PY
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rahp-execution-benchmark-${{ inputs.profile || 'full-validation' }}
+          path: build/execution-benchmark.json
+          if-no-files-found: error
