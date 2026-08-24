@@ -15,6 +15,10 @@ release:
   qualification:
     manifest: method/v1.6-release-qualification.yaml
     validator: tools/validate_v16_release.py
+    checks:
+      - tools/validate_scenario_corpora.py
+      - tools/validate_pressure_tests.py
+      - tools/validate_engine_contract.py
   notes:
     path: docs/releases/v1.6.0.md
   compatibility:
@@ -22,6 +26,7 @@ release:
     normalized_result_schema: 1
     evidence_retention_contract: rahp-evidence-retention-v1
 publication:
+  workflow: .github/workflows/release.yml
   target_branch: main
   tag_kind: annotated
   idempotent: true
