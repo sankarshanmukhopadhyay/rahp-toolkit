@@ -34,6 +34,10 @@ permissions:
 
 jobs:
   benchmark:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ${{ fromJSON(github.event_name == 'pull_request' && '["full-validation","cross-spec-dtg-tt-credspec"]' || format('["{0}"]', inputs.profile)) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -46,16 +50,19 @@ jobs:
       - name: Run selected benchmark
         run: >-
           python3 tools/benchmark_execution.py
-          "${{ inputs.profile || 'full-validation' }}"
-          --output build/execution-benchmark.json
+          "${{ matrix.profile }}"
+          --output "build/execution-benchmark-${{ matrix.profile }}.json"
       - name: Benchmark summary
         if: always()
+        env:
+          PROFILE: ${{ matrix.profile }}
         run: |
-          if [ -f build/execution-benchmark.json ]; then
-            python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import json
+          path="build/execution-benchmark-${PROFILE}.json"
+          if [ -f "$path" ]; then
+            BENCHMARK_PATH="$path" python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, os
           from pathlib import Path
-          d=json.loads(Path('build/execution-benchmark.json').read_text())
+          d=json.loads(Path(os.environ['BENCHMARK_PATH']).read_text())
           print('## RAHP execution benchmark')
           print(f"- Profile: `{d['profile']}`")
           print(f"- Wall time: **{d['wall_seconds']:.3f}s**")
@@ -71,6 +78,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: rahp-execution-benchmark-${{ inputs.profile || 'full-validation' }}
-          path: build/execution-benchmark.json
+          name: rahp-execution-benchmark-${{ matrix.profile }}
+          path: build/execution-benchmark-${{ matrix.profile }}.json
           if-no-files-found: error
