@@ -62,4 +62,5 @@ release_cut:
   selected_on: '2026-08-23'
   tag: v1.6.0
   publish_only_after_qualification: true
-  publication_workflow: .github/workflows/publish-qualified-release.yml
+  publication_workflow_at_cut: .github/workflows/publish-qualified-release.yml
+  publication_workflow: .github/workflows/release.yml
