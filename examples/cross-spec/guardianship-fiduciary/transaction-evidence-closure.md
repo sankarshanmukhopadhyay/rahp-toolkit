@@ -131,4 +131,4 @@ After the three constructions, RAHP is run again as a **retest**, not as a fresh
 
 The machine-readable result is [`post-construction-rahp.yaml`](./post-construction-rahp.yaml). The formal `pressure-test.yaml` is updated only with residuals that now satisfy the finding/evidence contract.
 
-No downstream DTG issue is created by this construction pass. Maintainer review in [Discussion #51](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/51) remains the next disposition gate.
+No upstream DTG issue is created by this construction pass. Maintainer review in [Discussion #51](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/51) remains the next disposition gate.
