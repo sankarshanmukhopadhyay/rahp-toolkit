@@ -114,6 +114,7 @@ def verify(doc: dict) -> list[str]:
         if compat.get(key) != expected:
             errors.append(f"compatibility mismatch for {key}")
 
+    resolved: dict[str, Path] = {}
     for key, label in (
         ("qualification_manifest", "qualification manifest"),
         ("qualification_validator", "qualification validator"),
@@ -124,12 +125,36 @@ def verify(doc: dict) -> list[str]:
         except ValueError as exc:
             errors.append(str(exc))
             continue
+        resolved[key] = path
         if not path.is_file():
             errors.append(f"{label} does not exist: {meta[key]}")
 
     versioning = load_yaml(ROOT / "method" / "versioning.yaml")
     if versioning.get("stable_release") != tag:
         errors.append("method/versioning.yaml stable_release differs from release declaration")
+
+    # Human-facing current-release surfaces remain release-generic: they must
+    # mention the declared tag and route to the declared release notes.
+    surface_checks = {
+        "README.md": [tag, meta["common_name"], meta["notes_path"]],
+        "CHANGELOG.md": [tag, meta["common_name"]],
+        "ROADMAP.md": [tag, meta["common_name"]],
+    }
+    for rel, required_terms in surface_checks.items():
+        path = ROOT / rel
+        if not path.is_file():
+            errors.append(f"release surface missing: {rel}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        for term in required_terms:
+            if term and term not in text:
+                errors.append(f"{rel} does not reference declared release term {term!r}")
+
+    portable = ROOT / "examples" / "portable-instance" / "data" / "instance.yaml"
+    if portable.is_file():
+        pdoc = load_yaml(portable)
+        if str((pdoc.get("instance") or {}).get("toolkit_version")) != tag:
+            errors.append(f"portable instance fixture toolkit_version must be {tag}")
 
     return errors
 
