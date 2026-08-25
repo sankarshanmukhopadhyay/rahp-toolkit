@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write
 
 jobs:
   monitor:
@@ -80,6 +81,7 @@ jobs:
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
       - name: Persist observed revisions
+        id: persist
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
@@ -95,7 +97,28 @@ jobs:
             instances/cawg/state/issue-events.json
           if git diff --cached --quiet; then
             echo "No instance state changes to persist."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "chore(assurance): advance monitored instance revisions"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Regenerate current-head assurance evidence
+        if: steps.persist.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_HEAD_SHA: ${{ steps.persist.outputs.head_sha }}
+        shell: bash
+        run: |
+          current_head="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$current_head" != "$EXPECTED_HEAD_SHA" ]; then
+            echo "::error::Default-branch HEAD moved before assurance dispatch: expected $EXPECTED_HEAD_SHA, observed $current_head"
+            exit 1
+          fi
+
+          gh workflow run validate.yml --ref main
+          gh workflow run pages.yml --ref main
+
+          echo "Dispatched toolkit validation and publication-integrity evidence for $EXPECTED_HEAD_SHA"
