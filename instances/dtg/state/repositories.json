@@ -2,9 +2,9 @@
   "version": 1,
   "repositories": {
     "trustoverip/dtgwg-trust-tasks-tf": {
-      "sha": "9b8fdc032b20be5af6d9baa9394a6c902bed6a47",
+      "sha": "331c725718ec6ae4176605b91fc5f0803eac3487",
       "status": "active",
-      "observed_at": "2026-08-24T04:24:54.729419+00:00"
+      "observed_at": "2026-08-25T04:19:38.795232+00:00"
     },
     "trustoverip/dtgwg-htx-tf": {
       "sha": "0718ff3ba2b0333571f1637e229c313d3545e162",
@@ -13,7 +13,7 @@
     },
     "trustoverip/dtgwg-ux-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-24T04:24:55.560394+00:00"
+      "observed_at": "2026-08-25T04:19:39.883931+00:00"
     },
     "trustoverip/dtgwg-general": {
       "sha": "fa15044225ff447ad6564983a5ce0732b80cbdc1",
@@ -26,9 +26,9 @@
       "observed_at": "2026-08-14T04:58:40.558854+00:00"
     },
     "trustoverip/dtgwg-zkp-tf": {
-      "sha": "b37d52fca4ab64ef759d4952b13757f3b23cb20b",
+      "sha": "3b6b3f2e76005d6f579d076ee2833ef56d599b65",
       "status": "active",
-      "observed_at": "2026-08-14T04:58:41.021584+00:00"
+      "observed_at": "2026-08-25T04:19:41.617503+00:00"
     },
     "trustoverip/dtgwg-cred-tf": {
       "sha": "d8e317ee6ec13c327f2bc96022be6190500432ae",
@@ -42,7 +42,7 @@
     },
     "trustoverip/dtgwg-rcards-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-24T04:24:57.592336+00:00"
+      "observed_at": "2026-08-25T04:19:43.076279+00:00"
     },
     "trustoverip/dtgwg-vds-tf": {
       "sha": "99eacacedd1729d20528a2ec65ff5288d103ec5e",
@@ -60,14 +60,14 @@
       "observed_at": "2026-08-14T04:58:43.379592+00:00"
     },
     "OpenVTC/openvtc": {
-      "sha": "b81226f174abeb42900ae6ddab32e0d39cc95273",
+      "sha": "93382f18ee78d3535c7f78f0b8560bc09df2c4f4",
       "status": "active",
-      "observed_at": "2026-08-24T04:24:59.321903+00:00"
+      "observed_at": "2026-08-25T04:19:45.481958+00:00"
     },
     "OpenVTC/verifiable-trust-infrastructure": {
-      "sha": "e296dcabd1d14c87cf27f355197f4519be2f3272",
+      "sha": "078b4c35403e4aadab39550150b722cf827528d4",
       "status": "active",
-      "observed_at": "2026-08-24T04:25:00.450867+00:00"
+      "observed_at": "2026-08-25T04:19:46.714872+00:00"
     },
     "sankarshanmukhopadhyay/dtgwg-cred-tf": {
       "sha": "200acbaa47a422b173652ed2c3dc961c4fbc9e7a",
