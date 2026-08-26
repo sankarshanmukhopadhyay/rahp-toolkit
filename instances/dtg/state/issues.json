@@ -19,10 +19,10 @@
       "updated_at": "2026-08-03T18:16:18Z"
     },
     "trustoverip/dtgwg-cred-spec#9": {
-      "comments": 1,
+      "comments": 2,
       "state": "open",
       "title": "Define the identity linkages required by the ZKP constructions",
-      "updated_at": "2026-08-06T00:34:28Z"
+      "updated_at": "2026-08-25T11:48:30Z"
     },
     "trustoverip/dtgwg-trust-tasks-tf#173": {
       "comments": 14,
