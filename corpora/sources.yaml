@@ -166,3 +166,11 @@ sources:
   - CORPUS-DTG-AGENT-NAMES
   - CORPUS-DTG-CREDSPEC
   review_policy: Recomposition is required whenever either dependency is semantically re-baselined.
+- corpus_id: CORPUS-CRED-ZKP-TT-COMPOSED
+  corpus_file: corpora/credential-zkp-trust-tasks-composed.yaml
+  update_mode: derived
+  dependencies:
+  - CORPUS-DTG-CREDSPEC
+  - CORPUS-DTG-ZKP
+  - CORPUS-TRUST-TASKS
+  review_policy: Recomposition is required whenever any credential, ZKP or Trust Tasks dependency is semantically re-baselined; the three-spec case remains outside the frozen v1.6.0 qualification corpus set until a future release explicitly qualifies it.
