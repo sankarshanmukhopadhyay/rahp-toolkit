@@ -35,7 +35,3 @@ jobs:
           RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
           DPIP_REPOSITORY: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
         run: python3 tools/dpip_handoff.py
-      - name: Activation note
-        if: ${{ secrets.DPIP_HANDOFF_TOKEN == '' }}
-        run: |
-          echo '::warning::DPIP_HANDOFF_TOKEN is not configured. The handoff contract is installed but cross-repository referral transport is inactive.'
