@@ -1,0 +1,94 @@
+review:
+  id: SR-XSP-CZT-001
+  status: complete
+  title: DTG Credential Specification × ZKP × Trust Tasks Framework v0.5.0 pressure test
+  reviewed_on: '2026-08-27'
+  evidence_grade: source-pinned
+  target:
+    repositories:
+      trust_tasks: trustoverip/dtgwg-trust-tasks-spec
+      credential_spec: trustoverip/dtgwg-cred-spec
+      zkp: trustoverip/dtgwg-zkp-tf
+    commits:
+      trust_tasks: 6425a74136c1d2dfa7115889abe0b3521700e887
+      credential_spec: b89f389abbdae77ba60b673c0836c781c2b54169
+      zkp: 3b6b3f2e76005d6f579d076ee2833ef56d599b65
+    corpus: corpora/credential-zkp-trust-tasks-composed.yaml
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.5.0
+    trigger_issue: 89
+  proposition: >-
+    Does the current DTG composition preserve authority, privacy, lifecycle and execution assurances when credential evidence and privacy-preserving proofs are carried through Trust Tasks v0.5.0 into consequential execution?
+  method:
+    rule: A pass at each pairwise seam does not imply a pass for the three-spec consequential flow.
+    falsification_bias: Test vectors are constructed so that individually valid component evidence must still fail when the composed proposition is false.
+  assurance:
+    residual_state: finding
+    policy_gate: FAIL
+    gate_reason: The current specifications provide strong component controls but do not yet establish one reusable contract for action-time authority, one-effect execution, task-specific proof commitment and end-to-end composed privacy.
+    positive_controls:
+      - Trust Tasks v0.5.0 provides pairwise-identifier guidance, fresh non-derived correlation handles, explicit lifecycle states, no inference from silence, freshness checks and retention/ingestion declarations.
+      - Credential Specification requires VWC digest binding to the referenced edge evidence.
+      - ZKP current upstream requirements strengthen context binding, composed-presentation privacy and separation of proof validity from authorization.
+  findings:
+    - id: F-001
+      title: Valid evidence does not establish current authority at consequential execution time
+      status: open
+      severity: Critical
+      scenarios: [XSP-CZT-001, XSP-CZT-003, XSP-CZT-007]
+      harm: >-
+        A valid credential and ZK proof can be combined with a fresh Trust Task after delegated authority has been revoked, expired, superseded or narrowed if proof and task freshness are treated as substitutes for authoritative mandate state.
+      recommendation: >-
+        Define a reusable action-time authority decision contract binding principal, delegate, action, scope, constraints, credential/status evidence and current lifecycle state immediately before the side effect.
+      retest_when:
+        - Negative vectors reject valid credential + valid proof + valid task after authority revocation, expiry, supersession or scope reduction.
+    - id: F-002
+      title: One-effect execution is not established by component validity
+      status: open
+      severity: High
+      scenarios: [XSP-CZT-004, XSP-CZT-005, XSP-CZT-007]
+      harm: >-
+        Delivery, proof verification and credential validity can all succeed while execution remains unknown or a duplicate retry creates a second consequential effect.
+      recommendation: >-
+        Bind the authoritative task instance, evidence set and outcome receipt to one logical effect, preserving Trust Tasks v0.5.0 lifecycle semantics and explicit idempotency/reconciliation behavior.
+      retest_when:
+        - Lost-reply and duplicate vectors demonstrate exactly one logical effect and never infer execution from transport delivery or proof success.
+    - id: F-003
+      title: Task-specific proof commitment remains a three-spec composition obligation
+      status: open
+      severity: High
+      scenarios: [XSP-CZT-002, XSP-CZT-005, XSP-CZT-007]
+      harm: >-
+        A privacy-preserving proof valid for one context can be replayed or semantically upgraded into another task if the transcript or companion evidence does not commit to the intended action, purpose, audience and freshness domain.
+      recommendation: >-
+        Define the minimum privacy-preserving task-context commitment and require cross-task/cross-audience negative vectors.
+      retest_when:
+        - Proof reuse outside the committed task/action/purpose/audience boundary is deterministically rejected.
+    - id: F-004
+      title: Composed privacy can fail despite pairwise identifiers and zero-knowledge disclosure
+      status: open
+      severity: High
+      scenarios: [XSP-CZT-002, XSP-CZT-006]
+      harm: >-
+        Pairwise issuer/recipient identifiers and selective disclosure can coexist with linkability through ceremony enactment, timestamps, retained task documents, status lookups or outcome evidence.
+      recommendation: >-
+        Evaluate declared, observable and effective correlation scope over the complete retained interaction, including task wrapper, proof transcript, credential/status evidence, ceremony metadata and outcome records.
+      retest_when:
+        - Composed privacy vectors demonstrate that two unrelated relying contexts cannot correlate the same subject or relationship from retained protocol-visible evidence beyond the explicitly declared scope.
+  scenario_dispositions:
+    XSP-CZT-001: expected-fail-until-action-time-authority-contract
+    XSP-CZT-002: expected-fail-until-composed-correlation-bounded
+    XSP-CZT-003: expected-fail-until-freshness-domains-composed
+    XSP-CZT-004: controlled-by-v0.5-lifecycle-if-transport-binding-conforms
+    XSP-CZT-005: expected-fail-until-one-effect-binding
+    XSP-CZT-006: expected-fail-until-retained-evidence-privacy-proven
+    XSP-CZT-007: expected-fail-until-non-inference-contract-explicit
+  judgment:
+    alternatives_considered:
+      - Treat the v0.5.0 component review as sufficient and close the older pairwise findings.
+      - Re-run only the existing pairwise Trust Tasks assessments.
+    chosen: >-
+      Preserve pairwise lineage but add the three-spec case because privacy, authority and execution propositions can survive each pairwise seam while failing only in the complete credential/proof/task interaction.
+    residual_uncertainty: >-
+      These conclusions are specification-level. Deployment profiles and executable implementations may close or worsen particular findings and require their own evidence.
