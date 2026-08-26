@@ -1,0 +1,84 @@
+review:
+  id: SR-XSP-001-TT050
+  status: complete
+  title: Trust Tasks v0.5.0 × DTG Credential Specification assurance delta
+  reviewed_on: '2026-08-27'
+  target:
+    repository: trustoverip/dtgwg-trust-tasks-spec + trustoverip/dtgwg-cred-spec
+    version: Composition of Trust Tasks Framework 0.5.0 and Credential Specification current main
+    commit: 6425a74136c1d2dfa7115889abe0b3521700e887
+    companion_commit: b89f389abbdae77ba60b673c0836c781c2b54169
+  lineage:
+    prior_assessment: examples/cross-spec/trust-tasks-credspec/pressure-test.yaml
+    prior_issue: 32
+    trigger_issue: 89
+    transition: reassessed
+    evidence_freshness: re-evaluated
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.5.0
+    reassessed_on: '2026-08-27'
+  proposition: >-
+    Determine whether Trust Tasks Framework v0.5.0 changes the prior cross-specification conclusions when credential evidence is used in consequential Trust Tasks.
+  assurance:
+    residual_state: finding
+    policy_gate: FAIL
+    gate_reason: v0.5.0 materially strengthens lifecycle, freshness, identifier privacy and state semantics, but does not by itself establish cross-artifact action-time authority or complete execution/evidence closure.
+    assurance_delta:
+      disposition: weakened
+      summary: >-
+        Trust Tasks v0.5.0 directly mitigates several subclaims in the prior replay/privacy findings. The remaining obligations are narrower: action-time authority coherence, one-effect execution/evidence closure, and governance/contestability beyond identifier hygiene.
+      finding_lineage:
+        F-001: unchanged
+        F-002: weakened
+        F-003: weakened
+  credited_controls:
+    - id: TT050-PRIV-01
+      evidence: trustoverip/dtgwg-trust-tasks-spec@6425a74136c1d2dfa7115889abe0b3521700e887
+      effect: Relationship-scoped VIDs are preferred and correlation handles must be fresh, unguessable and not derived from subject, account or session data.
+    - id: TT050-LIFE-01
+      evidence: trustoverip/dtgwg-trust-tasks-spec@6425a74136c1d2dfa7115889abe0b3521700e887
+      effect: One normative document lifecycle separates received, validated, accepted, executing, suspended, responded, errored, cancelled and expired states; silence establishes none of them.
+    - id: TT050-FRESH-01
+      evidence: trustoverip/dtgwg-trust-tasks-spec@6425a74136c1d2dfa7115889abe0b3521700e887
+      effect: Consequential tasks require issuedAt and malformed or impossible freshness intervals fail before acceptance.
+    - id: TT050-DATA-01
+      evidence: trustoverip/dtgwg-trust-tasks-spec@6425a74136c1d2dfa7115889abe0b3521700e887
+      effect: Retention, ingestion sensitivity and identifier scope are explicitly declarable with fail-safe absent-value readings.
+  findings:
+    - id: F-001
+      prior_disposition: refined
+      delta: unchanged
+      title: Action-time authority and lifecycle coherence remains cross-specification
+      status: open
+      severity: Critical
+      rationale: >-
+        Framework freshness governs the task document, but a fresh task and valid credential can still coexist with revoked, expired, superseded or out-of-scope authority unless the composed decision evaluates authoritative current state immediately before the consequential effect.
+      falsified_if:
+        - A normative composition profile requires authoritative action-time authority/status evaluation and negative vectors reject valid task plus valid credential when authority has changed.
+    - id: F-002
+      prior_disposition: refined
+      delta: weakened
+      title: Execution/outcome/replay obligation is narrower under the v0.5 lifecycle
+      status: open
+      severity: High
+      rationale: >-
+        The explicit lifecycle and no-silence-inference rules remove ambiguity between transport delivery, acceptance and execution. Residual risk remains where a valid credential/task pair can be retried or reused without a canonical one-effect execution binding and outcome receipt.
+      falsified_if:
+        - Duplicate and lost-reply vectors prove one logical consequential effect and bind credential use to the authoritative task execution outcome.
+    - id: F-003
+      prior_disposition: refined
+      delta: weakened
+      title: Privacy/contestability residual survives beyond identifier hygiene
+      status: open
+      severity: High
+      rationale: >-
+        Pairwise identifiers, fresh handles, retention declarations and bounded metadata materially reduce avoidable correlation. They do not establish end-to-end minimization across credential status lookups, retained task evidence and adverse-decision governance, nor do they define the accountable contest/remedy boundary.
+      falsified_if:
+        - A composed disclosure test demonstrates no unnecessary durable correlator across task, credential/status and retained evidence.
+        - A governance profile identifies decision authority, portable evidence and contest/remedy routing for adverse outcomes.
+  human_judgment:
+    accepted_conclusion: >-
+      Trust Tasks v0.5.0 deserves explicit assurance credit. It weakens two prior findings but does not justify a composition-level pass.
+    residual_uncertainty: >-
+      This reassessment is specification-evidence based; implementation-specific retry, retention and status-cache behavior remains outside this record.
