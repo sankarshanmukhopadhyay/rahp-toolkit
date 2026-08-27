@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "assessment": {
+    "id": "DTG-AR-2026-004",
+    "key": "dtg:repository:trustoverip/dtgwg-trust-tasks-tf",
+    "triggers": ["rahp-toolkit#70"]
+  },
+  "target": {
+    "repository": "trustoverip/dtgwg-trust-tasks-tf",
+    "baseline_revision": "2a40f6bd3b13c85c49123174fdbe4354b3c48d81",
+    "reviewed_revision": "cdfc6e231dc6cc9ed901bbd27b4c6e8ea2f3e06a"
+  },
+  "mode": "combined",
+  "status": "dispositioned",
+  "findings": [
+    {
+      "id": "F-001",
+      "title": "Retained outcome evidence remains a cross-specification dependency",
+      "status": "assurance-gap"
+    },
+    {
+      "id": "F-002",
+      "title": "Generic task-control and lifecycle observability are materially strengthened",
+      "status": "controlled"
+    },
+    {
+      "id": "F-005",
+      "title": "Supervising-principal and delegated authority remain profile/governance dependencies",
+      "status": "assurance-gap"
+    },
+    {
+      "id": "F-009",
+      "title": "Application-state namespace is not an authorization boundary",
+      "status": "deployment-control"
+    },
+    {
+      "id": "F-010",
+      "title": "Removal evidence does not guarantee durable redress delivery",
+      "status": "assurance-gap"
+    },
+    {
+      "id": "F-011",
+      "title": "Relationship publication provenance and correlation control are explicit",
+      "status": "controlled"
+    }
+  ],
+  "disposition": {
+    "outcome": "findings-raised",
+    "summary": "Trust Tasks through cdfc6e2 is net assurance-strengthening: framework 0.5 tightens freshness/privacy/lifecycle semantics, application-state adds explicit concurrency controls, relationship publication binds issuer authority while minimizing correlation, and removal notices strengthen adverse-decision evidence. Residual gaps remain at cross-spec outcome/delegation, deployment isolation and durable redress delivery boundaries.",
+    "decided_at": "2026-08-27T09:50:00+05:30"
+  },
+  "evidence": [
+    {
+      "id": "DTG-AR-2026-004-RECORD",
+      "class": "durable",
+      "description": "Human-readable durable assessment record in 2026-08-trust-tasks-cdfc6e2.md"
+    },
+    {
+      "id": "DTG-AR-2026-004-SOURCE",
+      "class": "referenced",
+      "description": "Pinned upstream Trust Tasks revision cdfc6e231dc6cc9ed901bbd27b4c6e8ea2f3e06a and descendant compare window from the prior reviewed baseline"
+    }
+  ],
+  "closure": {
+    "eligible_issues": [70],
+    "reviewed_revision": "cdfc6e231dc6cc9ed901bbd27b4c6e8ea2f3e06a"
+  },
+  "retest_triggers": [
+    "material Trust Tasks change after cdfc6e2 affecting authority, lifecycle, replay, privacy or redress",
+    "application-state authorization or namespace-isolation change",
+    "relationship publication proof-of-possession or retention change",
+    "removal-notice delivery or post-removal redress profile change",
+    "cross-system delegation profile change",
+    "Credential or ZKP composition change affecting action-time authority or privacy"
+  ]
+}
