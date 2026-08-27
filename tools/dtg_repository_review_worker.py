@@ -243,6 +243,14 @@ def self_test() -> int:
     assert key == "dtg:repository:OpenVTC/openvtc" and repo == "OpenVTC/openvtc"
     assert base.startswith("abcdef") and sha.startswith("1234567")
     assert lineage(issue["body"]) == ("gha-1-1", "a"*20)
+    assert "--" not in key and "--" not in (lineage(issue["body"])[0] or "")
+    real = """<!-- rahp-dtg-gatherer-run:gha-33065883850-1 -->\n<!-- rahp-dtg-gatherer-event:f34c692c84ec28d8bd45 -->\n<!-- rahp-assessment-key:dtg:repository:trustoverip/dtgwg-trust-tasks-tf -->\n<!-- rahp-dtg-change:trustoverip/dtgwg-trust-tasks-tf@e13efd8650ffbd8029f1945b824e9a7e12e2871a -->\n| Previous assessed/observed SHA | `8fab17fb910c9c5df5cb35aad3ec2ce881ce27bc` |\n"""
+    real_key, real_repo, real_base, real_head = provenance(real)
+    assert real_key == "dtg:repository:trustoverip/dtgwg-trust-tasks-tf"
+    assert real_repo == "trustoverip/dtgwg-trust-tasks-tf"
+    assert real_base == "8fab17fb910c9c5df5cb35aad3ec2ce881ce27bc"
+    assert real_head == "e13efd8650ffbd8029f1945b824e9a7e12e2871a"
+    assert lineage(real) == ("gha-33065883850-1", "f34c692c84ec28d8bd45")
     record, packet = render_record(issue), render_packet(issue)
     assert "automated disposition" in record and "exception path" in packet
     assert DPIP_NOT_REQUIRED in packet and DPIP_REQUESTED in packet
