@@ -16,11 +16,13 @@ WRAPPERS = [
         ROOT / ".github/workflows/dtg-cross-spec-pressure-test.yml",
         ROOT / "profiles/dtg/cross-spec-tests.yaml",
         "profiles/dtg/cross-spec-tests.yaml",
+        True,
     ),
     (
         ROOT / ".github/workflows/cawg-cross-spec-pressure-test.yml",
         ROOT / "profiles/cawg/cross-spec-tests.yaml",
         "profiles/cawg/cross-spec-tests.yaml",
+        False,
     ),
 ]
 GENERIC = ROOT / ".github/workflows/cross-spec-pressure-test.yml"
@@ -44,8 +46,12 @@ def main() -> int:
         errors.append("generic cross-spec workflow must expose workflow_call")
     if "workflow_dispatch" not in triggers:
         errors.append("generic cross-spec workflow must retain workflow_dispatch")
+    call_inputs = ((triggers.get("workflow_call") or {}).get("inputs") or {})
+    scoped_input = call_inputs.get("composition_scoped_registry_validation") or {}
+    if scoped_input.get("type") != "boolean" or scoped_input.get("default") not in ("false", False):
+        errors.append("generic cross-spec workflow must expose composition_scoped_registry_validation boolean default false")
 
-    for wrapper_path, registry_path, expected_registry in WRAPPERS:
+    for wrapper_path, registry_path, expected_registry, expect_scoped in WRAPPERS:
         wrapper = load_base(wrapper_path)
         registry = load_safe(registry_path)
         runnable = {
@@ -77,6 +83,7 @@ def main() -> int:
             target = job["uses"]
             wired_registry = job["with"]["registry_path"]
             wired_composition = job["with"]["composition_id"]
+            scoped = job.get("with", {}).get("composition_scoped_registry_validation", "false")
         except (KeyError, TypeError):
             errors.append(f"{wrapper_path.name}: assess job is not wired to reusable generic workflow")
             continue
@@ -89,6 +96,11 @@ def main() -> int:
             )
         if "inputs.composition_id" not in wired_composition:
             errors.append(f"{wrapper_path.name}: selected composition is not forwarded")
+        actual_scoped = str(scoped).lower() == "true"
+        if actual_scoped != expect_scoped:
+            errors.append(
+                f"{wrapper_path.name}: composition_scoped_registry_validation={actual_scoped}, expected {expect_scoped}"
+            )
 
     if errors:
         print("Cross-spec workflow validation: FAIL")
@@ -97,10 +109,11 @@ def main() -> int:
         return 1
 
     print("Cross-spec workflow validation: PASS")
-    for wrapper_path, registry_path, _ in WRAPPERS:
+    for wrapper_path, registry_path, _, expect_scoped in WRAPPERS:
         registry = load_safe(registry_path)
         count = sum(1 for item in registry.get("compositions", []) if item.get("runnable") is True)
-        print(f"- {wrapper_path.name}: {count} runnable choices synchronized")
+        mode = "composition-scoped" if expect_scoped else "full-registry"
+        print(f"- {wrapper_path.name}: {count} runnable choices synchronized; registry validation={mode}")
     print("- generic workflow: workflow_dispatch + workflow_call")
     return 0
 
