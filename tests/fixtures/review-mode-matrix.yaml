@@ -1,0 +1,23 @@
+version: 1
+profile:
+  id: review-mode-smoke
+  title: Review mode regression fixture
+assessment:
+  default_mode: combined
+  rahp_repository: sankarshanmukhopadhyay/rahp-toolkit
+  rahp_version: v1-test
+repositories:
+  - id: fixture-one
+    repository: example/fixture-one
+    commit: 0123456789abcdef0123456789abcdef01234567
+    version: fixture
+    context:
+      title: Fixture One
+    reviews: [rahp, security, combined]
+  - id: fixture-two
+    repository: example/fixture-two
+    commit: fedcba9876543210fedcba9876543210fedcba98
+    version: fixture
+    context:
+      title: Fixture Two
+    reviews: [rahp, security, combined]
