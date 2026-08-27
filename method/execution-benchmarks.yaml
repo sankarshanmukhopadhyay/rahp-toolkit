@@ -36,6 +36,36 @@ profiles:
       - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition trust-tasks--credential-spec
       - python3 tools/validate_pressure_tests.py --file examples/cross-spec/trust-tasks-credspec/pressure-test.yaml
       - python3 tools/cross_spec_review.py trust-tasks--credential-spec --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-cross-spec-review.md --events build/benchmark-cross-spec-events.json
+  cross-spec-dtg-full:
+    description: >-
+      Full non-publishing DTG cross-specification pressure-test execution across every
+      currently maintained and runnable composition declared in the DTG registry.
+    commands:
+      - python3 tools/validate_cross_spec_registry.py --registry profiles/dtg/cross-spec-tests.yaml
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition trust-tasks--credential-spec
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/trust-tasks-credspec/pressure-test.yaml
+      - python3 tools/cross_spec_review.py trust-tasks--credential-spec --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-trust-tasks--credential-spec-review.md --events build/benchmark-trust-tasks--credential-spec-events.json
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition credential-spec--zkp
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/credential-spec--zkp/pressure-test.yaml
+      - python3 tools/cross_spec_review.py credential-spec--zkp --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-credential-spec--zkp-review.md --events build/benchmark-credential-spec--zkp-events.json
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition credential-spec--vds
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/credential-spec--vds/pressure-test.yaml
+      - python3 tools/cross_spec_review.py credential-spec--vds --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-credential-spec--vds-review.md --events build/benchmark-credential-spec--vds-events.json
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition trust-tasks--zkp
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/trust-tasks--zkp/pressure-test.yaml
+      - python3 tools/cross_spec_review.py trust-tasks--zkp --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-trust-tasks--zkp-review.md --events build/benchmark-trust-tasks--zkp-events.json
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition trust-tasks--vds
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/trust-tasks--vds/pressure-test.yaml
+      - python3 tools/cross_spec_review.py trust-tasks--vds --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-trust-tasks--vds-review.md --events build/benchmark-trust-tasks--vds-events.json
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition zkp--vds
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/zkp--vds/pressure-test.yaml
+      - python3 tools/cross_spec_review.py zkp--vds --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-zkp--vds-review.md --events build/benchmark-zkp--vds-events.json
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition agent-names--trust-tasks
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/agent-names--trust-tasks/pressure-test.yaml
+      - python3 tools/cross_spec_review.py agent-names--trust-tasks --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-agent-names--trust-tasks-review.md --events build/benchmark-agent-names--trust-tasks-events.json
+      - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition agent-names--credential-spec
+      - python3 tools/validate_pressure_tests.py --file examples/cross-spec/agent-names--credential-spec/pressure-test.yaml
+      - python3 tools/cross_spec_review.py agent-names--credential-spec --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-agent-names--credential-spec-review.md --events build/benchmark-agent-names--credential-spec-events.json
   full-validation:
     description: Repository-wide non-Pages validation representative of the main CI assurance gate.
     commands:
@@ -91,3 +121,4 @@ comparison:
   target_reduction_percent:
     full-validation: 50
     cross-spec-dtg-tt-credspec: 50
+    cross-spec-dtg-full: 50
