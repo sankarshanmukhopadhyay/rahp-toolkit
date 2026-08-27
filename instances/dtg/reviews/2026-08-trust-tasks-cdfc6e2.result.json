@@ -26,8 +26,7 @@
     "decided_at": "2026-08-27T09:50:00+05:30"
   },
   "evidence": [
-    {"id":"DTG-AR-2026-005-RECORD","class":"durable","description":"Human-readable durable assessment record in 2026-08-trust-tasks-cdfc6e2.md"},
-    {"id":"DTG-AR-2026-005-SOURCE","class":"referenced","description":"Pinned upstream Trust Tasks revision cdfc6e231dc6cc9ed901bbd27b4c6e8ea2f3e06a and descendant compare window from the prior reviewed baseline"}
+    {"id":"DTG-AR-2026-005-RECORD","class":"durable","description":"Human-readable durable assessment record in 2026-08-trust-tasks-cdfc6e2.md; that record contains the pinned upstream source revision and compare window."}
   ],
   "closure": {
     "eligible_issues": [70],
