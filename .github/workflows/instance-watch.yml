@@ -70,6 +70,12 @@ jobs:
           --events instances/cawg/generated/review-events.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
+      - name: Advance DTG repository assessments explicitly
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/dtg_repository_review_worker.py
+
+
       - name: Publish DTG architecture-issue assessment triggers
         env:
           GITHUB_TOKEN: ${{ github.token }}
