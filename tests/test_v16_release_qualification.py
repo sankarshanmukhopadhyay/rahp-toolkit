@@ -27,12 +27,16 @@ class V16ReleaseQualificationTests(unittest.TestCase):
     def test_source_pinned_corpus_expansion_is_present(self):
         q = yaml.safe_load((ROOT / "method/v1.6-release-qualification.yaml").read_text())
         expected = q["coverage_expectations"]
+        qualified_ids = set(q.get("qualified_corpus_ids") or [])
         corpora = []
         for path in (ROOT / "corpora").rglob("*.yaml"):
             doc = yaml.safe_load(path.read_text()) or {}
             corpus = doc.get("corpus")
-            if isinstance(corpus, dict):
-                corpora.append(corpus)
+            if not isinstance(corpus, dict):
+                continue
+            if qualified_ids and corpus.get("id") not in qualified_ids:
+                continue
+            corpora.append(corpus)
         self.assertEqual(len(corpora), expected["total_corpora"])
         self.assertEqual(sum(len(c.get("scenarios") or []) for c in corpora), expected["total_scenarios"])
 

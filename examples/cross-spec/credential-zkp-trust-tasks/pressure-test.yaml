@@ -5,6 +5,11 @@ review:
   reviewed_on: '2026-08-27'
   evidence_grade: source-pinned
   target:
+    repository: trustoverip/dtgwg-cred-spec + trustoverip/dtgwg-zkp-tf + trustoverip/dtgwg-trust-tasks-spec
+    version: Credential Specification current main × ZKP current main × Trust Tasks Framework v0.5.0
+    source_paths:
+      - corpora/credential-zkp-trust-tasks-composed.yaml
+    commit: 6425a74136c1d2dfa7115889abe0b3521700e887
     repositories:
       trust_tasks: trustoverip/dtgwg-trust-tasks-spec
       credential_spec: trustoverip/dtgwg-cred-spec
@@ -18,9 +23,24 @@ review:
     repository: sankarshanmukhopadhyay/rahp-toolkit
     rahp_version: v1.5.0
     trigger_issue: 89
+    engine_contract: rahp-engine-contract-v1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    normalized_result_schema: '1'
   proposition: >-
     Does the current DTG composition preserve authority, privacy, lifecycle and execution assurances when credential evidence and privacy-preserving proofs are carried through Trust Tasks v0.5.0 into consequential execution?
+  scope:
+    included:
+      - authority-composition
+      - privacy-composition
+      - lifecycle-and-freshness
+      - task-specific-proof-binding
+      - consequential-execution
+      - retained-evidence-correlation
+    excluded:
+      - Independent implementation defects not caused or amplified by composition.
+      - Deployment-specific behavior not evidenced by the source-pinned specifications.
   method:
+    workflow: docs/cross-spec-pressure-testing.md
     rule: A pass at each pairwise seam does not imply a pass for the three-spec consequential flow.
     falsification_bias: Test vectors are constructed so that individually valid component evidence must still fail when the composed proposition is false.
   assurance:
@@ -31,12 +51,39 @@ review:
       - Trust Tasks v0.5.0 provides pairwise-identifier guidance, fresh non-derived correlation handles, explicit lifecycle states, no inference from silence, freshness checks and retention/ingestion declarations.
       - Credential Specification requires VWC digest binding to the referenced edge evidence.
       - ZKP current upstream requirements strengthen context binding, composed-presentation privacy and separation of proof validity from authorization.
+  summary:
+    finding_count: 4
+    open_count: 4
+    overall_assessment: >-
+      Component-level controls materially reduce several risks, but the complete Credential × ZKP × Trust Tasks consequential flow retains four cross-specification obligations that require explicit composition contracts or executable evidence before assurance can be raised.
   findings:
     - id: F-001
       title: Valid evidence does not establish current authority at consequential execution time
       status: open
       severity: Critical
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - governance
+        - implementation-guidance
       scenarios: [XSP-CZT-001, XSP-CZT-003, XSP-CZT-007]
+      scenario_patterns: [SP-AUTH-02, SP-GOV-01, SP-COMP-01, SP-COMP-02]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-SEC-02, HRM-INF-01, HRM-AUT-04, HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01, RKP-AUTH-02]
+        control_patterns: [CTP-COMP-01, CTP-AUTH-02]
+        guardrail_patterns: [GRP-COMP-01, GRP-AUTH-02]
+        assurance_patterns: [ATP-COMP-01, ATP-AUTH-02]
+        evidence_patterns: [EVP-COMP-01, EVP-AUTH-01]
+      evidence:
+        - source: corpora/credential-zkp-trust-tasks-composed.yaml#xsp-czt-001
+          observation: A valid credential and proof can remain acceptable while authoritative mandate state changes before a consequential task effect.
+        - source: corpora/credential-zkp-trust-tasks-composed.yaml#xsp-czt-003
+          observation: Proof freshness and task freshness do not establish credential or mandate freshness.
       harm: >-
         A valid credential and ZK proof can be combined with a fresh Trust Task after delegated authority has been revoked, expired, superseded or narrowed if proof and task freshness are treated as substitutes for authoritative mandate state.
       recommendation: >-
@@ -47,7 +94,29 @@ review:
       title: One-effect execution is not established by component validity
       status: open
       severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - implementation-guidance
+        - governance
       scenarios: [XSP-CZT-004, XSP-CZT-005, XSP-CZT-007]
+      scenario_patterns: [SP-COMP-01, SP-OPS-01, SP-OPS-02, SP-REPLAY-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-SEC-02, HRM-INF-01, HRM-AUT-04, HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01, RKP-AUTH-02]
+        control_patterns: [CTP-COMP-01, CTP-AUTH-02]
+        guardrail_patterns: [GRP-COMP-01, GRP-AUTH-02]
+        assurance_patterns: [ATP-COMP-01, ATP-AUTH-02]
+        evidence_patterns: [EVP-COMP-01, EVP-AUTH-01]
+      evidence:
+        - source: corpora/credential-zkp-trust-tasks-composed.yaml#xsp-czt-004
+          observation: Successful transport delivery does not establish successful task execution.
+        - source: corpora/credential-zkp-trust-tasks-composed.yaml#xsp-czt-005
+          observation: Duplicate consequential execution can occur even when reused credential and proof evidence remain valid.
       harm: >-
         Delivery, proof verification and credential validity can all succeed while execution remains unknown or a duplicate retry creates a second consequential effect.
       recommendation: >-
@@ -58,7 +127,29 @@ review:
       title: Task-specific proof commitment remains a three-spec composition obligation
       status: open
       severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - implementation-guidance
+        - governance
       scenarios: [XSP-CZT-002, XSP-CZT-005, XSP-CZT-007]
+      scenario_patterns: [SP-PRIV-01, SP-REPLAY-01, SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-SEC-02, HRM-INF-01, HRM-AUT-04, HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01, RKP-AUTH-02]
+        control_patterns: [CTP-COMP-01, CTP-AUTH-02]
+        guardrail_patterns: [GRP-COMP-01, GRP-AUTH-02]
+        assurance_patterns: [ATP-COMP-01, ATP-AUTH-02]
+        evidence_patterns: [EVP-COMP-01, EVP-AUTH-01]
+      evidence:
+        - source: corpora/credential-zkp-trust-tasks-composed.yaml#xsp-czt-002
+          observation: Privacy-preserving proof validity does not by itself establish binding to the intended task wrapper, purpose or audience.
+        - source: corpora/credential-zkp-trust-tasks-composed.yaml#xsp-czt-007
+          observation: Proof validity can be semantically upgraded into authorization or task completion if composition boundaries are not explicit.
       harm: >-
         A privacy-preserving proof valid for one context can be replayed or semantically upgraded into another task if the transcript or companion evidence does not commit to the intended action, purpose, audience and freshness domain.
       recommendation: >-
@@ -69,7 +160,29 @@ review:
       title: Composed privacy can fail despite pairwise identifiers and zero-knowledge disclosure
       status: open
       severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - governance
+        - implementation-guidance
       scenarios: [XSP-CZT-002, XSP-CZT-006]
+      scenario_patterns: [SP-PRIV-01, SP-PRIV-02, SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-SEC-02, HRM-INF-01, HRM-AUT-04, HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01, RKP-AUTH-02]
+        control_patterns: [CTP-COMP-01, CTP-AUTH-02]
+        guardrail_patterns: [GRP-COMP-01, GRP-AUTH-02]
+        assurance_patterns: [ATP-COMP-01, ATP-AUTH-02]
+        evidence_patterns: [EVP-COMP-01, EVP-AUTH-01]
+      evidence:
+        - source: corpora/credential-zkp-trust-tasks-composed.yaml#xsp-czt-002
+          observation: A private credential proof can still be wrapped in task-level metadata that creates a broader correlation surface.
+        - source: corpora/credential-zkp-trust-tasks-composed.yaml#xsp-czt-006
+          observation: Pairwise parties can remain correlatable through ceremony metadata or retained protocol evidence.
       harm: >-
         Pairwise issuer/recipient identifiers and selective disclosure can coexist with linkability through ceremony enactment, timestamps, retained task documents, status lookups or outcome evidence.
       recommendation: >-
