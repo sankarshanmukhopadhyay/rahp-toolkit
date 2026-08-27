@@ -95,34 +95,36 @@ jobs:
               counts[item['outcome']] = counts.get(item['outcome'], 0) + 1
           day = '${{ steps.snapshot.outputs.date }}'
           source_url = '${{ steps.snapshot.outputs.url }}'
-          body = f'''# DTG Portfolio Monitor → RAHP assurance controller
-
-<!-- rahp-assessment-key:dtg:portfolio:material-change-set -->
-<!-- rahp-portfolio-snapshot:{day} -->
-<!-- dtg-routing-policy:v1 -->
-
-RAHP consumed the current Portfolio Monitor snapshot and applied the versioned assurance-routing policy.
-
-## Proposition
-
-Do the current material DTG changes alter assurance conclusions, require a registered RAHP composition, require a bounded RAHP/security review, or require DPIP examination of composed privacy behaviour?
-
-## Routing evidence
-
-- Portfolio snapshot: {source_url}
-- Snapshot date: `{day}`
-- Qualifying findings: **{len(route)}**
-- Dispositions: `{counts}`
-- Unresolved findings: **{len(unresolved)}**
-
-## Pipeline contract
-
-Portfolio Monitor detects/classifies. RAHP owns assurance routing and RAHP assessments. Privacy-relevant findings are promoted through the canonical RAHP → DPIP transport. DPIP owns applicability/evidence/privacy conclusion and returns the disposition to RAHP.
-
-## Closure rule
-
-Do not close this controller while any routed RAHP review, DPIP referral, or unresolved qualifying finding remains outstanding. Unknown findings remain explicit rather than being silently dropped.
-'''
+          lines = [
+              '# DTG Portfolio Monitor → RAHP assurance controller',
+              '',
+              '<!-- rahp-assessment-key:dtg:portfolio:material-change-set -->',
+              f'<!-- rahp-portfolio-snapshot:{day} -->',
+              '<!-- dtg-routing-policy:v1 -->',
+              '',
+              'RAHP consumed the current Portfolio Monitor snapshot and applied the versioned assurance-routing policy.',
+              '',
+              '## Proposition',
+              '',
+              'Do the current material DTG changes alter assurance conclusions, require a registered RAHP composition, require a bounded RAHP/security review, or require DPIP examination of composed privacy behaviour?',
+              '',
+              '## Routing evidence',
+              '',
+              f'- Portfolio snapshot: {source_url}',
+              f'- Snapshot date: `{day}`',
+              f'- Qualifying findings: **{len(route)}**',
+              f'- Dispositions: `{counts}`',
+              f'- Unresolved findings: **{len(unresolved)}**',
+              '',
+              '## Pipeline contract',
+              '',
+              'Portfolio Monitor detects/classifies. RAHP owns assurance routing and RAHP assessments. Privacy-relevant findings are promoted through the canonical RAHP → DPIP transport. DPIP owns applicability/evidence/privacy conclusion and returns the disposition to RAHP.',
+              '',
+              '## Closure rule',
+              '',
+              'Do not close this controller while any routed RAHP review, DPIP referral, or unresolved qualifying finding remains outstanding. Unknown findings remain explicit rather than being silently dropped.',
+          ]
+          body = '\n'.join(lines) + '\n'
           event = {
               'assessment_key': 'dtg:portfolio:material-change-set',
               'observed_at': day,
