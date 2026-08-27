@@ -12,16 +12,22 @@ repositories:
   branch: main
   context:
     title: trustoverip/dtgwg-trust-tasks-tf
-    type: protocol-and-task-specification
+    type: task-force-workspace
     description: DTG instance target discovered from portfolio-monitor; workstream=trust-tasks;
-      lifecycle=active; reporting_weight=critical.
+      lifecycle=active; reporting_weight=high.
   scope:
     include:
     - README.md
     - docs/**
-    - specs/**
-    - schemas/**
-    - '**/*spec*.md'
+    - bindings/**
+    - trust-tasks-rs/**
+    - trust-tasks-ts/**
+    - trust-tasks-proof/**
+    - trust-tasks-https/**
+    - trust-tasks-didcomm/**
+    - trust-tasks-didcomm-v1/**
+    - trust-tasks-capability-client/**
+    - scripts/**
     - .github/workflows/**
   reviews:
   - rahp
@@ -358,6 +364,6 @@ output:
 governance:
   namespace: dtg
 extensions:
-  generated_at: '2026-08-27T03:55:53.081648+00:00'
+  generated_at: '2026-08-27T07:18:19.654944+00:00'
   source_registry: sankarshanmukhopadhyay/dtg-portfolio-monitor
   fork_owner: sankarshanmukhopadhyay
