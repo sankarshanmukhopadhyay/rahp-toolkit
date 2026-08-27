@@ -165,7 +165,18 @@ jobs:
           DPIP_REPOSITORY: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
         run: |
           python3 tools/dpip_handoff.py --self-test
-          python3 tools/dpip_handoff.py
+          issue_args=()
+          if [ -s build/dtg-routing/dpip-result.json ]; then
+            while IFS= read -r number; do
+              [ -n "$number" ] || continue
+              issue_args+=(--issue-number "$number")
+            done < <(jq -r '.issues[]?.number // empty' build/dtg-routing/dpip-result.json)
+          fi
+          if [ "${#issue_args[@]}" -gt 0 ]; then
+            python3 tools/dpip_handoff.py "${issue_args[@]}"
+          else
+            python3 tools/dpip_handoff.py
+          fi
 
       - name: Dispatch registered DTG cross-specification pressure tests
         env:
