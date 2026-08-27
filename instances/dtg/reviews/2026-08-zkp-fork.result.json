@@ -53,13 +53,13 @@
     },
     {
       "id": "DTG-AR-2026-003-WINDOW-72",
-      "class": "source-pinned",
-      "description": "ZKP fork comparison 546babc471130af751ed3a117a0d476f5e0a7e03 to 6064c3428ca88471b5ec8271ec03e318c26d2a13"
+      "class": "referenced",
+      "description": "Source-pinned ZKP fork comparison 546babc471130af751ed3a117a0d476f5e0a7e03 to 6064c3428ca88471b5ec8271ec03e318c26d2a13"
     },
     {
       "id": "DTG-AR-2026-003-WINDOW-86",
-      "class": "source-pinned",
-      "description": "ZKP fork comparison 6064c3428ca88471b5ec8271ec03e318c26d2a13 to 6e1356812716dbd0e551272251e3e825132a8268"
+      "class": "referenced",
+      "description": "Source-pinned ZKP fork comparison 6064c3428ca88471b5ec8271ec03e318c26d2a13 to 6e1356812716dbd0e551272251e3e825132a8268"
     }
   ],
   "closure": {
