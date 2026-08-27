@@ -145,6 +145,8 @@ jobs:
 
       - name: Test source-monitor resilience
         run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Validate DTG repository review worker
+        run: python3 tools/dtg_repository_review_worker.py --self-test
       - name: Validate TypeScript CI impact classifier
         run: python3 tools/typescript_ci_impact.py --self-test
       - name: Validate security-hardening reviews

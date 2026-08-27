@@ -23,10 +23,10 @@ DPIP_REQUESTED = "assurance:dpip-requested"
 MARKER = "<!-- rahp-dtg-repository-execution:v1 -->"
 PACKET_MARKER = "<!-- rahp-dtg-repository-judgment-packet:v1 -->"
 AUTO_MARKER = "<!-- rahp-dtg-auto-disposition:v2 -->"
-KEY_RE = re.compile(r"rahp-assessment-key:(dtg:repository:[^>\n]+)")
+KEY_RE = re.compile(r"rahp-assessment-key:(dtg:repository:[^\s>]+)")
 CHANGE_RE = re.compile(r"rahp-dtg-change:([^@>]+)@([0-9a-f]{7,40})")
 BASE_RE = re.compile(r"Previous assessed/observed SHA\s*\|\s*`([0-9a-f]{7,40})`")
-RUN_RE = re.compile(r"rahp-dtg-gatherer-run:([^>\n]+)")
+RUN_RE = re.compile(r"rahp-dtg-gatherer-run:([^\s>]+)")
 EVENT_RE = re.compile(r"rahp-dtg-gatherer-event:([0-9a-f]{20})")
 
 
