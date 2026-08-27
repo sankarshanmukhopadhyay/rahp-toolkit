@@ -127,11 +127,19 @@ def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str,
         "repository": "sankarshanmukhopadhyay/dtg-portfolio-monitor",
         "revision": day,
     }
+    source_pins = []
+    for item in items:
+        finding = item["finding"]
+        revision = str(finding.get("revision") or finding.get("commit_sha") or "")
+        repository = str(finding.get("repository") or "")
+        if repository and re.fullmatch(r"[0-9a-f]{40}", revision, re.I):
+            source_pins.append({"label": repository, "repository": repository, "revision": revision})
     payload = {
         "dpip": {
             "recommendation": "examine",
             **{k: v for k, v in dpip.items() if k != "question"},
             "source_change": source,
+            "source_pins": source_pins,
             "question": dpip.get("question"),
         }
     }
@@ -181,6 +189,8 @@ def main() -> int:
         assert 'f"' not in combined_body and '\\n"' not in combined_body
         assert 'f"' not in dpip_body and '\\n"' not in dpip_body
         assert "## Routed findings" in combined_body and "## Promotion gate" in dpip_body
+        assert "credential-proof-trust-task-consequential-execution" in dpip_body
+        assert "correlation-scope-does-not-expand-through-composition" in dpip_body
         print("PASS dtg portfolio routing self-test")
         return 0
 
