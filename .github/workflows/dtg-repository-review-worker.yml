@@ -1,0 +1,51 @@
+name: Advance DTG gatherer repository reviews
+
+on:
+  issues:
+    types: [opened, labeled, reopened]
+  schedule:
+    - cron: '29 * * * *'
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Optional DTG repository assessment issue number
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: rahp-dtg-repository-review-${{ github.event.issue.number || inputs.issue_number || 'reconcile' }}
+  cancel-in-progress: false
+
+jobs:
+  advance:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'issues' &&
+       contains(github.event.issue.body, 'rahp-assessment-key:dtg:repository:'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Validate gatherer-native worker
+        run: python3 tools/dtg_repository_review_worker.py --self-test
+      - name: Advance DTG repository review
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_ISSUE_NUMBER: ${{ inputs.issue_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          issue_number="${EVENT_ISSUE_NUMBER:-${INPUT_ISSUE_NUMBER:-}}"
+          if [ -n "$issue_number" ]; then
+            python3 tools/dtg_repository_review_worker.py --issue "$issue_number"
+          else
+            python3 tools/dtg_repository_review_worker.py
+          fi
