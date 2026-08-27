@@ -15,8 +15,8 @@ SPEC.loader.exec_module(MOD)
 class DtgAssuranceReconcileTests(unittest.TestCase):
     EVENT = "a" * 20
 
-    def run(self):
-        return {"id": "gha-123-1", "fingerprint": "fp", "qualifying_events": [self.EVENT]}
+    def run_record(self):
+        return {"id": "gha-123-1", "fingerprint": "fp", "qualifying_events": [self.EVENT], "event_count": 1}
 
     def issue(self, state="closed", labels=None):
         return {
@@ -27,7 +27,7 @@ class DtgAssuranceReconcileTests(unittest.TestCase):
         }
 
     def result(self, issue, comments=None):
-        evidence = MOD.normalize(self.run(), [issue], {9: comments or []})
+        evidence = MOD.normalize(self.run_record(), [issue], {9: comments or []})
         return MOD.compute(evidence)["portfolio_assurance"]
 
     def test_closed_issue_without_explicit_dpip_decision_is_not_terminal(self):
@@ -59,6 +59,13 @@ class DtgAssuranceReconcileTests(unittest.TestCase):
         )
         self.assertTrue(MOD.linked_to_run(issue, "gha-123-1"))
         self.assertEqual(MOD.event_ids(issue, "gha-123-1"), [self.EVENT])
+
+    def test_aggregate_preserves_worst_outstanding_lineage(self):
+        green = {"portfolio_assurance": {"run":"r-green","pipeline_status":"GREEN","disposition":"DPIP_NOT_REQUIRED"}}
+        amber = {"portfolio_assurance": {"run":"r-amber","pipeline_status":"AMBER","disposition":"WORK_OPEN"}}
+        summary = MOD.aggregate([green, amber])["dtg_assurance"]
+        self.assertEqual((summary["pipeline_status"], summary["disposition"]), ("AMBER", "WORK_OPEN"))
+        self.assertEqual(summary["open_or_blocked_runs"], 1)
 
 
 if __name__ == "__main__":
