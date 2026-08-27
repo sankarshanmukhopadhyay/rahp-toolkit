@@ -25,6 +25,12 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 tools/dtg_portfolio.py check --config instances/dtg/instance.yaml
 
+      - name: Stamp DTG gatherer lineage
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: python3 tools/dtg_gatherer_lineage.py
+
       - name: Check CAWG/C2PA instance
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -89,6 +95,7 @@ jobs:
           git add \
             instances/dtg/state/repositories.json \
             instances/dtg/generated/repositories.yaml \
+            instances/dtg/generated/gatherer-run.json \
             instances/dtg/state/issues.json \
             instances/dtg/state/issue-events.json \
             instances/cawg/state/repositories.json \
