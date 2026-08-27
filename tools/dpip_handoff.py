@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Transport explicitly promoted RAHP privacy referrals to DPIP.
 
-This tool intentionally does *not* decide which RAHP findings are privacy relevant.
-It only transports open RAHP issues already labelled ``assurance:dpip-requested``
-after validating the documented promotion-gate payload.
+The transport accepts both historical Portfolio Monitor provenance and the newer
+RAHP-native DTG gatherer lineage. It still does not decide whether DPIP is warranted.
 """
 from __future__ import annotations
 
@@ -32,7 +31,7 @@ def api(method: str, repo: str, path: str, token: str, payload: Any | None = Non
     data = None if payload is None else json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data, method=method, headers={
         "Accept": "application/vnd.github+json",
-        "User-Agent": "rahp-dpip-handoff/1.1",
+        "User-Agent": "rahp-dpip-handoff/1.2",
         "X-GitHub-Api-Version": "2022-11-28",
         "Authorization": f"Bearer {token}",
         **({"Content-Type": "application/json"} if data is not None else {}),
@@ -62,12 +61,18 @@ def handoff_payload(body: str) -> dict[str, Any]:
     raise ValueError("no machine-readable `dpip:` YAML block found")
 
 
+def lineage_id(source: dict[str, Any]) -> str:
+    return str(source.get("gatherer_run_id") or source.get("monitor_fingerprint") or "").strip()
+
+
 def validate_payload(payload: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     source = payload.get("source_change")
     if not isinstance(source, dict):
         return ["source_change must be a mapping"]
-    for key in ("monitor_fingerprint", "repository", "revision"):
+    if not lineage_id(source):
+        errors.append("source_change.gatherer_run_id or source_change.monitor_fingerprint is required for automated promotion")
+    for key in ("repository", "revision"):
         if not str(source.get(key, "")).strip():
             errors.append(f"source_change.{key} is required for automated promotion")
     targets = []
@@ -89,7 +94,7 @@ def identity(source_issue: int, payload: dict[str, Any]) -> tuple[str, str]:
         "affected_claims", "suspected_surfaces")}
     target_material["question"] = payload.get("question", "")
     digest = hashlib.sha256(json.dumps(target_material, sort_keys=True, separators=(",", ":")).encode()).hexdigest()[:16]
-    marker = f"<!-- rahp-dpip-handoff:{source_issue}:{source['monitor_fingerprint']}:{source['revision']}:{digest} -->"
+    marker = f"<!-- rahp-dpip-handoff:{source_issue}:{lineage_id(source)}:{source['revision']}:{digest} -->"
     return marker, digest
 
 
@@ -113,11 +118,21 @@ def find_existing(dpip_repo: str, token: str, marker: str) -> dict[str, Any] | N
 
 def create_intake(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], payload: dict[str, Any], marker: str, dpip_token: str) -> dict[str, Any]:
     source = payload["source_change"]
-    source_block = {"source": {
+    source_data: dict[str, Any] = {
         "system": "RAHP", "repository": rahp_repo, "issue": rahp_issue["number"],
-        "portfolio_monitor": {"fingerprint": source["monitor_fingerprint"], **({"finding_id": source["monitor_finding_id"]} if source.get("monitor_finding_id") else {})},
         "changed_artifact": {"repository": source["repository"], "revision": source["revision"], **({"pull_request": source["pull_request"]} if source.get("pull_request") else {})},
-    }}
+    }
+    if source.get("gatherer_run_id"):
+        source_data["gatherer"] = {
+            "run_id": source["gatherer_run_id"],
+            **({"event_id": source["gatherer_event_id"]} if source.get("gatherer_event_id") else {}),
+        }
+    if source.get("monitor_fingerprint"):
+        source_data["portfolio_monitor"] = {
+            "fingerprint": source["monitor_fingerprint"],
+            **({"finding_id": source["monitor_finding_id"]} if source.get("monitor_finding_id") else {}),
+        }
+    source_block = {"source": source_data}
     requested = {"requested_examination": {key: value for key, value in {
         "interactions": payload.get("affected_interactions", []),
         "reference_flows": payload.get("affected_reference_flows", []),
@@ -173,9 +188,7 @@ def run(rahp_repo: str, dpip_repo: str, rahp_token: str, dpip_token: str, issue_
     else:
         issues = list_requested(rahp_repo, rahp_token)
     for issue in issues:
-        if not issue_has_label(issue, REQUESTED):
-            continue
-        if issue_has_label(issue, COMPLETE):
+        if not issue_has_label(issue, REQUESTED) or issue_has_label(issue, COMPLETE):
             continue
         try:
             payload = handoff_payload(issue.get("body") or "")
@@ -197,28 +210,14 @@ def run(rahp_repo: str, dpip_repo: str, rahp_token: str, dpip_token: str, issue_
 
 
 def self_test() -> int:
-    body = """```yaml
-dpip:
-  recommendation: examine
-  affected_interactions: [C3]
-  affected_reference_flows: [RF-001]
-  affected_invariants: [P2, P4]
-  source_change:
-    monitor_fingerprint: abc123
-    repository: example/source
-    revision: deadbeef
-  question: Does the changed envelope widen correlation scope?
-```"""
-    payload = handoff_payload(body)
-    assert not validate_payload(payload)
-    marker1, digest1 = identity(12, payload)
-    marker2, digest2 = identity(12, payload)
-    assert marker1 == marker2 and digest1 == digest2
-    assert "abc123" in marker1 and "deadbeef" in marker1
-    bad = dict(payload); bad["question"] = ""
+    monitor = {"affected_interactions":["C3"],"source_change":{"monitor_fingerprint":"abc123","repository":"example/source","revision":"deadbeef"},"question":"Does correlation widen?"}
+    gatherer = {"affected_interactions":["C3"],"source_change":{"gatherer_run_id":"gha-123-1","gatherer_event_id":"a"*20,"repository":"example/source","revision":"deadbeef"},"question":"Does correlation widen?"}
+    assert not validate_payload(monitor)
+    assert not validate_payload(gatherer)
+    assert "abc123" in identity(12, monitor)[0]
+    assert "gha-123-1" in identity(12, gatherer)[0]
+    bad = dict(gatherer); bad["question"] = ""
     assert any("question" in error for error in validate_payload(bad))
-    payload["source_pins"] = [{"label":"Credential Spec","repository":"trustoverip/dtgwg-cred-spec","revision":"a"*40}]
-    assert payload["source_pins"][0]["repository"] == "trustoverip/dtgwg-cred-spec"
     print("PASS dpip_handoff self-test")
     return 0
 

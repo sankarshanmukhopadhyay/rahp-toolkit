@@ -25,6 +25,12 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 tools/dtg_portfolio.py check --config instances/dtg/instance.yaml
 
+      - name: Stamp DTG gatherer lineage
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: python3 tools/dtg_gatherer_lineage.py
+
       - name: Check CAWG/C2PA instance
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -80,7 +86,7 @@ jobs:
           --events instances/cawg/state/issue-events.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
-      - name: Persist observed revisions
+      - name: Persist observed revisions and non-empty DTG gatherer runs
         id: persist
         shell: bash
         run: |
@@ -95,6 +101,9 @@ jobs:
             instances/cawg/generated/repositories.yaml \
             instances/cawg/state/issues.json \
             instances/cawg/state/issue-events.json
+          if [ -d instances/dtg/generated/gatherer-runs ]; then
+            git add instances/dtg/generated/gatherer-runs
+          fi
           if git diff --cached --quiet; then
             echo "No instance state changes to persist."
             echo "changed=false" >> "$GITHUB_OUTPUT"
