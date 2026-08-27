@@ -55,12 +55,14 @@ jobs:
           --events instances/dtg/state/issue-events.json
 
       - name: Publish DTG assessment issues
+        id: publish_dtg_assessments
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/publish_assessment_issues.py
           --events instances/dtg/generated/review-events.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
+          --result-json /tmp/dtg-repository-assessments.json
 
       - name: Publish CAWG/C2PA assessment issues
         env:
@@ -70,10 +72,37 @@ jobs:
           --events instances/cawg/generated/review-events.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
-      - name: Advance DTG repository assessments explicitly
+      - name: Advance published DTG repository assessments by exact issue
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python3 tools/dtg_repository_review_worker.py
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > /tmp/dtg-repository-issue-numbers.txt
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("/tmp/dtg-repository-assessments.json").read_text(encoding="utf-8"))
+          seen = set()
+          for item in payload.get("issues", []):
+              key = str(item.get("assessment_key") or "")
+              number = item.get("number")
+              if not key.startswith("dtg:repository:") or not isinstance(number, int):
+                  continue
+              if number in seen:
+                  continue
+              seen.add(number)
+              print(number)
+          PY
+
+          if [ ! -s /tmp/dtg-repository-issue-numbers.txt ]; then
+            echo "No published DTG repository assessments to advance."
+          else
+            while IFS= read -r issue_number; do
+              echo "Advancing exact DTG repository assessment #$issue_number"
+              python3 tools/dtg_repository_review_worker.py --issue "$issue_number"
+            done < /tmp/dtg-repository-issue-numbers.txt
+          fi
 
 
       - name: Publish DTG architecture-issue assessment triggers
