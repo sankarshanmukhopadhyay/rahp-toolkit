@@ -5,6 +5,11 @@ on:
     paths:
       - tools/dpip_lifecycle.py
       - .github/workflows/dpip-lifecycle.yml
+  push:
+    branches: [main]
+    paths:
+      - tools/dpip_lifecycle.py
+      - .github/workflows/dpip-lifecycle.yml
   schedule:
     - cron: '47 4 * * *'
   workflow_dispatch:
@@ -19,7 +24,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: rahp-dpip-lifecycle-${{ github.event.pull_request.number || inputs.issue_number || 'scheduled' }}
+  group: rahp-dpip-lifecycle-${{ github.event.pull_request.number || inputs.issue_number || github.ref || 'scheduled' }}
   cancel-in-progress: false
 
 jobs:
