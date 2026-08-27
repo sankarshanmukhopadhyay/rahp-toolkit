@@ -155,7 +155,7 @@ def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str,
         f"```yaml\n{yaml_block}\n```\n"
     )
     return {
-        "assessment_key": f"dtg:portfolio:dpip:{rule_id}",
+        "assessment_key": f"dtg:portfolio:dpip:v2:{rule_id}:{digest}",
         "observed_at": day,
         "source": "dtg-portfolio-monitor-routing",
         "title": f"[DPIP requested] DTG portfolio privacy examination — {rule_id}",
@@ -191,6 +191,9 @@ def main() -> int:
         assert "## Routed findings" in combined_body and "## Promotion gate" in dpip_body
         assert "credential-proof-trust-task-consequential-execution" in dpip_body
         assert "correlation-scope-does-not-expand-through-composition" in dpip_body
+        event = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-27")
+        assert event["assessment_key"].startswith("dtg:portfolio:dpip:v2:relationship-correlation-privacy:")
+        assert event["assessment_key"].endswith(cluster_digest(grouped[("dpip", "relationship-correlation-privacy")]))
         print("PASS dtg portfolio routing self-test")
         return 0
 
