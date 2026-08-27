@@ -1,26 +1,29 @@
 version: 1
 contract: rahp-release-declaration-v1
 release:
-  version: 1.6.0
-  tag: v1.6.0
+  version: 1.7.0
+  tag: v1.7.0
   status: released
   qualification_status: qualified
-  title: RAHP Toolkit v1.6.0 — Common Earl
-  theme: Source-Pinned Coverage and Guided Adoption
+  title: RAHP Toolkit v1.7.0 — Common Palmfly
+  theme: Assurance Operations and Cross-Spec Execution
   name:
-    common: Common Earl
-    scientific: Tanaecia julii
+    common: Common Palmfly
+    scientific: Elymnias hypermnestra
     source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-    selected_on: '2026-08-23'
+    selected_on: '2026-08-27'
   qualification:
-    manifest: method/v1.6-release-qualification.yaml
-    validator: tools/validate_v16_release.py
+    manifest: method/v1.7-release-qualification.yaml
+    validator: tools/validate_v17_release.py
     checks:
       - tools/validate_scenario_corpora.py
       - tools/validate_pressure_tests.py
       - tools/validate_engine_contract.py
+      - tools/validate_security_reviews.py
+      - tools/validate_combined_reviews.py
+      - tools/validate_assessment_queue.py
   notes:
-    path: docs/releases/v1.6.0.md
+    path: docs/releases/v1.7.0.md
   compatibility:
     engine_contract: rahp-engine-contract-v1
     normalized_result_schema: 1
