@@ -28,3 +28,4 @@ jobs:
     with:
       registry_path: profiles/dtg/cross-spec-tests.yaml
       composition_id: ${{ inputs.composition_id }}
+      composition_scoped_registry_validation: true

@@ -11,6 +11,11 @@ on:
         description: Runnable composition ID from that profile registry
         required: true
         type: string
+      composition_scoped_registry_validation:
+        description: Validate only selected composition details in the registry before execution
+        required: false
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
       registry_path:
@@ -21,6 +26,11 @@ on:
         description: Runnable composition ID from that profile registry
         required: true
         type: string
+      composition_scoped_registry_validation:
+        description: Validate only selected composition details in the registry before execution
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -38,7 +48,15 @@ jobs:
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
 
-      - name: Validate selected profile registry
+      - name: Validate selected profile registry proposition
+        if: inputs.composition_scoped_registry_validation
+        run: >-
+          python3 tools/validate_cross_spec_registry.py
+          --registry "${{ inputs.registry_path }}"
+          --composition "${{ inputs.composition_id }}"
+
+      - name: Validate complete profile registry
+        if: ${{ !inputs.composition_scoped_registry_validation }}
         run: python3 tools/validate_cross_spec_registry.py --registry "${{ inputs.registry_path }}"
 
       - name: Resolve selected composition
