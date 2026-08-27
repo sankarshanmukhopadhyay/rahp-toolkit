@@ -9,39 +9,35 @@ parent: Reference
 
 This roadmap records the current portable RAHP direction. Historical pre-v1.2 roadmap material is preserved under `archive/pre-v1.2/` and is not current authority.
 
-## v1.6.0 — Source-Pinned Coverage and Guided Adoption (stable release)
+## v1.7.0 — Assurance Operations and Cross-Spec Execution (stable release)
 
-Status: **stable public release — Common Earl (*Tanaecia julii*)**.
+Status: **stable public release — Common Palmfly (*Elymnias hypermnestra*)**.
 
-v1.6 strengthens RAHP's reproducibility and usability without changing the stable v1 compatibility boundary. It makes scenario growth source-pinned and coverage-driven, preserves reassessment lineage across corpus change, and gives adopters clearer first-run, developer and continuous-assurance entry points.
+v1.7 strengthens RAHP's operational assurance loop without changing the stable v1 compatibility boundary. It qualifies monitor-driven assessment queueing, explicit review modes, live current-head assurance regeneration, full DTG cross-spec execution coverage and release-grade regression evidence.
 
 ### Delivered workstreams
 
-1. **Source-pinned corpus expansion**
-   - Trust Tasks and DTG Credential Specification corpora are pinned to immutable current source revisions;
-   - both primary corpora expand from 16 to 30 scenarios;
-   - machine-readable coverage maps make missing pressure dimensions visible.
+1. **Monitor → assessment operations**
+   - material portfolio changes are queued without being misrepresented as findings;
+   - a live state-changing instance-watch run persisted observed state and successfully dispatched validation and Pages against the exact resulting `main` SHA.
 
-2. **Composed seam reassessment**
-   - Trust Tasks × Credential Specification coverage expands from 12 to 20 scenarios;
-   - the pre-expansion assessment is preserved as durable lineage;
-   - the current assessment is rerun against the new source pins rather than merely relabelled.
+2. **Review-mode regression contract**
+   - `rahp`, `security` and `combined` modes are deterministically exercised;
+   - `--all` multi-target selection is covered;
+   - unsupported mode/target combinations fail closed.
 
-3. **Coverage discipline**
-   - packaged coverage is 182 scenario vectors across 14 corpora and 28 portable scenario patterns;
-   - scenario-count growth does not itself create findings or establish assurance;
-   - the affected TT×CredSpec residuals are refined by current evidence rather than multiplied mechanically.
+3. **Full DTG cross-spec execution**
+   - all 8 declared runnable DTG compositions are exercised;
+   - coverage spans authority/delegation, lifecycle, privacy composition, proof semantics, persistent state, provenance, linkability and identifier/control semantics.
 
-4. **Guided adoption and developer routing**
-   - the root README is a stable front door;
-   - `docs/getting-started.md` provides the first-run route;
-   - `docs/developer-guide.md` routes repository validation, engine and integration work;
-   - `docs/continuous-assurance.md` routes the v1.5 operational assurance capabilities without duplicating their authoritative topic pages.
+4. **Performance measurement**
+   - representative DTG, full DTG and full-validation wall times are recorded through a repeatable benchmark surface;
+   - current evidence does not support a like-for-like speed-improvement claim, and the release says so explicitly.
 
 5. **Release qualification and publication**
-   - `method/v1.6-release-qualification.yaml` defines the v1.6 release boundary;
-   - `tools/validate_v16_release.py` verifies source pins, coverage, reassessment lineage, documentation routing, workspace synchronization and compatibility;
-   - the qualified publication workflow revalidates the exact main-branch release commit before creating `v1.6.0` and the GitHub Release.
+   - `method/v1.7-release-qualification.yaml` defines the v1.7 release boundary;
+   - `tools/validate_v17_release.py` verifies review-mode evidence, live-operation evidence, 8/8 DTG coverage, workspace synchronization and compatibility;
+   - the qualified publication workflow revalidates the exact main-branch release commit before creating `v1.7.0` and the GitHub Release.
 
 ### Retained v1.5 capability contracts
 
@@ -102,9 +98,9 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v1.6.0 is additive within that boundary. Existing normalized results remain valid.
+v1.7.0 is additive within that boundary. Existing normalized results remain valid.
 
-See [v1.6.0 release notes](docs/releases/v1.6.0.md) and the [v1.6 qualification contract](method/v1.6-release-qualification.yaml).
+See [v1.7.0 release notes](docs/releases/v1.7.0.md) and the [v1.7 qualification contract](method/v1.7-release-qualification.yaml).
 
 ## v1.2.0 — Evidence-Driven Assurance
 

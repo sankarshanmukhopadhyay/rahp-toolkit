@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v1.6.0 (stable) · Common Earl · CC-BY 4.0
+Release v1.7.0 (stable) · Common Palmfly · CC-BY 4.0
 
 RAHP Toolkit is a **portable specification-assurance toolkit** for pressure-testing standards, protocols, implementations and composed systems against human harms, governance failures, adversarial conditions and resilience risks.
 
@@ -74,7 +74,7 @@ See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps a
 
 ## Current release
 
-v1.6.0 **Common Earl** (*Tanaecia julii*) is the stable release of **Source-Pinned Coverage and Guided Adoption**. It preserves the stable v1 compatibility boundaries:
+v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) is the stable release of **Assurance Operations and Cross-Spec Execution**. The previous stable release was v1.6.0 **Common Earl** (*Tanaecia julii*), preserved in the changelog and v1.6 release notes. It preserves the stable v1 compatibility boundaries:
 
 ```text
 rahp-engine-contract-v1
@@ -82,12 +82,12 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v1.6.0 qualifies the expanded source-pinned corpora, dependent-corpus recomposition and evidence-backed TT×CredSpec reassessment, while retaining the v1.5 Continuous Governed Assurance contracts. Maintained example baselines are not promoted merely because the toolkit version changes; they advance through their own retest or reassessment evidence.
+v1.7.0 qualifies the live monitor-to-assessment operating loop, deterministic `rahp` / `security` / `combined` / `--all` review-mode regression coverage, the full 8/8 DTG cross-specification pressure surface, RAHP→DPIP lifecycle handling and repeatable execution benchmarking. It deliberately does **not** claim a like-for-like speed improvement from the current benchmark evidence.
 
 Useful release surfaces:
 
-- [v1.6.0 release notes](docs/releases/v1.6.0.md)
-- [v1.6 qualification contract](method/v1.6-release-qualification.yaml)
+- [v1.7.0 release notes](docs/releases/v1.7.0.md)
+- [v1.7 qualification contract](method/v1.7-release-qualification.yaml)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
 - [Getting started](docs/getting-started.md)

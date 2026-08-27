@@ -9,6 +9,46 @@ parent: Reference
 
 This file records current release-level changes. The complete pre-v1.2 changelog, including accumulated historical `Unreleased` sections, is preserved at `archive/pre-v1.2/CHANGELOG-pre-v1.2.txt`.
 
+## v1.7.0 — 2026-08-27 — Common Palmfly
+
+### Added
+
+- Deterministic no-regression coverage for `rahp`, `security`, `combined` and multi-target `--all` review paths.
+- Full DTG cross-specification benchmark execution across 8 declared / 8 runnable compositions.
+- Live instance-watch acceptance proving persisted monitored state can dispatch current-head validation and Pages evidence successfully.
+- Workflow-dispatch contract validation and stale-head protection for post-monitor assurance regeneration.
+- Repeatable execution benchmarking for representative DTG, full DTG and repository full-validation profiles.
+- v1.7-specific machine-verifiable qualification manifest, validator and tests.
+
+### Changed
+
+- DTG assurance execution expands from a representative seam benchmark to the complete currently maintained runnable DTG composition set.
+- Real ZKP Portfolio Monitor queue lineage is advanced through a durable combined RAHP + security disposition without manufacturing findings.
+- Release qualification now treats the monitor → queue → substantive review → durable evidence → disposition path as an operational contract.
+- Root/workspace package metadata advances to `1.7.0` while the stable v1 engine/result/retention contracts remain unchanged.
+
+### Performance and coverage
+
+Measured benchmark evidence records approximately 1.586 s for the representative DTG seam, 11.165 s for the full eight-composition DTG pressure surface and 11.517 s for repository full validation. Earlier like-for-like measurements do **not** support a speed-improvement claim, so v1.7.0 qualifies measurement capability and coverage refinement rather than faster execution.
+
+### Compatibility
+
+The stable v1 compatibility boundaries remain unchanged:
+
+```text
+rahp-engine-contract-v1
+normalized result schema version 1
+rahp-evidence-retention-v1
+```
+
+v1.7.0 is an additive minor release. Existing normalized results and historical assessment lineage remain valid.
+
+### Release name
+
+**Common Palmfly — *Elymnias hypermnestra***, selected on 2026-08-27 from the recorded West Bengal butterfly list under the random-at-release-time naming policy.
+
+See [v1.7.0 release notes](docs/releases/v1.7.0.md).
+
 ## v1.6.0 — 2026-08-23 — Common Earl
 
 ### Added
