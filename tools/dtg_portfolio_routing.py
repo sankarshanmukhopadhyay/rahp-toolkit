@@ -93,6 +93,20 @@ def findings_table(items: list[dict[str, Any]]) -> str:
 
 def combined_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str, Any]:
     digest = cluster_digest(items)
+    body = (
+        "# Automated bounded combined review\n\n"
+        f"<!-- dtg-routing-policy:v1 -->\n"
+        f"<!-- dtg-routing-cluster:{digest} -->\n\n"
+        f"Portfolio snapshot: `{day}`  \nRouting rule: `{rule_id}`\n\n"
+        "## Proposition\n\n"
+        "Determine whether this coherent material change set preserves, strengthens, weakens, or creates new RAHP/security assurance propositions. Treat apparent mitigations as falsifiable claims and check for regressions.\n\n"
+        f"## Routed findings\n\n{findings_table(items)}\n\n"
+        "## Required disposition\n\n"
+        "- Record proposition-level outcomes: preserved / strengthened / weakened / new / uncertain.\n"
+        "- Record boundary cases and regression evidence.\n"
+        "- Promote any privacy-composition question through the canonical DPIP handoff rather than resolving it here.\n"
+        "- Link the result to the portfolio controller.\n"
+    )
     return {
         "assessment_key": f"dtg:portfolio:combined:{rule_id}",
         "observed_at": day,
@@ -100,13 +114,7 @@ def combined_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[
         "title": f"[DTG portfolio] Bounded combined RAHP + security review — {rule_id}",
         "labels": ["assessment-required", "dtg-instance"],
         "affected_reviews": ["rahp", "security", "combined"],
-        "body": f"""# Automated bounded combined review\n\n"
-                f"<!-- dtg-routing-policy:v1 -->\n"
-                f"<!-- dtg-routing-cluster:{digest} -->\n\n"
-                f"Portfolio snapshot: `{day}`  \nRouting rule: `{rule_id}`\n\n"
-                f"## Proposition\n\nDetermine whether this coherent material change set preserves, strengthens, weakens, or creates new RAHP/security assurance propositions. Treat apparent mitigations as falsifiable claims and check for regressions.\n\n"
-                f"## Routed findings\n\n{findings_table(items)}\n\n"
-                f"## Required disposition\n\n- Record proposition-level outcomes: preserved / strengthened / weakened / new / uncertain.\n- Record boundary cases and regression evidence.\n- Promote any privacy-composition question through the canonical DPIP handoff rather than resolving it here.\n- Link the result to the portfolio controller.\n""",
+        "body": body,
     }
 
 
@@ -128,19 +136,23 @@ def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str,
         }
     }
     yaml_block = yaml.safe_dump(payload, sort_keys=False).rstrip()
+    body = (
+        "# RAHP privacy referral\n\n"
+        f"<!-- dtg-routing-policy:v1 -->\n"
+        f"<!-- dtg-routing-cluster:{digest} -->\n\n"
+        f"Portfolio snapshot: `{day}`  \nRouting rule: `{rule_id}`\n\n"
+        f"## Routed findings\n\n{findings_table(items)}\n\n"
+        "## Promotion gate\n\n"
+        "RAHP has determined that these material changes raise a composed privacy/correlation question. RAHP does not prejudge the DPIP result; DPIP owns applicability, evidence selection and the scoped conclusion.\n\n"
+        f"```yaml\n{yaml_block}\n```\n"
+    )
     return {
         "assessment_key": f"dtg:portfolio:dpip:{rule_id}",
         "observed_at": day,
         "source": "dtg-portfolio-monitor-routing",
         "title": f"[DPIP requested] DTG portfolio privacy examination — {rule_id}",
         "labels": ["assurance:dpip-requested", "dtg-instance"],
-        "body": f"""# RAHP privacy referral\n\n"
-                f"<!-- dtg-routing-policy:v1 -->\n"
-                f"<!-- dtg-routing-cluster:{digest} -->\n\n"
-                f"Portfolio snapshot: `{day}`  \nRouting rule: `{rule_id}`\n\n"
-                f"## Routed findings\n\n{findings_table(items)}\n\n"
-                f"## Promotion gate\n\nRAHP has determined that these material changes raise a composed privacy/correlation question. RAHP does not prejudge the DPIP result; DPIP owns applicability, evidence selection and the scoped conclusion.\n\n"
-                f"```yaml\n{yaml_block}\n```\n""",
+        "body": body,
     }
 
 
