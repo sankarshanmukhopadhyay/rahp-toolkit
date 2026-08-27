@@ -33,6 +33,7 @@ propositions:
       - method/evidence-retention.yaml
       - method/schema/rahp-result.schema.json
       - method/schema/rahp-config.schema.json
+      - tests/test_ci_assurance.py
       - tests/conformance/**
       - tests/fixtures/portable-project/rahp.yaml
       - profiles/dtg/rahp.yaml
