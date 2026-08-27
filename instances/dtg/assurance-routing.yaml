@@ -21,10 +21,17 @@ finding_rules:
     repository_regex: '^(OpenVTC/|trustoverip/dtgwg-cred-spec$)'
     title_regex: '(relationship DID|relationship edge|correlation scope|deliberate-correlation|policy discovery)'
     dpip:
-      affected_interactions: [C3, C5]
-      affected_reference_flows: [RF-001, RF-003]
-      affected_invariants: [P2, P4, P5, P6]
-      affected_claims: [C3-PC-2, C3-PC-4, C3-PC-5, C5-PC-2, C5-PC-4]
+      affected_interactions: [credential-proof-trust-task-consequential-execution]
+      affected_reference_flows:
+        - "DTG Credential -> ZKP presentation -> Trust Task -> retained outcome evidence"
+      affected_invariants:
+        - no-unnecessary-cross-context-correlation
+        - correlation-scope-does-not-expand-through-composition
+        - retained-evidence-does-not-defeat-selective-disclosure
+      affected_claims:
+        - pairwise-identifiers-preserve-declared-correlation-scope
+        - zero-knowledge-disclosure-remains-private-after-task-wrapping
+        - retained-task-proof-status-and-outcome-evidence-do-not-enable-unintended-linkage
       suspected_surfaces:
         - relationship DID and edge identifiers
         - status and policy discovery traffic
