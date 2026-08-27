@@ -12,6 +12,7 @@ on:
           - core-validation
           - corpus-validation
           - cross-spec-dtg-tt-credspec
+          - cross-spec-dtg-full
           - full-validation
   pull_request:
     paths:
@@ -37,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        profile: ${{ fromJSON(github.event_name == 'pull_request' && '["full-validation","cross-spec-dtg-tt-credspec"]' || format('["{0}"]', inputs.profile)) }}
+        profile: ${{ fromJSON(github.event_name == 'pull_request' && '["full-validation","cross-spec-dtg-tt-credspec","cross-spec-dtg-full"]' || format('["{0}"]', inputs.profile)) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
