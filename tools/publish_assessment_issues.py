@@ -174,6 +174,9 @@ def main() -> int:
         raise SystemExit("GITHUB_TOKEN or GH_TOKEN is required")
     events = json.loads(args.events.read_text()) if args.events.exists() else []
     if not events:
+        if args.result_json:
+            args.result_json.parent.mkdir(parents=True, exist_ok=True)
+            args.result_json.write_text(json.dumps({"issues": []}, indent=2) + "\n", encoding="utf-8")
         print("no assessment issues to publish")
         return 0
 
