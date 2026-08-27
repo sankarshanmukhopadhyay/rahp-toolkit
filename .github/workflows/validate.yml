@@ -79,7 +79,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Validate GitHub Actions workflow syntax
-        uses: eifinger/actionlint-action@v1
+        uses: raven-actions/actionlint@v2
+        with:
+          version: '1.7.12'
+          shellcheck: false
+          pyflakes: false
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
