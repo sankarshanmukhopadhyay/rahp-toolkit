@@ -128,12 +128,23 @@ def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str,
         "revision": day,
     }
     source_pins = []
+    seen_pins: set[tuple[str, str]] = set()
     for item in items:
         finding = item["finding"]
-        revision = str(finding.get("revision") or finding.get("commit_sha") or "")
         repository = str(finding.get("repository") or "")
-        if repository and re.fullmatch(r"[0-9a-f]{40}", revision, re.I):
-            source_pins.append({"label": repository, "repository": repository, "revision": revision})
+        revisions: list[str] = []
+        direct = str(finding.get("revision") or finding.get("commit_sha") or "")
+        if re.fullmatch(r"[0-9a-f]{40}", direct, re.I):
+            revisions.append(direct)
+        for url in finding.get("evidence_urls") or []:
+            match = re.search(r"/commit/([0-9a-f]{40})(?:$|[/?#])", str(url), re.I)
+            if match:
+                revisions.append(match.group(1))
+        for revision in revisions:
+            key = (repository, revision.lower())
+            if repository and key not in seen_pins:
+                seen_pins.add(key)
+                source_pins.append({"label": repository, "repository": repository, "revision": revision})
     payload = {
         "dpip": {
             "recommendation": "examine",
@@ -155,7 +166,7 @@ def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str,
         f"```yaml\n{yaml_block}\n```\n"
     )
     return {
-        "assessment_key": f"dtg:portfolio:dpip:{rule_id}",
+        "assessment_key": f"dtg:portfolio:dpip:v2:{rule_id}:{digest}",
         "observed_at": day,
         "source": "dtg-portfolio-monitor-routing",
         "title": f"[DPIP requested] DTG portfolio privacy examination — {rule_id}",
@@ -191,6 +202,13 @@ def main() -> int:
         assert "## Routed findings" in combined_body and "## Promotion gate" in dpip_body
         assert "credential-proof-trust-task-consequential-execution" in dpip_body
         assert "correlation-scope-does-not-expand-through-composition" in dpip_body
+        event = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-27")
+        assert event["assessment_key"].startswith("dtg:portfolio:dpip:v2:relationship-correlation-privacy:")
+        assert event["assessment_key"].endswith(cluster_digest(grouped[("dpip", "relationship-correlation-privacy")]))
+        pin_fixture = [dict(fixture[0], evidence_urls=["https://github.com/example/source/commit/" + "a" * 40])]
+        pin_routed = route_findings(pin_fixture, policy)
+        pin_event = dpip_event("relationship-correlation-privacy", pin_routed, "2026-08-27")
+        assert "revision: " + "a" * 40 in pin_event["body"]
         print("PASS dtg portfolio routing self-test")
         return 0
 
