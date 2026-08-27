@@ -16,7 +16,9 @@ class DtgRepositoryReviewWorkerTests(unittest.TestCase):
             "state": "open",
             "number": 9,
             "labels": [{"name": "assessment-required"}],
-            "body": """<!-- rahp-assessment-key:dtg:repository:OpenVTC/openvtc -->
+            "body": """<!-- rahp-dtg-gatherer-run:gha-123-1 -->
+<!-- rahp-dtg-gatherer-event:aaaaaaaaaaaaaaaaaaaa -->
+<!-- rahp-assessment-key:dtg:repository:OpenVTC/openvtc -->
 <!-- rahp-dtg-change:OpenVTC/openvtc@1234567890abcdef -->
 ## Why review is required
 
@@ -48,10 +50,18 @@ class DtgRepositoryReviewWorkerTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             MOD.provenance(issue["body"])
 
-    def test_packet_asks_explicit_dpip_question(self):
+    def test_packet_asks_explicit_dpip_question_and_terminal_path(self):
         packet = MOD.render_packet(self.issue())
         self.assertIn("warrants a DPIP referral", packet)
         self.assertIn("specs/x.md", packet)
+        self.assertIn("assurance:dpip-not-required", packet)
+        self.assertIn("assurance:dpip-requested", packet)
+        self.assertIn("missing applicability decision", packet)
+
+    def test_lineage_is_visible_in_judgment_packet(self):
+        packet = MOD.render_packet(self.issue())
+        self.assertIn("gha-123-1", packet)
+        self.assertIn("aaaaaaaaaaaaaaaaaaaa", packet)
 
 
 if __name__ == "__main__":
