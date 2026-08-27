@@ -30,18 +30,13 @@ COMPLETE = "assurance:dpip-complete"
 def api(method: str, repo: str, path: str, token: str, payload: Any | None = None) -> Any:
     url = f"https://api.github.com/repos/{repo}/{path.lstrip('/')}"
     data = None if payload is None else json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        url,
-        data=data,
-        method=method,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "User-Agent": "rahp-dpip-handoff/1.0",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "Authorization": f"Bearer {token}",
-            **({"Content-Type": "application/json"} if data is not None else {}),
-        },
-    )
+    req = urllib.request.Request(url, data=data, method=method, headers={
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "rahp-dpip-handoff/1.1",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Authorization": f"Bearer {token}",
+        **({"Content-Type": "application/json"} if data is not None else {}),
+    })
     with urllib.request.urlopen(req, timeout=30) as response:
         raw = response.read()
     return json.loads(raw) if raw else None
@@ -76,12 +71,7 @@ def validate_payload(payload: dict[str, Any]) -> list[str]:
         if not str(source.get(key, "")).strip():
             errors.append(f"source_change.{key} is required for automated promotion")
     targets = []
-    for key in (
-        "affected_interactions",
-        "affected_reference_flows",
-        "affected_invariants",
-        "affected_claims",
-    ):
+    for key in ("affected_interactions", "affected_reference_flows", "affected_invariants", "affected_claims"):
         value = payload.get(key, [])
         if isinstance(value, list):
             targets.extend(str(item) for item in value if str(item).strip())
@@ -94,24 +84,12 @@ def validate_payload(payload: dict[str, Any]) -> list[str]:
 
 def identity(source_issue: int, payload: dict[str, Any]) -> tuple[str, str]:
     source = payload["source_change"]
-    target_material = {
-        key: payload.get(key, [])
-        for key in (
-            "affected_interactions",
-            "affected_reference_flows",
-            "affected_invariants",
-            "affected_claims",
-            "suspected_surfaces",
-        )
-    }
+    target_material = {key: payload.get(key, []) for key in (
+        "affected_interactions", "affected_reference_flows", "affected_invariants",
+        "affected_claims", "suspected_surfaces")}
     target_material["question"] = payload.get("question", "")
-    digest = hashlib.sha256(
-        json.dumps(target_material, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    ).hexdigest()[:16]
-    marker = (
-        f"<!-- rahp-dpip-handoff:{source_issue}:"
-        f"{source['monitor_fingerprint']}:{source['revision']}:{digest} -->"
-    )
+    digest = hashlib.sha256(json.dumps(target_material, sort_keys=True, separators=(",", ":")).encode()).hexdigest()[:16]
+    marker = f"<!-- rahp-dpip-handoff:{source_issue}:{source['monitor_fingerprint']}:{source['revision']}:{digest} -->"
     return marker, digest
 
 
@@ -125,8 +103,6 @@ def list_requested(repo: str, token: str) -> list[dict[str, Any]]:
 
 
 def find_existing(dpip_repo: str, token: str, marker: str) -> dict[str, Any] | None:
-    # The number of RAHP-originated DPIP issues should remain small. Reading the
-    # labelled set avoids GitHub Search indexing lag and makes idempotency immediate.
     label = urllib.parse.quote("source:rahp", safe="")
     issues = api("GET", dpip_repo, f"issues?state=all&labels={label}&per_page=100", token) or []
     for issue in issues:
@@ -135,91 +111,42 @@ def find_existing(dpip_repo: str, token: str, marker: str) -> dict[str, Any] | N
     return None
 
 
-def create_intake(
-    rahp_repo: str,
-    dpip_repo: str,
-    rahp_issue: dict[str, Any],
-    payload: dict[str, Any],
-    marker: str,
-    dpip_token: str,
-) -> dict[str, Any]:
+def create_intake(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], payload: dict[str, Any], marker: str, dpip_token: str) -> dict[str, Any]:
     source = payload["source_change"]
-    source_block = {
-        "source": {
-            "system": "RAHP",
-            "repository": rahp_repo,
-            "issue": rahp_issue["number"],
-            "portfolio_monitor": {
-                "fingerprint": source["monitor_fingerprint"],
-                **(
-                    {"finding_id": source["monitor_finding_id"]}
-                    if source.get("monitor_finding_id")
-                    else {}
-                ),
-            },
-            "changed_artifact": {
-                "repository": source["repository"],
-                "revision": source["revision"],
-                **({"pull_request": source["pull_request"]} if source.get("pull_request") else {}),
-            },
-        }
-    }
-    requested = {
-        "requested_examination": {
-            key: value
-            for key, value in {
-                "interactions": payload.get("affected_interactions", []),
-                "reference_flows": payload.get("affected_reference_flows", []),
-                "invariants": payload.get("affected_invariants", []),
-                "claims": payload.get("affected_claims", []),
-                "suspected_surfaces": payload.get("suspected_surfaces", []),
-                "question": payload.get("question", ""),
-            }.items()
-            if value
-        }
-    }
+    source_block = {"source": {
+        "system": "RAHP", "repository": rahp_repo, "issue": rahp_issue["number"],
+        "portfolio_monitor": {"fingerprint": source["monitor_fingerprint"], **({"finding_id": source["monitor_finding_id"]} if source.get("monitor_finding_id") else {})},
+        "changed_artifact": {"repository": source["repository"], "revision": source["revision"], **({"pull_request": source["pull_request"]} if source.get("pull_request") else {})},
+    }}
+    requested = {"requested_examination": {key: value for key, value in {
+        "interactions": payload.get("affected_interactions", []),
+        "reference_flows": payload.get("affected_reference_flows", []),
+        "invariants": payload.get("affected_invariants", []),
+        "claims": payload.get("affected_claims", []),
+        "suspected_surfaces": payload.get("suspected_surfaces", []),
+        "question": payload.get("question", ""),
+    }.items() if value}}
     body = (
-        f"{marker}\n\n"
-        f"## Source\n\nManual/automated handoff from `{rahp_repo}#{rahp_issue['number']}`.\n\n"
+        f"{marker}\n\n## Source\n\nAutomated handoff from `{rahp_repo}#{rahp_issue['number']}`.\n\n"
         f"```yaml\n{yaml.safe_dump(source_block, sort_keys=False).rstrip()}\n```\n\n"
-        f"## Requested examination\n\n"
-        f"```yaml\n{yaml.safe_dump(requested, sort_keys=False).rstrip()}\n```\n\n"
-        "## Boundary\n\n"
-        "This issue transports a RAHP examination request. RAHP does not prejudge the DPIP result. "
-        "DPIP owns applicability, evidence assessment, scoped conclusion, and return disposition.\n"
+        f"## Requested examination\n\n```yaml\n{yaml.safe_dump(requested, sort_keys=False).rstrip()}\n```\n\n"
+        "## Boundary\n\nRAHP does not prejudge the DPIP result. DPIP owns applicability, evidence assessment, scoped conclusion, and return disposition.\n"
     )
     title = f"[RAHP intake] {rahp_issue['title'].removeprefix('[DPIP candidate] ').removeprefix('[DPIP requested] ')}"
-    return api(
-        "POST",
-        dpip_repo,
-        "issues",
-        dpip_token,
-        {
-            "title": title[:256],
-            "body": body,
-            "assignees": ["sankarshanmukhopadhyay"],
-            "labels": ["source:rahp", "run:requested"],
-        },
-    )
+    return api("POST", dpip_repo, "issues", dpip_token, {
+        "title": title[:256], "body": body, "assignees": ["sankarshanmukhopadhyay"],
+        "labels": ["source:rahp", "run:requested"],
+    })
 
 
 def transition_source(rahp_repo: str, issue_number: int, dpip_issue: dict[str, Any], token: str) -> None:
     comments = api("GET", rahp_repo, f"issues/{issue_number}/comments?per_page=100", token) or []
     backlink_marker = f"<!-- rahp-dpip-open:{dpip_issue['number']} -->"
     if not any(backlink_marker in (comment.get("body") or "") for comment in comments):
-        api(
-            "POST",
-            rahp_repo,
-            f"issues/{issue_number}/comments",
-            token,
-            {
-                "body": (
-                    f"{backlink_marker}\nDPIP examination opened: "
-                    f"{dpip_issue['html_url']}\n\n"
-                    "The referral passed the RAHP promotion gate. DPIP now owns applicability and the scoped privacy conclusion."
-                )
-            },
-        )
+        api("POST", rahp_repo, f"issues/{issue_number}/comments", token, {"body": (
+            f"{backlink_marker}\nDPIP examination opened: {dpip_issue['html_url']}\n\n"
+            "The referral passed the RAHP promotion gate. DPIP now owns applicability and the scoped privacy conclusion."
+        )})
     api("POST", rahp_repo, f"issues/{issue_number}/labels", token, {"labels": [OPEN]})
     try:
         api("DELETE", rahp_repo, f"issues/{issue_number}/labels/{urllib.parse.quote(REQUESTED, safe='')}", token)
@@ -246,7 +173,7 @@ def run(rahp_repo: str, dpip_repo: str, rahp_token: str, dpip_token: str) -> int
             else:
                 print(f"EXISTS {dpip_repo}#{dpip_issue['number']} for {rahp_repo}#{issue['number']}")
             transition_source(rahp_repo, issue["number"], dpip_issue, rahp_token)
-        except Exception as exc:  # keep other qualified referrals moving; report every failure
+        except Exception as exc:
             failures += 1
             print(f"FAIL {rahp_repo}#{issue.get('number')}: {exc}", file=sys.stderr)
     return 1 if failures else 0
@@ -271,8 +198,7 @@ dpip:
     marker2, digest2 = identity(12, payload)
     assert marker1 == marker2 and digest1 == digest2
     assert "abc123" in marker1 and "deadbeef" in marker1
-    bad = dict(payload)
-    bad["question"] = ""
+    bad = dict(payload); bad["question"] = ""
     assert any("question" in error for error in validate_payload(bad))
     print("PASS dpip_handoff self-test")
     return 0
@@ -292,8 +218,8 @@ def main() -> int:
         print("GITHUB_TOKEN is required", file=sys.stderr)
         return 2
     if not dpip_token:
-        print("DPIP_HANDOFF_TOKEN is not configured; qualified referrals were not transported.")
-        return 0
+        print("DPIP_HANDOFF_TOKEN is not configured; refusing to leave qualified referrals stranded.", file=sys.stderr)
+        return 2
     return run(args.rahp_repository, args.dpip_repository, rahp_token, dpip_token)
 
 
