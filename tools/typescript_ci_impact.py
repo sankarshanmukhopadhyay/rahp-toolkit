@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Classify whether a RAHP change can affect Python↔TypeScript conformance.
 
+The affected assurance surface is governed by method/ci-assurance-propositions.yaml.
 This is an assurance-impact classifier, not a generic file-change optimiser. A
 classification error fails safe: TypeScript conformance is required.
 """
@@ -11,29 +12,27 @@ import fnmatch
 import json
 from pathlib import Path
 
-# Paths are intentionally tied to what tools/validate_typescript_sdk.py consumes
-# or to the implementation/build machinery that defines the cross-runtime contract.
-AFFECTED_PATTERNS = (
-    "packages/**",
-    "package.json",
-    "package-lock.json",
-    "requirements.txt",
-    "tools/validate_typescript_sdk.py",
-    "tools/typescript_ci_impact.py",
-    "tools/engine_contract.py",
-    "tools/rahp.py",
-    "method/engine-contract.yaml",
-    "method/evidence-retention.yaml",
-    "method/schema/rahp-result.schema.json",
-    "method/schema/rahp-config.schema.json",
-    "tests/conformance/**",
-    "tests/fixtures/portable-project/rahp.yaml",
-    "profiles/dtg/rahp.yaml",
-    "profiles/cawg/rahp.yaml",
-    "build/rahp.json",
-    ".github/workflows/validate.yml",
-    ".github/workflows/release.yml",
-)
+import yaml
+
+ROOT = Path(__file__).resolve().parent.parent
+POLICY = ROOT / "method" / "ci-assurance-propositions.yaml"
+PROPOSITION_ID = "python_typescript_conformance"
+
+
+def load_policy() -> dict[str, object]:
+    data = yaml.safe_load(POLICY.read_text(encoding="utf-8")) or {}
+    propositions = data.get("propositions") or {}
+    proposition = propositions.get(PROPOSITION_ID)
+    if not isinstance(proposition, dict):
+        raise ValueError(f"missing proposition {PROPOSITION_ID}")
+    paths = proposition.get("affected_paths")
+    if not isinstance(paths, list) or not paths or not all(isinstance(p, str) and p for p in paths):
+        raise ValueError("affected_paths must be a non-empty string list")
+    return proposition
+
+
+def affected_patterns() -> tuple[str, ...]:
+    return tuple(load_policy()["affected_paths"])
 
 
 def normalize(path: str) -> str:
@@ -45,44 +44,34 @@ def normalize(path: str) -> str:
 
 def matches(path: str) -> bool:
     path = normalize(path)
-    return any(fnmatch.fnmatchcase(path, pattern) for pattern in AFFECTED_PATTERNS)
+    return any(fnmatch.fnmatchcase(path, pattern) for pattern in affected_patterns())
 
 
 def classify(paths: list[str] | None, *, full: bool = False) -> dict[str, object]:
     if full:
-        return {
-            "required": True,
-            "reason": "full-validation-backstop",
-            "affected_paths": [],
-        }
+        return {"required": True, "reason": "full-validation-backstop", "affected_paths": []}
     if paths is None:
-        return {
-            "required": True,
-            "reason": "fail-safe-classification-unavailable",
-            "affected_paths": [],
-        }
+        return {"required": True, "reason": "fail-safe-classification-unavailable", "affected_paths": []}
+    try:
+        affected_patterns()
+    except Exception:
+        return {"required": True, "reason": "fail-safe-policy-unavailable", "affected_paths": []}
     cleaned = sorted({normalize(p) for p in paths if p.strip()})
     if not cleaned:
-        return {
-            "required": True,
-            "reason": "fail-safe-empty-change-set",
-            "affected_paths": [],
-        }
+        return {"required": True, "reason": "fail-safe-empty-change-set", "affected_paths": []}
     affected = [p for p in cleaned if matches(p)]
     if affected:
-        return {
-            "required": True,
-            "reason": "affected-assurance-paths",
-            "affected_paths": affected,
-        }
-    return {
-        "required": False,
-        "reason": "no-typescript-contract-assurance-paths-affected",
-        "affected_paths": [],
-    }
+        return {"required": True, "reason": "affected-assurance-paths", "affected_paths": affected}
+    return {"required": False, "reason": "no-typescript-contract-assurance-paths-affected", "affected_paths": []}
 
 
 def self_test() -> int:
+    proposition = load_policy()
+    assert proposition.get("owner_workflow") == ".github/workflows/validate.yml"
+    assert proposition.get("release_workflow") == ".github/workflows/release.yml"
+    assert proposition.get("release_mode") == "unconditional"
+    assert proposition.get("fail_safe") == "required"
+
     required_cases = {
         "typescript-source": ["packages/core/src/index.ts"],
         "package-lock": ["package-lock.json"],
@@ -92,8 +81,11 @@ def self_test() -> int:
         "profile-used-by-conformance": ["profiles/dtg/rahp.yaml"],
         "conformance-fixture": ["tests/conformance/engine/valid-minimal/result.json"],
         "classifier": ["tools/typescript_ci_impact.py"],
+        "policy": ["method/ci-assurance-propositions.yaml"],
+        "repository-validator": ["tools/validate_ci_assurance.py"],
         "workflow": [".github/workflows/validate.yml"],
         "workflow-dot-relative": ["./.github/workflows/validate.yml"],
+        "release-workflow": [".github/workflows/release.yml"],
     }
     for name, paths in required_cases.items():
         result = classify(paths)
@@ -105,6 +97,7 @@ def self_test() -> int:
         "new-corpus": ["corpora/credential-zkp-trust-tasks-composed.yaml"],
         "pressure-test": ["examples/cross-spec/credential-zkp-trust-tasks/pressure-test.yaml"],
         "telemetry-tool": ["tools/dpip_lifecycle.py"],
+        "specialist-workflow": [".github/workflows/dpip-lifecycle.yml"],
     }
     for name, paths in unrelated_cases.items():
         result = classify(paths)
