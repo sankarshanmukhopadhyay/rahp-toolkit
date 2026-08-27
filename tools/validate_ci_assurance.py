@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 POLICY_PATH = ROOT / "method" / "ci-assurance-propositions.yaml"
 WORKFLOWS = ROOT / ".github" / "workflows"
 PROPOSITION_ID = "python_typescript_conformance"
+TEST_PATH = ROOT / "tests" / "test_ci_assurance.py"
 
 
 def fail(message: str) -> None:
@@ -54,7 +55,7 @@ def main() -> int:
     classifier = ROOT / p["classifier"]
     repo_validator = ROOT / p["repository_validator"]
     conformance = ROOT / p["conformance_validator"]
-    for path in (owner, release, classifier, repo_validator, conformance):
+    for path in (owner, release, classifier, repo_validator, conformance, TEST_PATH):
         if not path.exists():
             fail(f"declared CI assurance path does not exist: {path.relative_to(ROOT)}")
 
@@ -64,6 +65,7 @@ def main() -> int:
         str(classifier.relative_to(ROOT)),
         str(repo_validator.relative_to(ROOT)),
         str(conformance.relative_to(ROOT)),
+        str(TEST_PATH.relative_to(ROOT)),
         str(owner.relative_to(ROOT)),
         str(release.relative_to(ROOT)),
     }
@@ -79,6 +81,7 @@ def main() -> int:
     require_text(owner_text, "workflow_dispatch:", "owner workflow")
     require_text(owner_text, "name: TypeScript conformance", "owner workflow")
     require_text(owner_text, "python3 tools/validate_typescript_sdk.py", "owner workflow")
+    require_text(owner_text, "python3 -m unittest discover -s tests -p 'test_*.py'", "owner workflow")
     require_text(release_text, "Require Python-TypeScript conformance for release publication", "release workflow")
     require_text(release_text, "python3 tools/validate_typescript_sdk.py", "release workflow")
     if "tools/typescript_ci_impact.py" in release_text:
@@ -92,9 +95,6 @@ def main() -> int:
     allowed = {p["owner_workflow"], p["release_workflow"]}
     if set(owners) != allowed:
         fail(f"cross-runtime conformance workflow ownership drift: found {owners}, expected {sorted(allowed)}")
-
-    validate_workflow = owner_text
-    require_text(validate_workflow, "python3 tools/validate_ci_assurance.py", "owner workflow")
 
     print("PASS repository-wide CI assurance proposition contract")
     print(f"  proposition: {PROPOSITION_ID}")
