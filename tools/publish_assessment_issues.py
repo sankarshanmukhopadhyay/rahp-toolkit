@@ -24,6 +24,7 @@ LEGACY_DTG_RE = re.compile(r"<!--\s*rahp-dtg-change:([^@>]+)@[^>]+-->")
 # upstream remediation repositories are evidence metadata only; automated issue
 # creation is confined to the RAHP review repository.
 CANONICAL_RAHP_ISSUE_REPOSITORY = "sankarshanmukhopadhyay/rahp-toolkit"
+CANONICAL_RAHP_ASSIGNEES = ["sankarshanmukhopadhyay"]
 
 
 def enforce_publication_repository(repository: str) -> str:
@@ -204,8 +205,13 @@ def main() -> int:
         body = event["body"]
         if key and f"rahp-assessment-key:{key}" not in body:
             body = f"<!-- rahp-assessment-key:{key} -->\n\n" + body
-        issue = request("POST", f"https://api.github.com/repos/{args.repository}/issues", token,
-                        {"title": title, "body": body, "labels": labels})
+        assignees = event.get("assignees") or CANONICAL_RAHP_ASSIGNEES
+        issue = request(
+            "POST",
+            f"https://api.github.com/repos/{args.repository}/issues",
+            token,
+            {"title": title, "body": body, "labels": labels, "assignees": assignees},
+        )
         print(f"[created] #{issue.get('number')} {title}")
         known_titles.add(title)
         if key:
