@@ -36,6 +36,19 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install TypeScript workspace
+        run: |
+          npm ci
+          npm install --global typescript@5.8.3
+
+      - name: Require Python-TypeScript conformance for release publication
+        run: python3 tools/validate_typescript_sdk.py
+
       - name: Resolve release declaration
         id: release
         run: python3 tools/release.py metadata --github-output "$GITHUB_OUTPUT"
