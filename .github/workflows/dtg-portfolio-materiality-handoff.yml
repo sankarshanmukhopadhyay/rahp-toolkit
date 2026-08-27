@@ -87,7 +87,7 @@ jobs:
         shell: bash
         run: |
           python3 - <<'PY'
-          import json, pathlib, os
+          import json, pathlib
           route = json.loads(pathlib.Path('build/dtg-routing/routing.json').read_text())
           unresolved = json.loads(pathlib.Path('build/dtg-routing/unresolved.json').read_text())
           counts = {}
@@ -123,7 +123,7 @@ Portfolio Monitor detects/classifies. RAHP owns assurance routing and RAHP asses
 
 Do not close this controller while any routed RAHP review, DPIP referral, or unresolved qualifying finding remains outstanding. Unknown findings remain explicit rather than being silently dropped.
 '''
-          event = {{
+          event = {
               'assessment_key': 'dtg:portfolio:material-change-set',
               'observed_at': day,
               'source': 'dtg-portfolio-monitor',
@@ -131,7 +131,7 @@ Do not close this controller while any routed RAHP review, DPIP referral, or unr
               'labels': ['assessment-required', 'dtg-instance', 'cross-specification'],
               'affected_reviews': ['rahp', 'security', 'combined'],
               'body': body,
-          }}
+          }
           pathlib.Path('build/dtg-routing/controller-events.json').write_text(json.dumps([event], indent=2) + '\n')
           PY
 
@@ -141,7 +141,7 @@ Do not close this controller while any routed RAHP review, DPIP referral, or unr
         run: >-
           python3 tools/publish_assessment_issues.py
           --events build/dtg-routing/controller-events.json
-          --repository sankarshanmukhopadhyay/rahp-toolkit
+          --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/controller-result.json
 
       - name: Publish/coalesce bounded combined RAHP reviews
@@ -150,7 +150,7 @@ Do not close this controller while any routed RAHP review, DPIP referral, or unr
         run: >-
           python3 tools/publish_assessment_issues.py
           --events build/dtg-routing/combined-events.json
-          --repository sankarshanmukhopadhyay/rahp-toolkit
+          --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/combined-result.json
 
       - name: Publish/coalesce canonical RAHP privacy referrals
@@ -159,7 +159,7 @@ Do not close this controller while any routed RAHP review, DPIP referral, or unr
         run: >-
           python3 tools/publish_assessment_issues.py
           --events build/dtg-routing/dpip-events.json
-          --repository sankarshanmukhopadhyay/rahp-toolkit
+          --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/dpip-result.json
 
       - name: Immediately transport qualified privacy referrals to DPIP
