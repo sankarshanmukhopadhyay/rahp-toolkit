@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "assessment": {
+    "id": "DTG-AR-2026-005",
+    "key": "dtg:repository:OpenVTC/verifiable-trust-infrastructure",
+    "triggers": [
+      "rahp-toolkit#21"
+    ]
+  },
+  "target": {
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "baseline_revision": "187ad9cde4cf5c5f8add3732a661816a650d631c",
+    "reviewed_revision": "78492c9d5c35419a9d47c8ad4f16fbef77fe94a4"
+  },
+  "mode": "combined",
+  "status": "dispositioned",
+  "findings": [
+    {
+      "id": "F-009",
+      "title": "Idempotency-store failure can re-open duplicate-effect risk",
+      "status": "assurance-gap"
+    },
+    {
+      "id": "F-010",
+      "title": "Pairwise relationship privacy is controlled, not operator-unlinkable",
+      "status": "controlled"
+    },
+    {
+      "id": "F-011",
+      "title": "Application-state namespace does not enforce isolation",
+      "status": "assurance-gap"
+    },
+    {
+      "id": "F-012",
+      "title": "Relationship identifier resolution privacy depends on DID-method policy",
+      "status": "review-required"
+    },
+    {
+      "id": "F-013",
+      "title": "Relationship authorization digest needs portable canonicalization",
+      "status": "review-required"
+    }
+  ],
+  "disposition": {
+    "outcome": "findings-raised",
+    "summary": "Net assurance-strengthening implementation delta with materially stronger retry/idempotency, publication authority, proof non-retention and concurrency controls. Residual conditions remain explicit for storage-failure duplicate effects, privileged/operator correlation, application isolation, DID-resolution privacy policy and portable canonicalization.",
+    "decided_at": "2026-08-27T10:00:00+05:30"
+  },
+  "evidence": [
+    {
+      "id": "DTG-AR-2026-005-RECORD",
+      "class": "durable",
+      "description": "Human-readable combined RAHP + security record in 2026-08-verifiable-trust-infrastructure-78492c9.md"
+    }
+  ],
+  "closure": {
+    "eligible_issues": [
+      21
+    ],
+    "reviewed_revision": "78492c9d5c35419a9d47c8ad4f16fbef77fe94a4"
+  },
+  "retest_triggers": [
+    "material VTI change after 78492c9 affecting retry/idempotency or consequential effect semantics",
+    "relationship publication/revocation authorization, proof-retention, logging or audit-attribution change",
+    "adoption of community-anchored ZKP or equivalent operator-unlinkable publication authorization",
+    "application-state authorization or isolation model change",
+    "accepted DID-method or resolver privacy policy change",
+    "portable VRC canonicalization or digest contract change",
+    "IACA or mdoc trust-anchor/revocation/status model change",
+    "internal-key custody or recovery policy change"
+  ]
+}
