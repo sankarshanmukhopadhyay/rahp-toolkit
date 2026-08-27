@@ -23,7 +23,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: dtg-portfolio-materiality-handoff-${{ inputs.snapshot_date || 'current' }}
+  group: dtg-portfolio-materiality-handoff
   cancel-in-progress: false
 
 jobs:
@@ -41,7 +41,7 @@ jobs:
       - name: Resolve and fetch Portfolio Monitor snapshot
         id: snapshot
         env:
-          INPUT_DATE: ${{ inputs.snapshot_date }}
+          INPUT_DATE: ${{ github.event.inputs.snapshot_date }}
         shell: bash
         run: |
           python3 - <<'PY'
@@ -195,6 +195,6 @@ Do not close this controller while any routed RAHP review, DPIP referral, or unr
           echo '- Snapshot: `${{ steps.snapshot.outputs.date }}`' >> "$GITHUB_STEP_SUMMARY"
           jq -r 'group_by(.outcome) | map("- " + .[0].outcome + ": " + (length|tostring)) | .[]' build/dtg-routing/routing.json >> "$GITHUB_STEP_SUMMARY" || true
           if [ -s build/dtg-routing/unresolved.json ] && [ "$(jq length build/dtg-routing/unresolved.json)" -gt 0 ]; then
-            echo '- ⚠️ Unresolved qualifying findings remain visible in routing output.' >> "$GITHUB_STEP_SUMMARY"
+            echo '- Unresolved qualifying findings remain visible in routing output.' >> "$GITHUB_STEP_SUMMARY"
             jq -r '.[] | "  - `\(.finding_id)` \(.repository): \(.title)"' build/dtg-routing/unresolved.json >> "$GITHUB_STEP_SUMMARY"
           fi
