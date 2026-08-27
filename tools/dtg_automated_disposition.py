@@ -35,7 +35,7 @@ WEAKEN_RE = re.compile(
     r"relax(?:es|ed|ing)?.{0,36}(?:auth|consent|check|validation)|"
     r"skip(?:s|ped|ping)?.{0,36}(?:auth|consent|validation)"
     r")\b",
-    re.I | re.S,
+    re.I,
 )
 CORRELATION_RE = re.compile(
     r"\b("
@@ -44,7 +44,7 @@ CORRELATION_RE = re.compile(
     r"(?:correlat|linkab).{0,60}(?:across contexts?|cross[- ]context|across parties|cross[- ]party|durable|stable identifier)|"
     r"(?:stable|durable) identifier.{0,48}(?:across contexts?|cross[- ]context|across parties|cross[- ]party)"
     r")\b",
-    re.I | re.S,
+    re.I,
 )
 CORRELATION_PREVENT_RE = re.compile(
     r"\b("
@@ -52,7 +52,7 @@ CORRELATION_PREVENT_RE = re.compile(
     r"(?:unlinkab|pairwise).{0,60}(?:identifier|handle|presentation|subject)|"
     r"must not correlate|cannot correlate|non[- ]correlat"
     r")\b",
-    re.I | re.S,
+    re.I,
 )
 DISCLOSURE_RE = re.compile(r"\b(stranger|disclos|leak|session exists|confidential)\w*\b", re.I)
 
@@ -260,8 +260,8 @@ def self_test() -> int:
 
     # Explicit prevention + implementation + regression test is strengthening.
     security = {"commits": [{"commit": {"message": "fix(auth): stop revoke-session telling a stranger the session exists"}}], "files": [
-        {"filename": "vta-service/src/trust_tasks/auth.rs", "patch": "+ reject unauthorized caller\n- reveal session"},
-        {"filename": "vta-service/tests/revoke_session_trust_task.rs", "patch": "+ stranger_and_missing_answer_identically\n+ assert payload == absent_payload"},
+        {"filename": "vta-service/src/trust_tasks/auth.rs", "patch": """+ reject unauthorized caller\n- reveal session"""},
+        {"filename": "vta-service/tests/revoke_session_trust_task.rs", "patch": """+ stranger_and_missing_answer_identically\n+ assert payload == absent_payload"""},
     ]}
     r = assess(security)
     assert r["terminal"] and r["security"] == "strengthened" and r["harm"] == "mitigated" and r["dpip"] == "not-required"
@@ -297,7 +297,7 @@ def self_test() -> int:
 
     # Lexical false positives from the real #144 window must remain benign.
     benign = {"commits": [{"commit": {"message": "fix(auth): stop unauthorized disclosure"}}], "files": [
-        {"filename": "src/auth.rs", "patch": '+ "disabled": false\n+ #[serde(skip_serializing_if = "Option::is_none")]\n+ deny stranger access'},
+        {"filename": "src/auth.rs", "patch": """+ "disabled": false\n+ #[serde(skip_serializing_if = "Option::is_none")]\n+ deny stranger access"""},
         {"filename": "tests/auth_test.rs", "patch": '+ assert_eq!(request_id, challenge, "the request id a bridge correlates on is the challenge it sent")'},
     ]}
     r = assess(benign)
