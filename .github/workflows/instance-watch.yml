@@ -86,7 +86,7 @@ jobs:
           --events instances/cawg/state/issue-events.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
-      - name: Persist observed revisions
+      - name: Persist observed revisions and non-empty DTG gatherer runs
         id: persist
         shell: bash
         run: |
@@ -95,13 +95,15 @@ jobs:
           git add \
             instances/dtg/state/repositories.json \
             instances/dtg/generated/repositories.yaml \
-            instances/dtg/generated/gatherer-run.json \
             instances/dtg/state/issues.json \
             instances/dtg/state/issue-events.json \
             instances/cawg/state/repositories.json \
             instances/cawg/generated/repositories.yaml \
             instances/cawg/state/issues.json \
             instances/cawg/state/issue-events.json
+          if [ -d instances/dtg/generated/gatherer-runs ]; then
+            git add instances/dtg/generated/gatherer-runs
+          fi
           if git diff --cached --quiet; then
             echo "No instance state changes to persist."
             echo "changed=false" >> "$GITHUB_OUTPUT"
