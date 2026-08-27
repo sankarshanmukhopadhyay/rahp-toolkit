@@ -74,7 +74,7 @@ See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps a
 
 ## Current release
 
-v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) is the stable release of **Assurance Operations and Cross-Spec Execution**. It preserves the stable v1 compatibility boundaries:
+v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) is the stable release of **Assurance Operations and Cross-Spec Execution**. The previous stable release was v1.6.0 **Common Earl** (*Tanaecia julii*), preserved in the changelog and v1.6 release notes. It preserves the stable v1 compatibility boundaries:
 
 ```text
 rahp-engine-contract-v1
