@@ -121,7 +121,9 @@ npm run build:ts
 npm run test:ts
 ```
 
-CI also checks Python/TypeScript conformance so language-specific behavior does not silently diverge.
+CI checks Python/TypeScript conformance when a pull request changes the TypeScript workspace or one of the engine, schema, profile or conformance surfaces consumed by that cross-runtime check. On unrelated changes the stable `TypeScript conformance` job remains visible but records an explicit justified skip instead of installing and rebuilding the workspace. Classification failures are fail-safe and require conformance.
+
+Scheduled and manually dispatched full validation always run Python/TypeScript conformance regardless of changed paths. Release publication also requires the full cross-runtime conformance check before publication. The governing rule is therefore proposition-sensitive rather than optional: a check may be skipped only when the changed assurance surface cannot affect the proposition it establishes.
 
 ## Documentation synchronization
 
