@@ -32,16 +32,12 @@ jobs:
         run: |
           python3 tools/dtg_gatherer_lineage.py --self-test
           python3 tools/dtg_assurance_reconcile.py --self-test
-      - name: Reconcile latest DTG gatherer run
+      - name: Reconcile retained DTG gatherer runs
         env:
           GITHUB_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          if [ ! -f instances/dtg/generated/gatherer-run.json ]; then
-            echo 'No persisted DTG gatherer run exists yet.' >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
           python3 tools/dtg_assurance_reconcile.py \
             --evidence-output /tmp/dtg-assurance-evidence.yaml \
             --result-output /tmp/dtg-assurance-result.yaml \
