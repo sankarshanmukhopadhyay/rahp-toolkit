@@ -1,0 +1,80 @@
+version: 1
+release: v1.7.0
+qualification: assurance-operations-and-cross-spec-execution
+stable_compatibility:
+  engine_contract: rahp-engine-contract-v1
+  normalized_result_schema: 1
+  evidence_retention_contract: rahp-evidence-retention-v1
+release_thesis: >-
+  v1.7.0 qualifies stronger assurance operations, review-mode regression protection,
+  DTG cross-spec execution coverage and RAHP-to-DPIP lifecycle handling without changing
+  the stable v1 engine, normalized-result or evidence-retention contracts.
+required_evidence:
+  release_notes: docs/releases/v1.7.0.md
+  dtg_registry: profiles/dtg/cross-spec-tests.yaml
+  zkp_review: instances/dtg/reviews/2026-08-zkp-fork.result.json
+  release_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/110
+  regression_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/108
+live_acceptance:
+  instance_watch_run: 33037809072
+  persisted_head: 08129c7dda0f0be34ca96512025a484b5bc6dd21
+  validation_run: 33037861115
+  pages_run: 33037862570
+  expected_conclusion: success
+review_mode_contract:
+  modes:
+    - rahp
+    - security
+    - combined
+  all_target_selection: true
+  fail_closed_on_disallowed_mode: true
+dtg_cross_spec:
+  expected_declared: 8
+  expected_runnable: 8
+  compositions:
+    - trust-tasks--credential-spec
+    - credential-spec--zkp
+    - credential-spec--vds
+    - trust-tasks--zkp
+    - trust-tasks--vds
+    - zkp--vds
+    - agent-names--trust-tasks
+    - agent-names--credential-spec
+performance:
+  claim: measured-not-improved
+  full_dtg_wall_seconds: 11.165
+  repository_full_validation_wall_seconds: 11.517
+  representative_dtg_wall_seconds: 1.586
+  policy: >-
+    Do not claim a speed improvement from the current like-for-like benchmark evidence.
+    The release qualifies benchmarking capability and coverage refinement, not a proven
+    execution-speed gain.
+historical_baseline_policy:
+  promote_maintained_examples: false
+  reason: >-
+    Toolkit release qualification does not itself reassess every maintained external target.
+portable_invariants:
+  - Portable core contracts remain deployment-independent.
+  - Queue creation is not a substantive finding.
+  - Zero findings is not equivalent to assured.
+  - Historical assessment records remain immutable lineage evidence.
+qualification_commands:
+  - python3 tools/validate_scenario_corpora.py
+  - python3 tools/validate_pressure_tests.py
+  - python3 tools/validate_engine_contract.py
+  - python3 tools/validate_security_reviews.py
+  - python3 tools/validate_combined_reviews.py
+  - python3 tools/validate_assessment_queue.py
+  - python3 tools/validate_typescript_sdk.py
+  - python3 tools/validate_v16_release.py
+  - python3 tools/validate_v17_release.py
+  - python3 -m unittest tests.test_v17_release_qualification
+release_cut:
+  butterfly_name_selection: random-at-release-time
+  butterfly_source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
+  selected_common_name: Common Palmfly
+  selected_scientific_name: Elymnias hypermnestra
+  selected_on: '2026-08-27'
+  tag: v1.7.0
+  publish_only_after_qualification: true
+  publication_workflow: .github/workflows/release.yml
