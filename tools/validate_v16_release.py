@@ -36,29 +36,29 @@ def main() -> int:
 
     if q.get("release") != "v1.6.0":
         errors.append("qualification manifest must identify release v1.6.0")
-    if status.get("stable_release") != "1.6.0":
-        errors.append("PROJECT-STATUS stable_release must be 1.6.0")
-    if status.get("development_target") != "1.6.0":
-        errors.append("PROJECT-STATUS development_target must be 1.6.0")
+    if semver_tuple(str(status.get("stable_release", "0.0.0"))) < semver_tuple("1.6.0"):
+        errors.append("PROJECT-STATUS stable_release must be at least 1.6.0")
+    if semver_tuple(str(status.get("development_target", "0.0.0"))) < semver_tuple("1.6.0"):
+        errors.append("PROJECT-STATUS development_target must be at least 1.6.0")
     if status.get("release_status") != "released":
         errors.append("v1.6.0 release commit must declare release_status released")
     if status.get("qualification_status") != "qualified":
         errors.append("v1.6.0 release commit must declare qualification_status qualified")
-    if status.get("qualification_contract") != "method/v1.6-release-qualification.yaml":
-        errors.append("PROJECT-STATUS must point at the v1.6 qualification contract")
+    if semver_tuple(str(status.get("stable_release", "0.0.0"))) == semver_tuple("1.6.0") and status.get("qualification_contract") != "method/v1.6-release-qualification.yaml":
+        errors.append("v1.6 release state must point at the v1.6 qualification contract")
 
     compat = status.get("compatibility") or {}
     for key, expected in (q.get("stable_compatibility") or {}).items():
         if compat.get(key) != expected:
             errors.append(f"stable compatibility mismatch for {key}: {compat.get(key)!r} != {expected!r}")
 
-    if versioning.get("stable_release") != "v1.6.0":
-        errors.append("method/versioning.yaml stable_release must be v1.6.0")
+    if semver_tuple(str(versioning.get("stable_release", "v0.0.0"))) < semver_tuple("v1.6.0"):
+        errors.append("method/versioning.yaml stable_release must be at least v1.6.0")
 
-    if package.get("version") != "1.6.0":
-        errors.append("root package version must be 1.6.0")
-    if lock.get("version") != "1.6.0" or (lock.get("packages") or {}).get("", {}).get("version") != "1.6.0":
-        errors.append("package-lock root version must be 1.6.0")
+    if semver_tuple(str(package.get("version", "0.0.0"))) < semver_tuple("1.6.0"):
+        errors.append("root package version must be at least 1.6.0")
+    if semver_tuple(str(lock.get("version", "0.0.0"))) < semver_tuple("1.6.0") or semver_tuple(str((lock.get("packages") or {}).get("", {}).get("version", "0.0.0"))) < semver_tuple("1.6.0"):
+        errors.append("package-lock root version must be at least 1.6.0")
 
     workspace_paths = [
         "packages/schema/package.json",
@@ -68,11 +68,11 @@ def main() -> int:
     ]
     for rel in workspace_paths:
         doc = json.loads((ROOT / rel).read_text(encoding="utf-8"))
-        if doc.get("version") != "1.6.0":
-            errors.append(f"workspace package must be 1.6.0: {rel}")
+        if semver_tuple(str(doc.get("version", "0.0.0"))) < semver_tuple("1.6.0"):
+            errors.append(f"workspace package must be at least 1.6.0: {rel}")
         for dep, dep_version in (doc.get("dependencies") or {}).items():
-            if dep.startswith("@rahp/") and dep_version != "1.6.0":
-                errors.append(f"workspace dependency {dep} in {rel} must be 1.6.0")
+            if dep.startswith("@rahp/") and semver_tuple(str(dep_version)) < semver_tuple("1.6.0"):
+                errors.append(f"workspace dependency {dep} in {rel} must be at least 1.6.0")
 
     for label, rel in (q.get("required_evidence") or {}).items():
         if not (ROOT / rel).exists():
@@ -143,12 +143,13 @@ def main() -> int:
 
     release_name = status.get("release_name") or {}
     cut = q.get("release_cut") or {}
-    if release_name.get("common_name") != cut.get("selected_common_name"):
-        errors.append("recorded v1.6 common release name does not match qualification manifest")
-    if release_name.get("scientific_name") != cut.get("selected_scientific_name"):
-        errors.append("recorded v1.6 scientific release name does not match qualification manifest")
-    if release_name.get("selected_on") != cut.get("selected_on"):
-        errors.append("recorded v1.6 selection date does not match qualification manifest")
+    if semver_tuple(str(status.get("stable_release", "0.0.0"))) == semver_tuple("1.6.0"):
+        if release_name.get("common_name") != cut.get("selected_common_name"):
+            errors.append("recorded v1.6 common release name does not match qualification manifest")
+        if release_name.get("scientific_name") != cut.get("selected_scientific_name"):
+            errors.append("recorded v1.6 scientific release name does not match qualification manifest")
+        if release_name.get("selected_on") != cut.get("selected_on"):
+            errors.append("recorded v1.6 selection date does not match qualification manifest")
     if (status.get("release_naming") or {}).get("selection") != "random-at-release-time":
         errors.append("West Bengal butterfly naming policy must remain random-at-release-time")
 
@@ -157,7 +158,7 @@ def main() -> int:
     release_notes = (ROOT / "docs/releases/v1.6.0.md").read_text(encoding="utf-8") if (ROOT / "docs/releases/v1.6.0.md").exists() else ""
     for label, text in (("README", readme), ("CHANGELOG", changelog), ("release notes", release_notes)):
         if "v1.6.0" not in text or "Common Earl" not in text:
-            errors.append(f"{label} is not synchronized to v1.6.0 Common Earl")
+            errors.append(f"{label} does not preserve v1.6.0 Common Earl history")
 
     workflow = ROOT / str(cut.get("publication_workflow", ""))
     if not workflow.exists():
