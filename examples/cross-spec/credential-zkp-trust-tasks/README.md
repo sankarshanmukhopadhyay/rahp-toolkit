@@ -78,7 +78,7 @@ Component-level controls materially reduce several risks, but the complete Crede
 | Secondary dispositions | Governance, Implementation Guidance |
 | Scenarios | `XSP-CZT-001`, `XSP-CZT-003`, `XSP-CZT-007` |
 | Scenario patterns | `SP-AUTH-02`, `SP-GOV-01`, `SP-COMP-01`, `SP-COMP-02` |
-| Personas | `D1` |
+| Personas | [D1 — Daniel Wright](../../../build/site/catalogue.html#D1) |
 | Risks | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 | Controls | — |
 | Guardrails | — |
@@ -124,7 +124,7 @@ Define a reusable action-time authority decision contract binding principal, del
 | Secondary dispositions | Implementation Guidance, Governance |
 | Scenarios | `XSP-CZT-004`, `XSP-CZT-005`, `XSP-CZT-007` |
 | Scenario patterns | `SP-COMP-01`, `SP-OPS-01`, `SP-OPS-02`, `SP-REPLAY-01` |
-| Personas | `D1` |
+| Personas | [D1 — Daniel Wright](../../../build/site/catalogue.html#D1) |
 | Risks | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 | Controls | — |
 | Guardrails | — |
@@ -170,7 +170,7 @@ Bind the authoritative task instance, evidence set and outcome receipt to one lo
 | Secondary dispositions | Implementation Guidance, Governance |
 | Scenarios | `XSP-CZT-002`, `XSP-CZT-005`, `XSP-CZT-007` |
 | Scenario patterns | `SP-PRIV-01`, `SP-REPLAY-01`, `SP-COMP-01` |
-| Personas | `D1` |
+| Personas | [D1 — Daniel Wright](../../../build/site/catalogue.html#D1) |
 | Risks | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 | Controls | — |
 | Guardrails | — |
@@ -216,7 +216,7 @@ Define the minimum privacy-preserving task-context commitment and require cross-
 | Secondary dispositions | Governance, Implementation Guidance |
 | Scenarios | `XSP-CZT-002`, `XSP-CZT-006` |
 | Scenario patterns | `SP-PRIV-01`, `SP-PRIV-02`, `SP-COMP-01` |
-| Personas | `D1` |
+| Personas | [D1 — Daniel Wright](../../../build/site/catalogue.html#D1) |
 | Risks | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 | Controls | — |
 | Guardrails | — |
