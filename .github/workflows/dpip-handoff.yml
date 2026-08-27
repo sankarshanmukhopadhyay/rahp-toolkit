@@ -1,10 +1,11 @@
 name: Promote qualified RAHP referrals to DPIP
 
 on:
+  issues:
+    types: [labeled]
   schedule:
-    # DTG Portfolio Monitor collects at 00:17 and 12:17 UTC daily. Run once
-    # weekly after the Tuesday 00:17 collection and after RAHP's normal watch.
-    - cron: '17 4 * * 2'
+    # Recovery reconciliation. The primary path is the label event.
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -12,11 +13,15 @@ permissions:
   issues: write
 
 concurrency:
-  group: rahp-dpip-handoff
+  group: rahp-dpip-handoff-${{ github.event.issue.number || 'reconcile' }}
   cancel-in-progress: false
 
 jobs:
   promote:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'issues' && github.event.label.name == 'assurance:dpip-requested')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6

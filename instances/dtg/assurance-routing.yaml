@@ -1,0 +1,63 @@
+version: 1
+qualification:
+  materiality: [high, critical]
+  assurance_impact: [potentially-breaking, breaking]
+
+composition_rules:
+  - id: trust-tasks--credential-spec
+    requires_repository_tokens: [trust-tasks, cred-spec]
+  - id: credential-spec--zkp
+    requires_repository_tokens: [cred-spec, zkp]
+  - id: credential-spec--vds
+    requires_repository_tokens: [cred-spec, vds]
+  - id: trust-tasks--zkp
+    requires_repository_tokens: [trust-tasks, zkp]
+  - id: trust-tasks--vds
+    requires_repository_tokens: [trust-tasks, vds]
+
+finding_rules:
+  - id: relationship-correlation-privacy
+    outcome: dpip
+    repository_regex: '^(OpenVTC/|trustoverip/dtgwg-cred-spec$)'
+    title_regex: '(relationship DID|relationship edge|correlation scope|deliberate-correlation|policy discovery)'
+    dpip:
+      affected_interactions: [C3, C5]
+      affected_reference_flows: [RF-001, RF-003]
+      affected_invariants: [P2, P4, P5, P6]
+      affected_claims: [C3-PC-2, C3-PC-4, C3-PC-5, C5-PC-2, C5-PC-4]
+      suspected_surfaces:
+        - relationship DID and edge identifiers
+        - status and policy discovery traffic
+        - retained relationship evidence
+        - deliberate-correlation mechanisms
+      question: >-
+        Across composed DTG relationship flows using relationship DIDs, asymmetric
+        edge declarations and deliberate-correlation mechanisms, do declared,
+        observable and effective correlation scope remain aligned, or can protocol
+        metadata, retained evidence, discovery/status traffic, or one side of an
+        asymmetric edge expand correlation beyond the explicitly declared scope?
+
+  - id: openvtc-security-combined
+    outcome: combined
+    repository_regex: '^OpenVTC/'
+    title_regex: '(auth|keyId|internal key|signed|proof|personhood|conformance|invitation|lifecycle|cache)'
+    review_mode: combined
+
+  - id: openvtc-routine-alignment
+    outcome: no-action
+    repository_regex: '^OpenVTC/'
+    title_regex: '(release|SDK|sdk|design note|removal notice|tell a member|drift reaches zero)'
+    rationale: >-
+      Material implementation/alignment evidence remains in the portfolio controller,
+      but absent a security/privacy trigger it does not independently require another
+      assurance run. A later higher-priority rule may override this disposition.
+
+  - id: trust-tasks-framework-covered
+    outcome: covered
+    repository_regex: '^trustoverip/dtgwg-trust-tasks-(tf|spec)$'
+    title_regex: '(framework|registry|generated types|typed signing|dispatch|application-state|refusal|removal|publish)'
+    covered_by: trust-tasks--credential-spec
+
+fallback:
+  outcome: unresolved
+  rationale: No routing rule matched; qualifying findings must remain visible until policy coverage is added.
