@@ -5,11 +5,6 @@ on:
     # Portfolio Monitor collects at 00:17 and 12:17 UTC. Allow collection/publish time.
     - cron: '7 1,13 * * *'
   workflow_dispatch:
-    inputs:
-      snapshot_date:
-        description: Optional UTC Portfolio Monitor snapshot date (YYYY-MM-DD)
-        required: false
-        type: string
   push:
     branches: [main]
     paths:
@@ -38,16 +33,14 @@ jobs:
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
 
-      - name: Resolve and fetch Portfolio Monitor snapshot
+      - name: Fetch current Portfolio Monitor snapshot
         id: snapshot
-        env:
-          INPUT_DATE: ${{ github.event.inputs.snapshot_date }}
         shell: bash
         run: |
           python3 - <<'PY'
           import json, os, pathlib, urllib.error, urllib.request
           from datetime import datetime, timezone
-          day = (os.environ.get('INPUT_DATE') or '').strip() or datetime.now(timezone.utc).date().isoformat()
+          day = datetime.now(timezone.utc).date().isoformat()
           year, month, date = day.split('-')
           url = ('https://raw.githubusercontent.com/sankarshanmukhopadhyay/'
                  f'dtg-portfolio-monitor/main/data/findings/{year}/{month}/{date}.json')
@@ -137,7 +130,7 @@ jobs:
           pathlib.Path('build/dtg-routing/controller-events.json').write_text(json.dumps([event], indent=2) + '\n')
           PY
 
-      - name: Publish/coalesce portfolio controller
+      - name: Publish or coalesce portfolio controller
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
@@ -146,7 +139,7 @@ jobs:
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/controller-result.json
 
-      - name: Publish/coalesce bounded combined RAHP reviews
+      - name: Publish or coalesce bounded combined RAHP reviews
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
@@ -155,7 +148,7 @@ jobs:
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/combined-result.json
 
-      - name: Publish/coalesce canonical RAHP privacy referrals
+      - name: Publish or coalesce canonical RAHP privacy referrals
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
@@ -164,7 +157,7 @@ jobs:
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/dpip-result.json
 
-      - name: Immediately transport qualified privacy referrals to DPIP
+      - name: Transport qualified privacy referrals to DPIP
         env:
           GITHUB_TOKEN: ${{ github.token }}
           DPIP_HANDOFF_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
