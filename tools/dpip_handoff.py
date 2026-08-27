@@ -126,10 +126,21 @@ def create_intake(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], pa
         "suspected_surfaces": payload.get("suspected_surfaces", []),
         "question": payload.get("question", ""),
     }.items() if value}}
+    pin_lines = []
+    for pin in payload.get("source_pins", []) or []:
+        if not isinstance(pin, dict):
+            continue
+        repository = str(pin.get("repository") or "").strip()
+        revision = str(pin.get("revision") or "").strip()
+        label = str(pin.get("label") or repository or "Source").strip()
+        if repository and re.fullmatch(r"[0-9a-f]{40}", revision, re.I):
+            pin_lines.append(f"- {label} [repo={repository}]: `{revision}`")
+    pins_md = ("\n\n## Source pins\n\n" + "\n".join(pin_lines)) if pin_lines else ""
     body = (
         f"{marker}\n\n## Source\n\nAutomated handoff from `{rahp_repo}#{rahp_issue['number']}`.\n\n"
         f"```yaml\n{yaml.safe_dump(source_block, sort_keys=False).rstrip()}\n```\n\n"
-        f"## Requested examination\n\n```yaml\n{yaml.safe_dump(requested, sort_keys=False).rstrip()}\n```\n\n"
+        f"## Requested examination\n\n```yaml\n{yaml.safe_dump(requested, sort_keys=False).rstrip()}\n```"
+        f"{pins_md}\n\n"
         "## Boundary\n\nRAHP does not prejudge the DPIP result. DPIP owns applicability, evidence assessment, scoped conclusion, and return disposition.\n"
     )
     title = f"[RAHP intake] {rahp_issue['title'].removeprefix('[DPIP candidate] ').removeprefix('[DPIP requested] ')}"
@@ -200,6 +211,8 @@ dpip:
     assert "abc123" in marker1 and "deadbeef" in marker1
     bad = dict(payload); bad["question"] = ""
     assert any("question" in error for error in validate_payload(bad))
+    payload["source_pins"] = [{"label":"Credential Spec","repository":"trustoverip/dtgwg-cred-spec","revision":"a"*40}]
+    assert payload["source_pins"][0]["repository"] == "trustoverip/dtgwg-cred-spec"
     print("PASS dpip_handoff self-test")
     return 0
 
