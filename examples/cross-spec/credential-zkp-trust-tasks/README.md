@@ -61,10 +61,10 @@ Component-level controls materially reduce several risks, but the complete Crede
 
 | ID | Finding | Severity | Status | Primary disposition | RAHP risks |
 |---|---|---|---|---|---|
-| `F-001` | Valid evidence does not establish current authority at consequential execution time | Critical | open | Companion Specification | [RK-G01 — Governance ambiguity and enforcement gap](../../../build/site/catalogue.html#RK-G01) |
-| `F-002` | One-effect execution is not established by component validity | High | open | Companion Specification | [RK-G01 — Governance ambiguity and enforcement gap](../../../build/site/catalogue.html#RK-G01) |
-| `F-003` | Task-specific proof commitment remains a three-spec composition obligation | High | open | Companion Specification | [RK-G01 — Governance ambiguity and enforcement gap](../../../build/site/catalogue.html#RK-G01) |
-| `F-004` | Composed privacy can fail despite pairwise identifiers and zero-knowledge disclosure | High | open | Companion Specification | [RK-G01 — Governance ambiguity and enforcement gap](../../../build/site/catalogue.html#RK-G01) |
+| `F-001` | Valid evidence does not establish current authority at consequential execution time | Critical | open | Companion Specification | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
+| `F-002` | One-effect execution is not established by component validity | High | open | Companion Specification | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
+| `F-003` | Task-specific proof commitment remains a three-spec composition obligation | High | open | Companion Specification | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
+| `F-004` | Composed privacy can fail despite pairwise identifiers and zero-knowledge disclosure | High | open | Companion Specification | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 
 ### Detailed findings
 
@@ -79,7 +79,7 @@ Component-level controls materially reduce several risks, but the complete Crede
 | Scenarios | `XSP-CZT-001`, `XSP-CZT-003`, `XSP-CZT-007` |
 | Scenario patterns | `SP-AUTH-02`, `SP-GOV-01`, `SP-COMP-01`, `SP-COMP-02` |
 | Personas | `D1` |
-| Risks | [RK-G01 — Governance ambiguity and enforcement gap](../../../build/site/catalogue.html#RK-G01) |
+| Risks | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 | Controls | — |
 | Guardrails | — |
 | Assurance tests | — |
@@ -125,7 +125,7 @@ Define a reusable action-time authority decision contract binding principal, del
 | Scenarios | `XSP-CZT-004`, `XSP-CZT-005`, `XSP-CZT-007` |
 | Scenario patterns | `SP-COMP-01`, `SP-OPS-01`, `SP-OPS-02`, `SP-REPLAY-01` |
 | Personas | `D1` |
-| Risks | [RK-G01 — Governance ambiguity and enforcement gap](../../../build/site/catalogue.html#RK-G01) |
+| Risks | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 | Controls | — |
 | Guardrails | — |
 | Assurance tests | — |
@@ -171,7 +171,7 @@ Bind the authoritative task instance, evidence set and outcome receipt to one lo
 | Scenarios | `XSP-CZT-002`, `XSP-CZT-005`, `XSP-CZT-007` |
 | Scenario patterns | `SP-PRIV-01`, `SP-REPLAY-01`, `SP-COMP-01` |
 | Personas | `D1` |
-| Risks | [RK-G01 — Governance ambiguity and enforcement gap](../../../build/site/catalogue.html#RK-G01) |
+| Risks | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 | Controls | — |
 | Guardrails | — |
 | Assurance tests | — |
@@ -217,7 +217,7 @@ Define the minimum privacy-preserving task-context commitment and require cross-
 | Scenarios | `XSP-CZT-002`, `XSP-CZT-006` |
 | Scenario patterns | `SP-PRIV-01`, `SP-PRIV-02`, `SP-COMP-01` |
 | Personas | `D1` |
-| Risks | [RK-G01 — Governance ambiguity and enforcement gap](../../../build/site/catalogue.html#RK-G01) |
+| Risks | [RK-G01 — Genesis Policy Capture](../../../build/site/catalogue.html#RK-G01) |
 | Controls | — |
 | Guardrails | — |
 | Assurance tests | — |
