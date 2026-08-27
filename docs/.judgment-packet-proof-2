@@ -1,0 +1,1 @@
+Regression intent: a combined-review issue already at judgment-required must still receive a reviewer packet during worker reconciliation; no assessment-required label is necessary for packet backfill.
