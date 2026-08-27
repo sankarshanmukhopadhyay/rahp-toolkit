@@ -2,9 +2,9 @@
   "version": 1,
   "repositories": {
     "trustoverip/dtgwg-trust-tasks-tf": {
-      "sha": "e13efd8650ffbd8029f1945b824e9a7e12e2871a",
+      "sha": "6e7b212b830ecbc99d7ea6fe97f3a3aa40c38bc9",
       "status": "active",
-      "observed_at": "2026-08-27T11:06:24.063326+00:00"
+      "observed_at": "2026-08-27T14:35:13.024091+00:00"
     },
     "trustoverip/dtgwg-htx-tf": {
       "sha": "0718ff3ba2b0333571f1637e229c313d3545e162",
@@ -13,7 +13,7 @@
     },
     "trustoverip/dtgwg-ux-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-27T11:06:24.780856+00:00"
+      "observed_at": "2026-08-27T14:35:14.285852+00:00"
     },
     "trustoverip/dtgwg-general": {
       "sha": "fa15044225ff447ad6564983a5ce0732b80cbdc1",
@@ -42,7 +42,7 @@
     },
     "trustoverip/dtgwg-rcards-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-27T11:06:26.460420+00:00"
+      "observed_at": "2026-08-27T14:35:17.351232+00:00"
     },
     "trustoverip/dtgwg-vds-tf": {
       "sha": "99eacacedd1729d20528a2ec65ff5288d103ec5e",
