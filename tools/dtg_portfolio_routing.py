@@ -205,6 +205,10 @@ def main() -> int:
         event = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-27")
         assert event["assessment_key"].startswith("dtg:portfolio:dpip:v2:relationship-correlation-privacy:")
         assert event["assessment_key"].endswith(cluster_digest(grouped[("dpip", "relationship-correlation-privacy")]))
+        pin_fixture = [dict(fixture[0], evidence_urls=["https://github.com/example/source/commit/" + "a" * 40])]
+        pin_routed = route_findings(pin_fixture, policy)
+        pin_event = dpip_event("relationship-correlation-privacy", pin_routed, "2026-08-27")
+        assert "revision: " + "a" * 40 in pin_event["body"]
         print("PASS dtg portfolio routing self-test")
         return 0
 
