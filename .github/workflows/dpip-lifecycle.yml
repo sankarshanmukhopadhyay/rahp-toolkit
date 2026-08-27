@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - tools/dpip_lifecycle.py
+      - tools/dpip_lifecycle_reconcile.py
       - .github/workflows/dpip-lifecycle.yml
   push:
     branches: [main]
     paths:
       - tools/dpip_lifecycle.py
+      - tools/dpip_lifecycle_reconcile.py
       - .github/workflows/dpip-lifecycle.yml
   schedule:
     - cron: '47 4 * * *'
@@ -39,7 +41,9 @@ jobs:
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
       - name: Validate lifecycle derivation
-        run: python3 tools/dpip_lifecycle.py --self-test
+        run: |
+          python3 tools/dpip_lifecycle.py --self-test
+          python3 tools/dpip_lifecycle_reconcile.py --self-test
       - name: Reconcile lifecycle telemetry
         if: github.event_name != 'pull_request'
         env:
@@ -51,7 +55,7 @@ jobs:
         shell: bash
         run: |
           if [ -n "${ISSUE_NUMBER:-}" ]; then
-            python3 tools/dpip_lifecycle.py --issue-number "$ISSUE_NUMBER"
+            python3 tools/dpip_lifecycle_reconcile.py --issue-number "$ISSUE_NUMBER"
           else
-            python3 tools/dpip_lifecycle.py
+            python3 tools/dpip_lifecycle_reconcile.py
           fi
