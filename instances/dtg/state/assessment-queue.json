@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "baselined_at": "2026-08-22T05:23:14+05:30",
+  "baselined_at": "2026-08-27T09:50:00+05:30",
   "open_generated_assessments": [],
   "dispositions": [
     {
@@ -8,14 +8,7 @@
       "assessment_key": "dtg:repository:trustoverip/dtgwg-trust-tasks-tf",
       "review": "instances/dtg/reviews/2026-08-trust-tasks.md",
       "reviewed_revision": "2a40f6bd3b13c85c49123174fdbe4354b3c48d81",
-      "rahp_issues": [
-        1,
-        3,
-        4,
-        7,
-        9,
-        20
-      ],
+      "rahp_issues": [1, 3, 4, 7, 9, 20],
       "disposition": "findings-raised"
     },
     {
@@ -23,10 +16,7 @@
       "assessment_key": "dtg:repository:OpenVTC/verifiable-trust-infrastructure",
       "review": "instances/dtg/reviews/2026-08-verifiable-trust-infrastructure.md",
       "reviewed_revision": "187ad9cde4cf5c5f8add3732a661816a650d631c",
-      "rahp_issues": [
-        2,
-        8
-      ],
+      "rahp_issues": [2, 8],
       "disposition": "findings-raised"
     },
     {
@@ -34,11 +24,16 @@
       "assessment_key": "dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf",
       "review": "instances/dtg/reviews/2026-08-zkp-fork.md",
       "reviewed_revision": "546babc471130af751ed3a117a0d476f5e0a7e03",
-      "rahp_issues": [
-        11,
-        27
-      ],
+      "rahp_issues": [11, 27],
       "disposition": "no-material-assurance-impact"
+    },
+    {
+      "assessment_id": "DTG-AR-2026-004",
+      "assessment_key": "dtg:repository:trustoverip/dtgwg-trust-tasks-tf",
+      "review": "instances/dtg/reviews/2026-08-trust-tasks-cdfc6e2.md",
+      "reviewed_revision": "cdfc6e231dc6cc9ed901bbd27b4c6e8ea2f3e06a",
+      "rahp_issues": [70],
+      "disposition": "findings-raised"
     }
   ]
 }
