@@ -1,0 +1,63 @@
+import importlib.util
+import pathlib
+import unittest
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location(
+    "dtg_assurance_reconcile", ROOT / "tools" / "dtg_assurance_reconcile.py"
+)
+MOD = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(MOD)
+
+
+class DtgAssuranceReconcileTests(unittest.TestCase):
+    EVENT = "a" * 20
+
+    def run(self):
+        return {"id": "gha-123-1", "fingerprint": "fp", "qualifying_events": [self.EVENT]}
+
+    def issue(self, state="closed", labels=None):
+        return {
+            "number": 9,
+            "state": state,
+            "labels": [{"name": name} for name in (labels or [])],
+            "body": f"<!-- rahp-dtg-gatherer-run:gha-123-1 -->\n<!-- rahp-dtg-gatherer-event:{self.EVENT} -->",
+        }
+
+    def result(self, issue, comments=None):
+        evidence = MOD.normalize(self.run(), [issue], {9: comments or []})
+        return MOD.compute(evidence)["portfolio_assurance"]
+
+    def test_closed_issue_without_explicit_dpip_decision_is_not_terminal(self):
+        p = self.result(self.issue())
+        self.assertEqual((p["pipeline_status"], p["disposition"]), ("AMBER", "WORK_OPEN"))
+
+    def test_explicit_no_dpip_allows_green_when_closed(self):
+        p = self.result(self.issue(labels=[MOD.DPIP_NOT_REQUIRED]))
+        self.assertEqual((p["pipeline_status"], p["disposition"]), ("GREEN", "DPIP_NOT_REQUIRED"))
+
+    def test_no_dpip_label_does_not_hide_open_issue(self):
+        p = self.result(self.issue(state="open", labels=[MOD.DPIP_NOT_REQUIRED]))
+        self.assertEqual((p["pipeline_status"], p["disposition"]), ("AMBER", "WORK_OPEN"))
+
+    def test_completed_dpip_requires_returned_structured_disposition(self):
+        p = self.result(self.issue(labels=["assurance:dpip-complete"]))
+        self.assertEqual((p["pipeline_status"], p["disposition"]), ("RED", "PIPELINE_BROKEN"))
+
+    def test_indeterminate_round_trip_remains_amber(self):
+        comments = [{"body": "```yaml\ndpip_disposition:\n  conclusion: INDETERMINATE\n```"}]
+        p = self.result(self.issue(labels=["assurance:dpip-complete"]), comments)
+        self.assertEqual((p["pipeline_status"], p["disposition"]), ("AMBER", "INDETERMINATE"))
+
+    def test_coalesced_trigger_recovers_event_lineage(self):
+        issue = self.issue(labels=[MOD.DPIP_NOT_REQUIRED])
+        issue["body"] = (
+            "<!-- rahp-assessment-key:dtg:repository:OpenVTC/openvtc -->\n"
+            f"<!-- rahp-trigger:dtg:repository:OpenVTC/openvtc@gatherer-gha-123-1-{self.EVENT} -->"
+        )
+        self.assertTrue(MOD.linked_to_run(issue, "gha-123-1"))
+        self.assertEqual(MOD.event_ids(issue, "gha-123-1"), [self.EVENT])
+
+
+if __name__ == "__main__":
+    unittest.main()
