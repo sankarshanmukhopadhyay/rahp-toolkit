@@ -8,7 +8,7 @@ nav_exclude: true
 
 # DTG review: Trust Tasks through cdfc6e2
 
-**Assessment ID:** `DTG-AR-2026-004`  
+**Assessment ID:** `DTG-AR-2026-005`  
 **Assessment key:** `dtg:repository:trustoverip/dtgwg-trust-tasks-tf`  
 **Mode:** combined RAHP + security  
 **Status:** dispositioned  
