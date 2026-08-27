@@ -36,8 +36,15 @@ AFFECTED_PATTERNS = (
 )
 
 
+def normalize(path: str) -> str:
+    value = path.strip()
+    while value.startswith("./"):
+        value = value[2:]
+    return value.lstrip("/")
+
+
 def matches(path: str) -> bool:
-    path = path.strip().lstrip("./")
+    path = normalize(path)
     return any(fnmatch.fnmatchcase(path, pattern) for pattern in AFFECTED_PATTERNS)
 
 
@@ -54,7 +61,7 @@ def classify(paths: list[str] | None, *, full: bool = False) -> dict[str, object
             "reason": "fail-safe-classification-unavailable",
             "affected_paths": [],
         }
-    cleaned = sorted({p.strip().lstrip("./") for p in paths if p.strip()})
+    cleaned = sorted({normalize(p) for p in paths if p.strip()})
     if not cleaned:
         return {
             "required": True,
@@ -86,6 +93,7 @@ def self_test() -> int:
         "conformance-fixture": ["tests/conformance/engine/valid-minimal/result.json"],
         "classifier": ["tools/typescript_ci_impact.py"],
         "workflow": [".github/workflows/validate.yml"],
+        "workflow-dot-relative": ["./.github/workflows/validate.yml"],
     }
     for name, paths in required_cases.items():
         result = classify(paths)
