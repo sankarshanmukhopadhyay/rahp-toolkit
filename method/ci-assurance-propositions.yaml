@@ -1,0 +1,48 @@
+id: rahp-ci-assurance-propositions-v1
+version: 1
+title: RAHP CI assurance propositions
+
+propositions:
+  python_typescript_conformance:
+    title: Python-TypeScript reference conformance
+    owner_workflow: .github/workflows/validate.yml
+    classifier: tools/typescript_ci_impact.py
+    repository_validator: tools/validate_ci_assurance.py
+    conformance_validator: tools/validate_typescript_sdk.py
+    conditional_events:
+      - pull_request
+      - push
+    full_backstop_events:
+      - schedule
+      - workflow_dispatch
+    release_workflow: .github/workflows/release.yml
+    release_mode: unconditional
+    fail_safe: required
+    affected_paths:
+      - packages/**
+      - package.json
+      - package-lock.json
+      - requirements.txt
+      - tools/validate_typescript_sdk.py
+      - tools/typescript_ci_impact.py
+      - tools/validate_ci_assurance.py
+      - tools/engine_contract.py
+      - tools/rahp.py
+      - method/ci-assurance-propositions.yaml
+      - method/engine-contract.yaml
+      - method/evidence-retention.yaml
+      - method/schema/rahp-result.schema.json
+      - method/schema/rahp-config.schema.json
+      - tests/conformance/**
+      - tests/fixtures/portable-project/rahp.yaml
+      - profiles/dtg/rahp.yaml
+      - profiles/cawg/rahp.yaml
+      - build/rahp.json
+      - .github/workflows/validate.yml
+      - .github/workflows/release.yml
+
+judgment: >-
+  Proposition-sensitive execution decides whether a change can affect the
+  Python-TypeScript conformance claim. It does not make conformance optional.
+  Unknown classification is REQUIRED, full validation is REQUIRED, and release
+  publication is an unconditional backstop.
