@@ -1,0 +1,49 @@
+name: Reconcile DTG end-to-end assurance
+
+on:
+  issues:
+    types: [labeled, unlabeled, closed, reopened]
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+
+concurrency:
+  group: rahp-dtg-assurance-reconcile
+  cancel-in-progress: true
+
+jobs:
+  reconcile:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'issues' && contains(github.event.issue.body, 'rahp-dtg-gatherer'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Validate lineage reconciliation
+        run: |
+          python3 tools/dtg_gatherer_lineage.py --self-test
+          python3 tools/dtg_assurance_reconcile.py --self-test
+      - name: Reconcile latest DTG gatherer run
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f instances/dtg/generated/gatherer-run.json ]; then
+            echo 'No persisted DTG gatherer run exists yet.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          python3 tools/dtg_assurance_reconcile.py \
+            --evidence-output /tmp/dtg-assurance-evidence.yaml \
+            --result-output /tmp/dtg-assurance-result.yaml \
+            | tee /tmp/dtg-assurance-summary.md
+          cat /tmp/dtg-assurance-summary.md >> "$GITHUB_STEP_SUMMARY"
