@@ -42,25 +42,8 @@ propositions:
       - .github/workflows/validate.yml
       - .github/workflows/release.yml
 
-  dtg_cross_spec:
-    title: DTG cross-specification composition assurance
-    owner_workflow: .github/workflows/validate.yml
-    direct_workflow: .github/workflows/dtg-cross-spec-pressure-test.yml
-    reusable_workflow: .github/workflows/cross-spec-pressure-test.yml
-    registry: profiles/dtg/cross-spec-tests.yaml
-    classifier: tools/dtg_cross_spec_ci_impact.py
-    validator: tools/validate_dtg_cross_spec_ci.py
-    conditional_events:
-      - pull_request
-      - push
-    full_backstop_events:
-      - schedule
-      - workflow_dispatch
-    fail_safe: all-compositions
-    selection_granularity: composition
-
 judgment: >-
-  Proposition-sensitive execution decides whether a change can affect a declared
-  assurance claim. It does not make assurance optional. Python-TypeScript
-  uncertainty requires conformance; DTG Cross-Spec uncertainty expands to all
-  maintained runnable compositions. Full validation remains a backstop.
+  Proposition-sensitive execution decides whether a change can affect the
+  Python-TypeScript conformance claim. It does not make conformance optional.
+  Unknown classification is REQUIRED, full validation is REQUIRED, and release
+  publication is an unconditional backstop.
