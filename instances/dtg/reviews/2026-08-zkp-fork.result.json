@@ -3,31 +3,74 @@
   "assessment": {
     "id": "DTG-AR-2026-003",
     "key": "dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf",
-    "triggers": ["rahp-toolkit#11", "rahp-toolkit#27"]
+    "triggers": [
+      "rahp-toolkit#11",
+      "rahp-toolkit#27",
+      "rahp-toolkit#72",
+      "rahp-toolkit#86"
+    ]
   },
   "target": {
     "repository": "sankarshanmukhopadhyay/dtgwg-zkp-tf",
     "baseline_revision": "9a1ae81465e1da9f5c06ccd500a70708eb2511a6",
-    "reviewed_revision": "546babc471130af751ed3a117a0d476f5e0a7e03"
+    "reviewed_revision": "6e1356812716dbd0e551272251e3e825132a8268"
   },
   "mode": "combined",
   "status": "dispositioned",
   "findings": [
-    {"id":"F-001","title":"Construction-dependent conformance coverage remains incomplete","status":"open","residual_state":"review-required","owner":"ZKP construction-selection / conformance workstream"},
-    {"id":"F-002","title":"Cross-spec authority and lifecycle dependencies remain external","status":"open","residual_state":"assurance-gap","owner":"cross-specification companion profiles"}
+    {
+      "id": "F-001",
+      "title": "Experimental constructions are executable but not production-qualified",
+      "status": "open",
+      "residual_state": "review-required",
+      "owner": "ZKP construction-selection / conformance workstream"
+    },
+    {
+      "id": "F-002",
+      "title": "Cross-spec authority and lifecycle dependencies remain external",
+      "status": "open",
+      "residual_state": "assurance-gap",
+      "owner": "cross-specification companion profiles"
+    },
+    {
+      "id": "F-003",
+      "title": "Community and registry proof inputs remain an owning-layer dependency",
+      "status": "open",
+      "residual_state": "external-dependency",
+      "owner": "Credential / Registry / governance profile owners"
+    }
   ],
   "disposition": {
     "outcome": "no-material-assurance-impact",
-    "summary": "Material strengthening of executable evidence, release integrity and conformance honesty; remaining construction blockers and cross-spec dependencies are explicit residual states rather than false passes.",
-    "decided_at": "2026-08-22T05:08:00+05:30"
+    "summary": "The queued composed-privacy, experimental-construction, asymmetric-edge and Community-Anchored Proof deltas materially strengthen negative-test coverage and assurance boundaries without introducing a blocking RAHP or security regression. Experimental constructions remain non-production-qualified and cross-specification/registry dependencies remain explicit residual states.",
+    "decided_at": "2026-08-27T09:15:00+05:30"
   },
   "evidence": [
-    {"id":"DTG-AR-2026-003-RECORD","class":"durable","description":"Human-readable durable assessment record in 2026-08-zkp-fork.md"}
+    {
+      "id": "DTG-AR-2026-003-RECORD",
+      "class": "durable",
+      "description": "Human-readable durable combined RAHP + security assessment record in 2026-08-zkp-fork.md"
+    },
+    {
+      "id": "DTG-AR-2026-003-WINDOW-72",
+      "class": "source-pinned",
+      "description": "ZKP fork comparison 546babc471130af751ed3a117a0d476f5e0a7e03 to 6064c3428ca88471b5ec8271ec03e318c26d2a13"
+    },
+    {
+      "id": "DTG-AR-2026-003-WINDOW-86",
+      "class": "source-pinned",
+      "description": "ZKP fork comparison 6064c3428ca88471b5ec8271ec03e318c26d2a13 to 6e1356812716dbd0e551272251e3e825132a8268"
+    }
   ],
-  "closure": {"eligible_issues":[11,27],"reviewed_revision":"546babc471130af751ed3a117a0d476f5e0a7e03"},
+  "closure": {
+    "eligible_issues": [11, 27, 72, 86],
+    "reviewed_revision": "6e1356812716dbd0e551272251e3e825132a8268"
+  },
   "retest_triggers": [
     "material ZKP fork change",
-    "construction selection or executable proof adapter change",
+    "experimental construction proposed for normative or production promotion",
+    "independent cryptographic or interoperability evidence changes construction confidence",
+    "Credential or Registry layer supplies concrete Community-Anchored Proof inputs",
     "Trust Tasks baseline change",
     "Credential Specification baseline change",
     "new active VDS/Agent Names/HTX binding"
