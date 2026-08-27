@@ -128,12 +128,23 @@ def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str,
         "revision": day,
     }
     source_pins = []
+    seen_pins: set[tuple[str, str]] = set()
     for item in items:
         finding = item["finding"]
-        revision = str(finding.get("revision") or finding.get("commit_sha") or "")
         repository = str(finding.get("repository") or "")
-        if repository and re.fullmatch(r"[0-9a-f]{40}", revision, re.I):
-            source_pins.append({"label": repository, "repository": repository, "revision": revision})
+        revisions: list[str] = []
+        direct = str(finding.get("revision") or finding.get("commit_sha") or "")
+        if re.fullmatch(r"[0-9a-f]{40}", direct, re.I):
+            revisions.append(direct)
+        for url in finding.get("evidence_urls") or []:
+            match = re.search(r"/commit/([0-9a-f]{40})(?:$|[/?#])", str(url), re.I)
+            if match:
+                revisions.append(match.group(1))
+        for revision in revisions:
+            key = (repository, revision.lower())
+            if repository and key not in seen_pins:
+                seen_pins.add(key)
+                source_pins.append({"label": repository, "repository": repository, "revision": revision})
     payload = {
         "dpip": {
             "recommendation": "examine",
