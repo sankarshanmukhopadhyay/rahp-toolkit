@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Compute a DTG portfolio assurance terminal state from durable lineage evidence.
+"""Compute DTG end-to-end assurance state from RAHP gatherer lineage evidence.
 
 This module is deliberately DTG-instance-specific. It does not infer assurance from CI
-success and it does not call GitHub. Orchestration supplies a normalized evidence
-record; this controller validates coverage/provenance and computes a conservative
-terminal state that can be rendered or published elsewhere.
+success and it does not call GitHub. The RAHP DTG gatherer/orchestration layer supplies
+a normalized evidence record; this controller validates coverage/provenance and computes
+a conservative terminal state that can be rendered or published elsewhere.
 """
 from __future__ import annotations
 
@@ -15,14 +15,9 @@ from typing import Any
 
 import yaml
 
-
 GREEN = "GREEN"
 AMBER = "AMBER"
 RED = "RED"
-
-
-def _count(items: list[dict[str, Any]], key: str, value: Any = True) -> int:
-    return sum(1 for item in items if item.get(key) == value)
 
 
 def _unique(values: list[str]) -> list[str]:
@@ -30,29 +25,26 @@ def _unique(values: list[str]) -> list[str]:
 
 
 def compute(evidence: dict[str, Any]) -> dict[str, Any]:
-    """Return a deterministic portfolio-assurance result.
+    """Return a deterministic portfolio-assurance result from RAHP gatherer evidence.
 
-    Expected evidence shape is intentionally small and transport-neutral:
+    Expected transport-neutral shape:
 
-    snapshot: {id, fingerprint, qualifying_findings:[ids...]}
-    findings: [{id, accounted_for, disposition, assessment_ids:[...]}]
+    run: {id, fingerprint, qualifying_events:[ids...]}
+    events: [{id, accounted_for, disposition, assessment_ids:[...]}]
     assessments: [{id, required, complete, adverse, provenance_valid}]
     dpip: [{id, required, complete, disposition, return_received, provenance_valid}]
-
-    ``disposition`` for DPIP may be PASS, NOT_APPLICABLE, INDETERMINATE or ADVERSE.
-    Unknown/missing terminal dispositions are treated conservatively as open work.
     """
-    snapshot = evidence.get("snapshot") or {}
-    qualifying = list(snapshot.get("qualifying_findings") or [])
-    finding_rows = list(evidence.get("findings") or [])
+    run = evidence.get("run") or evidence.get("snapshot") or {}
+    qualifying = list(run.get("qualifying_events") or run.get("qualifying_findings") or [])
+    event_rows = list(evidence.get("events") or evidence.get("findings") or [])
     assessments = list(evidence.get("assessments") or [])
     dpip = list(evidence.get("dpip") or [])
 
-    finding_by_id = {row.get("id"): row for row in finding_rows if row.get("id")}
-    missing_findings = [fid for fid in qualifying if fid not in finding_by_id]
+    event_by_id = {row.get("id"): row for row in event_rows if row.get("id")}
+    missing_events = [eid for eid in qualifying if eid not in event_by_id]
     unaccounted = [
-        fid for fid in qualifying
-        if fid in finding_by_id and not finding_by_id[fid].get("accounted_for", False)
+        eid for eid in qualifying
+        if eid in event_by_id and not event_by_id[eid].get("accounted_for", False)
     ]
 
     required_assessments = [a for a in assessments if a.get("required", True)]
@@ -87,7 +79,7 @@ def compute(evidence: dict[str, Any]) -> dict[str, Any]:
             open_dpip.append(ident)
 
     provenance_failures = _unique(invalid_assessment_provenance + invalid_dpip_provenance)
-    coverage_failures = _unique(missing_findings + unaccounted)
+    coverage_failures = _unique(missing_events + unaccounted)
     open_work = _unique(open_assessments + open_dpip)
     adverse = _unique(adverse_assessments + adverse_dpip)
 
@@ -99,18 +91,17 @@ def compute(evidence: dict[str, Any]) -> dict[str, Any]:
         pipeline_status, disposition = AMBER, "INDETERMINATE"
     elif coverage_failures or open_work:
         pipeline_status, disposition = AMBER, "WORK_OPEN"
+    elif required_dpip:
+        pipeline_status, disposition = GREEN, "DPIP_COMPLETE"
     else:
-        if required_dpip:
-            pipeline_status, disposition = GREEN, "DPIP_COMPLETE"
-        else:
-            pipeline_status, disposition = GREEN, "DPIP_NOT_REQUIRED"
+        pipeline_status, disposition = GREEN, "DPIP_NOT_REQUIRED"
 
-    result = {
+    return {
         "portfolio_assurance": {
-            "snapshot": snapshot.get("id"),
-            "fingerprint": snapshot.get("fingerprint"),
-            "monitor_findings": len(qualifying),
-            "findings_accounted_for": len(qualifying) - len(coverage_failures),
+            "run": run.get("id"),
+            "fingerprint": run.get("fingerprint"),
+            "gatherer_events": len(qualifying),
+            "events_accounted_for": len(qualifying) - len(coverage_failures),
             "assessments": {
                 "required": len(required_assessments),
                 "complete": len(required_assessments) - len(open_assessments),
@@ -137,7 +128,6 @@ def compute(evidence: dict[str, Any]) -> dict[str, Any]:
             },
         }
     }
-    return result
 
 
 def render_markdown(result: dict[str, Any]) -> str:
@@ -145,11 +135,11 @@ def render_markdown(result: dict[str, Any]) -> str:
     d = p["dpip"]
     a = p["assessments"]
     lines = [
-        f"# DTG Portfolio Assurance — {p.get('snapshot') or 'unknown snapshot'}",
+        f"# DTG End-to-End Assurance — {p.get('run') or 'unknown gatherer run'}",
         "",
         f"**{p['pipeline_status']} — {p['disposition']}**",
         "",
-        f"{p['findings_accounted_for']}/{p['monitor_findings']} material findings accounted for · "
+        f"{p['events_accounted_for']}/{p['gatherer_events']} gatherer events accounted for · "
         f"{a['complete']}/{a['required']} required assessments complete · "
         f"DPIP {'required' if d['required'] else 'not required'}"
         + (f" ({d['completed']}/{d['requests']} returned)" if d['required'] else "")
