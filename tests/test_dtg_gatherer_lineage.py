@@ -1,5 +1,6 @@
 import importlib.util
 import pathlib
+import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -40,6 +41,20 @@ class DtgGathererLineageTests(unittest.TestCase):
         second = self.event()
         second["new"] = "c" * 40
         self.assertNotEqual(MOD.event_id(first), MOD.event_id(second))
+
+    def test_per_run_record_paths_do_not_alias(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run_dir = pathlib.Path(tmp)
+            self.assertNotEqual(
+                MOD.run_record_path(run_dir, "gha-1-1"),
+                MOD.run_record_path(run_dir, "gha-2-1"),
+            )
+
+    def test_zero_event_run_has_no_qualifying_lineage(self):
+        stamped, run = MOD.stamp([], "gha-empty-1")
+        self.assertEqual(stamped, [])
+        self.assertEqual(run["event_count"], 0)
+        self.assertEqual(run["qualifying_events"], [])
 
 
 if __name__ == "__main__":
