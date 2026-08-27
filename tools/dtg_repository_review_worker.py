@@ -53,13 +53,18 @@ def is_repository_review(issue: dict[str, Any]) -> bool:
     return issue.get("state") == "open" and KEY_RE.search(body) is not None and bool({ASSESSMENT, JUDGMENT} & labels(issue))
 
 
-def provenance(body: str) -> tuple[str, str, str, str]:
+def provenance(body: str) -> tuple[str, str, str | None, str]:
     key = KEY_RE.search(body or "")
     change = CHANGE_RE.search(body or "")
     base = BASE_RE.search(body or "")
-    if not key or not change or not base:
-        raise ValueError("repository review lacks gatherer assessment/base/change provenance")
-    return key.group(1).strip(), change.group(1).strip(), base.group(1).strip(), change.group(2).strip()
+    if not key or not change:
+        raise ValueError("repository review lacks gatherer assessment/change provenance")
+    return (
+        key.group(1).strip(),
+        change.group(1).strip(),
+        base.group(1).strip() if base else None,
+        change.group(2).strip(),
+    )
 
 
 def lineage(body: str) -> tuple[str | None, str | None]:
@@ -80,7 +85,7 @@ def render_record(issue: dict[str, Any]) -> str:
     lines = [
         MARKER, "## Automated gatherer-native evidence execution", "",
         f"- Review issue: #{issue['number']}", f"- Assessment key: `{key}`", f"- Repository: `{repo}`",
-        f"- Gathered revision window: `{base}` → `{sha}`",
+        f"- Gathered revision window: `{base or 'unknown-base'}` → `{sha}`",
     ]
     if run_id:
         lines.append(f"- Gatherer run: `{run_id}`" + (f" / event `{event_id}`" if event_id else ""))
@@ -110,7 +115,7 @@ def render_packet(issue: dict[str, Any]) -> str:
     lineage_line = f"**Gatherer lineage:** `{run_id}`" + (f" / `{event_id}`" if event_id else "") if run_id else "**Gatherer lineage:** legacy/un-stamped assessment"
     return "\n".join([
         PACKET_MARKER, "## Reviewer judgment packet — gatherer-native repository review", "",
-        f"**Assessment:** `{key}`  ", f"**Repository:** `{repo}`  ", f"**Revision window:** `{base}` → `{sha}`  ", lineage_line, "",
+        f"**Assessment:** `{key}`  ", f"**Repository:** `{repo}`  ", f"**Revision window:** `{base or 'unknown-base'}` → `{sha}`  ", lineage_line, "",
         "The automated disposition attempt did not establish every required lens. Human judgment is therefore the exception path for the unresolved dimensions below.", "",
         "### Materiality evidence", "", why, "", "### Gathered file boundary", "", files, "",
         "### Gathered commits", "", commits, "", "### Required judgment", "",
@@ -153,6 +158,8 @@ def has_marker(items: list[dict[str, Any]], marker: str) -> bool:
 
 def attempt_auto(issue: dict[str, Any], token: str, existing: list[dict[str, Any]]) -> bool:
     _, repo, base, head = provenance(issue.get("body") or "")
+    if not base:
+        return False
     compare = auto.fetch_compare(repo, base, head, token)
     result = auto.assess(compare)
     if not has_marker(existing, AUTO_MARKER):
