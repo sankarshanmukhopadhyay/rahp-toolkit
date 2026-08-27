@@ -5,10 +5,17 @@ on:
     # Portfolio Monitor collects at 00:17 and 12:17 UTC. Allow collection/publish time.
     - cron: '7 1,13 * * *'
   workflow_dispatch:
+    inputs:
+      snapshot_date:
+        description: Optional UTC Portfolio Monitor snapshot date (YYYY-MM-DD)
+        required: false
+        type: string
   push:
     branches: [main]
     paths:
       - '.github/workflows/dtg-portfolio-materiality-handoff.yml'
+      - 'tools/dtg_portfolio_routing.py'
+      - 'instances/dtg/assurance-routing.yaml'
 
 permissions:
   contents: read
@@ -16,7 +23,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: dtg-portfolio-materiality-handoff
+  group: dtg-portfolio-materiality-handoff-${{ inputs.snapshot_date || 'current' }}
   cancel-in-progress: false
 
 jobs:
@@ -27,125 +34,96 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
 
-      - name: Convert current Portfolio Monitor findings into RAHP assessment events
-        id: gate
+      - name: Resolve and fetch Portfolio Monitor snapshot
+        id: snapshot
+        env:
+          INPUT_DATE: ${{ inputs.snapshot_date }}
         shell: bash
         run: |
           python3 - <<'PY'
-          import json
-          import pathlib
-          import urllib.error
-          import urllib.request
+          import json, os, pathlib, urllib.error, urllib.request
           from datetime import datetime, timezone
-
-          day = datetime.now(timezone.utc).date().isoformat()
+          day = (os.environ.get('INPUT_DATE') or '').strip() or datetime.now(timezone.utc).date().isoformat()
           year, month, date = day.split('-')
-          source_url = (
-              'https://raw.githubusercontent.com/'
-              'sankarshanmukhopadhyay/dtg-portfolio-monitor/main/'
-              f'data/findings/{year}/{month}/{date}.json'
-          )
-
+          url = ('https://raw.githubusercontent.com/sankarshanmukhopadhyay/'
+                 f'dtg-portfolio-monitor/main/data/findings/{year}/{month}/{date}.json')
           try:
-              with urllib.request.urlopen(source_url, timeout=30) as response:
+              with urllib.request.urlopen(url, timeout=30) as response:
                   findings = json.load(response)
           except urllib.error.HTTPError as exc:
               if exc.code == 404:
-                  raise SystemExit(
-                      f'Portfolio Monitor has not published the expected {day} findings snapshot: {source_url}'
-                  ) from exc
+                  raise SystemExit(f'Expected Portfolio Monitor snapshot is missing: {url}') from exc
               raise
-
           if not isinstance(findings, list):
               raise SystemExit('Portfolio Monitor findings snapshot must be a JSON array')
+          build = pathlib.Path('build/dtg-routing')
+          build.mkdir(parents=True, exist_ok=True)
+          (build / 'findings.json').write_text(json.dumps(findings, indent=2) + '\n', encoding='utf-8')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+              out.write(f'date={day}\n')
+              out.write(f'url={url}\n')
+          print(f'Fetched {len(findings)} findings from {url}')
+          PY
 
-          qualifying = []
-          for finding in findings:
-              if finding.get('state') != 'open':
-                  continue
-              if finding.get('review_status') not in (None, 'unreviewed'):
-                  continue
-              if finding.get('materiality') not in {'high', 'critical'}:
-                  continue
-              if finding.get('assurance_impact') not in {'potentially-breaking', 'breaking'}:
-                  continue
-              qualifying.append(finding)
+      - name: Validate and execute machine-readable assurance routing
+        run: |
+          python3 tools/dtg_portfolio_routing.py \
+            --findings build/dtg-routing/findings.json \
+            --policy instances/dtg/assurance-routing.yaml \
+            --snapshot-date '${{ steps.snapshot.outputs.date }}' \
+            --out-dir build/dtg-routing \
+            --self-test
+          python3 tools/dtg_portfolio_routing.py \
+            --findings build/dtg-routing/findings.json \
+            --policy instances/dtg/assurance-routing.yaml \
+            --snapshot-date '${{ steps.snapshot.outputs.date }}' \
+            --out-dir build/dtg-routing
 
-          build = pathlib.Path('build')
-          build.mkdir(exist_ok=True)
-          events_path = build / 'dtg-portfolio-assessment-events.json'
-          compositions_path = build / 'dtg-portfolio-compositions.txt'
+      - name: Build portfolio controller event
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, os
+          route = json.loads(pathlib.Path('build/dtg-routing/routing.json').read_text())
+          unresolved = json.loads(pathlib.Path('build/dtg-routing/unresolved.json').read_text())
+          counts = {}
+          for item in route:
+              counts[item['outcome']] = counts.get(item['outcome'], 0) + 1
+          day = '${{ steps.snapshot.outputs.date }}'
+          source_url = '${{ steps.snapshot.outputs.url }}'
+          body = f'''# DTG Portfolio Monitor → RAHP assurance controller
 
-          if not qualifying:
-              events_path.write_text('[]\n', encoding='utf-8')
-              compositions_path.write_text('', encoding='utf-8')
-              with open(pathlib.Path(__import__('os').environ['GITHUB_OUTPUT']), 'a', encoding='utf-8') as out:
-                  out.write('qualified=false\n')
-                  out.write('count=0\n')
-              print('No Portfolio Monitor findings crossed the RAHP materiality gate.')
-              raise SystemExit(0)
+<!-- rahp-assessment-key:dtg:portfolio:material-change-set -->
+<!-- rahp-portfolio-snapshot:{day} -->
+<!-- dtg-routing-policy:v1 -->
 
-          repositories = sorted({f.get('repository') for f in qualifying if f.get('repository')})
-          evidence_urls = []
-          for finding in qualifying:
-              evidence_urls.extend(finding.get('evidence_urls') or [])
-          evidence_urls = list(dict.fromkeys(evidence_urls))
+RAHP consumed the current Portfolio Monitor snapshot and applied the versioned assurance-routing policy.
 
-          rows = []
-          for finding in qualifying[:40]:
-              title = str(finding.get('title') or '').replace('|', '\\|')
-              repo = str(finding.get('repository') or 'n/a').replace('|', '\\|')
-              rows.append(
-                  f"| `{finding.get('finding_id', 'n/a')}` | `{repo}` | {title} | "
-                  f"{finding.get('materiality', 'n/a')} | {finding.get('assurance_impact', 'n/a')} |"
-              )
+## Proposition
 
-          more = ''
-          if len(qualifying) > 40:
-              more = f"\n\n_Additional qualifying findings omitted from the table: {len(qualifying) - 40}. The source snapshot remains authoritative._"
+Do the current material DTG changes alter assurance conclusions, require a registered RAHP composition, require a bounded RAHP/security review, or require DPIP examination of composed privacy behaviour?
 
-          body = f'''# DTG Portfolio Monitor → RAHP assurance handoff
+## Routing evidence
 
-          <!-- rahp-assessment-key:dtg:portfolio:material-change-set -->
-          <!-- rahp-portfolio-snapshot:{day} -->
+- Portfolio snapshot: {source_url}
+- Snapshot date: `{day}`
+- Qualifying findings: **{len(route)}**
+- Dispositions: `{counts}`
+- Unresolved findings: **{len(unresolved)}**
 
-          The DTG Portfolio Monitor published a current findings snapshot containing **{len(qualifying)}** open, unreviewed findings that cross the automatic RAHP gate:
+## Pipeline contract
 
-          - materiality is `high` or `critical`; and
-          - assurance impact is `potentially-breaking` or `breaking`.
+Portfolio Monitor detects/classifies. RAHP owns assurance routing and RAHP assessments. Privacy-relevant findings are promoted through the canonical RAHP → DPIP transport. DPIP owns applicability/evidence/privacy conclusion and returns the disposition to RAHP.
 
-          This issue is an **assessment queue and evidence record**, not a finding that the affected specifications or implementations are unsafe.
+## Closure rule
 
-          ## Proposition under review
-
-          Do the current material DTG portfolio changes alter risks, harms, security assumptions, controls, guardrails, privacy/correlation properties, governance dependencies, or interoperability behaviour enough to require changed assurance conclusions?
-
-          ## Trigger evidence
-
-          - Portfolio snapshot: {source_url}
-          - Snapshot date (UTC): `{day}`
-          - Qualifying findings: **{len(qualifying)}**
-          - Affected repositories: **{len(repositories)}**
-
-          | Finding | Repository | Change | Materiality | Assurance impact |
-          |---|---|---|---|---|
-          {chr(10).join(rows)}{more}
-
-          ## Acceptance criteria
-
-          1. Execute the applicable DTG cross-specification RAHP pressure tests for every registered composition implicated by the evidence.
-          2. Review unmapped material findings as a bounded combined RAHP + security change set rather than silently dropping them.
-          3. Record whether each assurance proposition is preserved, changed, falsified, or remains uncertain.
-          4. Record objections, boundary cases, residual uncertainty and any DPIP handoff warranted by composed privacy behaviour.
-          5. Close this work item only after the assessment evidence links back to this Portfolio Monitor snapshot.
-
-          ## Automation policy
-
-          This handoff is deliberately generated by RAHP after consuming Portfolio Monitor evidence. The Portfolio Monitor detects and classifies changes; RAHP owns the assurance decision and review record. Repeated qualifying observations coalesce into the open portfolio assessment rather than creating one issue per repository event.
-          '''
-
-          event = {
+Do not close this controller while any routed RAHP review, DPIP referral, or unresolved qualifying finding remains outstanding. Unknown findings remain explicit rather than being silently dropped.
+'''
+          event = {{
               'assessment_key': 'dtg:portfolio:material-change-set',
               'observed_at': day,
               'source': 'dtg-portfolio-monitor',
@@ -153,77 +131,70 @@ jobs:
               'labels': ['assessment-required', 'dtg-instance', 'cross-specification'],
               'affected_reviews': ['rahp', 'security', 'combined'],
               'body': body,
-          }
-          events_path.write_text(json.dumps([event], indent=2) + '\n', encoding='utf-8')
-
-          # Deterministic mapping from monitored repositories to registered DTG
-          # cross-spec pressure-test compositions. Unmapped findings remain in the
-          # aggregate assessment issue for bounded combined review.
-          names = set(repositories)
-          for finding in qualifying:
-              names.update(finding.get('related_repositories') or [])
-          joined = '\n'.join(sorted(names)).lower()
-          compositions = []
-          if 'trust-tasks' in joined and 'cred-spec' in joined:
-              compositions.append('trust-tasks--credential-spec')
-          if 'cred-spec' in joined and ('zkp' in joined or 'zero' in joined):
-              compositions.append('credential-spec--zkp')
-          if 'cred-spec' in joined and 'vds' in joined:
-              compositions.append('credential-spec--vds')
-          if 'trust-tasks' in joined and ('zkp' in joined or 'zero' in joined):
-              compositions.append('trust-tasks--zkp')
-          if 'trust-tasks' in joined and 'vds' in joined:
-              compositions.append('trust-tasks--vds')
-          if ('agent-names' in joined or 'agent-naming' in joined) and 'trust-tasks' in joined:
-              compositions.append('agent-names--trust-tasks')
-          if ('agent-names' in joined or 'agent-naming' in joined) and 'cred-spec' in joined:
-              compositions.append('agent-names--credential-spec')
-          compositions_path.write_text('\n'.join(dict.fromkeys(compositions)) + ('\n' if compositions else ''), encoding='utf-8')
-
-          with open(pathlib.Path(__import__('os').environ['GITHUB_OUTPUT']), 'a', encoding='utf-8') as out:
-              out.write('qualified=true\n')
-              out.write(f'count={len(qualifying)}\n')
-
-          print(f'{len(qualifying)} findings crossed the RAHP materiality gate.')
-          print(f'Registered implicated compositions: {compositions or "none"}')
+          }}
+          pathlib.Path('build/dtg-routing/controller-events.json').write_text(json.dumps([event], indent=2) + '\n')
           PY
 
-      - name: Publish/coalesce durable RAHP assessment work item
-        if: steps.gate.outputs.qualified == 'true'
+      - name: Publish/coalesce portfolio controller
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/publish_assessment_issues.py
-          --events build/dtg-portfolio-assessment-events.json
-          --repository "sankarshanmukhopadhyay/rahp-toolkit"
-          --result-json build/dtg-portfolio-publish-result.json
+          --events build/dtg-routing/controller-events.json
+          --repository sankarshanmukhopadhyay/rahp-toolkit
+          --result-json build/dtg-routing/controller-result.json
+
+      - name: Publish/coalesce bounded combined RAHP reviews
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/publish_assessment_issues.py
+          --events build/dtg-routing/combined-events.json
+          --repository sankarshanmukhopadhyay/rahp-toolkit
+          --result-json build/dtg-routing/combined-result.json
+
+      - name: Publish/coalesce canonical RAHP privacy referrals
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/publish_assessment_issues.py
+          --events build/dtg-routing/dpip-events.json
+          --repository sankarshanmukhopadhyay/rahp-toolkit
+          --result-json build/dtg-routing/dpip-result.json
+
+      - name: Immediately transport qualified privacy referrals to DPIP
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DPIP_HANDOFF_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
+          RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
+          DPIP_REPOSITORY: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+        run: |
+          python3 tools/dpip_handoff.py --self-test
+          python3 tools/dpip_handoff.py
 
       - name: Dispatch registered DTG cross-specification pressure tests
-        if: steps.gate.outputs.qualified == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          if [ ! -s build/dtg-portfolio-compositions.txt ]; then
-            echo 'No registered cross-spec composition could be mapped; aggregate combined review remains required.'
+          if [ ! -s build/dtg-routing/compositions.txt ]; then
+            echo 'No registered cross-spec composition was implicated.'
             exit 0
           fi
           while IFS= read -r composition; do
             [ -n "$composition" ] || continue
             echo "Dispatching RAHP DTG pressure test: $composition"
             gh workflow run dtg-cross-spec-pressure-test.yml --ref main -f composition_id="$composition"
-          done < build/dtg-portfolio-compositions.txt
+          done < build/dtg-routing/compositions.txt
 
-      - name: Add handoff evidence to workflow summary
+      - name: Publish routing summary
         if: always()
         shell: bash
         run: |
-          echo '## DTG Portfolio Monitor → RAHP handoff' >> "$GITHUB_STEP_SUMMARY"
-          echo "- Qualifying findings: ${{ steps.gate.outputs.count || '0' }}" >> "$GITHUB_STEP_SUMMARY"
-          if [ -f build/dtg-portfolio-publish-result.json ]; then
-            jq -r '.issues[] | "- RAHP work item: [#\(.number)](\(.url)) (\(.action))"' build/dtg-portfolio-publish-result.json >> "$GITHUB_STEP_SUMMARY"
-          fi
-          if [ -s build/dtg-portfolio-compositions.txt ]; then
-            echo '- Dispatched compositions:' >> "$GITHUB_STEP_SUMMARY"
-            sed 's/^/  - `/' build/dtg-portfolio-compositions.txt | sed 's/$/`/' >> "$GITHUB_STEP_SUMMARY"
+          echo '## DTG Portfolio Monitor → RAHP → DPIP pipeline' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Snapshot: `${{ steps.snapshot.outputs.date }}`' >> "$GITHUB_STEP_SUMMARY"
+          jq -r 'group_by(.outcome) | map("- " + .[0].outcome + ": " + (length|tostring)) | .[]' build/dtg-routing/routing.json >> "$GITHUB_STEP_SUMMARY" || true
+          if [ -s build/dtg-routing/unresolved.json ] && [ "$(jq length build/dtg-routing/unresolved.json)" -gt 0 ]; then
+            echo '- ⚠️ Unresolved qualifying findings remain visible in routing output.' >> "$GITHUB_STEP_SUMMARY"
+            jq -r '.[] | "  - `\(.finding_id)` \(.repository): \(.title)"' build/dtg-routing/unresolved.json >> "$GITHUB_STEP_SUMMARY"
           fi
