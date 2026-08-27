@@ -1,7 +1,7 @@
 {
   "version": 1,
   "assessment": {
-    "id": "DTG-AR-2026-004",
+    "id": "DTG-AR-2026-005",
     "key": "dtg:repository:trustoverip/dtgwg-trust-tasks-tf",
     "triggers": ["rahp-toolkit#70"]
   },
@@ -13,36 +13,12 @@
   "mode": "combined",
   "status": "dispositioned",
   "findings": [
-    {
-      "id": "F-001",
-      "title": "Retained outcome evidence remains a cross-specification dependency",
-      "status": "assurance-gap"
-    },
-    {
-      "id": "F-002",
-      "title": "Generic task-control and lifecycle observability are materially strengthened",
-      "status": "controlled"
-    },
-    {
-      "id": "F-005",
-      "title": "Supervising-principal and delegated authority remain profile/governance dependencies",
-      "status": "assurance-gap"
-    },
-    {
-      "id": "F-009",
-      "title": "Application-state namespace is not an authorization boundary",
-      "status": "deployment-control"
-    },
-    {
-      "id": "F-010",
-      "title": "Removal evidence does not guarantee durable redress delivery",
-      "status": "assurance-gap"
-    },
-    {
-      "id": "F-011",
-      "title": "Relationship publication provenance and correlation control are explicit",
-      "status": "controlled"
-    }
+    {"id":"F-001","title":"Retained outcome evidence remains a cross-specification dependency","status":"assurance-gap"},
+    {"id":"F-002","title":"Generic task-control and lifecycle observability are materially strengthened","status":"controlled"},
+    {"id":"F-005","title":"Supervising-principal and delegated authority remain profile/governance dependencies","status":"assurance-gap"},
+    {"id":"F-009","title":"Application-state namespace is not an authorization boundary","status":"deployment-control"},
+    {"id":"F-010","title":"Removal evidence does not guarantee durable redress delivery","status":"assurance-gap"},
+    {"id":"F-011","title":"Relationship publication provenance and correlation control are explicit","status":"controlled"}
   ],
   "disposition": {
     "outcome": "findings-raised",
@@ -50,16 +26,8 @@
     "decided_at": "2026-08-27T09:50:00+05:30"
   },
   "evidence": [
-    {
-      "id": "DTG-AR-2026-004-RECORD",
-      "class": "durable",
-      "description": "Human-readable durable assessment record in 2026-08-trust-tasks-cdfc6e2.md"
-    },
-    {
-      "id": "DTG-AR-2026-004-SOURCE",
-      "class": "referenced",
-      "description": "Pinned upstream Trust Tasks revision cdfc6e231dc6cc9ed901bbd27b4c6e8ea2f3e06a and descendant compare window from the prior reviewed baseline"
-    }
+    {"id":"DTG-AR-2026-005-RECORD","class":"durable","description":"Human-readable durable assessment record in 2026-08-trust-tasks-cdfc6e2.md"},
+    {"id":"DTG-AR-2026-005-SOURCE","class":"referenced","description":"Pinned upstream Trust Tasks revision cdfc6e231dc6cc9ed901bbd27b4c6e8ea2f3e06a and descendant compare window from the prior reviewed baseline"}
   ],
   "closure": {
     "eligible_issues": [70],
