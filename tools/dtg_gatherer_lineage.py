@@ -2,7 +2,9 @@
 """Stamp DTG gatherer events with a stable run lineage identifier.
 
 This post-processes the existing dtg_portfolio.py event list so the gatherer remains
-focused on discovery/materiality while orchestration owns run identity.
+focused on discovery/materiality while orchestration owns run identity. Non-empty runs
+are retained as immutable per-run records so a later empty run cannot hide unresolved
+RAHP/DPIP work from an earlier lineage.
 """
 from __future__ import annotations
 
@@ -15,7 +17,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 DEFAULT_EVENTS = pathlib.Path("instances/dtg/generated/review-events.json")
-DEFAULT_RUN = pathlib.Path("instances/dtg/generated/gatherer-run.json")
+DEFAULT_RUN_DIR = pathlib.Path("instances/dtg/generated/gatherer-runs")
 
 
 def event_id(event: dict[str, Any]) -> str:
@@ -63,10 +65,14 @@ def resolved_run_id(explicit: str | None = None) -> str:
     return datetime.now(timezone.utc).strftime("local-%Y%m%dT%H%M%SZ")
 
 
+def run_record_path(run_dir: pathlib.Path, run_id: str) -> pathlib.Path:
+    return run_dir / f"{run_id}.json"
+
+
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--events", type=pathlib.Path, default=DEFAULT_EVENTS)
-    p.add_argument("--run-record", type=pathlib.Path, default=DEFAULT_RUN)
+    p.add_argument("--run-dir", type=pathlib.Path, default=DEFAULT_RUN_DIR)
     p.add_argument("--run-id")
     p.add_argument("--self-test", action="store_true")
     args = p.parse_args()
@@ -77,14 +83,25 @@ def main() -> int:
         assert run1["fingerprint"] == run2["fingerprint"]
         assert first[0]["gatherer_event_id"] == second[0]["gatherer_event_id"]
         assert "rahp-dtg-gatherer-run:test-1" in first[0]["body"]
+        assert run_record_path(pathlib.Path("runs"), "test-1") == pathlib.Path("runs/test-1.json")
         print("PASS dtg_gatherer_lineage self-test")
         return 0
     events = json.loads(args.events.read_text(encoding="utf-8")) if args.events.exists() else []
-    stamped, run = stamp(events, resolved_run_id(args.run_id))
+    run_id = resolved_run_id(args.run_id)
+    stamped, run = stamp(events, run_id)
     args.events.parent.mkdir(parents=True, exist_ok=True)
     args.events.write_text(json.dumps(stamped, indent=2) + "\n", encoding="utf-8")
-    args.run_record.parent.mkdir(parents=True, exist_ok=True)
-    args.run_record.write_text(json.dumps(run, indent=2) + "\n", encoding="utf-8")
+    if run["event_count"]:
+        args.run_dir.mkdir(parents=True, exist_ok=True)
+        path = run_record_path(args.run_dir, run_id)
+        if path.exists():
+            existing = json.loads(path.read_text(encoding="utf-8"))
+            # A rerun/attempt with the same identity must be deterministic rather than
+            # mutating the evidence set beneath an existing assurance lineage.
+            if existing.get("fingerprint") != run["fingerprint"]:
+                raise SystemExit(f"gatherer run identity collision for {run_id}: evidence fingerprint changed")
+        else:
+            path.write_text(json.dumps(run, indent=2) + "\n", encoding="utf-8")
     print(f"DTG gatherer run {run['id']}: {run['event_count']} qualifying event(s), fingerprint {run['fingerprint']}")
     return 0
 
