@@ -173,6 +173,14 @@ def main() -> int:
         ]
         outcomes = [x["outcome"] for x in route_findings(fixture, policy)]
         assert outcomes == ["dpip", "combined", "unresolved"], outcomes
+        grouped = defaultdict(list)
+        for item in route_findings(fixture, policy):
+            grouped[(item["outcome"], item["rule_id"])].append(item)
+        combined_body = combined_event("openvtc-security-combined", grouped[("combined", "openvtc-security-combined")], "2026-08-27")["body"]
+        dpip_body = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-27")["body"]
+        assert 'f"' not in combined_body and '\\n"' not in combined_body
+        assert 'f"' not in dpip_body and '\\n"' not in dpip_body
+        assert "## Routed findings" in combined_body and "## Promotion gate" in dpip_body
         print("PASS dtg portfolio routing self-test")
         return 0
 
