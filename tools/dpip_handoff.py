@@ -166,9 +166,15 @@ def transition_source(rahp_repo: str, issue_number: int, dpip_issue: dict[str, A
             raise
 
 
-def run(rahp_repo: str, dpip_repo: str, rahp_token: str, dpip_token: str) -> int:
+def run(rahp_repo: str, dpip_repo: str, rahp_token: str, dpip_token: str, issue_numbers: list[int] | None = None) -> int:
     failures = 0
-    for issue in list_requested(rahp_repo, rahp_token):
+    if issue_numbers:
+        issues = [api("GET", rahp_repo, f"issues/{number}", rahp_token) for number in issue_numbers]
+    else:
+        issues = list_requested(rahp_repo, rahp_token)
+    for issue in issues:
+        if not issue_has_label(issue, REQUESTED):
+            continue
         if issue_has_label(issue, COMPLETE):
             continue
         try:
@@ -222,6 +228,7 @@ def main() -> int:
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--rahp-repository", default=os.getenv("RAHP_REPOSITORY", DEFAULT_RAHP_REPO))
     parser.add_argument("--dpip-repository", default=os.getenv("DPIP_REPOSITORY", DEFAULT_DPIP_REPO))
+    parser.add_argument("--issue-number", type=int, action="append", default=[], help="process a freshly published RAHP referral directly")
     args = parser.parse_args()
     if args.self_test:
         return self_test()
@@ -233,7 +240,7 @@ def main() -> int:
     if not dpip_token:
         print("DPIP_HANDOFF_TOKEN is not configured; refusing to leave qualified referrals stranded.", file=sys.stderr)
         return 2
-    return run(args.rahp_repository, args.dpip_repository, rahp_token, dpip_token)
+    return run(args.rahp_repository, args.dpip_repository, rahp_token, dpip_token, args.issue_number or None)
 
 
 if __name__ == "__main__":
