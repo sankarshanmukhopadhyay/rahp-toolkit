@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "baselined_at": "2026-08-22T05:23:14+05:30",
+  "baselined_at": "2026-08-27T10:00:00+05:30",
   "open_generated_assessments": [],
   "dispositions": [
     {
@@ -19,13 +19,14 @@
       "disposition": "findings-raised"
     },
     {
-      "assessment_id": "DTG-AR-2026-002",
+      "assessment_id": "DTG-AR-2026-005",
       "assessment_key": "dtg:repository:OpenVTC/verifiable-trust-infrastructure",
-      "review": "instances/dtg/reviews/2026-08-verifiable-trust-infrastructure.md",
-      "reviewed_revision": "187ad9cde4cf5c5f8add3732a661816a650d631c",
+      "review": "instances/dtg/reviews/2026-08-verifiable-trust-infrastructure-78492c9.md",
+      "reviewed_revision": "78492c9d5c35419a9d47c8ad4f16fbef77fe94a4",
       "rahp_issues": [
         2,
-        8
+        8,
+        21
       ],
       "disposition": "findings-raised"
     },
