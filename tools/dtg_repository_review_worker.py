@@ -22,7 +22,7 @@ DPIP_NOT_REQUIRED = "assurance:dpip-not-required"
 DPIP_REQUESTED = "assurance:dpip-requested"
 MARKER = "<!-- rahp-dtg-repository-execution:v1 -->"
 PACKET_MARKER = "<!-- rahp-dtg-repository-judgment-packet:v1 -->"
-AUTO_MARKER = "<!-- rahp-dtg-auto-disposition:v1 -->"
+AUTO_MARKER = "<!-- rahp-dtg-auto-disposition:v2 -->"
 KEY_RE = re.compile(r"rahp-assessment-key:(dtg:repository:[^>\n]+)")
 CHANGE_RE = re.compile(r"rahp-dtg-change:([^@>]+)@([0-9a-f]{7,40})")
 BASE_RE = re.compile(r"Previous assessed/observed SHA\s*\|\s*`([0-9a-f]{7,40})`")
@@ -190,8 +190,9 @@ def advance(issue: dict[str, Any], token: str) -> None:
         api("POST", f"issues/{issue['number']}/labels", token, {"labels": [JUDGMENT, EXECUTED]})
         remove_label(issue["number"], ASSESSMENT, token)
     elif JUDGMENT in states and not has_marker(existing, AUTO_MARKER):
-        # Existing judgment-era issues (e.g. live acceptance cases) get one
-        # retrospective bounded auto-disposition attempt after this upgrade.
+        # Existing judgment-era issues get one attempt for each disposition
+        # evidence-model version. A prior v1 result must not suppress the v2
+        # polarity-aware acceptance re-evaluation.
         if attempt_auto(issue, token, existing):
             return
     if not has_marker(existing, PACKET_MARKER):
