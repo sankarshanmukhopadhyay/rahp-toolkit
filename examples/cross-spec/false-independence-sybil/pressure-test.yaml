@@ -1,0 +1,141 @@
+review:
+  id: SR-XSP-FI-001
+  status: complete
+  title: DTG false-independence / Sybil composition pressure test
+  reviewed_on: '2026-08-28'
+  evidence_grade: modeled
+  target:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    version: pre-specification evidence model from issues 158, 193 and 198
+    commit: 726dd14defb0b647a52aea1c8859af2dd2afeb8b
+    source_paths:
+      - examples/cross-spec/false-independence-sybil/pressure-test.yaml
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.8.0
+    trigger_issue: 198
+    engine_contract: rahp-engine-contract-v1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    normalized_result_schema: '1'
+  proposition: >-
+    Identity, issuer, community or attestation multiplicity must not increase assurance merely because apparent count increases when the evidence remains under substantially common effective control; legitimate contextual identifier plurality must remain acceptable.
+  scope:
+    included:
+      - common-control-multiplicity
+      - genuinely-independent-corroboration
+      - legitimate-contextual-identifiers
+      - context-specific-uniqueness
+      - unknown-independence
+    excluded:
+      - Universal proof-of-personhood requirements.
+      - A universal identifier or cross-context subject correlator.
+      - Claims that zero-knowledge proof alone establishes Sybil resistance.
+  method:
+    workflow: docs/cross-spec-pressure-testing.md
+    rule: Multiplicity is not evidence of independence; independence must be established at the assurance level relied upon by policy.
+    falsification_bias: The fixture must fail if count alone raises assurance or if anti-Sybil handling rejects legitimate contextual identifier plurality.
+  assurance:
+    residual_state: finding
+    policy_gate: AMBER
+    gate_reason: >-
+      The invariant is pressure-testable, but effective independence may be only partially observable and privacy-preserving contextual uniqueness can require specialist privacy examination.
+    positive_controls:
+      - Explicit separation of identity count, evidence-source count and effective-control independence.
+      - Unknown independence is represented as bounded uncertainty rather than silently upgraded to corroboration.
+      - Legitimate pairwise or contextual identifiers are preserved as a counter-case.
+  summary:
+    finding_count: 1
+    open_count: 1
+    overall_assessment: >-
+      RAHP can express the false-independence invariant without equating identifier plurality with attack behavior. The remaining assurance gap is evidence sufficient to establish effective independence in a given relying policy.
+  findings:
+    - id: F-001
+      title: Apparent multiplicity can be over-read as independent corroboration
+      status: open
+      severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - governance
+        - implementation-guidance
+      scenarios: []
+      scenario_patterns: [SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01]
+        control_patterns: [CTP-COMP-01]
+        guardrail_patterns: [GRP-COMP-01]
+        assurance_patterns: [ATP-COMP-01]
+        evidence_patterns: [EVP-COMP-01]
+      evidence:
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/158
+          observation: The source proposition explicitly distinguishes identity multiplicity from trust multiplicity and requires independent evidentiary provenance before assurance amplification.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193
+          observation: The evidence register generalizes the threat family across Sybil, sock-puppet, false-diversity, trust-laundering, collusion, quorum-capture and selective-evidence cases.
+      harm: >-
+        A relying decision can grant disproportionate authority, eligibility, reputation, governance weight or trust when many controlled identities, issuers, communities or attestations are mistaken for independent corroboration.
+      recommendation: >-
+        Require relying policy to treat multiplicity and independence as separate propositions, preserve uncertainty when effective control cannot be established, and avoid universal correlation as an anti-Sybil shortcut.
+      retest_when:
+        - A DTG composition provides executable independence evidence and privacy-preserving contextual uniqueness controls for the relevant relying decision.
+  modeled_cases:
+    - id: FI-001
+      name: common-control-multiplicity
+      identity_count: 5
+      evidence_source_count: 5
+      effective_control_domains: 1
+      independence_evidence: established-common-control
+      expected_assurance_effect: no-increase
+      expected_disposition: reject-false-independence
+      dpip_review: not-required-for-this-case
+    - id: FI-002
+      name: genuinely-independent-corroboration
+      identity_count: 3
+      evidence_source_count: 3
+      effective_control_domains: 3
+      independence_evidence: established-independent
+      expected_assurance_effect: policy-may-recognize-corroboration
+      expected_disposition: allow-policy-weighting
+      dpip_review: not-required-for-this-case
+    - id: FI-003
+      name: legitimate-contextual-identifiers
+      identity_count: 3
+      evidence_source_count: 1
+      effective_control_domains: 1
+      independence_evidence: not-claimed
+      expected_assurance_effect: no-increase-no-penalty
+      expected_disposition: preserve-contextual-plurality
+      dpip_review: not-required-for-this-case
+    - id: FI-004
+      name: context-specific-uniqueness
+      identity_count: 2
+      evidence_source_count: 1
+      effective_control_domains: 1
+      independence_evidence: not-claimed
+      repeated_same_context: true
+      expected_assurance_effect: no-increase
+      expected_disposition: reject-duplicate-contextual-exercise
+      prohibited_mechanism: universal-cross-context-correlator
+      dpip_review: warranted-if-nullifier-or-correlation-evidence-is-retained
+    - id: FI-005
+      name: unknown-independence
+      identity_count: 4
+      evidence_source_count: 4
+      effective_control_domains: unknown
+      independence_evidence: unavailable
+      expected_assurance_effect: no-silent-increase
+      expected_disposition: indeterminate-or-reduced-weight
+      dpip_review: context-dependent
+  judgment:
+    alternatives_considered:
+      - Keep issue 193 as taxonomy only and defer executable evidence.
+      - Implement all false-independence threat classes in one fixture.
+      - Begin with sock puppetry rather than the more general Sybil invariant.
+    chosen: >-
+      Start with issue 158 because its invariant is crisp, falsifiable, composition-relevant and contains the legitimate multiplicity counter-case required to prevent anti-Sybil controls from becoming universal identity controls.
+    residual_uncertainty: >-
+      Effective governance or control independence may not be fully observable. The correct response is bounded uncertainty, not fabricated certainty. Privacy-sensitive uniqueness mechanisms may require DPIP examination depending on correlation, nullifier and retention behavior.
