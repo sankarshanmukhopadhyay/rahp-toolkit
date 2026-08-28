@@ -67,6 +67,8 @@ A toolkit release does not automatically requalify maintained external targets. 
 
 ## v1.7.0 — Assurance Operations and Cross-Spec Execution
 
+Status: **historical stable release — Common Palmfly (*Elymnias hypermnestra*)**.
+
 v1.7 qualified monitor-driven assessment queueing, explicit review modes, live current-head assurance regeneration, full DTG cross-spec execution coverage and release-grade regression evidence.
 
 See [v1.7.0 release notes](docs/releases/v1.7.0.md).
