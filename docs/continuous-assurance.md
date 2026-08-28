@@ -43,7 +43,7 @@ RAHP uses normalized residual states rather than a single assurance score:
 | `not-assessed` | The proposition was not sufficiently evaluated. |
 | `not-applicable` | The proposition is outside applicable scope. |
 
-**Zero findings is not equivalent to assured.** See [Assurance evaluation](assurance-evaluation.md) and [Interpreting results](interpreting-results.md).
+**Zero findings is not equivalent to assured.** A successful workflow is likewise not an assurance conclusion: execution may be green while the current posture remains AMBER because evidence is incomplete or the policy gate is `INDETERMINATE`. `INDETERMINATE` is never silently converted to PASS. See [Assurance evaluation](assurance-evaluation.md) and [Interpreting results](interpreting-results.md).
 
 ## 1. Determine what changed
 
@@ -71,7 +71,7 @@ See [Remediation and retesting](remediation-lifecycle.md).
 
 ## 5. Apply policy without manufacturing authority
 
-A policy gate can return `PASS`, `FAIL` or `INDETERMINATE`. That result does not itself authorize publication, risk acceptance or closure.
+A policy gate can return `PASS`, `FAIL` or `INDETERMINATE`. That result does not itself authorize publication, risk acceptance or closure. `INDETERMINATE` remains a non-green assurance outcome until evidence or governed disposition resolves the uncertainty.
 
 Authority is independently scoped to actions such as `observe`, `assess`, `disposition`, `remediate`, `publish`, `accept-risk`, `close` and `reopen`. Repository permissions are not automatically governance authority.
 
