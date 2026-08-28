@@ -8,8 +8,9 @@ class V17ReleaseQualificationTests(unittest.TestCase):
         self.assertEqual(s["compatibility"]["engine_contract"],"rahp-engine-contract-v1")
         self.assertEqual(s["compatibility"]["normalized_result_schema"],1)
         self.assertEqual(s["compatibility"]["evidence_retention_contract"],"rahp-evidence-retention-v1")
-    def test_workspace_is_170(self):
-        self.assertEqual(json.loads((ROOT/"package.json").read_text())["version"],"1.7.0")
+    def test_historical_v17_manifest_is_preserved(self):
+        q=yaml.safe_load((ROOT/"method/v1.7-release-qualification.yaml").read_text())
+        self.assertEqual(q["release"],"v1.7.0")
     def test_dtg_registry_is_eight_of_eight(self):
         d=yaml.safe_load((ROOT/"profiles/dtg/cross-spec-tests.yaml").read_text())
         self.assertEqual(len(d["compositions"]),8)
