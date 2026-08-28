@@ -84,7 +84,6 @@ review:
       secondary_dispositions:
         - governance
         - implementation-guidance
-        - privacy-review
       scenarios: []
       scenario_patterns: [SP-COMP-01]
       personas: [D1]
