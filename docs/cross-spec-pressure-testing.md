@@ -49,7 +49,6 @@ For each composed scenario, reviewers should ask:
 
 A cross-spec finding should identify whether the remediation belongs primarily to Trust Tasks, CredSpec, both, or an external governance/runtime layer. RAHP's `primary_disposition` remains the routing mechanism; the scenario corpus supplies the test condition, not the ownership decision.
 
-
 ## Manual GitHub Actions execution and WG review record
 
 Cross-specification execution is **profile-owned, not DTG-owned**. RAHP core provides the generic workflow and validators; an ecosystem supplies its own registry, component adapters, composed corpora and reviewed assessment records. The DTG example pack declares its seams in [`profiles/dtg/cross-spec-tests.yaml`](../profiles/dtg/cross-spec-tests.yaml).
@@ -85,6 +84,25 @@ The maintained worked assessment is [`examples/cross-spec/trust-tasks-credspec/p
 
 A useful closure condition is therefore stronger than “both component specifications validate”: the composition should demonstrate semantic ownership, lifecycle alignment, authority continuity, privacy composition and contestability evidence at the seam.
 
+## Adversarial false-independence evidence
+
+Cross-specification assurance also needs to challenge evidence structures that look stronger merely because they contain more identities, actors, artifacts, hops or approvals. Issue [#193](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193) established seven executable pressure-test records:
+
+| Review | Threat surface | Preserved judgment |
+|---|---|---|
+| `SR-XSP-FI-001` | Sybil/common-control multiplicity | multiplicity is not evidence of independence |
+| `SR-XSP-FI-002` | False governance diversity | nominal diversity is not governance independence |
+| `SR-XSP-FI-003` | Trust laundering | provenance depth is not assurance depth |
+| `SR-XSP-FI-004` | Sock puppetry | social/persona multiplicity is not social independence |
+| `SR-XSP-FI-005` | Quorum capture | threshold arithmetic is not independent or legitimate approval |
+| `SR-XSP-FI-006` | Collusion | distinct actors are not necessarily independent actors |
+| `SR-XSP-FI-007` | Selective evidence | valid evidence is not necessarily complete evidence |
+
+These records are pressure tests, not universal suspicion rules. Each preserves a legitimate counter-case: contextual identifiers, genuinely independent governance or corroboration, legitimate transformations, multi-persona use, independent threshold agreement, disclosed coalitions and proposition-scoped selective disclosure remain acceptable when the claimed assurance proposition is actually evidenced.
+
+Unknown independence or completeness is not silently upgraded because a workflow succeeded or an artifact validated. The fixtures preserve bounded uncertainty / AMBER. Privacy-sensitive mechanisms for uniqueness, correlation, contradiction handling or completeness can cross the DPIP boundary when specialist privacy analysis is warranted; RAHP does not replace that examination with universal disclosure or universal correlation.
+
+The corpus is guarded both by row-specific semantic tests and by `tests/test_false_independence_corpus_qualification.py`, which fails if a row disappears, loses stable identity, drops its adversarial/counter-case boundary, or silently turns unknown evidence into PASS/assured sufficiency.
 
 ## Profile isolation
 
