@@ -1,0 +1,168 @@
+review:
+  id: SR-XSP-FI-004
+  status: complete
+  title: DTG sock-puppetry false social independence pressure test
+  reviewed_on: '2026-08-28'
+  evidence_grade: modeled
+  target:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    version: pre-specification evidence model from issues 166, 193 and 206
+    commit: 106cd1c74eef441a4785ebdf369c7a463016ead1
+    source_paths:
+      - examples/cross-spec/false-social-independence-sock-puppetry/pressure-test.yaml
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.8.0
+    trigger_issue: 206
+    engine_contract: rahp-engine-contract-v1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    normalized_result_schema: '1'
+  proposition: >-
+    Multiple identities controlled by one actor MUST NOT be interpreted as independent social evidence merely because they appear as distinct personas, relationships, issuers, endorsers, commenters, community members or counterparties; genuine independent support may be recognized by relying policy.
+  scope:
+    included:
+      - manufactured-endorsement-cluster
+      - apparent-community-consensus
+      - coordinated-negative-attestations
+      - cross-community-sock-puppetry
+      - genuinely-independent-social-support
+      - legitimate-multi-persona-use
+      - unknown-controller-independence
+    excluded:
+      - A prohibition on pseudonymity, pairwise identifiers or contextual personas.
+      - A universal person-to-identity uniqueness requirement.
+      - A claim that all repeated social evidence is deceptive.
+  method:
+    workflow: docs/cross-spec-pressure-testing.md
+    rule: Social multiplicity is not evidence of social independence; independence credit requires evidence appropriate to the relying policy.
+    falsification_bias: The fixture must fail if persona count, signature count or community spread alone creates corroboration, or if legitimate privacy-preserving multi-persona use is treated as an assurance failure.
+  assurance:
+    residual_state: finding
+    policy_gate: AMBER
+    gate_reason: >-
+      The invariant is pressure-testable, but controller independence may be unknown and privacy-safe observation of common control can require policy-specific or DPIP-sensitive mechanisms.
+    positive_controls:
+      - Persona count, social-evidence count and effective-controller count are represented separately.
+      - Common control prevents automatic independent-corroboration credit.
+      - Cross-community spread is not treated as proof of social independence.
+      - Genuine independent social support remains eligible for policy-recognized corroboration.
+      - Legitimate multi-persona use is preserved without requiring universal correlation.
+      - Unknown controller independence remains bounded uncertainty rather than silently granted corroboration.
+  summary:
+    finding_count: 1
+    open_count: 1
+    overall_assessment: >-
+      RAHP can express sock-puppetry as deceptive manufacture of social independence while preserving legitimate persona separation. The remaining cross-specification challenge is how relying policy can observe or bound effective-control independence without imposing privacy-harmful universal correlation.
+  findings:
+    - id: F-001
+      title: Persona multiplicity can be mistaken for independent social corroboration
+      status: open
+      severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - governance
+        - implementation-guidance
+      scenarios: []
+      scenario_patterns: [SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01]
+        control_patterns: [CTP-COMP-01]
+        guardrail_patterns: [GRP-COMP-01]
+        assurance_patterns: [ATP-COMP-01]
+        evidence_patterns: [EVP-COMP-01]
+      evidence:
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/166
+          observation: The source issue distinguishes sock puppetry from Sybil resistance by focusing on false social independence rather than identity multiplication alone.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193
+          observation: The false-independence register requires apparent multiplicity, consensus and corroboration to remain distinct from genuine independence.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/206
+          observation: The executable promotion records the seven falsification and counter-cases, including the privacy-preserving multi-persona boundary.
+      harm: >-
+        A relying decision can gain false confidence, false distrust or false consensus when one controller generates multiple social signals that appear to originate from separate actors or communities.
+      recommendation: >-
+        Require relying policy to distinguish persona-level signals from effective-controller independence where that distinction is material, avoid treating cross-community or signature multiplicity as proof of independence, preserve bounded uncertainty when independence is unknown, and avoid privacy-harmful universal correlation.
+      retest_when:
+        - DTG Credentials, Relationships, Communities or Trust Tasks provide executable semantics for controller-independence evidence or privacy-preserving anti-amplification controls.
+  modeled_cases:
+    - id: SP-001
+      name: manufactured-endorsement-cluster
+      persona_count: 5
+      social_evidence_count: 5
+      effective_controller_count: 1
+      community_count: 1
+      independence_evidence: common-control-established
+      expected_corroboration_effect: no-independent-uplift
+      expected_disposition: collapse-to-effective-controller
+    - id: SP-002
+      name: apparent-community-consensus
+      persona_count: 8
+      social_evidence_count: 8
+      effective_controller_count: 1
+      community_count: 1
+      signal_type: vote-or-position
+      independence_evidence: common-control-established
+      expected_consensus_effect: no-legitimate-consensus-credit
+      expected_disposition: reject-persona-count-as-consensus
+    - id: SP-003
+      name: coordinated-negative-attestations
+      persona_count: 4
+      social_evidence_count: 4
+      effective_controller_count: 1
+      community_count: 1
+      signal_type: adverse-attestation
+      independently_signed: true
+      independence_evidence: common-control-established
+      expected_corroboration_effect: no-independent-uplift
+      expected_disposition: collapse-adverse-signals-to-effective-source
+    - id: SP-004
+      name: cross-community-sock-puppetry
+      persona_count: 6
+      social_evidence_count: 6
+      effective_controller_count: 1
+      community_count: 3
+      independence_evidence: common-control-established
+      expected_corroboration_effect: no-independent-uplift
+      expected_disposition: do-not-credit-community-spread-alone
+    - id: SP-005
+      name: genuinely-independent-social-support
+      persona_count: 4
+      social_evidence_count: 4
+      effective_controller_count: 4
+      community_count: 3
+      independence_evidence: established-independent
+      expected_corroboration_effect: policy-may-recognize-uplift
+      expected_disposition: allow-policy-weighting
+    - id: SP-006
+      name: legitimate-multi-persona-use
+      persona_count: 3
+      social_evidence_count: 0
+      effective_controller_count: 1
+      community_count: 3
+      purpose: privacy-safety-or-role-separation
+      claims_independent-social-support: false
+      expected_corroboration_effect: none
+      expected_disposition: permit-contextual-personas-without-penalty
+    - id: SP-007
+      name: unknown-controller-independence
+      persona_count: 4
+      social_evidence_count: 4
+      effective_controller_count: unknown
+      community_count: 2
+      independence_evidence: unknown
+      expected_corroboration_effect: no-silent-independent-uplift
+      expected_disposition: indeterminate-or-reduced-weight
+  judgment:
+    alternatives_considered:
+      - Treat every separately signed persona signal as independent social evidence.
+      - Require universal cross-context identity correlation before any social evidence can be trusted.
+      - Disallow multiple personas whenever common control is detected.
+    chosen: >-
+      Separate persona multiplicity from social-evidence multiplicity and effective-controller independence. Common control defeats automatic independence credit, while legitimate contextual personas and genuinely independent support remain valid counter-cases.
+    residual_uncertainty: >-
+      Common control may be difficult to establish without correlation mechanisms that create privacy, retention or linkability risks. RAHP should expose that uncertainty and the assurance consequence; privacy-sensitive anti-sock-puppetry mechanisms may require DPIP evaluation rather than being smuggled in as a universal identity requirement.
