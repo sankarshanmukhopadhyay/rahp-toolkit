@@ -1,8 +1,8 @@
 version: 1
 profile:
   id: portable-project
-  title: Synthetic Non-DTG Portability Fixture
-  description: Proves configuration-driven RAHP operation without DTG instance data.
+  title: Synthetic Non-DTG Standards Portability Fixture
+  description: Proves configuration-driven RAHP operation for specification and protocol targets without deployment state.
 assessment:
   default_mode: combined
   rahp_version: v0.5.0
@@ -17,11 +17,13 @@ repositories:
     scope:
       include: ["spec/**"]
     reviews: [rahp, security, combined]
-  - id: beta-guide
-    repository: example.test/beta-guide
+  - id: beta-protocol
+    repository: example.test/beta-protocol
     branch: stable
     commit: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
     context:
-      title: Beta Guide
-      type: implementation-guidance
-    reviews: [rahp]
+      title: Beta Protocol
+      type: protocol
+    scope:
+      include: ["protocol/**"]
+    reviews: [rahp, combined]
