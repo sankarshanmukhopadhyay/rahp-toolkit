@@ -21,6 +21,7 @@ profiles:
       - python3 tools/validate_evidence_freshness_delta.py
       - python3 tools/validate_authority_policy_gates.py
       - python3 tools/validate_engine_contract.py
+      - python3 tools/validate_project_invariants.py
   corpus-validation:
     description: Full packaged corpus and pressure-test evidence validation.
     commands:
@@ -91,6 +92,7 @@ profiles:
       - python3 tools/corpus_status.py --offline
       - python3 tools/validate_pressure_tests.py
       - python3 tools/validate_project_identity.py
+      - python3 tools/validate_project_invariants.py
       - python3 tools/validate_release_metadata.py
       - python3 tools/validate_documentation_ia.py
       - python3 -m unittest discover -s tests -p 'test_*.py'

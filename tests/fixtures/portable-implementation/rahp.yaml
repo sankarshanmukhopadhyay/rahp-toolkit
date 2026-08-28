@@ -1,0 +1,29 @@
+version: 1
+profile:
+  id: portable-implementation
+  title: Synthetic Non-DTG Implementation Portability Fixture
+  description: Proves the same RAHP engine can assess an implementation-oriented deployment without core changes.
+assessment:
+  default_mode: rahp
+  rahp_version: v0.5.0
+repositories:
+  - id: gamma-runtime
+    repository: example.test/gamma-runtime
+    branch: main
+    commit: cccccccccccccccccccccccccccccccccccccccc
+    context:
+      title: Gamma Runtime
+      type: implementation
+    scope:
+      include: ["src/**", "tests/**"]
+    reviews: [rahp, security, combined]
+  - id: delta-service
+    repository: example.test/delta-service
+    branch: main
+    commit: dddddddddddddddddddddddddddddddddddddddd
+    context:
+      title: Delta Service
+      type: implementation
+    scope:
+      include: ["service/**", "tests/**"]
+    reviews: [rahp]

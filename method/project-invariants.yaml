@@ -1,0 +1,67 @@
+version: 1
+contract: rahp-project-invariants-v1
+invariants:
+  - id: INV-PORTABLE-001
+    title: Portable specification-assurance boundary
+    proposition: >-
+      RAHP Toolkit is a portable specification-assurance toolkit for pressure-testing
+      standards, protocols, implementations and composed systems against human harms,
+      governance failures, adversarial conditions and resilience risks.
+    dependency_direction:
+      allowed:
+        - deployment-to-portable-core
+        - corpus-to-portable-catalogue
+        - example-to-portable-contract
+      forbidden:
+        - portable-core-to-deployment-profile
+        - portable-contract-to-ecosystem-governance-state
+    portable_core_files:
+      - tools/rahp.py
+      - tools/review.py
+      - tools/validate_engine_contract.py
+      - method/schema/rahp-config.schema.json
+    prohibited_core_tokens:
+      - profiles/dtg/
+      - profiles/cawg/
+      - instances/dtg/
+      - instances/cawg/
+      - dtg-portfolio-monitor
+      - trustoverip/dtgwg-
+      - sankarshanmukhopadhyay/dtg-
+    portability_fixtures:
+      - tests/fixtures/portable-project/rahp.yaml
+      - tests/fixtures/portable-implementation/rahp.yaml
+    stripped_core:
+      remove_paths:
+        - profiles
+        - instances
+        - corpora
+        - examples
+      commands:
+        - python3 tools/validate_portability.py --root {root}
+    required_target_classes:
+      specification:
+        evidence: tests/fixtures/portable-project/rahp.yaml
+        marker: specification
+      protocol:
+        evidence: tests/fixtures/portable-project/rahp.yaml
+        marker: protocol
+      implementation:
+        evidence: tests/fixtures/portable-implementation/rahp.yaml
+        marker: implementation
+      composed-system:
+        evidence: docs/cross-spec-pressure-testing.md
+        marker: first-class test surface
+    required_pressure_dimensions:
+      human-harms:
+        evidence: method/catalogue/harm-patterns.yaml
+        marker: HRM-
+      governance-failures:
+        evidence: method/catalogue/harm-patterns.yaml
+        marker: HRM-GOV-
+      adversarial-conditions:
+        evidence: tests/test_false_independence_corpus_qualification.py
+        marker: FalseIndependenceCorpusQualificationTests
+      resilience-risks:
+        evidence: tools/validate_resilience.py
+        marker: DRARM
