@@ -1,0 +1,141 @@
+review:
+  id: SR-XSP-FI-002
+  status: complete
+  title: DTG false governance-diversity composition pressure test
+  reviewed_on: '2026-08-28'
+  evidence_grade: modeled
+  target:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    version: pre-specification evidence model from issues 160 and 193
+    commit: 29eff9bef26ce7ceeb7766f78b81f7954a7cd588
+    source_paths:
+      - examples/cross-spec/false-governance-diversity/pressure-test.yaml
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.8.0
+    trigger_issue: 160
+    engine_contract: rahp-engine-contract-v1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    normalized_result_schema: '1'
+  proposition: >-
+    Nominal diversity of issuers, communities, registries, operators or trust roots must not be treated as governance independence when materially decisive control, policy authority or decision power remains common; genuinely independent governance roots must remain recognizable as a legitimate counter-case.
+  scope:
+    included:
+      - nominal-issuer-diversity-common-controller
+      - branded-community-diversity-common-policy-authority
+      - operational-separation-common-decisive-root
+      - genuinely-independent-governance-roots
+      - unknown-governance-dependence
+    excluded:
+      - Claims that organizational centralization is inherently a failure.
+      - A requirement that every relying decision use multiple governance roots.
+      - Universal proof that two organizations can never coordinate or collude.
+  method:
+    workflow: docs/cross-spec-pressure-testing.md
+    rule: Nominal source count is not evidence of governance independence; the relying policy must evaluate the control or policy authority relevant to the assurance claim.
+    falsification_bias: The fixture must fail if nominal issuer, operator, community or root count alone earns a diversity uplift under common decisive control, or if genuine governance independence is suppressed merely because common infrastructure exists.
+  assurance:
+    residual_state: finding
+    policy_gate: AMBER
+    gate_reason: >-
+      Governance independence is pressure-testable, but effective decision power can be partially observable, contractual, delegated or context-dependent. Unknown dependence must remain bounded uncertainty rather than default diversity credit.
+    positive_controls:
+      - Explicit separation of nominal source count, operational separation and effective governance-control domains.
+      - Common decisive policy authority prevents automatic diversity uplift.
+      - Genuine governance independence remains eligible for relying-policy weighting when supported by evidence.
+      - Unknown governance dependence is represented as INDETERMINATE or reduced weight.
+  summary:
+    finding_count: 1
+    open_count: 1
+    overall_assessment: >-
+      RAHP can express false governance diversity without treating centralization itself as a defect. The unresolved assurance question is whether the relying policy has evidence sufficient to establish the independence of the governance roots it intends to count.
+  findings:
+    - id: F-001
+      title: Nominal trust-root diversity can conceal common decisive governance control
+      status: open
+      severity: High
+      primary_disposition: governance
+      secondary_dispositions:
+        - companion-specification
+        - implementation-guidance
+      scenarios: []
+      scenario_patterns: [SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01]
+        control_patterns: [CTP-COMP-01]
+        guardrail_patterns: [GRP-COMP-01]
+        assurance_patterns: [ATP-COMP-01]
+        evidence_patterns: [EVP-COMP-01]
+      evidence:
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/160
+          observation: The source proposition requires nominal diversity to be distinguished from governance independence where issuers, communities, registries or roots share effective control or policy authority.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193
+          observation: The evidence register requires many issuers to be distinguished from many governance roots and treats FALSE-DIVERSITY as a first-class false-independence threat.
+      harm: >-
+        A relying decision can overstate decentralization, corroboration or legitimacy when several nominal sources are counted as independent even though materially decisive authority remains concentrated in one effective governance domain.
+      recommendation: >-
+        Require relying policy to separate nominal source diversity, operational separation and governance independence; identify the authority material to the decision; withhold diversity uplift under common decisive control; and preserve bounded uncertainty when dependence cannot be established.
+      retest_when:
+        - A DTG composition provides executable evidence about governance-root control, delegated authority or policy dependence for the relevant relying decision.
+  modeled_cases:
+    - id: GD-001
+      name: nominal-issuer-diversity-common-controller
+      nominal_source_count: 3
+      operator_count: 3
+      effective_governance_domains: 1
+      decisive_authority: common-controller
+      independence_evidence: established-common-control
+      expected_assurance_effect: no-diversity-uplift
+      expected_disposition: reject-false-governance-diversity
+    - id: GD-002
+      name: branded-community-diversity-common-policy-authority
+      nominal_source_count: 4
+      operator_count: 4
+      effective_governance_domains: 1
+      decisive_authority: common-mandatory-policy
+      independence_evidence: established-common-policy-authority
+      expected_assurance_effect: no-governance-independence-uplift
+      expected_disposition: treat-as-common-governance-root-for-claim
+    - id: GD-003
+      name: operational-separation-common-decisive-root
+      nominal_source_count: 3
+      operator_count: 3
+      effective_governance_domains: 1
+      shared_infrastructure: false
+      decisive_authority: common-registry-decision
+      independence_evidence: established-common-decisive-root
+      expected_assurance_effect: no-governance-independence-uplift
+      expected_disposition: separate-operations-from-governance-independence
+    - id: GD-004
+      name: genuinely-independent-governance-roots
+      nominal_source_count: 3
+      operator_count: 3
+      effective_governance_domains: 3
+      decisive_authority: independent-policy-authorities
+      independence_evidence: established-independent
+      expected_assurance_effect: policy-may-recognize-diversity
+      expected_disposition: allow-policy-weighting
+    - id: GD-005
+      name: unknown-governance-dependence
+      nominal_source_count: 4
+      operator_count: 4
+      effective_governance_domains: unknown
+      decisive_authority: unknown
+      independence_evidence: unavailable
+      expected_assurance_effect: no-silent-diversity-uplift
+      expected_disposition: indeterminate-or-reduced-weight
+  judgment:
+    alternatives_considered:
+      - Treat every separately operated issuer or community as an independent governance source.
+      - Treat any shared infrastructure or centralization as proof that independent corroboration is impossible.
+      - Defer false-diversity coverage until a universal governance-control ontology exists.
+    chosen: >-
+      Test the materially decisive authority behind the assurance claim. This rejects superficial source-count diversity without converting architectural centralization or shared infrastructure into an automatic failure.
+    residual_uncertainty: >-
+      Effective governance control can be delegated, contractual, informal, time-varying or only partly observable. Where the relevant dependence cannot be established, the correct disposition is bounded uncertainty rather than fabricated independence or fabricated capture.
