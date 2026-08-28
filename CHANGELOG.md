@@ -9,6 +9,49 @@ parent: Reference
 
 This file records current release-level changes. The complete pre-v1.2 changelog, including accumulated historical `Unreleased` sections, is preserved at `archive/pre-v1.2/CHANGELOG-pre-v1.2.txt`.
 
+## v1.8.0 — 2026-08-28 — Common Map
+
+### Added
+
+- Gatherer-native end-to-end assurance lineage across material repository changes, bounded RAHP judgment, optional DPIP examination, return reconciliation and truthful portfolio disposition.
+- Evidence-backed automatic disposition before human escalation, constrained by explicit evidence-sufficiency rules.
+- Polarity-aware evidence handling that distinguishes weakening/introduction from fixing/prevention without treating keywords or CI success as semantic assurance.
+- Reviewer-ready judgment packets for unresolved semantic questions.
+- Semantic materiality classification for normative, security, semantic, dependency, generated, evidence and release surfaces.
+- VTI composition and adversarial false-independence evidence registers as structured continuing evidence programmes.
+- v1.8-specific machine-verifiable qualification manifest, validator and tests.
+
+### Changed
+
+- DTG materiality now distinguishes substantive semantic change from generated/codegen convergence and release propagation.
+- #151-style semantic changes remain assessment-worthy even when surrounded by release fan-out.
+- #183-style generated binding convergence plus package/changelog propagation routes to triage rather than a fresh broad RAHP/security assessment.
+- RAHP → DPIP applicability, source-pin lineage and return state are explicit; `INDETERMINATE` remains non-green.
+- Newly published assessment IDs can advance directly without depending on eventually consistent GitHub issue rediscovery.
+- Root/workspace package metadata advances to `1.8.0` while the stable v1 engine/result/retention contracts remain unchanged.
+
+### Continuing evidence programmes
+
+The VTI composition register and adversarial identity/trust-independence register remain open by design. v1.8.0 qualifies the evidence taxonomy and operating machinery; it does **not** claim complete Sybil, sock-puppet, trust-laundering, false-diversity, collusion, selective-evidence or quorum-capture pressure-test coverage.
+
+### Compatibility
+
+The stable v1 compatibility boundaries remain unchanged:
+
+```text
+rahp-engine-contract-v1
+normalized result schema version 1
+rahp-evidence-retention-v1
+```
+
+v1.8.0 is an additive minor release. Existing normalized results and historical assessment/release qualification lineage remain valid.
+
+### Release name
+
+**Common Map — *Cyrestis thyodamas***, selected on 2026-08-28 from the recorded West Bengal butterfly list under the random-at-release-time naming policy.
+
+See [v1.8.0 release notes](docs/releases/v1.8.0.md).
+
 ## v1.7.0 — 2026-08-27 — Common Palmfly
 
 ### Added

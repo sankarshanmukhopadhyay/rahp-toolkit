@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v1.7.0 (stable) · Common Palmfly · CC-BY 4.0
+Release v1.8.0 (stable) · Common Map · CC-BY 4.0
 
 RAHP Toolkit is a **portable specification-assurance toolkit** for pressure-testing standards, protocols, implementations and composed systems against human harms, governance failures, adversarial conditions and resilience risks.
 
@@ -74,7 +74,7 @@ See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps a
 
 ## Current release
 
-v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) is the stable release of **Assurance Operations and Cross-Spec Execution**. The previous stable release was v1.6.0 **Common Earl** (*Tanaecia julii*), preserved in the changelog and v1.6 release notes. It preserves the stable v1 compatibility boundaries:
+v1.8.0 **Common Map** (*Cyrestis thyodamas*) is the stable release of **Semantically Governed Assurance Pipeline**. The previous stable release was v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*), preserved in the changelog and v1.7 release notes. Earlier release history also preserves v1.6.0 **Common Earl** (*Tanaecia julii*). It preserves the stable v1 compatibility boundaries:
 
 ```text
 rahp-engine-contract-v1
@@ -82,12 +82,14 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v1.7.0 qualifies the live monitor-to-assessment operating loop, deterministic `rahp` / `security` / `combined` / `--all` review-mode regression coverage, the full 8/8 DTG cross-specification pressure surface, RAHP→DPIP lifecycle handling and repeatable execution benchmarking. It deliberately does **not** claim a like-for-like speed improvement from the current benchmark evidence.
+v1.8.0 qualifies gatherer-native end-to-end assurance lineage, bounded evidence-backed disposition before human escalation, polarity-aware evidence handling, reviewer-ready judgment packets, robust RAHP→DPIP lifecycle routing, and semantic materiality that distinguishes substantive change from generated/release fan-out without weakening conservative review boundaries.
+
+The VTI composition register and adversarial false-independence register are qualified as structured continuing evidence programmes. Their open pressure-test candidates, including #193, are deliberately **not** represented as complete coverage.
 
 Useful release surfaces:
 
-- [v1.7.0 release notes](docs/releases/v1.7.0.md)
-- [v1.7 qualification contract](method/v1.7-release-qualification.yaml)
+- [v1.8.0 release notes](docs/releases/v1.8.0.md)
+- [v1.8 qualification contract](method/v1.8-release-qualification.yaml)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
 - [Getting started](docs/getting-started.md)

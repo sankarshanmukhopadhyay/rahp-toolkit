@@ -123,6 +123,8 @@ jobs:
         run: python3 tools/validate_v16_release.py
       - name: Validate v1.7 release qualification
         run: python3 tools/validate_v17_release.py
+      - name: Validate v1.8 release qualification
+        run: python3 tools/validate_v18_release.py
       - name: Validate canonical maintained examples
         run: python3 tools/validate_current_examples.py
 
