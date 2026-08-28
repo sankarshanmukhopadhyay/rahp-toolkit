@@ -1,0 +1,80 @@
+version: 1
+release: v1.8.0
+qualification: semantically-governed-assurance-pipeline
+stable_compatibility:
+  engine_contract: rahp-engine-contract-v1
+  normalized_result_schema: 1
+  evidence_retention_contract: rahp-evidence-retention-v1
+release_thesis: >-
+  v1.8.0 qualifies a semantically governed assurance pipeline: gatherer-native
+  lineage, bounded evidence-backed disposition, polarity-aware evidence,
+  explicit RAHP-to-DPIP lifecycle handling, and semantic materiality, while
+  preserving stable v1 compatibility and keeping continuing evidence registers
+  explicitly non-terminal.
+required_evidence:
+  release_notes: docs/releases/v1.8.0.md
+  release_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/196
+  semantic_materiality_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/157
+  semantic_materiality_pr: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/195
+  materiality_regression_fixture: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/183
+  continuing_independence_register: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193
+pipeline_capabilities:
+  gatherer_native_lineage: true
+  direct_issue_advancement: true
+  evidence_backed_auto_disposition: true
+  human_judgment_exception_path: true
+  polarity_aware_evidence: true
+  explicit_dpip_applicability: true
+  dpip_indeterminate_non_green: true
+semantic_materiality:
+  explicit_classes:
+    - normative
+    - security
+    - semantic
+    - dependency
+    - generated
+    - evidence
+    - release
+  score_is_assurance_verdict: false
+  high_significance_change_cannot_be_masked_by_fanout: true
+  generated_convergence_can_triage: true
+  bounded_release_only_can_be_informational: true
+  conservative_unknown_manifest_change: true
+  regression_test: tests/test_dtg_semantic_materiality.py
+continuing_programmes:
+  vti_composition_register_issue: 192
+  false_independence_register_issue: 193
+  release_claims_complete_coverage: false
+  policy: >-
+    Open composition and adversarial-independence registers are evidence programmes,
+    not release blockers or claims of completed threat coverage.
+historical_baseline_policy:
+  promote_maintained_examples: false
+  reason: >-
+    Toolkit release qualification does not itself reassess every maintained external target.
+portable_invariants:
+  - Portable core contracts remain deployment-independent.
+  - Queue creation is not a substantive finding.
+  - Workflow success is not assurance success.
+  - INDETERMINATE is not GREEN.
+  - Historical assessment records remain immutable lineage evidence.
+  - Numeric materiality weights are explanatory and never an assurance score.
+qualification_commands:
+  - python3 tools/validate_scenario_corpora.py
+  - python3 tools/validate_pressure_tests.py
+  - python3 tools/validate_engine_contract.py
+  - python3 tools/validate_security_reviews.py
+  - python3 tools/validate_combined_reviews.py
+  - python3 tools/validate_assessment_queue.py
+  - python3 tools/validate_typescript_sdk.py
+  - python3 tools/validate_v18_release.py
+  - python3 -m unittest tests.test_v18_release_qualification
+release_cut:
+  butterfly_name_selection: random-at-release-time
+  butterfly_source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
+  selected_common_name: Common Map
+  selected_scientific_name: Cyrestis thyodamas
+  selected_on: '2026-08-28'
+  tag: v1.8.0
+  publish_only_after_qualification: true
+  publication_workflow: .github/workflows/release.yml
