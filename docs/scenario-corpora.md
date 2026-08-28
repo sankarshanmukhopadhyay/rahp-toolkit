@@ -29,9 +29,10 @@ Scenario corpora connect domain-specific use cases to portable RAHP pressure-tes
 | ZKP × VDS | RAHP-authored DTG profile adapter | Linkability, selective disclosure, lifecycle and provenance | 4 |
 | Agent Names × Trust Tasks | RAHP-authored DTG profile adapter | Naming versus principal/delegate/task authority | 4 |
 | Agent Names × CredSpec | RAHP-authored DTG profile adapter | Identifier, subject/controller and issuer-authority semantics | 4 |
+| Credential Spec × ZKP × Trust Tasks | RAHP-authored DTG profile adapter | Complete credential/proof/task seam: action-time authority, privacy composition, freshness, execution state, replay and non-inference | 7 |
 | [CAWG/C2PA](../corpora/cawg/) | Multi-source external CAWG/C2PA portfolio | Identity, governance, consent, delegation, metadata, privacy, UX, security and mandate-readiness interactions | 36 |
 
-Together these adapters expose **182 scenario test vectors** to the RAHP pressure-testing workflow. The CAWG/C2PA corpus is intentionally multi-source: its primary source and additional specification repositories are declared without inventing a DTG Portfolio Monitor relationship.
+Together these adapters expose **189 scenario test vectors across 15 corpora** to the RAHP pressure-testing workflow. The CAWG/C2PA corpus is intentionally multi-source: its primary source and additional specification repositories are declared without inventing a DTG Portfolio Monitor relationship.
 
 ## Source-pinned Trust Tasks and Credential Spec baselines
 
@@ -106,6 +107,8 @@ Some consequential failures are not owned by either specification alone. The Tru
 - status lookup plus task metadata creating a durable correlator;
 - restoration propagating through only one layer; and
 - technically valid task/credential evidence being over-read as fiduciary or constrained-action propriety.
+
+The three-spec Credential Spec × ZKP × Trust Tasks adapter adds seven P0 seams where individually valid credential, proof and task artefacts can still compose unsafely: action-time authority, wrapper linkability, freshness-domain confusion, transport-versus-execution state, composite replay, retained-evidence correlation and proof/authorization/outcome non-inference.
 
 `XSP-*` identifiers are RAHP-owned because these are synthesized interaction scenarios rather than copied source use cases.
 
