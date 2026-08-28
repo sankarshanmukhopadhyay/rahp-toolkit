@@ -31,6 +31,45 @@ assessment:
     documentation_triage_roles:
     - task-force-workspace
     - legacy-or-transition
+    semantic_weighting:
+      weights:
+        normative: 8
+        security: 8
+        semantic: 6
+        dependency: 6
+        generated: 2
+        evidence: 1
+        release: 0.25
+      normative_paths:
+      - schemas/**
+      - specs/**
+      - '**/*spec*.md'
+      security_sensitive_paths:
+      - .github/workflows/**
+      - '**/auth/**'
+      - '**/security/**'
+      generated_paths:
+      - bindings/**
+      - '**/bindings/**'
+      - '**/schema_index.rs'
+      - '**/src/specs/**'
+      - 'trust-tasks-ts/src/provision/**'
+      evidence_paths:
+      - tests/**
+      - '**/tests/**'
+      - '**/*test*.*'
+      release_metadata_paths:
+      - CHANGELOG.md
+      - '**/CHANGELOG.md'
+      - Cargo.lock
+      - '**/Cargo.lock'
+      manifest_paths:
+      - Cargo.toml
+      - '**/Cargo.toml'
+      - package.json
+      - '**/package.json'
+      - package-lock.json
+      - '**/package-lock.json'
     role_profiles:
       normative-specification:
       - README.md
