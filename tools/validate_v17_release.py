@@ -6,6 +6,12 @@ from pathlib import Path
 import yaml
 ROOT=Path(__file__).resolve().parents[1]
 
+def at_least(value, floor):
+    try:
+        return tuple(map(int,str(value).lstrip("v").split("."))) >= tuple(map(int,floor.split(".")))
+    except Exception:
+        return False
+
 def load_yaml(rel): return yaml.safe_load((ROOT/rel).read_text(encoding="utf-8"))
 
 def main():
