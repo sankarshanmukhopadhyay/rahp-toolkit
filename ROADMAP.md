@@ -47,6 +47,24 @@ v1.8 strengthens RAHP's operating assurance pipeline without changing the stable
    - adversarial false-independence concerns are classified across Sybil, sock-puppet, false-diversity, trust-laundering, collusion, quorum-capture and selective-evidence classes;
    - these registers remain continuing work and are not misrepresented as completed threat coverage.
 
+The final bullet above records the **v1.8.0 release boundary** and remains historically correct. It is not a claim about the later state of `main`.
+
+### Post-release current-main qualification
+
+After v1.8.0 was cut, issue [#193](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193) completed the seven-row adversarial false-independence evidence corpus as executable pressure-test evidence:
+
+- `SR-XSP-FI-001` — Sybil/common-control multiplicity;
+- `SR-XSP-FI-002` — false governance diversity;
+- `SR-XSP-FI-003` — trust laundering;
+- `SR-XSP-FI-004` — sock puppetry / false social independence;
+- `SR-XSP-FI-005` — quorum capture;
+- `SR-XSP-FI-006` — collusion; and
+- `SR-XSP-FI-007` — selective-evidence incompleteness.
+
+The common judgment is that apparent multiplicity, provenance depth, threshold satisfaction, actor distinctness or artifact validity must not automatically be upgraded into evidence independence or completeness. Each executable row preserves a legitimate counter-case and bounded uncertainty, so anti-abuse pressure tests do not become blanket rejection of plurality, transformation, coalition, selective disclosure or privacy-preserving minimization.
+
+This post-release completion **does not retroactively extend the v1.8.0 qualification claim**. It is current-main evidence and must be requalified with the stable-v1 regression suite before any later release claim incorporates it.
+
 ### Retained portable capability contracts
 
 v1.8 preserves the previously qualified portable capability set:
