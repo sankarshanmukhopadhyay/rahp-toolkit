@@ -101,16 +101,100 @@ def compare(repo: str, base: str, head: str) -> dict[str,Any]:
 def path_matches(path: str, patterns: list[str]) -> bool:
     return any(fnmatch.fnmatch(path,p) or pathlib.PurePosixPath(path).match(p) for p in patterns)
 
-def classify(target: dict[str,Any], files: list[dict[str,Any]], cfg: dict[str,Any]) -> tuple[str,list[str],list[str]]:
+def _commit_subjects(commits: list[dict[str,Any]]) -> list[str]:
+    subjects=[]
+    for item in commits:
+        message=((item.get("commit") or {}).get("message") or "").splitlines()
+        if message:
+            subjects.append(message[0].strip().lower())
+    return subjects
+
+def _release_propagation_window(commits: list[dict[str,Any]]) -> bool:
+    """Return True only for a bounded release/codegen propagation commit window.
+
+    This is intentionally conservative: dependency/security upgrades, arbitrary
+    chores, and unknown commit intent are never downgraded merely because they
+    touch manifests or lockfiles.
+    """
+    subjects=_commit_subjects(commits)
+    if not subjects:
+        return False
+    allowed=(
+        "chore: release", "chore(release)", "release:", "chore: publish",
+        "chore(publish)", "fix(ts): regenerate", "fix(codegen): regenerate",
+        "chore(codegen): regenerate", "chore: regenerate",
+    )
+    forbidden=("depend", "security", "cve", "upgrade", "bump dependency", "update dependency")
+    return all(any(s.startswith(prefix) for prefix in allowed) for s in subjects) and not any(
+        token in s for s in subjects for token in forbidden
+    )
+
+def materiality_breakdown(
+    matched_files: list[dict[str,Any]],
+    cfg: dict[str,Any],
+    commits: list[dict[str,Any]] | None = None,
+) -> dict[str,Any]:
+    """Classify matched files by assurance significance.
+
+    The score is explanatory, not an assurance verdict. Routing remains bounded
+    by explicit classes so a large amount of release fan-out cannot outweigh one
+    normative/security-sensitive semantic change.
+    """
+    mc=cfg["assessment"]["materiality"]
+    profile=mc.get("semantic_weighting", {})
+    paths={
+        "normative": profile.get("normative_paths", ["schemas/**","specs/**","**/*spec*.md"]),
+        "security": profile.get("security_sensitive_paths", [".github/workflows/**","**/auth/**","**/security/**"]),
+        "generated": profile.get("generated_paths", ["bindings/**","**/bindings/**","**/schema_index.rs","**/src/specs/**"]),
+        "evidence": profile.get("evidence_paths", ["tests/**","**/tests/**","**/*test*.*"]),
+        "release": profile.get("release_metadata_paths", ["CHANGELOG.md","**/CHANGELOG.md","Cargo.lock","**/Cargo.lock"]),
+        "manifests": profile.get("manifest_paths", ["Cargo.toml","**/Cargo.toml","package.json","**/package.json","package-lock.json","**/package-lock.json"]),
+    }
+    weights={"normative":8.0,"security":8.0,"semantic":6.0,"dependency":6.0,"generated":2.0,"evidence":1.0,"release":0.25}
+    weights.update({k:float(v) for k,v in (profile.get("weights") or {}).items()})
+    release_window=_release_propagation_window(commits or [])
+    buckets={k:[] for k in weights}
+    for f in matched_files:
+        p=f["filename"]
+        if path_matches(p, paths["normative"]):
+            kind="normative"
+        elif path_matches(p, paths["security"]):
+            kind="security"
+        elif path_matches(p, paths["generated"]):
+            kind="generated"
+        elif path_matches(p, paths["evidence"]):
+            kind="evidence"
+        elif path_matches(p, paths["release"]):
+            kind="release"
+        elif path_matches(p, paths["manifests"]):
+            kind="release" if release_window else "dependency"
+        else:
+            kind="semantic"
+        buckets.setdefault(kind,[]).append(p)
+    score=sum(weights.get(kind,0.0)*len(items) for kind,items in buckets.items())
+    return {
+        "buckets": buckets,
+        "weights": weights,
+        "score": round(score,2),
+        "release_propagation_window": release_window,
+    }
+
+def classify(
+    target: dict[str,Any],
+    files: list[dict[str,Any]],
+    cfg: dict[str,Any],
+    commits: list[dict[str,Any]] | None = None,
+) -> tuple[str,list[str],list[str]]:
     mc=cfg["assessment"]["materiality"]
     configured=target.get("material_paths",[])
     always=mc.get("always_material_paths",[])
-    matched=[]
+    matched_files=[]
     reasons=[]
     for f in files:
         p=f["filename"]
         if path_matches(p, configured + always):
-            matched.append(p)
+            matched_files.append(f)
+    matched=[f["filename"] for f in matched_files]
     if matched:
         reasons.append(f"{len(matched)} changed file(s) match the target's material assessment scope")
     if target.get("reporting_weight") in mc.get("review_weights",[]) and files:
@@ -120,12 +204,34 @@ def classify(target: dict[str,Any], files: list[dict[str,Any]], cfg: dict[str,An
     if not matched:
         return "ignore", matched, reasons
 
-    # Some repository roles use README/docs as operational routing surfaces rather
-    # than normative specification text. For those roles, documentation-only
-    # movement is significant enough to record, but should be triaged before a
-    # full RAHP/security assessment is opened. This prevents canonical-source
-    # relocations and repository housekeeping from becoming false-positive
-    # assurance work while preserving an auditable governance signal.
+    breakdown=materiality_breakdown(matched_files,cfg,commits)
+    buckets=breakdown["buckets"]
+    summary=", ".join(f"{k}={len(v)}" for k,v in buckets.items() if v)
+    reasons.append(f"semantic materiality profile: {summary}; weighted evidence score={breakdown['score']}")
+    if breakdown["release_propagation_window"]:
+        reasons.append("commit window is bounded release/code-generation propagation; manifest fan-out receives release weight")
+
+    # Any normative, security-sensitive, implementation-semantic, or dependency
+    # change remains assessment-worthy regardless of how much low-weight fan-out
+    # accompanies it.
+    high_classes=("normative","security","semantic","dependency")
+    if any(buckets.get(k) for k in high_classes):
+        return "assessment", matched, reasons
+
+    # Generated/evidence-only movement remains visible but is classification work,
+    # not automatically a fresh broad RAHP/security assessment.
+    if buckets.get("generated") or buckets.get("evidence"):
+        reasons.append("matched changes are generated/evidence/release surfaces without a new high-weight semantic path")
+        return "triage", matched, reasons
+
+    # Pure release metadata in a bounded propagation window is informational. It
+    # remains in persisted revision lineage but does not create fresh assessment
+    # work. Outside a bounded release window manifests are classified as dependency.
+    if buckets.get("release") and breakdown["release_propagation_window"]:
+        reasons.append("only release propagation remains after semantic weighting; no fresh assessment work item required")
+        return "ignore", matched, reasons
+
+    # Existing documentation-role triage remains as a separate bounded policy.
     documentation = mc.get("documentation_paths", [])
     triage_roles = set(mc.get("documentation_triage_roles", []))
     role = target.get("role")
@@ -354,7 +460,7 @@ def main():
         if old==new: continue
         try:
             comp=compare(repo,old,new)
-            classification,matched,reasons=classify(t,comp.get("files",[]),cfg)
+            classification,matched,reasons=classify(t,comp.get("files",[]),cfg,comp.get("commits",[]))
         except Exception as exc:
             classification="assessment"; matched=[]; reasons=[f"unable to compare prior SHA cleanly; conservative review required ({exc})"]
             comp={"files":[],"commits":[]}
