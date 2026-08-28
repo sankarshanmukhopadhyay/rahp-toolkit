@@ -1,0 +1,243 @@
+review:
+  id: SR-XSP-FI-005
+  status: complete
+  title: DTG quorum-capture and threshold-manipulation pressure test
+  reviewed_on: '2026-08-28'
+  evidence_grade: modeled
+  target:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    version: pre-specification evidence model from issues 178, 193 and 208
+    commit: 2160132bc7583971bddacd6b86491b30a6b9f094
+    source_paths:
+      - examples/cross-spec/quorum-capture/pressure-test.yaml
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.8.0
+    trigger_issue: 208
+    engine_contract: rahp-engine-contract-v1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    normalized_result_schema: '1'
+  proposition: >-
+    Satisfying an N-of-M threshold MUST NOT automatically establish independent,
+    representative or legitimate approval when participant eligibility,
+    independence, weighting, attendance semantics, lifecycle state or common
+    control materially affects the decision.
+  scope:
+    included:
+      - captured-three-of-five
+      - duplicate-influence-across-roles
+      - lifecycle-denominator-change
+      - coordinated-abstention
+      - hidden-weighting
+      - genuinely-independent-threshold-approval
+      - unknown-independence-or-eligibility
+    excluded:
+      - A prohibition on threshold or quorum governance.
+      - A rule that abstention is inherently illegitimate.
+      - A rule that weighted voting is inherently illegitimate.
+      - A universal voting-system or constitutional-governance specification.
+  method:
+    workflow: docs/cross-spec-pressure-testing.md
+    rule: >-
+      Threshold arithmetic establishes numeric satisfaction only; relying policy
+      must separately evaluate the independence, eligibility, representativeness,
+      weighting and current governance state that give the threshold meaning.
+    falsification_bias: >-
+      The fixture must fail if N-of-M satisfaction alone proves legitimacy,
+      duplicate roles automatically multiply independent influence, stale quorum
+      semantics survive material lifecycle changes, or legitimate current and
+      independent threshold approval is prevented from counting.
+  assurance:
+    residual_state: finding
+    policy_gate: AMBER
+    gate_reason: >-
+      The invariant is pressure-testable, but representativeness and legitimate
+      quorum semantics remain policy-dependent and common-control evidence may be
+      incomplete.
+    positive_controls:
+      - Numeric threshold satisfaction is represented separately from substantive legitimacy.
+      - Eligible participant count and effective-controller count are separate quantities.
+      - Role multiplicity does not automatically create actor independence.
+      - Governance-rule version and membership state are explicit in lifecycle cases.
+      - Abstention and weighting are judged against disclosed policy semantics rather than prohibited categorically.
+      - Genuine independent threshold approval remains a valid counter-case.
+      - Unknown independence or eligibility remains bounded uncertainty rather than silently upgraded legitimacy.
+  summary:
+    finding_count: 1
+    open_count: 1
+    overall_assessment: >-
+      RAHP can express quorum capture as a false-independence failure in which a
+      numerically satisfied approval rule is over-read as independent,
+      representative or legitimate consensus. The remaining cross-specification
+      requirement is sufficient semantics for eligibility, control, weighting and
+      governance-rule lifecycle to be evaluated alongside threshold arithmetic.
+  findings:
+    - id: F-001
+      title: Numeric threshold satisfaction can conceal captured or stale governance
+      status: open
+      severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - governance
+        - implementation-guidance
+      scenarios: []
+      scenario_patterns: [SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01]
+        control_patterns: [CTP-COMP-01]
+        guardrail_patterns: [GRP-COMP-01]
+        assurance_patterns: [ATP-COMP-01]
+        evidence_patterns: [EVP-COMP-01]
+      evidence:
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/178
+          observation: >-
+            The source issue identifies threshold satisfaction under common
+            control, duplicate roles, lifecycle changes and coordinated abstention
+            as cases where arithmetic quorum can be over-read as legitimacy.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193
+          observation: >-
+            The false-independence register records QUORUM-CAPTURE as the case in
+            which satisfying N-of-M does not automatically establish independent or
+            legitimate approval.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/208
+          observation: >-
+            The executable promotion records falsification and counter-cases for
+            common control, role duplication, lifecycle, abstention, weighting,
+            genuine independent quorum and unknown independence.
+      harm: >-
+        A relying decision can treat captured, non-representative or stale approval
+        as legitimate governance merely because the configured threshold is
+        numerically satisfied.
+      recommendation: >-
+        Evaluate threshold satisfaction together with current participant
+        eligibility, effective control, role occupancy, weighting, attendance
+        semantics and governance-rule version where those properties are material
+        to the relying policy.
+      retest_when:
+        - >-
+          DTG governance, Communities, Relationships or Trust Tasks provide
+          executable quorum semantics including eligibility, weighting, lifecycle
+          and independence evidence.
+  modeled_cases:
+    - id: QC-001
+      name: captured-three-of-five
+      threshold_required: 3
+      nominal_members: 5
+      approvals_counted: 3
+      threshold_satisfied: true
+      eligible_approvers: 5
+      effective_controller_count_for_approvals: 1
+      independence_required_by_policy: true
+      expected_legitimacy_effect: no-independent-approval-credit
+      expected_disposition: reject-arithmetic-as-independence
+    - id: QC-002
+      name: duplicate-influence-across-roles
+      threshold_required: 3
+      nominal_roles_approving: 3
+      approvals_counted: 3
+      threshold_satisfied: true
+      distinct_actors_approving: 2
+      effective_controller_count_for_approvals: 2
+      one_actor_multiple_roles: true
+      policy_requires_distinct_actors: true
+      expected_legitimacy_effect: threshold-not-substantively-met
+      expected_disposition: deduplicate-role-influence-per-policy
+    - id: QC-003
+      name: lifecycle-denominator-change
+      configured_threshold_required: 3
+      configured_membership_count: 5
+      current_membership_count: 4
+      governance_rule_version_at_configuration: v1
+      current_governance_rule_version: v2
+      rule_recomputed_for_current_membership: false
+      approvals_counted: 3
+      threshold_satisfied_under_stale_rule: true
+      expected_legitimacy_effect: no-silent-carry-forward
+      expected_disposition: require-current-rule-re-evaluation
+    - id: QC-004
+      name: coordinated-abstention
+      total_eligible_members: 7
+      members_present: 4
+      approvals_counted: 3
+      threshold_rule: three-of-present
+      threshold_satisfied: true
+      coordinated_abstainers: 3
+      abstainers_share_effective_control: true
+      representativeness_assumption_defeated: true
+      expected_legitimacy_effect: no-automatic-representative-consensus
+      expected_disposition: evaluate-attendance-semantics-and-control
+    - id: QC-005
+      name: hidden-weighting
+      nominal_approvals_counted: 3
+      threshold_satisfied_by_count: true
+      weights_disclosed: false
+      approval_weights: [5, 1, 1]
+      equal_vote_semantics_asserted: true
+      expected_legitimacy_effect: count-insufficient
+      expected_disposition: expose-weighting-before-legitimacy-credit
+    - id: QC-006
+      name: genuinely-independent-threshold-approval
+      threshold_required: 3
+      nominal_members: 5
+      approvals_counted: 3
+      threshold_satisfied: true
+      eligible_approvers: 5
+      effective_controller_count_for_approvals: 3
+      independence_evidence: established-independent
+      governance_rule_current: true
+      weights_disclosed: true
+      expected_legitimacy_effect: policy-may-recognize-approval
+      expected_disposition: allow-policy-weighting
+    - id: QC-007
+      name: legitimate-versioned-recomputed-threshold
+      configured_membership_count: 5
+      current_membership_count: 4
+      governance_rule_version_at_configuration: v1
+      current_governance_rule_version: v2
+      rule_recomputed_for_current_membership: true
+      current_threshold_required: 3
+      approvals_counted: 3
+      threshold_satisfied: true
+      expected_legitimacy_effect: current-rule-may-be-recognized
+      expected_disposition: allow-versioned-governance-rule
+    - id: QC-008
+      name: legitimate-disclosed-weighted-vote
+      threshold_rule: weighted-supermajority
+      weights_disclosed: true
+      weights_policy_authorized: true
+      weighted_threshold_satisfied: true
+      expected_legitimacy_effect: policy-may-recognize-approval
+      expected_disposition: allow-transparent-weighted-rule
+    - id: QC-009
+      name: unknown-independence-or-eligibility
+      threshold_required: 3
+      approvals_counted: 3
+      threshold_satisfied: true
+      eligibility_evidence: incomplete
+      effective_controller_count_for_approvals: unknown
+      independence_evidence: unknown
+      expected_legitimacy_effect: no-silent-legitimacy-upgrade
+      expected_disposition: indeterminate-or-reduced-weight
+  judgment:
+    alternatives_considered:
+      - Treat any syntactically satisfied N-of-M rule as sufficient legitimacy evidence.
+      - Reject threshold governance whenever approvers share roles, weights or abstention strategies.
+      - Freeze quorum semantics permanently to the membership state in which the rule was first configured.
+    chosen: >-
+      Treat threshold arithmetic as one input to assurance rather than a proxy for
+      legitimacy. Where policy depends on independence, eligibility,
+      representativeness, weighting or current governance composition, those
+      propositions must be evaluated separately; transparent weighted rules and
+      legitimately versioned quorum changes remain valid counter-cases.
+    residual_uncertainty: >-
+      Representativeness and legitimate quorum design are governance- and
+      policy-specific, and common-control or coordination evidence may be
+      incomplete. RAHP should expose which substantive assumptions remain
+      unproven rather than invent a universal voting constitution or silently grant
+      legitimacy from arithmetic satisfaction alone.
