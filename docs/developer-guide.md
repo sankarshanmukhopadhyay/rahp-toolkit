@@ -13,6 +13,16 @@ This page collects the repository-facing workflow that previously competed for s
 
 RAHP separates the portable method from deployment-specific state. Changes to core schemas, normalized results, engine behavior or portable catalogues must remain usable by an unrelated adopter without inheriting DTG, CAWG/C2PA or another deployment's semantics.
 
+That architectural claim is machine-readable in `method/project-invariants.yaml`. `INV-PORTABLE-001` requires the portable core to remain executable without bundled profiles, instances, corpora or examples; prohibits declared portable-core files from depending on deployment-specific paths/state; requires two distinct non-DTG adoption fixtures; and retains executable evidence for specification, protocol, implementation and composed-system targets across harms, governance, adversarial and resilience pressure dimensions.
+
+Run the invariant directly with:
+
+```bash
+python3 tools/validate_project_invariants.py
+```
+
+The validator includes a destructive portability test in a temporary checkout. If generic code starts requiring DTG/CAWG deployment state, the test should fail rather than allowing the README to remain "portable" while the implementation is not.
+
 The stable v1 compatibility boundaries are:
 
 ```text
@@ -43,6 +53,7 @@ python3 tools/validate_evidence_freshness_delta.py
 python3 tools/validate_authority_policy_gates.py
 python3 tools/validate_capability_documentation.py
 python3 tools/validate_engine_contract.py
+python3 tools/validate_project_invariants.py
 python3 tools/validate_scenario_corpora.py
 python3 tools/validate_pressure_tests.py
 python3 tools/build.py
@@ -144,6 +155,7 @@ Avoid copying detailed topic material back into the README or multiple hub pages
 Before merging a substantive change:
 
 - confirm canonical structured files validate;
+- confirm `INV-PORTABLE-001` when portable-core or deployment-boundary surfaces change;
 - regenerate durable views;
 - inspect the affected assessment/retest impact;
 - run the full validation workflow;
