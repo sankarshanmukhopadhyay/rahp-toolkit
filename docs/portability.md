@@ -19,6 +19,32 @@ flowchart TD
     C3 --> P[Project-owned repository targets]
 ```
 
+## Machine-tested architectural invariant
+
+`method/project-invariants.yaml` now makes portability an executable project invariant rather than a documentation convention.
+
+**`INV-PORTABLE-001`** states that RAHP portable core must remain executable and conformant without any bundled deployment, profile, corpus or ecosystem-specific governance state. Deployment-specific material may consume portable RAHP contracts but must not become a dependency of them. The qualified distribution must also retain evidence that RAHP can assess specifications, protocols, implementations and composed systems across human-harm, governance, adversarial and resilience pressure dimensions.
+
+CI executes:
+
+```bash
+python3 tools/validate_project_invariants.py
+```
+
+The validator checks the declared portable-core files for prohibited deployment dependencies, validates two materially different synthetic non-DTG deployments, checks the four target classes and four pressure dimensions, and performs a destructive portability test. That destructive test copies the repository to a temporary workspace, removes `profiles/`, `instances/`, `corpora/` and `examples/`, and then runs the portable portability qualification there.
+
+The dependency direction is therefore explicit:
+
+```text
+profile / instance / corpus / example
+                ↓
+          portable RAHP core
+                ↓
+        stable RAHP contracts
+```
+
+The reverse dependency is a CI failure. A bundled ecosystem may demonstrate or extend RAHP; it may not become a prerequisite for the portable core.
+
 ## v0.5 portability contract
 
 An adopter must be able to:
@@ -34,15 +60,20 @@ An adopter must be able to:
 
 ## Mechanical proof
 
-`tests/fixtures/portable-project/rahp.yaml` is deliberately non-DTG. CI runs:
+Two deliberately non-DTG fixtures exercise materially different adoption shapes:
+
+- `tests/fixtures/portable-project/rahp.yaml` — specification and protocol targets;
+- `tests/fixtures/portable-implementation/rahp.yaml` — implementation targets.
+
+CI runs:
 
 ```bash
 python3 tools/validate_portability.py
 ```
 
-The fixture must validate, list its targets, and resolve dry-run scaffolding for all three review modes while containing no DTG repository, corpus, portfolio-monitor, governance-issue, or `RP-001` dependency.
+Both fixtures must validate, list their targets, and resolve dry-run scaffolding through the same RAHP engine without DTG repositories, corpora, portfolio-monitor state, governance issues, or other bundled deployment dependencies. `tools/validate_project_invariants.py` repeats this proof after bundled deployment surfaces are physically absent from a temporary checkout.
 
-Passing this test proves **configuration and workflow portability**. A real external Working Group adoption remains valuable field evidence, but it is no longer required to make the software architecture portable.
+Passing these tests proves **configuration, workflow and architectural portability**. A real external Working Group adoption remains valuable field evidence, but it is no longer required to make the software architecture portable.
 
 ## Deployment-specific extensions
 
@@ -63,6 +94,5 @@ Repository monitoring is target-aware. Main-branch targets retain the portable `
 Materiality is also role-aware. A deployment may add `assessment.materiality.role_profiles` keyed by the target `context.type`. This lets a normative specification emphasize specification/schema surfaces while a reference implementation treats implementation code and tests as assurance-relevant evidence. Target-specific `scope.include` entries and deployment-wide `always_material_paths` remain additive.
 
 Deployments may also configure `assessment.materiality.documentation_paths` together with `documentation_triage_roles`. When every matched material path is documentation/routing material and the target role is explicitly triage-enabled, the portable monitor emits a `change-triage` event rather than an `assessment-required` event. This is intentionally opt-in: specifications whose Markdown files are normative remain assessment-sensitive unless the deployment explicitly classifies their role otherwise.
-
 
 `tools/issue_watch.py` provides an independent **allow-listed issue early-warning channel**. A deployment owns its issue registry, labels, state and affected-review mapping. The toolkit does not discover or ingest every issue automatically, and issue text never becomes normative evidence merely because it is watched. CAWG/C2PA and DTG both use this mechanism with separate registries, demonstrating that situational monitoring is part of the portable operational layer rather than a CAWG-specific feature.
