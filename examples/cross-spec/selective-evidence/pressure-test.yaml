@@ -1,0 +1,232 @@
+review:
+  id: SR-XSP-FI-007
+  status: complete
+  title: DTG selective-evidence incompleteness pressure test
+  reviewed_on: '2026-08-28'
+  evidence_grade: modeled
+  target:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    version: pre-specification evidence model from issues 176, 193 and 212
+    commit: aeae87ab99d95459209dfa7782b1ee6954e89a8c
+    source_paths:
+      - examples/cross-spec/selective-evidence/pressure-test.yaml
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.8.0
+    trigger_issue: 212
+    engine_contract: rahp-engine-contract-v1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    normalized_result_schema: '1'
+  proposition: >-
+    A valid subset of evidence MUST NOT automatically be treated as complete when
+    omitted provenance, contradictory evidence, superseding state, source
+    limitations or lifecycle history would materially change the relying decision.
+  scope:
+    included:
+      - valid-but-stale-credential
+      - contradictory-attestations-cherry-picked
+      - derived-claim-with-omitted-source-limitation
+      - selective-relationship-history
+      - legitimate-selective-disclosure
+      - privacy-sensitive-contradiction-handling
+      - unknown-completeness
+      - complete-relevant-disclosure
+    excluded:
+      - A requirement for maximal disclosure of all provenance or history.
+      - A rule that selective disclosure is inherently deceptive.
+      - A universal contradiction-discovery or provenance-indexing mechanism.
+      - A requirement to reveal privacy-sensitive data that is immaterial to the relying proposition.
+  method:
+    workflow: docs/cross-spec-pressure-testing.md
+    rule: >-
+      Artifact validity and evidence completeness are separate propositions.
+      Completeness is evaluated relative to the relying proposition and the
+      materiality of omitted contradictory, superseding, provenance or lifecycle
+      context; irrelevant information may remain undisclosed.
+    falsification_bias: >-
+      The fixture must fail if technical validity alone proves completeness,
+      materially contradictory or superseding context can be silently omitted,
+      derived claims erase material source limitations, or legitimate selective
+      disclosure is penalized merely for minimizing irrelevant data.
+  assurance:
+    residual_state: finding
+    policy_gate: AMBER
+    gate_reason: >-
+      The invariant is pressure-testable, but determining whether omitted context
+      is material requires proposition-specific policy semantics, and privacy-safe
+      mechanisms for proving completeness or contradiction handling may require
+      DPIP-sensitive design.
+    positive_controls:
+      - Artifact validity and evidence completeness are represented separately.
+      - Materiality of omitted context is evaluated against the relying proposition.
+      - Contradictory and superseding evidence blocks silent completeness when material.
+      - Decision-relevant source limitations survive derivation or transformation.
+      - Legitimate selective disclosure and data minimization remain valid counter-cases.
+      - Unknown completeness remains bounded uncertainty rather than silently upgraded sufficiency.
+      - Privacy-sensitive completeness does not become a universal full-history disclosure requirement.
+  summary:
+    finding_count: 1
+    open_count: 1
+    overall_assessment: >-
+      RAHP can express selective-evidence failure as a material incompleteness
+      problem rather than a validity failure. A presented credential, attestation,
+      relationship fact or derived claim may be technically valid while the
+      evidence set remains insufficient because material contradictory,
+      superseding, provenance or lifecycle context is omitted. The remaining
+      cross-specification need is proposition-aware completeness semantics that
+      preserve privacy-respecting minimization.
+  findings:
+    - id: F-001
+      title: Valid evidence can be materially incomplete for the relying proposition
+      status: open
+      severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - governance
+        - implementation-guidance
+      scenarios: []
+      scenario_patterns: [SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01]
+        control_patterns: [CTP-COMP-01]
+        guardrail_patterns: [GRP-COMP-01]
+        assurance_patterns: [ATP-COMP-01]
+        evidence_patterns: [EVP-COMP-01]
+      evidence:
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/176
+          observation: >-
+            The source issue identifies stale credentials, contradictory
+            attestations, omitted source limitations and selective relationship
+            history as cases where technically valid evidence may be misleadingly
+            incomplete.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193
+          observation: >-
+            The false-independence register records SELECTIVE-EVIDENCE as the case
+            in which validity of a subset must not be mistaken for completeness of
+            the evidence relevant to a relying decision.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/212
+          observation: >-
+            The executable promotion records the materiality boundary, legitimate
+            minimization counter-case, unknown-completeness treatment and DPIP
+            privacy boundary.
+      harm: >-
+        A relying party can make an adverse or falsely reassuring decision from a
+        technically valid but materially incomplete evidence set, including where
+        contradictory, superseding or provenance-limiting context is omitted.
+      recommendation: >-
+        Evaluate evidence sufficiency separately from artifact validity. Where the
+        relying proposition depends on current state, contradiction handling,
+        provenance limitations or lifecycle history, require evidence appropriate
+        to those propositions while preserving minimization of immaterial data.
+      retest_when:
+        - >-
+          DTG Credentials, Relationships, Communities or Trust Tasks provide
+          executable semantics for contradiction, superseding state, provenance
+          limitations or proposition-scoped completeness evidence.
+        - >-
+          DPIP provides or evaluates privacy-preserving mechanisms for completeness
+          proofs, non-disclosure of irrelevant history, or contradiction handling.
+  modeled_cases:
+    - id: SE-001
+      name: valid-but-stale-credential
+      artifact_valid: true
+      presented_state: active-at-issuance
+      later_state_exists: true
+      later_state: revoked-or-superseded
+      later_state_material: true
+      later_state_disclosed: false
+      evidence_completeness: false
+      expected_assurance_effect: no-current-completeness-credit
+      expected_disposition: require-material-lifecycle-context
+    - id: SE-002
+      name: contradictory-attestations-cherry-picked
+      favorable_attestation_valid: true
+      contradictory_attestation_exists: true
+      contradiction_material: true
+      contradiction_disclosed: false
+      completeness_asserted: true
+      evidence_completeness: false
+      expected_assurance_effect: no-silent-complete-evidence-credit
+      expected_disposition: represent-material-contradiction
+    - id: SE-003
+      name: derived-claim-with-omitted-source-limitation
+      derived_artifact_valid: true
+      source_limitation_exists: true
+      source_limitation_material: true
+      source_limitation_preserved: false
+      evidence_completeness: false
+      expected_assurance_effect: derivation-does-not-erase-limitations
+      expected_disposition: preserve-material-source-constraints
+    - id: SE-004
+      name: selective-relationship-history
+      presented_history_entries: 3
+      omitted_history_entries: 2
+      omitted_entries_material: true
+      superseding_or_adverse_event_omitted: true
+      evidence_completeness: false
+      expected_assurance_effect: partial-history-not-complete-history
+      expected_disposition: qualify-or-reject-completeness
+    - id: SE-005
+      name: legitimate-selective-disclosure
+      artifact_valid: true
+      disclosure_is_partial: true
+      omitted_attributes_material: false
+      omitted_history_material: false
+      relying_proposition_supported: true
+      evidence_completeness_for_proposition: true
+      privacy_minimization_preserved: true
+      expected_assurance_effect: policy-may-recognize-sufficiency
+      expected_disposition: allow-minimal-proof
+    - id: SE-006
+      name: privacy-sensitive-contradiction-handling
+      contradictory_context_exists: true
+      contradiction_material: true
+      direct_full_disclosure_creates_privacy_or_linkability_risk: true
+      privacy_safe_completeness_mechanism_available: unknown
+      evidence_completeness: unknown
+      expected_assurance_effect: no-forced-maximal-disclosure
+      expected_disposition: indeterminate-and-consider-dpip
+    - id: SE-007
+      name: unknown-completeness
+      artifact_valid: true
+      contradiction_discovery_available: false
+      superseding_state_discovery_available: unknown
+      completeness_evidence: unknown
+      evidence_completeness: unknown
+      expected_assurance_effect: no-silent-sufficiency-upgrade
+      expected_disposition: indeterminate-or-reduced-weight
+    - id: SE-008
+      name: complete-relevant-disclosure
+      artifact_valid: true
+      contradiction_state: none-or-represented
+      superseding_state: none-or-represented
+      material_source_limitations_preserved: true
+      material_lifecycle_context_represented: true
+      irrelevant_data_disclosed: false
+      evidence_completeness_for_proposition: true
+      expected_assurance_effect: policy-may-recognize-sufficiency
+      expected_disposition: allow-proposition-scoped-completeness
+  judgment:
+    alternatives_considered:
+      - Treat every valid presented artifact as complete evidence for the relying decision.
+      - Require maximal disclosure of all provenance, relationship history and contradictory material regardless of relevance.
+      - Treat all selective disclosure as inherently deceptive or incomplete.
+    chosen: >-
+      Treat validity and completeness as distinct assurance propositions. Require
+      materially decision-relevant contradiction, superseding state, provenance
+      limitations and lifecycle context to be represented or otherwise accounted
+      for, while preserving selective disclosure and minimization of information
+      that is immaterial to the relying proposition.
+    residual_uncertainty: >-
+      Materiality is proposition- and policy-dependent, and systems may lack a
+      privacy-safe way to establish that no relevant contradictory or superseding
+      evidence has been withheld. RAHP should expose this as bounded uncertainty;
+      where mechanism design involves linkability, correlation, retention or
+      disclosure trade-offs, DPIP may be warranted rather than requiring universal
+      full-history disclosure.
