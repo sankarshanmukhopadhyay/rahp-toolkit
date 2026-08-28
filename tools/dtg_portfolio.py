@@ -109,25 +109,39 @@ def _commit_subjects(commits: list[dict[str,Any]]) -> list[str]:
             subjects.append(message[0].strip().lower())
     return subjects
 
-def _release_propagation_window(commits: list[dict[str,Any]]) -> bool:
-    """Return True only for a bounded release/codegen propagation commit window.
+def _release_signals(commits: list[dict[str,Any]]) -> tuple[bool,bool]:
+    """Return (release_present, propagation_only) from bounded commit subjects.
 
-    This is intentionally conservative: dependency/security upgrades, arbitrary
-    chores, and unknown commit intent are never downgraded merely because they
-    touch manifests or lockfiles.
+    A release commit can coexist with a real semantic commit. Small manifest
+    deltas in that window may still be release propagation, while the semantic
+    files independently keep the revision assessment-worthy.
     """
     subjects=_commit_subjects(commits)
     if not subjects:
-        return False
-    allowed=(
-        "chore: release", "chore(release)", "release:", "chore: publish",
-        "chore(publish)", "fix(ts): regenerate", "fix(codegen): regenerate",
-        "chore(codegen): regenerate", "chore: regenerate",
-    )
+        return False, False
+    release_prefixes=("chore: release", "chore(release)", "release:", "chore: publish", "chore(publish)")
+    codegen_prefixes=("fix(ts): regenerate", "fix(codegen): regenerate", "chore(codegen): regenerate", "chore: regenerate")
     forbidden=("depend", "security", "cve", "upgrade", "bump dependency", "update dependency")
-    return all(any(s.startswith(prefix) for prefix in allowed) for s in subjects) and not any(
-        token in s for s in subjects for token in forbidden
+    if any(token in s for s in subjects for token in forbidden):
+        return False, False
+    release_present=any(any(s.startswith(prefix) for prefix in release_prefixes) for s in subjects)
+    propagation_only=release_present and all(
+        any(s.startswith(prefix) for prefix in release_prefixes + codegen_prefixes)
+        for s in subjects
     )
+    return release_present, propagation_only
+
+def _small_release_manifest_delta(file: dict[str,Any], release_present: bool) -> bool:
+    if not release_present:
+        return False
+    path=file["filename"]
+    additions=int(file.get("additions",0) or 0)
+    deletions=int(file.get("deletions",0) or 0)
+    if path.endswith(("Cargo.toml","package.json")):
+        return additions <= 2 and deletions <= 2
+    if path.endswith(("Cargo.lock","package-lock.json")):
+        return additions <= 12 and deletions <= 12
+    return False
 
 def materiality_breakdown(
     matched_files: list[dict[str,Any]],
@@ -152,7 +166,7 @@ def materiality_breakdown(
     }
     weights={"normative":8.0,"security":8.0,"semantic":6.0,"dependency":6.0,"generated":2.0,"evidence":1.0,"release":0.25}
     weights.update({k:float(v) for k,v in (profile.get("weights") or {}).items()})
-    release_window=_release_propagation_window(commits or [])
+    release_present,release_only_window=_release_signals(commits or [])
     buckets={k:[] for k in weights}
     for f in matched_files:
         p=f["filename"]
@@ -167,7 +181,7 @@ def materiality_breakdown(
         elif path_matches(p, paths["release"]):
             kind="release"
         elif path_matches(p, paths["manifests"]):
-            kind="release" if release_window else "dependency"
+            kind="release" if _small_release_manifest_delta(f,release_present) else "dependency"
         else:
             kind="semantic"
         buckets.setdefault(kind,[]).append(p)
@@ -176,7 +190,8 @@ def materiality_breakdown(
         "buckets": buckets,
         "weights": weights,
         "score": round(score,2),
-        "release_propagation_window": release_window,
+        "release_propagation_present": release_present,
+        "release_propagation_window": release_only_window,
     }
 
 def classify(
@@ -204,6 +219,17 @@ def classify(
     if not matched:
         return "ignore", matched, reasons
 
+    # Preserve the existing documentation-routing boundary before semantic
+    # weighting. Documentation-only movement for triage-enabled repository roles
+    # remains classification work rather than a broad assurance review.
+    documentation = mc.get("documentation_paths", [])
+    triage_roles = set(mc.get("documentation_triage_roles", []))
+    role = target.get("role")
+    docs_only = bool(documentation) and all(path_matches(p, documentation) for p in matched)
+    if role in triage_roles and docs_only:
+        reasons.append("all material matches are documentation/routing paths for a triage-enabled repository role")
+        return "triage", matched, reasons
+
     breakdown=materiality_breakdown(matched_files,cfg,commits)
     buckets=breakdown["buckets"]
     summary=", ".join(f"{k}={len(v)}" for k,v in buckets.items() if v)
@@ -230,15 +256,6 @@ def classify(
     if buckets.get("release") and breakdown["release_propagation_window"]:
         reasons.append("only release propagation remains after semantic weighting; no fresh assessment work item required")
         return "ignore", matched, reasons
-
-    # Existing documentation-role triage remains as a separate bounded policy.
-    documentation = mc.get("documentation_paths", [])
-    triage_roles = set(mc.get("documentation_triage_roles", []))
-    role = target.get("role")
-    docs_only = bool(documentation) and all(path_matches(p, documentation) for p in matched)
-    if role in triage_roles and docs_only:
-        reasons.append("all material matches are documentation/routing paths for a triage-enabled repository role")
-        return "triage", matched, reasons
 
     return "assessment", matched, reasons
 
