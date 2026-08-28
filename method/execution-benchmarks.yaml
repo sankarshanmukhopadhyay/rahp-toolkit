@@ -84,6 +84,7 @@ profiles:
       - python3 tools/validate_v15_release.py
       - python3 tools/validate_v16_release.py
       - python3 tools/validate_v17_release.py
+      - python3 tools/validate_v18_release.py
       - python3 tools/validate_current_examples.py
       - python3 tools/validate_persona_quality.py
       - python3 tools/validate_scenario_corpora.py

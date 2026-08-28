@@ -21,4 +21,10 @@ A RAHP result is not a binary pass/fail statement. The v1.2 model separates **si
 
 **Zero findings is not equivalent to assured.** A report with `0 findings + 7 assurance-gap` records no confirmed defect, but it also records seven unresolved assurance obligations. Dashboards and downstream automation must preserve that distinction.
 
+## Workflow state is not assurance state
+
+A green GitHub Actions run, successful renderer, valid schema or completed RAHP workflow establishes that the configured machinery executed successfully. It does **not** establish that the proposition under review is safe, sufficient or assured. Workflow success can therefore coexist with an AMBER assurance posture when evidence is incomplete or materially uncertain.
+
+`INDETERMINATE` is the explicit conservative outcome for a proposition that cannot be safely resolved from available evidence. It must not be silently converted to PASS merely because execution succeeded or no adverse detector fired. In portfolio presentation this remains non-green / AMBER until additional evidence or a governed disposition supports a different conclusion.
+
 For every potential finding, ask: **What signal exists? What control is present? What evidence demonstrates the control? What residual gap remains?** Then separately ask who has authority to remediate it.
