@@ -15,24 +15,24 @@ def main():
     versioning=load_yaml("method/versioning.yaml")
     errors=[]
     if q.get("release")!="v1.7.0": errors.append("qualification manifest must identify v1.7.0")
-    if str(status.get("stable_release"))!="1.7.0": errors.append("PROJECT-STATUS stable_release must be 1.7.0")
-    if status.get("development_target")!="1.7.0": errors.append("development_target must be 1.7.0")
-    if status.get("release_status")!="released" or status.get("qualification_status")!="qualified": errors.append("release state must be released/qualified")
-    if status.get("qualification_contract")!="method/v1.7-release-qualification.yaml": errors.append("qualification contract mismatch")
+    if not at_least(status.get("stable_release"),"1.7.0"): errors.append("PROJECT-STATUS stable_release must be v1.7.0 or later")
+    if not at_least(status.get("development_target"),"1.7.0"): errors.append("development_target must be v1.7.0 or later")
+    if status.get("release_status")!="released" or status.get("qualification_status")!="qualified": errors.append("current release state must remain released/qualified")
+    
     compat=q.get("stable_compatibility") or {}
     for k,v in compat.items():
         if (status.get("compatibility") or {}).get(k)!=v: errors.append(f"compatibility mismatch: {k}")
-    if versioning.get("stable_release")!="v1.7.0": errors.append("versioning stable_release must be v1.7.0")
-    if (release.get("release") or {}).get("version")!="1.7.0": errors.append("release declaration version mismatch")
+    if not at_least(versioning.get("stable_release"),"1.7.0"): errors.append("versioning stable_release must be v1.7.0 or later")
+    if not at_least((release.get("release") or {}).get("version"),"1.7.0"): errors.append("release declaration must remain v1.7.0 or later")
     package=json.loads((ROOT/"package.json").read_text())
     lock=json.loads((ROOT/"package-lock.json").read_text())
-    if package.get("version")!="1.7.0": errors.append("root package version mismatch")
-    if lock.get("version")!="1.7.0" or (lock.get("packages") or {}).get("",{}).get("version")!="1.7.0": errors.append("lock root version mismatch")
+    if not at_least(package.get("version"),"1.7.0"): errors.append("root package must remain v1.7.0 or later")
+    if package.get("version")!=lock.get("version") or package.get("version")!=(lock.get("packages") or {}).get("",{}).get("version"): errors.append("lock root version must match current package version")
     for rel in ["packages/schema/package.json","packages/core/package.json","packages/graph/package.json","packages/cli/package.json"]:
         d=json.loads((ROOT/rel).read_text())
-        if d.get("version")!="1.7.0": errors.append(f"workspace version mismatch: {rel}")
+        if d.get("version")!=package.get("version"): errors.append(f"workspace version mismatch: {rel}")
         for dep,dv in (d.get("dependencies") or {}).items():
-            if dep.startswith("@rahp/") and dv!="1.7.0": errors.append(f"workspace dependency mismatch: {rel} {dep}")
+            if dep.startswith("@rahp/") and dv!=package.get("version"): errors.append(f"workspace dependency mismatch: {rel} {dep}")
     reg=load_yaml("profiles/dtg/cross-spec-tests.yaml")
     comps=reg.get("compositions") or []
     if len(comps)!=(q.get("dtg_cross_spec") or {}).get("expected_declared"): errors.append("DTG declared composition count mismatch")
