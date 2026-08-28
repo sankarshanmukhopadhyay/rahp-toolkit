@@ -63,6 +63,8 @@ class DtgSemanticMaterialityTests(unittest.TestCase):
         profile = MOD.materiality_breakdown(files, self.cfg, commits)
         self.assertTrue(profile["buckets"]["normative"])
         self.assertTrue(profile["buckets"]["semantic"])
+        self.assertTrue(profile["buckets"]["release"])
+        self.assertTrue(profile["release_propagation_present"])
         self.assertFalse(profile["release_propagation_window"])
 
     def test_183_generated_convergence_becomes_triage_not_broad_assessment(self):
@@ -118,6 +120,13 @@ class DtgSemanticMaterialityTests(unittest.TestCase):
         profile = MOD.materiality_breakdown(files, self.cfg, commits)
         self.assertEqual(len(profile["buckets"]["normative"]), 1)
         self.assertEqual(len(profile["buckets"]["release"]), 25)
+
+    def test_existing_documentation_only_triage_is_preserved(self):
+        files = [self.file("README.md"), self.file("docs/routing.md")]
+        commits = [self.commit("docs: clarify canonical repository routing")]
+        classification, _, reasons = MOD.classify(self.target, files, self.cfg, commits)
+        self.assertEqual(classification, "triage")
+        self.assertTrue(any("documentation/routing paths" in r for r in reasons))
 
     def test_unknown_manifest_change_remains_conservative(self):
         files = [self.file("trust-tasks-rs/Cargo.toml")]
