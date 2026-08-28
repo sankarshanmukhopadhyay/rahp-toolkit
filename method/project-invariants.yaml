@@ -18,13 +18,8 @@ invariants:
     portable_core_files:
       - tools/rahp.py
       - tools/review.py
-      - tools/engine.py
-      - tools/normalize.py
       - tools/validate_engine_contract.py
       - method/schema/rahp-config.schema.json
-      - method/schema/normalized-result.schema.json
-      - method/engine-contract-v1.yaml
-      - method/evidence-retention-v1.yaml
     prohibited_core_tokens:
       - profiles/dtg/
       - profiles/cawg/
@@ -60,10 +55,10 @@ invariants:
         marker: first-class test surface
     required_pressure_dimensions:
       human-harms:
-        evidence: method/catalogue/harms.yaml
+        evidence: method/catalogue/harm-patterns.yaml
         marker: HRM-
       governance-failures:
-        evidence: method/catalogue/harms.yaml
+        evidence: method/catalogue/harm-patterns.yaml
         marker: HRM-GOV-
       adversarial-conditions:
         evidence: tests/test_false_independence_corpus_qualification.py
