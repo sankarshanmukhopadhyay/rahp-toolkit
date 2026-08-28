@@ -53,6 +53,7 @@ assessment:
       - '**/bindings/**'
       - '**/schema_index.rs'
       - '**/src/specs/**'
+      - 'trust-tasks-ts/src/provision/**'
       evidence_paths:
       - tests/**
       - '**/tests/**'
