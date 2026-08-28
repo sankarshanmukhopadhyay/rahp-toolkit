@@ -34,6 +34,14 @@ ADVERSARIAL_EFFECT_MARKERS = (
     "deduplicate",
 )
 
+BOUNDED_UNCERTAINTY_MARKERS = (
+    "indeterminate",
+    "reduced-weight",
+    "bounded-uncertainty",
+    "no-silent",
+    "no-increase",
+)
+
 
 class FalseIndependenceCorpusQualificationTests(unittest.TestCase):
     """Corpus-level regression contract for the seven rows closed by issue #193."""
@@ -107,7 +115,7 @@ class FalseIndependenceCorpusQualificationTests(unittest.TestCase):
                     self.assertNotIn("pass", outcome)
                     self.assertNotIn("assured", outcome)
                     self.assertTrue(
-                        any(marker in outcome for marker in ("indeterminate", "reduced-weight", "no-silent", "no-increase")),
+                        any(marker in outcome for marker in BOUNDED_UNCERTAINTY_MARKERS),
                         f"{review_id} uncertainty must remain bounded rather than become assurance sufficiency",
                     )
 
