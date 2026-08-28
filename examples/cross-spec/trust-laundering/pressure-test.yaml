@@ -1,0 +1,149 @@
+review:
+  id: SR-XSP-FI-003
+  status: complete
+  title: DTG trust-laundering composition pressure test
+  reviewed_on: '2026-08-28'
+  evidence_grade: modeled
+  target:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    version: pre-specification evidence model from issues 159, 193 and 201
+    commit: 941eb03909d1eb269afc11124ec91752f1a8a94a
+    source_paths:
+      - examples/cross-spec/trust-laundering/pressure-test.yaml
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.8.0
+    trigger_issue: 201
+    engine_contract: rahp-engine-contract-v1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    normalized_result_schema: '1'
+  proposition: >-
+    Assurance must not increase merely because the same underlying proposition or evidence has been re-issued, wrapped, vouched for, cross-referenced or transported through additional trust artifacts; genuinely new independent evidence may justify an increase.
+  scope:
+    included:
+      - affiliated-reissuance
+      - circular-reattestation
+      - multiple-artifact-forms-one-source
+      - intermediary-wrapping-lineage-preserved
+      - genuinely-new-independent-corroboration
+      - unknown-or-obscured-lineage
+    excluded:
+      - A prohibition on derived credentials, endorsements or trust chains.
+      - A rule that transformed evidence can never gain assurance.
+      - Universal numeric assurance arithmetic across specifications.
+  method:
+    workflow: docs/cross-spec-pressure-testing.md
+    rule: Provenance depth is traceability, not assurance depth; uplift requires materially new evidence and independence appropriate to the relying policy.
+    falsification_bias: The fixture must fail if wrapping, cycle depth or artifact count alone raises assurance, or if legitimate independent corroboration is prevented from contributing assurance.
+  assurance:
+    residual_state: finding
+    policy_gate: AMBER
+    gate_reason: >-
+      The laundering invariant is pressure-testable, but whether an endorsement introduces genuinely new evidentiary substance can be policy- and claim-dependent and lineage may be incomplete.
+    positive_controls:
+      - Artifact count, lineage depth, underlying evidence and evidentiary independence are represented separately.
+      - Circular and common-source lineage do not become independent corroboration through transformation.
+      - Legitimate derived artifacts remain permitted and genuinely new independent evidence is preserved as a counter-case.
+      - Unknown lineage remains bounded uncertainty rather than silently upgraded independence.
+  summary:
+    finding_count: 1
+    open_count: 1
+    overall_assessment: >-
+      RAHP can express trust laundering as unjustified assurance amplification while preserving legitimate derivation and endorsement. The remaining cross-specification requirement is sufficient lineage and evidence-grade semantics for a relying policy to distinguish transformation from new evidence.
+  findings:
+    - id: F-001
+      title: Evidence transformation can be mistaken for independent assurance
+      status: open
+      severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - governance
+        - implementation-guidance
+      scenarios: []
+      scenario_patterns: [SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01]
+        control_patterns: [CTP-COMP-01]
+        guardrail_patterns: [GRP-COMP-01]
+        assurance_patterns: [ATP-COMP-01]
+        evidence_patterns: [EVP-COMP-01]
+      evidence:
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/159
+          observation: The source proposition identifies re-issuance, wrapping, circular re-attestation and intermediary endorsement as possible assurance-laundering paths when no genuinely independent evidence is introduced.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193
+          observation: The false-independence register distinguishes evidence lineage from evidence independence and records TRUST-LAUNDERING as a first-class threat class.
+      harm: >-
+        A relying decision can gain false confidence when one weak, conflicted or common-source proposition is represented through several credentials, relationships, communities or intermediaries and the resulting provenance depth is mistaken for independent corroboration.
+      recommendation: >-
+        Require composed trust artifacts to preserve sufficient lineage and evidence-grade semantics to distinguish transformation from materially new evidence, detect circular or common-source provenance, and preserve bounded uncertainty when lineage is unavailable.
+      retest_when:
+        - DTG Credentials, Relationships, Communities or Trust Tasks provide executable lineage and evidence-grade semantics sufficient to distinguish transformed evidence from materially new independent evidence.
+  modeled_cases:
+    - id: TL-001
+      name: affiliated-reissuance
+      artifact_count: 2
+      lineage_depth: 2
+      underlying_evidence_sources: 1
+      new_independent_evidence: false
+      relationship: affiliated
+      expected_assurance_effect: no-increase
+      expected_disposition: preserve-source-ceiling
+    - id: TL-002
+      name: circular-reattestation
+      artifact_count: 3
+      lineage_depth: 3
+      underlying_evidence_sources: 1
+      lineage_cycle: true
+      new_independent_evidence: false
+      expected_assurance_effect: no-increase
+      expected_disposition: reject-circular-corroboration
+    - id: TL-003
+      name: multiple-artifact-forms-one-source
+      artifact_count: 4
+      lineage_depth: 2
+      underlying_evidence_sources: 1
+      artifact_forms: [credential, relationship, community-attestation, trust-task-evidence]
+      new_independent_evidence: false
+      expected_assurance_effect: no-increase
+      expected_disposition: deduplicate-evidentiary-substance
+    - id: TL-004
+      name: intermediary-wrapping-lineage-preserved
+      artifact_count: 2
+      lineage_depth: 2
+      underlying_evidence_sources: 1
+      lineage_preserved: true
+      new_independent_evidence: false
+      expected_assurance_effect: preserve-or-reduce-per-policy
+      expected_disposition: allow-derived-artifact-with-lineage
+    - id: TL-005
+      name: genuinely-new-independent-corroboration
+      artifact_count: 2
+      lineage_depth: 2
+      underlying_evidence_sources: 2
+      new_independent_evidence: true
+      independence_evidence: established-independent
+      expected_assurance_effect: policy-may-recognize-uplift
+      expected_disposition: allow-policy-weighting
+    - id: TL-006
+      name: unknown-or-obscured-lineage
+      artifact_count: 3
+      lineage_depth: unknown
+      underlying_evidence_sources: unknown
+      new_independent_evidence: unknown
+      expected_assurance_effect: no-silent-increase
+      expected_disposition: indeterminate-or-reduced-weight
+  judgment:
+    alternatives_considered:
+      - Treat every downstream endorsement as fresh assurance.
+      - Cap every derived artifact permanently at the assurance of its source.
+      - Detect laundering only through actor identity or common-control evidence.
+    chosen: >-
+      Treat provenance depth as traceability rather than assurance depth. Transformation alone cannot justify uplift, while materially new independent evidence remains eligible to contribute assurance under the relying policy.
+    residual_uncertainty: >-
+      Whether an endorsement adds genuinely new evidentiary substance is claim- and policy-dependent, and lineage can be incomplete or obscured. The correct response is to expose lineage, evidence grade and independence where available and preserve bounded uncertainty where they are not, rather than invent universal assurance arithmetic.
