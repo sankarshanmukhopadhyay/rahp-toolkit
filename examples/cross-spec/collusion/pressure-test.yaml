@@ -1,0 +1,211 @@
+review:
+  id: SR-XSP-FI-006
+  status: complete
+  title: DTG collusion and cartel-formation false-independence pressure test
+  reviewed_on: '2026-08-28'
+  evidence_grade: modeled
+  target:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    version: pre-specification evidence model from issues 167, 193 and 210
+    commit: 8b17e9f39ba3be8de8b35e9012d3508f7e0ebd68
+    source_paths:
+      - examples/cross-spec/collusion/pressure-test.yaml
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v1.8.0
+    trigger_issue: 210
+    engine_contract: rahp-engine-contract-v1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    normalized_result_schema: '1'
+  proposition: >-
+    Evidence from distinct actors MUST NOT automatically be treated as independent
+    corroboration when materially coordinated behaviour, pre-arranged action or
+    shared strategic interest can produce the same apparent result.
+  scope:
+    included:
+      - coordinated-cross-endorsement
+      - cartelized-exclusion
+      - pre-arranged-threshold-approval
+      - collusive-negative-attestations
+      - aligned-interest-without-observed-coordination
+      - genuinely-independent-agreement
+      - legitimate-disclosed-coalition
+      - unknown-coordination
+    excluded:
+      - A rule that agreement among multiple actors is inherently suspicious.
+      - A rule that shared strategic interest alone proves collusion.
+      - A universal collusion-detection mechanism.
+      - A replacement for the separate Sybil, false-diversity or quorum-capture cases.
+  method:
+    workflow: docs/cross-spec-pressure-testing.md
+    rule: >-
+      Actor distinctness and decision or evidence independence are separate
+      propositions. Established coordination may defeat independence credit where
+      relying policy expects independent judgment; agreement, shared interest or
+      disclosed coalition action alone does not establish collusion.
+    falsification_bias: >-
+      The fixture must fail if distinct actor identities automatically prove
+      independent corroboration, if ordinary agreement or aligned interests alone
+      are classified as collusion, or if genuine independent agreement and disclosed
+      coalition action cannot be represented as legitimate counter-cases.
+  assurance:
+    residual_state: finding
+    policy_gate: AMBER
+    gate_reason: >-
+      The invariant is pressure-testable, but collusion is epistemically difficult:
+      coordination evidence may be incomplete and strategic-interest alignment alone
+      is insufficient to establish coordinated action.
+    positive_controls:
+      - Actor distinctness is represented separately from decision or evidence independence.
+      - Established coordination can reduce independence credit without requiring common control.
+      - Shared strategic interest alone does not prove collusion.
+      - Genuine independent agreement remains a valid corroboration counter-case.
+      - Disclosed coalition or joint decision-making is not treated as deceptive when policy models it as one unit.
+      - Unknown coordination remains bounded uncertainty rather than either a fabricated finding or silent PASS.
+  summary:
+    finding_count: 1
+    open_count: 1
+    overall_assessment: >-
+      RAHP can express collusion as a false-independence failure where genuinely
+      distinct actors coordinate to manufacture corroboration, exclusion or approval.
+      The remaining cross-specification challenge is obtaining sufficient,
+      privacy-respecting evidence about coordination without treating agreement or
+      shared incentives as misconduct by default.
+  findings:
+    - id: F-001
+      title: Distinct actors can coordinate to manufacture apparent independent corroboration
+      status: open
+      severity: High
+      primary_disposition: companion-specification
+      secondary_dispositions:
+        - governance
+        - implementation-guidance
+      scenarios: []
+      scenario_patterns: [SP-COMP-01]
+      personas: [D1]
+      risks: [RK-G01]
+      controls: []
+      guardrails: []
+      assurance_tests: []
+      portable_assurance:
+        harm_patterns: [HRM-GOV-02]
+        risk_patterns: [RKP-COMP-01]
+        control_patterns: [CTP-COMP-01]
+        guardrail_patterns: [GRP-COMP-01]
+        assurance_patterns: [ATP-COMP-01]
+        evidence_patterns: [EVP-COMP-01]
+      evidence:
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/167
+          observation: >-
+            The source issue distinguishes collusion from Sybil and false-diversity
+            cases: genuinely distinct actors may coordinate endorsements, exclusions,
+            attestations or approvals.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193
+          observation: >-
+            The false-independence register records COLLUSION as the case in which
+            actor distinctness does not automatically establish independent corroboration.
+        - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/210
+          observation: >-
+            The executable promotion records falsification boundaries for established
+            coordination, aligned interests, genuine agreement, disclosed coalitions
+            and unknown coordination.
+      harm: >-
+        A relying decision can over-count coordinated evidence or governance actions
+        as independent corroboration, allowing cartels to manufacture trust, distrust,
+        exclusion or approval while satisfying nominal diversity requirements.
+      recommendation: >-
+        Where independence is material, represent actor distinctness, coordination
+        evidence, strategic alignment and decision/evidence independence separately;
+        reduce independence credit for established coordination without treating
+        agreement or shared interest alone as collusion.
+      retest_when:
+        - >-
+          DTG Credentials, Communities, Relationships, Trust Tasks or governance
+          surfaces provide executable semantics for coordination, coalition identity
+          or independent-decision evidence.
+  modeled_cases:
+    - id: CL-001
+      name: coordinated-cross-endorsement
+      distinct_actor_count: 3
+      effective_controller_count: 3
+      coordination_state: established
+      strategic_interest_alignment: high
+      evidence_paths_independent: false
+      relying_policy_requires_independent_corroboration: true
+      expected_assurance_effect: no-independent-uplift
+      expected_disposition: treat-as-coordinated-corroboration
+    - id: CL-002
+      name: cartelized-exclusion
+      distinct_actor_count: 4
+      communities_involved: 3
+      effective_controller_count: 4
+      coordination_state: established
+      adverse_evidence_repetition: true
+      expected_assurance_effect: no-cross-community-independence-credit
+      expected_disposition: bound-cartelized-adverse-evidence
+    - id: CL-003
+      name: pre-arranged-threshold-approval
+      distinct_actor_count: 3
+      threshold_satisfied: true
+      coordination_state: established
+      prearranged_vote: true
+      policy_expects_independent_judgment: true
+      expected_assurance_effect: no-independent-decision-credit
+      expected_disposition: separate-threshold-from-decision-independence
+    - id: CL-004
+      name: collusive-negative-attestations
+      distinct_actor_count: 3
+      separately_signed_attestations: true
+      coordination_state: established
+      evidence_paths_independent: false
+      expected_assurance_effect: no-independent-uplift
+      expected_disposition: treat-as-coordinated-adverse-source
+    - id: CL-005
+      name: aligned-interest-without-observed-coordination
+      distinct_actor_count: 3
+      strategic_interest_alignment: high
+      coordination_state: not-established
+      evidence_paths_independent: unknown
+      expected_assurance_effect: no-collusion-finding-from-interest-alone
+      expected_disposition: bounded-uncertainty-if-independence-material
+    - id: CL-006
+      name: genuinely-independent-agreement
+      distinct_actor_count: 3
+      effective_controller_count: 3
+      coordination_state: no-material-coordination-observed
+      evidence_paths_independent: true
+      strategic_interest_alignment: mixed
+      expected_assurance_effect: policy-may-recognize-corroboration
+      expected_disposition: allow-independent-agreement
+    - id: CL-007
+      name: legitimate-disclosed-coalition
+      distinct_actor_count: 3
+      coordination_state: explicit-and-disclosed
+      coalition_modeled_as_single_decision_unit: true
+      claims_independent_corroboration: false
+      expected_assurance_effect: no-false-independence-defect
+      expected_disposition: allow-transparent-coalition
+    - id: CL-008
+      name: unknown-coordination
+      distinct_actor_count: 3
+      coordination_state: unknown
+      strategic_interest_alignment: unknown
+      evidence_paths_independent: unknown
+      relying_policy_requires_independent_corroboration: true
+      expected_assurance_effect: no-silent-independence-upgrade
+      expected_disposition: indeterminate-or-reduced-weight
+  judgment:
+    alternatives_considered:
+      - Treat distinct legal or cryptographic actors as automatically independent.
+      - Treat agreement, shared interest or repeated conclusions as sufficient evidence of collusion.
+      - Require proof of secret intent before known coordinated behaviour can affect independence credit.
+    chosen: >-
+      Separate actor distinctness from decision and evidence independence. Established
+      coordination may defeat independence credit even among genuinely distinct
+      actors, while shared interest, ordinary agreement and transparently modeled
+      coalition action remain insufficient to establish a false-independence defect.
+    residual_uncertainty: >-
+      Collusion is often intentionally difficult to observe. RAHP can expose when
+      independent-corroboration assumptions are unsupported or contradicted, but it
+      should not fabricate intent, infer misconduct from aligned incentives alone, or
+      mandate universal surveillance of relationships between otherwise distinct actors.
