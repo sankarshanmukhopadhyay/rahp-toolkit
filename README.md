@@ -74,7 +74,7 @@ See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps a
 
 ## Current release
 
-v1.8.0 **Common Map** (*Cyrestis thyodamas*) is the stable release of **Semantically Governed Assurance Pipeline**. The previous stable release was v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*), preserved in the changelog and v1.7 release notes. It preserves the stable v1 compatibility boundaries:
+v1.8.0 **Common Map** (*Cyrestis thyodamas*) is the stable release of **Semantically Governed Assurance Pipeline**. The previous stable release was v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*), preserved in the changelog and v1.7 release notes. Earlier release history also preserves v1.6.0 **Common Earl** (*Tanaecia julii*). It preserves the stable v1 compatibility boundaries:
 
 ```text
 rahp-engine-contract-v1
