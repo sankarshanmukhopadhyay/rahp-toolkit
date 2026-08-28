@@ -18,7 +18,7 @@ RAHP helps an implementer, maintainer or reviewer turn a broad question such as 
 - **durable remediation and retest lineage** when targets, evidence or controls change; and
 - **continuous governed assurance** through freshness, impact analysis, policy gates, scoped authority and current posture.
 
-RAHP is deliberately evidence-conservative: **zero findings is not equivalent to assured**. A target can have no confirmed findings while still carrying assurance gaps, unresolved review obligations or insufficient evidence.
+RAHP is deliberately evidence-conservative: **zero findings is not equivalent to assured**. A target can have no confirmed findings while still carrying assurance gaps, unresolved review obligations or insufficient evidence. Likewise, **workflow green is not assurance green**: successful execution proves that the machinery ran, not that the proposition under review is supported. `INDETERMINATE` remains a non-green / AMBER assurance outcome until sufficient evidence or governed disposition changes it.
 
 ## Current architecture
 
@@ -68,9 +68,11 @@ For a guided first run, configuration examples and the wider command set, use [G
 
 The reusable catalogue under `method/catalogue/` currently contains **162 portable assurance patterns** across harms, risks, controls, guardrails, assurance tests and evidence patterns.
 
-The packaged scenario adapters expose **182 scenario test vectors across 14 corpora and 28 portable scenario patterns**. They include source-pinned Trust Tasks and DTG Credential Specification corpora, their composed seam corpus, DTG ZKP, CAWG/C2PA and smaller interface-baseline/composed adapters. A larger corpus broadens review coverage; it does not by itself establish that a target is safe or conformant.
+The packaged scenario adapters expose **189 scenario test vectors across 15 corpora and 28 portable scenario patterns**. They include source-pinned Trust Tasks and DTG Credential Specification corpora, their composed seam corpus, DTG ZKP, CAWG/C2PA and smaller interface-baseline/composed adapters. A larger corpus broadens review coverage; it does not by itself establish that a target is safe or conformant.
 
-See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps and maintenance rules.
+The current `main` branch also contains the completed seven-row adversarial false-independence evidence corpus from [#193](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193): Sybil/common-control multiplicity, false governance diversity, trust laundering, sock puppetry, quorum capture, collusion and selective-evidence incompleteness. Each row has a machine-readable pressure-test record, semantic regression tests, legitimate counter-cases and explicit bounded-uncertainty handling. The corpus-level rule is that apparent multiplicity, depth, threshold satisfaction, actor distinctness or artifact validity must not automatically be upgraded into evidence independence or completeness.
+
+See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps and maintenance rules, and [Cross-spec pressure testing](docs/cross-spec-pressure-testing.md) for composition and adversarial seam evidence.
 
 ## Current release
 
@@ -84,7 +86,7 @@ rahp-evidence-retention-v1
 
 v1.8.0 qualifies gatherer-native end-to-end assurance lineage, bounded evidence-backed disposition before human escalation, polarity-aware evidence handling, reviewer-ready judgment packets, robust RAHP→DPIP lifecycle routing, and semantic materiality that distinguishes substantive change from generated/release fan-out without weakening conservative review boundaries.
 
-The VTI composition register and adversarial false-independence register are qualified as structured continuing evidence programmes. Their open pressure-test candidates, including #193, are deliberately **not** represented as complete coverage.
+**Historical release boundary:** at the point v1.8.0 was qualified, the VTI composition register and adversarial false-independence register were continuing evidence programmes and #193 was deliberately not represented as complete coverage. That release evidence remains immutable. **Current `main` has subsequently completed #193**; this post-release evidence does not retroactively change what v1.8.0 qualified.
 
 Useful release surfaces:
 
