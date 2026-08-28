@@ -9,52 +9,53 @@ parent: Reference
 
 This roadmap records the current portable RAHP direction. Historical pre-v1.2 roadmap material is preserved under `archive/pre-v1.2/` and is not current authority.
 
-## v1.7.0 — Assurance Operations and Cross-Spec Execution (stable release)
+## v1.8.0 — Semantically Governed Assurance Pipeline (stable release)
 
-Status: **stable public release — Common Palmfly (*Elymnias hypermnestra*)**.
+Status: **stable public release — Common Map (*Cyrestis thyodamas*)**.
 
-v1.7 strengthens RAHP's operational assurance loop without changing the stable v1 compatibility boundary. It qualifies monitor-driven assessment queueing, explicit review modes, live current-head assurance regeneration, full DTG cross-spec execution coverage and release-grade regression evidence.
+v1.8 strengthens RAHP's operating assurance pipeline without changing the stable v1 compatibility boundary. It improves how material work is selected, how deterministic evidence advances, where human judgment is required, and how specialist privacy examination is integrated.
 
 ### Delivered workstreams
 
-1. **Monitor → assessment operations**
-   - material portfolio changes are queued without being misrepresented as findings;
-   - a live state-changing instance-watch run persisted observed state and successfully dispatched validation and Pages against the exact resulting `main` SHA.
+1. **Gatherer-native end-to-end assurance**
+   - material repository changes retain immutable revision and gatherer lineage;
+   - published assessment IDs advance directly without read-after-create discovery races;
+   - portfolio GREEN/AMBER/RED remains evidence-dependent rather than CI-dependent.
 
-2. **Review-mode regression contract**
-   - `rahp`, `security` and `combined` modes are deterministically exercised;
-   - `--all` multi-target selection is covered;
-   - unsupported mode/target combinations fail closed.
+2. **Bounded evidence-backed disposition**
+   - deterministic evidence may close a review only under explicit evidence-sufficiency rules;
+   - semantic uncertainty escalates to `judgment-required`;
+   - workflow success is not converted into assurance success.
 
-3. **Full DTG cross-spec execution**
-   - all 8 declared runnable DTG compositions are exercised;
-   - coverage spans authority/delegation, lifecycle, privacy composition, proof semantics, persistent state, provenance, linkability and identifier/control semantics.
+3. **Polarity-aware evidence**
+   - strengthening/prevention evidence is distinguished from weakening/introduction evidence;
+   - ambiguous lexical signals do not manufacture a PASS or adverse finding.
 
-4. **Performance measurement**
-   - representative DTG, full DTG and full-validation wall times are recorded through a repeatable benchmark surface;
-   - current evidence does not support a like-for-like speed-improvement claim, and the release says so explicitly.
+4. **RAHP → DPIP lifecycle**
+   - privacy examination is invoked only when warranted;
+   - handoff contracts, source pins, return lineage and DPIP applicability are explicit;
+   - `INDETERMINATE` remains non-green.
 
-5. **Release qualification and publication**
-   - `method/v1.7-release-qualification.yaml` defines the v1.7 release boundary;
-   - `tools/validate_v17_release.py` verifies review-mode evidence, live-operation evidence, 8/8 DTG coverage, workspace synchronization and compatibility;
-   - the qualified publication workflow revalidates the exact main-branch release commit before creating `v1.7.0` and the GitHub Release.
+5. **Semantic materiality**
+   - normative, security-sensitive, implementation-semantic and genuine dependency changes remain assessment-worthy;
+   - generated/codegen convergence is triaged rather than automatically promoted to broad review;
+   - bounded release-only propagation is informational;
+   - low-weight release fan-out cannot mask one high-significance semantic change.
 
-### Retained v1.5 capability contracts
-
-v1.6 retains the previously qualified continuous-assurance capability set unchanged:
-
-- **Durable assessment and finding lineage**;
-- **Governed remediation and retest**;
-- **Assurance graph and impact analysis**;
-- **Evidence provenance, freshness and delta**;
-- **Executable authority and policy gates**; and
-- **Portfolio and deployment presentation**.
-
-These remain registered, documented and executable capability surfaces; v1.6 adds coverage and adoption qualification around them rather than replacing their contracts.
+6. **Structured continuing evidence programmes**
+   - VTI composition candidates are indexed as pre-specification evidence;
+   - adversarial false-independence concerns are classified across Sybil, sock-puppet, false-diversity, trust-laundering, collusion, quorum-capture and selective-evidence classes;
+   - these registers remain continuing work and are not misrepresented as completed threat coverage.
 
 ### Baseline policy
 
-A toolkit release does not automatically requalify maintained external targets. The maintained-example registry remains at its separately evidenced v1.5.0 baselines until each example is independently reassessed or retested. Historical records remain immutable lineage evidence.
+A toolkit release does not automatically requalify maintained external targets. Historical records remain immutable lineage evidence, and open evidence registers remain open unless their own acceptance criteria are satisfied.
+
+## v1.7.0 — Assurance Operations and Cross-Spec Execution
+
+v1.7 qualified monitor-driven assessment queueing, explicit review modes, live current-head assurance regeneration, full DTG cross-spec execution coverage and release-grade regression evidence.
+
+See [v1.7.0 release notes](docs/releases/v1.7.0.md).
 
 ## v1.5.0 — Continuous Governed Assurance
 
@@ -98,9 +99,9 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v1.7.0 is additive within that boundary. Existing normalized results remain valid.
+v1.8.0 is additive within that boundary. Existing normalized results remain valid.
 
-See [v1.7.0 release notes](docs/releases/v1.7.0.md) and the [v1.7 qualification contract](method/v1.7-release-qualification.yaml).
+See [v1.8.0 release notes](docs/releases/v1.8.0.md) and the [v1.8 qualification contract](method/v1.8-release-qualification.yaml).
 
 ## v1.2.0 — Evidence-Driven Assurance
 
