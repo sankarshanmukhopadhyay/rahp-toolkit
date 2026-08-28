@@ -78,7 +78,7 @@ RAHP can express selective-evidence failure as a material incompleteness problem
 | Severity | High |
 | Status | open |
 | Primary disposition | Companion Specification |
-| Secondary dispositions | Governance, Implementation Guidance, Privacy Review |
+| Secondary dispositions | Governance, Implementation Guidance |
 | Scenarios | — |
 | Scenario patterns | `SP-COMP-01` |
 | Personas | [D1 — Daniel Wright](../../../build/site/catalogue.html#D1) |
