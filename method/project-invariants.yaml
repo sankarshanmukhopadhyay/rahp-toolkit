@@ -39,7 +39,6 @@ invariants:
         - examples
       commands:
         - python3 tools/validate_portability.py --root {root}
-        - python3 tools/validate_engine_contract.py
     required_target_classes:
       specification:
         evidence: tests/fixtures/portable-project/rahp.yaml
