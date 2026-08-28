@@ -47,6 +47,20 @@ v1.8 strengthens RAHP's operating assurance pipeline without changing the stable
    - adversarial false-independence concerns are classified across Sybil, sock-puppet, false-diversity, trust-laundering, collusion, quorum-capture and selective-evidence classes;
    - these registers remain continuing work and are not misrepresented as completed threat coverage.
 
+### Retained portable capability contracts
+
+v1.8 preserves the previously qualified portable capability set:
+
+- **Durable assessment and finding lineage**
+- **Governed remediation and retest**
+- **Assurance graph and impact analysis**
+- **Evidence provenance, freshness and delta**
+- **Executable authority and policy gates**
+- **Portfolio and deployment presentation**
+- **Release qualification**
+
+These remain executable, documented, deployment-independent capability surfaces. v1.8 extends the operational assurance pipeline around them rather than replacing their contracts.
+
 ### Baseline policy
 
 A toolkit release does not automatically requalify maintained external targets. Historical records remain immutable lineage evidence, and open evidence registers remain open unless their own acceptance criteria are satisfied.
