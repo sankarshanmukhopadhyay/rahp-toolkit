@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Assurance Evidence
+parent: Reference
+nav_order: 9
 ---
 
 # Assurance evidence contract
