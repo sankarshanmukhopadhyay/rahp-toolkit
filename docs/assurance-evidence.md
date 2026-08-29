@@ -1,3 +1,8 @@
+---
+layout: default
+title: Assurance Evidence
+---
+
 # Assurance evidence contract
 
 RAHP separates toolkit execution, corpus integrity, publication, and optional cross-specification evidence.
