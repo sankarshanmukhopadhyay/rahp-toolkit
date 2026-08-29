@@ -5,7 +5,7 @@ parent: Reference
 nav_order: 9
 ---
 
-# Assurance evidence contract
+# Assurance Evidence
 
 RAHP separates toolkit execution, corpus integrity, publication, and optional cross-specification evidence.
 
