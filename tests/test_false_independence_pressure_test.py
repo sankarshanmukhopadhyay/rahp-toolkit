@@ -96,7 +96,7 @@ def test_uniqueness_mechanism_pass_does_not_become_independence_pass():
     assert case["mechanism_establishes"] == ["bounded-context-non-reuse"]
     assert case["independence_evidence"] == "unavailable"
     assert case["expected_assurance_effect"] == "bounded-sub-proposition-satisfied"
-    assert case["expected_disposition"] == "retain-bounded-independence-uncertainty"
+    assert case["expected_disposition"] == "retain-bounded-uncertainty"
     assert case["overall_false_independence_result"] == "indeterminate"
     for claim in (
         "issuer-independence",
