@@ -26,11 +26,11 @@ release_naming:
   applies_from: 1.5.0
   convention: west-bengal-butterfly
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selection: pinned-pool-random-at-release-time
+  selection: random-at-release-time
   policy: >-
     Each v1.5.x and later release receives a release name selected at random
-    from the repository's governed pinned pool sourced from the recorded list.
-    The selected common name and scientific name are persisted before release.
+    from the governed pinned pool sourced from the recorded butterfly list. The
+    selected common name and scientific name are persisted before release.
 release_intent: >-
   v1.9.0 Portable Clean-Room Assurance is the stable release. It preserves the
   stable v1 contracts while qualifying declarative clean-room execution,
