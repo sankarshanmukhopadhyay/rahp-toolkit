@@ -34,6 +34,29 @@ review:
     workflow: docs/cross-spec-pressure-testing.md
     rule: Multiplicity is not evidence of independence; independence must be established at the assurance level relied upon by policy.
     falsification_bias: The fixture must fail if count alone raises assurance or if anti-Sybil handling rejects legitimate contextual identifier plurality.
+  control_routing:
+    assurance_owner: rahp
+    composition_responsibility: apply-selected-control-and-preserve-its-bounded-semantics
+    verification_owner: rahp
+    required_capabilities:
+      - id: privacy-preserving-contextual-uniqueness
+        purpose: Prevent duplicate exercise within a bounded relying context without requiring a universal cross-context correlator.
+        candidate_provider_classes:
+          - zero-knowledge-proof-mechanism
+          - personhood-or-uniqueness-credential
+          - credential-or-authority-system
+          - other-contextual-uniqueness-control
+        provider_binding: non-normative
+        mechanism_success_establishes:
+          - bounded-context-non-reuse
+        mechanism_success_does_not_establish:
+          - issuer-independence
+          - controller-independence
+          - governance-independence
+          - non-collusion
+          - evidentiary-independence
+        residual_assurance_obligation: >-
+          The relying composition must separately evidence every independence proposition on which assurance depends; RAHP must preserve unknown independence as bounded uncertainty rather than infer it from successful uniqueness proof.
   assurance:
     residual_state: finding
     policy_gate: AMBER
@@ -130,6 +153,26 @@ review:
       expected_assurance_effect: no-silent-increase
       expected_disposition: indeterminate-or-reduced-weight
       dpip_review: context-dependent
+    - id: FI-006
+      name: uniqueness-mechanism-success-with-residual-independence
+      identity_count: 2
+      evidence_source_count: 2
+      effective_control_domains: unknown
+      independence_evidence: unavailable
+      control_capability: privacy-preserving-contextual-uniqueness
+      mechanism_result: pass
+      mechanism_establishes:
+        - bounded-context-non-reuse
+      mechanism_does_not_establish:
+        - issuer-independence
+        - controller-independence
+        - governance-independence
+        - non-collusion
+        - evidentiary-independence
+      expected_assurance_effect: bounded-sub-proposition-satisfied
+      expected_disposition: retain-independence-uncertainty
+      overall_false_independence_result: indeterminate
+      dpip_review: warranted-if-proof-transcripts-nullifiers-or-correlation-state-are-retained
   judgment:
     alternatives_considered:
       - Keep issue 193 as taxonomy only and defer executable evidence.
@@ -138,4 +181,4 @@ review:
     chosen: >-
       Start with issue 158 because its invariant is crisp, falsifiable, composition-relevant and contains the legitimate multiplicity counter-case required to prevent anti-Sybil controls from becoming universal identity controls.
     residual_uncertainty: >-
-      Effective governance or control independence may not be fully observable. The correct response is bounded uncertainty, not fabricated certainty. Privacy-sensitive uniqueness mechanisms may require DPIP examination depending on correlation, nullifier and retention behavior.
+      Effective governance or control independence may not be fully observable. The correct response is bounded uncertainty, not fabricated certainty. Privacy-sensitive uniqueness mechanisms may require DPIP examination depending on correlation, nullifier and retention behavior. A mechanism-level PASS establishes only the bounded capability it proves and must never be promoted into issuer, controller, governance, collusion or evidentiary independence without separate evidence.
