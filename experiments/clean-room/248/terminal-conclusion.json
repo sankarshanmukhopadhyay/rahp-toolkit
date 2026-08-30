@@ -1,0 +1,61 @@
+{
+  "schema": "rahp-true-clean-room-terminal/v1",
+  "issue": 248,
+  "lineage_id": "dogwood-clean-room-248-33296944093",
+  "historical_inputs_used": false,
+  "target": {
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "release": "VTI-Dogwood-RC-1",
+    "revision": "cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b"
+  },
+  "runtime_revisions": {
+    "rahp": "8aa33cefea36d0254c70c31bf47e19ebf2d5d1b5",
+    "dpip": "aa067a3eda93db700d6a5a3e34c61a6df29b4ff9",
+    "interop": "12c4917cc1a522c16ee0fe3bfe832143fb17479a"
+  },
+  "workflow": {
+    "run_id": 33296944093,
+    "artifact_id": 9727752013,
+    "artifact_name": "dogwood-true-clean-room-248-33296944093",
+    "artifact_digest": "sha256:de6418c317c934f10b64036288fd7462af822a85c4f45fe8c172f8af86d761e5"
+  },
+  "materiality": {
+    "privacy": "MATERIAL",
+    "rationale": "Pinned target architecture makes privacy a gating constraint and exposes selective-disclosure, unlinkability, relationship, verifier, status/policy and Trust Task correlation surfaces."
+  },
+  "dimensions": {
+    "risk": {"outcome": "INDETERMINATE", "colour": "AMBER", "reason": "Documented partial durable-audit coverage creates bounded residual risk without proving whole-target failure."},
+    "harm": {"outcome": "INDETERMINATE", "colour": "AMBER", "reason": "Accountability/redress harm is plausible from audit gaps but no fresh harm-realization scenario was demonstrated."},
+    "security": {"outcome": "BOUNDED_ADVERSE", "colour": "AMBER", "reason": "Target documents high-severity unaudited state mutations and silent audit-write failures; evidence is bounded, not a whole-target security FAIL."},
+    "composition": {"outcome": "BOUNDED_FAVOURABLE_WITH_RESIDUAL", "colour": "AMBER", "reason": "Composition positive control, context-distinct no-join case and falsification vector executed coherently; evidence remains composition-attributed."},
+    "privacy": {"outcome": "INDETERMINATE", "colour": "AMBER", "reason": "Fresh DPIP #135 concluded evidence-classification-required because the Dogwood-native same-DID run is semantically mis-typed as an unlinkability-pressure case."}
+  },
+  "evidence_requirements": [
+    {"id": "ER-REL-DID-AB", "attempt_state": "EXECUTED", "evidence_state": "SATISFIED", "attribution": "target-native:Dogwood-RC-1"},
+    {"id": "ER-VERIFIER-AB", "attempt_state": "EXECUTED", "evidence_state": "SATISFIED", "attribution": "target-native:Dogwood-RC-1"},
+    {"id": "ER-STATUS-AB", "attempt_state": "EXECUTED", "evidence_state": "SATISFIED", "attribution": "composition-runtime:Interop-Lab"},
+    {"id": "ER-TASK-AB", "attempt_state": "EXECUTED", "evidence_state": "SATISFIED", "attribution": "composition-runtime:Interop-Lab"}
+  ],
+  "dpip": {
+    "issue": 135,
+    "state": "complete",
+    "result": "INDETERMINATE / evidence-classification-required"
+  },
+  "terminal": {
+    "portfolio_disposition": "AMBER",
+    "scoped_conclusion": "INDETERMINATE",
+    "why_not_green": "Documented audit residuals remain and Dogwood-native privacy experiment-role metadata prevents a target-level privacy PASS.",
+    "why_not_red": "The fresh run did not establish target-created cross-context correlation or a whole-target security/privacy failure; composition pressure evidence is bounded favourable.",
+    "residuals": [
+      "https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/issues/69"
+    ],
+    "recommended_next_step": "Fix Interop Lab #69, then create a new comparable pinned Dogwood privacy examination with correctly separated positive-control and context-distinct native experiments; do not mutate DPIP #135 or RAHP #248."
+  },
+  "references": [
+    "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/248",
+    "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/33296944093",
+    "https://github.com/sankarshanmukhopadhyay/dtg-privacy-implementation-profile/issues/135",
+    "https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/issues/69",
+    "https://github.com/OpenVTC/verifiable-trust-infrastructure/releases/tag/VTI-Dogwood-RC-1"
+  ]
+}
