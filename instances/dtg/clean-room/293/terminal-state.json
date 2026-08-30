@@ -1,0 +1,57 @@
+{
+  "schema": "rahp-clean-room-terminal-state/v1",
+  "run_id": "dtg-canonical-clean-room-293-faed4f07",
+  "source_issue": 293,
+  "status": "complete",
+  "portfolio_state": "AMBER",
+  "specification_portfolio_state": "AMBER",
+  "reference_stack_state": "AMBER_WITH_BOUNDED_FAIL",
+  "privacy_state": "INDETERMINATE",
+  "specialist_examinations": [
+    {
+      "examiner": "DPIP",
+      "issue": 146,
+      "state": "INDETERMINATE",
+      "disposition": "evidence-required"
+    }
+  ],
+  "composite_results": {
+    "PASS": 9,
+    "INDETERMINATE": 4,
+    "FAIL_OR_FAIL_BOUNDED": 2
+  },
+  "material_failures": [
+    {
+      "id": "DTG-COMP-005",
+      "scope": "OpenVTC/dtg-credentials VWC digest interoperability",
+      "portfolio_effect": "bounded-reference-implementation-fail"
+    }
+  ],
+  "material_indeterminate": [
+    "DTG-COMP-003",
+    "DTG-COMP-004",
+    "DTG-COMP-012",
+    "DTG-COMP-014"
+  ],
+  "clean_room": {
+    "historical_assurance_inputs_used": false,
+    "historical_comparison_performed_after_judgment": true,
+    "portfolio_registry_revision": "faed4f076b647dde16b016cf14a74aed72497f72",
+    "live_pinned_targets": 15,
+    "no_commit_transitional_targets": 2,
+    "recursive_rahp_host_excluded": true
+  },
+  "rahp_engine": {
+    "core_change_required": false,
+    "stability": "PASS_BOUNDED",
+    "repeatability": "PASS_BOUNDED"
+  },
+  "green_conditions": [
+    "Resolve or explicitly profile the VWC digest implementation mismatch",
+    "Close member-issued VMC status/currentness composition contract",
+    "Produce fresh pinned DPIP runtime A/B evidence",
+    "Produce cross-transport semantic conformance evidence for every claimed production transport",
+    "Qualify or mature optional VDS/Agent Names/HTX layers",
+    "Publish a composition-level failure/correction/redress matrix"
+  ]
+}

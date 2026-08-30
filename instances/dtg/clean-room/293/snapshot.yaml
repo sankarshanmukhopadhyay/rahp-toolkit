@@ -1,0 +1,115 @@
+schema: rahp-clean-room-portfolio-snapshot/v1
+run_id: dtg-canonical-clean-room-293-faed4f07
+source_issue: 293
+created_at: 2026-08-30
+isolation:
+  historical_assurance_inputs_used: false
+  prior_dpip_results_used: false
+  prior_portfolio_colour_used: false
+  prior_gatherer_state_used: false
+portfolio_registry:
+  repository: sankarshanmukhopadhyay/dtg-portfolio-monitor
+  path: config/repositories.yaml
+  revision: faed4f076b647dde16b016cf14a74aed72497f72
+rahp_profile:
+  path: profiles/dtg/rahp.yaml
+  authority: dtg-instance-discovery
+  synchronization: passed-before-assessment
+excluded_from_recursive_assessment:
+  - repository: sankarshanmukhopadhyay/rahp-toolkit
+    reason: RAHP deployment host; retained as discovery provenance, not assessed as a DTG target
+targets:
+  - repository: trustoverip/dtgwg-trust-tasks-tf
+    role: task-force-workspace
+    lifecycle: active
+    reporting_weight: high
+    revision: 134733ff934775db522522dc26cb79836da29256
+  - repository: trustoverip/dtgwg-trust-tasks-spec
+    role: normative-specification
+    lifecycle: active
+    reporting_weight: critical
+    revision: 6425a74136c1d2dfa7115889abe0b3521700e887
+  - repository: trustoverip/dtgwg-htx-tf
+    role: task-force-workspace
+    lifecycle: active
+    reporting_weight: high
+    revision: 0718ff3ba2b0333571f1637e229c313d3545e162
+  - repository: trustoverip/dtgwg-ux-tf
+    role: legacy-or-transition
+    lifecycle: transitional
+    reporting_weight: low
+    state: no-commits
+  - repository: trustoverip/dtgwg-general
+    role: coordination
+    lifecycle: active
+    reporting_weight: high
+    revision: fa15044225ff447ad6564983a5ce0732b80cbdc1
+  - repository: trustoverip/dtgwg-cred-spec
+    role: normative-specification
+    lifecycle: active
+    reporting_weight: critical
+    revision: 2b403b607aaec9d84f78189a55337c677f3cd2ed
+  - repository: trustoverip/dtgwg-zkp-tf
+    role: implementation-guidance
+    lifecycle: active
+    reporting_weight: critical
+    revision: 3b6b3f2e76005d6f579d076ee2833ef56d599b65
+  - repository: trustoverip/dtgwg-cred-tf
+    role: task-force-workspace
+    lifecycle: active
+    reporting_weight: high
+    revision: d8e317ee6ec13c327f2bc96022be6190500432ae
+  - repository: trustoverip/dtgwg-rahp-tf
+    role: task-force-workspace
+    lifecycle: active
+    reporting_weight: high
+    revision: ce954decb4394c6de98282dee6c7c8c18392de63
+  - repository: trustoverip/dtgwg-rcards-tf
+    role: legacy-or-transition
+    lifecycle: transitional
+    reporting_weight: low
+    state: no-commits
+  - repository: trustoverip/dtgwg-vds-tf
+    role: normative-specification
+    lifecycle: active
+    reporting_weight: critical
+    revision: 99eacacedd1729d20528a2ec65ff5288d103ec5e
+  - repository: trustoverip/dtgwg-agent-names-tf
+    role: task-force-workspace
+    lifecycle: active
+    reporting_weight: high
+    revision: 962591709e260616aba066bf08865962f6851bf3
+  - repository: OpenVTC/dtg-credentials
+    role: implementation-and-examples
+    lifecycle: active
+    reporting_weight: high
+    revision: fcae96171d95b4bae55a2e1ead22c52413da2a57
+  - repository: OpenVTC/openvtc
+    role: implementation
+    lifecycle: active
+    reporting_weight: high
+    revision: 28bbf17155eda82bde00274f75109780deef6f96
+  - repository: OpenVTC/verifiable-trust-infrastructure
+    role: reference-implementation
+    lifecycle: active
+    reporting_weight: critical
+    revision: 96304b3b6ae76995e094e575560d74a43ee95e51
+  - repository: sankarshanmukhopadhyay/dtgwg-cred-tf
+    role: task-force-workspace
+    lifecycle: active
+    reporting_weight: high
+    authority: non-authoritative-fork
+    upstream: trustoverip/dtgwg-cred-tf
+    revision: 200acbaa47a422b173652ed2c3dc961c4fbc9e7a
+  - repository: sankarshanmukhopadhyay/dtgwg-zkp-tf
+    role: implementation-guidance
+    lifecycle: active
+    reporting_weight: critical
+    authority: non-authoritative-fork
+    upstream: trustoverip/dtgwg-zkp-tf
+    revision: e49d0b4cda23fe5f113f4075668730ca4218488b
+counts:
+  assessment_targets: 17
+  live_pinned_targets: 15
+  no_commit_transitional_targets: 2
+  recursive_host_exclusions: 1

@@ -1,0 +1,166 @@
+schema: rahp-composite-proposition-ledger/v1
+run_id: dtg-canonical-clean-room-293-faed4f07
+source_issue: 293
+overall_state: AMBER
+propositions:
+  - id: DTG-COMP-001
+    domain: authority
+    proposition: Current canonical repositories can be distinguished from task-force workspaces and non-authoritative forks.
+    result: PASS
+    confidence: high
+    evidence:
+      - trustoverip/dtgwg-trust-tasks-spec README identifies itself as canonical framework source.
+      - trustoverip/dtgwg-cred-spec README identifies itself as specification home; dtgwg-cred-tf redirects normative work there.
+      - maintained ZKP fork explicitly disclaims normative authority.
+    action: Preserve authority metadata in generated assessment perimeter.
+
+  - id: DTG-COMP-002
+    domain: trust-tasks
+    proposition: Trust Task document lifecycle and reply/failure semantics are sufficiently explicit to avoid inferring semantic state from silence or transport facts.
+    result: PASS
+    confidence: high-bounded
+    evidence:
+      - Canonical framework defines received/validated/accepted/executing/suspended/responded/errored/cancelled/expired states.
+      - Success, failure and continuation are distinct wire dispositions.
+      - Bindings are required to map framework lifecycle states.
+    residual: Runtime conformance of every transport binding is separately required.
+
+  - id: DTG-COMP-003
+    domain: trust-tasks-transport
+    proposition: REST/HTTPS, DIDComm and TSP transports exhibit equivalent consequential Trust Task semantics in the current composed implementation.
+    result: INDETERMINATE
+    confidence: bounded
+    evidence:
+      - Source defines transport-independent semantics.
+      - VTI TSP operator guide states TSP is experimental/off by default and runtime message paths should be validated against a live mediator before production.
+      - No fresh #293 multi-transport runtime transaction was executed.
+    action_owner: OpenVTC/reference-implementation
+    evidence_needed: Fresh pinned cross-transport conformance execution covering success, failure, continuation, consent and lifecycle transitions.
+
+  - id: DTG-COMP-004
+    domain: credential-currentness
+    proposition: A verifier can establish current member consent for a member-issued VMC acknowledgement.
+    result: INDETERMINATE
+    confidence: high
+    evidence:
+      - Current credential specification states member-issued VMC withdrawal/status discovery remains deferred.
+      - It explicitly says a verifier cannot currently learn that an otherwise matching acknowledgement has since been withdrawn.
+    action_owner: DTG-spec-upstream
+    minimum_resolution: Member-controlled status/currentness discovery contract plus unavailable/stale failure semantics and privacy analysis.
+
+  - id: DTG-COMP-005
+    domain: credential-interoperability
+    proposition: The current OpenVTC DTG Credentials library produces VWC digests interoperable with DTG Core Credentials Working Draft 01.
+    result: FAIL
+    confidence: high
+    evidence:
+      - OpenVTC/dtg-credentials README at the pinned revision explicitly declares known VWC digest encoding divergence and bidirectional non-interoperability with spec-conformant implementations.
+    action_owner: OpenVTC/reference-implementation
+    minimum_resolution: Align encoding/verification or explicitly version the incompatible profile; add independent conformance vectors.
+    portfolio_effect: Blocking only for compositions that use this implementation path; does not invalidate the canonical specification.
+
+  - id: DTG-COMP-006
+    domain: credential-assurance
+    proposition: Cryptographic validity is kept distinct from issuer authorization, current status and Trust Task context.
+    result: PASS
+    confidence: high-bounded
+    evidence:
+      - Credential spec requires proof verification, validity enforcement, issuer authorization, digest integrity and context binding as distinct verifier obligations.
+    residual: Actual trust-registry/policy authority remains deployment-specific.
+
+  - id: DTG-COMP-007
+    domain: personhood
+    proposition: Current source semantics avoid treating a credential type or successful proof as universal personhood/global uniqueness.
+    result: PASS
+    confidence: high-bounded
+    evidence:
+      - Credential spec says PHC qualification is a governance determination, not a schema property.
+      - VTI personhood docs separate real-human evidence from one-membership-per-person and state cross-community personhood is wider than a community-local guarantee.
+      - ZKP requirements explicitly state personhood does not imply civil identity/global uniqueness.
+    residual: Assurance strength depends on accepted IDVP governance and deduplication quality.
+
+  - id: DTG-COMP-008
+    domain: uniqueness
+    proposition: Scoped uniqueness/nullifier controls are not promoted into one-natural-person-global assurance.
+    result: PASS
+    confidence: high-bounded
+    evidence:
+      - ZKP requirements state a scoped nullifier can enforce one action per enrolled secret/scope/epoch but not one natural person globally.
+      - VTI per-community pseudonym control explicitly attributes guarantee strength to the accepted IDVP.
+    residual: Deployed proof construction and issuer coordination require runtime/governance evidence.
+
+  - id: DTG-COMP-009
+    domain: false-independence
+    proposition: Multiplicity of identities/credentials/evidence paths is not automatically counted as independent assurance.
+    result: PASS
+    confidence: high-bounded
+    evidence:
+      - RAHP generic false-independence control-provider boundary is active for this assessment.
+      - Current ZKP source itself distinguishes scoped uniqueness from broader governance claims.
+    residual: Specific controller/issuer independence claims remain evidence-dependent.
+
+  - id: DTG-COMP-010
+    domain: relationship-lifecycle
+    proposition: Current VTI source models reciprocal relationship completion and in-force lifecycle rather than equating publication with a live mutual relationship.
+    result: PASS
+    confidence: medium-high
+    evidence:
+      - VTI graph distinguishes half-edges and complete reciprocal edges.
+      - In-force status accounts for expiry, suspension, supersession and withdrawal.
+      - Suspend/restore/supersede/withdraw precedence is documented.
+    residual: Fresh runtime exercise of stale authorization and downstream reliance was not produced in #293.
+
+  - id: DTG-COMP-011
+    domain: authorization
+    proposition: Consequential task approval is bound to the exact act and revalidated at execution time.
+    result: PASS
+    confidence: high-bounded
+    evidence:
+      - VTI task-consent binds approval to URI+payload digest, uses signed effects/state pin, single-use grants and re-checks current policy, enrolment and data state before execution.
+    residual: This does not establish every DTG ceremony family has converged on one normative upstream contract.
+
+  - id: DTG-COMP-012
+    domain: privacy
+    proposition: The current composed portfolio preserves intended privacy boundaries across relationship, task, status/policy, verifier, personhood-deduplication and proof/nullifier surfaces.
+    result: INDETERMINATE
+    confidence: high
+    specialist_result: DPIP-146-INDETERMINATE
+    evidence:
+      - Fresh source review establishes material correlation surfaces.
+      - DPIP #146 records ER-REL-DID-AB, ER-STATUS-AB, ER-TASK-AB and ER-VERIFIER-AB as NOT_EVIDENCED for this lineage.
+    action_owner: DPIP/evidence-production
+    minimum_resolution: Fresh attributable pinned A/B runtime observations with positive controls and context-distinct unlinkability cases.
+
+  - id: DTG-COMP-013
+    domain: governance
+    proposition: Governance/authority assumptions are explicit enough that cryptographic validity is not silently treated as authorization.
+    result: PASS
+    confidence: medium-high
+    evidence:
+      - Credential spec delegates PHC, issuer acceptance and trust-registry policy to governance.
+      - ZKP task force states accreditation carries assurance that cryptography does not.
+      - VTI public personhood profile exposes governance claims and accepted IDVPs.
+    residual: Trust-registry authority quality and governance-framework enforcement remain deployment obligations.
+
+  - id: DTG-COMP-014
+    domain: failure-redress
+    proposition: The portfolio has complete deterministic failure, correction and redress semantics across the composed stack.
+    result: INDETERMINATE
+    confidence: medium
+    evidence:
+      - Trust Tasks provides strong failure and lifecycle semantics.
+      - VTI provides consent denial/staleness and several lifecycle controls.
+      - No single current normative cross-portfolio redress contract was established for all credential/personhood/relationship/privacy failures.
+    action_owner: composition-owner/future-VTI-specification
+    minimum_resolution: Map challenge/correction/remediation and unavailable-authority behaviour across the complete composed flow.
+
+  - id: DTG-COMP-015
+    domain: portfolio-maturity
+    proposition: Every repository represented as a DTG portfolio component currently has a mature normative deliverable suitable for whole-portfolio conformance.
+    result: FAIL_BOUNDED
+    confidence: high
+    evidence:
+      - VDS repository says it will be the home of VDS V1.0.
+      - Agent Names repository currently exposes task-force framing without a normative deliverable in this source pass.
+      - HTX repository is artifact/workspace-oriented rather than a current normative technical specification.
+    portfolio_effect: Optional/immature layers must be excluded or explicitly profiled; they prevent a claim that the entire named portfolio has one uniform conformance maturity.
