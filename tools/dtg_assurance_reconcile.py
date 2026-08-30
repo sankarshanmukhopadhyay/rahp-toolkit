@@ -124,7 +124,7 @@ def normalize(run: dict[str, Any], issues: list[dict[str, Any]], comments_by_iss
             dpip.append({
                 "id": f"rahp#{number}:dpip", "required": True, "complete": dpip_complete,
                 "return_received": conclusion is not None, "disposition": conclusion,
-                "provenance_valid": bool(ids),
+                "provenance_valid": bool(ids) and assessor_contract_valid is not False,
                 "assessor_contract_valid": assessor_contract_valid,
             })
     return {"run": run, "events": list(events.values()), "assessments": assessments, "dpip": dpip}
