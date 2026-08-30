@@ -17,6 +17,11 @@ on:
           - zkp--vds
           - agent-names--trust-tasks
           - agent-names--credential-spec
+      assessment_lineage:
+        description: Optional fresh lineage discriminator for clean-room execution
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -29,3 +34,4 @@ jobs:
       registry_path: profiles/dtg/cross-spec-tests.yaml
       composition_id: ${{ inputs.composition_id }}
       composition_scoped_registry_validation: true
+      assessment_lineage: ${{ inputs.assessment_lineage || '' }}
