@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Clean-room Dogwood assessment acceptance runner for RAHP #241.
+"""Clean-room Dogwood assessment acceptance runner.
 
-This script deliberately tests the deterministic boundary of current RAHP/DPIP machinery.
-It does not import historical Dogwood assessment records and does not manufacture semantic
-judgments that current RAHP explicitly requires a reviewer to supply.
+This renderer records deterministic clean-room provenance and, when supplied,
+reports the actual evidence-probe ledger. It never converts probe execution into
+semantic assurance judgment: reviewer materiality/reconciliation remains explicit.
 """
 from __future__ import annotations
 
@@ -17,9 +17,9 @@ from typing import Any
 TARGET_REPOSITORY = "OpenVTC/verifiable-trust-infrastructure"
 TARGET_RELEASE = "VTI-Dogwood-RC-1"
 TARGET_REVISION = "cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b"
-ISSUE_URL = "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/241"
+ISSUE_URL = "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/246"
 RELEASE_URL = "https://github.com/OpenVTC/verifiable-trust-infrastructure/releases/tag/VTI-Dogwood-RC-1"
-FORBIDDEN_HISTORY = ["#225", "#228", "#231", "#234", "#120", "#123", "#129"]
+FORBIDDEN_HISTORY = ["#225", "#228", "#231", "#234", "#120", "#123", "#129", "#134"]
 
 
 def run(cmd: list[str], cwd: Path | None = None) -> str:
@@ -45,109 +45,122 @@ def inventory_target(target: Path) -> dict[str, Any]:
     cargo_toml = target / "Cargo.toml"
     cargo_lock = target / "Cargo.lock"
     audit_review = target / "AUDIT-TRAIL-REVIEW.md"
-    members = []
-    if cargo_toml.exists():
-        for line in cargo_toml.read_text(encoding="utf-8").splitlines():
-            s = line.strip().strip(',').strip('"')
-            if s and not s.startswith("#") and "/" in s and "=" not in s and "[" not in s:
-                members.append(s)
     return {
         "cargo_workspace_present": cargo_toml.exists(),
         "cargo_lock_present": cargo_lock.exists(),
         "audit_trail_review_present": audit_review.exists(),
-        "workspace_member_candidates": sorted(set(members)),
         "top_level_entries": sorted(p.name for p in target.iterdir())[:200],
     }
 
 
-def build_result(args: argparse.Namespace) -> tuple[dict[str, Any], str]:
-    rahp = args.rahp.resolve()
-    dpip = args.dpip.resolve()
-    interop = args.interop.resolve()
-    target = args.target.resolve()
+def load_ledger(path: Path | None) -> dict[str, Any] | None:
+    if path is None:
+        return None
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if value.get("schema") != "rahp-evidence-probe-ledger/v1":
+        raise ValueError("unexpected evidence probe ledger schema")
+    if value.get("target", {}).get("revision") != TARGET_REVISION:
+        raise ValueError("probe ledger target revision does not match Dogwood target")
+    if value.get("orchestration_defects"):
+        raise ValueError("probe ledger contains orchestration defects")
+    return value
 
+
+def build_result(args: argparse.Namespace) -> tuple[dict[str, Any], str]:
+    rahp, dpip, interop, target = (args.rahp.resolve(), args.dpip.resolve(), args.interop.resolve(), args.target.resolve())
     target_head = git_head(target)
     if target_head != TARGET_REVISION:
         raise RuntimeError(f"Dogwood pin mismatch: expected {TARGET_REVISION}, observed {target_head}")
 
     repos = {
-        "rahp": {"path": str(rahp), "revision": git_head(rahp), "clean_after_scaffold": git_clean(rahp)},
-        "dpip": {"path": str(dpip), "revision": git_head(dpip), "clean": git_clean(dpip)},
-        "interop": {"path": str(interop), "revision": git_head(interop), "clean": git_clean(interop)},
-        "target": {"path": str(target), "revision": target_head, "clean": git_clean(target)},
+        "rahp": {"revision": git_head(rahp)},
+        "dpip": {"revision": git_head(dpip), "clean": git_clean(dpip)},
+        "interop": {"revision": git_head(interop), "clean": git_clean(interop)},
+        "target": {"revision": target_head, "clean": git_clean(target)},
     }
-    # RAHP is expected to contain newly scaffolded working assessment files at this point.
     if not repos["dpip"]["clean"] or not repos["interop"]["clean"] or not repos["target"]["clean"]:
-        raise RuntimeError("clean-room integrity failed: target or supporting read-only worktree became dirty")
+        raise RuntimeError("clean-room integrity failed: supporting worktree became dirty")
 
-    now = datetime.now(timezone.utc).isoformat()
+    ledger = load_ledger(args.probe_ledger)
+    requirements = ledger.get("requirements", []) if ledger else []
+    executed = [x for x in requirements if x.get("attempt_state") == "EXECUTED"]
+    unresolved = [x for x in requirements if x.get("result") == "NOT_EVIDENCED"]
+    evidence_stage = "PASS" if ledger and len(requirements) == 4 and not ledger.get("orchestration_defects") else "NOT_RUN"
+
     result = {
-        "schema": "rahp-clean-room-assessment-result/v1",
+        "schema": "rahp-clean-room-assessment-result/v2",
         "assessment": {
-            "issue": 241,
+            "issue": 246,
             "issue_url": ISSUE_URL,
             "started_from_fresh_lineage": True,
             "historical_dogwood_inputs_permitted": False,
             "historical_comparators_allowed_after_terminal_result": FORBIDDEN_HISTORY,
-            "observed_at": now,
+            "observed_at": datetime.now(timezone.utc).isoformat(),
         },
-        "target": {
-            "repository": TARGET_REPOSITORY,
-            "release": TARGET_RELEASE,
-            "revision": TARGET_REVISION,
-            "release_url": RELEASE_URL,
-        },
+        "target": {"repository": TARGET_REPOSITORY, "release": TARGET_RELEASE, "revision": TARGET_REVISION, "release_url": RELEASE_URL},
         "runtime": repos,
         "source_inventory": inventory_target(target),
+        "evidence_probe_ledger": ledger,
         "deterministic_stages": {
             "clean_checkout_verification": "PASS",
             "immutable_target_pin": "PASS",
             "target_inventory": "PASS",
             "rahp_scaffold_capability": "PASS",
+            "registered_evidence_probe_execution": evidence_stage,
             "semantic_review": "REVIEWER_REQUIRED",
             "privacy_materiality": "NOT_YET_DETERMINED",
             "dpip_examination": "NOT_YET_APPLICABLE",
             "rahp_reconciliation": "BLOCKED_ON_SEMANTIC_REVIEW",
         },
         "terminal": {
-            "workflow_state": "COMPLETE_AT_DETERMINISTIC_BOUNDARY",
+            "workflow_state": "COMPLETE_AT_EVIDENCE_AND_DETERMINISTIC_BOUNDARY",
             "assurance_disposition": "AMBER",
             "scoped_conclusion": "INDETERMINATE / REVIEW_REQUIRED",
-            "reason": (
-                "Current RAHP deterministically pins, prepares and structures assessment work, "
-                "but its CLI explicitly leaves substantive semantic findings to a human or AI-assisted reviewer. "
-                "A clean-room run therefore cannot truthfully infer privacy materiality, invoke DPIP, or reconcile "
-                "a target-level PASS/FAIL without that semantic step."
-            ),
+            "reason": "Fresh runtime evidence probes were executed and recorded, but probe sufficiency does not replace the accepted semantic review required for materiality, DPIP applicability, and final RAHP reconciliation.",
             "unknowns": [
-                "risk/harm/security/composition semantic disposition has not yet been independently populated",
-                "privacy materiality has not yet been independently judged",
-                "no fresh DPIP examination exists in this lineage",
+                "fresh risk/harm/security/composition semantic disposition has not yet been accepted",
+                "privacy materiality has not yet been independently judged in this lineage",
+                "the final DPIP and RAHP reconciled conclusion has not yet been produced from this fresh evidence",
             ],
             "references": [
-                {"title": "Clean-room assessment issue", "url": ISSUE_URL},
+                {"title": "Evidence-probe orchestration issue", "url": ISSUE_URL},
                 {"title": "Dogwood RC-1 release", "url": RELEASE_URL},
+                {"title": "Evidence probe ledger", "artifact_path": "evidence-probe-ledger.json"},
             ],
-            "recommended_next_step": {
-                "action": "Populate a fresh semantic RAHP review from this clean-room target and evidence only; if privacy is material, create a new DPIP lineage, then reconcile.",
-                "owner": "RAHP reviewer / current RAHP→DPIP workflow",
-            },
-        },
-        "tooling_maturity": {
-            "machine_readability": {
-                "status": "PARTIAL",
-                "strengths": ["immutable target", "fresh-lineage marker", "typed stage states", "references", "explicit next step"],
-                "defects": ["no autonomous semantic disposition", "no autonomous DPIP applicability decision", "no one-shot reconciled target conclusion"],
-            },
-            "human_comprehensibility": {
-                "status": "PARTIAL",
-                "strengths": ["plain bottom line", "unknowns", "links", "next step"],
-                "defects": ["terminal target conclusion still depends on an external semantic-review step"],
-            },
+            "recommended_next_step": {"action": "Admit the fresh attributable probe evidence into a semantic RAHP review; if privacy is material, create a new DPIP examination and reconcile.", "owner": "RAHP reviewer / RAHP→DPIP lifecycle"},
         },
     }
 
-    summary = f"""# Clean-room Dogwood assessment — reviewer summary\n\n## Bottom line\n\n**AMBER — INDETERMINATE / REVIEW REQUIRED.** The clean-room run successfully verified a fresh, clean checkout of Dogwood RC-1 at `{TARGET_REVISION}` and exercised the deterministic RAHP assessment boundary. It did **not** produce a truthful target-level PASS or FAIL because current RAHP deliberately requires a reviewer to supply substantive semantic findings before privacy materiality, DPIP referral, and final reconciliation can occur.\n\n## What was assessed\n\n- Target: `{TARGET_REPOSITORY}`\n- Release: `{TARGET_RELEASE}`\n- Immutable commit: `{TARGET_REVISION}`\n- Historical Dogwood assessment records were excluded as inputs.\n\n## What we found\n\nThe clean-room and pinning controls work: all participating repositories began from clean worktrees, the Dogwood revision matched the immutable target, and RAHP successfully scaffolded a fresh pinned review. The current RAHP command-line path explicitly does not manufacture substantive findings. That is a valid safety boundary, but it means the current system is not yet a one-command end-to-end assurance engine.\n\n## Why this is AMBER\n\nThis is not GREEN because risk, harm, security, composition and privacy materiality have not yet received a fresh semantic disposition in this lineage. It is not RED because the run did not establish an adverse Dogwood finding or a broken provenance chain. Missing judgment is therefore preserved as **INDETERMINATE**, not converted into PASS.\n\n## What remains unknown\n\n- Fresh risk/harm/security/composition conclusions.\n- Whether privacy is material under the fresh semantic review.\n- If privacy is material, what a new DPIP examination concludes.\n- The final reconciled Dogwood assurance colour after those steps.\n\n## References\n\n- [Clean-room RAHP issue #241]({ISSUE_URL})\n- [Dogwood RC-1 release]({RELEASE_URL})\n- Machine-readable artifact: `machine-conclusion.json` from the associated workflow run.\n\n## Recommended next step\n\n**Populate the fresh semantic RAHP review using only this clean-room target/evidence.** If that review finds privacy material, create a new DPIP examination in a new lineage. Then return the DPIP result to RAHP and produce the final reconciled machine-readable and plain-language conclusion.\n\n## Tooling maturity observation\n\nRAHP/DPIP have strong deterministic provenance and evidence-boundary behavior, but this clean-room test exposes a remaining orchestration gap: the system does not yet carry a fresh target from deterministic preparation through semantic judgment, optional DPIP, reconciliation, and a terminal human/machine conclusion without an explicit reviewer step.\n"""
+    rows = "\n".join(
+        f"- `{x.get('requirement_id')}` — **{x.get('result')}**, attempt `{x.get('attempt_state')}`, attribution `{x.get('attribution')}`"
+        for x in requirements
+    ) or "- No probe ledger supplied."
+    summary = f"""# Clean-room Dogwood evidence-probe summary
+
+## Bottom line
+
+**AMBER — INDETERMINATE / REVIEW REQUIRED.** The stronger clean-room flow successfully executed the registered runtime evidence producers against pinned Dogwood RC-1 and recorded every required evidence attempt. This is materially stronger than the earlier clean-room run: no requirement is `NOT_EVIDENCED` merely because the harness failed to try it. It is still not a target-level privacy PASS/FAIL because semantic review, materiality, DPIP examination, and reconciliation remain separate judgment stages.
+
+## Evidence produced
+
+{rows}
+
+Two producers executed for four requirements. Dogwood-native relationship/verifier observations remain attributed to Dogwood; status/policy and Trust Task observations remain explicitly attributed to the Interop Lab composition.
+
+## Why this remains AMBER here
+
+The evidence-production gap is closed, but evidence production alone is not assurance judgment. A reviewer must admit and interpret the evidence, determine privacy materiality, invoke DPIP if warranted, and reconcile the result. Workflow success therefore does not become assurance GREEN.
+
+## Remaining uncertainty
+
+{('- No runtime requirement remains NOT_EVIDENCED in the probe ledger.' if not unresolved else '- Some runtime requirements remain NOT_EVIDENCED after explicit attempts.')}
+- Fresh semantic RAHP disposition and privacy materiality remain to be accepted.
+- A fresh DPIP conclusion based on this evidence has not yet been produced.
+
+## Recommended next step
+
+Use this fresh attempt ledger and evidence package in the next pinned semantic RAHP/DPIP assessment. Any future `NOT_EVIDENCED` result must now be traceable to an executed/unavailable probe or an explicit absence of an applicable producer.
+"""
     return result, summary
 
 
@@ -158,6 +171,7 @@ def main() -> int:
     ap.add_argument("--interop", type=Path, required=True)
     ap.add_argument("--target", type=Path, required=True)
     ap.add_argument("--out-dir", type=Path, required=True)
+    ap.add_argument("--probe-ledger", type=Path)
     args = ap.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
     result, summary = build_result(args)
