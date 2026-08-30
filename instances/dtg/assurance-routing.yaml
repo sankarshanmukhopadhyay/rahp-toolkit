@@ -1,4 +1,4 @@
-version: 1
+version: 2
 qualification:
   materiality: [high, critical]
   assurance_impact: [potentially-breaking, breaking]
@@ -44,6 +44,46 @@ finding_rules:
         metadata, retained evidence, discovery/status traffic, or one side of an
         asymmetric edge expand correlation beyond the explicitly declared scope?
 
+  - id: device-metadata-privacy
+    outcome: dpip
+    repository_regex: '^OpenVTC/'
+    title_regex: '(device|install).*(name|label|heartbeat)|(heartbeat).*(name|label|device|install)'
+    dpip:
+      affected_interactions: [device-presence-and-metadata]
+      affected_reference_flows:
+        - "device/install -> heartbeat or presence update -> retained service metadata"
+      affected_invariants:
+        - no-unnecessary-cross-context-correlation
+        - metadata-does-not-expand-declared-correlation-scope
+      affected_claims:
+        - device-metadata-is-bounded-to-the-declared-operational-scope
+      suspected_surfaces:
+        - device or install display metadata
+        - heartbeat payloads
+        - retained presence records
+      question: >-
+        Does device or install metadata transmitted in heartbeat/presence traffic
+        create an unnecessary stable or human-readable correlation surface beyond
+        the declared operational scope?
+
+  - id: delegation-credential-composition
+    outcome: combined
+    repository_regex: '.*'
+    title_regex: '(delegation credential|delegation.*credential|\bVDC\b)'
+    review_mode: combined
+
+  - id: redress-contestability-combined
+    outcome: combined
+    repository_regex: '.*'
+    title_regex: '(rejected applicant|refusal.*reason|reason.*refusal|redress|contestab)'
+    review_mode: combined
+
+  - id: spec-dependency-alignment
+    outcome: combined
+    repository_regex: '.*'
+    title_regex: '(trust-tasks-rs|specification dependency|spec dependency|specs now define|schema dependency)'
+    review_mode: combined
+
   - id: openvtc-security-combined
     outcome: combined
     repository_regex: '^OpenVTC/'
@@ -53,11 +93,14 @@ finding_rules:
   - id: openvtc-routine-alignment
     outcome: no-action
     repository_regex: '^OpenVTC/'
-    title_regex: '(release|SDK|sdk|design note|removal notice|tell a member|drift reaches zero)'
+    title_regex: '(release|SDK|sdk|design note|removal notice|tell a member|drift reaches zero|(^|[- ])v[0-9]+\.[0-9]+\.[0-9]+$)'
     rationale: >-
-      Material implementation/alignment evidence remains in the portfolio controller,
-      but absent a security/privacy trigger it does not independently require another
-      assurance run. A later higher-priority rule may override this disposition.
+      Material implementation/alignment or packaging evidence remains in the
+      portfolio controller, but absent a security/privacy trigger it does not
+      independently require another assurance run. Versioned release artifacts
+      inherit the dispositions of their constituent material changes rather than
+      creating duplicate assessment work. A later higher-priority rule may override
+      this disposition.
 
   - id: trust-tasks-framework-covered
     outcome: covered
