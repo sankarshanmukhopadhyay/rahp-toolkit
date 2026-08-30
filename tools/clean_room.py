@@ -35,13 +35,20 @@ def resolve(spec: dict[str, Any], *, instance: str, snapshot: str, nonce: str) -
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--spec", type=pathlib.Path, required=True)
-    ap.add_argument("--instance", required=True)
-    ap.add_argument("--snapshot", required=True)
+    ap.add_argument("--instance")
+    ap.add_argument("--snapshot")
     ap.add_argument("--nonce", required=True)
     ap.add_argument("--output", type=pathlib.Path)
     args = ap.parse_args()
     spec = json.loads(args.spec.read_text(encoding="utf-8"))
-    result = resolve(spec, instance=args.instance, snapshot=args.snapshot, nonce=args.nonce)
+    run = spec.get("run") or {}
+    instance = args.instance or str(run.get("instance") or "").strip()
+    snapshot = args.snapshot or str(run.get("snapshot") or "").strip()
+    if not instance:
+        raise SystemExit("clean-room instance is required in run.instance or --instance")
+    if not snapshot:
+        raise SystemExit("clean-room snapshot is required in run.snapshot or --snapshot")
+    result = resolve(spec, instance=instance, snapshot=snapshot, nonce=args.nonce)
     text = json.dumps(result, indent=2) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
