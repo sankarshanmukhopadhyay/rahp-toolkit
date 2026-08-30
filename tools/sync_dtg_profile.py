@@ -44,7 +44,7 @@ def portable_target(target: dict[str, Any]) -> dict[str, Any]:
             "title": target["repository"],
             "type": target.get("role") or "repository",
             "description": (
-                f"DTG portfolio target discovered from {target['source']}; "
+                f"DTG instance target discovered from {target['source']}; "
                 f"workstream={target.get('workstream') or 'n/a'}; "
                 f"lifecycle={target.get('lifecycle') or 'n/a'}; "
                 f"reporting_weight={target.get('reporting_weight') or 'n/a'}."
