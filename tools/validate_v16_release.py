@@ -122,13 +122,13 @@ def main() -> int:
     if deps.get("CORPUS-DTG-CREDSPEC") != pins.get("credential_spec"):
         errors.append("composed corpus does not depend on the qualified Credential Spec pin")
 
-    review = load_yaml("examples/cross-spec/trust-tasks-credspec/pressure-test.yaml").get("review") or {}
+    review = load_yaml("examples/cross-spec/trust-tasks-credspec/history/v1.6-qualified-2026-08-23.yaml").get("review") or {}
     if review.get("target", {}).get("commit") != pins.get("trust_tasks"):
         errors.append("TT×CredSpec reassessment is not pinned to the qualified Trust Tasks revision")
     if review.get("target", {}).get("companion_commit") != pins.get("credential_spec"):
         errors.append("TT×CredSpec reassessment is not pinned to the qualified Credential Spec revision")
     if review.get("lineage", {}).get("prior_record") != "history/pre-corpus-expansion-2026-08-23.yaml":
-        errors.append("TT×CredSpec reassessment must preserve the pre-expansion history pointer")
+        errors.append("preserved v1.6 TT×CredSpec snapshot must preserve the pre-expansion history pointer")
     if review.get("assurance", {}).get("assurance_delta", {}).get("disposition") != "refined":
         errors.append("TT×CredSpec reassessment must record the source-pinned corpus delta as refined")
 
