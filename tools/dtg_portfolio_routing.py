@@ -12,6 +12,8 @@ from typing import Any
 
 import yaml
 
+from finding_model import normalize_finding, semantic_match
+
 
 def load_yaml(path: pathlib.Path) -> dict[str, Any]:
     value = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -30,7 +32,8 @@ def qualifies(finding: dict[str, Any], policy: dict[str, Any]) -> bool:
     )
 
 
-def matches(rule: dict[str, Any], finding: dict[str, Any]) -> bool:
+def legacy_matches(rule: dict[str, Any], finding: dict[str, Any]) -> bool:
+    """Compatibility matcher for pre-normalization instance profiles."""
     repo = str(finding.get("repository") or "")
     title = str(finding.get("title") or "")
     if rule.get("repository_regex") and not re.search(str(rule["repository_regex"]), repo, re.I):
@@ -40,22 +43,40 @@ def matches(rule: dict[str, Any], finding: dict[str, Any]) -> bool:
     return True
 
 
-def route_findings(findings: list[dict[str, Any]], policy: dict[str, Any]) -> list[dict[str, Any]]:
+def route_findings(
+    findings: list[dict[str, Any]],
+    policy: dict[str, Any],
+    normalization_policy: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    """Route qualified findings.
+
+    When a normalization policy is supplied, semantic rules are authoritative.
+    Raw repository/title matching is used only by the explicit compatibility path.
+    """
     routed: list[dict[str, Any]] = []
-    fallback = policy.get("fallback") or {"outcome": "unresolved"}
+    fallback = policy.get("fallback") or {"outcome": "UNMAPPED"}
     for finding in findings:
         if not qualifies(finding, policy):
             continue
+        normalized = normalize_finding(finding, normalization_policy) if normalization_policy else None
         decision = None
-        for rule in policy.get("finding_rules") or []:
-            if matches(rule, finding):
-                decision = rule
-                break
+        if normalized is not None:
+            if normalized["normalization"]["status"] == "mapped":
+                for rule in policy.get("semantic_rules") or []:
+                    if semantic_match(rule, normalized):
+                        decision = rule
+                        break
+        else:
+            for rule in policy.get("finding_rules") or []:
+                if legacy_matches(rule, finding):
+                    decision = rule
+                    break
         decision = decision or fallback
         routed.append({
             "finding": finding,
+            **({"normalized_finding": normalized} if normalized is not None else {}),
             "rule_id": decision.get("id", "fallback"),
-            "outcome": decision.get("outcome", "unresolved"),
+            "outcome": decision.get("outcome", "UNMAPPED"),
             "decision": decision,
         })
     return routed
@@ -191,22 +212,26 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--findings", type=pathlib.Path, required=True)
     ap.add_argument("--policy", type=pathlib.Path, required=True)
+    ap.add_argument("--normalization-policy", type=pathlib.Path, help="instance-owned raw finding normalization profile")
     ap.add_argument("--snapshot-date", required=True)
     ap.add_argument("--out-dir", type=pathlib.Path, required=True)
     ap.add_argument("--assessment-lineage", default="", help="optional fresh-lineage discriminator; omitted preserves steady-state coalescing")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
     policy = load_yaml(args.policy)
+    normalization_policy = load_yaml(args.normalization_policy) if args.normalization_policy else None
     if args.self_test:
         fixture = [
             {"finding_id":"p","fingerprint":"p","state":"open","review_status":"unreviewed","materiality":"high","assurance_impact":"potentially-breaking","repository":"trustoverip/dtgwg-cred-spec","title":"Name asymmetric relationship edge correlation scope","related_repositories":[]},
             {"finding_id":"s","fingerprint":"s","state":"open","review_status":"unreviewed","materiality":"high","assurance_impact":"breaking","repository":"OpenVTC/openvtc","title":"fix auth conformance","related_repositories":[]},
             {"finding_id":"u","fingerprint":"u","state":"open","review_status":"unreviewed","materiality":"high","assurance_impact":"breaking","repository":"example/unknown","title":"unknown material change","related_repositories":[]},
         ]
-        outcomes = [x["outcome"] for x in route_findings(fixture, policy)]
-        assert outcomes == ["dpip", "combined", "unresolved"], outcomes
+        routed_fixture = route_findings(fixture, policy, normalization_policy)
+        outcomes = [x["outcome"] for x in routed_fixture]
+        expected_last = "UNMAPPED" if normalization_policy else "UNMAPPED"
+        assert outcomes == ["dpip", "combined", expected_last], outcomes
         grouped = defaultdict(list)
-        for item in route_findings(fixture, policy):
+        for item in routed_fixture:
             grouped[(item["outcome"], item["rule_id"])].append(item)
         combined_body = combined_event("openvtc-security-combined", grouped[("combined", "openvtc-security-combined")], "2026-08-27")["body"]
         dpip_body = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-27")["body"]
@@ -228,7 +253,7 @@ def main() -> int:
         combined_clean = combined_event("openvtc-security-combined", grouped[("combined", "openvtc-security-combined")], "2026-08-30", "clean-room-A")
         assert combined_clean["assessment_key"] != "dtg:portfolio:combined:openvtc-security-combined"
         pin_fixture = [dict(fixture[0], evidence_urls=["https://github.com/example/source/commit/" + "a" * 40])]
-        pin_routed = route_findings(pin_fixture, policy)
+        pin_routed = route_findings(pin_fixture, policy, normalization_policy)
         pin_event = dpip_event("relationship-correlation-privacy", pin_routed, "2026-08-27")
         assert "revision: " + "a" * 40 in pin_event["body"]
         print("PASS dtg portfolio routing self-test")
@@ -237,7 +262,7 @@ def main() -> int:
     findings = json.loads(args.findings.read_text(encoding="utf-8"))
     if not isinstance(findings, list):
         raise SystemExit("findings must be a JSON array")
-    routed = route_findings(findings, policy)
+    routed = route_findings(findings, policy, normalization_policy)
     grouped: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for item in routed:
         grouped[(item["outcome"], item["rule_id"])].append(item)
@@ -247,7 +272,7 @@ def main() -> int:
     dpip = [dpip_event(rule, items, args.snapshot_date, lineage) for (outcome, rule), items in grouped.items() if outcome == "dpip"]
     unresolved = [
         {"finding_id": item["finding"].get("finding_id"), "repository": item["finding"].get("repository"), "title": item["finding"].get("title"), "rule_id": item["rule_id"]}
-        for item in routed if item["outcome"] == "unresolved"
+        for item in routed if item["outcome"] in {"unresolved", "UNMAPPED"}
     ]
     args.out_dir.mkdir(parents=True, exist_ok=True)
     (args.out_dir / "routing.json").write_text(json.dumps(routed, indent=2) + "\n", encoding="utf-8")
