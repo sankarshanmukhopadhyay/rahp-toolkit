@@ -1,0 +1,40 @@
+schema: rahp-specialist-assurance-ledger/v1
+run_id: dtg-canonical-clean-room-293-faed4f07
+source_issue: 293
+entries:
+  - finding: DTG-COMP-012
+    domain: privacy
+    applicability: required
+    examiner: DPIP
+    examination_repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+    examination_issue: 146
+    result: INDETERMINATE
+    disposition: evidence-required
+    evidence_requirements:
+      ER-REL-DID-AB: NOT_EVIDENCED
+      ER-STATUS-AB: NOT_EVIDENCED
+      ER-TASK-AB: NOT_EVIDENCED
+      ER-VERIFIER-AB: NOT_EVIDENCED
+    rahp_reconciliation: Portfolio privacy remains AMBER/INDETERMINATE; no privacy PASS is inferred.
+  - finding: DTG-COMP-004
+    domain: credential-currentness
+    applicability: required-at-privacy-layer-for-status-discovery
+    examiner: DPIP
+    examination_issue: 146
+    result: INDETERMINATE
+    rahp_reconciliation: Normative status/currentness dependency remains open and its lookup privacy is not runtime-proven.
+  - finding: DTG-COMP-005
+    domain: credential-interoperability
+    applicability: not-required
+    reason: Documented implementation/spec mismatch is directly established without specialist privacy examination.
+  - finding: DTG-COMP-003
+    domain: transport-equivalence
+    applicability: not-required
+    reason: Requires interoperability/runtime conformance evidence rather than specialist privacy judgment, though transport metadata remains included in DPIP privacy scope.
+  - finding: DTG-COMP-007
+    domain: personhood
+    applicability: required-only-for-correlation/privacy-subclaims
+    examiner: DPIP
+    examination_issue: 146
+    result: INDETERMINATE
+    reason: Personhood governance semantics can be assessed by RAHP; pseudonym/deduplication correlation behaviour requires privacy evidence.
