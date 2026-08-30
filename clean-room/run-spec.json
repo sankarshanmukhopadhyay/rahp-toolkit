@@ -1,8 +1,8 @@
 {
   "schema": "rahp-clean-room-run/v1",
   "run": {
-    "issue": 253,
-    "lineage_prefix": "clean-room-253"
+    "issue": 257,
+    "lineage_prefix": "clean-room-v1.9"
   },
   "target": {
     "repository": "OpenVTC/verifiable-trust-infrastructure",
@@ -18,13 +18,13 @@
     },
     "interop": {
       "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
-      "revision": "bfcadf8119a033b2d938b07c8338b82907c23990",
+      "revision": "5657df62f851aefa62a2432263022d8221722b89",
       "path": "interop"
     }
   },
   "assessment": {
-    "profile_id": "clean-room-253",
-    "title": "Fresh clean-room assurance assessment",
+    "profile_id": "clean-room-v1.9",
+    "title": "v1.9 portable clean-room acceptance assessment",
     "target_id": "target-under-test",
     "target_title": "Immutable target under clean-room assessment",
     "mode": "combined"
@@ -40,21 +40,21 @@
   ],
   "evidence_plan": {
     "producers": {
-      "target-native-ab": {
+      "target-native-pressure": {
         "cwd": "interop",
-        "revision": "bfcadf8119a033b2d938b07c8338b82907c23990",
+        "revision": "5657df62f851aefa62a2432263022d8221722b89",
         "attribution": "target-native:VTI-Dogwood-RC-1",
         "command": [
           "python",
           "experiments/dtg-protected-access/capture_ab_runtime.py",
-          "cases/dtg-protected-access/dogwood-rc1-runtime-ab.yaml",
+          "cases/dtg-protected-access/dogwood-rc1-runtime-pressure-ab.yaml",
           "--output",
           "../output/target-capture.yaml"
         ]
       },
       "composition-ab": {
         "cwd": "interop",
-        "revision": "bfcadf8119a033b2d938b07c8338b82907c23990",
+        "revision": "5657df62f851aefa62a2432263022d8221722b89",
         "attribution": "composition-runtime:Interop-Lab",
         "command": [
           "python",
@@ -62,19 +62,19 @@
           "--output-dir",
           "../output/composed",
           "--revision",
-          "bfcadf8119a033b2d938b07c8338b82907c23990"
+          "5657df62f851aefa62a2432263022d8221722b89"
         ]
       }
     },
     "requirements": [
       {
         "id": "ER-REL-DID-AB",
-        "producer": "target-native-ab",
+        "producer": "target-native-pressure",
         "evidence_file": "output/target-capture.yaml"
       },
       {
         "id": "ER-VERIFIER-AB",
-        "producer": "target-native-ab",
+        "producer": "target-native-pressure",
         "evidence_file": "output/target-capture.yaml"
       },
       {
