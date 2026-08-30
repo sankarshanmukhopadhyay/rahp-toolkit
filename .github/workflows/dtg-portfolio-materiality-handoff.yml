@@ -5,6 +5,11 @@ on:
     # Portfolio Monitor collects at 00:17 and 12:17 UTC. Allow collection/publish time.
     - cron: '7 1,13 * * *'
   workflow_dispatch:
+    inputs:
+      assessment_lineage:
+        description: Optional fresh lineage discriminator for clean-room execution
+        required: false
+        type: string
   push:
     branches: [main]
     paths:
@@ -69,6 +74,7 @@ jobs:
             --policy instances/dtg/assurance-routing.yaml \
             --snapshot-date '${{ steps.snapshot.outputs.date }}' \
             --out-dir build/dtg-routing \
+            --assessment-lineage '${{ inputs.assessment_lineage || '' }}' \
             --self-test
           python3 tools/dtg_portfolio_routing.py \
             --findings build/dtg-routing/findings.json \
@@ -88,10 +94,12 @@ jobs:
               counts[item['outcome']] = counts.get(item['outcome'], 0) + 1
           day = '${{ steps.snapshot.outputs.date }}'
           source_url = '${{ steps.snapshot.outputs.url }}'
+          lineage = '${{ inputs.assessment_lineage || '' }}'.strip()
           lines = [
               '# DTG Portfolio Monitor → RAHP assurance controller',
               '',
-              '<!-- rahp-assessment-key:dtg:portfolio:material-change-set -->',
+              f"<!-- rahp-assessment-key:{'dtg:portfolio:material-change-set:lineage:' + lineage if lineage else 'dtg:portfolio:material-change-set'} -->",
+              *([f'<!-- rahp-clean-room-lineage:{lineage} -->'] if lineage else []),
               f'<!-- rahp-portfolio-snapshot:{day} -->',
               '<!-- dtg-routing-policy:v1 -->',
               '',
@@ -119,7 +127,7 @@ jobs:
           ]
           body = '\n'.join(lines) + '\n'
           event = {
-              'assessment_key': 'dtg:portfolio:material-change-set',
+              'assessment_key': ('dtg:portfolio:material-change-set:lineage:' + lineage) if lineage else 'dtg:portfolio:material-change-set',
               'observed_at': day,
               'source': 'dtg-portfolio-monitor',
               'title': f'DTG portfolio materiality assessment required — {day}',
@@ -199,6 +207,9 @@ jobs:
         run: |
           echo '## DTG Portfolio Monitor → RAHP → DPIP pipeline' >> "$GITHUB_STEP_SUMMARY"
           echo '- Snapshot: `${{ steps.snapshot.outputs.date }}`' >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ inputs.assessment_lineage || '' }}" ]; then
+            echo '- Clean-room lineage: `${{ inputs.assessment_lineage }}`' >> "$GITHUB_STEP_SUMMARY"
+          fi
           jq -r 'group_by(.outcome) | map("- " + .[0].outcome + ": " + (length|tostring)) | .[]' build/dtg-routing/routing.json >> "$GITHUB_STEP_SUMMARY" || true
           if [ -s build/dtg-routing/unresolved.json ] && [ "$(jq length build/dtg-routing/unresolved.json)" -gt 0 ]; then
             echo '- Unresolved qualifying findings remain visible in routing output.' >> "$GITHUB_STEP_SUMMARY"
