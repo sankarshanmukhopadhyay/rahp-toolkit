@@ -90,7 +90,7 @@ v2.0.0 makes normalized findings, declarative instance profiles, semantic-first 
 
 Three frozen DTG snapshots (28–30 Aug 2026) execute through the same unchanged stabilized core. The validation suite also retains non-DTG/CAWG portability checks. The final DTG black-box wave produced real consumer FAIL results without requiring another RAHP-core patch; that is evidence of toolkit portability, not a claim that the DTG portfolio is GREEN.
 
-**Historical release:** v1.9.0 **Lesser Mime** (*Papilio epycides*) remains the immutable Portable Clean-Room Assurance release.
+**Historical releases:** v1.9.0 **Lesser Mime** (*Papilio epycides*) remains the immutable Portable Clean-Room Assurance release; v1.8.0 **Common Map** (*Cyrestis thyodamas*) remains the Semantically Governed Assurance Pipeline record; v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) remains the Assurance Operations and Cross-Spec Execution record; and v1.6.0 **Common Earl** (*Tanaecia julii*) remains the Source-Pinned Coverage and Guided Adoption record.
 
 Useful release surfaces:
 
