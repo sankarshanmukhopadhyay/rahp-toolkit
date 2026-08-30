@@ -1,0 +1,97 @@
+{
+  "schema": "rahp-clean-room-run/v1",
+  "run": {
+    "issue": 253,
+    "lineage_prefix": "clean-room-253"
+  },
+  "target": {
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "revision": "cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b",
+    "release": "VTI-Dogwood-RC-1",
+    "path": "target"
+  },
+  "resources": {
+    "dpip": {
+      "repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile",
+      "revision": "aa067a3eda93db700d6a5a3e34c61a6df29b4ff9",
+      "path": "dpip"
+    },
+    "interop": {
+      "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+      "revision": "bfcadf8119a033b2d938b07c8338b82907c23990",
+      "path": "interop"
+    }
+  },
+  "assessment": {
+    "profile_id": "clean-room-253",
+    "title": "Fresh clean-room assurance assessment",
+    "target_id": "target-under-test",
+    "target_title": "Immutable target under clean-room assessment",
+    "mode": "combined"
+  },
+  "environment": {
+    "DOGWOOD_CHECKOUT": "{workspace}/target"
+  },
+  "setup_commands": [
+    "sudo apt-get update",
+    "sudo apt-get install -y libdbus-1-dev pkg-config",
+    "rustup toolchain install stable",
+    "rustup default stable"
+  ],
+  "evidence_plan": {
+    "producers": {
+      "target-native-ab": {
+        "cwd": "interop",
+        "revision": "bfcadf8119a033b2d938b07c8338b82907c23990",
+        "attribution": "target-native:VTI-Dogwood-RC-1",
+        "command": [
+          "python",
+          "experiments/dtg-protected-access/capture_ab_runtime.py",
+          "cases/dtg-protected-access/dogwood-rc1-runtime-ab.yaml",
+          "--output",
+          "../output/target-capture.yaml"
+        ]
+      },
+      "composition-ab": {
+        "cwd": "interop",
+        "revision": "bfcadf8119a033b2d938b07c8338b82907c23990",
+        "attribution": "composition-runtime:Interop-Lab",
+        "command": [
+          "python",
+          "experiments/dtg-protected-access/run_composed_ab.py",
+          "--output-dir",
+          "../output/composed",
+          "--revision",
+          "bfcadf8119a033b2d938b07c8338b82907c23990"
+        ]
+      }
+    },
+    "requirements": [
+      {
+        "id": "ER-REL-DID-AB",
+        "producer": "target-native-ab",
+        "evidence_file": "output/target-capture.yaml"
+      },
+      {
+        "id": "ER-VERIFIER-AB",
+        "producer": "target-native-ab",
+        "evidence_file": "output/target-capture.yaml"
+      },
+      {
+        "id": "ER-STATUS-AB",
+        "producer": "composition-ab",
+        "evidence_file": "output/composed/unlinkability-pressure-capture.yaml",
+        "attribution": "composition-runtime:Interop-Lab"
+      },
+      {
+        "id": "ER-TASK-AB",
+        "producer": "composition-ab",
+        "evidence_file": "output/composed/unlinkability-pressure-capture.yaml",
+        "attribution": "composition-runtime:Interop-Lab"
+      }
+    ]
+  },
+  "post_probe_commands": [
+    "python interop/experiments/dtg-protected-access/export_dpip_evidence.py output/target-capture.yaml --output output/target-provided-evidence.json"
+  ]
+}
