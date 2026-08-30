@@ -91,12 +91,23 @@ def findings_table(items: list[dict[str, Any]]) -> str:
     return "\n".join(rows)
 
 
-def combined_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str, Any]:
+def lineage_key(base: str, lineage: str | None) -> str:
+    clean = (lineage or "").strip()
+    return f"{base}:lineage:{clean}" if clean else base
+
+
+def lineage_marker(lineage: str | None) -> str:
+    clean = (lineage or "").strip()
+    return f"<!-- rahp-clean-room-lineage:{clean} -->\n" if clean else ""
+
+
+def combined_event(rule_id: str, items: list[dict[str, Any]], day: str, lineage: str | None = None) -> dict[str, Any]:
     digest = cluster_digest(items)
     body = (
         "# Automated bounded combined review\n\n"
         f"<!-- dtg-routing-policy:v1 -->\n"
-        f"<!-- dtg-routing-cluster:{digest} -->\n\n"
+        f"<!-- dtg-routing-cluster:{digest} -->\n"
+        f"{lineage_marker(lineage)}\n"
         f"Portfolio snapshot: `{day}`  \nRouting rule: `{rule_id}`\n\n"
         "## Proposition\n\n"
         "Determine whether this coherent material change set preserves, strengthens, weakens, or creates new RAHP/security assurance propositions. Treat apparent mitigations as falsifiable claims and check for regressions.\n\n"
@@ -108,7 +119,7 @@ def combined_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[
         "- Link the result to the portfolio controller.\n"
     )
     return {
-        "assessment_key": f"dtg:portfolio:combined:{rule_id}",
+        "assessment_key": lineage_key(f"dtg:portfolio:combined:{rule_id}", lineage),
         "observed_at": day,
         "source": "dtg-portfolio-monitor-routing",
         "title": f"[DTG portfolio] Bounded combined RAHP + security review — {rule_id}",
@@ -118,7 +129,7 @@ def combined_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[
     }
 
 
-def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str, Any]:
+def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str, lineage: str | None = None) -> dict[str, Any]:
     decision = items[0]["decision"]
     dpip = decision.get("dpip") or {}
     digest = cluster_digest(items)
@@ -158,7 +169,8 @@ def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str,
     body = (
         "# RAHP privacy referral\n\n"
         f"<!-- dtg-routing-policy:v1 -->\n"
-        f"<!-- dtg-routing-cluster:{digest} -->\n\n"
+        f"<!-- dtg-routing-cluster:{digest} -->\n"
+        f"{lineage_marker(lineage)}\n"
         f"Portfolio snapshot: `{day}`  \nRouting rule: `{rule_id}`\n\n"
         f"## Routed findings\n\n{findings_table(items)}\n\n"
         "## Promotion gate\n\n"
@@ -166,7 +178,7 @@ def dpip_event(rule_id: str, items: list[dict[str, Any]], day: str) -> dict[str,
         f"```yaml\n{yaml_block}\n```\n"
     )
     return {
-        "assessment_key": f"dtg:portfolio:dpip:v2:{rule_id}:{digest}",
+        "assessment_key": lineage_key(f"dtg:portfolio:dpip:v2:{rule_id}:{digest}", lineage),
         "observed_at": day,
         "source": "dtg-portfolio-monitor-routing",
         "title": f"[DPIP requested] DTG portfolio privacy examination — {rule_id}",
@@ -181,6 +193,7 @@ def main() -> int:
     ap.add_argument("--policy", type=pathlib.Path, required=True)
     ap.add_argument("--snapshot-date", required=True)
     ap.add_argument("--out-dir", type=pathlib.Path, required=True)
+    ap.add_argument("--assessment-lineage", default="", help="optional fresh-lineage discriminator; omitted preserves steady-state coalescing")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
     policy = load_yaml(args.policy)
@@ -205,6 +218,15 @@ def main() -> int:
         event = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-27")
         assert event["assessment_key"].startswith("dtg:portfolio:dpip:v2:relationship-correlation-privacy:")
         assert event["assessment_key"].endswith(cluster_digest(grouped[("dpip", "relationship-correlation-privacy")]))
+        steady_again = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-30")
+        assert steady_again["assessment_key"] == event["assessment_key"]
+        clean_a = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-30", "clean-room-A")
+        clean_b = dpip_event("relationship-correlation-privacy", grouped[("dpip", "relationship-correlation-privacy")], "2026-08-30", "clean-room-B")
+        assert clean_a["assessment_key"] != event["assessment_key"]
+        assert clean_a["assessment_key"] != clean_b["assessment_key"]
+        assert "rahp-clean-room-lineage:clean-room-A" in clean_a["body"]
+        combined_clean = combined_event("openvtc-security-combined", grouped[("combined", "openvtc-security-combined")], "2026-08-30", "clean-room-A")
+        assert combined_clean["assessment_key"] != "dtg:portfolio:combined:openvtc-security-combined"
         pin_fixture = [dict(fixture[0], evidence_urls=["https://github.com/example/source/commit/" + "a" * 40])]
         pin_routed = route_findings(pin_fixture, policy)
         pin_event = dpip_event("relationship-correlation-privacy", pin_routed, "2026-08-27")
@@ -220,8 +242,9 @@ def main() -> int:
     for item in routed:
         grouped[(item["outcome"], item["rule_id"])].append(item)
 
-    combined = [combined_event(rule, items, args.snapshot_date) for (outcome, rule), items in grouped.items() if outcome == "combined"]
-    dpip = [dpip_event(rule, items, args.snapshot_date) for (outcome, rule), items in grouped.items() if outcome == "dpip"]
+    lineage = args.assessment_lineage.strip() or None
+    combined = [combined_event(rule, items, args.snapshot_date, lineage) for (outcome, rule), items in grouped.items() if outcome == "combined"]
+    dpip = [dpip_event(rule, items, args.snapshot_date, lineage) for (outcome, rule), items in grouped.items() if outcome == "dpip"]
     unresolved = [
         {"finding_id": item["finding"].get("finding_id"), "repository": item["finding"].get("repository"), "title": item["finding"].get("title"), "rule_id": item["rule_id"]}
         for item in routed if item["outcome"] == "unresolved"
@@ -233,7 +256,7 @@ def main() -> int:
     (args.out_dir / "unresolved.json").write_text(json.dumps(unresolved, indent=2) + "\n", encoding="utf-8")
     selected = compositions(routed, policy)
     (args.out_dir / "compositions.txt").write_text("\n".join(selected) + ("\n" if selected else ""), encoding="utf-8")
-    print(json.dumps({"qualified": len(routed), "combined": len(combined), "dpip": len(dpip), "unresolved": len(unresolved), "compositions": selected}))
+    print(json.dumps({"qualified": len(routed), "combined": len(combined), "dpip": len(dpip), "unresolved": len(unresolved), "compositions": selected, "assessment_lineage": lineage}))
     return 0
 
 
