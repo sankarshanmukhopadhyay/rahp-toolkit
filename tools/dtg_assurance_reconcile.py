@@ -14,6 +14,7 @@ from typing import Any
 import yaml
 
 from dtg_portfolio_assurance import compute, render_markdown
+from assessor_contract import validate_result as validate_assessor_result
 
 REPO = "sankarshanmukhopadhyay/rahp-toolkit"
 DEFAULT_RUN_DIR = pathlib.Path("instances/dtg/generated/gatherer-runs")
@@ -52,12 +53,43 @@ def event_ids(issue: dict[str, Any], run_id: str, comments: list[dict[str, Any]]
     return list(dict.fromkeys(explicit + coalesced))
 
 
-def dpip_conclusion(comments: list[dict[str, Any]]) -> str | None:
+def dpip_return_record(comments: list[dict[str, Any]]) -> tuple[str | None, bool | None]:
+    """Return DPIP conclusion plus portable-contract validity when supplied.
+
+    Historical DPIP returns may predate rahp-assessor-result/v1; those remain
+    readable as legacy records. New returns carrying assessor_result are validated
+    by the RAHP-owned schema before being treated as portable evidence.
+    """
     for comment in reversed(comments):
-        m = DPIP_DISPOSITION_RE.search(comment.get("body") or "")
+        body = comment.get("body") or ""
+        for match in re.finditer(r"```ya?ml\s*\n(.*?)```", body, re.DOTALL | re.IGNORECASE):
+            try:
+                block = yaml.safe_load(match.group(1))
+            except yaml.YAMLError:
+                continue
+            if not isinstance(block, dict):
+                continue
+            disposition = block.get("dpip_disposition")
+            if not isinstance(disposition, dict):
+                continue
+            conclusion = str(disposition.get("conclusion") or "").strip() or None
+            assessor = disposition.get("assessor_result")
+            if assessor is None:
+                return conclusion, None
+            if not isinstance(assessor, dict):
+                return conclusion, False
+            valid = not validate_assessor_result(assessor)
+            if conclusion and assessor.get("outcome") != conclusion:
+                valid = False
+            return conclusion, valid
+        m = DPIP_DISPOSITION_RE.search(body)
         if m:
-            return m.group(1)
-    return None
+            return m.group(1), None
+    return None, None
+
+
+def dpip_conclusion(comments: list[dict[str, Any]]) -> str | None:
+    return dpip_return_record(comments)[0]
 
 
 def normalize(run: dict[str, Any], issues: list[dict[str, Any]], comments_by_issue: dict[int, list[dict[str, Any]]]) -> dict[str, Any]:
@@ -81,7 +113,7 @@ def normalize(run: dict[str, Any], issues: list[dict[str, Any]], comments_by_iss
         has_dpip = bool(states & DPIP_STATES)
         explicit_no_dpip = DPIP_NOT_REQUIRED in states
         dpip_complete = "assurance:dpip-complete" in states
-        conclusion = dpip_conclusion(comments)
+        conclusion, assessor_contract_valid = dpip_return_record(comments)
         semantic_terminal = issue.get("state") == "closed" and (explicit_no_dpip or dpip_complete)
         assessments.append({
             "id": f"rahp#{number}", "required": True, "complete": semantic_terminal,
@@ -92,7 +124,8 @@ def normalize(run: dict[str, Any], issues: list[dict[str, Any]], comments_by_iss
             dpip.append({
                 "id": f"rahp#{number}:dpip", "required": True, "complete": dpip_complete,
                 "return_received": conclusion is not None, "disposition": conclusion,
-                "provenance_valid": bool(ids),
+                "provenance_valid": bool(ids) and assessor_contract_valid is not False,
+                "assessor_contract_valid": assessor_contract_valid,
             })
     return {"run": run, "events": list(events.values()), "assessments": assessments, "dpip": dpip}
 
@@ -178,6 +211,22 @@ def main() -> int:
         dpip_issue = {"number":8,"state":"closed","labels":[{"name":"assurance:dpip-complete"}],"body":f"<!-- rahp-dtg-gatherer-run:r1 -->\n<!-- rahp-dtg-gatherer-event:{'a'*20} -->"}
         comments={8:[{"body":"```yaml\ndpip_disposition:\n  conclusion: INDETERMINATE\n```"}]}
         assert compute(normalize(run,[dpip_issue],comments))["portfolio_assurance"]["disposition"] == "INDETERMINATE"
+        portable = {
+            "schema": "rahp-assessor-result/v1",
+            "assessor": "example-specialist",
+            "assessment_id": "example:8",
+            "outcome": "PASS",
+            "reason_code": "evidence-supported",
+            "evidence_used": ["E-1"],
+            "residual_risk": "bounded",
+            "action_required": "none",
+        }
+        portable_comments={8:[{"body":"```yaml\n"+yaml.safe_dump({"dpip_disposition":{"conclusion":"PASS","assessor_result":portable}},sort_keys=False)+"```"}]}
+        normalized = normalize(run,[dpip_issue],portable_comments)
+        assert normalized["dpip"][0]["assessor_contract_valid"] is True
+        bad = dict(portable); bad["outcome"] = "FAIL"
+        bad_comments={8:[{"body":"```yaml\n"+yaml.safe_dump({"dpip_disposition":{"conclusion":"PASS","assessor_result":bad}},sort_keys=False)+"```"}]}
+        assert normalize(run,[dpip_issue],bad_comments)["dpip"][0]["assessor_contract_valid"] is False
         print("PASS dtg_assurance_reconcile self-test")
         return 0
     runs = load_runs(args.run_dir)

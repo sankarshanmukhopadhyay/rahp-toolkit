@@ -1,14 +1,14 @@
 version: 1
 id: rahp-engine-contract-v1
 contract_family: 1
-contract_revision: '1.2'
+contract_revision: '1.3'
 status: stable
 title: RAHP language-neutral engine contract
 purpose: >-
   Define the portable execution boundary shared by any conforming RAHP implementation.
-  Revision 1.2 extends the v1 contract family additively with evidence classification,
-  residual assurance evaluation, governed remediation manifests, and evidence-based
-  retesting while preserving the v1 compatibility boundary.
+  Revision 1.3 extends the v1 contract family additively with normalized findings,
+  finite specialist-assessor results, explicit assessment lifecycle transitions and
+  engine-owned clean-room isolation while preserving the v1 compatibility boundary.
 execution_model:
   stages:
     - source
@@ -34,6 +34,11 @@ execution_model:
     - A retest MUST identify both the prior and retested revision and produce closure evidence.
     - A disposition records the reviewed revision and the decision made.
     - A baseline advances only after a disposition is durable.
+    - Workflow success is operational evidence only and MUST NOT be interpreted as an assurance outcome.
+    - Every evaluated specialist-assessor request MUST terminate as PASS, FAIL, INDETERMINATE, or NOT_APPLICABLE.
+    - Unknown qualifying semantics MUST remain visible as UNMAPPED rather than disappear.
+    - A clean-room assessment MUST NOT coalesce with historical or steady-state assessment state.
+    - Clean-room evidence and assessor lineage MUST be fresh and historically isolated.
 operations:
   - id: validate-profile
     inputs: [rahp-config]
@@ -71,10 +76,22 @@ operations:
   - id: evaluate-retest
     inputs: [prior-assurance-evaluation, current-assurance-evaluation]
     outputs: [retest-record]
+  - id: validate-assessor-result
+    inputs: [specialist-assessor-result]
+    outputs: [validation-result]
+  - id: transition-assessment-lifecycle
+    inputs: [assessment-lifecycle, transition-event]
+    outputs: [assessment-lifecycle]
+  - id: initialize-clean-room
+    inputs: [instance, snapshot, clean-room-run-spec]
+    outputs: [clean-room-lineage, assessment-lifecycle]
   - id: promote-disposition
     inputs: [rahp-result, retention-plan]
     outputs: [durable-assurance-record]
 result_schema: method/schema/rahp-result.schema.json
+normalized_finding_schema: method/schema/normalized-finding.schema.json
+assessor_result_schema: method/schema/assessor-result.schema.json
+assessment_lifecycle_schema: method/schema/assessment-lifecycle.schema.json
 assurance_evaluation_schema: method/schema/assurance-evaluation.schema.json
 remediation_schema: method/schema/remediation-manifest.schema.json
 retest_schema: method/schema/retest.schema.json
