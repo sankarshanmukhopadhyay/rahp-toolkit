@@ -12,6 +12,8 @@ from pathlib import Path
 
 import yaml
 
+import release_codenames
+
 ROOT = Path(__file__).resolve().parents[1]
 DECLARATION = ROOT / "method" / "release.yaml"
 
@@ -80,6 +82,8 @@ def verify(doc: dict) -> list[str]:
     for key in ("title", "qualification_manifest", "qualification_validator", "notes_path", "publication_workflow"):
         if not meta[key]:
             errors.append(f"release metadata requires {key}")
+
+    errors.extend(release_codenames.validate_repository(doc))
 
     package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
     if package.get("version") != version:

@@ -1,0 +1,42 @@
+name: Release Codename Policy
+
+on:
+  pull_request:
+    paths:
+      - 'config/release-codename-*.json'
+      - 'config/release-codenames.txt'
+      - 'tools/release_codenames.py'
+      - 'tools/test_release_codenames.py'
+      - 'tools/release.py'
+      - 'method/release.yaml'
+      - 'docs/release-governance.md'
+      - '.github/workflows/release-codename-policy.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'config/release-codename-*.json'
+      - 'config/release-codenames.txt'
+      - 'tools/release_codenames.py'
+      - 'tools/test_release_codenames.py'
+      - 'tools/release.py'
+      - 'method/release.yaml'
+      - '.github/workflows/release-codename-policy.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install PyYAML
+      - name: Validate pinned pool and persisted current release binding
+        run: python3 tools/release_codenames.py validate
+      - name: Pressure-test codename invariants
+        run: python3 tools/test_release_codenames.py
+      - name: Verify current RAHP release declaration
+        run: python3 tools/release.py verify

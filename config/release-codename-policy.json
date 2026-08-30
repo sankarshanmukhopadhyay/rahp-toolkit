@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "minimumPoolSize": 20,
+  "pool": "config/release-codenames.txt",
+  "source": {
+    "name": "List of butterflies of West Bengal",
+    "url": "https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal",
+    "retrieved": "2026-08-30",
+    "selectionBasis": "Reviewed common names represented on the source page"
+  },
+  "identity": {
+    "authoritative": "semantic version/tag",
+    "codenameRole": "human-readable release metadata"
+  },
+  "selection": {
+    "preferUnused": true,
+    "allowReuseAfterExhaustion": false,
+    "persistBeforeAcceptance": true,
+    "liveSourceFetchAtRelease": false
+  },
+  "grandfatheredHistoryAliases": [
+    {
+      "codename": "Common Map",
+      "scientific": "Cyrestis thyodamas",
+      "sourceCommonName": "map butterfly",
+      "reason": "Preserve immutable published v1.8.0 release identity; do not rewrite historical release metadata."
+    }
+  ]
+}
