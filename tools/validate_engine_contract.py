@@ -48,7 +48,7 @@ def main():
 
     versioning=yaml.safe_load((ROOT/'method/versioning.yaml').read_text())
     stable_release=str(versioning.get('stable_release',''))
-    if not re.fullmatch(r'v1\.\d+\.\d+', stable_release): errors+=fail('stable release metadata must identify a v1.x semantic version')
+    if not re.fullmatch(r'v\d+\.\d+\.\d+', stable_release): errors+=fail('stable toolkit release metadata must identify a semantic vMAJOR.MINOR.PATCH version')
     contracts=versioning.get('contracts',{})
     if contracts.get('engine')!=contract_id: errors+=fail('versioning engine contract id mismatch')
     if contracts.get('engine_family')!=contract_family: errors+=fail('versioning engine family mismatch')
