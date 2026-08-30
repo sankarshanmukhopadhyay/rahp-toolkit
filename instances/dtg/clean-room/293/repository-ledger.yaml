@@ -1,0 +1,242 @@
+schema: rahp-repository-assessment-ledger/v1
+run_id: dtg-canonical-clean-room-293-faed4f07
+source_issue: 293
+rules:
+  prior_findings_as_evidence: prohibited
+  workflow_success_implies_assurance: false
+  missing_runtime_evidence: INDETERMINATE
+repositories:
+  - repository: trustoverip/dtgwg-trust-tasks-tf
+    revision: 134733ff934775db522522dc26cb79836da29256
+    role: task-force-workspace
+    authority: registry-bindings-libraries
+    judgment: PASS_BOUNDED
+    evidence:
+      - README identifies this repository as the per-task spec/schema registry, transport bindings and generated libraries.
+      - Current repository carries Trust Task framework-facing bindings and implementations but is not the canonical framework authority.
+    specialist_assurance: not-required-locally
+    composition: required
+    runtime: required-for-transport-equivalence-claims
+    upstream: none-local
+    residual: Transport equivalence across DIDComm/HTTPS/TSP is not established by source presence alone.
+
+  - repository: trustoverip/dtgwg-trust-tasks-spec
+    revision: 6425a74136c1d2dfa7115889abe0b3521700e887
+    role: normative-specification
+    authority: canonical
+    judgment: PASS_BOUNDED
+    evidence:
+      - Normative document defines unique non-reused task ids, explicit request/success/failure/continuation semantics, acceptance expiry, duplicate-execution handling and document lifecycle.
+      - External citations are bound to the innermost attesting exchange and to a task digest; taskDigest and stepDigest semantics are explicitly separated.
+      - Transport bindings are required to map framework lifecycle states rather than infer semantic state from transport facts.
+      - threadId, parentThreadId and ceremony identifiers may be used for routing, correlation, aggregation or audit.
+    specialist_assurance: required-at-composition-for-correlation-surfaces
+    composition: required
+    runtime: required-for-privacy-and-transport-equivalence-claims
+    upstream: none-local
+    residual: Strong framework semantics do not prove runtime privacy or multi-transport behavioural equivalence.
+
+  - repository: trustoverip/dtgwg-htx-tf
+    revision: 0718ff3ba2b0333571f1637e229c313d3545e162
+    role: task-force-workspace
+    authority: non-normative-current-artifact-workspace
+    judgment: INDETERMINATE
+    evidence:
+      - Pinned repository contains experience/onboarding artifacts but no current root normative specification was identified in this clean-room source pass.
+    specialist_assurance: not-required
+    composition: optional
+    runtime: not-required-for-core-technical-conclusion
+    upstream: human-trust-experience-workstream
+    residual: No portfolio-level claim of HTX conformance is justified from the current repository state.
+
+  - repository: trustoverip/dtgwg-ux-tf
+    role: legacy-or-transition
+    authority: transitional
+    judgment: NOT_APPLICABLE
+    evidence:
+      - GitHub reports an empty repository with no commits at run start.
+    specialist_assurance: not-required
+    composition: optional
+    runtime: not-required
+    upstream: lifecycle-maintenance
+    residual: Must not be treated as an assessment/gatherer failure.
+
+  - repository: trustoverip/dtgwg-general
+    revision: fa15044225ff447ad6564983a5ce0732b80cbdc1
+    role: coordination
+    authority: working-group-coordination
+    judgment: PASS_BOUNDED
+    evidence:
+      - README describes the DTGWG scope, task-force topology and LFDT Lab implementations.
+    specialist_assurance: not-required
+    composition: contextual
+    runtime: not-required
+    upstream: none
+    residual: Coordination text is not a substitute for normative component specifications.
+
+  - repository: trustoverip/dtgwg-cred-spec
+    revision: 2b403b607aaec9d84f78189a55337c677f3cd2ed
+    role: normative-specification
+    authority: canonical
+    judgment: AMBER
+    evidence:
+      - Specification separates cryptographic proof verification, validity windows, issuer authorization, digest integrity and Trust Task context binding.
+      - PHC qualification is explicitly a governance determination, not a schema property.
+      - Current text states that withdrawal/revocation/re-issuance of the member-issued VMC acknowledgement and its member-controlled status discovery are deferred; until that mechanism exists a verifier cannot learn that a matching acknowledgement was subsequently withdrawn.
+    specialist_assurance: required-for-status-privacy-at-composition
+    composition: required
+    runtime: required-for-status-discovery-behaviour
+    upstream: DTG-spec-upstream
+    residual: Current consent/currentness for member-issued VMC acknowledgement cannot be assumed solely from a valid matching credential pair.
+
+  - repository: trustoverip/dtgwg-zkp-tf
+    revision: 3b6b3f2e76005d6f579d076ee2833ef56d599b65
+    role: implementation-guidance
+    authority: upstream-task-force
+    judgment: AMBER
+    evidence:
+      - README states that cryptography carries privacy while accreditation/governance carries assurance.
+      - Requirements distinguish liveness, personhood, holder binding, human continuity and scoped uniqueness.
+      - Scoped nullifiers can enforce one action per enrolled secret/scope/epoch but do not imply one natural person globally.
+      - Unlinkability claims are context-dependent and must name adversary and horizon.
+    specialist_assurance: required
+    composition: required
+    runtime: required-for-deployed-proof-privacy
+    upstream: DTG-spec-upstream
+    residual: Working-draft semantics are appropriately bounded, but a final deployable interoperable proof profile is not established by this source review.
+
+  - repository: trustoverip/dtgwg-cred-tf
+    revision: d8e317ee6ec13c327f2bc96022be6190500432ae
+    role: task-force-workspace
+    authority: workspace
+    judgment: PASS_BOUNDED
+    evidence:
+      - README explicitly directs normative specification work to trustoverip/dtgwg-cred-spec.
+    specialist_assurance: not-required-locally
+    composition: contextual
+    runtime: not-required
+    upstream: none-local
+    residual: Historical/superseded credential text must not be used as current normative authority.
+
+  - repository: trustoverip/dtgwg-rahp-tf
+    revision: ce954decb4394c6de98282dee6c7c8c18392de63
+    role: task-force-workspace
+    authority: upstream-method-workspace
+    judgment: PASS_BOUNDED
+    evidence:
+      - README describes the upstream DTG RAHP method/worked instance.
+    specialist_assurance: not-required
+    composition: contextual
+    runtime: not-required
+    upstream: none
+    residual: This repository is not the execution engine used for #293.
+
+  - repository: trustoverip/dtgwg-rcards-tf
+    role: legacy-or-transition
+    authority: transitional
+    judgment: NOT_APPLICABLE
+    evidence:
+      - GitHub reports an empty repository with no commits at run start.
+    specialist_assurance: not-required
+    composition: optional
+    runtime: not-required
+    upstream: lifecycle-maintenance
+    residual: Must not be treated as an assessment/gatherer failure.
+
+  - repository: trustoverip/dtgwg-vds-tf
+    revision: 99eacacedd1729d20528a2ec65ff5288d103ec5e
+    role: normative-specification
+    authority: planned-task-force
+    judgment: INDETERMINATE
+    evidence:
+      - Current README states the repository will be the home of the DTG VDS Specification V1.0.
+    specialist_assurance: not-required-at-current-scope
+    composition: optional-until-normative-deliverable-exists
+    runtime: not-required
+    upstream: DTG-spec-upstream
+    residual: A composite implementer cannot claim conformance to a VDS V1.0 deliverable that is not yet present in the pinned repository.
+
+  - repository: trustoverip/dtgwg-agent-names-tf
+    revision: 962591709e260616aba066bf08865962f6851bf3
+    role: task-force-workspace
+    authority: planned-task-force
+    judgment: INDETERMINATE
+    evidence:
+      - Current README identifies the Agent Names Task Force but no normative specification surface was found in this clean-room source pass.
+    specialist_assurance: not-required-at-current-scope
+    composition: optional
+    runtime: not-required
+    upstream: DTG-spec-upstream
+    residual: Agent-name interoperability cannot be claimed from this repository state.
+
+  - repository: OpenVTC/dtg-credentials
+    revision: fcae96171d95b4bae55a2e1ead22c52413da2a57
+    role: implementation-and-examples
+    authority: non-normative-reference
+    judgment: FAIL
+    evidence:
+      - README explicitly warns of known VWC digest encoding divergence from DTG Core Credentials Working Draft 01.
+      - README states VWCs produced by this library will not interoperate with spec-conformant implementations in either direction.
+    specialist_assurance: not-required
+    composition: required-if-library-is-used
+    runtime: not-required-to-establish-current-documented-divergence
+    upstream: OpenVTC/reference-implementation
+    residual: Fix or replace this VWC path before claiming current-spec VWC interoperability.
+
+  - repository: OpenVTC/openvtc
+    revision: 28bbf17155eda82bde00274f75109780deef6f96
+    role: implementation
+    authority: non-normative-reference
+    judgment: AMBER
+    evidence:
+      - README identifies an implementation of first-person trust relationships using PHCs and VRCs.
+      - It depends on VTI and current DTG credential/trust surfaces.
+    specialist_assurance: required-at-composition
+    composition: required
+    runtime: required-for-current-end-to-end-privacy-and-transport-claims
+    upstream: OpenVTC/reference-implementation
+    residual: No fresh #293 runtime execution demonstrates the complete composed behaviour.
+
+  - repository: OpenVTC/verifiable-trust-infrastructure
+    revision: 96304b3b6ae76995e094e575560d74a43ee95e51
+    role: reference-implementation
+    authority: non-normative-reference
+    judgment: AMBER
+    evidence:
+      - Personhood implementation explicitly distinguishes real-human evidence from one-membership-per-person and states cross-community personhood is a wider property.
+      - singleMembership requires accepted IDVPs and uses a per-community pseudonym/deduplication control; the guarantee is explicitly attributed to the IDVP.
+      - Relationship graph distinguishes half-edges from complete reciprocal edges and re-evaluates in-force lifecycle state; suspend/restore/supersede/withdraw semantics are documented.
+      - Task consent binds approval to exact task payload, uses single-use grants and re-checks current policy/enrolment/state before execution.
+      - TSP is experimental/off by default and its runtime message paths are stated to require validation against a live mediator before production.
+    specialist_assurance: required
+    composition: required
+    runtime: required
+    upstream: OpenVTC/reference-implementation
+    residual: Source semantics are materially stronger than a naive implementation, but fresh #293 runtime privacy and multi-transport evidence is absent.
+
+  - repository: sankarshanmukhopadhyay/dtgwg-cred-tf
+    revision: 200acbaa47a422b173652ed2c3dc961c4fbc9e7a
+    role: task-force-workspace
+    authority: non-authoritative-fork
+    judgment: INDETERMINATE
+    evidence:
+      - README identifies an early v0.3 draft rather than the current canonical specification.
+    specialist_assurance: not-required-locally
+    composition: experimental-only
+    runtime: not-required
+    upstream: none
+    residual: Must not be used as normative authority for current portfolio implementation.
+
+  - repository: sankarshanmukhopadhyay/dtgwg-zkp-tf
+    revision: e49d0b4cda23fe5f113f4075668730ca4218488b
+    role: implementation-guidance
+    authority: non-authoritative-fork
+    judgment: PASS_BOUNDED
+    evidence:
+      - README explicitly states normative decisions remain with upstream.
+      - Fork develops implementation, conformance, privacy/security and operational evidence while preserving bounded claims.
+    specialist_assurance: required-for-privacy-claims
+    composition: experimental-evidence-provider
+    runtime: required-for-deployed-claims
+    upstream: trustoverip/dtgwg-zkp-tf
+    residual: Useful evidence/control-provider material; not itself a normative DTG specification.
