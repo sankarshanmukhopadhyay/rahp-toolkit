@@ -25,6 +25,11 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 tools/dtg_portfolio.py check --config instances/dtg/instance.yaml
 
+      - name: Synchronize checked-in DTG profile
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/sync_dtg_profile.py --write
+
       - name: Stamp DTG gatherer lineage
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
@@ -130,6 +135,7 @@ jobs:
           git add \
             instances/dtg/state/repositories.json \
             instances/dtg/generated/repositories.yaml \
+            profiles/dtg/rahp.yaml \
             instances/dtg/state/issues.json \
             instances/dtg/state/issue-events.json \
             instances/cawg/state/repositories.json \
