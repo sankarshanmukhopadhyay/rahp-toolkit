@@ -77,3 +77,32 @@ def test_visible_judgment_records_alternatives_and_residual_uncertainty():
     assert len(judgment["alternatives_considered"]) >= 2
     assert "issue 158" in judgment["chosen"].lower()
     assert "bounded uncertainty" in judgment["residual_uncertainty"].lower()
+
+
+def test_control_routing_is_generic_and_non_normative():
+    routing = load_review()["control_routing"]
+    assert routing["assurance_owner"] == "rahp"
+    capability = routing["required_capabilities"][0]
+    assert capability["id"] == "privacy-preserving-contextual-uniqueness"
+    assert capability["provider_binding"] == "non-normative"
+    assert "zero-knowledge-proof-mechanism" in capability["candidate_provider_classes"]
+    assert "issuer-independence" in capability["mechanism_success_does_not_establish"]
+    assert "evidentiary-independence" in capability["mechanism_success_does_not_establish"]
+
+
+def test_uniqueness_mechanism_pass_does_not_become_independence_pass():
+    case = cases_by_name()["uniqueness-mechanism-success-with-residual-independence"]
+    assert case["mechanism_result"] == "pass"
+    assert case["mechanism_establishes"] == ["bounded-context-non-reuse"]
+    assert case["independence_evidence"] == "unavailable"
+    assert case["expected_assurance_effect"] == "bounded-sub-proposition-satisfied"
+    assert case["expected_disposition"] == "retain-independence-uncertainty"
+    assert case["overall_false_independence_result"] == "indeterminate"
+    for claim in (
+        "issuer-independence",
+        "controller-independence",
+        "governance-independence",
+        "non-collusion",
+        "evidentiary-independence",
+    ):
+        assert claim in case["mechanism_does_not_establish"]

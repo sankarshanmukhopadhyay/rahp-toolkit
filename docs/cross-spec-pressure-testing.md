@@ -102,6 +102,25 @@ These records are pressure tests, not universal suspicion rules. Each preserves 
 
 Unknown independence or completeness is not silently upgraded because a workflow succeeded or an artifact validated. The fixtures preserve bounded uncertainty / AMBER. Privacy-sensitive mechanisms for uniqueness, correlation, contradiction handling or completeness can cross the DPIP boundary when specialist privacy analysis is warranted; RAHP does not replace that examination with universal disclosure or universal correlation.
 
+### Assurance ownership versus control-provider capability
+
+False-independence assurance uses a generic routing boundary rather than assigning the threat to a particular cryptographic or ecosystem component:
+
+```text
+assurance proposition
+  -> required control capability
+  -> candidate provider class
+  -> composed use
+  -> residual assurance obligation
+  -> RAHP verification
+```
+
+RAHP owns the assurance question and verifies the composed outcome. A companion component may provide a mechanism such as privacy-preserving contextual uniqueness. The composition owns applying that mechanism within its declared scope. Provider classes are non-normative: a ZKP mechanism, personhood/uniqueness credential, credential/authority system or another control can satisfy the bounded capability if its evidence supports the claim.
+
+Mechanism success is deliberately narrower than assurance success. For example, a proof that establishes bounded-context non-reuse may prevent duplicate exercise without a universal correlator, but it does **not** by itself establish issuer independence, controller or governance independence, non-collusion, or evidentiary independence. Those remain separate propositions and must stay INDETERMINATE or otherwise bounded when evidence is unavailable.
+
+This prevents both architectural errors: RAHP does not implement the cryptographic anti-Sybil mechanism itself, and it does not outsource the broader false-independence judgment to a ZKP result.
+
 The corpus is guarded both by row-specific semantic tests and by `tests/test_false_independence_corpus_qualification.py`, which fails if a row disappears, loses stable identity, drops its adversarial/counter-case boundary, or silently turns unknown evidence into PASS/assured sufficiency.
 
 ## Profile isolation
