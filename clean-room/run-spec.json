@@ -2,7 +2,9 @@
   "schema": "rahp-clean-room-run/v1",
   "run": {
     "issue": 257,
-    "lineage_prefix": "clean-room-v1.9"
+    "lineage_prefix": "clean-room-v1.9",
+    "instance": "dtg",
+    "snapshot": "2026-08-30"
   },
   "target": {
     "repository": "OpenVTC/verifiable-trust-infrastructure",
