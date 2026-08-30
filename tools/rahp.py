@@ -11,6 +11,7 @@ populate the canonical review records.
 """
 from __future__ import annotations
 import argparse
+import json
 import datetime as dt
 import pathlib
 import re
@@ -180,6 +181,32 @@ def cmd_review(a: argparse.Namespace) -> None:
 
 
 
+def cmd_assess(a: argparse.Namespace) -> None:
+    """Initialize an engine-owned assessment mode contract.
+
+    This command does not perform substantive semantic judgment. It resolves the
+    portable lifecycle/isolation boundary that execution workflows must obey.
+    """
+    if a.mode == "clean-room":
+        if not a.run_spec:
+            raise SystemExit("--run-spec is required for clean-room mode")
+        cmd = [
+            sys.executable, str(ROOT / "tools" / "clean_room.py"),
+            "--spec", str(a.run_spec),
+            "--nonce", a.nonce,
+        ]
+        if a.instance:
+            cmd += ["--instance", a.instance]
+        if a.snapshot:
+            cmd += ["--snapshot", a.snapshot]
+        subprocess.run(cmd, cwd=ROOT, check=True)
+        return
+
+    from assessment_controller import new_lifecycle
+    assessment_id = a.assessment_id or f"{a.instance or 'portable'}:{a.snapshot or 'current'}"
+    print(json.dumps(new_lifecycle(assessment_id, "steady-state"), indent=2))
+
+
 def cmd_resilience(a: argparse.Namespace) -> None:
     profile = a.profile or (ROOT / "profiles" / "resilience" / "default.yaml")
     cmd = [sys.executable, str(ROOT / "tools" / "resilience_assess.py"),
@@ -206,6 +233,14 @@ def main() -> None:
     rv.add_argument("--config", type=pathlib.Path, required=True); rv.add_argument("--target"); rv.add_argument("--all", action="store_true")
     rv.add_argument("--mode", choices=["rahp","security","combined"]); rv.add_argument("--offline", action="store_true"); rv.add_argument("--force", action="store_true")
     rv.add_argument("--reviewed-on", default=dt.date.today().isoformat()); rv.add_argument("--dry-run", action="store_true", help="resolve configuration and show review scaffolding commands without writing files"); rv.set_defaults(func=cmd_review)
+    ass = sub.add_parser("assess", help="initialize portable steady-state or clean-room assessment semantics")
+    ass.add_argument("--mode", choices=["steady-state", "clean-room"], required=True)
+    ass.add_argument("--instance")
+    ass.add_argument("--snapshot")
+    ass.add_argument("--assessment-id")
+    ass.add_argument("--run-spec", type=pathlib.Path)
+    ass.add_argument("--nonce", default="local")
+    ass.set_defaults(func=cmd_assess)
     dr = sub.add_parser("resilience", help="run the portable Distributed Resilience and Amplification Risk Model")
     dr.add_argument("--path", type=pathlib.Path, required=True, help="checked-out repository or extracted target directory")
     dr.add_argument("--profile", type=pathlib.Path, help="DRARM profile; defaults to profiles/resilience/default.yaml")
