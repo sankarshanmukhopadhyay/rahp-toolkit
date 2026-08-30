@@ -19,7 +19,7 @@ EXECUTED = "assessment-evidence-complete"
 MARKER = "<!-- rahp-combined-execution:v1 -->"
 PACKET_MARKER = "<!-- rahp-combined-judgment-packet:v1 -->"
 FINDING_RE = re.compile(r"([0-9a-f]{20})")
-SNAPSHOT_RE = re.compile(r"Portfolio Monitor snapshot:\s*`(\d{4}-\d{2}-\d{2})`")
+SNAPSHOT_RE = re.compile(r"Portfolio(?: Monitor)? snapshot:\s*`(\d{4}-\d{2}-\d{2})`")
 MONITOR_RAW = "https://raw.githubusercontent.com/sankarshanmukhopadhyay/dtg-portfolio-monitor/main/data/findings/{year}/{month}/{day}.json"
 
 
@@ -223,6 +223,13 @@ def self_test() -> int:
     assert is_combined(issue)
     assert finding_ids(issue["body"]) == ["307e953d00cf9fb48ba7", "0bb1b102763cd38950c0"]
     assert snapshot_date(issue["body"]) == "2026-08-27"
+    assert snapshot_date("Portfolio snapshot: `2026-08-30`") == "2026-08-30"
+    try:
+        snapshot_date("Unrelated date: `2026-08-30`")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("snapshot parser must require an explicit portfolio snapshot field")
     rendered = render_record(issue)
     assert "semantic judgment required" in rendered and "false positive" in rendered
     fixture = {
