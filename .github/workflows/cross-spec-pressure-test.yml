@@ -16,6 +16,11 @@ on:
         required: false
         type: boolean
         default: false
+      assessment_lineage:
+        description: Optional fresh lineage discriminator for clean-room execution
+        required: false
+        type: string
+        default: ''
   workflow_dispatch:
     inputs:
       registry_path:
@@ -31,6 +36,11 @@ on:
         required: false
         type: boolean
         default: false
+      assessment_lineage:
+        description: Optional fresh lineage discriminator for clean-room execution
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -80,6 +90,7 @@ jobs:
           --output build/cross-spec-review.md
           --events build/cross-spec-review-events.json
           --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          --assessment-lineage "${{ inputs.assessment_lineage || '' }}"
 
       - name: Publish durable RAHP review issue
         env:

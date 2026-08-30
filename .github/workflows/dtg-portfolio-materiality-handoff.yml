@@ -80,7 +80,8 @@ jobs:
             --findings build/dtg-routing/findings.json \
             --policy instances/dtg/assurance-routing.yaml \
             --snapshot-date '${{ steps.snapshot.outputs.date }}' \
-            --out-dir build/dtg-routing
+            --out-dir build/dtg-routing \
+            --assessment-lineage '${{ inputs.assessment_lineage || '' }}'
 
       - name: Build portfolio controller event
         shell: bash
@@ -101,7 +102,7 @@ jobs:
               f"<!-- rahp-assessment-key:{'dtg:portfolio:material-change-set:lineage:' + lineage if lineage else 'dtg:portfolio:material-change-set'} -->",
               *([f'<!-- rahp-clean-room-lineage:{lineage} -->'] if lineage else []),
               f'<!-- rahp-portfolio-snapshot:{day} -->',
-              '<!-- dtg-routing-policy:v1 -->',
+              '<!-- dtg-routing-policy:v2 -->',
               '',
               'RAHP consumed the current Portfolio Monitor snapshot and applied the versioned assurance-routing policy.',
               '',
@@ -195,10 +196,15 @@ jobs:
             echo 'No registered cross-spec composition was implicated.'
             exit 0
           fi
+          lineage='${{ inputs.assessment_lineage || '' }}'
           while IFS= read -r composition; do
             [ -n "$composition" ] || continue
             echo "Dispatching RAHP DTG pressure test: $composition"
-            gh workflow run dtg-cross-spec-pressure-test.yml --ref main -f composition_id="$composition"
+            args=(-f composition_id="$composition")
+            if [ -n "$lineage" ]; then
+              args+=(-f assessment_lineage="$lineage")
+            fi
+            gh workflow run dtg-cross-spec-pressure-test.yml --ref main "${args[@]}"
           done < build/dtg-routing/compositions.txt
 
       - name: Publish routing summary

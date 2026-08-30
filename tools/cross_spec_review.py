@@ -37,7 +37,7 @@ def upstream_targets(item: dict[str, Any]) -> list[str]:
     return [c["repository"] for c in item.get("components", []) if c.get("upstream_issue_target")]
 
 
-def render_issue(item: dict[str, Any], assessment: dict[str, Any], run_url: str = "") -> str:
+def render_issue(item: dict[str, Any], assessment: dict[str, Any], run_url: str = "", assessment_lineage: str = "") -> str:
     review = assessment.get("review") or assessment
     summary = review.get("summary") or {}
     target = review.get("target") or {}
@@ -55,6 +55,11 @@ def render_issue(item: dict[str, Any], assessment: dict[str, Any], run_url: str 
         f"- Reviewed on: `{review.get('reviewed_on', 'unknown')}`",
         f"- Source repositories: {md_list(repos)}",
     ]
+    if assessment_lineage:
+        lines += [
+            f"- Clean-room lineage: `{assessment_lineage}`",
+            f"<!-- rahp-clean-room-lineage:{assessment_lineage} -->",
+        ]
     if run_url:
         lines.append(f"- GitHub Actions run: {run_url}")
     lines += [
@@ -132,11 +137,15 @@ def render_issue(item: dict[str, Any], assessment: dict[str, Any], run_url: str 
     return "\n".join(lines).rstrip() + "\n"
 
 
-def event_for(item: dict[str, Any], body: str) -> dict[str, Any]:
+def event_for(item: dict[str, Any], body: str, assessment_lineage: str = "") -> dict[str, Any]:
     profile_id = item.get("_profile_id", "external")
     labels = item.get("_issue_labels") or ["assessment-required", "cross-specification"]
     return {
-        "assessment_key": f"{profile_id}:cross-spec:{item['id']}",
+        "assessment_key": (
+            f"{profile_id}:cross-spec:{item['id']}:lineage:{assessment_lineage}"
+            if assessment_lineage
+            else f"{profile_id}:cross-spec:{item['id']}"
+        ),
         "source": "manual-cross-spec-pressure-test",
         "title": f"[Cross-spec] {item['title']} pressure-test review",
         "body": body,
@@ -154,6 +163,7 @@ def main() -> int:
     ap.add_argument("--output", type=Path, default=ROOT / "build/cross-spec-review.md")
     ap.add_argument("--events", type=Path, default=ROOT / "build/cross-spec-review-events.json")
     ap.add_argument("--run-url", default="")
+    ap.add_argument("--assessment-lineage", default="", help="Optional clean-room lineage discriminator")
     args = ap.parse_args()
     registry_path = args.registry if args.registry.is_absolute() else ROOT / args.registry
     registry = load_yaml(registry_path)
@@ -164,10 +174,10 @@ def main() -> int:
     item["_profile_id"] = profile.get("id", "external")
     item["_issue_labels"] = profile.get("issue_labels") or ["assessment-required", "cross-specification"]
     assessment = load_yaml(ROOT / item["assessment"])
-    body = render_issue(item, assessment, args.run_url)
+    body = render_issue(item, assessment, args.run_url, args.assessment_lineage.strip())
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(body, encoding="utf-8")
-    args.events.write_text(json.dumps([event_for(item, body)], indent=2) + "\n", encoding="utf-8")
+    args.events.write_text(json.dumps([event_for(item, body, args.assessment_lineage.strip())], indent=2) + "\n", encoding="utf-8")
     print(args.output)
     return 0
 
