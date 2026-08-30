@@ -20,13 +20,41 @@ repositories:
   branch: main
   context:
     title: trustoverip/dtgwg-trust-tasks-tf
-    type: protocol-and-task-specification
-    description: DTG portfolio target; workstream=trust-tasks; lifecycle=active; reporting_weight=critical.
+    type: task-force-workspace
+    description: DTG instance target discovered from portfolio-monitor; workstream=trust-tasks;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include: &id001
+    include:
     - README.md
     - docs/**
-    - specs/**
+    - bindings/**
+    - trust-tasks-rs/**
+    - trust-tasks-ts/**
+    - trust-tasks-proof/**
+    - trust-tasks-https/**
+    - trust-tasks-didcomm/**
+    - trust-tasks-didcomm-v1/**
+    - trust-tasks-capability-client/**
+    - scripts/**
+    - .github/workflows/**
+  reviews:
+  - rahp
+  - security
+  - combined
+- id: trustoverip-dtgwg-trust-tasks-spec
+  repository: trustoverip/dtgwg-trust-tasks-spec
+  branch: main
+  context:
+    title: trustoverip/dtgwg-trust-tasks-spec
+    type: normative-specification
+    description: DTG instance target discovered from portfolio-monitor; workstream=trust-tasks;
+      lifecycle=active; reporting_weight=critical.
+  scope:
+    include:
+    - README.md
+    - spec/**
+    - specs.json
+    - docs/**
     - schemas/**
     - '**/*spec*.md'
     - .github/workflows/**
@@ -40,9 +68,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-htx-tf
     type: task-force-workspace
-    description: DTG portfolio target; workstream=human-trust-experience; lifecycle=active; reporting_weight=high.
+    description: DTG instance target discovered from portfolio-monitor; workstream=human-trust-experience;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -53,9 +88,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-ux-tf
     type: legacy-or-transition
-    description: DTG portfolio target; workstream=human-trust-experience; lifecycle=transitional; reporting_weight=low.
+    description: DTG instance target discovered from portfolio-monitor; workstream=human-trust-experience;
+      lifecycle=transitional; reporting_weight=low.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -66,9 +108,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-general
     type: coordination
-    description: DTG portfolio target; workstream=coordination; lifecycle=active; reporting_weight=high.
+    description: DTG instance target discovered from portfolio-monitor; workstream=coordination;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -79,9 +128,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-cred-spec
     type: normative-specification
-    description: DTG portfolio target; workstream=credentials; lifecycle=active; reporting_weight=critical.
+    description: DTG instance target discovered from portfolio-monitor; workstream=credentials;
+      lifecycle=active; reporting_weight=critical.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -92,9 +148,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-zkp-tf
     type: implementation-guidance
-    description: DTG portfolio target; workstream=zero-knowledge-proofs; lifecycle=active; reporting_weight=critical.
+    description: DTG instance target discovered from portfolio-monitor; workstream=zero-knowledge-proofs;
+      lifecycle=active; reporting_weight=critical.
   scope:
-    include: *id001
+    include: &id002
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -105,9 +168,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-cred-tf
     type: task-force-workspace
-    description: DTG portfolio target; workstream=credentials; lifecycle=active; reporting_weight=high.
+    description: DTG instance target discovered from portfolio-monitor; workstream=credentials;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include: *id001
+    include: &id001
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -118,9 +188,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-rahp-tf
     type: task-force-workspace
-    description: DTG portfolio target; workstream=rahp; lifecycle=active; reporting_weight=high.
+    description: DTG instance target discovered from portfolio-monitor; workstream=rahp;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include: *id001
+    include: &id003
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -131,9 +208,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-rcards-tf
     type: legacy-or-transition
-    description: DTG portfolio target; workstream=relationship-cards; lifecycle=transitional; reporting_weight=low.
+    description: DTG instance target discovered from portfolio-monitor; workstream=relationship-cards;
+      lifecycle=transitional; reporting_weight=low.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -144,9 +228,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-vds-tf
     type: normative-specification
-    description: DTG portfolio target; workstream=verifiable-data-structures; lifecycle=active; reporting_weight=critical.
+    description: DTG instance target discovered from portfolio-monitor; workstream=verifiable-data-structures;
+      lifecycle=active; reporting_weight=critical.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -157,9 +248,16 @@ repositories:
   context:
     title: trustoverip/dtgwg-agent-names-tf
     type: task-force-workspace
-    description: DTG portfolio target; workstream=agent-names; lifecycle=active; reporting_weight=high.
+    description: DTG instance target discovered from portfolio-monitor; workstream=agent-names;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -170,9 +268,16 @@ repositories:
   context:
     title: OpenVTC/dtg-credentials
     type: implementation-and-examples
-    description: DTG portfolio target; workstream=credentials; lifecycle=active; reporting_weight=high.
+    description: DTG instance target discovered from portfolio-monitor; workstream=credentials;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -183,9 +288,16 @@ repositories:
   context:
     title: OpenVTC/openvtc
     type: implementation
-    description: DTG portfolio target; workstream=community-platform; lifecycle=active; reporting_weight=high.
+    description: DTG instance target discovered from portfolio-monitor; workstream=community-platform;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include: *id001
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
   reviews:
   - rahp
   - security
@@ -196,7 +308,29 @@ repositories:
   context:
     title: OpenVTC/verifiable-trust-infrastructure
     type: reference-implementation
-    description: DTG portfolio target; workstream=verifiable-trust-infrastructure; lifecycle=active; reporting_weight=critical.
+    description: DTG instance target discovered from portfolio-monitor; workstream=verifiable-trust-infrastructure;
+      lifecycle=active; reporting_weight=critical.
+  scope:
+    include:
+    - README.md
+    - docs/**
+    - specs/**
+    - schemas/**
+    - '**/*spec*.md'
+    - .github/workflows/**
+  reviews:
+  - rahp
+  - security
+  - combined
+- id: sankarshanmukhopadhyay-dtgwg-cred-tf
+  repository: sankarshanmukhopadhyay/dtgwg-cred-tf
+  branch: main
+  upstream: trustoverip/dtgwg-cred-tf
+  context:
+    title: sankarshanmukhopadhyay/dtgwg-cred-tf
+    type: task-force-workspace
+    description: DTG instance target discovered from portfolio-fork; workstream=credentials;
+      lifecycle=active; reporting_weight=high.
   scope:
     include: *id001
   reviews:
@@ -206,64 +340,33 @@ repositories:
 - id: sankarshanmukhopadhyay-dtgwg-zkp-tf
   repository: sankarshanmukhopadhyay/dtgwg-zkp-tf
   branch: main
+  upstream: trustoverip/dtgwg-zkp-tf
   context:
     title: sankarshanmukhopadhyay/dtgwg-zkp-tf
     type: implementation-guidance
-    description: Fork of a DTG Portfolio Monitor repository; included in the DTG RAHP deployment perimeter.
+    description: DTG instance target discovered from portfolio-fork; workstream=zero-knowledge-proofs;
+      lifecycle=active; reporting_weight=critical.
   scope:
-    include:
-    - README.md
-    - docs/**
-    - specs/**
-    - schemas/**
-    - '**/*spec*.md'
-    - .github/workflows/**
+    include: *id002
   reviews:
   - rahp
   - security
   - combined
-  upstream: trustoverip/dtgwg-zkp-tf
-- id: sankarshanmukhopadhyay-dtgwg-cred-tf
-  repository: sankarshanmukhopadhyay/dtgwg-cred-tf
-  branch: main
-  context:
-    title: sankarshanmukhopadhyay/dtgwg-cred-tf
-    type: task-force-workspace
-    description: Fork of a DTG Portfolio Monitor repository; included in the DTG RAHP deployment perimeter.
-  scope:
-    include:
-    - README.md
-    - docs/**
-    - specs/**
-    - schemas/**
-    - '**/*spec*.md'
-    - .github/workflows/**
-  reviews:
-  - rahp
-  - security
-  - combined
-  upstream: trustoverip/dtgwg-cred-tf
 - id: sankarshanmukhopadhyay-rahp-toolkit
   repository: sankarshanmukhopadhyay/rahp-toolkit
   branch: main
+  upstream: trustoverip/dtgwg-rahp-tf
   context:
     title: sankarshanmukhopadhyay/rahp-toolkit
     type: task-force-workspace
-    description: Portable RAHP toolkit deployment host; retained in the DTG profile for provenance but excluded
-      from recursive DTG instance assessment.
+    description: DTG instance target discovered from portfolio-fork; workstream=rahp;
+      lifecycle=active; reporting_weight=high.
   scope:
-    include:
-    - README.md
-    - docs/**
-    - specs/**
-    - schemas/**
-    - '**/*spec*.md'
-    - .github/workflows/**
+    include: *id003
   reviews:
   - rahp
   - security
   - combined
-  upstream: trustoverip/dtgwg-rahp-tf
 output:
   directory: build/targets
 governance:
@@ -271,3 +374,5 @@ governance:
 extensions:
   operational_profile: instances/dtg/generated/repositories.yaml
   portfolio_registry: sankarshanmukhopadhyay/dtg-portfolio-monitor
+  portfolio_registry_path: config/repositories.yaml
+  portfolio_authority: dtg-instance-discovery
