@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rahp.dev/schema/normalized-finding.schema.json",
+  "title": "RAHP normalized finding",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "source",
+    "state",
+    "materiality",
+    "assurance_impact",
+    "dimensions",
+    "concerns",
+    "affected_surfaces",
+    "change_kind",
+    "normalization"
+  ],
+  "properties": {
+    "schema": {"const": "rahp-normalized-finding/v1"},
+    "id": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "object",
+      "required": ["repository", "title"],
+      "properties": {
+        "repository": {"type": "string"},
+        "revision": {"type": "string"},
+        "title": {"type": "string"},
+        "fingerprint": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "state": {"type": "string"},
+    "review_status": {"type": ["string", "null"]},
+    "materiality": {"type": "string", "minLength": 1},
+    "assurance_impact": {"type": "string", "minLength": 1},
+    "dimensions": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "concerns": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "affected_surfaces": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "change_kind": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "related_repositories": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "normalization": {
+      "type": "object",
+      "required": ["status", "matched_rule_ids"],
+      "properties": {
+        "status": {"enum": ["mapped", "unmapped"]},
+        "matched_rule_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "raw": {"type": "object"}
+  },
+  "additionalProperties": true
+}
