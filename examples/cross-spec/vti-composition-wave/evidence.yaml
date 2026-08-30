@@ -1,0 +1,148 @@
+evidence:
+  id: VTI-COMP-WAVE-001
+  title: Bounded composition evidence for delegation, lifecycle, human control and discovery
+  tracking_issue: 235
+  evidence_class: composition-fixture
+  boundary: >-
+    These vectors test RAHP composition propositions. They do not define future VTI
+    normative text, prove upstream component conformance, or substitute synthetic
+    fixtures for implementation-level substitution or portability evidence.
+  source_lineage:
+    - issue: 186
+      proposition: delegation-lineage
+    - issue: 66
+      proposition: lifecycle-precedence
+    - issue: 187
+      proposition: stale-state
+    - issue: 189
+      proposition: human-control
+    - issue: 191
+      proposition: discovery-not-authority
+    - path: examples/cross-spec/guardianship-fiduciary/pressure-test.yaml
+    - path: examples/cross-spec/vti-semantic-completion/evidence.yaml
+
+  delegation:
+    - id: delegation-legitimate-chain
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, current: true, redelegation: true}
+        - {from: agent-b, to: service-c, scope: read-record, current: true, redelegation: false}
+      action: read-record
+      expected: AUTHORIZED
+    - id: delegation-scope-widening
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, current: true, redelegation: true}
+        - {from: agent-b, to: service-c, scope: write-record, current: true, redelegation: false}
+      action: write-record
+      expected: DENIED
+    - id: delegation-revoked-upstream
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, current: false, redelegation: true}
+        - {from: agent-b, to: service-c, scope: read-record, current: true, redelegation: false}
+      action: read-record
+      expected: DENIED
+    - id: delegation-unauthorized-redelegation
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, current: true, redelegation: false}
+        - {from: agent-b, to: service-c, scope: read-record, current: true, redelegation: false}
+      action: read-record
+      expected: DENIED
+    - id: delegation-lineage-unknown
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, current: true, redelegation: true}
+      action: read-record
+      missing_hop: true
+      expected: INDETERMINATE
+
+  lifecycle:
+    - id: lifecycle-current-active
+      artifact_state: active
+      authoritative_state: active
+      authoritative_state_known: true
+      expected: ACTIONABLE
+    - id: lifecycle-stale-after-suspension
+      artifact_state: active
+      authoritative_state: suspended
+      authoritative_state_known: true
+      expected: NOT_ACTIONABLE
+    - id: lifecycle-stale-after-revocation
+      artifact_state: active
+      authoritative_state: revoked
+      authoritative_state_known: true
+      expected: NOT_ACTIONABLE
+    - id: lifecycle-superseded
+      artifact_state: active
+      authoritative_state: superseded
+      authoritative_state_known: true
+      expected: NOT_ACTIONABLE
+    - id: lifecycle-restored-current
+      artifact_state: restored
+      authoritative_state: restored
+      authoritative_state_known: true
+      expected: ACTIONABLE
+    - id: lifecycle-precedence-unknown
+      artifact_state: active
+      authoritative_state: unknown
+      authoritative_state_known: false
+      expected: INDETERMINATE
+
+  human_control:
+    - id: human-authorized-exact-scope
+      protocol_complete: true
+      required_authorization: true
+      authorization_evidence: present
+      authorized_scope: disclose-age-over-18
+      action_scope: disclose-age-over-18
+      expected: AUTHORIZED
+    - id: human-overbroad-action
+      protocol_complete: true
+      required_authorization: true
+      authorization_evidence: present
+      authorized_scope: disclose-age-over-18
+      action_scope: disclose-full-birthdate
+      expected: DENIED
+    - id: human-authorization-missing
+      protocol_complete: true
+      required_authorization: true
+      authorization_evidence: missing
+      authorized_scope: null
+      action_scope: disclose-age-over-18
+      expected: INDETERMINATE
+    - id: human-not-required
+      protocol_complete: true
+      required_authorization: false
+      authorization_evidence: missing
+      authorized_scope: null
+      action_scope: routine-nonmaterial-operation
+      expected: NOT_REQUIRED
+
+  discovery:
+    - id: discovery-success-authority-valid
+      resolution: success
+      authority: valid
+      expected: AUTHORIZED
+    - id: discovery-success-authority-invalid
+      resolution: success
+      authority: invalid
+      expected: DENIED
+    - id: discovery-success-authority-unknown
+      resolution: success
+      authority: unknown
+      expected: INDETERMINATE
+    - id: discovery-failure
+      resolution: failed
+      authority: unknown
+      expected: NOT_RESOLVED
+
+  unresolved_implementation_evidence:
+    - issue: 188
+      requirement: >-
+        A genuine A/B substitution fixture using two concrete component implementations
+        that are independently conformant under the applicable component contract.
+      status: EVIDENCE_REQUIRED
+      synthetic_substitution_permitted: false
+    - issue: 190
+      requirement: >-
+        A genuine migration fixture between two concrete implementations preserving
+        active, suspended, revoked, delegated and privacy-sensitive state.
+      status: EVIDENCE_REQUIRED
+      synthetic_substitution_permitted: false

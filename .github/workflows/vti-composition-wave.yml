@@ -1,0 +1,34 @@
+name: VTI composition evidence wave
+
+on:
+  pull_request:
+    paths:
+      - 'examples/cross-spec/vti-composition-wave/**'
+      - 'tools/validate_vti_composition_wave.py'
+      - '.github/workflows/vti-composition-wave.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'examples/cross-spec/vti-composition-wave/**'
+      - 'tools/validate_vti_composition_wave.py'
+      - '.github/workflows/vti-composition-wave.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  composition-evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml
+      - name: Execute bounded VTI composition vectors
+        run: python tools/validate_vti_composition_wave.py
+      - name: Preserve assurance boundary
+        run: |
+          echo 'These fixtures are RAHP composition evidence, not future VTI normative text.'
+          echo '#188 and #190 remain EVIDENCE_REQUIRED until genuine implementation pairs exist.'
