@@ -88,7 +88,7 @@ v1.9.0 qualifies the generic declarative clean-room executor, immutable target a
 
 The release also records bounded target-adapter evidence from Interop Lab #71/#72: the established same-relationship case remains a detector-sensitivity positive control, while a new context-distinct target-native pressure case begins A and B with distinct client identities without changing RAHP's generic clean-room machinery.
 
-**Historical release boundary:** v1.8.0 **Common Map** (*Cyrestis thyodamas*) remains an immutable historical qualification record for the Semantically Governed Assurance Pipeline. New v1.9 evidence does not rewrite historical v1.8 assessment or DPIP records.
+**Historical releases:** v1.8.0 **Common Map** (*Cyrestis thyodamas*) remains the immutable qualification record for the Semantically Governed Assurance Pipeline; v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) records Assurance Operations and Cross-Spec Execution; and v1.6.0 **Common Earl** (*Tanaecia julii*) records Source-Pinned Coverage and Guided Adoption. New v1.9 evidence does not rewrite those historical qualification records.
 
 Useful release surfaces:
 
