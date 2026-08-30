@@ -2,6 +2,8 @@ import importlib.util
 import pathlib
 import sys
 import unittest
+import json
+import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOLS = ROOT / "tools"
@@ -72,6 +74,25 @@ class PortableLifecycleContractTests(unittest.TestCase):
         a = new_lifecycle("same-key")
         b = new_lifecycle("same-key")
         self.assertTrue(may_coalesce(a, b))
+
+    def test_clean_room_cli_emits_engine_owned_isolation(self):
+        run = subprocess.run(
+            [
+                sys.executable, str(TOOLS / "rahp.py"), "assess",
+                "--mode", "clean-room",
+                "--run-spec", str(ROOT / "clean-room" / "run-spec.json"),
+                "--nonce", "contract-test",
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        value = json.loads(run.stdout)
+        self.assertEqual(value["mode"], "clean-room")
+        self.assertEqual(value["lineage"]["run_id"], "contract-test")
+        self.assertFalse(value["lineage"]["isolation"]["historical_state_allowed"])
+        self.assertFalse(value["coalescing_allowed"])
 
     def test_assessor_schema_rejects_workflow_success_as_outcome(self):
         invalid = {
