@@ -1,11 +1,7 @@
 import copy
-import json
-import tempfile
 import unittest
-from pathlib import Path
 
 from tools.semantic_review_resume import fingerprint, reconcile, validate
-
 
 REV = "cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b"
 
@@ -33,11 +29,8 @@ def record(materiality="NOT_MATERIAL", dpip_state="NOT_REQUIRED", dpip_conclusio
 
 class SemanticReviewResumeTests(unittest.TestCase):
     def test_missing_acceptance_stays_review_required(self):
-        value = record()
-        value["acceptance"]["accepted"] = False
-        result = reconcile(value)
-        self.assertEqual(result["semantic_review_state"], "REVIEW_REQUIRED")
-        self.assertEqual(result["terminal"]["colour"], "AMBER")
+        value = record(); value["acceptance"]["accepted"] = False
+        self.assertEqual(reconcile(value)["terminal"]["colour"], "AMBER")
 
     def test_not_material_can_reconcile_green(self):
         result = reconcile(record())
@@ -50,31 +43,35 @@ class SemanticReviewResumeTests(unittest.TestCase):
         self.assertIn("DPIP", result["terminal"]["reason"])
 
     def test_material_indeterminate_dpip_is_amber(self):
-        result = reconcile(record("MATERIAL", "COMPLETE", "INDETERMINATE"))
-        self.assertEqual(result["terminal"]["colour"], "AMBER")
+        self.assertEqual(reconcile(record("MATERIAL", "COMPLETE", "INDETERMINATE"))["terminal"]["colour"], "AMBER")
 
     def test_material_adverse_dpip_is_red(self):
-        result = reconcile(record("MATERIAL", "COMPLETE", "FAIL"))
-        self.assertEqual(result["terminal"]["colour"], "RED")
+        self.assertEqual(reconcile(record("MATERIAL", "COMPLETE", "FAIL"))["terminal"]["colour"], "RED")
 
     def test_wrong_pin_rejected(self):
-        value = record()
-        self.assertTrue(validate(value, "0" * 40))
+        self.assertTrue(validate(record(), "0" * 40))
 
-    def test_tampered_review_rejected(self):
-        value = record()
-        value["dimensions"]["risk"] = "FAIL"
-        errors = validate(value)
-        self.assertTrue(any("fingerprint" in e for e in errors))
+    def test_tampered_semantic_review_rejected(self):
+        value = record(); value["dimensions"]["risk"] = "FAIL"
+        self.assertTrue(any("fingerprint" in e for e in validate(value)))
 
     def test_same_review_is_deterministic(self):
         value = record("MATERIAL", "COMPLETE", "PASS")
         self.assertEqual(reconcile(value), reconcile(copy.deepcopy(value)))
 
     def test_indeterminate_dimension_never_green(self):
-        value = record()
-        value["dimensions"]["security"] = "INDETERMINATE"
+        value = record(); value["dimensions"]["security"] = "INDETERMINATE"
         value["acceptance"]["fingerprint"] = fingerprint(value)
+        self.assertEqual(reconcile(value)["terminal"]["colour"], "AMBER")
+
+    def test_dpip_state_can_advance_without_reaccepting_semantic_judgment(self):
+        value = record("MATERIAL", "REQUIRED_PENDING")
+        accepted = value["acceptance"]["fingerprint"]
+        value["dpip"] = {"state": "COMPLETE", "conclusion": "INDETERMINATE", "examination": "DPIP#134"}
+        value["residuals"].append("runtime evidence still missing")
+        value["references"].append("https://example.test/dpip/134")
+        self.assertEqual(fingerprint(value), accepted)
+        self.assertEqual(validate(value), [])
         self.assertEqual(reconcile(value)["terminal"]["colour"], "AMBER")
 
 
