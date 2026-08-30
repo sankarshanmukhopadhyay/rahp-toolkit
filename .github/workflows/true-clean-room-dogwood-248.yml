@@ -1,0 +1,203 @@
+name: True clean-room Dogwood #248
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/true-clean-room-dogwood-248.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clean-room:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      DOGWOOD_CHECKOUT: ${{ github.workspace }}/dogwood
+      CLEAN_ROOM_ISSUE: '248'
+      CLEAN_ROOM_LINEAGE: dogwood-clean-room-248-${{ github.run_id }}
+    steps:
+      - name: Checkout RAHP under test
+        uses: actions/checkout@v4
+        with:
+          path: rahp
+          fetch-depth: 1
+
+      - name: Checkout current DPIP
+        uses: actions/checkout@v4
+        with:
+          repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+          ref: main
+          path: dpip
+          fetch-depth: 1
+
+      - name: Checkout current Interop Lab
+        uses: actions/checkout@v4
+        with:
+          repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+          ref: main
+          path: interop
+          fetch-depth: 1
+
+      - name: Checkout immutable Dogwood RC-1 target
+        uses: actions/checkout@v4
+        with:
+          repository: OpenVTC/verifiable-trust-infrastructure
+          ref: cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b
+          path: dogwood
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install assurance and runtime dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r rahp/requirements.txt
+          sudo apt-get update
+          sudo apt-get install -y libdbus-1-dev pkg-config
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Verify strict clean-room source boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C dogwood rev-parse HEAD)" = "cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b"
+          test -z "$(git -C dpip status --porcelain)"
+          test -z "$(git -C interop status --porcelain)"
+          test -z "$(git -C dogwood status --porcelain)"
+          printf '%s\n' "$CLEAN_ROOM_LINEAGE" > /tmp/clean-room-lineage
+
+      - name: Exercise current RAHP pinned-review scaffold
+        working-directory: rahp
+        shell: bash
+        run: |
+          cat > /tmp/dogwood-clean-room-248.yaml <<'YAML'
+          version: 1
+          profile:
+            id: dogwood-clean-room-248
+            title: True clean-room Dogwood #248
+          assessment:
+            default_mode: combined
+            rahp_repository: sankarshanmukhopadhyay/rahp-toolkit
+            rahp_version: current-clean-room
+          repositories:
+            - id: dogwood-rc1-clean-room-248
+              repository: OpenVTC/verifiable-trust-infrastructure
+              local_path: ../dogwood
+              version: VTI-Dogwood-RC-1
+              commit: cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b
+              reviews: [combined]
+              context:
+                title: VTI Dogwood RC-1 true clean-room target
+          output:
+            directory: build/clean-room-targets
+          YAML
+          python tools/rahp.py config-validate --config /tmp/dogwood-clean-room-248.yaml
+          python tools/rahp.py review --config /tmp/dogwood-clean-room-248.yaml --target dogwood-rc1-clean-room-248 --mode combined --force
+
+      - name: Build fresh #248 evidence-probe plan
+        shell: bash
+        run: |
+          mkdir -p output
+          python - <<'PY'
+          import json, os, subprocess
+          rev = subprocess.check_output(['git','-C','interop','rev-parse','HEAD'], text=True).strip()
+          plan = {
+            'lineage': {'id': os.environ['CLEAN_ROOM_LINEAGE'], 'issue': 248},
+            'target': {'repository': 'OpenVTC/verifiable-trust-infrastructure', 'revision': 'cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b'},
+            'producers': {
+              'dogwood-native-ab': {
+                'cwd': 'interop', 'revision': rev, 'attribution': 'target-native:Dogwood-RC-1',
+                'command': ['python','experiments/dtg-protected-access/capture_ab_runtime.py','cases/dtg-protected-access/dogwood-rc1-runtime-ab.yaml','--output','../output/dogwood-capture.yaml']
+              },
+              'composed-ab': {
+                'cwd': 'interop', 'revision': rev, 'attribution': 'composition-runtime:Interop-Lab',
+                'command': ['python','experiments/dtg-protected-access/run_composed_ab.py','--output-dir','../output/composed','--revision',rev]
+              }
+            },
+            'requirements': [
+              {'id':'ER-REL-DID-AB','producer':'dogwood-native-ab','evidence_file':'output/dogwood-capture.yaml'},
+              {'id':'ER-VERIFIER-AB','producer':'dogwood-native-ab','evidence_file':'output/dogwood-capture.yaml'},
+              {'id':'ER-STATUS-AB','producer':'composed-ab','evidence_file':'output/composed/unlinkability-pressure-capture.yaml','attribution':'composition-runtime:Interop-Lab'},
+              {'id':'ER-TASK-AB','producer':'composed-ab','evidence_file':'output/composed/unlinkability-pressure-capture.yaml','attribution':'composition-runtime:Interop-Lab'}
+            ]
+          }
+          open('output/probe-plan.json','w').write(json.dumps(plan, indent=2) + '\n')
+          PY
+
+      - name: Execute every registered evidence probe
+        run: |
+          python rahp/tools/evidence_probe_orchestrator.py output/probe-plan.json \
+            --workspace "$GITHUB_WORKSPACE" \
+            --output output/evidence-probe-ledger.json
+
+      - name: Export fresh Dogwood DPIP-ready evidence
+        run: |
+          python interop/experiments/dtg-protected-access/export_dpip_evidence.py \
+            output/dogwood-capture.yaml \
+            --output output/dogwood-provided-evidence.json
+
+      - name: Verify no omitted probes and preserve attribution
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('output/evidence-probe-ledger.json'))
+          assert d['complete'], d['orchestration_defects']
+          assert not d['orchestration_defects']
+          assert d['lineage']['issue'] == 248
+          assert len(d['requirements']) == 4
+          by={x['requirement_id']:x for x in d['requirements']}
+          assert by['ER-REL-DID-AB']['attribution'] == 'target-native:Dogwood-RC-1'
+          assert by['ER-VERIFIER-AB']['attribution'] == 'target-native:Dogwood-RC-1'
+          assert by['ER-STATUS-AB']['attribution'] == 'composition-runtime:Interop-Lab'
+          assert by['ER-TASK-AB']['attribution'] == 'composition-runtime:Interop-Lab'
+          assert all(x['attempt_state'] in {'EXECUTED','ATTEMPTED_UNAVAILABLE','NO_APPLICABLE_PRODUCER'} for x in d['requirements'])
+          print(json.dumps(d, indent=2))
+          PY
+
+      - name: Emit fresh evidence-stage machine and human records
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          ledger=json.load(open('output/evidence-probe-ledger.json'))
+          reqs=ledger['requirements']
+          record={
+            'schema':'rahp-true-clean-room-evidence-stage/v1',
+            'issue':248,
+            'lineage_id':os.environ['CLEAN_ROOM_LINEAGE'],
+            'target':{
+              'repository':'OpenVTC/verifiable-trust-infrastructure',
+              'release':'VTI-Dogwood-RC-1',
+              'revision':'cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b'
+            },
+            'runtime_revisions':{
+              'rahp':subprocess.check_output(['git','-C','rahp','rev-parse','HEAD'],text=True).strip(),
+              'dpip':subprocess.check_output(['git','-C','dpip','rev-parse','HEAD'],text=True).strip(),
+              'interop':subprocess.check_output(['git','-C','interop','rev-parse','HEAD'],text=True).strip()
+            },
+            'historical_inputs_used':False,
+            'probe_ledger':ledger,
+            'stage':'EVIDENCE_READY_FOR_SEMANTIC_REVIEW',
+            'recommended_next_step':'Perform fresh semantic RAHP review from this target and evidence only; determine privacy materiality and create a new DPIP examination iff warranted.'
+          }
+          open('output/evidence-stage-machine.json','w').write(json.dumps(record,indent=2)+'\n')
+          lines=['# True clean-room Dogwood #248 — evidence stage','','**Evidence production completed from a fresh lineage.** No historical Dogwood findings, DPIP results, or evidence packages were used as inputs.','',f"Lineage: `{os.environ['CLEAN_ROOM_LINEAGE']}`",'','## Fresh evidence requirements']
+          for x in reqs:
+            lines.append(f"- `{x['requirement_id']}` — **{x['result']}**, attempt `{x['attempt_state']}`, attribution `{x['attribution']}`")
+          lines += ['','This is not yet an assurance PASS/FAIL. The next step is fresh semantic RAHP review, privacy materiality, fresh DPIP iff warranted, and same-lineage reconciliation.']
+          open('output/evidence-stage-human.md','w').write('\n'.join(lines)+'\n')
+          print('\n'.join(lines))
+          PY
+          cat output/evidence-stage-human.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload #248 fresh evidence package
+        uses: actions/upload-artifact@v4
+        with:
+          name: dogwood-true-clean-room-248-${{ github.run_id }}
+          path: output/
+          if-no-files-found: error
