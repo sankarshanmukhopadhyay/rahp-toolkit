@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 1.8.0
-development_target: 1.8.0
+stable_release: 1.9.0
+development_target: 1.9.0
 release_status: released
 qualification_status: qualified
-qualification_contract: method/v1.8-release-qualification.yaml
+qualification_contract: method/v1.9-release-qualification.yaml
 release_name:
-  common_name: Common Map
-  scientific_name: Cyrestis thyodamas
+  common_name: Lesser Mime
+  scientific_name: Papilio epycides
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-08-28'
+  selected_on: '2026-08-30'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -29,11 +29,11 @@ release_naming:
   selection: random-at-release-time
   policy: >-
     Each v1.5.x and later release receives a release name selected at random
-    from the butterfly species listed by the recorded source. The selected
-    common name and scientific name SHOULD be recorded in the release notes.
+    from the governed pinned pool sourced from the recorded butterfly list. The
+    selected common name and scientific name are persisted before release.
 release_intent: >-
-  v1.8.0 Semantically Governed Assurance Pipeline is the stable release. It
-  preserves the stable v1 contracts while qualifying gatherer-native end-to-end
-  assurance, evidence-backed disposition, polarity-aware evidence handling,
-  semantic materiality, and structured composition/adversarial evidence
-  programmes without claiming those continuing evidence registers are complete.
+  v1.9.0 Portable Clean-Room Assurance is the stable release. It preserves the
+  stable v1 contracts while qualifying declarative clean-room execution,
+  immutable target/resource pinning, attributable runtime evidence, explicit
+  positive-control versus pressure-test semantics, fresh RAHP-to-DPIP lineage,
+  and workflow governance that prevents target-specific clean-room regression.

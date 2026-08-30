@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v1.8.0 (stable) · Common Map · CC-BY 4.0
+Release v1.9.0 (stable) · Lesser Mime · CC-BY 4.0
 
 RAHP Toolkit is a **portable specification-assurance toolkit** for pressure-testing standards, protocols, implementations and composed systems against human harms, governance failures, adversarial conditions and resilience risks.
 
@@ -76,7 +76,7 @@ See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps a
 
 ## Current release
 
-v1.8.0 **Common Map** (*Cyrestis thyodamas*) is the stable release of **Semantically Governed Assurance Pipeline**. The previous stable release was v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*), preserved in the changelog and v1.7 release notes. Earlier release history also preserves v1.6.0 **Common Earl** (*Tanaecia julii*). It preserves the stable v1 compatibility boundaries:
+v1.9.0 **Lesser Mime** (*Papilio epycides*) is the stable release of **Portable Clean-Room Assurance**. It preserves the stable v1 compatibility boundaries:
 
 ```text
 rahp-engine-contract-v1
@@ -84,14 +84,16 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v1.8.0 qualifies gatherer-native end-to-end assurance lineage, bounded evidence-backed disposition before human escalation, polarity-aware evidence handling, reviewer-ready judgment packets, robust RAHP→DPIP lifecycle routing, and semantic materiality that distinguishes substantive change from generated/release fan-out without weakening conservative review boundaries.
+v1.9.0 qualifies the generic declarative clean-room executor, immutable target and auxiliary-resource pins, attributable evidence-probe execution, explicit positive-control versus unlinkability-pressure semantics, fresh RAHP→DPIP→RAHP specialist lineage, and workflow governance that prevents target-specific clean-room executors from reappearing.
 
-**Historical release boundary:** at the point v1.8.0 was qualified, the VTI composition register and adversarial false-independence register were continuing evidence programmes and #193 was deliberately not represented as complete coverage. That release evidence remains immutable. **Current `main` has subsequently completed #193**; this post-release evidence does not retroactively change what v1.8.0 qualified.
+The release also records bounded target-adapter evidence from Interop Lab #71/#72: the established same-relationship case remains a detector-sensitivity positive control, while a new context-distinct target-native pressure case begins A and B with distinct client identities without changing RAHP's generic clean-room machinery.
+
+**Historical releases:** v1.8.0 **Common Map** (*Cyrestis thyodamas*) remains the immutable qualification record for the Semantically Governed Assurance Pipeline; v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) records Assurance Operations and Cross-Spec Execution; and v1.6.0 **Common Earl** (*Tanaecia julii*) records Source-Pinned Coverage and Guided Adoption. New v1.9 evidence does not rewrite those historical qualification records.
 
 Useful release surfaces:
 
-- [v1.8.0 release notes](docs/releases/v1.8.0.md)
-- [v1.8 qualification contract](method/v1.8-release-qualification.yaml)
+- [v1.9.0 release notes](docs/releases/v1.9.0.md)
+- [v1.9 qualification contract](method/v1.9-release-qualification.yaml)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
 - [Getting started](docs/getting-started.md)

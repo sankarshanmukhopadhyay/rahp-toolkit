@@ -4,6 +4,7 @@
     {"version": "v1.5.0", "codename": "Purple Leaf Blue", "status": "published"},
     {"version": "v1.6.0", "codename": "Common Earl", "status": "published"},
     {"version": "v1.7.0", "codename": "Common Palmfly", "status": "published"},
-    {"version": "v1.8.0", "codename": "Common Map", "status": "published"}
+    {"version": "v1.8.0", "codename": "Common Map", "status": "published"},
+    {"version": "v1.9.0", "codename": "Lesser Mime", "status": "published"}
   ]
 }

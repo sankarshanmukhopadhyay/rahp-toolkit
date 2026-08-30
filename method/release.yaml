@@ -1,20 +1,20 @@
 version: 1
 contract: rahp-release-declaration-v1
 release:
-  version: 1.8.0
-  tag: v1.8.0
+  version: 1.9.0
+  tag: v1.9.0
   status: released
   qualification_status: qualified
-  title: RAHP Toolkit v1.8.0 — Common Map
-  theme: Semantically Governed Assurance Pipeline
+  title: RAHP Toolkit v1.9.0 — Lesser Mime
+  theme: Portable Clean-Room Assurance
   name:
-    common: Common Map
-    scientific: Cyrestis thyodamas
+    common: Lesser Mime
+    scientific: Papilio epycides
     source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-    selected_on: '2026-08-28'
+    selected_on: '2026-08-30'
   qualification:
-    manifest: method/v1.8-release-qualification.yaml
-    validator: tools/validate_v18_release.py
+    manifest: method/v1.9-release-qualification.yaml
+    validator: tools/validate_v19_release.py
     checks:
       - tools/validate_scenario_corpora.py
       - tools/validate_pressure_tests.py
@@ -23,7 +23,7 @@ release:
       - tools/validate_combined_reviews.py
       - tools/validate_assessment_queue.py
   notes:
-    path: docs/releases/v1.8.0.md
+    path: docs/releases/v1.9.0.md
   compatibility:
     engine_contract: rahp-engine-contract-v1
     normalized_result_schema: 1

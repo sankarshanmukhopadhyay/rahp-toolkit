@@ -9,6 +9,51 @@ parent: Reference
 
 This file records current release-level changes. The complete pre-v1.2 changelog, including accumulated historical `Unreleased` sections, is preserved at `archive/pre-v1.2/CHANGELOG-pre-v1.2.txt`.
 
+## v1.9.0 — 2026-08-30 — Lesser Mime
+
+### Added
+
+- Generic declarative clean-room assurance execution driven by a run specification rather than target/issue-specific workflow code.
+- Immutable target and auxiliary-resource pinning with explicit clean-room lineage and historical-input exclusion.
+- Declarative evidence-probe orchestration with required attempt state and producer attribution.
+- Explicit positive-control and unlinkability-pressure experiment semantics, including correlator-origin preservation.
+- Machine-readable and human-readable clean-room evidence-stage records separated from semantic assurance disposition.
+- Workflow governance preventing reintroduction of target-specific clean-room executors.
+- v1.9-specific qualification manifest and validator.
+
+### Changed
+
+- The canonical clean-room path now uses `clean-room-assessment.yml`; superseded Dogwood-specific clean-room workflows were removed.
+- The v1.9 acceptance run pins the completed Interop Lab #71/#72 target-native pressure adapter while keeping target behavior outside generic RAHP machinery.
+- Clean-room evidence can now distinguish detector-sensitivity positive controls from materially context-distinct pressure cases without reclassifying one as the other.
+- Root/workspace package metadata advances to `1.9.0` while the stable v1 engine/result/retention contracts remain unchanged.
+
+### Assurance boundaries
+
+- Workflow green remains distinct from assurance green.
+- A positive-control join is expected detector evidence, not target privacy failure.
+- Composition evidence is not promoted to target-native evidence.
+- Missing or unexercised evidence remains missing/not-evidenced rather than PASS.
+- Historical RAHP and DPIP records remain immutable; fresh evidence creates fresh comparable lineage.
+
+### Compatibility
+
+The stable v1 compatibility boundaries remain unchanged:
+
+```text
+rahp-engine-contract-v1
+normalized result schema version 1
+rahp-evidence-retention-v1
+```
+
+v1.9.0 is an additive minor release. Existing normalized results and historical assessment/release qualification lineage remain valid.
+
+### Release name
+
+**Lesser Mime — *Papilio epycides***, selected on 2026-08-30 from the governed pinned West Bengal butterfly pool.
+
+See [v1.9.0 release notes](docs/releases/v1.9.0.md).
+
 ## v1.8.0 — 2026-08-28 — Common Map
 
 ### Added

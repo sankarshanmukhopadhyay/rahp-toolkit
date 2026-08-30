@@ -1,6 +1,6 @@
 version: 1
 id: rahp-versioning-v1
-stable_release: v1.8.0
+stable_release: v1.9.0
 contracts:
   engine: rahp-engine-contract-v1
   engine_family: 1

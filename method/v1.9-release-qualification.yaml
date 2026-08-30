@@ -1,0 +1,76 @@
+version: 1
+release: v1.9.0
+qualification: portable-clean-room-assurance
+stable_compatibility:
+  engine_contract: rahp-engine-contract-v1
+  normalized_result_schema: 1
+  evidence_retention_contract: rahp-evidence-retention-v1
+release_thesis: >-
+  v1.9.0 qualifies portable clean-room assurance execution as a reusable RAHP
+  capability: declarative immutable target/resource pins, fresh evidence production,
+  attributable experiment roles, bounded semantic review and specialist privacy
+  escalation, while preserving stable v1 compatibility and immutable historical lineage.
+required_evidence:
+  release_notes: docs/releases/v1.9.0.md
+  release_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/257
+  generic_clean_room_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/253
+  generic_clean_room_pr: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/254
+  workflow_rationalisation_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/255
+  workflow_rationalisation_pr: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/256
+  dpip_clean_room_examination: https://github.com/sankarshanmukhopadhyay/dtg-privacy-implementation-profile/issues/136
+  target_native_pressure_issue: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/issues/71
+  target_native_pressure_pr: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/pull/72
+portable_clean_room:
+  declarative_run_spec: true
+  immutable_target_pins: true
+  immutable_auxiliary_resource_pins: true
+  historical_inputs_excluded: true
+  evidence_probe_plan_declarative: true
+  evidence_attempt_state_explicit: true
+  producer_attribution_required: true
+  machine_and_human_evidence_stage_records: true
+  target_specific_behavior_confined_to_adapter_or_run_spec: true
+experiment_semantics:
+  positive_control_is_detector_sensitivity: true
+  positive_control_join_is_not_privacy_failure: true
+  unlinkability_pressure_requires_context_distinct_execution: true
+  missing_evidence_is_not_pass: true
+  composition_evidence_not_promoted_to_target_native: true
+specialist_lifecycle:
+  privacy_materiality_explicit: true
+  new_dpip_examination_per_fresh_lineage: true
+  dpip_indeterminate_non_green: true
+  historical_dpip_records_not_mutated: true
+workflow_governance:
+  sole_generic_clean_room_executor: .github/workflows/clean-room-assessment.yml
+  target_specific_clean_room_workflows_forbidden: true
+  distinct_state_machine_ownership_preserved: true
+historical_baseline_policy:
+  prior_assessment_findings_are_inputs_to_new_clean_room_run: false
+  historical_comparison_allowed_only_after_terminal_disposition: true
+portable_invariants:
+  - Portable core contracts remain deployment-independent.
+  - Target adapters may be implementation-specific; generic evidence machinery may not be.
+  - Workflow success is not assurance success.
+  - Missing evidence remains missing and INDETERMINATE remains non-green.
+  - Positive controls prove detector sensitivity, not target privacy failure.
+  - Composition evidence is never silently re-attributed to a target implementation.
+  - Historical assessment and specialist-examination records remain immutable lineage evidence.
+qualification_commands:
+  - python3 tools/validate_scenario_corpora.py
+  - python3 tools/validate_pressure_tests.py
+  - python3 tools/validate_engine_contract.py
+  - python3 tools/validate_security_reviews.py
+  - python3 tools/validate_combined_reviews.py
+  - python3 tools/validate_assessment_queue.py
+  - python3 tools/validate_typescript_sdk.py
+  - python3 tools/validate_v19_release.py
+release_cut:
+  butterfly_name_selection: pinned-pool-random-at-release-time
+  butterfly_source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
+  selected_common_name: Lesser Mime
+  selected_scientific_name: Papilio epycides
+  selected_on: '2026-08-30'
+  tag: v1.9.0
+  publish_only_after_qualification: true
+  publication_workflow: .github/workflows/release.yml
