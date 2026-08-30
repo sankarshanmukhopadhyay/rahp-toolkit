@@ -170,7 +170,7 @@ review:
         - non-collusion
         - evidentiary-independence
       expected_assurance_effect: bounded-sub-proposition-satisfied
-      expected_disposition: retain-independence-uncertainty
+      expected_disposition: retain-bounded-independence-uncertainty
       overall_false_independence_result: indeterminate
       dpip_review: warranted-if-proof-transcripts-nullifiers-or-correlation-state-are-retained
   judgment:
