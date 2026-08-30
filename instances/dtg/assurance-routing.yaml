@@ -15,6 +15,108 @@ composition_rules:
   - id: trust-tasks--vds
     requires_repository_tokens: [trust-tasks, vds]
 
+semantic_rules:
+  - id: relationship-correlation-privacy
+    when:
+      dimensions: [privacy]
+      concerns: [correlation, persistent-identifier]
+    outcome: dpip
+    dpip:
+      affected_interactions: [credential-proof-trust-task-consequential-execution]
+      affected_reference_flows:
+        - "DTG Credential -> ZKP presentation -> Trust Task -> retained outcome evidence"
+      affected_invariants:
+        - no-unnecessary-cross-context-correlation
+        - correlation-scope-does-not-expand-through-composition
+        - retained-evidence-does-not-defeat-selective-disclosure
+      affected_claims:
+        - pairwise-identifiers-preserve-declared-correlation-scope
+        - zero-knowledge-disclosure-remains-private-after-task-wrapping
+        - retained-task-proof-status-and-outcome-evidence-do-not-enable-unintended-linkage
+      suspected_surfaces:
+        - relationship DID and edge identifiers
+        - status and policy discovery traffic
+        - retained relationship evidence
+        - deliberate-correlation mechanisms
+      question: >-
+        Across composed DTG relationship flows using relationship DIDs, asymmetric
+        edge declarations and deliberate-correlation mechanisms, do declared,
+        observable and effective correlation scope remain aligned, or can protocol
+        metadata, retained evidence, discovery/status traffic, or one side of an
+        asymmetric edge expand correlation beyond the explicitly declared scope?
+
+  - id: device-metadata-privacy
+    when:
+      dimensions: [privacy]
+      concerns: [metadata, correlation]
+    outcome: dpip
+    dpip:
+      affected_interactions: [device-presence-and-metadata]
+      affected_reference_flows:
+        - "device/install -> heartbeat or presence update -> retained service metadata"
+      affected_invariants:
+        - no-unnecessary-cross-context-correlation
+        - metadata-does-not-expand-declared-correlation-scope
+      affected_claims:
+        - device-metadata-is-bounded-to-the-declared-operational-scope
+      suspected_surfaces:
+        - device or install display metadata
+        - heartbeat payloads
+        - retained presence records
+      question: >-
+        Does device or install metadata transmitted in heartbeat/presence traffic
+        create an unnecessary stable or human-readable correlation surface beyond
+        the declared operational scope?
+
+  - id: delegation-credential-composition
+    when:
+      dimensions: [authorization, lifecycle, composition]
+      concerns: [delegation]
+    outcome: combined
+    review_mode: combined
+
+  - id: redress-contestability-combined
+    when:
+      dimensions: [redress, governance]
+      concerns: [contestability]
+    outcome: combined
+    review_mode: combined
+
+  - id: spec-dependency-alignment
+    when:
+      dimensions: [composition, lifecycle]
+      concerns: [dependency-alignment]
+    outcome: combined
+    review_mode: combined
+
+  - id: openvtc-security-combined
+    when:
+      dimensions: [security, lifecycle]
+      concerns: [authorization]
+    outcome: combined
+    review_mode: combined
+
+  - id: openvtc-routine-alignment
+    when:
+      dimensions: [release]
+      concerns: [aggregation]
+    outcome: no-action
+    rationale: >-
+      Material implementation/alignment or packaging evidence remains in the
+      portfolio controller, but absent a security/privacy trigger it does not
+      independently require another assurance run. Versioned release artifacts
+      inherit the dispositions of their constituent material changes rather than
+      creating duplicate assessment work.
+
+  - id: trust-tasks-framework-covered
+    when:
+      dimensions: [composition, lifecycle]
+      concerns: [framework-alignment]
+    outcome: covered
+    covered_by: trust-tasks--credential-spec
+
+# Transitional compatibility rules for callers that have not yet supplied an
+# instance normalization profile. Production DTG routing uses semantic_rules.
 finding_rules:
   - id: relationship-correlation-privacy
     outcome: dpip
@@ -109,5 +211,5 @@ finding_rules:
     covered_by: trust-tasks--credential-spec
 
 fallback:
-  outcome: unresolved
-  rationale: No routing rule matched; qualifying findings must remain visible until policy coverage is added.
+  outcome: UNMAPPED
+  rationale: No normalized semantic routing rule matched; qualifying findings remain visible until instance profile coverage is added.
