@@ -1,0 +1,11 @@
+{
+  "lineage": {"id": "fixture-lineage"},
+  "target": {"repository": "example/target", "revision": "0000000000000000000000000000000000000000"},
+  "requirements": [
+    {"id": "ER-EXECUTED", "producer": "ok"},
+    {"id": "ER-UNAVAILABLE", "unavailable_reason": "no target-native probe registered"}
+  ],
+  "producers": {
+    "ok": {"command": ["python", "-c", "print('probe executed')"]}
+  }
+}
