@@ -9,11 +9,54 @@ parent: Reference
 
 This roadmap records the current portable RAHP direction. Historical pre-v1.2 roadmap material is preserved under `archive/pre-v1.2/` and is not current authority.
 
-## v1.8.0 — Semantically Governed Assurance Pipeline (stable release)
+## v1.9.0 — Portable Clean-Room Assurance (stable release)
 
-Status: **stable public release — Common Map (*Cyrestis thyodamas*)**.
+Status: **stable public release — Lesser Mime (*Papilio epycides*)**.
 
-v1.8 strengthens RAHP's operating assurance pipeline without changing the stable v1 compatibility boundary. It improves how material work is selected, how deterministic evidence advances, where human judgment is required, and how specialist privacy examination is integrated.
+v1.9 qualifies clean-room assurance as a reusable portable capability without changing the stable v1 compatibility boundary.
+
+### Delivered workstreams
+
+1. **Generic declarative clean-room execution**
+   - one canonical `clean-room-assessment.yml` executor;
+   - target, resource, adapter and evidence-producer semantics supplied through a run specification;
+   - immutable source pins and explicit fresh lineage.
+
+2. **Attributable evidence production**
+   - evidence requirements carry explicit producer and attempt state;
+   - target-native and composition evidence remain separately attributed;
+   - missing or unexercised evidence remains missing rather than being promoted to PASS.
+
+3. **Experiment-role semantics**
+   - same-relationship runs can be declared as positive controls with `must-detect` semantics;
+   - materially context-distinct target-native runs can be declared as unlinkability pressure cases with `must-not-emerge` semantics;
+   - a detected positive-control join is detector-sensitivity evidence, not target privacy failure.
+
+4. **Fresh specialist lineage**
+   - clean-room evidence feeds a fresh semantic RAHP review;
+   - privacy materiality can create a new DPIP examination;
+   - DPIP `INDETERMINATE` remains non-green;
+   - historical RAHP and DPIP records remain immutable.
+
+5. **Workflow governance**
+   - obsolete target-specific clean-room workflows are removed;
+   - an executable governance check prevents their reintroduction;
+   - distinct lifecycle/state-machine workflows remain separate where their semantic ownership differs.
+
+6. **Target-adapter portability acceptance**
+   - Interop Lab #71/#72 adds a target-native context-distinct Dogwood pressure adapter;
+   - the existing positive control remains unchanged;
+   - generic RAHP clean-room execution and generic Interop A/B classification/export logic require no VTI/Dogwood-specific branch.
+
+### Baseline policy
+
+A toolkit release does not automatically requalify every maintained external target. Historical records remain immutable lineage evidence. A bounded favourable pressure observation does not become a global target privacy PASS.
+
+## v1.8.0 — Semantically Governed Assurance Pipeline
+
+Status: **historical stable release — Common Map (*Cyrestis thyodamas*)**.
+
+v1.8 strengthened RAHP's operating assurance pipeline without changing the stable v1 compatibility boundary. It improved how material work is selected, how deterministic evidence advances, where human judgment is required, and how specialist privacy examination is integrated.
 
 ### Delivered workstreams
 
@@ -44,30 +87,17 @@ v1.8 strengthens RAHP's operating assurance pipeline without changing the stable
 
 6. **Structured continuing evidence programmes**
    - VTI composition candidates are indexed as pre-specification evidence;
-   - adversarial false-independence concerns are classified across Sybil, sock-puppet, false-diversity, trust-laundering, collusion, quorum-capture and selective-evidence classes;
-   - these registers remain continuing work and are not misrepresented as completed threat coverage.
+   - adversarial false-independence concerns are classified across Sybil, sock-puppet, false-diversity, trust-laundering, collusion, quorum-capture and selective-evidence classes.
 
-The final bullet above records the **v1.8.0 release boundary** and remains historically correct. It is not a claim about the later state of `main`.
+The final bullet above records the **v1.8.0 release boundary** and remains historically correct.
 
-### Post-release current-main qualification
+### Post-release evidence
 
-After v1.8.0 was cut, issue [#193](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193) completed the seven-row adversarial false-independence evidence corpus as executable pressure-test evidence:
-
-- `SR-XSP-FI-001` — Sybil/common-control multiplicity;
-- `SR-XSP-FI-002` — false governance diversity;
-- `SR-XSP-FI-003` — trust laundering;
-- `SR-XSP-FI-004` — sock puppetry / false social independence;
-- `SR-XSP-FI-005` — quorum capture;
-- `SR-XSP-FI-006` — collusion; and
-- `SR-XSP-FI-007` — selective-evidence incompleteness.
-
-The common judgment is that apparent multiplicity, provenance depth, threshold satisfaction, actor distinctness or artifact validity must not automatically be upgraded into evidence independence or completeness. Each executable row preserves a legitimate counter-case and bounded uncertainty, so anti-abuse pressure tests do not become blanket rejection of plurality, transformation, coalition, selective disclosure or privacy-preserving minimization.
-
-This post-release completion **does not retroactively extend the v1.8.0 qualification claim**. It is current-main evidence and must be requalified with the stable-v1 regression suite before any later release claim incorporates it.
+After v1.8.0 was cut, issue [#193](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193) completed the seven-row adversarial false-independence evidence corpus. That completion does not retroactively extend the v1.8.0 qualification claim; it is later evidence preserved in current lineage.
 
 ### Retained portable capability contracts
 
-v1.8 preserves the previously qualified portable capability set:
+v1.9 preserves the previously qualified portable capability set:
 
 - **Durable assessment and finding lineage**
 - **Governed remediation and retest**
@@ -76,12 +106,6 @@ v1.8 preserves the previously qualified portable capability set:
 - **Executable authority and policy gates**
 - **Portfolio and deployment presentation**
 - **Release qualification**
-
-These remain executable, documented, deployment-independent capability surfaces. v1.8 extends the operational assurance pipeline around them rather than replacing their contracts.
-
-### Baseline policy
-
-A toolkit release does not automatically requalify maintained external targets. Historical records remain immutable lineage evidence, and open evidence registers remain open unless their own acceptance criteria are satisfied.
 
 ## v1.7.0 — Assurance Operations and Cross-Spec Execution
 
@@ -93,9 +117,9 @@ See [v1.7.0 release notes](docs/releases/v1.7.0.md).
 
 ## v1.5.0 — Continuous Governed Assurance
 
-v1.5 turned evidence-driven point-in-time assessment into durable, continuously governed assurance while preserving deployment independence. It delivered the retained capability contracts above plus machine-verifiable v1.5 release qualification.
+v1.5 turned evidence-driven point-in-time assessment into durable, continuously governed assurance while preserving deployment independence.
 
-The v1.5 lifecycle remains part of v1.6:
+The retained lifecycle is:
 
 ```text
 material target change
@@ -133,9 +157,9 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v1.8.0 is additive within that boundary. Existing normalized results remain valid.
+v1.9.0 is additive within that boundary. Existing normalized results remain valid.
 
-See [v1.8.0 release notes](docs/releases/v1.8.0.md) and the [v1.8 qualification contract](method/v1.8-release-qualification.yaml).
+See [v1.9.0 release notes](docs/releases/v1.9.0.md) and the [v1.9 qualification contract](method/v1.9-release-qualification.yaml).
 
 ## v1.2.0 — Evidence-Driven Assurance
 
@@ -145,7 +169,7 @@ See [v1.2.0 release notes](docs/releases/v1.2.0.md).
 
 ## Future work
 
-Subsequent v1.x releases may refine implementation, adoption, corpus coverage and operational tooling without breaking the stable v1 contracts. Each v1.5.0-and-later release receives its own randomly selected West Bengal butterfly release name at release time.
+Subsequent v1.x releases may refine implementation, adoption, corpus coverage and operational tooling without breaking the stable v1 contracts. Each v1.5.0-and-later release receives its own randomly selected name from the governed pinned West Bengal butterfly pool.
 
 A v2 release is required for breaking changes to the stable method or normalized-result compatibility boundary.
 
