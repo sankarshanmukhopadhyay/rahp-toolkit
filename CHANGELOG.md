@@ -7,6 +7,35 @@ parent: Reference
 ---
 # Changelog
 
+## v2.0.0 — 2026-08-30 — Blue Mormon
+
+### Added
+
+- Generic normalized finding contract and semantic-first routing with structured `UNMAPPED`.
+- Declarative instance-owned normalization/routing profiles.
+- Portable specialist assessor result contract with finite PASS/FAIL/INDETERMINATE/NOT_APPLICABLE outcomes.
+- Explicit assessment lifecycle controller and engine-owned clean-room isolation.
+- Black-box acceptance fixtures for three materially different DTG snapshots.
+- RAHP-side validation of specialist result provenance.
+
+### Changed
+
+- Clean-room is now a first-class engine mode rather than workflow-threaded lineage convention.
+- Source titles/repository names are adapter input/provenance rather than primary routing authority.
+- Plugin failures and malformed specialist returns can no longer contribute PASS/GREEN.
+- Product release identity advances to v2.0.0 while preserving `rahp-engine-contract-v1` revision 1.3, result schema 1 and evidence-retention v1.
+
+### Acceptance result
+
+The final 30 Aug DTG black-box wave produced two target FAIL results without requiring another RAHP-core change. The consumer portfolio is RED; the toolkit release claim is portability and lifecycle stability, not target assurance success.
+
+### Release name
+
+**Blue Mormon — *Papilio polymnestor***.
+
+See [v2.0.0 release notes](docs/releases/v2.0.0.md).
+
+
 This file records current release-level changes. The complete pre-v1.2 changelog, including accumulated historical `Unreleased` sections, is preserved at `archive/pre-v1.2/CHANGELOG-pre-v1.2.txt`.
 
 ## v1.9.0 — 2026-08-30 — Lesser Mime

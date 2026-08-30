@@ -1,0 +1,52 @@
+version: 1
+release: v2.0.0
+qualification: portable-assurance-engine-stabilization
+stable_compatibility:
+  engine_contract: rahp-engine-contract-v1
+  engine_revision: '1.3'
+  normalized_result_schema: 1
+  evidence_retention_contract: rahp-evidence-retention-v1
+release_thesis: >-
+  v2.0.0 marks the product-level stabilization boundary at which portfolio-specific
+  vocabulary and change patterns are normalized through instance adapters/profiles,
+  specialist assessors return finite portable results, clean-room isolation is engine-owned,
+  and multiple materially different portfolio snapshots execute without routine RAHP-core
+  modification.
+required_evidence:
+  release_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/286
+  stabilization_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/276
+  normalized_finding_pr: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/278
+  lifecycle_pr: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/281
+  dpip_terminal_contract_pr: https://github.com/sankarshanmukhopadhyay/dtg-privacy-implementation-profile/pull/141
+  dpip_portable_result_pr: https://github.com/sankarshanmukhopadhyay/dtg-privacy-implementation-profile/pull/142
+  dpip_device_profile_pr: https://github.com/sankarshanmukhopadhyay/dtg-privacy-implementation-profile/pull/143
+  device_metadata_evidence_pr: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/pull/76
+  install_binding_evidence_pr: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/pull/77
+  terminal_dtg_controller: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/250
+portable_boundaries:
+  normalized_findings: true
+  declarative_instance_profiles: true
+  semantic_first_routing: true
+  structured_unmapped: true
+  portable_assessor_result: true
+  finite_assessment_lifecycle: true
+  first_class_clean_room: true
+  workflow_success_not_assurance_success: true
+  historical_lineage_immutable: true
+black_box_acceptance:
+  frozen_dtg_snapshots:
+    - tests/acceptance/dtg/2026-08-28.json
+    - tests/acceptance/dtg/2026-08-29.json
+    - tests/acceptance/dtg/2026-08-30.json
+  same_core_revision_required: true
+  non_dtg_validation_retained: true
+  portfolio_failures_do_not_imply_toolkit_failure: true
+release_cut:
+  butterfly_name_selection: governed-pinned-pool
+  butterfly_source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
+  selected_common_name: Blue Mormon
+  selected_scientific_name: Papilio polymnestor
+  selected_on: '2026-08-30'
+  tag: v2.0.0
+  publish_only_after_qualification: true
+  publication_workflow: .github/workflows/release.yml

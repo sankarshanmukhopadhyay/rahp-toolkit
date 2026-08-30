@@ -7,6 +7,57 @@ parent: Reference
 ---
 # RAHP Toolkit Roadmap
 
+## v2.0.0 — Portable Assurance Engine Stabilization (stable release)
+
+Status: **stable public release candidate — Blue Mormon (*Papilio polymnestor*)**.
+
+v2.0 marks the product-level architecture boundary where RAHP core becomes deliberately boring: new portfolio findings should normally change instance data, profiles, evidence, or conclusions rather than generic engine code.
+
+### Delivered workstreams
+
+1. **Normalized finding model**
+   - portfolio-neutral finding schema;
+   - source text retained as provenance;
+   - semantic-first routing;
+   - unknown qualified concepts become `UNMAPPED`.
+
+2. **Declarative instance profiles**
+   - DTG-specific extraction and routing semantics live under `instances/dtg/`;
+   - generic finding logic no longer owns target vocabulary.
+
+3. **Portable specialist assessor contract**
+   - finite PASS / FAIL / INDETERMINATE / NOT_APPLICABLE results;
+   - required reason code, evidence use, residual risk and action;
+   - malformed returns invalidate provenance instead of contributing GREEN.
+
+4. **Finite lifecycle controller**
+   - explicit DISCOVERED → QUALIFIED → ROUTED → ASSESSMENT_REQUIRED → EVIDENCE_REQUIRED → EVIDENCE_READY → ASSESSED → TERMINAL transitions;
+   - plugin error cannot become PASS.
+
+5. **First-class clean-room mode**
+   - engine-owned unique lineage;
+   - historical state/evidence exclusion;
+   - coalescing forbidden;
+   - fresh specialist lineage required.
+
+6. **Black-box portability acceptance**
+   - frozen DTG snapshots for 28, 29 and 30 Aug execute through one unchanged stabilized core;
+   - non-DTG/CAWG validation remains part of the suite;
+   - final DTG target failures were discovered without further RAHP-core modification.
+
+### Compatibility
+
+The product major version does not invalidate the stable portable compatibility authorities:
+
+```text
+rahp-engine-contract-v1 revision 1.3
+normalized result schema version 1
+rahp-evidence-retention-v1
+```
+
+Historical v1.x results and evidence remain valid.
+
+
 This roadmap records the current portable RAHP direction. Historical pre-v1.2 roadmap material is preserved under `archive/pre-v1.2/` and is not current authority.
 
 ## v1.9.0 — Portable Clean-Room Assurance (stable release)
@@ -169,9 +220,9 @@ See [v1.2.0 release notes](docs/releases/v1.2.0.md).
 
 ## Future work
 
-Subsequent v1.x releases may refine implementation, adoption, corpus coverage and operational tooling without breaking the stable v1 contracts. Each v1.5.0-and-later release receives its own randomly selected name from the governed pinned West Bengal butterfly pool.
+Subsequent releases may refine implementation, adoption, corpus coverage and operational tooling while preserving or explicitly versioning the stable portable contracts. Each v1.5.0-and-later release receives its own randomly selected name from the governed pinned West Bengal butterfly pool.
 
-A v2 release is required for breaking changes to the stable method or normalized-result compatibility boundary.
+Product semantic version and engine/result/evidence contract identifiers are related but distinct compatibility authorities. A breaking contract change still requires a new contract/schema identity even when the product major version has already advanced.
 
 ## Explicit non-goals
 

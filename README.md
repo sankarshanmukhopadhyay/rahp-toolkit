@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v1.9.0 (stable) · Lesser Mime · CC-BY 4.0
+Release v2.0.0 (stable) · Blue Mormon · CC-BY 4.0
 
 RAHP Toolkit is a **portable specification-assurance toolkit** for pressure-testing standards, protocols, implementations and composed systems against human harms, governance failures, adversarial conditions and resilience risks.
 
@@ -76,32 +76,31 @@ See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps a
 
 ## Current release
 
-v1.9.0 **Lesser Mime** (*Papilio epycides*) is the stable release of **Portable Clean-Room Assurance**. It preserves the stable v1 compatibility boundaries:
+v2.0.0 **Blue Mormon** (*Papilio polymnestor*) is the stable release of **Portable Assurance Engine Stabilization**.
+
+The product major version marks an architectural boundary, not a break in the portable compatibility contracts:
 
 ```text
-rahp-engine-contract-v1
+rahp-engine-contract-v1 revision 1.3
 normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v1.9.0 qualifies the generic declarative clean-room executor, immutable target and auxiliary-resource pins, attributable evidence-probe execution, explicit positive-control versus unlinkability-pressure semantics, fresh RAHP→DPIP→RAHP specialist lineage, and workflow governance that prevents target-specific clean-room executors from reappearing.
+v2.0.0 makes normalized findings, declarative instance profiles, semantic-first routing, structured `UNMAPPED`, finite specialist-assessor results, explicit assessment lifecycle state, and engine-owned clean-room isolation part of the stable operating model.
 
-The release also records bounded target-adapter evidence from Interop Lab #71/#72: the established same-relationship case remains a detector-sensitivity positive control, while a new context-distinct target-native pressure case begins A and B with distinct client identities without changing RAHP's generic clean-room machinery.
+Three frozen DTG snapshots (28–30 Aug 2026) execute through the same unchanged stabilized core. The validation suite also retains non-DTG/CAWG portability checks. The final DTG black-box wave produced real consumer FAIL results without requiring another RAHP-core patch; that is evidence of toolkit portability, not a claim that the DTG portfolio is GREEN.
 
-**Historical releases:** v1.8.0 **Common Map** (*Cyrestis thyodamas*) remains the immutable qualification record for the Semantically Governed Assurance Pipeline; v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) records Assurance Operations and Cross-Spec Execution; and v1.6.0 **Common Earl** (*Tanaecia julii*) records Source-Pinned Coverage and Guided Adoption. New v1.9 evidence does not rewrite those historical qualification records.
+**Historical releases:** v1.9.0 **Lesser Mime** (*Papilio epycides*) remains the immutable Portable Clean-Room Assurance release; v1.8.0 **Common Map** (*Cyrestis thyodamas*) remains the Semantically Governed Assurance Pipeline record; v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) remains the Assurance Operations and Cross-Spec Execution record; and v1.6.0 **Common Earl** (*Tanaecia julii*) remains the Source-Pinned Coverage and Guided Adoption record.
 
 Useful release surfaces:
 
-- [v1.9.0 release notes](docs/releases/v1.9.0.md)
-- [v1.9 qualification contract](method/v1.9-release-qualification.yaml)
+- [v2.0.0 release notes](docs/releases/v2.0.0.md)
+- [v2.0 qualification contract](method/v2.0-release-qualification.yaml)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
-- [Getting started](docs/getting-started.md)
-- [Developer guide](docs/developer-guide.md)
-- [Continuous assurance](docs/continuous-assurance.md)
 - [Release history](CHANGELOG.md)
 
-From v1.5.0 onward, release presentation metadata follows the [West Bengal butterfly naming policy](docs/release-naming.md); semantic versioning remains the compatibility authority.
+From v1.5.0 onward, release presentation metadata follows the [West Bengal butterfly naming policy](docs/release-naming.md); semantic versioning and the contract identifiers remain the compatibility authority.
 
 ## Repository map
 
