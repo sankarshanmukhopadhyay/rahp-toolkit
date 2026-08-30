@@ -69,6 +69,7 @@ jobs:
         shell: bash
         run: |
           cat > /tmp/dogwood-clean-room.yaml <<'YAML'
+          version: 1
           profile:
             id: dogwood-clean-room-241
             title: Dogwood clean-room assessment
