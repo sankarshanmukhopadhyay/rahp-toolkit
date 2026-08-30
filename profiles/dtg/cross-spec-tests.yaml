@@ -19,7 +19,7 @@ compositions:
   priority: P0
   evidence_grade: source-pinned
   corpus_id: CORPUS-TT-CREDSPEC-COMPOSED
-  assessment: examples/cross-spec/trust-tasks-credspec/pressure-test.yaml
+  assessment: examples/cross-spec/trust-tasks-credspec/v1.9-current-pressure-test.yaml
   components:
   - repository: trustoverip/dtgwg-trust-tasks-tf
     corpus_id: CORPUS-TRUST-TASKS
