@@ -1,0 +1,35 @@
+name: VTI semantic completion evidence
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/vti-semantic-completion.yml'
+      - 'tools/validate_vti_semantic_completion.py'
+      - 'examples/cross-spec/vti-semantic-completion/evidence.yaml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/vti-semantic-completion.yml'
+      - 'tools/validate_vti_semantic_completion.py'
+      - 'examples/cross-spec/vti-semantic-completion/evidence.yaml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  semantic-completion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install pyyaml
+      - name: Execute semantic-completion composition vectors
+        run: python3 tools/validate_vti_semantic_completion.py
+      - name: Preserve assurance boundary
+        run: |
+          echo '## VTI semantic completion evidence' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Technical workflow completion is evaluated separately from semantic trust outcome.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- A green workflow proves the evidence vectors are evaluated as declared; it is not a VTI assurance PASS.' >> "$GITHUB_STEP_SUMMARY"
