@@ -2,8 +2,9 @@
 """Transport explicitly promoted RAHP privacy referrals to DPIP.
 
 RAHP owns promotion of a privacy question. Once promoted, this transport preserves
-canonical examination identifiers, immutable source pins, evidence requirements and
-human-readable presentation metadata without making the DPIP privacy judgment.
+canonical examination identifiers, immutable source pins, evidence requirements,
+supplied evidence bindings and human-readable presentation metadata without making
+the DPIP privacy judgment.
 """
 from __future__ import annotations
 
@@ -29,6 +30,11 @@ CANONICAL_KEYS = (
     "interaction_ids", "reference_flow_ids", "invariant_ids", "claim_ids",
     "profile_ids", "evidence_requirement_ids",
 )
+EVIDENCE_PROVENANCE_KEYS = (
+    "producer", "run_id", "observed_at", "implementation_repository",
+    "implementation_revision", "context_a_run", "context_b_run",
+)
+SHA40 = re.compile(r"^[0-9a-f]{40}$", re.I)
 
 
 def api(method: str, repo: str, path: str, token: str, payload: Any | None = None) -> Any:
@@ -36,7 +42,7 @@ def api(method: str, repo: str, path: str, token: str, payload: Any | None = Non
     data = None if payload is None else json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data, method=method, headers={
         "Accept": "application/vnd.github+json",
-        "User-Agent": "rahp-dpip-handoff/1.3",
+        "User-Agent": "rahp-dpip-handoff/1.4",
         "X-GitHub-Api-Version": "2022-11-28",
         "Authorization": f"Bearer {token}",
         **({"Content-Type": "application/json"} if data is not None else {}),
@@ -94,7 +100,7 @@ def source_pins(payload: dict[str, Any]) -> list[dict[str, str]]:
             continue
         repository = str(raw.get("repository") or "").strip()
         revision = str(raw.get("revision") or "").strip()
-        if repository and re.fullmatch(r"[0-9a-f]{40}", revision, re.I):
+        if repository and SHA40.fullmatch(revision):
             pins.append({
                 "label": str(raw.get("label") or repository).strip(),
                 "repository": repository,
@@ -103,11 +109,54 @@ def source_pins(payload: dict[str, Any]) -> list[dict[str, str]]:
     source = payload.get("source_change") or {}
     repository = str(source.get("repository") or "").strip()
     revision = str(source.get("revision") or "").strip()
-    if repository and re.fullmatch(r"[0-9a-f]{40}", revision, re.I):
+    if repository and SHA40.fullmatch(revision):
         implicit = {"label": "Changed artifact", "repository": repository, "revision": revision}
         if not any(p["repository"] == repository and p["revision"].lower() == revision.lower() for p in pins):
             pins.insert(0, implicit)
     return pins
+
+
+def provided_evidence(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    raw = payload.get("provided_evidence", [])
+    if raw is None:
+        return []
+    if not isinstance(raw, list):
+        raise ValueError("provided_evidence must be a list")
+    return raw
+
+
+def validate_evidence(records: list[dict[str, Any]]) -> list[str]:
+    errors: list[str] = []
+    seen: set[str] = set()
+    for index, record in enumerate(records):
+        prefix = f"provided_evidence[{index}]"
+        if not isinstance(record, dict):
+            errors.append(f"{prefix} must be a mapping")
+            continue
+        requirement_id = str(record.get("requirement_id") or "").strip()
+        if not requirement_id:
+            errors.append(f"{prefix}.requirement_id is required")
+        elif requirement_id in seen:
+            errors.append(f"duplicate supplied evidence for requirement {requirement_id}")
+        else:
+            seen.add(requirement_id)
+        if not str(record.get("evidence_class") or "").strip():
+            errors.append(f"{prefix}.evidence_class is required")
+        provenance = record.get("provenance")
+        if not isinstance(provenance, dict):
+            errors.append(f"{prefix}.provenance must be a mapping")
+        else:
+            for key in EVIDENCE_PROVENANCE_KEYS:
+                if not str(provenance.get(key) or "").strip():
+                    errors.append(f"{prefix}.provenance.{key} is required")
+            revision = str(provenance.get("implementation_revision") or "")
+            if revision and not SHA40.fullmatch(revision):
+                errors.append(f"{prefix}.provenance.implementation_revision must be an immutable 40-hex commit SHA")
+        if not isinstance(record.get("surfaces"), dict):
+            errors.append(f"{prefix}.surfaces must be a mapping")
+        if not str(record.get("observation_summary") or "").strip():
+            errors.append(f"{prefix}.observation_summary is required")
+    return errors
 
 
 def validate_payload(payload: dict[str, Any]) -> list[str]:
@@ -128,6 +177,10 @@ def validate_payload(payload: dict[str, Any]) -> list[str]:
         errors.append("at least one legacy or canonical DPIP target is required")
     if not str(payload.get("question", "")).strip():
         errors.append("an actionable DPIP examination question is required")
+    try:
+        errors.extend(validate_evidence(provided_evidence(payload)))
+    except ValueError as exc:
+        errors.append(str(exc))
     return errors
 
 
@@ -138,6 +191,7 @@ def identity(source_issue: int, payload: dict[str, Any]) -> tuple[str, str]:
         "affected_claims", "suspected_surfaces")}
     target_material["canonical"] = canonical_contract(payload)
     target_material["source_pins"] = source_pins(payload)
+    target_material["provided_evidence"] = provided_evidence(payload)
     target_material["question"] = payload.get("question", "")
     digest = hashlib.sha256(json.dumps(target_material, sort_keys=True, separators=(",", ":")).encode()).hexdigest()[:16]
     marker = f"<!-- rahp-dpip-handoff:{source_issue}:{lineage_id(source)}:{source['revision']}:{digest} -->"
@@ -181,6 +235,7 @@ def create_intake(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], pa
         "claims": payload.get("affected_claims", []),
         "suspected_surfaces": payload.get("suspected_surfaces", []),
         "canonical": canonical_contract(payload),
+        "provided_evidence": provided_evidence(payload),
         "question": payload.get("question", ""),
     }.items() if value}
     requested = {"requested_examination": requested_data}
@@ -188,7 +243,7 @@ def create_intake(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], pa
         f"{marker}\n\n## Source\n\nAutomated handoff from `{rahp_repo}#{rahp_issue['number']}`.\n\n"
         f"```yaml\n{yaml.safe_dump(source_block, sort_keys=False).rstrip()}\n```\n\n"
         f"## Requested examination\n\n```yaml\n{yaml.safe_dump(requested, sort_keys=False).rstrip()}\n```\n\n"
-        "## Boundary\n\nRAHP does not prejudge the DPIP result. DPIP owns applicability, evidence assessment, scoped conclusion, and return disposition. Canonical identifiers are machine keys; DPIP must resolve them to human-readable titles and explanations in reviewer-facing output.\n"
+        "## Boundary\n\nRAHP transports supplied evidence without deciding whether it is sufficient. DPIP owns applicability, evidence-class acceptance, evidence assessment, scoped conclusion, and return disposition. Canonical identifiers are machine keys; DPIP must resolve them to human-readable titles and explanations in reviewer-facing output.\n"
     )
     title = f"[RAHP intake] {rahp_issue['title'].removeprefix('[DPIP candidate] ').removeprefix('[DPIP requested] ')}"
     return api("POST", dpip_repo, "issues", dpip_token, {"title": title[:256], "body": body, "assignees": ["sankarshanmukhopadhyay"], "labels": ["source:rahp", "run:requested"]})
@@ -254,6 +309,30 @@ def self_test() -> int:
     digest1 = identity(225, dogwood)[1]
     changed = json.loads(json.dumps(dogwood)); changed["canonical"]["evidence_requirement_ids"].append("ER-NEW")
     assert identity(225, changed)[1] != digest1
+
+    evidence = {
+        "requirement_id": "ER-REL-DID-AB",
+        "evidence_class": "runtime-upstream-observation",
+        "provenance": {
+            "producer": "trust-protocol-interop-lab",
+            "run_id": "run-001",
+            "observed_at": "2026-08-30T00:00:00Z",
+            "implementation_repository": "OpenVTC/verifiable-trust-infrastructure",
+            "implementation_revision": dogwood_sha,
+            "context_a_run": "A-001",
+            "context_b_run": "B-001",
+        },
+        "observation_summary": "Two-context runtime relationship observations.",
+        "surfaces": {"relationship_did": {"classification": "fresh", "context_a": "did:example:a", "context_b": "did:example:b"}},
+    }
+    supplied = json.loads(json.dumps(dogwood)); supplied["provided_evidence"] = [evidence]
+    assert not validate_payload(supplied)
+    assert identity(225, supplied)[1] != digest1
+    changed_evidence = json.loads(json.dumps(supplied)); changed_evidence["provided_evidence"][0]["provenance"]["run_id"] = "run-002"
+    assert identity(225, changed_evidence)[1] != identity(225, supplied)[1]
+    malformed = json.loads(json.dumps(supplied)); malformed["provided_evidence"][0]["provenance"]["implementation_revision"] = "main"
+    assert any("implementation_revision" in item for item in validate_payload(malformed))
+
     legacy = {"affected_interactions": ["C3"], "source_change": {"monitor_fingerprint": "abc123", "repository": "example/source", "revision": "deadbeef"}, "question": "Does correlation widen?"}
     assert not validate_payload(legacy)
     print("PASS dpip_handoff self-test")
