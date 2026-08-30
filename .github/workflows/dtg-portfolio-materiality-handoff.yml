@@ -16,6 +16,9 @@ on:
       - '.github/workflows/dtg-portfolio-materiality-handoff.yml'
       - 'tools/dtg_portfolio_routing.py'
       - 'instances/dtg/assurance-routing.yaml'
+      - 'instances/dtg/finding-normalization.yaml'
+      - 'tools/finding_model.py'
+      - 'method/schema/normalized-finding.schema.json'
 
 permissions:
   contents: read
@@ -72,6 +75,7 @@ jobs:
           python3 tools/dtg_portfolio_routing.py \
             --findings build/dtg-routing/findings.json \
             --policy instances/dtg/assurance-routing.yaml \
+            --normalization-policy instances/dtg/finding-normalization.yaml \
             --snapshot-date '${{ steps.snapshot.outputs.date }}' \
             --out-dir build/dtg-routing \
             --assessment-lineage '${{ inputs.assessment_lineage || '' }}' \
@@ -79,6 +83,7 @@ jobs:
           python3 tools/dtg_portfolio_routing.py \
             --findings build/dtg-routing/findings.json \
             --policy instances/dtg/assurance-routing.yaml \
+            --normalization-policy instances/dtg/finding-normalization.yaml \
             --snapshot-date '${{ steps.snapshot.outputs.date }}' \
             --out-dir build/dtg-routing \
             --assessment-lineage '${{ inputs.assessment_lineage || '' }}'
@@ -102,9 +107,9 @@ jobs:
               f"<!-- rahp-assessment-key:{'dtg:portfolio:material-change-set:lineage:' + lineage if lineage else 'dtg:portfolio:material-change-set'} -->",
               *([f'<!-- rahp-clean-room-lineage:{lineage} -->'] if lineage else []),
               f'<!-- rahp-portfolio-snapshot:{day} -->',
-              '<!-- dtg-routing-policy:v2 -->',
+              '<!-- dtg-routing-policy:v3-semantic -->',
               '',
-              'RAHP consumed the current Portfolio Monitor snapshot and applied the versioned assurance-routing policy.',
+              'RAHP consumed the current Portfolio Monitor snapshot, normalized source findings through the DTG instance adapter, and applied semantic assurance routing.',
               '',
               '## Proposition',
               '',
@@ -116,7 +121,7 @@ jobs:
               f'- Snapshot date: `{day}`',
               f'- Qualifying findings: **{len(route)}**',
               f'- Dispositions: `{counts}`',
-              f'- Unresolved findings: **{len(unresolved)}**',
+              f'- UNMAPPED findings: **{len(unresolved)}**',
               '',
               '## Pipeline contract',
               '',
@@ -124,7 +129,7 @@ jobs:
               '',
               '## Closure rule',
               '',
-              'Do not close this controller while any routed RAHP review, DPIP referral, or unresolved qualifying finding remains outstanding. Unknown findings remain explicit rather than being silently dropped.',
+              'Do not close this controller while any routed RAHP review, DPIP referral, or UNMAPPED qualifying finding remains outstanding. Unknown semantics remain explicit rather than being silently dropped.',
           ]
           body = '\n'.join(lines) + '\n'
           event = {
@@ -218,6 +223,6 @@ jobs:
           fi
           jq -r 'group_by(.outcome) | map("- " + .[0].outcome + ": " + (length|tostring)) | .[]' build/dtg-routing/routing.json >> "$GITHUB_STEP_SUMMARY" || true
           if [ -s build/dtg-routing/unresolved.json ] && [ "$(jq length build/dtg-routing/unresolved.json)" -gt 0 ]; then
-            echo '- Unresolved qualifying findings remain visible in routing output.' >> "$GITHUB_STEP_SUMMARY"
+            echo '- UNMAPPED qualifying findings remain visible in routing output.' >> "$GITHUB_STEP_SUMMARY"
             jq -r '.[] | "  - `\(.finding_id)` \(.repository): \(.title)"' build/dtg-routing/unresolved.json >> "$GITHUB_STEP_SUMMARY"
           fi
