@@ -23,7 +23,7 @@
     }
   },
   "assessment": {
-    "profile_id": "clean-room-v1.9",
+    "profile_id": "clean-room-v1-9",
     "title": "v1.9 portable clean-room acceptance assessment",
     "target_id": "target-under-test",
     "target_title": "Immutable target under clean-room assessment",
