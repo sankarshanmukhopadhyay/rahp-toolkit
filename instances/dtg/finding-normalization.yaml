@@ -1,0 +1,74 @@
+version: 1
+schema: rahp-finding-normalization-profile/v1
+
+# These extraction rules are DTG instance data. They translate raw repository/title
+# language into the portable semantics consumed by RAHP core routing.
+mapping_rules:
+  - id: relationship-correlation-privacy
+    repository_regex: '^(OpenVTC/|trustoverip/dtgwg-cred-spec$)'
+    title_regex: '(relationship DID|relationship edge|correlation scope|deliberate-correlation|policy discovery)'
+    semantics:
+      dimensions: [privacy]
+      concerns: [correlation, persistent-identifier]
+      affected_surfaces: [relationship-identifier, status-policy-discovery, retained-evidence]
+      change_kind: [behavior-change]
+
+  - id: device-metadata-privacy
+    repository_regex: '^OpenVTC/'
+    title_regex: '(device|install).*(name|label|heartbeat)|(heartbeat).*(name|label|device|install)'
+    semantics:
+      dimensions: [privacy]
+      concerns: [metadata, correlation]
+      affected_surfaces: [protocol-envelope, retained-state, device-presence]
+      change_kind: [behavior-change]
+
+  - id: delegation-credential-composition
+    title_regex: '(delegation credential|delegation.*credential|\bVDC\b)'
+    semantics:
+      dimensions: [authorization, lifecycle, composition]
+      concerns: [delegation]
+      affected_surfaces: [credential, authority-state]
+      change_kind: [behavior-change]
+
+  - id: redress-contestability-combined
+    title_regex: '(rejected applicant|refusal.*reason|reason.*refusal|redress|contestab)'
+    semantics:
+      dimensions: [redress, governance]
+      concerns: [contestability]
+      affected_surfaces: [decision-outcome]
+      change_kind: [behavior-change]
+
+  - id: spec-dependency-alignment
+    title_regex: '(trust-tasks-rs|specification dependency|spec dependency|specs now define|schema dependency)'
+    semantics:
+      dimensions: [composition, lifecycle]
+      concerns: [dependency-alignment]
+      affected_surfaces: [specification-interface]
+      change_kind: [dependency-change]
+
+  - id: openvtc-security-combined
+    repository_regex: '^OpenVTC/'
+    title_regex: '(auth|keyId|internal key|signed|proof|personhood|conformance|invitation|lifecycle|cache)'
+    semantics:
+      dimensions: [security, lifecycle]
+      concerns: [authorization]
+      affected_surfaces: [protocol-envelope]
+      change_kind: [behavior-change]
+
+  - id: openvtc-routine-alignment
+    repository_regex: '^OpenVTC/'
+    title_regex: '(release|SDK|sdk|design note|removal notice|tell a member|drift reaches zero|(^|[- ])v[0-9]+\.[0-9]+\.[0-9]+$)'
+    semantics:
+      dimensions: [release]
+      concerns: [aggregation]
+      affected_surfaces: [release-artifact]
+      change_kind: [release-change]
+
+  - id: trust-tasks-framework-covered
+    repository_regex: '^trustoverip/dtgwg-trust-tasks-(tf|spec)$'
+    title_regex: '(framework|registry|generated types|typed signing|dispatch|application-state|refusal|removal|publish)'
+    semantics:
+      dimensions: [composition, lifecycle]
+      concerns: [framework-alignment]
+      affected_surfaces: [trust-task]
+      change_kind: [behavior-change]
