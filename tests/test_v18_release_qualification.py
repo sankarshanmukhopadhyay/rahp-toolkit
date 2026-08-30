@@ -11,8 +11,14 @@ class V18ReleaseQualificationTests(unittest.TestCase):
         self.assertEqual(s["compatibility"]["normalized_result_schema"],1)
         self.assertEqual(s["compatibility"]["evidence_retention_contract"],"rahp-evidence-retention-v1")
 
-    def test_workspace_is_180(self):
-        self.assertEqual(json.loads((ROOT/"package.json").read_text())["version"],"1.8.0")
+    def test_v18_release_history_is_preserved(self):
+        history=json.loads((ROOT/"config/release-codename-history.json").read_text())
+        record=next(item for item in history["releases"] if item["version"]=="v1.8.0")
+        self.assertEqual(record["codename"],"Common Map")
+        self.assertEqual(record["status"],"published")
+        notes=(ROOT/"docs/releases/v1.8.0.md").read_text()
+        self.assertIn("Common Map",notes)
+        self.assertIn("Cyrestis thyodamas",notes)
 
     def test_semantic_materiality_regression_is_present(self):
         text=(ROOT/"tests/test_dtg_semantic_materiality.py").read_text()
@@ -27,9 +33,5 @@ class V18ReleaseQualificationTests(unittest.TestCase):
         q=yaml.safe_load((ROOT/"method/v1.8-release-qualification.yaml").read_text())
         self.assertEqual(q["continuing_programmes"]["false_independence_register_issue"],193)
         self.assertFalse(q["continuing_programmes"]["release_claims_complete_coverage"])
-
-    def test_release_name(self):
-        r=yaml.safe_load((ROOT/"method/release.yaml").read_text())["release"]
-        self.assertEqual((r["name"]["common"],r["name"]["scientific"]),("Common Map","Cyrestis thyodamas"))
 
 if __name__=="__main__": unittest.main()
