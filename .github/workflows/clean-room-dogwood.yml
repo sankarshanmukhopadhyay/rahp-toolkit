@@ -1,0 +1,111 @@
+name: Clean-room Dogwood assessment
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/clean-room-dogwood.yml'
+      - 'tools/clean_room_dogwood.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clean-room:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout RAHP under test
+        uses: actions/checkout@v4
+        with:
+          path: rahp
+          fetch-depth: 1
+
+      - name: Checkout current DPIP
+        uses: actions/checkout@v4
+        with:
+          repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+          ref: main
+          path: dpip
+          fetch-depth: 1
+
+      - name: Checkout current Interop Lab
+        uses: actions/checkout@v4
+        with:
+          repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+          ref: main
+          path: interop
+          fetch-depth: 1
+
+      - name: Checkout immutable Dogwood RC-1 target
+        uses: actions/checkout@v4
+        with:
+          repository: OpenVTC/verifiable-trust-infrastructure
+          ref: cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b
+          path: dogwood
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install RAHP dependencies
+        working-directory: rahp
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Verify clean-room source boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C dogwood rev-parse HEAD)" = "cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b"
+          test -z "$(git -C rahp status --porcelain)"
+          test -z "$(git -C dpip status --porcelain)"
+          test -z "$(git -C interop status --porcelain)"
+          test -z "$(git -C dogwood status --porcelain)"
+          echo 'Clean-room boundary verified; no prior Dogwood assessment artifacts were fetched.'
+
+      - name: Exercise current RAHP pinned-review scaffold
+        working-directory: rahp
+        shell: bash
+        run: |
+          cat > /tmp/dogwood-clean-room.yaml <<'YAML'
+          version: 1
+          profile:
+            id: dogwood-clean-room-241
+            title: Dogwood clean-room assessment
+          assessment:
+            default_mode: combined
+            rahp_repository: sankarshanmukhopadhyay/rahp-toolkit
+            rahp_version: current-clean-room
+          repositories:
+            - id: dogwood-rc1-clean-room
+              repository: OpenVTC/verifiable-trust-infrastructure
+              local_path: ../dogwood
+              version: VTI-Dogwood-RC-1
+              commit: cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b
+              reviews: [combined]
+              context:
+                title: VTI Dogwood RC-1 clean-room target
+          output:
+            directory: build/clean-room-targets
+          YAML
+          python tools/rahp.py config-validate --config /tmp/dogwood-clean-room.yaml
+          python tools/rahp.py review --config /tmp/dogwood-clean-room.yaml --target dogwood-rc1-clean-room --mode combined --force
+
+      - name: Produce machine and human conclusion artifacts
+        shell: bash
+        run: |
+          python rahp/tools/clean_room_dogwood.py \
+            --rahp rahp \
+            --dpip dpip \
+            --interop interop \
+            --target dogwood \
+            --out-dir output
+          cat output/human-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload clean-room conclusion
+        uses: actions/upload-artifact@v4
+        with:
+          name: dogwood-clean-room-241
+          path: output/
+          if-no-files-found: error
