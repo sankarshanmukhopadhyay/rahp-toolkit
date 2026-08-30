@@ -18,7 +18,7 @@ evidence:
     semantic preconditions.
   vectors:
     - id: technical-success-current-authority
-      description: Legitimate counter-case: all technical and semantic conditions are established.
+      description: "Legitimate counter-case: all technical and semantic conditions are established."
       protocol:
         completed: true
         credential_verified: true
