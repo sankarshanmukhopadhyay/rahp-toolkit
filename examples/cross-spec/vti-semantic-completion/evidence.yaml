@@ -1,0 +1,96 @@
+evidence:
+  id: VTI-COMP-SEM-001
+  title: Protocol completion is not semantic trust completion
+  issue: 185
+  evidence_class: composition-fixture
+  proposition: >-
+    Successful technical execution must not be promoted to successful completion
+    of a composed trust outcome unless every required semantic precondition is
+    affirmatively established at the consequential-action boundary.
+  source_lineage:
+    - examples/cross-spec/trust-tasks--zkp/pressure-test.yaml#F-001
+    - corpora/trust-tasks-zkp-composed.yaml#XSP-TZ-004
+    - examples/cross-spec/trust-tasks-credspec/pressure-test.yaml#F-001
+  boundary: >-
+    These vectors test composition semantics, not a specific upstream VTI normative
+    requirement. Technical completion and cryptographic validity are inputs; current
+    authority, relationship state, and required human authorization are separate
+    semantic preconditions.
+  vectors:
+    - id: technical-success-current-authority
+      description: Legitimate counter-case: all technical and semantic conditions are established.
+      protocol:
+        completed: true
+        credential_verified: true
+        proof_verified: true
+      semantic_preconditions:
+        current_authority: satisfied
+        relationship_state: satisfied
+        human_authorization: satisfied
+      expected:
+        technical_outcome: COMPLETE
+        semantic_outcome: SATISFIED
+
+    - id: technical-success-revoked-authority
+      description: >-
+        Falsifier: protocol and proof complete successfully, but delegated authority
+        is revoked before consequential execution.
+      protocol:
+        completed: true
+        credential_verified: true
+        proof_verified: true
+      semantic_preconditions:
+        current_authority: failed
+        relationship_state: satisfied
+        human_authorization: satisfied
+      expected:
+        technical_outcome: COMPLETE
+        semantic_outcome: FAILED
+
+    - id: technical-success-authority-unknown
+      description: >-
+        Missing authority evidence must remain indeterminate rather than becoming
+        success merely because the protocol completed.
+      protocol:
+        completed: true
+        credential_verified: true
+        proof_verified: true
+      semantic_preconditions:
+        current_authority: indeterminate
+        relationship_state: satisfied
+        human_authorization: satisfied
+      expected:
+        technical_outcome: COMPLETE
+        semantic_outcome: INDETERMINATE
+
+    - id: technical-success-invalid-relationship-state
+      description: >-
+        A completed exchange cannot establish the intended trust outcome where the
+        required relationship-state transition is not valid.
+      protocol:
+        completed: true
+        credential_verified: true
+        proof_verified: true
+      semantic_preconditions:
+        current_authority: satisfied
+        relationship_state: failed
+        human_authorization: satisfied
+      expected:
+        technical_outcome: COMPLETE
+        semantic_outcome: FAILED
+
+    - id: technical-success-human-authorization-unknown
+      description: >-
+        Required principal authorization that is unavailable remains indeterminate;
+        machine completion is not a substitute for it.
+      protocol:
+        completed: true
+        credential_verified: true
+        proof_verified: true
+      semantic_preconditions:
+        current_authority: satisfied
+        relationship_state: satisfied
+        human_authorization: indeterminate
+      expected:
+        technical_outcome: COMPLETE
+        semantic_outcome: INDETERMINATE
