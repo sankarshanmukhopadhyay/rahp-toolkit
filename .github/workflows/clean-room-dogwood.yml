@@ -8,6 +8,7 @@ on:
       - 'tools/evidence_probe_orchestrator.py'
       - 'tests/test_evidence_probe_orchestrator.py'
       - 'tests/test_evidence_probe_plan_fixture.py'
+      - 'tests/test_evidence_probe_derivation.py'
   workflow_dispatch:
 
 permissions:
@@ -163,7 +164,9 @@ jobs:
       - name: Produce machine and human conclusion artifacts
         run: |
           python rahp/tools/clean_room_dogwood.py \
-            --rahp rahp --dpip dpip --interop interop --target dogwood --out-dir output
+            --rahp rahp --dpip dpip --interop interop --target dogwood \
+            --probe-ledger output/evidence-probe-ledger.json \
+            --out-dir output
           cat output/human-summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload clean-room evidence and conclusion
