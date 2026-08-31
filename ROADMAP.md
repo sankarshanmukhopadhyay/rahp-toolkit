@@ -47,3 +47,5 @@ v2.1 adds/qualifies the canonical machine-owned assurance FSM, multi-granularity
 ## Historical roadmap
 
 The pre-v2.1 roadmap remains available through the v2.0.0 tag and repository history. Historical release notes and qualification records remain immutable evidence rather than being rewritten into the current roadmap.
+
+The qualified v1 lineage remains explicit in the current roadmap for regression traceability, including **v1.7.0 Common Palmfly** (Assurance Operations and Complete DTG Cross-Spec Coverage). Its historical roadmap commitments remain evidence of that release boundary, not claims that v2.1 is limited to the v1.7 scope.
