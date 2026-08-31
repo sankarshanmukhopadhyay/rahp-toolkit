@@ -26,7 +26,8 @@ release_naming:
   applies_from: 1.5.0
   convention: west-bengal-butterfly
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selection: governed-random-unused-candidate
+  selection: random-at-release-time
+  candidate_rule: governed-random-unused-candidate
 release_intent: >-
   v2.1.0 Qualified Autonomous Assurance Plane packages the post-#311 canonical
   machine-owned assurance lifecycle, multi-granularity subject model, autonomous
