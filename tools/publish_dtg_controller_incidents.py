@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
-"""Publish durable RAHP controller incidents for unowned DTG broken-pipeline conditions."""
+"""Publish durable controller incidents for unowned DTG broken-pipeline conditions.
+
+Operational contract:
+- Consumes the machine-readable incident records emitted by dtg_assurance_reconcile.py.
+- Does nothing for RED blockers already owned by a referenced RAHP issue.
+- For an unowned blocker, creates one deterministic dtg-instance issue and reuses the
+  same issue on subsequent runs by its embedded incident key.
+- This owns controller/provenance remediation only; it must not duplicate assessment or
+  DPIP work already owned by another issue.
+"""
 from __future__ import annotations
 
 import argparse
