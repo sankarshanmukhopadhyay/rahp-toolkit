@@ -1,16 +1,20 @@
 {
-  "schema": "rahp-qualification-manifest/v1",
-  "issue": 318,
-  "cases": [
-    {"id": "a2a-standalone", "spec": "clean-room/qualification/a2a-standalone.json", "expected_outcome": "PASS"},
-    {"id": "a2a-model-gap", "spec": "clean-room/qualification/a2a-model-gap.json", "expected_outcome": "INDETERMINATE", "expected_reason": "model-gap"},
-    {"id": "cawg-cross-spec", "spec": "clean-room/qualification/cawg-cross-spec.json", "expected_outcome": "PASS"},
-    {"id": "c2pa-rs-implementation", "spec": "clean-room/qualification/c2pa-rs-implementation.json", "expected_outcome": "PASS"},
-    {"id": "dtg-composite", "spec": "clean-room/run-spec.json", "expected_outcome": "INDETERMINATE"}
+  "schema":"rahp-qualification-manifest/v1",
+  "issue":318,
+  "cases":[
+    {"id":"a2a-prior-pin","spec":"clean-room/qualification/a2a-prior-pin.json","expected_outcome":"PASS"},
+    {"id":"a2a-standalone","spec":"clean-room/qualification/a2a-standalone.json","expected_outcome":"PASS"},
+    {"id":"a2a-model-gap","spec":"clean-room/qualification/a2a-model-gap.json","expected_outcome":"INDETERMINATE","expected_reason":"model-gap"},
+    {"id":"a2a-evidence-required","spec":"clean-room/qualification/a2a-evidence-required.json","expected_outcome":"INDETERMINATE","expected_reason":"evidence-required"},
+    {"id":"cawg-specialist-na","spec":"clean-room/qualification/cawg-specialist-na.json","expected_outcome":"NOT_APPLICABLE"},
+    {"id":"cawg-cross-spec","spec":"clean-room/qualification/cawg-cross-spec.json","expected_outcome":"PASS"},
+    {"id":"c2pa-rs-implementation","spec":"clean-room/qualification/c2pa-rs-implementation.json","expected_outcome":"PASS"},
+    {"id":"dtg-composite","spec":"clean-room/run-spec.json","expected_outcome":"INDETERMINATE"}
   ],
-  "required_subject_types": ["specification", "protocol-surface", "cross-specification", "implementation", "composition"],
-  "required_profiles": ["dtg", "cawg-c2pa", "a2a"],
-  "require_zero_stranded": true,
-  "require_replay_identity": true,
-  "require_outbox_contract_test": true
+  "required_subject_types":["specification","protocol-surface","cross-specification","implementation","composition"],
+  "required_profiles":["dtg","cawg-c2pa","a2a"],
+  "require_zero_stranded":true,
+  "require_replay_identity":true,
+  "require_reassessment_lineage":true,
+  "require_transport_failure_recovery":true
 }
