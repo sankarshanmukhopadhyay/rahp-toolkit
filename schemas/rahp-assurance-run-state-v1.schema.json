@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/rahp/schemas/rahp-assurance-run-state-v1.schema.json",
+  "title": "RAHP assurance run state v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "assessment_id",
+    "subject",
+    "source_pins",
+    "state",
+    "terminal",
+    "history"
+  ],
+  "properties": {
+    "schema": {"const": "rahp-assurance-run-state/v1"},
+    "assessment_id": {"type": "string", "minLength": 1},
+    "correlation_key": {"type": "string", "minLength": 1},
+    "subject": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": {
+          "enum": [
+            "repository",
+            "artifact",
+            "standard",
+            "specification",
+            "requirement",
+            "protocol-surface",
+            "cross-specification",
+            "composition",
+            "flow",
+            "implementation",
+            "deployment",
+            "portfolio",
+            "changeset"
+          ]
+        },
+        "id": {"type": "string", "minLength": 1},
+        "components": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "source_pins": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["repository", "revision"],
+        "properties": {
+          "repository": {"type": "string", "minLength": 1},
+          "revision": {"type": "string", "minLength": 1},
+          "artifact": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "state": {
+      "enum": [
+        "OBSERVED",
+        "GATHERED",
+        "MATERIALITY_COMPLETE",
+        "ASSESSMENT_COMPLETE",
+        "SPECIALIST_REQUIRED",
+        "SPECIALIST_IN_PROGRESS",
+        "SPECIALIST_RETURN_READY",
+        "SPECIALIST_RETURNED",
+        "RECONCILED",
+        "TERMINAL_PASS",
+        "TERMINAL_FAIL",
+        "TERMINAL_NOT_APPLICABLE",
+        "TERMINAL_INDETERMINATE_EVIDENCE_REQUIRED",
+        "TERMINAL_INDETERMINATE_MODEL_GAP",
+        "TERMINAL_UPSTREAM_ACTION",
+        "ERROR_TRANSPORT_RETRYABLE",
+        "ERROR_CONTRACT_INCOMPATIBLE",
+        "ERROR_CONTROLLER"
+      ]
+    },
+    "terminal": {"type": "boolean"},
+    "outcome": {
+      "enum": ["PASS", "FAIL", "NOT_APPLICABLE", "INDETERMINATE", "UPSTREAM_ACTION", "ERROR"]
+    },
+    "reason_code": {"type": "string"},
+    "evidence": {"type": "array", "items": {"type": "object"}},
+    "residuals": {"type": "array", "items": {"type": "object"}},
+    "actions": {"type": "array", "items": {"type": "object"}},
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "reason"],
+        "properties": {
+          "from": {"type": ["string", "null"]},
+          "to": {"type": "string"},
+          "reason": {"type": "string"},
+          "event_id": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"terminal": {"const": true}}},
+      "then": {"required": ["outcome", "reason_code"]}
+    }
+  ],
+  "additionalProperties": true
+}
