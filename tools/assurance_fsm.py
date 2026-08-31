@@ -99,16 +99,19 @@ def new_run(subject: dict[str, Any], source_pins: list[dict[str, Any]], correlat
 
 def transition(run: dict[str, Any], to_state: str, reason: str, event_id: str | None = None, **updates: Any) -> dict[str, Any]:
     current = run.get("state")
+
+    # Event replay is a no-op regardless of the current state. This check must happen
+    # before transition legality or an already-consumed event would look like a self-
+    # transition and incorrectly fail the controller.
+    if event_id and any(item.get("event_id") == event_id for item in run.get("history", [])):
+        return run
+
     if run.get("terminal"):
         if current == to_state:
             return run
         raise ValueError(f"terminal run cannot transition from {current} to {to_state}")
     if to_state not in ALLOWED.get(current, set()):
         raise ValueError(f"illegal assurance transition {current!r} -> {to_state!r}")
-
-    # Idempotency: the same event may be replayed but may not mutate history twice.
-    if event_id and any(item.get("event_id") == event_id for item in run.get("history", [])):
-        return run
 
     run["history"].append({"from": current, "to": to_state, "reason": reason, **({"event_id": event_id} if event_id else {})})
     run["state"] = to_state
