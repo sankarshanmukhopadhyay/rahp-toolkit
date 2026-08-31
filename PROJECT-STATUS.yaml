@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 2.0.0
-development_target: 2.0.0
-release_status: released
+stable_release: 2.1.0
+development_target: 2.1.0
+release_status: candidate
 qualification_status: qualified
-qualification_contract: method/v2.0-release-qualification.yaml
+qualification_contract: method/v2.1-release-qualification.yaml
 release_name:
-  common_name: Blue Mormon
-  scientific_name: Papilio polymnestor
+  common_name: Common Acacia Blue
+  scientific_name: Surendra quercetorum
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-08-30'
+  selected_on: '2026-08-31'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -19,22 +19,18 @@ portability:
     deployment, repository host, specification family, implementation, or
     governance community.
   demonstration_policy: >-
-    DTG, OpenVTC, ARPA, CAWG/C2PA, and other project-specific assessments MAY
+    DTG, OpenVTC, ARPA, CAWG/C2PA, A2A, and other project-specific assessments MAY
     demonstrate portable capabilities but MUST NOT become dependencies of the
     portable method or core conformance contract.
 release_naming:
   applies_from: 1.5.0
   convention: west-bengal-butterfly
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selection: random-at-release-time
-  policy: >-
-    Each v1.5.x and later release receives a release name selected at random
-    from the governed pinned pool sourced from the recorded butterfly list. The
-    selected common name and scientific name are persisted before release.
+  selection: governed-random-unused-candidate
 release_intent: >-
-  v2.0.0 Portable Assurance Engine Stabilization is the stable release. It marks
-  the product-level boundary where portfolio-specific language is normalized through
-  instance adapters/profiles, specialist assessors obey a finite portable result
-  contract, clean-room isolation is engine-owned, and black-box portfolio changes do
-  not routinely require RAHP core changes. The stable engine/result/evidence contracts
-  remain backward compatible with v1.x lineage.
+  v2.1.0 Qualified Autonomous Assurance Plane packages the post-#311 canonical
+  machine-owned assurance lifecycle, multi-granularity subject model, autonomous
+  controller, watchdog, citable human+machine terminal records, durable specialist
+  return semantics, engine-owned clean-room execution and multi-target zero-touch
+  qualification. Valid autonomous outcomes include adverse and indeterminate states;
+  missing evidence never becomes PASS and component PASS never implies composition PASS.
