@@ -115,9 +115,15 @@ def residual_marker(source: int, target: int) -> str:
     return f"<!-- rahp-dpip-residual:{RECONCILIATION_VERSION}:{source}:{target} -->"
 
 
-def list_completed_open(repo: str, token: str) -> list[dict[str, Any]]:
-    label = urllib.parse.quote(COMPLETE, safe="")
-    return api("GET", repo, f"issues?state=open&labels={label}&per_page=100", token) or []
+def list_candidates(repo: str, token: str) -> list[dict[str, Any]]:
+    """Scan both lifecycle labels so return reconciliation does not depend on label order."""
+    by_number: dict[int, dict[str, Any]] = {}
+    for label_name in (OPEN, COMPLETE):
+        label = urllib.parse.quote(label_name, safe="")
+        issues = api("GET", repo, f"issues?state=open&labels={label}&per_page=100", token) or []
+        for issue in issues:
+            by_number[int(issue["number"])] = issue
+    return [by_number[number] for number in sorted(by_number)]
 
 
 def find_residual(repo: str, token: str, marker: str) -> dict[str, Any] | None:
@@ -264,6 +270,7 @@ dpip_disposition:
     assert is_referral_container({"title": "[DPIP requested] test", "body": ""})
     assert not is_referral_container({"title": "Composite assessment", "body": ""})
     assert reconciliation_marker(91, 65) == "<!-- rahp-dpip-reconciliation:v1:91:65 -->"
+    assert set((OPEN, COMPLETE)) == {"assurance:dpip-open", "assurance:dpip-complete"}
     print("PASS dpip_return_reconcile self-test")
     return 0
 
@@ -281,7 +288,7 @@ def main() -> int:
     if not token:
         print("GITHUB_TOKEN is required", file=sys.stderr)
         return 2
-    issues = [api("GET", args.rahp_repository, f"issues/{args.issue_number}", token)] if args.issue_number else list_completed_open(args.rahp_repository, token)
+    issues = [api("GET", args.rahp_repository, f"issues/{args.issue_number}", token)] if args.issue_number else list_candidates(args.rahp_repository, token)
     failures = 0
     for issue in issues:
         try:
