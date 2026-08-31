@@ -1,27 +1,11 @@
 {
   "schema": "rahp-clean-room-run/v2",
-  "run": {"issue": 318, "lineage_prefix": "q318-a2a-spec", "instance": "a2a", "snapshot": "2026-08-31"},
+  "run": {"issue": 318, "lineage_prefix": "q318-a2a-spec", "instance": "a2a", "snapshot": "2026-08-31", "reassessment_of": "rahp:8cd407936d6d00d7aed5", "supersession_rule": "new immutable source pin creates a linked reassessment; historical assessment remains immutable"},
   "target": {"repository": "a2aproject/A2A", "revision": "f63dbb48271940ca5bd421f87e27e4d6ec002795", "release": "main-pinned", "path": "target"},
   "resources": {},
   "subject": {"type": "specification", "id": "A2A-v1-specification"},
-  "assurance_contract": {
-    "material": true,
-    "specialist_required": false,
-    "scope": "Bounded assessment of the pinned A2A specification as a protocol subject, including agent-interaction and delegation consequences.",
-    "non_scope": "Specific agent implementations and deployments not represented by the pinned specification.",
-    "personas": ["delegating user", "remote agent operator"],
-    "scenarios": ["A user delegates a consequential task to an agent that interoperates with another A2A agent."],
-    "risks": ["delegation ambiguity", "authority-context confusion"],
-    "harms": ["an agent action is treated as authorized beyond the user's intended scope"],
-    "assurance_propositions": ["Protocol-level interoperability must not be interpreted as evidence that consequential delegated authority is valid, current, or sufficiently scoped."],
-    "tests": ["bounded portable normative specification assessment"],
-    "harm_traceability": [{"persona": "delegating user", "scenario": "consequential task delegated across A2A agents", "harm": "action exceeds intended delegated authority", "proposition": "interoperability must not imply delegated authority", "control": "explicit authority scope, task semantics, and application-level authorization checks"}],
-    "actions": [{"surface": "normative-specification", "action": "Keep protocol interoperability semantics distinct from application-level authority and authorization claims.", "acceptance_criterion": "A conforming implementation cannot infer consequential authority solely from successful A2A protocol participation."}]
-  },
+  "assurance_contract": {"material": true, "specialist_required": false, "scope": "Bounded assessment of the pinned A2A specification as a protocol subject, including agent-interaction and delegation consequences.", "non_scope": "Specific agent implementations and deployments not represented by the pinned specification.", "personas": ["delegating user", "remote agent operator"], "scenarios": ["A user delegates a consequential task to an agent that interoperates with another A2A agent."], "risks": ["delegation ambiguity", "authority-context confusion"], "harms": ["an agent action is treated as authorized beyond the user's intended scope"], "assurance_propositions": ["Protocol-level interoperability must not be interpreted as evidence that consequential delegated authority is valid, current, or sufficiently scoped."], "tests": ["bounded portable normative specification assessment"], "harm_traceability": [{"persona": "delegating user", "scenario": "consequential task delegated across A2A agents", "harm": "action exceeds intended delegated authority", "proposition": "interoperability must not imply delegated authority", "control": "explicit authority scope, task semantics, and application-level authorization checks"}], "actions": [{"surface": "normative-specification", "action": "Keep protocol interoperability semantics distinct from application-level authority and authorization claims.", "acceptance_criterion": "A conforming implementation cannot infer consequential authority solely from successful A2A protocol participation."}]},
   "assessment": {"profile_id": "q318-a2a-spec", "title": "#318 A2A standalone specification qualification", "target_id": "a2a-spec", "target_title": "A2A specification", "mode": "combined"},
   "evidence_plan": {"producers": {}, "requirements": []},
-  "assessor": {
-    "commands": [["python", "-c", "import json,pathlib; pathlib.Path('output/a2a-assessor.json').write_text(json.dumps({'schema':'rahp-assessor-result/v1','assessor':'rahp-bounded-spec','assessment_id':'q318-a2a','outcome':'PASS','reason_code':'bounded-spec-pass','evidence_used':[],'residual_risk':'Implementation-specific authority enforcement remains outside the pinned specification assessment.','action_required':'Preserve the protocol-versus-authority boundary in downstream profiles and implementations.'}))"]],
-    "result_file": "output/a2a-assessor.json"
-  }
+  "assessor": {"commands": [["python", "-c", "import json,pathlib; pathlib.Path('output/a2a-assessor.json').write_text(json.dumps({'schema':'rahp-assessor-result/v1','assessor':'rahp-bounded-spec','assessment_id':'q318-a2a','outcome':'PASS','reason_code':'bounded-spec-pass','evidence_used':[],'residual_risk':'Implementation-specific authority enforcement remains outside the pinned specification assessment.','action_required':'Preserve the protocol-versus-authority boundary in downstream profiles and implementations.'}))"]], "result_file": "output/a2a-assessor.json"}
 }
