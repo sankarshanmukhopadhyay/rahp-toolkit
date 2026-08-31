@@ -2,9 +2,9 @@
   "version": 1,
   "repositories": {
     "trustoverip/dtgwg-trust-tasks-tf": {
-      "sha": "27401b7d66ffc2855a3119b8de073db14cd38fa2",
+      "sha": "134733ff934775db522522dc26cb79836da29256",
       "status": "active",
-      "observed_at": "2026-08-28T15:38:10.704411+00:00"
+      "observed_at": "2026-08-31T00:45:49.261644+00:00"
     },
     "trustoverip/dtgwg-htx-tf": {
       "sha": "0718ff3ba2b0333571f1637e229c313d3545e162",
@@ -13,7 +13,7 @@
     },
     "trustoverip/dtgwg-ux-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-28T15:38:12.157140+00:00"
+      "observed_at": "2026-08-31T00:45:50.153293+00:00"
     },
     "trustoverip/dtgwg-general": {
       "sha": "fa15044225ff447ad6564983a5ce0732b80cbdc1",
@@ -42,7 +42,7 @@
     },
     "trustoverip/dtgwg-rcards-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-28T15:38:16.615205+00:00"
+      "observed_at": "2026-08-31T00:45:52.436857+00:00"
     },
     "trustoverip/dtgwg-vds-tf": {
       "sha": "99eacacedd1729d20528a2ec65ff5288d103ec5e",
@@ -55,19 +55,19 @@
       "observed_at": "2026-08-14T04:58:43.075603+00:00"
     },
     "OpenVTC/dtg-credentials": {
-      "sha": "9eaeb6b8263aaa09ea1846a008361c2984a8b308",
+      "sha": "392d7c63eb1c0a7c004e9e11eb823769b5ce5459",
       "status": "active",
-      "observed_at": "2026-08-28T15:38:18.812820+00:00"
+      "observed_at": "2026-08-31T00:45:54.028577+00:00"
     },
     "OpenVTC/openvtc": {
-      "sha": "317044e3fea07a5f9365e3a69d5ead4c2d9be6a5",
+      "sha": "512ae535ee09f5c42b55bec1606964e4715bb525",
       "status": "active",
-      "observed_at": "2026-08-28T15:38:20.058956+00:00"
+      "observed_at": "2026-08-31T00:45:55.145348+00:00"
     },
     "OpenVTC/verifiable-trust-infrastructure": {
-      "sha": "48eddef47be83aaf1fcc3802ec837a8acacc5811",
+      "sha": "e0f700b7dd46a3a56407456b56e3b0a2626d1c16",
       "status": "active",
-      "observed_at": "2026-08-28T15:38:21.614485+00:00"
+      "observed_at": "2026-08-31T00:45:56.665222+00:00"
     },
     "sankarshanmukhopadhyay/dtgwg-cred-tf": {
       "sha": "200acbaa47a422b173652ed2c3dc961c4fbc9e7a",

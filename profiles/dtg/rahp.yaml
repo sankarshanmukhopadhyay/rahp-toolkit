@@ -2,8 +2,9 @@ version: 1
 profile:
   id: dtg
   title: DTG Working Group RAHP deployment
-  description: Current checked-in DTG deployment snapshot. Operational automation refreshes instances/dtg/generated/repositories.yaml
-    from the DTG Portfolio Monitor and relevant forks.
+  description: Current checked-in DTG deployment snapshot. Operational automation
+    refreshes instances/dtg/generated/repositories.yaml from the DTG Portfolio Monitor
+    and relevant forks.
   owner: DTG RAHP instance
 assessment:
   default_mode: combined

@@ -7,10 +7,10 @@
       "updated_at": "2026-08-24T00:45:53Z"
     },
     "trustoverip/dtgwg-cred-spec#17": {
-      "comments": 1,
+      "comments": 2,
       "state": "open",
       "title": "W3C alignment: DataIntegrityProof, digestMultibase, and the CID 1.0 multibase headers",
-      "updated_at": "2026-08-27T07:32:19Z"
+      "updated_at": "2026-08-29T12:40:20Z"
     },
     "trustoverip/dtgwg-cred-spec#8": {
       "comments": 1,
