@@ -10,23 +10,33 @@ from typing import Any
 from assessment_controller import clean_room_lineage
 
 REQUIRED = {"schema", "run", "target", "resources", "assessment", "evidence_plan"}
+SUPPORTED = {"rahp-clean-room-run/v1", "rahp-clean-room-run/v2"}
 
 
 def resolve(spec: dict[str, Any], *, instance: str, snapshot: str, nonce: str) -> dict[str, Any]:
     missing = sorted(REQUIRED - set(spec))
     if missing:
         raise ValueError(f"run specification missing keys: {missing}")
-    if spec.get("schema") != "rahp-clean-room-run/v1":
+    if spec.get("schema") not in SUPPORTED:
         raise ValueError("unsupported clean-room run schema")
     target = spec.get("target") or {}
     if not all(target.get(k) for k in ("repository", "revision", "path")):
         raise ValueError("target repository/revision/path are required")
+    if spec.get("schema") == "rahp-clean-room-run/v2":
+        subject = spec.get("subject") or {}
+        contract = spec.get("assurance_contract") or {}
+        if not subject.get("type") or not subject.get("id"):
+            raise ValueError("v2 clean-room run requires subject.type and subject.id")
+        if "material" not in contract:
+            raise ValueError("v2 clean-room run requires assurance_contract.material")
     lineage = clean_room_lineage(instance, snapshot, nonce)
     return {
         "schema": "rahp-clean-room-resolution/v1",
+        "run_schema": spec.get("schema"),
         "mode": "clean-room",
         "lineage": lineage,
         "target": target,
+        **({"subject": spec.get("subject")} if spec.get("subject") else {}),
         "historical_inputs_used": False,
         "coalescing_allowed": False,
     }

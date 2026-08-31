@@ -1,10 +1,10 @@
 {
-  "schema": "rahp-clean-room-run/v1",
+  "schema": "rahp-clean-room-run/v2",
   "run": {
-    "issue": 257,
-    "lineage_prefix": "clean-room-v1.9",
+    "issue": 311,
+    "lineage_prefix": "clean-room-autonomous-v2",
     "instance": "dtg",
-    "snapshot": "2026-08-30"
+    "snapshot": "2026-08-31"
   },
   "target": {
     "repository": "OpenVTC/verifiable-trust-infrastructure",
@@ -15,7 +15,7 @@
   "resources": {
     "dpip": {
       "repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile",
-      "revision": "aa067a3eda93db700d6a5a3e34c61a6df29b4ff9",
+      "revision": "ea10a821e6feb9f751b83d2a6daecfd571ac594d",
       "path": "dpip"
     },
     "interop": {
@@ -24,11 +24,71 @@
       "path": "interop"
     }
   },
+  "subject": {
+    "type": "composition",
+    "id": "IC-DTG-PROTECTED-ACCESS-001",
+    "components": [
+      "DTG Credentials",
+      "DTG Trust Tasks",
+      "DTG ZKP",
+      "Verifiable Trust Infrastructure",
+      "DPIP privacy invariants"
+    ]
+  },
+  "assurance_contract": {
+    "material": true,
+    "specialist_required": true,
+    "scope": "Protected-person confidential service access: prove a narrow entitlement without unnecessarily revealing provider, relationship, location, case identifier or another durable cross-context correlator.",
+    "non_scope": "Claims about deployments, transports or implementation paths not represented by the immutable target and Interop Lab evidence producers in this run.",
+    "personas": [
+      "protected person",
+      "service verifier",
+      "credential issuer"
+    ],
+    "scenarios": [
+      "A protected person presents minimum entitlement evidence to distinct relying contexts while relationship, task, verifier and status/policy surfaces are pressure-tested for unintended linkage."
+    ],
+    "risks": [
+      "cross-context correlation",
+      "unnecessary disclosure",
+      "retained interaction evidence becoming a durable join surface"
+    ],
+    "harms": [
+      "exposure of a protected person's service relationship or activity across contexts",
+      "loss of confidentiality through compositional metadata linkage"
+    ],
+    "assurance_propositions": [
+      "The composed flow must not create unnecessary cross-context correlation through relationship identifiers, verifier transcripts, status/policy discovery or retained trust-task evidence."
+    ],
+    "cross_spec_assumptions": [
+      "Component-level privacy properties do not imply composition-level unlinkability.",
+      "Evidence from target-native and composition-runtime producers must remain attributable and comparable across the tested contexts."
+    ],
+    "required_evidence": [
+      "ER-REL-DID-AB",
+      "ER-VERIFIER-AB",
+      "ER-STATUS-AB",
+      "ER-TASK-AB"
+    ],
+    "tests": [
+      "target-native relationship/verifier A-B capture",
+      "composed status/task unlinkability A-B pressure test"
+    ],
+    "harm_traceability": [
+      {
+        "persona": "protected person",
+        "scenario": "confidential service access across distinct relying contexts",
+        "harm": "cross-context exposure of service relationship or activity",
+        "proposition": "no unnecessary cross-context correlation in the composed flow",
+        "control": "context-bounded identifiers, minimized verifier transcripts, and unlinkable retained task/status evidence"
+      }
+    ]
+  },
   "assessment": {
-    "profile_id": "clean-room-v1-9",
-    "title": "v1.9 portable clean-room acceptance assessment",
+    "profile_id": "clean-room-autonomous-v2",
+    "title": "Autonomous clean-room composition assurance assessment",
     "target_id": "target-under-test",
-    "target_title": "Immutable target under clean-room assessment",
+    "target_title": "Immutable VTI target under clean-room composition assessment",
     "mode": "combined"
   },
   "environment": {
