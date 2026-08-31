@@ -4,7 +4,7 @@ release:
   version: 2.1.0
   tag: v2.1.0
   status: candidate
-  qualification_status: qualified-candidate
+  qualification_status: qualified
   title: RAHP Toolkit v2.1.0 — Common Acacia Blue
   theme: Qualified Autonomous Assurance Plane
   name:
@@ -15,20 +15,9 @@ release:
   qualification:
     manifest: method/v2.1-release-qualification.yaml
     validator: tools/validate_v21_release.py
-    checks:
-      - tools/validate_scenario_corpora.py
-      - tools/validate_pressure_tests.py
-      - tools/validate_engine_contract.py
-      - tools/validate_security_reviews.py
-      - tools/validate_combined_reviews.py
-      - tools/validate_assessment_queue.py
-      - tools/validate_workflow_governance.py
-  notes:
-    path: docs/releases/v2.1.0.md
-  compatibility:
-    engine_contract: rahp-engine-contract-v1
-    normalized_result_schema: 1
-    evidence_retention_contract: rahp-evidence-retention-v1
+    checks: [tools/validate_scenario_corpora.py, tools/validate_pressure_tests.py, tools/validate_engine_contract.py, tools/validate_security_reviews.py, tools/validate_combined_reviews.py, tools/validate_assessment_queue.py, tools/validate_workflow_governance.py]
+  notes: {path: docs/releases/v2.1.0.md}
+  compatibility: {engine_contract: rahp-engine-contract-v1, normalized_result_schema: 1, evidence_retention_contract: rahp-evidence-retention-v1}
 publication:
   workflow: .github/workflows/release.yml
   target_branch: main
