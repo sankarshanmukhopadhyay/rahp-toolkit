@@ -35,7 +35,7 @@ jobs:
     timeout-minutes: 50
     env:
       RUN_SPEC: ${{ inputs.run_spec_path || 'clean-room/run-spec.json' }}
-      QUALIFICATION_MANIFEST: ${{ github.event_name == 'pull_request' && 'clean-room/qualification/manifest.json' || inputs.qualification_manifest }}
+      QUALIFICATION_MANIFEST: ${{ inputs.qualification_manifest || '' }}
     steps:
       - name: Checkout RAHP under test
         uses: actions/checkout@v4
