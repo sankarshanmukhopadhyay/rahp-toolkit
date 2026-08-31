@@ -1,0 +1,9 @@
+{
+  "requirement_ids": ["ER-CAWG-IDENTITY-SPEC", "ER-C2PA-SPEC-SURFACE"],
+  "assessor": "rahp-evidence-assertion-assessor",
+  "assessment_id": "q318-cawg-c2pa-source-derived",
+  "success_reason_code": "bounded-cross-spec-surfaces-established",
+  "success_residual_risk": "The pinned sources establish distinct identity-assertion and Content Credentials specification surfaces; they do not by themselves prove safe consumer interpretation of every composition.",
+  "success_action_required": "Keep provenance and identity assurance explicitly distinguished in composition semantics and user-facing presentation.",
+  "boundedness": "PASS applies only to the asserted source predicates and their distinct semantic surfaces at the immutable pins."
+}
