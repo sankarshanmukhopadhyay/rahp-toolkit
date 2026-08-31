@@ -6,6 +6,8 @@ on:
   pull_request:
     paths:
       - tools/assurance_fsm.py
+      - tools/assurance_record.py
+      - tools/assurance_watchdog.py
       - schemas/rahp-assurance-run-state-v1.schema.json
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
@@ -15,6 +17,8 @@ on:
     branches: [main]
     paths:
       - tools/assurance_fsm.py
+      - tools/assurance_record.py
+      - tools/assurance_watchdog.py
       - schemas/rahp-assurance-run-state-v1.schema.json
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
@@ -54,9 +58,11 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
-      - name: Validate canonical controller, lifecycle and return reconciliation
+      - name: Validate canonical controller, records, watchdog and DPIP reconciliation
         run: |
           python3 tools/assurance_fsm.py --self-test
+          python3 tools/assurance_record.py --self-test
+          python3 tools/assurance_watchdog.py --self-test
           python3 tools/dpip_lifecycle.py --self-test
           python3 tools/dpip_lifecycle_reconcile.py --self-test
           python3 tools/dpip_return_reconcile.py --self-test
@@ -80,3 +86,10 @@ jobs:
             python3 tools/dpip_lifecycle_reconcile.py
             python3 tools/dpip_return_reconcile.py
           fi
+      - name: Detect stranded controller states after normal retries
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
+          RAHP_CONTROLLER_SLA_HOURS: '6'
+        run: python3 tools/assurance_watchdog.py
