@@ -1,4 +1,6 @@
-name: RAHP instance change watch
+name: RAHP incremental instance monitor
+
+run-name: Incremental DTG/CAWG monitor · ${{ github.event_name }} · #${{ github.run_number }}
 
 on:
   schedule:
@@ -19,6 +21,18 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
+
+      - name: Declare incremental monitor semantics
+        shell: bash
+        run: |
+          {
+            echo "## RAHP incremental instance monitor"
+            echo
+            echo "This run is **stateful and delta-driven**. It detects changes since the persisted instance baseline."
+            echo "A successful run with zero material events is **not** a fresh or clean-room assessment of the portfolio."
+            echo "Clean-room assessment is a separate assurance operation with a new immutable evaluation lineage."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Operating mode: incremental/stateful monitor (not clean-room assessment)"
 
       - name: Check DTG instance
         env:
@@ -177,4 +191,14 @@ jobs:
       - name: Reconcile DTG end-to-end assurance explicitly
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python3 tools/dtg_assurance_reconcile.py
+        run: >-
+          python3 tools/dtg_assurance_reconcile.py
+          --incident-output /tmp/dtg-controller-incidents.json
+
+      - name: Persist unowned DTG broken-pipeline incidents
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/publish_dtg_controller_incidents.py
+          /tmp/dtg-controller-incidents.json
+          --repository "sankarshanmukhopadhyay/rahp-toolkit"

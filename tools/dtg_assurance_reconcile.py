@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import pathlib
@@ -171,9 +172,57 @@ def aggregate(results: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def blocker_owner_issue(blocker: str) -> int | None:
+    """Return the RAHP issue number that durably owns a blocker, when encoded."""
+    match = re.search(r"rahp#(\d+)", str(blocker))
+    return int(match.group(1)) if match else None
+
+
+def controller_incidents(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Describe deterministic ownership for RED/PIPELINE_BROKEN conditions.
+
+    A controller incident is required only when a broken-pipeline blocker has no
+    durable RAHP issue owner. Existing assessment/DPIP issues remain the owner and
+    suppress duplicate controller issues.
+    """
+    records: list[dict[str, Any]] = []
+    for result in results:
+        row = result.get("portfolio_assurance") or {}
+        if (row.get("pipeline_status"), row.get("disposition")) != ("RED", "PIPELINE_BROKEN"):
+            continue
+        blockers = row.get("blockers") or {}
+        broken = sorted(set(
+            list(blockers.get("orphaned_handoffs") or [])
+            + list(blockers.get("provenance") or [])
+        ))
+        owners = sorted({n for item in broken if (n := blocker_owner_issue(str(item))) is not None})
+        unowned = [str(item) for item in broken if blocker_owner_issue(str(item)) is None]
+        run_id = str(row.get("run") or "unknown")
+        digest_input = run_id + "\\0" + "\\0".join(unowned or broken)
+        key = hashlib.sha256(digest_input.encode("utf-8")).hexdigest()[:20]
+        records.append({
+            "run": run_id,
+            "pipeline_status": "RED",
+            "disposition": "PIPELINE_BROKEN",
+            "blockers": broken,
+            "owner_issues": owners,
+            "unowned_blockers": unowned,
+            "incident_required": bool(unowned),
+            "incident_key": key,
+        })
+    return records
+
+
 def render_aggregate(summary: dict[str, Any]) -> str:
     p = summary["dtg_assurance"]
-    lines = ["# DTG End-to-End Assurance", "", f"**{p['pipeline_status']} — {p['disposition']}**", ""]
+    lines = [
+        "# DTG End-to-End Assurance",
+        "",
+        "> Operation: incremental/stateful DTG monitor reconciliation. This is not a clean-room portfolio assessment.",
+        "",
+        f"**{p['pipeline_status']} — {p['disposition']}**",
+        "",
+    ]
     if not p.get("runs"):
         lines.append("No retained non-empty gatherer runs require reconciliation.")
     else:
@@ -196,6 +245,7 @@ def main() -> int:
     p.add_argument("--run-dir", type=pathlib.Path, default=DEFAULT_RUN_DIR)
     p.add_argument("--evidence-output", type=pathlib.Path)
     p.add_argument("--result-output", type=pathlib.Path)
+    p.add_argument("--incident-output", type=pathlib.Path)
     p.add_argument("--self-test", action="store_true")
     args = p.parse_args()
     if args.self_test:
@@ -227,11 +277,20 @@ def main() -> int:
         bad = dict(portable); bad["outcome"] = "FAIL"
         bad_comments={8:[{"body":"```yaml\n"+yaml.safe_dump({"dpip_disposition":{"conclusion":"PASS","assessor_result":bad}},sort_keys=False)+"```"}]}
         assert normalize(run,[dpip_issue],bad_comments)["dpip"][0]["assessor_contract_valid"] is False
+        broken = {"portfolio_assurance":{"run":"r-broken","pipeline_status":"RED","disposition":"PIPELINE_BROKEN","blockers":{"orphaned_handoffs":["rahp#8:dpip"],"provenance":[]}}}
+        owned = controller_incidents([broken])[0]
+        assert owned["incident_required"] is False and owned["owner_issues"] == [8]
+        broken["portfolio_assurance"]["blockers"]["provenance"] = ["missing-provenance-record"]
+        unowned = controller_incidents([broken])[0]
+        assert unowned["incident_required"] is True and unowned["unowned_blockers"] == ["missing-provenance-record"]
         print("PASS dtg_assurance_reconcile self-test")
         return 0
     runs = load_runs(args.run_dir)
     if not runs:
         summary = aggregate([])
+        if args.incident_output:
+            args.incident_output.parent.mkdir(parents=True, exist_ok=True)
+            args.incident_output.write_text(json.dumps({"incidents": []}, indent=2) + "\n", encoding="utf-8")
         print(render_aggregate(summary), end="")
         return 0
     token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
@@ -242,15 +301,25 @@ def main() -> int:
     evidence_rows = [normalize(run, issues, comments) for run in runs]
     results = [compute(row) for row in evidence_rows]
     summary = aggregate(results)
+    incidents = controller_incidents(results)
     if args.evidence_output:
         args.evidence_output.parent.mkdir(parents=True, exist_ok=True)
         args.evidence_output.write_text(yaml.safe_dump({"runs": evidence_rows}, sort_keys=False), encoding="utf-8")
     if args.result_output:
         args.result_output.parent.mkdir(parents=True, exist_ok=True)
         args.result_output.write_text(yaml.safe_dump({"summary": summary, "runs": results}, sort_keys=False), encoding="utf-8")
+    if args.incident_output:
+        args.incident_output.parent.mkdir(parents=True, exist_ok=True)
+        args.incident_output.write_text(json.dumps({"incidents": incidents}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(render_aggregate(summary), end="")
     for result in results:
         print("\n" + render_markdown(result), end="")
+    for incident in incidents:
+        owners = ", ".join(f"rahp#{n}" for n in incident["owner_issues"]) or "none"
+        if incident["incident_required"]:
+            print(f"\nController incident required for {incident['run']}: unowned blockers " + ", ".join(incident["unowned_blockers"]))
+        else:
+            print(f"\nBroken-pipeline ownership for {incident['run']}: existing durable owner(s) {owners}; no duplicate controller incident.")
     return 0
 
 

@@ -67,6 +67,35 @@ class DtgAssuranceReconcileTests(unittest.TestCase):
         self.assertEqual((summary["pipeline_status"], summary["disposition"]), ("AMBER", "WORK_OPEN"))
         self.assertEqual(summary["open_or_blocked_runs"], 1)
 
+    def test_broken_pipeline_with_existing_rahp_owner_does_not_require_incident(self):
+        result = {
+            "portfolio_assurance": {
+                "run": "gha-123-1",
+                "pipeline_status": "RED",
+                "disposition": "PIPELINE_BROKEN",
+                "blockers": {"orphaned_handoffs": ["rahp#305:dpip"], "provenance": []},
+            }
+        }
+        incident = MOD.controller_incidents([result])[0]
+        self.assertFalse(incident["incident_required"])
+        self.assertEqual(incident["owner_issues"], [305])
+        self.assertEqual(incident["unowned_blockers"], [])
+
+    def test_broken_pipeline_without_owner_requires_deterministic_incident(self):
+        result = {
+            "portfolio_assurance": {
+                "run": "gha-123-1",
+                "pipeline_status": "RED",
+                "disposition": "PIPELINE_BROKEN",
+                "blockers": {"orphaned_handoffs": [], "provenance": ["missing-source-pin"]},
+            }
+        }
+        first = MOD.controller_incidents([result])[0]
+        second = MOD.controller_incidents([result])[0]
+        self.assertTrue(first["incident_required"])
+        self.assertEqual(first["incident_key"], second["incident_key"])
+        self.assertEqual(first["unowned_blockers"], ["missing-source-pin"])
+
 
 if __name__ == "__main__":
     unittest.main()
