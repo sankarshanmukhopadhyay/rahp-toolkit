@@ -4,11 +4,15 @@ on:
   pull_request:
     paths:
       - '.github/workflows/**'
+      - 'config/workflow-governance.yaml'
+      - 'tools/validate_workflow_governance.py'
       - 'docs/workflow-governance.md'
   push:
     branches: [main]
     paths:
       - '.github/workflows/**'
+      - 'config/workflow-governance.yaml'
+      - 'tools/validate_workflow_governance.py'
       - 'docs/workflow-governance.md'
   workflow_dispatch:
 
@@ -20,49 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Enforce canonical clean-room workflow boundary
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          root = Path('.github/workflows')
-          workflows = sorted(p.name for p in root.glob('*.yml'))
-
-          canonical = 'clean-room-assessment.yml'
-          if canonical not in workflows:
-              raise SystemExit(f'missing canonical clean-room executor: {canonical}')
-
-          forbidden_files = [
-              name for name in workflows
-              if name != canonical and (
-                  name.startswith('clean-room-') or
-                  name.startswith('true-clean-room-') or
-                  re.search(r'clean-room.*\d+', name)
-              )
-          ]
-          if forbidden_files:
-              raise SystemExit(
-                  'target/issue-specific clean-room workflows are forbidden; '
-                  'use declarative run specifications instead: ' + ', '.join(forbidden_files)
-              )
-
-          text = (root / canonical).read_text(encoding='utf-8').lower()
-          forbidden_literals = (
-              'dogwood',
-              'openvtc',
-              'vti-dogwood',
-              'true-clean-room-dogwood',
-          )
-          leaked = [token for token in forbidden_literals if token in text]
-          if leaked:
-              raise SystemExit(
-                  'canonical clean-room executor contains target-specific literals: '
-                  + ', '.join(leaked)
-              )
-
-          print(f'PASS: {canonical} is the sole clean-room workflow executor')
-          print(f'Workflow files checked: {len(workflows)}')
-          PY
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install PyYAML
+      - name: Enforce workflow inventory, budget and ownership boundaries
+        run: python3 tools/validate_workflow_governance.py
