@@ -1,0 +1,53 @@
+{
+  "schema": "rahp-zero-touch-qualification-evidence/v1",
+  "issue": 318,
+  "parent_issue": 311,
+  "qualification_run": 33350790322,
+  "qualification_job": 99363615530,
+  "pr": 319,
+  "tested_head": "a98b7a8035a1116a460166e08c3cee6784fe1ac3",
+  "artifact": {
+    "id": 9743597275,
+    "name": "clean-room-assurance-33350790322",
+    "digest": "sha256:91fe0a7c36550c86eac32e2f8f8e27067f1bb14c781033f245309a620e331b8f",
+    "size_bytes": 82557
+  },
+  "operator_actions_after_trigger": 0,
+  "stranded_runs": 0,
+  "profiles": ["a2a", "cawg-c2pa", "dtg"],
+  "cases": [
+    {"id":"a2a-prior-pin","subject_type":"specification","assessment_id":"rahp:8cd407936d6d00d7aed5","outcome":"PASS","reason_code":"bounded-spec-pass"},
+    {"id":"a2a-standalone","subject_type":"specification","assessment_id":"rahp:708688891d8f0841c06e","outcome":"PASS","reason_code":"bounded-normative-predicates-satisfied"},
+    {"id":"a2a-model-gap","subject_type":"protocol-surface","assessment_id":"rahp:7a784c8cde67b20cfea9","outcome":"INDETERMINATE","reason_code":"model-gap"},
+    {"id":"a2a-evidence-required","subject_type":"protocol-surface","assessment_id":"rahp:df6b81960ce6cae2921f","outcome":"INDETERMINATE","reason_code":"evidence-required"},
+    {"id":"cawg-specialist-na","subject_type":"protocol-surface","assessment_id":"rahp:7dc6119263ed1b8890d7","outcome":"NOT_APPLICABLE","reason_code":"specialist-not-applicable"},
+    {"id":"cawg-cross-spec","subject_type":"cross-specification","assessment_id":"rahp:bdc4ce6c615405da6fbf","outcome":"PASS","reason_code":"bounded-cross-spec-surfaces-established"},
+    {"id":"c2pa-rs-implementation","subject_type":"implementation","assessment_id":"rahp:3c88e8654a880d5c7153","outcome":"PASS","reason_code":"bounded-implementation-evidence-satisfied"},
+    {"id":"dtg-composite","subject_type":"composition","assessment_id":"rahp:01ec4bbbf81d3343648d","outcome":"INDETERMINATE","reason_code":"model-gap"}
+  ],
+  "replay": {
+    "same_assessment_id": true,
+    "assessment_id": "rahp:708688891d8f0841c06e"
+  },
+  "reassessment": {
+    "prior_assessment_id": "rahp:8cd407936d6d00d7aed5",
+    "new_assessment_id": "rahp:708688891d8f0841c06e",
+    "different_source_pin_identity": true,
+    "lineage_preserved": true
+  },
+  "transport_failure_recovery": {
+    "injected_failure": true,
+    "pending_outbox_after_failure": true,
+    "automatic_retry_succeeded": true,
+    "idempotent_delivery": true,
+    "delivery_attempts": 2
+  },
+  "companion_checks": {
+    "workflow_governance_run": 33350790298,
+    "workflow_governance": "success",
+    "repository_validate_run": 33350790331,
+    "repository_validate": "success",
+    "documentation_build_run": 33350790343,
+    "documentation_build": "success"
+  }
+}
