@@ -3,7 +3,7 @@ contract: rahp-release-declaration-v1
 release:
   version: 2.1.0
   tag: v2.1.0
-  status: candidate
+  status: released
   qualification_status: qualified
   title: RAHP Toolkit v2.1.0 — Common Acacia Blue
   theme: Qualified Autonomous Assurance Plane
