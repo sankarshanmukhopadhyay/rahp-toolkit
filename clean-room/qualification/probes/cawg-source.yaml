@@ -1,0 +1,14 @@
+requirements:
+  - id: ER-CAWG-IDENTITY-SPEC
+    paths:
+      - docs/modules/ROOT/pages/index.adoc
+    assertions:
+      - id: identity-subject
+        pattern: '= Identity Assertion'
+        expected_present: true
+      - id: ratified-version
+        pattern: 'Version 1\.3 DIF Ratified Specification 17 August 2026'
+        expected_present: true
+      - id: ux-surface
+        pattern: 'include::partial\$user-experience\.adoc\[\]'
+        expected_present: true
