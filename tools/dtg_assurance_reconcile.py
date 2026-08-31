@@ -174,7 +174,7 @@ def aggregate(results: list[dict[str, Any]]) -> dict[str, Any]:
 
 def blocker_owner_issue(blocker: str) -> int | None:
     """Return the RAHP issue number that durably owns a blocker, when encoded."""
-    match = re.search(r"rahp#(\\d+)", str(blocker))
+    match = re.search(r"rahp#(\d+)", str(blocker))
     return int(match.group(1)) if match else None
 
 
