@@ -149,6 +149,8 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_*.py'
       - name: Validate DTG repository review worker
         run: python3 tools/dtg_repository_review_worker.py --self-test
+      - name: Validate DTG controller incident publisher
+        run: python3 tools/publish_dtg_controller_incidents.py /tmp/unused.json --self-test
       - name: Validate DTG profile against authoritative portfolio discovery
         env:
           GITHUB_TOKEN: ${{ github.token }}
