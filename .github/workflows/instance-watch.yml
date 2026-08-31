@@ -1,3 +1,20 @@
+# RAHP incremental instance monitor
+#
+# Purpose:
+#   Stateful, delta-driven orchestration for deployed RAHP instances. This workflow
+#   checks DTG and CAWG/C2PA repository/issue state against persisted baselines,
+#   publishes/coalesces assessment work, advances bounded DTG repository reviews,
+#   persists observed state, and reconciles retained DTG assurance lineages.
+#
+# Side effects:
+#   May create/update RAHP GitHub issues, commit instance state back to main, dispatch
+#   validation/publication workflows, and create a controller incident for an otherwise
+#   unowned RED/PIPELINE_BROKEN condition.
+#
+# Boundary:
+#   This is NOT a clean-room portfolio assessment. Workflow success means the monitor
+#   executed successfully; it does not imply that assurance is GREEN.
+#
 name: RAHP incremental instance monitor
 
 run-name: Incremental DTG/CAWG monitor · ${{ github.event_name }} · #${{ github.run_number }}
