@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Stamp DTG gatherer events with a stable run lineage identifier.
+"""Stamp DTG material-review events with stable gatherer run/event lineage.
 
-This post-processes the existing dtg_portfolio.py event list so the gatherer remains
-focused on discovery/materiality while orchestration owns run identity. Non-empty runs
-are retained as immutable per-run records so a later empty run cannot hide unresolved
-RAHP/DPIP work from an earlier lineage.
+Operational contract:
+- Post-processes dtg_portfolio.py output; discovery/materiality remain owned upstream.
+- Adds deterministic event identifiers and a run identifier, then retains each non-empty
+  gatherer run as immutable JSON under instances/dtg/generated/gatherer-runs/.
+- This retention prevents a later empty incremental run from hiding unresolved RAHP or
+  DPIP work from an earlier run.
+- It creates provenance only; it does not assess or disposition the events.
 """
 from __future__ import annotations
 
