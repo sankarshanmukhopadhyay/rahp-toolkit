@@ -1,0 +1,9 @@
+{
+  "requirement_ids": ["ER-C2PA-RS-VERSION", "ER-C2PA-RS-CARGO-METADATA"],
+  "assessor": "rahp-evidence-assertion-assessor",
+  "assessment_id": "q318-c2pa-rs-evidence-derived",
+  "success_reason_code": "bounded-implementation-evidence-satisfied",
+  "success_residual_risk": "The pinned implementation declares C2PA validator 2.3.0 and its Cargo workspace is executable enough to resolve metadata; this does not prove production conformance or all runtime validation behavior.",
+  "success_action_required": "Preserve immutable specification-version binding and executable regression/conformance evidence for material implementation changes.",
+  "boundedness": "PASS applies only to the named source-version and executable workspace predicates at the immutable implementation pin."
+}
