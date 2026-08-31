@@ -10,6 +10,9 @@ on:
       - tools/assurance_watchdog.py
       - tools/autonomous_assurance_controller.py
       - schemas/rahp-assurance-run-state-v1.schema.json
+      - schemas/rahp-assessor-result-v1.schema.json
+      - schemas/rahp-evidence-remediation-v1.schema.json
+      - schemas/rahp-specialist-return-v1.schema.json
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
       - tools/dpip_return_reconcile.py
@@ -22,6 +25,9 @@ on:
       - tools/assurance_watchdog.py
       - tools/autonomous_assurance_controller.py
       - schemas/rahp-assurance-run-state-v1.schema.json
+      - schemas/rahp-assessor-result-v1.schema.json
+      - schemas/rahp-evidence-remediation-v1.schema.json
+      - schemas/rahp-specialist-return-v1.schema.json
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
       - tools/dpip_return_reconcile.py
