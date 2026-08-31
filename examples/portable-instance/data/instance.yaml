@@ -8,66 +8,24 @@ instance:
     version_assessed: '0.1'
     review_date: 2026-08
     repository: https://example.invalid/spec
-  toolkit_version: v2.0.0
+  toolkit_version: v2.1.0
   licence: CC-BY-4.0
   maintainer: RAHP portability test fixture
 namespaces:
-  RK:
-    pattern: ^RK-[A-Z]{1,2}\d{2}$
-    record_type: risk
-    file: risks.yaml
-  CT:
-    pattern: ^CT-\d{2}$
-    record_type: control
-    file: controls.yaml
-  GR:
-    pattern: ^GR-\d{2}$
-    record_type: guardrail
-    file: guardrails.yaml
-  AT:
-    pattern: ^AT-\d{2}$
-    record_type: assurance_test
-    file: assurance-tests.yaml
-  M:
-    pattern: ^M-\d{2}$
-    record_type: metric
-    file: metrics.yaml
+  RK: {pattern: '^RK-[A-Z]{1,2}\d{2}$', record_type: risk, file: risks.yaml}
+  CT: {pattern: '^CT-\d{2}$', record_type: control, file: controls.yaml}
+  GR: {pattern: '^GR-\d{2}$', record_type: guardrail, file: guardrails.yaml}
+  AT: {pattern: '^AT-\d{2}$', record_type: assurance_test, file: assurance-tests.yaml}
+  M: {pattern: '^M-\d{2}$', record_type: metric, file: metrics.yaml}
 references:
-  risk:
-    affected_metrics: M
-    guardrails: GR
-    controls: CT
-    assurance_tests: AT
-  control:
-    guardrails: GR
-    linked_risks: RK
-  guardrail:
-    risks_addressed: RK
-    controls: CT
-    assurance_tests: AT
-  assurance_test:
-    guardrail: GR
-    risks_covered: RK
-  metric:
-    risks_measured: RK
+  risk: {affected_metrics: M, guardrails: GR, controls: CT, assurance_tests: AT}
+  control: {guardrails: GR, linked_risks: RK}
+  guardrail: {risks_addressed: RK, controls: CT, assurance_tests: AT}
+  assurance_test: {guardrail: GR, risks_covered: RK}
+  metric: {risks_measured: RK}
 invariants:
-- id: INV-1
-  rule: every_guardrail_has_assurance_test
-  message: A guardrail without an assurance test is unverifiable.
-  severity: error
-- id: INV-2
-  rule: every_control_reaches_a_metric
-  message: A control without a signal is unmonitorable.
-  severity: error
-- id: INV-3
-  rule: critical_risk_has_guardrail
-  message: A Critical risk must have a guardrail.
-  severity: error
-- id: INV-4
-  rule: must_address_risk_is_covered
-  message: A must-address risk needs a guardrail or acceptance.
-  severity: warning
-- id: INV-5
-  rule: no_orphan_identifiers
-  message: Every defined identifier should be referenced.
-  severity: warning
+- {id: INV-1, rule: every_guardrail_has_assurance_test, message: 'A guardrail without an assurance test is unverifiable.', severity: error}
+- {id: INV-2, rule: every_control_reaches_a_metric, message: 'A control without a signal is unmonitorable.', severity: error}
+- {id: INV-3, rule: critical_risk_has_guardrail, message: 'A Critical risk must have a guardrail.', severity: error}
+- {id: INV-4, rule: must_address_risk_is_covered, message: 'A must-address risk needs a guardrail or acceptance.', severity: warning}
+- {id: INV-5, rule: no_orphan_identifiers, message: 'Every defined identifier should be referenced.', severity: warning}
