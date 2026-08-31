@@ -68,6 +68,18 @@ semantic_rules:
         create an unnecessary stable or human-readable correlation surface beyond
         the declared operational scope?
 
+  - id: rp-wallet-origin-binding
+    when:
+      dimensions: [privacy, authorization]
+      concerns: [data-minimization, origin-binding]
+    outcome: no-action
+    rationale: >-
+      Origin-bound RP wallet resolution that reduces disclosure to one already-bound
+      persona is assurance-strengthening when browser-attested origin remains the
+      authority boundary and consequential sign-in consent remains separate. Keep the
+      finding visible in the portfolio controller; escalate only if another semantic
+      rule identifies a privacy, security, correlation, or authorization regression.
+
   - id: delegation-credential-composition
     when:
       dimensions: [authorization, lifecycle, composition]
@@ -167,6 +179,15 @@ finding_rules:
         Does device or install metadata transmitted in heartbeat/presence traffic
         create an unnecessary stable or human-readable correlation surface beyond
         the declared operational scope?
+
+  - id: rp-wallet-origin-binding
+    outcome: no-action
+    repository_regex: '^OpenVTC/(vta-browser-plugin|verifiable-trust-infrastructure|openvtc)$'
+    title_regex: '(walletProfile|wallet profile|RP[- ]login|relying party.*wallet|site knows you as|origin[- ]bound|persona.*site)'
+    rationale: >-
+      Origin-bound RP wallet resolution that reduces disclosure to one already-bound
+      persona is assurance-strengthening when browser-attested origin remains the
+      authority boundary and consequential sign-in consent remains separate.
 
   - id: delegation-credential-composition
     outcome: combined
