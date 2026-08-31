@@ -1,7 +1,7 @@
 project: rahp-toolkit
 stable_release: 2.1.0
 development_target: 2.1.0
-release_status: candidate
+release_status: released
 qualification_status: qualified
 qualification_contract: method/v2.1-release-qualification.yaml
 release_name:
