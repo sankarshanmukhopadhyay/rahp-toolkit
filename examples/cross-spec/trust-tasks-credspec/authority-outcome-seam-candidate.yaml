@@ -1,0 +1,224 @@
+candidate_profile:
+  id: TT-CREDSPEC-AUTHORITY-OUTCOME-SEAM-001
+  status: exploratory
+  provenance:
+    rahp_issue: 337
+    pressure_test: examples/cross-spec/trust-tasks-credspec/v1.9-current-pressure-test.yaml
+    corpus: corpora/trust-tasks-credspec-composed.yaml
+    derived_from_comment: 5475128619
+  proposition: >
+    A relying implementation can consume a bounded cross-specification decision without
+    treating credential proof validity as current action authority or treating current
+    action authority as proof of execution or outcome.
+  non_goals:
+    - Define a new base authority object for Trust Tasks or the DTG Credential Specification.
+    - Make the verifier authoritative beyond the declared evidence, policy, scope and evaluation time.
+    - Fold privacy, redress, fiduciary propriety or governance legitimacy into technical authorization.
+  authority_decision:
+    result_values:
+      - confirmed
+      - contradicted
+      - unresolved
+    proposition_shape: >
+      Actor X is authorized for Action Y, in Scope Z, under Policy P, against State S,
+      as evaluated at Time T.
+    required_bindings:
+      - actor
+      - action
+      - scope
+      - policy_digest
+      - credential_digests
+      - delegation_or_acl_digests
+      - registry_or_status_digests
+      - evaluated_at
+      - status_as_of
+      - freshness_requirement
+      - verifier_identity
+    semantics:
+      confirmed: >
+        All mandatory evidence is available, freshness requirements are satisfied,
+        authoritative sources are compatible under declared precedence rules, and the
+        bounded authorization proposition evaluates positively.
+      contradicted: >
+        Sufficient authoritative evidence establishes that the bounded authorization
+        proposition is false, for example revocation, expiry, actor mismatch, scope
+        mismatch or an explicit policy denial.
+      unresolved: >
+        The verifier cannot safely establish either confirmed or contradicted because
+        required evidence is missing, stale, conflicting without a precedence rule,
+        version-incompatible or otherwise incomplete.
+    invariants:
+      - Missing evidence MUST NOT be treated as confirmed.
+      - Missing evidence MUST NOT be silently converted to contradicted.
+      - Conflicting authoritative state MUST NOT be resolved without a declared precedence rule.
+      - A confirmed result MUST NOT imply execution, successful completion or authoritative side effect.
+      - A confirmed result MUST NOT imply fiduciary propriety, governance compliance, retained agency or substantive legitimacy.
+  outcome_decision:
+    result_values:
+      - confirmed
+      - contradicted
+      - unresolved
+    required_bindings:
+      - transaction_id
+      - canonical_action_digest
+      - authority_decision_digest
+      - execution_or_idempotency_reference
+      - authoritative_effect_or_outcome_evidence_digest
+      - evaluated_at
+      - verifier_identity
+    semantics:
+      confirmed: >
+        The declared authoritative outcome evidence establishes that the bounded
+        transaction/action completed with the claimed effect under the declared
+        execution and idempotency rules.
+      contradicted: >
+        Authoritative execution or outcome evidence establishes that the claimed
+        completion/effect did not occur or conflicts with the claimed result.
+      unresolved: >
+        The available evidence is insufficient to establish or contradict the claimed
+        execution/outcome.
+    invariants:
+      - Authorization MUST remain distinct from execution and outcome.
+      - A valid credential or confirmed authority decision MUST NOT be treated as proof of completion.
+      - One-time or idempotent execution MUST bind to one canonical transaction/action identity.
+  evidence_closure:
+    required:
+      - exact input digests
+      - source authority identifiers
+      - policy and profile versions
+      - evaluation timestamps
+      - freshness/status-as-of data
+      - reason codes
+      - canonical transaction snapshot where quorum or execution semantics require it
+    fail_closed_rule: >
+      If evidence required for the evaluated proposition cannot be resolved, the
+      applicable decision result is unresolved unless authoritative contradictory
+      evidence independently establishes contradicted.
+  external_obligations:
+    privacy:
+      rationale: >
+        Correlation, audience expansion, derived-data leakage and observer linkage are
+        composition properties and are not safely represented as authority outcomes.
+    redress:
+      rationale: >
+        Adverse-decision explanation, accountability, correction and remedy require a
+        governance contract beyond the technical authorization result.
+    non_inference:
+      rationale: >
+        Technical authorization evidence must not be over-read as fiduciary propriety,
+        governance legitimacy, absence of conflict or retained human agency.
+  scenario_coverage:
+    XSP-001:
+      authority_seam: partial
+      primary_control: outcome_decision
+      residual: credential/task context requires outcome evidence closure
+    XSP-002:
+      authority_seam: strong
+      primary_control: authority_decision
+      residual: freshness and state precedence
+    XSP-003:
+      authority_seam: partial
+      primary_control: outcome_decision
+      residual: replay/idempotency and canonical transaction binding
+    XSP-004:
+      authority_seam: useful
+      primary_control: authority_decision
+      residual: typed identity and role bindings
+    XSP-005:
+      authority_seam: out-of-scope
+      primary_control: privacy
+      residual: recipient/audience scoping
+    XSP-006:
+      authority_seam: out-of-scope
+      primary_control: privacy
+      residual: composition fingerprinting/correlation
+    XSP-007:
+      authority_seam: strong
+      primary_control: authority_decision
+      residual: delegation freshness
+    XSP-008:
+      authority_seam: strong
+      primary_control: authority_decision
+      residual: explicit identity-layer precedence
+    XSP-009:
+      authority_seam: strong
+      primary_control: authority_decision
+      residual: offline status-as-of semantics and safe degradation
+    XSP-010:
+      authority_seam: useful
+      primary_control: authority_decision
+      residual: version/profile compatibility
+    XSP-011:
+      authority_seam: out-of-scope
+      primary_control: privacy
+      residual: failure/error disclosure controls
+    XSP-012:
+      authority_seam: out-of-scope
+      primary_control: redress
+      residual: accountable adverse-decision and appeal path
+    XSP-013:
+      authority_seam: strong
+      primary_control: authority_decision
+      residual: ACL/credential authoritative-state precedence
+    XSP-014:
+      authority_seam: strong
+      primary_control: authority_decision
+      residual: approval freshness and canonical decision snapshot
+    XSP-015:
+      authority_seam: partial
+      primary_control: evidence_closure
+      residual: quorum must bind to one transaction/policy/evidence snapshot
+    XSP-016:
+      authority_seam: strong
+      primary_control: authority_decision
+      residual: removal-state precedence plus redress
+    XSP-017:
+      authority_seam: partial
+      primary_control: evidence_closure
+      residual: missing referenced VRC forces unresolved
+    XSP-018:
+      authority_seam: out-of-scope
+      primary_control: privacy
+      residual: status lookup/task metadata correlation
+    XSP-019:
+      authority_seam: strong
+      primary_control: authority_decision
+      residual: restoration/revocation precedence
+    XSP-020:
+      authority_seam: boundary
+      primary_control: non_inference
+      residual: technical authorization must not imply propriety or retained agency
+  retest_gates:
+    F-001:
+      status: not-satisfied
+      close_only_if:
+        - Current delegated-authority verification is normatively defined across task and credential evidence.
+        - confirmed/contradicted/unresolved semantics are defined and fail closed on missing or stale evidence.
+        - Lifecycle synchronization and authoritative-state precedence are defined.
+        - Offline status-as-of and safe-degradation semantics are defined.
+        - Version/profile compatibility and restoration/revocation conflict handling are defined.
+        - Technical authorization has an explicit non-inference boundary.
+    F-002:
+      status: not-satisfied
+      close_only_if:
+        - Outcome/execution verification is explicitly separate from action authority.
+        - One-time or idempotent execution is bound to a canonical transaction/action identity.
+        - Threshold/quorum evidence is bound to one canonical decision, policy and evidence snapshot.
+        - Referenced credential evidence required for the proposition is complete or yields unresolved.
+        - Authoritative side-effect/outcome evidence is defined and bound to the transaction.
+        - The outcome result is reproducible from retained evidence and exact input digests.
+    F-003:
+      status: intentionally-not-resolved-by-this-candidate
+      note: >
+        Privacy/correlation, contestability and redress remain separate governance/privacy
+        obligations and should not be absorbed into the authority verifier.
+  disposition:
+    current_judgment: >
+      The tri-state action-authority result is a coherent core seam for F-001 and an
+      important input to F-002, but it is not a universal assurance result. The smallest
+      coherent companion profile also needs a separate outcome decision, deterministic
+      evidence closure, and explicit non-inference/privacy/redress boundaries.
+    upstream_ownership: unresolved
+    next_decision: >
+      Determine whether this seam belongs in a DTG cross-spec companion profile and which
+      narrow normative clarifications, if any, belong in Trust Tasks or the Credential Specification.
