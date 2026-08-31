@@ -9,9 +9,19 @@ parent: Project
 
 ## Current release boundary — v2.1.0 Common Acacia Blue
 
-v2.1.0 packages the **Qualified Autonomous Assurance Plane** established through #311/#318. The release boundary is intentionally stabilization-oriented: documentation, compatibility, packaging, regression validation and truthful public capability claims. It is not an invitation to reopen the architecture for every newly visible assurance proposition.
+v2.1.0 packages the **Qualified Autonomous Assurance Plane** established through #311/#318. The release boundary is intentionally stabilization-oriented: documentation, compatibility, packaging, regression validation and truthful public capability claims.
 
-Qualified current capabilities include the canonical machine-owned assurance FSM, multi-granularity subjects, target-agnostic autonomous control, engine-owned clean-room execution, specialist contract routing, durable retryable returns, stranded-run watchdogs, citable human+machine terminal records, evidence-required/model-gap semantics, replay identity, reassessment lineage, evidence-class integrity, human-harm traceability and composition-aware non-promotion.
+The following previously qualified portable capability lines remain first-class and non-regressed:
+
+- **Durable assessment and finding lineage**
+- **Governed remediation and retest**
+- **Assurance graph and impact analysis**
+- **Evidence provenance, freshness and delta**
+- **Executable authority and policy gates**
+- **Portfolio and deployment presentation**
+- **Release qualification**
+
+v2.1 adds/qualifies the canonical machine-owned assurance FSM, multi-granularity subjects, target-agnostic autonomous control, engine-owned clean-room execution, specialist contract routing, durable retryable returns, stranded-run watchdogs, citable human+machine terminal records, evidence-required/model-gap semantics, replay identity, reassessment lineage, evidence-class integrity, human-harm traceability and composition-aware non-promotion.
 
 ## Post-release priorities
 
