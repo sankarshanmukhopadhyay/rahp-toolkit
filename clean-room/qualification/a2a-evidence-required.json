@@ -1,0 +1,10 @@
+{
+  "schema":"rahp-clean-room-run/v2",
+  "run":{"issue":318,"lineage_prefix":"q318-a2a-evidence","instance":"a2a","snapshot":"2026-08-31-evidence-required"},
+  "target":{"repository":"a2aproject/A2A","revision":"f63dbb48271940ca5bd421f87e27e4d6ec002795","release":"main-pinned","path":"target"},
+  "resources":{},
+  "subject":{"type":"protocol-surface","id":"A2A-delegation-runtime-evidence"},
+  "assurance_contract":{"material":true,"specialist_required":true,"scope":"Qualification of a material A2A delegation proposition whose named runtime evidence is unavailable.","non_scope":"A finding that A2A itself fails the proposition.","personas":["delegating user"],"scenarios":["A consequential action is delegated across agents."],"risks":["authority-context confusion"],"harms":["delegation scope cannot be evidenced at runtime"],"assurance_propositions":["Runtime authority continuity must be evidenced before assurance can be concluded."],"required_evidence":["ER-A2A-AUTHORITY-AB"],"tests":["required evidence absence must become deterministic evidence-required"],"harm_traceability":[{"persona":"delegating user","scenario":"consequential delegation across agents","harm":"unproven authority continuity","proposition":"runtime authority continuity requires attributable evidence","control":"pinned runtime authority A/B evidence"}],"actions":[{"surface":"evidence-test","action":"Produce attributable runtime authority-continuity evidence for the named requirement.","acceptance_criterion":"A new comparable pinned run satisfies ER-A2A-AUTHORITY-AB in an accepted evidence class and reaches specialist reconciliation without operator intervention."}]},
+  "assessment":{"profile_id":"q318-a2a-evidence","title":"#318 specialist evidence-required qualification","target_id":"a2a-evidence","target_title":"A2A delegation evidence surface","mode":"combined"},
+  "evidence_plan":{"producers":{},"requirements":[]}
+}

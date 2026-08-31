@@ -1,0 +1,11 @@
+{
+  "schema":"rahp-clean-room-run/v2",
+  "run":{"issue":318,"lineage_prefix":"q318-a2a-prior","instance":"a2a","snapshot":"2026-08-28"},
+  "target":{"repository":"a2aproject/A2A","revision":"aa042ec2653ab98c7ec5c3dc8e2feb7c3078aee1","release":"prior-pinned","path":"target"},
+  "resources":{},
+  "subject":{"type":"specification","id":"A2A-v1-specification"},
+  "assurance_contract":{"material":true,"specialist_required":false,"scope":"Historical pinned A2A specification baseline for reassessment-lineage qualification.","non_scope":"Subsequent source revisions.","personas":["delegating user"],"scenarios":["A user delegates a consequential task across A2A agents."],"risks":["delegation ambiguity"],"harms":["authority is inferred beyond intended scope"],"assurance_propositions":["A historical pinned assessment remains immutable when a new source revision is assessed."],"tests":["historical pin baseline"],"harm_traceability":[{"persona":"delegating user","scenario":"delegation across agents","harm":"authority overreach","proposition":"historical assessment remains immutable","control":"source-pinned reassessment lineage"}]},
+  "assessment":{"profile_id":"q318-a2a-prior","title":"#318 A2A prior-pin qualification","target_id":"a2a-prior","target_title":"A2A prior specification pin","mode":"combined"},
+  "evidence_plan":{"producers":{},"requirements":[]},
+  "assessor":{"commands":[["python","-c","import json,pathlib; pathlib.Path('output/a2a-prior-assessor.json').write_text(json.dumps({'schema':'rahp-assessor-result/v1','assessor':'rahp-bounded-spec','assessment_id':'q318-a2a-prior','outcome':'PASS','reason_code':'bounded-spec-pass','evidence_used':[],'residual_risk':'Historical baseline only.','action_required':'Reassess on a new immutable source pin without mutating this record.'}))"]],"result_file":"output/a2a-prior-assessor.json"}
+}

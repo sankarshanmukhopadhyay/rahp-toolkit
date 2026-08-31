@@ -1,0 +1,23 @@
+{
+  "schema": "rahp-clean-room-run/v2",
+  "run": {"issue": 318, "lineage_prefix": "q318-a2a-model-gap", "instance": "a2a", "snapshot": "2026-08-31-model-gap"},
+  "target": {"repository": "a2aproject/A2A", "revision": "f63dbb48271940ca5bd421f87e27e4d6ec002795", "release": "main-pinned", "path": "target"},
+  "resources": {},
+  "subject": {"type": "protocol-surface", "id": "A2A-unmapped-delegation-evidence-surface"},
+  "assurance_contract": {
+    "material": true,
+    "specialist_required": true,
+    "scope": "Deliberately unmapped evidence proposition used to prove autonomous model-gap termination.",
+    "non_scope": "A substantive claim that the A2A specification is defective.",
+    "personas": ["delegating user"],
+    "scenarios": ["A consequential delegation crosses an A2A interaction boundary without a configured evidence contract for authority continuity."],
+    "risks": ["unmapped assurance proposition"],
+    "harms": ["authority continuity cannot be established by the configured assurance model"],
+    "assurance_propositions": ["A material but unmapped delegation-evidence surface must terminate as a model/evidence-contract gap without human review."],
+    "tests": ["unmapped proposition fail-closed regression"],
+    "harm_traceability": [{"persona": "delegating user", "scenario": "delegation crosses an A2A boundary", "harm": "authority continuity remains unproven", "proposition": "unmapped evidence surfaces must fail closed", "control": "machine-generated evidence-model remediation contract"}],
+    "actions": [{"surface": "assurance-model", "action": "Define a portable evidence contract for the delegation-authority proposition before claiming assurance.", "acceptance_criterion": "A new pinned run binds an attributable evidence producer and portable assessor result; the historical model-gap run remains immutable."}]
+  },
+  "assessment": {"profile_id": "q318-a2a-model-gap", "title": "#318 A2A model-gap qualification", "target_id": "a2a-model-gap", "target_title": "A2A unmapped proposition", "mode": "combined"},
+  "evidence_plan": {"producers": {}, "requirements": []}
+}

@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/clean-room-assessment.yml'
       - 'clean-room/**'
+      - 'tools/qualification_matrix.py'
       - 'tools/clean_room.py'
       - 'tools/clean_room_execute.py'
       - 'tools/evidence_probe_orchestrator.py'
@@ -19,6 +20,11 @@ on:
         required: false
         default: clean-room/run-spec.json
         type: string
+      qualification_manifest:
+        description: Optional repository-relative qualification manifest
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -29,6 +35,7 @@ jobs:
     timeout-minutes: 50
     env:
       RUN_SPEC: ${{ inputs.run_spec_path || 'clean-room/run-spec.json' }}
+      QUALIFICATION_MANIFEST: ${{ inputs.qualification_manifest || '' }}
     steps:
       - name: Checkout RAHP under test
         uses: actions/checkout@v4
@@ -51,34 +58,51 @@ jobs:
           python rahp/tools/autonomous_assurance_controller.py --self-test
           python rahp/tools/clean_room_execute.py --self-test
 
-      - name: Execute isolated assurance run to terminal state
+      - name: Execute isolated assurance run or qualification matrix
+        shell: bash
         run: |
-          python rahp/tools/clean_room_execute.py \
-            --spec "rahp/${RUN_SPEC}" \
-            --rahp rahp \
-            --workspace "$GITHUB_WORKSPACE" \
-            --nonce "$GITHUB_RUN_ID"
+          set -euo pipefail
+          if [ -n "${QUALIFICATION_MANIFEST:-}" ] && [ -f "rahp/${QUALIFICATION_MANIFEST}" ]; then
+            python rahp/tools/qualification_matrix.py \
+              --manifest "rahp/${QUALIFICATION_MANIFEST}" \
+              --rahp rahp \
+              --root "$GITHUB_WORKSPACE" \
+              --nonce "$GITHUB_RUN_ID"
+          else
+            python rahp/tools/clean_room_execute.py \
+              --spec "rahp/${RUN_SPEC}" \
+              --rahp rahp \
+              --workspace "$GITHUB_WORKSPACE" \
+              --nonce "$GITHUB_RUN_ID"
+          fi
 
-      - name: Require a citable terminal assurance record
+      - name: Require citable terminal assurance output
         run: |
           python - <<'PY'
           import json, pathlib
-          output=pathlib.Path('output')
-          terminal=json.loads((output/'clean-room-terminal.json').read_text())
-          record=json.loads((output/'assurance-terminal-machine.json').read_text())
-          assert terminal['terminal'] is True, terminal
-          assert terminal['stranded'] is False, terminal
-          assert record['terminal'] is True, record
-          assert record['assessment_id'] == terminal['assessment_id']
-          assert record['source_pins'], record
-          assert (output/'assurance-terminal-human.md').read_text().strip()
-          print(json.dumps(terminal,indent=2))
+          q=pathlib.Path('qualification-output/qualification-summary.json')
+          if q.exists():
+              summary=json.loads(q.read_text())
+              assert summary['operator_actions_after_trigger'] == 0, summary
+              assert summary['stranded_runs'] == 0, summary
+              assert summary['replay']['same_assessment_id'] is True, summary
+              print(json.dumps(summary,indent=2))
+          else:
+              output=pathlib.Path('output')
+              terminal=json.loads((output/'clean-room-terminal.json').read_text())
+              record=json.loads((output/'assurance-terminal-machine.json').read_text())
+              assert terminal['terminal'] is True and terminal['stranded'] is False, terminal
+              assert record['terminal'] is True and record['assessment_id'] == terminal['assessment_id']
+              assert record['source_pins']
+              assert (output/'assurance-terminal-human.md').read_text().strip()
+              print(json.dumps(terminal,indent=2))
           PY
-          cat output/assurance-terminal-human.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload clean-room assurance package
         uses: actions/upload-artifact@v4
         with:
           name: clean-room-assurance-${{ github.run_id }}
-          path: output/
+          path: |
+            output/
+            qualification-output/
           if-no-files-found: error

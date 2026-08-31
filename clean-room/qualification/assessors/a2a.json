@@ -1,0 +1,9 @@
+{
+  "requirement_ids": ["ER-A2A-NORMATIVE-AUTHORITY"],
+  "assessor": "rahp-evidence-assertion-assessor",
+  "assessment_id": "q318-a2a-source-derived",
+  "success_reason_code": "bounded-normative-predicates-satisfied",
+  "success_residual_risk": "The pinned specification explicitly addresses authorization and deterministic normative-model derivation; this does not establish that application-level delegated authority is sufficient in every implementation.",
+  "success_action_required": "Preserve explicit authorization treatment and the single-authoritative-model regeneration rule; separately assess implementation-level delegation semantics.",
+  "boundedness": "PASS applies only to the named normative predicates at the immutable A2A source pin."
+}

@@ -1,0 +1,14 @@
+requirements:
+  - id: ER-A2A-NORMATIVE-AUTHORITY
+    paths:
+      - docs/specification.md
+    assertions:
+      - id: enterprise-authorization
+        pattern: 'Address authentication, authorization, security, privacy'
+        expected_present: true
+      - id: authoritative-model
+        pattern: 'single authoritative normative definition'
+        expected_present: true
+      - id: regenerate-derived
+        pattern: 'MUST[^\n]*regenerated from the proto'
+        expected_present: true
