@@ -23,6 +23,7 @@ from dpip_lifecycle import DEFAULT_DPIP_REPO, DEFAULT_RAHP_REPO, api
 
 COMPLETE = "assurance:dpip-complete"
 OPEN = "assurance:dpip-open"
+MODEL_GAP = "assurance:model-gap"
 RETURN_RE = re.compile(r"<!--\s*dpip-return:([^#\s]+)#(\d+)\s*-->")
 YAML_RE = re.compile(r"```ya?ml\s*\n(.*?)```", re.DOTALL | re.IGNORECASE)
 RECONCILIATION_VERSION = "v2"
@@ -96,6 +97,13 @@ def reconciliation_state(conclusion: str, terminal_reason: str = "") -> str:
 
 def fsm_terminal_state(conclusion: str, terminal_reason: str = "") -> str:
     return terminal_from_specialist(normalize_conclusion(conclusion), terminal_reason)
+
+
+def residual_labels(state: str) -> list[str]:
+    labels = ["assurance"]
+    if state == "model-gap":
+        labels.append(MODEL_GAP)
+    return labels
 
 
 def is_referral_container(issue: dict[str, Any]) -> bool:
@@ -182,7 +190,7 @@ This issue is the durable RAHP owner created by terminal reconciliation of a com
 
 Close only after attributable remediation/evidence plus a comparable pinned reassessment supports a terminal RAHP disposition. The completed referral container being closed is **not** evidence of privacy PASS.
 """
-    return api("POST", repo, "issues", token, {"title": residual_title(source_issue, state), "body": body, "labels": ["assurance"], "assignees": ["sankarshanmukhopadhyay"]})
+    return api("POST", repo, "issues", token, {"title": residual_title(source_issue, state), "body": body, "labels": residual_labels(state), "assignees": ["sankarshanmukhopadhyay"]})
 
 
 def remove_label(repo: str, number: int, label: str, token: str) -> None:
@@ -254,6 +262,9 @@ dpip_disposition:
     assert parsed_gap and parsed_gap["target_issue"] == 149 and parsed_gap["terminal_reason"] == "model-gap"
     assert reconciliation_state(parsed_gap["conclusion"], parsed_gap["terminal_reason"]) == "model-gap"
     assert fsm_terminal_state(parsed_gap["conclusion"], parsed_gap["terminal_reason"]) == "TERMINAL_INDETERMINATE_MODEL_GAP"
+    assert residual_labels("model-gap") == ["assurance", "assurance:model-gap"]
+    assert residual_labels("evidence-required") == ["assurance"]
+    assert residual_labels("finding-open") == ["assurance"]
 
     assert reconciliation_state("FAIL") == "finding-open"
     assert reconciliation_state("PASS") == "resolved"
@@ -263,7 +274,7 @@ dpip_disposition:
     assert not is_referral_container({"title": "Composite assessment", "body": ""})
     assert reconciliation_marker(309, 149) == "<!-- rahp-dpip-reconciliation:v2:309:149 -->"
     assert set((OPEN, COMPLETE)) == {"assurance:dpip-open", "assurance:dpip-complete"}
-    print("PASS dpip_return_reconcile self-test including #309/#149 model-gap")
+    print("PASS dpip_return_reconcile self-test including #309/#149 model-gap labeling")
     return 0
 
 
