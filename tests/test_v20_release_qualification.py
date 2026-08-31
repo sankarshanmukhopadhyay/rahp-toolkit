@@ -5,16 +5,20 @@ import yaml
 ROOT=Path(__file__).resolve().parents[1]
 
 class V20ReleaseQualificationTests(unittest.TestCase):
-    def test_workspace_is_200(self):
-        self.assertEqual(json.loads((ROOT/"package.json").read_text())["version"],"2.0.0")
+    def test_current_workspace_has_advanced_beyond_200(self):
+        package_version=json.loads((ROOT/"package.json").read_text())["version"]
         status=yaml.safe_load((ROOT/"PROJECT-STATUS.yaml").read_text())
-        self.assertEqual(str(status["stable_release"]),"2.0.0")
+        self.assertNotEqual(package_version,"2.0.0")
+        self.assertNotEqual(str(status["stable_release"]),"2.0.0")
 
-    def test_release_identity(self):
-        r=yaml.safe_load((ROOT/"method/release.yaml").read_text())["release"]
-        self.assertEqual(r["version"],"2.0.0")
-        self.assertEqual(r["theme"],"Portable Assurance Engine Stabilization")
-        self.assertEqual((r["name"]["common"],r["name"]["scientific"]),("Blue Mormon","Papilio polymnestor"))
+    def test_v20_release_identity_is_preserved_as_history(self):
+        notes=(ROOT/"docs/releases/v2.0.0.md").read_text(encoding="utf-8")
+        changelog=(ROOT/"CHANGELOG.md").read_text(encoding="utf-8")
+        readme=(ROOT/"README.md").read_text(encoding="utf-8")
+        for text in (notes,changelog,readme):
+            self.assertIn("v2.0.0",text)
+            self.assertIn("Blue Mormon",text)
+        self.assertIn("Portable Assurance Engine Stabilization",notes)
 
     def test_contract_compatibility_is_preserved(self):
         s=yaml.safe_load((ROOT/"PROJECT-STATUS.yaml").read_text())

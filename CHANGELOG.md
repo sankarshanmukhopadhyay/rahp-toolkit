@@ -7,331 +7,36 @@ parent: Reference
 ---
 # Changelog
 
-## v2.0.0 — 2026-08-30 — Blue Mormon
+## v2.1.0 — 2026-08-31 — Common Acacia Blue
 
 ### Added
 
-- Generic normalized finding contract and semantic-first routing with structured `UNMAPPED`.
-- Declarative instance-owned normalization/routing profiles.
-- Portable specialist assessor result contract with finite PASS/FAIL/INDETERMINATE/NOT_APPLICABLE outcomes.
-- Explicit assessment lifecycle controller and engine-owned clean-room isolation.
-- Black-box acceptance fixtures for three materially different DTG snapshots.
-- RAHP-side validation of specialist result provenance.
+- Canonical machine-owned assurance FSM and deterministic assessment identity.
+- Multi-granularity assurance subjects distinct from repository/evidence-container identity.
+- Target-agnostic autonomous assurance controller and engine-owned terminal clean-room execution.
+- Stranded-run watchdog and citable materially equivalent human + machine terminal records.
+- Deterministic evidence-required and model-gap terminal semantics.
+- Durable retryable specialist-return/outbox behavior through compatible specialist contracts.
+- Replay/idempotency and new-pin reassessment lineage.
+- Bounded source/specification assertion adapters.
+- Multi-target A2A × CAWG/C2PA × DTG zero-touch clean-room qualification.
 
-### Changed
+### Qualified behavior
 
-- Clean-room is now a first-class engine mode rather than workflow-threaded lineage convention.
-- Source titles/repository names are adapter input/provenance rather than primary routing authority.
-- Plugin failures and malformed specialist returns can no longer contribute PASS/GREEN.
-- Product release identity advances to v2.0.0 while preserving `rahp-engine-contract-v1` revision 1.3, result schema 1 and evidence-retention v1.
+Qualification #318 / PR #319, run `33350790322`, completed with zero operator actions after the initial trigger and zero stranded runs. It exercised standalone specification, cross-specification, implementation/source-code and composition subjects; specialist and no-specialist terminal paths; model-gap behavior; replay identity; reassessment lineage; and injected transport failure with automatic recovery.
 
-### Acceptance result
-
-The final 30 Aug DTG black-box wave produced two target FAIL results without requiring another RAHP-core change. The consumer portfolio is RED; the toolkit release claim is portability and lifecycle stability, not target assurance success.
-
-### Release name
-
-**Blue Mormon — *Papilio polymnestor***.
-
-See [v2.0.0 release notes](docs/releases/v2.0.0.md).
-
-
-This file records current release-level changes. The complete pre-v1.2 changelog, including accumulated historical `Unreleased` sections, is preserved at `archive/pre-v1.2/CHANGELOG-pre-v1.2.txt`.
-
-## v1.9.0 — 2026-08-30 — Lesser Mime
-
-### Added
-
-- Generic declarative clean-room assurance execution driven by a run specification rather than target/issue-specific workflow code.
-- Immutable target and auxiliary-resource pinning with explicit clean-room lineage and historical-input exclusion.
-- Declarative evidence-probe orchestration with required attempt state and producer attribution.
-- Explicit positive-control and unlinkability-pressure experiment semantics, including correlator-origin preservation.
-- Machine-readable and human-readable clean-room evidence-stage records separated from semantic assurance disposition.
-- Workflow governance preventing reintroduction of target-specific clean-room executors.
-- v1.9-specific qualification manifest and validator.
-
-### Changed
-
-- The canonical clean-room path now uses `clean-room-assessment.yml`; superseded Dogwood-specific clean-room workflows were removed.
-- The v1.9 acceptance run pins the completed Interop Lab #71/#72 target-native pressure adapter while keeping target behavior outside generic RAHP machinery.
-- Clean-room evidence can now distinguish detector-sensitivity positive controls from materially context-distinct pressure cases without reclassifying one as the other.
-- Root/workspace package metadata advances to `1.9.0` while the stable v1 engine/result/retention contracts remain unchanged.
-
-### Assurance boundaries
-
-- Workflow green remains distinct from assurance green.
-- A positive-control join is expected detector evidence, not target privacy failure.
-- Composition evidence is not promoted to target-native evidence.
-- Missing or unexercised evidence remains missing/not-evidenced rather than PASS.
-- Historical RAHP and DPIP records remain immutable; fresh evidence creates fresh comparable lineage.
+The qualified property is deterministic attributable terminal assurance execution, not universal PASS/GREEN. Missing evidence never becomes PASS and component PASS never automatically implies composition PASS.
 
 ### Compatibility
 
-The stable v1 compatibility boundaries remain unchanged:
-
-```text
-rahp-engine-contract-v1
-normalized result schema version 1
-rahp-evidence-retention-v1
-```
-
-v1.9.0 is an additive minor release. Existing normalized results and historical assessment/release qualification lineage remain valid.
+`rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1` remain the compatibility authorities.
 
 ### Release name
 
-**Lesser Mime — *Papilio epycides***, selected on 2026-08-30 from the governed pinned West Bengal butterfly pool.
+**Common Acacia Blue — *Surendra quercetorum***.
 
-See [v1.9.0 release notes](docs/releases/v1.9.0.md).
+See [v2.1.0 release notes](docs/releases/v2.1.0.md).
 
-## v1.8.0 — 2026-08-28 — Common Map
+## Prior release history
 
-### Added
-
-- Gatherer-native end-to-end assurance lineage across material repository changes, bounded RAHP judgment, optional DPIP examination, return reconciliation and truthful portfolio disposition.
-- Evidence-backed automatic disposition before human escalation, constrained by explicit evidence-sufficiency rules.
-- Polarity-aware evidence handling that distinguishes weakening/introduction from fixing/prevention without treating keywords or CI success as semantic assurance.
-- Reviewer-ready judgment packets for unresolved semantic questions.
-- Semantic materiality classification for normative, security, semantic, dependency, generated, evidence and release surfaces.
-- VTI composition and adversarial false-independence evidence registers as structured continuing evidence programmes.
-- v1.8-specific machine-verifiable qualification manifest, validator and tests.
-
-### Changed
-
-- DTG materiality now distinguishes substantive semantic change from generated/codegen convergence and release propagation.
-- #151-style semantic changes remain assessment-worthy even when surrounded by release fan-out.
-- #183-style generated binding convergence plus package/changelog propagation routes to triage rather than a fresh broad RAHP/security assessment.
-- RAHP → DPIP applicability, source-pin lineage and return state are explicit; `INDETERMINATE` remains non-green.
-- Newly published assessment IDs can advance directly without depending on eventually consistent GitHub issue rediscovery.
-- Root/workspace package metadata advances to `1.8.0` while the stable v1 engine/result/retention contracts remain unchanged.
-
-### Continuing evidence programmes
-
-The VTI composition register and adversarial identity/trust-independence register remain open by design. v1.8.0 qualifies the evidence taxonomy and operating machinery; it does **not** claim complete Sybil, sock-puppet, trust-laundering, false-diversity, collusion, selective-evidence or quorum-capture pressure-test coverage.
-
-### Compatibility
-
-The stable v1 compatibility boundaries remain unchanged:
-
-```text
-rahp-engine-contract-v1
-normalized result schema version 1
-rahp-evidence-retention-v1
-```
-
-v1.8.0 is an additive minor release. Existing normalized results and historical assessment/release qualification lineage remain valid.
-
-### Release name
-
-**Common Map — *Cyrestis thyodamas***, selected on 2026-08-28 from the recorded West Bengal butterfly list under the random-at-release-time naming policy.
-
-See [v1.8.0 release notes](docs/releases/v1.8.0.md).
-
-## v1.7.0 — 2026-08-27 — Common Palmfly
-
-### Added
-
-- Deterministic no-regression coverage for `rahp`, `security`, `combined` and multi-target `--all` review paths.
-- Full DTG cross-specification benchmark execution across 8 declared / 8 runnable compositions.
-- Live instance-watch acceptance proving persisted monitored state can dispatch current-head validation and Pages evidence successfully.
-- Workflow-dispatch contract validation and stale-head protection for post-monitor assurance regeneration.
-- Repeatable execution benchmarking for representative DTG, full DTG and repository full-validation profiles.
-- v1.7-specific machine-verifiable qualification manifest, validator and tests.
-
-### Changed
-
-- DTG assurance execution expands from a representative seam benchmark to the complete currently maintained runnable DTG composition set.
-- Real ZKP Portfolio Monitor queue lineage is advanced through a durable combined RAHP + security disposition without manufacturing findings.
-- Release qualification now treats the monitor → queue → substantive review → durable evidence → disposition path as an operational contract.
-- Root/workspace package metadata advances to `1.7.0` while the stable v1 engine/result/retention contracts remain unchanged.
-
-### Performance and coverage
-
-Measured benchmark evidence records approximately 1.586 s for the representative DTG seam, 11.165 s for the full eight-composition DTG pressure surface and 11.517 s for repository full validation. Earlier like-for-like measurements do **not** support a speed-improvement claim, so v1.7.0 qualifies measurement capability and coverage refinement rather than faster execution.
-
-### Compatibility
-
-The stable v1 compatibility boundaries remain unchanged:
-
-```text
-rahp-engine-contract-v1
-normalized result schema version 1
-rahp-evidence-retention-v1
-```
-
-v1.7.0 is an additive minor release. Existing normalized results and historical assessment lineage remain valid.
-
-### Release name
-
-**Common Palmfly — *Elymnias hypermnestra***, selected on 2026-08-27 from the recorded West Bengal butterfly list under the random-at-release-time naming policy.
-
-See [v1.7.0 release notes](docs/releases/v1.7.0.md).
-
-## v1.6.0 — 2026-08-23 — Common Earl
-
-### Added
-
-- Source-pinned Trust Tasks and DTG Credential Specification corpora at immutable upstream revisions.
-- Machine-readable coverage maps for the two primary corpora.
-- Expanded Trust Tasks and Credential Specification corpora from 16 to 30 scenarios each.
-- Expanded Trust Tasks × Credential Specification seam corpus from 12 to 20 composed scenarios.
-- Durable pre-expansion assessment history and evidence-backed cross-specification reassessment.
-- Guided documentation hubs for first-run adoption, development/integration and continuous assurance.
-- Machine-verifiable v1.6 release qualification contract, validator and tests.
-- Qualified, commit-bound GitHub tag/release publication workflow.
-
-### Changed
-
-- Packaged corpus coverage increases from 146 to 182 scenario vectors across 14 corpora and 28 portable scenario patterns.
-- The Trust Tasks corpus is pinned to `4937c70df95e56ed6404b8c004106ecb121a23cf`.
-- The DTG Credential Specification corpus is pinned to `b89f389abbdae77ba60b673c0836c781c2b54169`.
-- The Trust Tasks × Credential Specification pressure test was rerun against the expanded current-source corpus; its three residual themes remain but are refined by stronger current ACL lifecycle, approval, redress and VWC binding evidence.
-- The root README is now a concise front door rather than an accumulating handbook.
-- Historical v1.5 qualification validation is release-history aware so later compatible v1 releases do not invalidate preserved v1.5 evidence.
-- Root/workspace package metadata advances to `1.6.0` while the stable v1 engine/result/retention contracts remain unchanged.
-
-### Compatibility
-
-The stable v1 compatibility boundaries remain unchanged:
-
-```text
-rahp-engine-contract-v1
-normalized result schema version 1
-rahp-evidence-retention-v1
-```
-
-v1.6.0 is an additive minor release. Existing normalized results remain valid.
-
-### Assurance and baseline policy
-
-- Corpus growth broadens the pressure surface but is not itself an assurance conclusion.
-- The expanded TT×CredSpec review refines existing residuals rather than manufacturing new findings from scenario count.
-- Maintained example baselines remain at their separately evidenced v1.5 state until independently reassessed; the toolkit release does not silently promote them.
-- Historical assessment records remain immutable lineage evidence.
-
-### Release name
-
-**Common Earl — *Tanaecia julii***, selected on 2026-08-23 from the recorded West Bengal butterfly list under the random-at-release-time naming policy.
-
-See [v1.6.0 release notes](docs/releases/v1.6.0.md).
-
-## v1.5.0 — 2026-08-22 — Purple Leaf Blue
-
-### Added
-
-- Durable assessment identity and finding lineage independent of individual assessment runs and issue trackers.
-- Governed remediation obligations, acceptance criteria, closure evidence and executable retest lineage.
-- Portable assurance graph with explicit impact-propagation semantics and deterministic reassessment selection.
-- Evidence provenance manifests, conservative assurance freshness and machine-readable assurance deltas.
-- Scoped executable authority with suspension, revocation and expiry state.
-- Three-valued policy gates with `PASS`, `FAIL` and `INDETERMINATE` outcomes.
-- Portable assurance posture for actionable operational/portfolio views without a synthetic assurance score.
-- Machine-readable v1.5 capability/documentation registry and synchronization validation.
-- Machine-readable v1.5 release qualification manifest and validator.
-- Deployment-neutral conformance fixtures plus maintained deployment demonstrations.
-- Release runbook and synchronized v1.5.0 release content.
-
-### Changed
-
-- The v1.5 lifecycle connects target change → impact → freshness → reassessment/retest → assurance delta → remediation → policy gate → authority verification → operational posture.
-- Portfolio presentation keeps assurance conclusion, freshness, remediation, gate and authority state separate rather than collapsing them into a percentage.
-- Documentation synchronization is a CI-enforced property across implemented v1.5 capabilities.
-- Root/workspace package metadata advances to `1.5.0` while the stable v1 engine/result/retention contracts remain unchanged.
-
-### Compatibility
-
-The stable v1 compatibility boundaries remain unchanged:
-
-```text
-rahp-engine-contract-v1
-normalized result schema version 1
-rahp-evidence-retention-v1
-```
-
-v1.5.0 is an additive minor release. Existing v1.1 and v1.2 normalized results remain valid.
-
-### Governance
-
-- Policy evaluation never creates authority.
-- Repository permissions are not automatically governance authority.
-- Stale/retest-required assurance is not automatically a finding.
-- Detector absence does not establish closure.
-- Work-item deletion does not destroy canonical assurance lineage.
-- Project-specific deployments remain demonstrations rather than portable-core dependencies.
-
-### Release name
-
-**Purple Leaf Blue — *Amblypodia anita***, selected from the recorded West Bengal butterfly list under the v1.5.x naming policy.
-
-See [v1.5.0 release notes](docs/releases/v1.5.0.md) and the [v1.5 release runbook](docs/v1.5-release-runbook.md).
-
-## v1.2.0 — 2026-08-20
-
-### Added
-
-- Evidence-driven assurance evaluation with seven residual states: `assured`, `controlled`, `finding`, `assurance-gap`, `review-required`, `not-assessed` and `not-applicable`.
-- Typed evidence classification by repository/context surface and authority weight.
-- First-class control credit so risk signals can be evaluated against controls and assurance evidence before a residual conclusion is assigned.
-- `method/schema/assurance-evaluation.schema.json`.
-- `method/schema/remediation-manifest.schema.json`.
-- `method/schema/retest.schema.json`.
-- `method/mappings/resilience-to-assurance.yaml` for semantically valid DRARM-to-portable-pattern mappings.
-- Python assurance evaluation and CLI support.
-- TypeScript schema/core/CLI support for assurance summaries, residual inference and retest outcomes.
-- Cross-implementation conformance fixtures for confirmed findings, assurance gaps, controlled targets, remediation manifests and retest transitions.
-- Documentation for assurance evaluation, evidence classification, result interpretation and remediation/retest lifecycle.
-
-### Changed
-
-- Detector output is explicitly a signal rather than an automatic finding.
-- Normalized result schema version `1` gains optional assurance summaries, evaluations, remediations and retests while preserving v1.1 result validity.
-- `rahp-engine-contract-v1` gains additive assurance-evaluation/remediation/retest operations without changing its stable contract identifier.
-- Zero-finding semantics now prevent unresolved `assurance-gap`, `review-required` or `not-assessed` states from being represented as `no-material-assurance-impact`.
-- DRARM is integrated as a specialized signal provider into the portable assurance graph where semantic equivalence exists; unmatched rules remain explicitly unmapped.
-- Remediation ownership/routing is machine-readable while external publication authority remains separately governed.
-- Root README and roadmap are aligned to the evidence-driven v1.2 lifecycle.
-- TypeScript workspace, package and lockfile metadata advance to `1.2.0`.
-- `method/versioning.yaml` advances the declared stable release to `v1.2.0`.
-
-### Compatibility
-
-The stable v1 boundaries remain unchanged:
-
-```text
-rahp-engine-contract-v1
-normalized result schema version 1
-rahp-evidence-retention-v1
-```
-
-v1.2.0 is an additive minor release. Existing v1.1 normalized results remain valid.
-
-### Governance
-
-- A remediation manifest can identify an owning repository/control plane but does not grant authority to publish externally.
-- Observation, assessment and publication remain distinct capabilities.
-- Evidence-based retesting is the closure mechanism; detector absence alone is not proof of resolution.
-
-See [v1.2.0 release notes](docs/releases/v1.2.0.md).
-
-## v1.1.0 — 2026-08-17
-
-- Added the portable assurance knowledge model and catalogue.
-- Added catalogue validation, catalogue-aware review mappings and portable scenario stress patterns.
-- Added the governed simple-English glossary and explicit guardrail applicability semantics.
-- Expanded maintained DTG, CAWG/C2PA, A2A and cross-specification examples.
-- Added generated portable catalogue and assurance graph views.
-- Preserved `rahp-engine-contract-v1`, normalized result schema version `1` and `rahp-evidence-retention-v1`.
-
-See [v1.1.0 release notes](docs/releases/v1.1.0.md).
-
-## v1.0.0
-
-- Established the stable v1 method/versioning boundary.
-- Added Python/TypeScript differential conformance.
-- Formalized evidence retention and normalized-result compatibility.
-- Added documentation information-architecture validation.
-
-See [v1.0.0 release notes](docs/releases/v1.0.0.md).
-
-## Historical releases
-
-Detailed v0.x and early v1 release notes remain under [`docs/releases/`](docs/releases/). The full pre-v1.2 changelog is retained for provenance at `archive/pre-v1.2/CHANGELOG-pre-v1.2.txt`.
+v2.0.0 **Blue Mormon** and the complete earlier release history remain immutable in Git history and the v2.0.0 tag. Historical v1.7.0 **Common Palmfly** remains the immutable Assurance Operations and Complete DTG Cross-Spec Coverage release record. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record. Historical release-note files remain under [`docs/releases/`](docs/releases/), and pre-v1.2 accumulated history remains under `archive/pre-v1.2/`.

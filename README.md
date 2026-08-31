@@ -1,42 +1,63 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.0.0 (stable) · Blue Mormon · CC-BY 4.0
+Release v2.1.0 (stable) · Common Acacia Blue · CC-BY 4.0
 
-RAHP Toolkit is a **portable specification-assurance toolkit** for pressure-testing standards, protocols, implementations and composed systems against human harms, governance failures, adversarial conditions and resilience risks.
+RAHP Toolkit is a **portable assurance execution and monitoring plane** for pressure-testing standards, protocols, implementations, changesets and composed trust systems against human harms, governance failures, adversarial conditions, privacy/security risks and resilience failures.
 
-> **Project identity:** RAHP Toolkit is the portable method and engine contract. DTG, CAWG/C2PA, OpenVTC, ARPA and other portfolios or projects are independently scoped deployments and examples. No deployment defines the portable method for another adopter. The **Bundled DTG exemplar** is project provenance and an exercised deployment, not a core dependency.
+> **Project identity:** RAHP is the reusable method, contracts and machine-owned assurance lifecycle. Repositories are evidence/source containers; the unit of assurance may instead be a specification, requirement, protocol surface, cross-specification interaction, composition, flow, implementation, deployment proposition, portfolio or changeset. DTG, CAWG/C2PA, A2A, OpenVTC, ARPA and other projects remain independently scoped deployments or qualification consumers.
 
 ## What RAHP does
 
-RAHP helps an implementer, maintainer or reviewer turn a broad question such as “what could go wrong here?” into reproducible assurance evidence. It provides:
+RAHP turns a source/change observation into attributable assurance knowledge through a canonical lifecycle:
 
-- **scenario-driven pressure testing** against harms, adversarial conditions and governance failure;
-- a **portable assurance catalogue** linking harm, risk, control, guardrail, assurance and evidence patterns;
-- **source-pinned corpora** and cross-specification scenarios for repeatable coverage;
-- **evidence classification and closure rules** so cryptographic or structural validity is not mistaken for sufficient assurance;
-- **durable remediation and retest lineage** when targets, evidence or controls change; and
-- **continuous governed assurance** through freshness, impact analysis, policy gates, scoped authority and current posture.
+```text
+subject/change observation
+  → gather + subject model
+  → materiality
+  → bounded RAHP assessment
+  → specialist routing when applicable
+  → specialist examination + durable return
+  → RAHP reconciliation
+  → residual/action
+  → citable terminal assurance record
+```
 
-RAHP is deliberately evidence-conservative: **zero findings is not equivalent to assured**. A target can have no confirmed findings while still carrying assurance gaps, unresolved review obligations or insufficient evidence. Likewise, **workflow green is not assurance green**: successful execution proves that the machinery ran, not that the proposition under review is supported. `INDETERMINATE` remains a non-green / AMBER assurance outcome until sufficient evidence or governed disposition changes it.
+The controller, not GitHub workflow choreography, owns assurance state. Workflows are triggers and transports around that state machine.
+
+Current capabilities include:
+
+- multi-granularity assurance subjects distinct from repository identity;
+- scenario-driven harms, risk, governance, security and composition pressure testing;
+- deterministic assessment identity, replay/idempotency and new-pin reassessment lineage;
+- engine-owned clean-room isolation and terminal execution;
+- target-agnostic autonomous assessment control;
+- versioned portable specialist contracts, including `rahp-assessor-result/v1`;
+- durable retryable specialist-return/outbox semantics with compatible specialists;
+- watchdog detection of stranded transient states;
+- explicit PASS, FAIL, NOT_APPLICABLE, INDETERMINATE/evidence-required and INDETERMINATE/model-gap outcomes;
+- citable materially equivalent machine-readable and human-readable terminal records;
+- evidence-class integrity across static specification evidence, fixtures/synthetic tests, runtime observations and governance evidence;
+- action-target precision across specification, composition/profile, implementation, evidence/test, deployment/operator, governance/redress and consumer-experience surfaces;
+- human-harm traceability from persona/scenario through harm/risk, proposition, control/guardrail, evidence, inference and recommendation;
+- source-pinned corpora, cross-specification scenarios and bounded source/specification assertion adapters;
+- continuous governed assurance through freshness, impact analysis, scoped authority and current posture.
+
+RAHP is deliberately evidence-conservative: **zero findings is not equivalent to assured**. Missing evidence never becomes PASS. Workflow success is not assurance success. A component PASS never automatically implies a composition PASS.
 
 ## Current architecture
 
-```text
-target revision
-  → scenarios and evidence
-  → risks / harms / controls / guardrails
-  → assurance evaluation
-  → finding | gap | controlled | assured
-  → remediation
-  → retest and assurance delta
-  → governed disposition
-  → current assurance posture
-```
+The post-v2.0 architecture was qualified through #311/#318 and PR #319 across materially different A2A, CAWG/C2PA and DTG subjects. The clean-room qualification exercised standalone specification, cross-specification, implementation/source-code and composition subjects; no-specialist and specialist terminal paths; NOT_APPLICABLE and INDETERMINATE outcomes; model gaps; replay identity; new-pin reassessment lineage; durable outbox state; deliberately injected cross-repository transport failure and automatic recovery.
 
-The portable method is shared; deployment context remains independent. Structured method data is authoritative, while Markdown, JSON, JSON-LD and rendered site views are publication surfaces.
+Qualification run `33350790322` completed with **zero operator actions after the trigger and zero stranded runs**. Durable evidence is committed at `clean-room/qualification/evidence-33350790322.json`; the human report is `docs/zero-touch-qualification-2026-08-31.md`.
 
-For the full conceptual walkthrough, see [How RAHP works](docs/how-rahp-works.md). For the operational lifecycle, see [Continuous assurance](docs/continuous-assurance.md).
+The bounded product claim is:
+
+> RAHP is qualified, within the tested contract and subject boundaries, as a zero-touch autonomous assurance monitoring plane that can fail closed into citable, actionable terminal assurance states without operator lifecycle shepherding.
+
+This does not mean every assessment is GREEN. Trustworthy autonomous termination includes adverse and indeterminate outcomes.
+
+**Bundled DTG exemplar:** the repository includes a DTG deployment profile, source-pinned scenario corpora and cross-specification examples as one qualification/adoption consumer. They demonstrate portable RAHP capabilities but are not dependencies of the generic method or engine contracts.
 
 ## Quick start
 
@@ -46,7 +67,7 @@ python3 tools/review.py --help
 python3 tools/validate.py
 ```
 
-For a guided first run, configuration examples and the wider command set, use [Getting started](docs/getting-started.md). For repository internals, validation, the engine contract and the TypeScript implementation, use the [Developer guide](docs/developer-guide.md).
+For a guided first run, use [Getting started](docs/getting-started.md). For the conceptual model, see [How RAHP works](docs/how-rahp-works.md). For continuous operation, see [Continuous assurance](docs/continuous-assurance.md). For repository internals and contracts, see the [Developer guide](docs/developer-guide.md).
 
 ## Choose your path
 
@@ -56,29 +77,23 @@ For a guided first run, configuration examples and the wider command set, use [G
 | Run my first assessment | [Getting started](docs/getting-started.md) |
 | Pressure-test a specification | [Pressure-testing a specification](docs/pressure-testing-a-spec.md) |
 | Test multiple specifications together | [Cross-spec pressure testing](docs/cross-spec-pressure-testing.md) |
-| Browse scenario coverage | [Scenario corpora](docs/scenario-corpora.md) and [corpora browser](corpora/) |
-| Interpret findings and assurance states | [Interpreting results](docs/interpreting-results.md) |
+| Interpret findings and terminal states | [Interpreting results](docs/interpreting-results.md) |
 | Understand continuous reassessment | [Continuous assurance](docs/continuous-assurance.md) |
 | Adopt RAHP for another project | [Adopting RAHP](ADOPTION.md) and [Configuration](docs/configuration.md) |
-| Browse reusable assurance patterns | [Portable catalogue](method/catalogue/) |
 | Develop or integrate the toolkit | [Developer guide](docs/developer-guide.md) |
-| Contribute | [How to contribute](docs/how-to-contribute.md) and [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Review zero-touch qualification | [Qualification report](docs/zero-touch-qualification-2026-08-31.md) |
 
 ## Scenario and assurance coverage
 
-The reusable catalogue under `method/catalogue/` currently contains **162 portable assurance patterns** across harms, risks, controls, guardrails, assurance tests and evidence patterns.
+The reusable catalogue under `method/catalogue/` contains portable assurance patterns across harms, risks, controls, guardrails, assurance tests and evidence patterns. Packaged scenario adapters include DTG, CAWG/C2PA and other interface/composition cases, including the seven-row adversarial false-independence corpus. Apparent multiplicity, depth, threshold satisfaction, actor distinctness or artifact validity must not automatically be upgraded into evidence independence or completeness.
 
-The packaged scenario adapters expose **189 scenario test vectors across 15 corpora and 28 portable scenario patterns**. They include source-pinned Trust Tasks and DTG Credential Specification corpora, their composed seam corpus, DTG ZKP, CAWG/C2PA and smaller interface-baseline/composed adapters. A larger corpus broadens review coverage; it does not by itself establish that a target is safe or conformant.
-
-The current `main` branch also contains the completed seven-row adversarial false-independence evidence corpus from [#193](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/193): Sybil/common-control multiplicity, false governance diversity, trust laundering, sock puppetry, quorum capture, collusion and selective-evidence incompleteness. Each row has a machine-readable pressure-test record, semantic regression tests, legitimate counter-cases and explicit bounded-uncertainty handling. The corpus-level rule is that apparent multiplicity, depth, threshold satisfaction, actor distinctness or artifact validity must not automatically be upgraded into evidence independence or completeness.
-
-See [Scenario corpora](docs/scenario-corpora.md) for provenance, coverage maps and maintenance rules, and [Cross-spec pressure testing](docs/cross-spec-pressure-testing.md) for composition and adversarial seam evidence.
+See [Scenario corpora](docs/scenario-corpora.md) and [Cross-spec pressure testing](docs/cross-spec-pressure-testing.md).
 
 ## Current release
 
-v2.0.0 **Blue Mormon** (*Papilio polymnestor*) is the stable release of **Portable Assurance Engine Stabilization**.
+v2.1.0 **Common Acacia Blue** (*Surendra quercetorum*) is the stable **Qualified Autonomous Assurance Plane** release.
 
-The product major version marks an architectural boundary, not a break in the portable compatibility contracts:
+The release is additive at the product level and preserves the existing compatibility authorities:
 
 ```text
 rahp-engine-contract-v1 revision 1.3
@@ -86,40 +101,36 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v2.0.0 makes normalized findings, declarative instance profiles, semantic-first routing, structured `UNMAPPED`, finite specialist-assessor results, explicit assessment lifecycle state, and engine-owned clean-room isolation part of the stable operating model.
-
-Three frozen DTG snapshots (28–30 Aug 2026) execute through the same unchanged stabilized core. The validation suite also retains non-DTG/CAWG portability checks. The final DTG black-box wave produced real consumer FAIL results without requiring another RAHP-core patch; that is evidence of toolkit portability, not a claim that the DTG portfolio is GREEN.
-
-**Historical releases:** v1.9.0 **Lesser Mime** (*Papilio epycides*) remains the immutable Portable Clean-Room Assurance release; v1.8.0 **Common Map** (*Cyrestis thyodamas*) remains the Semantically Governed Assurance Pipeline record; v1.7.0 **Common Palmfly** (*Elymnias hypermnestra*) remains the Assurance Operations and Cross-Spec Execution record; and v1.6.0 **Common Earl** (*Tanaecia julii*) remains the Source-Pinned Coverage and Guided Adoption record.
+v2.1.0 packages the post-#311 canonical assurance FSM, autonomous controller, watchdog, terminal assurance records, multi-subject clean-room execution, source/spec assertion adapters and the multi-target zero-touch qualification evidence. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization record. Historical v1.7.0 **Common Palmfly** remains the immutable Assurance Operations and Complete DTG Cross-Spec Coverage release record. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record.
 
 Useful release surfaces:
 
-- [v2.0.0 release notes](docs/releases/v2.0.0.md)
-- [v2.0 qualification contract](method/v2.0-release-qualification.yaml)
+- [v2.1.0 release notes](docs/releases/v2.1.0.md)
+- [v2.1 qualification contract](method/v2.1-release-qualification.yaml)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
 - [Release history](CHANGELOG.md)
 
-From v1.5.0 onward, release presentation metadata follows the [West Bengal butterfly naming policy](docs/release-naming.md); semantic versioning and the contract identifiers remain the compatibility authority.
+Release presentation metadata follows the governed West Bengal butterfly naming policy; semantic versioning and contract identifiers remain the compatibility authority.
 
 ## Repository map
 
 | Path | Role |
 |---|---|
 | `method/` | Portable lifecycle, catalogue, schemas, glossary, mappings, qualification and engine/version contracts. |
-| `tools/` | Portable orchestration, validation, monitoring, rendering, posture and build tooling. |
+| `tools/` | Portable orchestration, autonomous control, validation, monitoring, rendering, posture and build tooling. |
 | `profiles/<id>/` | Deployment configuration and cross-specification registries. |
 | `instances/<id>/` | Deployment-owned state, review records and local assurance vocabulary. |
+| `clean-room/` | Declarative clean-room run specifications and committed qualification evidence. |
 | `corpora/` | Scenario adapters mapped to portable stress patterns. |
 | `examples/` | Curated worked assessments and portability/conformance fixtures. |
 | `packages/` | TypeScript schema/core/graph/CLI reference implementation. |
-| `build/` | Generated evidence and publication views; do not hand-edit. |
-| `docs/` | Guided documentation, reference material, runbooks and release notes. |
+| `docs/` | Guided documentation, architecture, runbooks, qualification and release notes. |
 | `archive/` | Historical provenance; not current authority. |
 
 ## AI-assisted use and accountability
 
-AI systems may assist with review, change analysis, scenario generation, evidence organization and drafting. AI output is not, by itself, assurance evidence and does not become a durable finding without review. See [AI-assisted RAHP](docs/ai-assisted-process.md).
+AI systems may assist with review, change analysis, scenario generation, evidence organization and drafting. AI output is not, by itself, assurance evidence and does not become a durable finding without the applicable evidence and assurance contract. See [AI-assisted RAHP](docs/ai-assisted-process.md).
 
 ## License and provenance
 

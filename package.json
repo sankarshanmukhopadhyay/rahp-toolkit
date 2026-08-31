@@ -1,11 +1,9 @@
 {
   "name": "rahp-toolkit",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "module",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "build:ts": "npm run build -w @rahp/schema && npm run build -w @rahp/core && npm run build -w @rahp/graph && npm run build -w @rahp/cli",
     "test:ts": "npm run build:ts && node packages/cli/dist/cli.js conformance",

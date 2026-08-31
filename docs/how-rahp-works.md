@@ -7,18 +7,67 @@ parent: Learn RAHP
 ---
 # How RAHP works
 
-RAHP converts affected-party analysis into standards assurance evidence.
+RAHP converts changes in trust-system artefacts into attributable, reproducible and actionable assurance knowledge.
 
-1. Personas and contexts establish who participates and who bears consequences.
-2. User stories and scenarios expose concrete decision and failure paths.
-3. Risks describe failure mechanisms and harms describe consequence allocation.
-4. Controls reduce likelihood or impact; guardrails prevent progression when hard preconditions fail.
-5. Assurance tests and metrics produce evidence that controls are operating or guardrails are satisfied.
-6. Recommendations translate findings into actionable standards or governance changes.
-7. Risk acceptances and governance precedents preserve explicit decisions rather than allowing silent drift.
+The human-harm chain remains central:
 
-The validator makes structural integrity machine-verifiable. v0.8 also defines a language-neutral execution lifecycle (`source → observation → trigger → assessment → finding → disposition → baseline`) and normalized result contract. The build system turns canonical YAML into human and machine-readable evidence surfaces, while ordinary run exhaust remains outside durable Git state. See [Engine contract](engine-contract.md) and [Review evidence and retention](evidence-retention.md).
+`persona/scenario → harm/risk → proposition → control/guardrail → evidence → inference → actionable recommendation`
 
-## v1.1: reusable assurance patterns
+## The assurance subject is not the repository
 
-RAHP can now project a deployment finding onto a portable assurance chain: `HRM-* ← RKP-* → CTP-* → GRP-*/ATP-* → EVP-*`. The local finding remains authoritative for the reviewed deployment; the portable mapping makes recurring mechanisms comparable and testable across specifications. See [Assurance knowledge model](assurance-knowledge-model.md).
+A repository is an evidence/source container. RAHP can assure a repository, but the actual subject can instead be an artefact, standard, specification, requirement, protocol surface, cross-specification interaction, composition, flow, implementation, deployment, portfolio or changeset. Subject identity, source pins and scope are therefore explicit controller inputs.
+
+## Canonical machine-owned lifecycle
+
+```text
+subject/change observation
+→ gather
+→ subject model
+→ materiality
+→ bounded RAHP assessment
+→ specialist routing when applicable
+→ specialist examination
+→ return-ready
+→ durable specialist return
+→ RAHP reconciliation
+→ durable residual/action
+→ terminal assurance record
+```
+
+The state machine is authoritative. GitHub Actions workflows are transports and triggers; a green workflow is not itself an assurance conclusion.
+
+Every transition is designed to be machine-owned, idempotent and source-pinned. Replay attaches to the same assessment identity. A new immutable source pin creates a new reassessment identity with explicit lineage/supersession semantics.
+
+## Terminal outcomes are evidence-conservative
+
+RAHP does not optimize for GREEN. Valid terminal outcomes include PASS, FAIL, NOT_APPLICABLE, INDETERMINATE/evidence-required, INDETERMINATE/model-gap, upstream-action and defined controller/contract error states.
+
+Missing evidence never becomes PASS. Unknown or unmapped evidence surfaces become explicit model-gap residuals. Transport failure is retryable machine state rather than a human-only transition.
+
+## Specialist assurance
+
+Specialists consume versioned portable requests and return finite portable assessor results. A specialist `run:complete` must imply that a valid returnable result already exists. Cross-repository delivery is represented as durable outbox state with acknowledgement and idempotent retry.
+
+DPIP is the first qualified privacy specialist, but RAHP is not version-locked to DPIP: compatibility is governed by contract/schema versions and shared fixtures.
+
+## Evidence classes stay distinct
+
+Static specification evidence, repository fixtures/synthetic tests, executable conformance evidence, attributable runtime observations and governance evidence answer different questions. One class cannot silently satisfy a proposition requiring another.
+
+This is especially important for composition. **Component PASS does not imply composition PASS.** RAHP must separately evaluate cross-specification assumptions, authority/lifecycle interactions, correlation/privacy surfaces, substitution, redress, weakest-link behavior and evidence continuity at the composition/flow boundary.
+
+## Citable terminal assurance records
+
+A completed run produces materially equivalent machine-readable and human-readable facts, including subject/type, immutable pins, scope/non-scope, affected actors/personas, propositions, evidence and provenance, inference/boundedness, terminal outcome, residuals, required actions, remediation surface/owner and reassessment lineage.
+
+Material findings should identify where remediation belongs: normative specification, composition/profile contract, implementation/code, evidence/test gap, deployment/operator control, governance/redress or consumer/user experience.
+
+## Clean-room and continuous assurance
+
+Clean-room execution is engine-owned: historical evidence/state cannot silently coalesce into a fresh qualification run. Continuous assurance uses the same lifecycle with explicit freshness, materiality, evidence and reassessment rules.
+
+The post-#311 architecture was qualified across A2A, CAWG/C2PA and DTG in run `33350790322` with zero operator actions after the initial trigger and zero stranded runs. See [the qualification report](zero-touch-qualification-2026-08-31.md).
+
+## Portable assurance patterns
+
+RAHP can project a deployment finding onto a portable assurance chain: `HRM-* ← RKP-* → CTP-* → GRP-*/ATP-* → EVP-*`. The local finding remains authoritative for the reviewed subject; the portable mapping makes recurring mechanisms comparable and testable across specifications. See [Assurance knowledge model](assurance-knowledge-model.md), [Engine contract](engine-contract.md) and [Review evidence and retention](evidence-retention.md).
