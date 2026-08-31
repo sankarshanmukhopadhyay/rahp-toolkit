@@ -4,11 +4,14 @@ on:
   pull_request:
     paths:
       - '.github/workflows/clean-room-assessment.yml'
-      - 'clean-room/run-spec.json'
-      - 'tools/evidence_probe_orchestrator.py'
+      - 'clean-room/**'
       - 'tools/clean_room.py'
-      - 'tools/assessment_controller.py'
-      - 'method/schema/assessment-lifecycle.schema.json'
+      - 'tools/clean_room_execute.py'
+      - 'tools/evidence_probe_orchestrator.py'
+      - 'tools/autonomous_assurance_controller.py'
+      - 'tools/assurance_fsm.py'
+      - 'tools/assurance_record.py'
+      - 'schemas/rahp-*.schema.json'
   workflow_dispatch:
     inputs:
       run_spec_path:
@@ -41,220 +44,41 @@ jobs:
       - name: Install RAHP dependencies
         run: python -m pip install --disable-pip-version-check -r rahp/requirements.txt
 
-      - name: Load run specification and checkout immutable resources
-        shell: bash
+      - name: Validate autonomous clean-room engine
         run: |
-          python - <<'PY'
-          import json, os, pathlib, re, subprocess
+          python rahp/tools/assurance_fsm.py --self-test
+          python rahp/tools/assurance_record.py --self-test
+          python rahp/tools/autonomous_assurance_controller.py --self-test
+          python rahp/tools/clean_room_execute.py --self-test
 
-          workspace = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
-          spec_path = workspace / 'rahp' / os.environ['RUN_SPEC']
-          spec = json.loads(spec_path.read_text())
-
-          required = {'schema', 'run', 'target', 'resources', 'assessment', 'evidence_plan'}
-          missing = sorted(required - set(spec))
-          if missing:
-              raise SystemExit(f'run specification missing keys: {missing}')
-          if spec['schema'] != 'rahp-clean-room-run/v1':
-              raise SystemExit(f"unsupported run specification schema: {spec['schema']}")
-
-          run = spec['run']
-          target = spec['target']
-          for key in ('instance', 'snapshot'):
-              if not run.get(key):
-                  raise SystemExit(f'run.{key} is required')
-          for key in ('repository', 'revision', 'release', 'path'):
-              if not target.get(key):
-                  raise SystemExit(f'target.{key} is required')
-          if not re.fullmatch(r'[0-9a-f]{40}', target['revision']):
-              raise SystemExit('target.revision must be an immutable 40-character commit SHA')
-
-          resources = {'target': target, **spec['resources']}
-          revisions = {}
-          for resource_id, resource in resources.items():
-              repo = resource['repository']
-              revision = resource['revision']
-              path = workspace / resource['path']
-              if path.exists():
-                  raise SystemExit(f'checkout path already exists: {path}')
-              path.mkdir(parents=True)
-              subprocess.run(['git', '-C', str(path), 'init', '-q'], check=True)
-              subprocess.run(['git', '-C', str(path), 'remote', 'add', 'origin', f'https://github.com/{repo}.git'], check=True)
-              subprocess.run(['git', '-C', str(path), 'fetch', '--depth', '1', 'origin', revision], check=True)
-              subprocess.run(['git', '-C', str(path), 'checkout', '--detach', '-q', 'FETCH_HEAD'], check=True)
-              actual = subprocess.check_output(['git', '-C', str(path), 'rev-parse', 'HEAD'], text=True).strip()
-              if re.fullmatch(r'[0-9a-f]{40}', revision) and actual != revision:
-                  raise SystemExit(f'{resource_id} immutable pin mismatch: expected {revision}, got {actual}')
-              if subprocess.check_output(['git', '-C', str(path), 'status', '--porcelain'], text=True).strip():
-                  raise SystemExit(f'{resource_id} checkout is not clean')
-              revisions[resource_id] = actual
-
-          (workspace / 'output').mkdir(exist_ok=True)
-          subprocess.run([
-              'python', str(workspace / 'rahp' / 'tools' / 'clean_room.py'),
-              '--spec', str(spec_path),
-              '--nonce', os.environ['GITHUB_RUN_ID'],
-              '--output', str(workspace / 'output' / 'clean-room-resolution.json'),
-          ], check=True)
-          resolution = json.loads((workspace / 'output' / 'clean-room-resolution.json').read_text())
-          lineage = resolution['lineage']['run_id']
-          (workspace / 'output' / 'resolved-run.json').write_text(json.dumps({
-              **resolution,
-              'lineage_id': lineage,
-              'issue': run.get('issue'),
-              'target': target,
-              'resolved_revisions': revisions,
-          }, indent=2) + '\n')
-
-          with open(os.environ['GITHUB_ENV'], 'a') as env:
-              env.write(f'CLEAN_ROOM_LINEAGE={lineage}\n')
-              env.write(f'CLEAN_ROOM_TARGET_PATH={workspace / target["path"]}\n')
-              for key, value in spec.get('environment', {}).items():
-                  rendered = value.replace('{workspace}', str(workspace))
-                  env.write(f'{key}={rendered}\n')
-          PY
-
-      - name: Execute run-specific setup adapter
-        shell: bash
+      - name: Execute isolated assurance run to terminal state
         run: |
-          python - <<'PY'
-          import json, os, pathlib, subprocess
-          spec=json.loads((pathlib.Path(os.environ['GITHUB_WORKSPACE'])/'rahp'/os.environ['RUN_SPEC']).read_text())
-          for command in spec.get('setup_commands', []):
-              subprocess.run(command, shell=True, check=True, cwd=os.environ['GITHUB_WORKSPACE'])
-          PY
-
-      - name: Exercise generic RAHP pinned-review scaffold
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json, os, pathlib, yaml
-          workspace=pathlib.Path(os.environ['GITHUB_WORKSPACE'])
-          spec=json.loads((workspace/'rahp'/os.environ['RUN_SPEC']).read_text())
-          target=spec['target']; assessment=spec['assessment']
-          target_id=assessment.get('target_id','clean-room-target')
-          config={
-              'version':1,
-              'profile':{'id':assessment.get('profile_id','clean-room-assessment'),'title':assessment.get('title','Clean-room assurance assessment')},
-              'assessment':{'default_mode':assessment.get('mode','combined'),'rahp_repository':os.environ['GITHUB_REPOSITORY'],'rahp_version':'current-clean-room'},
-              'repositories':[{
-                  'id':target_id,
-                  'repository':target['repository'],
-                  'local_path':f"../{target['path']}",
-                  'version':target['release'],
-                  'commit':target['revision'],
-                  'reviews':[assessment.get('mode','combined')],
-                  'context':{'title':assessment.get('target_title',target['repository'])},
-              }],
-              'output':{'directory':'build/clean-room-targets'},
-          }
-          path=pathlib.Path('/tmp/clean-room-assessment.yaml')
-          path.write_text(yaml.safe_dump(config, sort_keys=False))
-          PY
-          cd rahp
-          python tools/rahp.py config-validate --config /tmp/clean-room-assessment.yaml
-          TARGET_ID=$(python - <<'PY'
-          import json, os
-          s=json.load(open(os.environ['RUN_SPEC']))
-          print(s['assessment'].get('target_id','clean-room-target'))
-          PY
-          )
-          MODE=$(python - <<'PY'
-          import json, os
-          s=json.load(open(os.environ['RUN_SPEC']))
-          print(s['assessment'].get('mode','combined'))
-          PY
-          )
-          python tools/rahp.py review --config /tmp/clean-room-assessment.yaml --target "$TARGET_ID" --mode "$MODE" --force
-
-      - name: Build declarative evidence-probe plan
-        shell: bash
-        run: |
-          python - <<'PY'
-          import copy, json, os, pathlib
-          workspace=pathlib.Path(os.environ['GITHUB_WORKSPACE'])
-          spec=json.loads((workspace/'rahp'/os.environ['RUN_SPEC']).read_text())
-          plan=copy.deepcopy(spec['evidence_plan'])
-          plan['lineage']={'id':os.environ['CLEAN_ROOM_LINEAGE']}
-          if spec['run'].get('issue') is not None:
-              plan['lineage']['issue']=spec['run']['issue']
-          plan['target']={'repository':spec['target']['repository'],'revision':spec['target']['revision']}
-          (workspace/'output'/'probe-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
-          PY
-
-      - name: Execute all registered evidence probes
-        run: |
-          python rahp/tools/evidence_probe_orchestrator.py output/probe-plan.json \
+          python rahp/tools/clean_room_execute.py \
+            --spec "rahp/${RUN_SPEC}" \
+            --rahp rahp \
             --workspace "$GITHUB_WORKSPACE" \
-            --output output/evidence-probe-ledger.json
+            --nonce "$GITHUB_RUN_ID"
 
-      - name: Execute run-specific post-probe adapters
-        shell: bash
+      - name: Require a citable terminal assurance record
         run: |
           python - <<'PY'
-          import json, os, pathlib, subprocess
-          spec=json.loads((pathlib.Path(os.environ['GITHUB_WORKSPACE'])/'rahp'/os.environ['RUN_SPEC']).read_text())
-          for command in spec.get('post_probe_commands', []):
-              subprocess.run(command, shell=True, check=True, cwd=os.environ['GITHUB_WORKSPACE'])
+          import json, pathlib
+          output=pathlib.Path('output')
+          terminal=json.loads((output/'clean-room-terminal.json').read_text())
+          record=json.loads((output/'assurance-terminal-machine.json').read_text())
+          assert terminal['terminal'] is True, terminal
+          assert terminal['stranded'] is False, terminal
+          assert record['terminal'] is True, record
+          assert record['assessment_id'] == terminal['assessment_id']
+          assert record['source_pins'], record
+          assert (output/'assurance-terminal-human.md').read_text().strip()
+          print(json.dumps(terminal,indent=2))
           PY
+          cat output/assurance-terminal-human.md >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Verify generic evidence-attempt invariants
-        run: |
-          python - <<'PY'
-          import json
-          ledger=json.load(open('output/evidence-probe-ledger.json'))
-          assert ledger['complete'], ledger.get('orchestration_defects')
-          assert not ledger.get('orchestration_defects', [])
-          assert ledger['requirements'], 'run produced no evidence requirements'
-          allowed={'EXECUTED','ATTEMPTED_UNAVAILABLE','NO_APPLICABLE_PRODUCER'}
-          for item in ledger['requirements']:
-              assert item['attempt_state'] in allowed, item
-              assert item.get('attribution'), item
-          print(json.dumps(ledger, indent=2))
-          PY
-
-      - name: Emit generic machine and human evidence-stage records
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json, os, pathlib, subprocess
-          workspace=pathlib.Path(os.environ['GITHUB_WORKSPACE'])
-          spec=json.loads((workspace/'rahp'/os.environ['RUN_SPEC']).read_text())
-          ledger=json.load(open(workspace/'output'/'evidence-probe-ledger.json'))
-          resolved=json.load(open(workspace/'output'/'resolved-run.json'))
-          record={
-              'schema':'rahp-clean-room-evidence-stage/v1',
-              'lineage_id':os.environ['CLEAN_ROOM_LINEAGE'],
-              'issue':spec['run'].get('issue'),
-              'target':spec['target'],
-              'runtime_revisions':{
-                  'rahp':subprocess.check_output(['git','-C','rahp','rev-parse','HEAD'],text=True).strip(),
-                  **resolved['resolved_revisions'],
-              },
-              'historical_inputs_used':False,
-              'probe_ledger':ledger,
-              'stage':'EVIDENCE_READY_FOR_SEMANTIC_REVIEW',
-              'recommended_next_step':'Perform fresh semantic RAHP review from this target and evidence only; determine privacy materiality and create a new DPIP examination iff warranted.',
-          }
-          (workspace/'output'/'evidence-stage-machine.json').write_text(json.dumps(record,indent=2)+'\n')
-          lines=[
-              '# Clean-room assurance — evidence stage','',
-              '**Fresh evidence production completed.** Historical assessment findings, dispositions and evidence packages were not inputs.','',
-              f"Lineage: `{os.environ['CLEAN_ROOM_LINEAGE']}`",
-              f"Target: `{spec['target']['repository']}@{spec['target']['revision']}` ({spec['target']['release']})",'',
-              '## Evidence requirements'
-          ]
-          for item in ledger['requirements']:
-              lines.append(f"- `{item['requirement_id']}` — **{item['result']}**, attempt `{item['attempt_state']}`, attribution `{item['attribution']}`")
-          lines += ['', 'This is evidence production, not an assurance PASS/FAIL. Semantic RAHP review, privacy materiality, DPIP if warranted, and reconciliation remain separate judgment stages.']
-          (workspace/'output'/'evidence-stage-human.md').write_text('\n'.join(lines)+'\n')
-          print('\n'.join(lines))
-          PY
-          cat output/evidence-stage-human.md >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload clean-room evidence package
+      - name: Upload clean-room assurance package
         uses: actions/upload-artifact@v4
         with:
-          name: clean-room-evidence-${{ github.run_id }}
+          name: clean-room-assurance-${{ github.run_id }}
           path: output/
           if-no-files-found: error
