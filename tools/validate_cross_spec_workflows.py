@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GENERIC = ROOT / ".github/workflows/cross-spec-pressure-test.yml"
 REGISTRIES = [
     ("dtg", ROOT / "profiles/dtg/cross-spec-tests.yaml"),
-    ("cawg", ROOT / "profiles/cawg/cross-spec-tests.yaml"),
+    ("cawg-c2pa", ROOT / "profiles/cawg/cross-spec-tests.yaml"),
 ]
 REMOVED_WRAPPERS = [
     ROOT / ".github/workflows/dtg-cross-spec-pressure-test.yml",
