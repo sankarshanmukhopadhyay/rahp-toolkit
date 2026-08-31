@@ -204,12 +204,16 @@ jobs:
           lineage='${{ inputs.assessment_lineage || '' }}'
           while IFS= read -r composition; do
             [ -n "$composition" ] || continue
-            echo "Dispatching RAHP DTG pressure test: $composition"
-            args=(-f composition_id="$composition")
+            echo "Dispatching RAHP DTG pressure test via generic executor: $composition"
+            args=(
+              -f registry_path="profiles/dtg/cross-spec-tests.yaml"
+              -f composition_id="$composition"
+              -f composition_scoped_registry_validation=true
+            )
             if [ -n "$lineage" ]; then
               args+=(-f assessment_lineage="$lineage")
             fi
-            gh workflow run dtg-cross-spec-pressure-test.yml --ref main "${args[@]}"
+            gh workflow run cross-spec-pressure-test.yml --ref main "${args[@]}"
           done < build/dtg-routing/compositions.txt
 
       - name: Publish routing summary
