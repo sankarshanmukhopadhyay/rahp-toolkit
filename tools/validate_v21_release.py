@@ -19,10 +19,7 @@ def main():
     if compat.get('normalized_result_schema')!=1 or compat.get('evidence_retention_contract')!='rahp-evidence-retention-v1': errors.append('result/evidence compatibility changed')
     run=q.get('qualification_run') or {}
     if run.get('operator_actions_after_trigger')!=0 or run.get('stranded_runs')!=0: errors.append('qualification must record zero operator actions and zero stranded runs')
-    required=[
-      'method/schema/assurance-run-state.schema.json','tools/assurance_fsm.py','tools/assurance_watchdog.py','tools/assurance_record.py',
-      'tools/autonomous_assurance_controller.py','tools/clean_room_execute.py','tools/text_assertion_probe.py','tools/evidence_assertion_assessor.py',
-      'clean-room/qualification/evidence-33350790322.json','docs/zero-touch-qualification-2026-08-31.md','docs/releases/v2.1.0.md']
+    required=['schemas/rahp-assurance-run-state-v1.schema.json','schemas/rahp-assessor-result-v1.schema.json','schemas/rahp-evidence-remediation-v1.schema.json','schemas/rahp-specialist-return-v1.schema.json','tools/assurance_fsm.py','tools/assurance_watchdog.py','tools/assurance_record.py','tools/autonomous_assurance_controller.py','tools/clean_room_execute.py','tools/text_assertion_probe.py','tools/evidence_assertion_assessor.py','clean-room/qualification/evidence-33350790322.json','docs/zero-touch-qualification-2026-08-31.md','docs/releases/v2.1.0.md']
     for item in required:
         if not (ROOT/item).is_file(): errors.append(f'missing v2.1 qualification artifact: {item}')
     for key in ('missing_evidence_never_pass','component_pass_not_composition_pass','workflows_not_authoritative_controller_state','human_machine_terminal_equivalence','evidence_classes_remain_distinct','generic_core_target_agnostic'):
