@@ -1,0 +1,8 @@
+requirements:
+  - id: ER-C2PA-RS-VERSION
+    paths:
+      - sdk/src/spec_versions.rs
+    assertions:
+      - id: validator-version
+        pattern: 'C2PA_VALIDATOR_VERSION:\s*&str\s*=\s*"2\.3\.0"'
+        expected_present: true
