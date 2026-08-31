@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.1.0 (candidate) · Common Acacia Blue · CC-BY 4.0
+Release v2.1.0 (stable) · Common Acacia Blue · CC-BY 4.0
 
 RAHP Toolkit is a **portable assurance execution and monitoring plane** for pressure-testing standards, protocols, implementations, changesets and composed trust systems against human harms, governance failures, adversarial conditions, privacy/security risks and resilience failures.
 
@@ -87,9 +87,9 @@ The reusable catalogue under `method/catalogue/` contains portable assurance pat
 
 See [Scenario corpora](docs/scenario-corpora.md) and [Cross-spec pressure testing](docs/cross-spec-pressure-testing.md).
 
-## Current release candidate
+## Current release
 
-v2.1.0 **Common Acacia Blue** (*Surendra quercetorum*) is the candidate **Qualified Autonomous Assurance Plane** release.
+v2.1.0 **Common Acacia Blue** (*Surendra quercetorum*) is the stable **Qualified Autonomous Assurance Plane** release.
 
 The release is additive at the product level and preserves the existing compatibility authorities:
 
@@ -99,7 +99,7 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v2.1.0 packages the post-#311 canonical assurance FSM, autonomous controller, watchdog, terminal assurance records, multi-subject clean-room execution, source/spec assertion adapters and the multi-target zero-touch qualification evidence. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization record.
+v2.1.0 packages the post-#311 canonical assurance FSM, autonomous controller, watchdog, terminal assurance records, multi-subject clean-room execution, source/spec assertion adapters and the multi-target zero-touch qualification evidence. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization record. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record.
 
 Useful release surfaces:
 
