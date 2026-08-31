@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """Publish RAHP assessment events as stable, coalesced GitHub work items.
 
-v0.7.1 separates *observations* from *assessment work items*. Repeated material
-repository deltas and watched-issue activity should enrich an existing open
-assessment whenever possible rather than create one issue per observation.
+Operational contract:
+- Consumes generated repository/architecture assessment events and confines automated
+  issue creation to the canonical RAHP repository.
+- Reuses/coalesces an existing open assessment key where possible instead of creating
+  one issue per observation; the resulting issue is a durable work owner, not a finding.
+- May create issues or append trigger comments/metadata through the GitHub API.
+- Publication does not execute the assessment and issue creation does not imply that a
+  target is unsafe or that DPIP is required.
 """
 from __future__ import annotations
 

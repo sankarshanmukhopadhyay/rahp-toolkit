@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Synchronize the checked-in DTG RAHP profile with authoritative DTG discovery.
 
-This is DTG deployment machinery, not generic RAHP core. Discovery authority remains
-instances/dtg/instance.yaml -> DTG Portfolio Monitor registry + configured matching forks.
-Assessment runs should pin immutable revisions after this perimeter is synchronized.
+Operational contract:
+- DTG deployment machinery, not generic RAHP core.
+- Reads instances/dtg/instance.yaml and authoritative portfolio discovery, then renders
+  the discovered perimeter into profiles/dtg/rahp.yaml.
+- --write changes the checked-in deployment profile; --check verifies synchronization.
+- The synchronized profile defines scope only. Assessment runs must still pin immutable
+  revisions and independently execute the relevant assurance methods.
 """
 from __future__ import annotations
 

@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Portable repository-change monitor for a RAHP deployment instance.
+"""Monitor repository-head deltas for a normal RAHP deployment profile.
 
-Unlike the DTG portfolio adapter, this tool does not discover repositories from a
-DTG registry. It reads a normal RAHP profile, tracks repository@branch heads, and
-emits assessment-required events when material paths change. This makes change
-tracking reusable by external deployments such as CAWG/C2PA.
+Operational contract:
+- Generic deployment monitor used by non-DTG instances such as CAWG/C2PA.
+- Reads a profile plus persisted repository state, compares repository heads/material
+  paths, and emits assessment-required review events for qualifying changes.
+- It is stateful and incremental: unchanged state correctly emits no new work.
+- It does not perform the resulting assessment and does not equate monitor success with
+  assurance success.
 """
 from __future__ import annotations
 import argparse, fnmatch, json, os, pathlib, urllib.error, urllib.request

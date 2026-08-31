@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-"""Reconstruct retained DTG gatherer runs from RAHP issues and compute assurance state."""
+"""Reconstruct retained DTG gatherer lineages and compute end-to-end assurance state.
+
+Operational contract:
+- Reads immutable non-empty gatherer-run records plus durable RAHP issues/comments and
+  reconstructs event coverage, assessment completion, DPIP returns, and provenance.
+- Computes conservative GREEN/AMBER/RED terminal semantics across retained lineages;
+  workflow success is deliberately not an input to the assurance conclusion.
+- Can emit machine-readable controller-incident records. Existing rahp#N blockers remain
+  their durable owners; only genuinely unowned PIPELINE_BROKEN blockers need an incident.
+- This is incremental lineage reconciliation, not a fresh clean-room portfolio assessment.
+"""
 from __future__ import annotations
 
 import argparse

@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
-"""Advance RAHP DTG gatherer repository assessments with bounded auto-disposition."""
+"""Advance one published DTG repository assessment through bounded automation.
+
+Operational contract:
+- DTG deployment-specific worker invoked only for exact assessment issue numbers emitted
+  by the current monitor run.
+- Reads issue provenance and the pinned repository delta, generates/records assessment
+  evidence, and applies bounded auto-disposition only when deterministic rules permit.
+- May update labels/comments, close a terminal assessment, or request DPIP; ambiguous or
+  judgment-bearing cases remain visibly open for human/governance disposition.
+- It must not treat CI success as assurance success or broaden itself into a clean-room
+  portfolio assessment.
+"""
 from __future__ import annotations
 
 import argparse

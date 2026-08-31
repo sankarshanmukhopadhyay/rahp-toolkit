@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """Watch an allow-listed set of GitHub issues for assessment-relevant change.
 
-Issue activity is an early-warning input, not normative specification evidence.
-The watcher is deployment-neutral: each registry chooses the issues, affected
-reviews, labels, and state files that belong to that assurance deployment.
+Operational contract:
+- Deployment-neutral early-warning adapter; each registry owns the watched issues,
+  affected reviews, labels, and state/output paths.
+- Reads the persisted issue observation state, compares current GitHub issue metadata,
+  and emits assessment-trigger events when selected observations change.
+- Issue activity is non-normative evidence: a changed comment or state can trigger
+  review, but cannot by itself rebaseline a specification or establish assurance.
+- Writes observation/event state only; downstream publication owns GitHub work items.
 """
 from __future__ import annotations
 
