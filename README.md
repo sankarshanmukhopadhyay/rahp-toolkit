@@ -99,7 +99,7 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v2.1.0 packages the post-#311 canonical assurance FSM, autonomous controller, watchdog, terminal assurance records, multi-subject clean-room execution, source/spec assertion adapters and the multi-target zero-touch qualification evidence. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization record. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record.
+v2.1.0 packages the post-#311 canonical assurance FSM, autonomous controller, watchdog, terminal assurance records, multi-subject clean-room execution, source/spec assertion adapters and the multi-target zero-touch qualification evidence. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization record. Historical v1.7.0 **Common Palmfly** remains the immutable Assurance Operations and Complete DTG Cross-Spec Coverage release record. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record.
 
 Useful release surfaces:
 
