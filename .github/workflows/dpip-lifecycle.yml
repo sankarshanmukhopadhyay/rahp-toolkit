@@ -8,7 +8,11 @@ on:
       - tools/assurance_fsm.py
       - tools/assurance_record.py
       - tools/assurance_watchdog.py
+      - tools/autonomous_assurance_controller.py
       - schemas/rahp-assurance-run-state-v1.schema.json
+      - schemas/rahp-assessor-result-v1.schema.json
+      - schemas/rahp-evidence-remediation-v1.schema.json
+      - schemas/rahp-specialist-return-v1.schema.json
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
       - tools/dpip_return_reconcile.py
@@ -19,7 +23,11 @@ on:
       - tools/assurance_fsm.py
       - tools/assurance_record.py
       - tools/assurance_watchdog.py
+      - tools/autonomous_assurance_controller.py
       - schemas/rahp-assurance-run-state-v1.schema.json
+      - schemas/rahp-assessor-result-v1.schema.json
+      - schemas/rahp-evidence-remediation-v1.schema.json
+      - schemas/rahp-specialist-return-v1.schema.json
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
       - tools/dpip_return_reconcile.py
@@ -63,6 +71,7 @@ jobs:
           python3 tools/assurance_fsm.py --self-test
           python3 tools/assurance_record.py --self-test
           python3 tools/assurance_watchdog.py --self-test
+          python3 tools/autonomous_assurance_controller.py --self-test
           python3 tools/dpip_lifecycle.py --self-test
           python3 tools/dpip_lifecycle_reconcile.py --self-test
           python3 tools/dpip_return_reconcile.py --self-test
