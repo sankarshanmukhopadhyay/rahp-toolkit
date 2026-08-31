@@ -1,0 +1,11 @@
+{
+  "schema":"rahp-clean-room-run/v2",
+  "run":{"issue":318,"lineage_prefix":"q318-cawg-na","instance":"cawg-c2pa","snapshot":"2026-08-31-na"},
+  "target":{"repository":"decentralized-identity/cawg-identity-assertion","revision":"8851770a46221729b4e0d92cbfcad484b245cc71","release":"DIF-ratified","path":"target"},
+  "resources":{},
+  "subject":{"type":"protocol-surface","id":"CAWG-privacy-specialist-not-applicable"},
+  "assurance_contract":{"material":true,"specialist_required":true,"scope":"Qualification that a specialist can autonomously return NOT_APPLICABLE for a bounded proposition.","non_scope":"Any broader privacy conclusion about CAWG Identity Assertion.","personas":["content creator"],"scenarios":["A bounded assurance proposition is routed to a specialist and found outside the specialist's applicable scope."],"risks":["incorrect specialist applicability"],"harms":["irrelevant specialist conclusions distort the assurance record"],"assurance_propositions":["Specialist applicability must be explicit and NOT_APPLICABLE must reconcile terminally without human review."],"tests":["portable specialist NOT_APPLICABLE return"],"harm_traceability":[{"persona":"content creator","scenario":"specialist routing of a bounded proposition","harm":"irrelevant privacy conclusion alters assurance","proposition":"specialist applicability is explicit","control":"portable NOT_APPLICABLE result and terminal reconciliation"}]},
+  "assessment":{"profile_id":"q318-cawg-na","title":"#318 specialist NOT_APPLICABLE qualification","target_id":"cawg-na","target_title":"CAWG specialist applicability surface","mode":"combined"},
+  "evidence_plan":{"producers":{},"requirements":[]},
+  "assessor":{"commands":[["python","-c","import json,pathlib; pathlib.Path('output/cawg-na-assessor.json').write_text(json.dumps({'schema':'rahp-assessor-result/v1','assessor':'qualification-specialist','assessment_id':'q318-cawg-na','outcome':'NOT_APPLICABLE','reason_code':'specialist-not-applicable','evidence_used':[],'residual_risk':'No specialist privacy conclusion applies to this deliberately bounded qualification proposition.','action_required':'No specialist remediation; preserve the applicability boundary.'}))"]],"result_file":"output/cawg-na-assessor.json"}
+}
