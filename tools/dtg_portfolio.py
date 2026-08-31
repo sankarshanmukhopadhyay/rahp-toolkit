@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-"""DTG RAHP instance portfolio discovery and material-change assessment queue.
+"""Discover the configured DTG portfolio and emit material repository-change events.
 
-This module is instance-specific. The portable RAHP engine in tools/rahp.py does not
-import or depend on it.
+Operational contract:
+- DTG deployment-specific adapter; portable RAHP core does not depend on it.
+- Reads the DTG instance configuration plus the external portfolio registry and the
+  persisted repository observation baseline.
+- Resolves current repository heads, compares changed paths/semantic materiality, and
+  writes generated repository/review-event state for downstream publication.
+- It detects deltas only; it does not perform a clean-room assessment and it does not
+  itself prove that a changed or unchanged repository is safe.
 """
 from __future__ import annotations
 import argparse, fnmatch, json, os, pathlib, re, sys, urllib.error, urllib.request
