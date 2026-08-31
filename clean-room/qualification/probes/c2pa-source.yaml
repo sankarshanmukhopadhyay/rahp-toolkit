@@ -1,0 +1,8 @@
+requirements:
+  - id: ER-C2PA-SPEC-SURFACE
+    paths:
+      - README.md
+    assertions:
+      - id: content-credentials
+        pattern: 'C2PA Specifications for Content Credentials'
+        expected_present: true
