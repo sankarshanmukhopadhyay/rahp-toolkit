@@ -1,16 +1,20 @@
-name: Reconcile RAHP-DPIP lifecycle telemetry
+name: Reconcile RAHP-DPIP lifecycle and returns
 
 on:
+  issue_comment:
+    types: [created, edited]
   pull_request:
     paths:
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
+      - tools/dpip_return_reconcile.py
       - .github/workflows/dpip-lifecycle.yml
   push:
     branches: [main]
     paths:
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
+      - tools/dpip_return_reconcile.py
       - .github/workflows/dpip-lifecycle.yml
   schedule:
     - cron: '47 4 * * *'
@@ -26,11 +30,17 @@ permissions:
   issues: write
 
 concurrency:
-  group: rahp-dpip-lifecycle-${{ github.event.pull_request.number || inputs.issue_number || github.ref || 'scheduled' }}
+  group: rahp-dpip-lifecycle-${{ github.event.issue.number || github.event.pull_request.number || inputs.issue_number || github.ref || 'scheduled' }}
   cancel-in-progress: false
 
 jobs:
   lifecycle:
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event_name == 'push' ||
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '<!-- dpip-return:'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -40,22 +50,28 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
-      - name: Validate lifecycle derivation
+      - name: Validate lifecycle and return reconciliation
         run: |
           python3 tools/dpip_lifecycle.py --self-test
           python3 tools/dpip_lifecycle_reconcile.py --self-test
-      - name: Reconcile lifecycle telemetry
+          python3 tools/dpip_return_reconcile.py --self-test
+      - name: Reconcile lifecycle telemetry and terminal DPIP return
         if: github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           DPIP_HANDOFF_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
           RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
           DPIP_REPOSITORY: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
-          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_ISSUE_NUMBER: ${{ inputs.issue_number }}
         shell: bash
         run: |
-          if [ -n "${ISSUE_NUMBER:-}" ]; then
-            python3 tools/dpip_lifecycle_reconcile.py --issue-number "$ISSUE_NUMBER"
+          set -euo pipefail
+          issue_number="${EVENT_ISSUE_NUMBER:-${INPUT_ISSUE_NUMBER:-}}"
+          if [ -n "$issue_number" ]; then
+            python3 tools/dpip_lifecycle_reconcile.py --issue-number "$issue_number"
+            python3 tools/dpip_return_reconcile.py --issue-number "$issue_number"
           else
             python3 tools/dpip_lifecycle_reconcile.py
+            python3 tools/dpip_return_reconcile.py
           fi

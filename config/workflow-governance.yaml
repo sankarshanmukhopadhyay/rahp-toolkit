@@ -1,0 +1,64 @@
+schema: rahp-workflow-governance/v1
+max_workflows: 20
+forbid_dispatch_only_wrappers: true
+workflows:
+  clean-room-assessment.yml:
+    class: core-execution
+    responsibility: clean-room-assurance-execution
+  cross-spec-pressure-test.yml:
+    class: core-execution
+    responsibility: cross-specification-assessment-execution
+  pages.yml:
+    class: core-execution
+    responsibility: documentation-publication-integrity
+  release.yml:
+    class: core-execution
+    responsibility: qualified-release-publication
+  validate.yml:
+    class: core-execution
+    responsibility: repository-wide-assurance-validation
+  combined-review-worker.yml:
+    class: lifecycle-controller
+    responsibility: bounded-combined-review-advancement
+  dpip-handoff.yml:
+    class: lifecycle-controller
+    responsibility: rahp-to-dpip-referral-transport
+  dpip-lifecycle.yml:
+    class: lifecycle-controller
+    responsibility: rahp-dpip-lifecycle-and-return-reconciliation
+  dtg-assurance-reconcile.yml:
+    class: lifecycle-controller
+    responsibility: dtg-end-to-end-assurance-reconciliation
+  dtg-portfolio-materiality-handoff.yml:
+    class: lifecycle-controller
+    responsibility: dtg-portfolio-materiality-routing
+  dtg-repository-review-worker.yml:
+    class: lifecycle-controller
+    responsibility: dtg-repository-review-advancement
+  instance-watch.yml:
+    class: lifecycle-controller
+    responsibility: instance-observation-publication-and-persistence
+  corpus-review.yml:
+    class: bounded-evidence
+    responsibility: corpus-review-packet-production
+  corpus-status.yml:
+    class: bounded-evidence
+    responsibility: corpus-source-drift-observation
+  distributed-resilience-assessment.yml:
+    class: bounded-evidence
+    responsibility: distributed-resilience-assessment
+  execution-benchmark.yml:
+    class: bounded-evidence
+    responsibility: execution-cost-benchmarking
+  release-codename-policy.yml:
+    class: bounded-evidence
+    responsibility: release-codename-policy-validation
+  vti-composition-wave.yml:
+    class: bounded-evidence
+    responsibility: vti-composition-evidence-vectors
+  vti-semantic-completion.yml:
+    class: bounded-evidence
+    responsibility: vti-semantic-completion-evidence-vectors
+  workflow-governance.yml:
+    class: governance
+    responsibility: github-actions-surface-governance

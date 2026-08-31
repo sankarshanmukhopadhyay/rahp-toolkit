@@ -1,6 +1,14 @@
 # GitHub Actions workflow governance
 
-This document records the intended ownership boundary of the RAHP Toolkit GitHub Actions surface. The objective is not to minimise workflow count mechanically. The objective is to keep **one execution owner per distinct assurance responsibility**, eliminate stale one-off entry points, and make thin adapters visibly different from duplicate engines.
+This document records the ownership boundary of the RAHP Toolkit GitHub Actions surface. The objective is not cosmetic minimisation; it is to keep **one execution owner per distinct assurance responsibility** while preventing the Actions UI from growing through convenience wrappers, target-specific launchers and superseded one-off workflows.
+
+The machine-readable authority for the current surface is `config/workflow-governance.yaml`.
+
+## Workflow budget
+
+RAHP currently permits **at most 20 workflow files**. The governed inventory is exact: every `.github/workflows/*.yml` file must be declared in `config/workflow-governance.yaml`, every declared workflow must exist, and each must own a unique responsibility.
+
+A new workflow is therefore not a free additive change. It must demonstrate a distinct execution/state responsibility and either remain within the budget by replacing/consolidating an existing surface or be accompanied by an explicit governance decision to change the budget. `tools/validate_workflow_governance.py` enforces this invariant.
 
 ## Governing rule
 
@@ -8,9 +16,10 @@ A workflow should exist only when it owns at least one of the following:
 
 - a distinct reusable execution contract;
 - a distinct lifecycle or state-machine transition;
-- a distinct scheduled or event-driven recovery responsibility;
-- a bounded evidence/benchmark surface whose cost or triggers justify independent execution; or
-- a deliberately thin typed launcher over a reusable workflow.
+- a distinct scheduled or event-driven recovery responsibility; or
+- a bounded evidence/benchmark surface whose cost or triggers justify independent execution.
+
+A workflow that exists only to preset inputs and call another local reusable workflow is not a distinct execution owner. Profile, target, release and experiment selection should be declarative inputs to a generic executor instead.
 
 Mechanical similarity is not sufficient reason to merge workflows when doing so would obscure semantic ownership. Conversely, target names, historical issue numbers, release names, or experiment-specific semantics must not be embedded in reusable workflow logic when those values can be supplied declaratively.
 
@@ -20,28 +29,21 @@ Mechanical similarity is not sufficient reason to merge workflows when doing so 
 
 - `validate.yml` — repository-wide assurance, method, conformance and generated-evidence validation.
 - `pages.yml` — documentation build/render/deploy integrity. It intentionally does not duplicate the full validation suite.
-- `cross-spec-pressure-test.yml` — reusable cross-specification assessment executor.
+- `cross-spec-pressure-test.yml` — the sole reusable and manually dispatchable cross-specification assessment executor. Ecosystem selection is supplied through `registry_path`, `composition_id` and validation-mode inputs.
 - `clean-room-assessment.yml` — generic declarative clean-room evidence executor.
 - `release.yml` — qualified release publication.
-
-### Typed launchers
-
-- `cawg-cross-spec-pressure-test.yml` — CAWG/C2PA composition selector over the reusable cross-spec workflow.
-- `dtg-cross-spec-pressure-test.yml` — DTG composition selector over the reusable cross-spec workflow.
-
-These files intentionally preserve typed manual choices. They do not contain independent assessment engines.
 
 ### Lifecycle/state-machine controllers
 
 - `combined-review-worker.yml` — bounded combined-review advancement.
 - `dtg-repository-review-worker.yml` — DTG gatherer repository-review advancement.
-- `dtg-portfolio-materiality-handoff.yml` — portfolio materiality/routing handoff.
+- `dtg-portfolio-materiality-handoff.yml` — portfolio materiality/routing handoff; it dispatches the generic cross-spec executor directly.
 - `dpip-handoff.yml` — explicit RAHP→DPIP referral transport.
-- `dpip-lifecycle.yml` — RAHP/DPIP lifecycle telemetry and recovery reconciliation.
+- `dpip-lifecycle.yml` — RAHP/DPIP lifecycle telemetry **and terminal post-DPIP return reconciliation**. A returned specialist result is converted to `resolved`, `finding-open`, `evidence-required`, or `review-required`; completed referral containers are not retained as proxies for unresolved assurance.
 - `dtg-assurance-reconcile.yml` — DTG gatherer assurance reconciliation.
 - `instance-watch.yml` — scheduled instance observation, publication and persistence controller.
 
-These workflows share some bootstrap mechanics but own different event contracts, inputs and state transitions. They should not be collapsed merely to reduce file count.
+These workflows share bootstrap mechanics but own different event contracts and state transitions. They should not be collapsed merely to reduce file count.
 
 ### Bounded evidence and operational validation
 
@@ -57,12 +59,17 @@ These remain independently useful because they are path-scoped, scheduled, manua
 
 ## Removed workflows
 
-The following historical workflows were removed by #255 after `clean-room-assessment.yml` became the canonical declarative executor:
+Historical target-specific clean-room workflows were removed after `clean-room-assessment.yml` became the canonical declarative executor:
 
 - `clean-room-dogwood.yml`
 - `true-clean-room-dogwood-248.yml`
 
-They encoded a target and/or historical assessment issue directly in workflow logic. Retaining them would create competing clean-room entry points and reintroduce the coupling removed by #253/#254.
+The 31 Aug 2026 workflow rationalisation also removed two dispatch-only cross-spec wrappers:
+
+- `cawg-cross-spec-pressure-test.yml`
+- `dtg-cross-spec-pressure-test.yml`
+
+Both merely preset inputs to `cross-spec-pressure-test.yml`. CAWG and DTG now use the generic executor directly, reducing the workflow surface from **22 to 20** without removing an assurance capability.
 
 ## Clean-room portability invariant
 
@@ -70,23 +77,32 @@ Reusable clean-room workflow logic must not depend on a target repository name, 
 
 A new conforming target should require a new declarative run specification/adapter configuration, not a new `clean-room-<target>.yml` workflow.
 
+## Post-assessor lifecycle invariant
+
+A specialist assessor return is not the end of the RAHP transaction. A returned DPIP result must be reconciled into RAHP-owned state.
+
+`PASS`/not-applicable can resolve the referral; `FAIL` creates or reuses a durable finding residual; `INDETERMINATE` creates or reuses an evidence-required residual; unknown/unparseable returns become review-required. In every case, the referral container represents the completed handoff and is not kept open merely because the broader assurance proposition remains non-green.
+
+Closing a referral is therefore **not** equivalent to privacy PASS. The durable residual owns whatever evidence, remediation or retest remains.
+
 ## Rationalisation policy
 
 When auditing workflows, use this order:
 
 1. remove superseded one-off workflows;
-2. move target/experiment data into declarative inputs;
-3. prefer reusable workflow calls for genuinely shared execution engines;
-4. retain thin typed launchers when they improve safe manual operation;
+2. move target/profile/experiment data into declarative inputs;
+3. prohibit dispatch-only local wrappers over reusable workflows;
+4. prefer reusable workflow calls or direct generic dispatch for shared execution engines;
 5. retain distinct lifecycle controllers where state ownership differs;
-6. consolidate repeated bootstrap mechanics only when it does not hide state-machine boundaries;
-7. reduce scheduled recovery polling only after event-driven reliability has been demonstrated.
+6. retain bounded evidence workflows where independent triggers/cost/evidence products are meaningful;
+7. consolidate repeated bootstrap mechanics only when it does not hide state-machine boundaries;
+8. reduce scheduled recovery polling only after event-driven reliability has been demonstrated.
 
 ## Follow-on candidates
 
-The following are candidates for later review rather than automatic consolidation:
+The following remain candidates for evidence-led review rather than automatic consolidation:
 
 - extract common issue-worker bootstrap/setup if a reusable worker wrapper remains transparent about the invoked state machine;
-- introduce a generic path-scoped evidence-validator workflow if a third validation surface demonstrates the same execution contract as the current VTI evidence workflows;
+- introduce a generic path-scoped evidence-validator only if multiple existing evidence workflows demonstrate the same execution contract;
 - review hourly recovery schedules after sufficient operational evidence shows event-driven handoffs/reconciliation are reliable;
 - converge action major versions opportunistically, without mixing version churn with semantic workflow changes.
