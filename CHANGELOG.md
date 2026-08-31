@@ -39,4 +39,4 @@ See [v2.1.0 release notes](docs/releases/v2.1.0.md).
 
 ## Prior release history
 
-v2.0.0 **Blue Mormon** and the complete earlier release history remain immutable in Git history and the v2.0.0 tag. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record. Historical release-note files remain under [`docs/releases/`](docs/releases/), and pre-v1.2 accumulated history remains under `archive/pre-v1.2/`.
+v2.0.0 **Blue Mormon** and the complete earlier release history remain immutable in Git history and the v2.0.0 tag. Historical v1.7.0 **Common Palmfly** remains the immutable Assurance Operations and Complete DTG Cross-Spec Coverage release record. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record. Historical release-note files remain under [`docs/releases/`](docs/releases/), and pre-v1.2 accumulated history remains under `archive/pre-v1.2/`.
