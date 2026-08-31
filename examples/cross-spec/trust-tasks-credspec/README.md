@@ -216,3 +216,19 @@ Define privacy and contestability requirements across the complete evidence clos
 
 <!-- END GENERATED PRESSURE TEST -->
 
+## Candidate action-authority / outcome seam
+
+RAHP issue [#337](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/337) exposed a residual composition question: a credential can be valid in its native proof format while current authority, lifecycle state and post-authorization outcome remain separate propositions.
+
+The exploratory [`authority-outcome-seam-candidate.yaml`](authority-outcome-seam-candidate.yaml) records the current pressure-tested judgment without asserting upstream normative ownership. It models:
+
+- a bounded tri-state `authority_decision`: `confirmed | contradicted | unresolved`;
+- a separate tri-state `outcome_decision`;
+- deterministic evidence/snapshot binding;
+- explicit freshness, state-precedence and version obligations;
+- non-inference boundaries so authorization is not over-read as execution, fiduciary propriety or governance legitimacy; and
+- privacy/redress as external composition obligations rather than verifier result fields.
+
+The candidate includes an XSP-001 through XSP-020 coverage matrix and explicit retest gates for F-001 and F-002. F-003 is intentionally **not** claimed as resolved by this candidate.
+
+This is an assurance design artifact, not a DTG specification. The next governance decision is whether the seam belongs in a cross-spec companion profile and which, if any, narrow normative clarifications belong in Trust Tasks or the Credential Specification.
