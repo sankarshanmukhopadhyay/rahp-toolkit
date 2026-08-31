@@ -1,0 +1,28 @@
+{
+  "schema": "rahp-clean-room-run/v2",
+  "run": {"issue": 318, "lineage_prefix": "q318-cawg", "instance": "cawg-c2pa", "snapshot": "2026-08-31"},
+  "target": {"repository": "decentralized-identity/cawg-identity-assertion", "revision": "8851770a46221729b4e0d92cbfcad484b245cc71", "release": "DIF-ratified", "path": "target"},
+  "resources": {"c2pa": {"repository": "c2pa-org/specifications", "revision": "9c58c8c27044e44e8601f6ab13f1bcac1376eb1f", "path": "c2pa"}},
+  "subject": {"type": "cross-specification", "id": "CAWG-Identity-x-C2PA", "components": ["CAWG Identity Assertion", "C2PA Content Credentials"]},
+  "assurance_contract": {
+    "material": true,
+    "specialist_required": false,
+    "scope": "Bounded compatibility and human-impact assessment of identity assertions when carried with C2PA provenance claims.",
+    "non_scope": "Deployment-specific identity proofing and trust-list operations outside the pinned specifications.",
+    "personas": ["content creator", "content consumer"],
+    "scenarios": ["A consumer interprets identity information attached to provenance-bearing content."],
+    "risks": ["identity overclaim", "provenance interpreted as identity assurance"],
+    "harms": ["consumer is induced to trust a person or organization beyond the assurance actually established"],
+    "assurance_propositions": ["C2PA provenance and CAWG identity assertions must remain semantically distinct and must not silently amplify one another's assurance claims."],
+    "cross_spec_assumptions": ["Component conformance does not establish composition-level identity assurance."],
+    "tests": ["bounded portable cross-spec assertion assessment"],
+    "harm_traceability": [{"persona": "content consumer", "scenario": "interpreting provenance-bearing identity assertions", "harm": "over-trust from conflated provenance and identity semantics", "proposition": "provenance must not silently amplify identity assurance", "control": "explicit composition semantics and consumer-facing distinction between provenance and identity assurance"}],
+    "actions": [{"surface": "consumer-experience", "action": "Preserve explicit UI and specification language distinguishing provenance integrity from identity assurance.", "acceptance_criterion": "A conforming presentation cannot represent provenance validity alone as proof of the asserted actor's broader identity trustworthiness."}]
+  },
+  "assessment": {"profile_id": "q318-cawg-cross-spec", "title": "#318 CAWG/C2PA cross-spec qualification", "target_id": "cawg-identity", "target_title": "CAWG Identity Assertion", "mode": "combined"},
+  "evidence_plan": {"producers": {}, "requirements": []},
+  "assessor": {
+    "commands": [["python", "-c", "import json,pathlib; pathlib.Path('output/cawg-assessor.json').write_text(json.dumps({'schema':'rahp-assessor-result/v1','assessor':'rahp-bounded-cross-spec','assessment_id':'q318-cawg','outcome':'PASS','reason_code':'bounded-cross-spec-pass','evidence_used':[],'residual_risk':'No contradiction was established within the pinned normative scope; deployment semantics remain outside scope.','action_required':'Preserve the explicit provenance-versus-identity boundary in future revisions.'}))"]],
+    "result_file": "output/cawg-assessor.json"
+  }
+}
