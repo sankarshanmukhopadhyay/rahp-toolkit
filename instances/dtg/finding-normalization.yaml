@@ -22,6 +22,15 @@ mapping_rules:
       affected_surfaces: [protocol-envelope, retained-state, device-presence]
       change_kind: [behavior-change]
 
+  - id: rp-wallet-origin-binding
+    repository_regex: '^OpenVTC/(vta-browser-plugin|verifiable-trust-infrastructure|openvtc)$'
+    title_regex: '(walletProfile|wallet profile|RP[- ]login|relying party.*wallet|site knows you as|origin[- ]bound|persona.*site)'
+    semantics:
+      dimensions: [privacy, authorization]
+      concerns: [data-minimization, origin-binding]
+      affected_surfaces: [wallet-interface, relying-party-binding, persona-disclosure]
+      change_kind: [behavior-change]
+
   - id: delegation-credential-composition
     title_regex: '(delegation credential|delegation.*credential|\bVDC\b)'
     semantics:
