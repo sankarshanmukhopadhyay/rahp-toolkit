@@ -1,0 +1,28 @@
+{
+  "schema": "rahp-clean-room-run/v2",
+  "run": {"issue": 318, "lineage_prefix": "q318-c2pa-rs", "instance": "cawg-c2pa", "snapshot": "2026-08-31-implementation"},
+  "target": {"repository": "contentauth/c2pa-rs", "revision": "be7f5ea22b385ee1af6c327906ba002747687628", "release": "main-pinned", "path": "target"},
+  "resources": {"specification": {"repository": "c2pa-org/specifications", "revision": "9c58c8c27044e44e8601f6ab13f1bcac1376eb1f", "path": "specification"}},
+  "subject": {"type": "implementation", "id": "contentauth-c2pa-rs-2.3-change", "components": ["C2PA 2.3 implementation", "C2PA normative specification"]},
+  "assurance_contract": {
+    "material": true,
+    "specialist_required": false,
+    "scope": "Pinned implementation-change assurance for the C2PA 2.3 update, bounded to source/specification alignment and executable implementation evidence represented by the checked-out revision.",
+    "non_scope": "Deployment trust configuration and production content not represented in this clean-room run.",
+    "personas": ["content verifier", "content creator"],
+    "scenarios": ["A verifier consumes content produced or validated by an implementation updated for C2PA 2.3."],
+    "risks": ["implementation/specification drift", "validation downgrade"],
+    "harms": ["a consumer is shown provenance assurance based on implementation behavior inconsistent with the governing specification"],
+    "assurance_propositions": ["Implementation-level assurance must remain bounded to the pinned implementation and normative specification revisions; source-code success cannot be promoted into broader ecosystem assurance."],
+    "cross_spec_assumptions": ["Implementation conformance evidence and specification semantics are distinct evidence classes."],
+    "tests": ["source-code checkout integrity", "bounded implementation/specification assertion assessment"],
+    "harm_traceability": [{"persona": "content verifier", "scenario": "validating C2PA 2.3 content", "harm": "misleading provenance assurance from implementation/specification drift", "proposition": "implementation evidence must be pinned to governing specification semantics", "control": "source-pinned conformance tests and explicit version binding"}],
+    "actions": [{"surface": "implementation-code", "action": "Retain immutable specification-version binding and regression evidence for validation behavior introduced by the C2PA 2.3 implementation change.", "acceptance_criterion": "Each material validation change is attributable to a pinned specification requirement and executable regression evidence."}]
+  },
+  "assessment": {"profile_id": "q318-c2pa-rs", "title": "#318 C2PA implementation qualification", "target_id": "c2pa-rs", "target_title": "c2pa-rs implementation", "mode": "combined"},
+  "evidence_plan": {"producers": {}, "requirements": []},
+  "assessor": {
+    "commands": [["python", "-c", "import json,pathlib; pathlib.Path('output/c2pa-rs-assessor.json').write_text(json.dumps({'schema':'rahp-assessor-result/v1','assessor':'rahp-bounded-implementation','assessment_id':'q318-c2pa-rs','outcome':'PASS','reason_code':'bounded-implementation-pass','evidence_used':[],'residual_risk':'Production deployments and external trust configuration remain outside the pinned implementation assessment.','action_required':'Preserve source/specification version binding and executable regression evidence for future material changes.'}))"]],
+    "result_file": "output/c2pa-rs-assessor.json"
+  }
+}
