@@ -45,7 +45,7 @@ Current capabilities include:
 
 RAHP is deliberately evidence-conservative: **zero findings is not equivalent to assured**. Missing evidence never becomes PASS. Workflow success is not assurance success. A component PASS never automatically implies a composition PASS.
 
-## Qualified zero-touch architecture
+## Current architecture
 
 The post-v2.0 architecture was qualified through #311/#318 and PR #319 across materially different A2A, CAWG/C2PA and DTG subjects. The clean-room qualification exercised standalone specification, cross-specification, implementation/source-code and composition subjects; no-specialist and specialist terminal paths; NOT_APPLICABLE and INDETERMINATE outcomes; model gaps; replay identity; new-pin reassessment lineage; durable outbox state; deliberately injected cross-repository transport failure and automatic recovery.
 
@@ -56,6 +56,8 @@ The bounded product claim is:
 > RAHP is qualified, within the tested contract and subject boundaries, as a zero-touch autonomous assurance monitoring plane that can fail closed into citable, actionable terminal assurance states without operator lifecycle shepherding.
 
 This does not mean every assessment is GREEN. Trustworthy autonomous termination includes adverse and indeterminate outcomes.
+
+**Bundled DTG exemplar:** the repository includes a DTG deployment profile, source-pinned scenario corpora and cross-specification examples as one qualification/adoption consumer. They demonstrate portable RAHP capabilities but are not dependencies of the generic method or engine contracts.
 
 ## Quick start
 
