@@ -19,6 +19,7 @@ producers:
     executable_groups:
       relationship-and-credential:
         requirements: [ER-REL-DID-AB, ER-STATUS-AB, ER-TASK-AB, ER-VERIFIER-AB, ER-CREDENTIAL-ID-AB]
+        workflow: composed-ab-evidence.yml
       device-metadata:
         requirements: [ER-DEVICE-METADATA-AB]
-        workflow: device-metadata-observer-ab.yml
+        workflow: device-metadata-observer-ab-evidence.yml
