@@ -9,10 +9,10 @@ on:
       - tools/assurance_record.py
       - tools/assurance_watchdog.py
       - tools/autonomous_assurance_controller.py
-      - schemas/rahp-assurance-run-state-v1.schema.json
-      - schemas/rahp-assessor-result-v1.schema.json
-      - schemas/rahp-evidence-remediation-v1.schema.json
-      - schemas/rahp-specialist-return-v1.schema.json
+      - tools/assurance_obligation.py
+      - tools/evidence_producer_controller.py
+      - config/evidence-producers.yaml
+      - schemas/rahp-assurance-obligation-v1.schema.json
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
       - tools/dpip_return_reconcile.py
@@ -20,24 +20,20 @@ on:
   push:
     branches: [main]
     paths:
-      - tools/assurance_fsm.py
-      - tools/assurance_record.py
-      - tools/assurance_watchdog.py
-      - tools/autonomous_assurance_controller.py
-      - schemas/rahp-assurance-run-state-v1.schema.json
-      - schemas/rahp-assessor-result-v1.schema.json
-      - schemas/rahp-evidence-remediation-v1.schema.json
-      - schemas/rahp-specialist-return-v1.schema.json
+      - tools/assurance_obligation.py
+      - tools/evidence_producer_controller.py
+      - config/evidence-producers.yaml
+      - schemas/rahp-assurance-obligation-v1.schema.json
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
       - tools/dpip_return_reconcile.py
       - .github/workflows/dpip-lifecycle.yml
   schedule:
-    - cron: '47 4 * * *'
+    - cron: '47 * * * *'
   workflow_dispatch:
     inputs:
       issue_number:
-        description: Optional RAHP referral issue to reconcile
+        description: Optional RAHP referral or semantic obligation issue to reconcile
         required: false
         type: string
 
@@ -66,20 +62,23 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
-      - name: Validate canonical controller, records, watchdog and DPIP reconciliation
+      - name: Validate controller and obligation contracts
         run: |
           python3 tools/assurance_fsm.py --self-test
           python3 tools/assurance_record.py --self-test
           python3 tools/assurance_watchdog.py --self-test
           python3 tools/autonomous_assurance_controller.py --self-test
+          python3 tools/assurance_obligation.py --self-test
+          python3 tools/evidence_producer_controller.py --self-test
           python3 tools/dpip_lifecycle.py --self-test
           python3 tools/dpip_lifecycle_reconcile.py --self-test
           python3 tools/dpip_return_reconcile.py --self-test
-      - name: Reconcile lifecycle telemetry and terminal DPIP return
+      - name: Reconcile lifecycle, specialist returns, and active evidence obligations
         if: github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           DPIP_HANDOFF_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
+          EVIDENCE_PRODUCER_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
           RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
           DPIP_REPOSITORY: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
           EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
@@ -95,6 +94,9 @@ jobs:
             python3 tools/dpip_lifecycle_reconcile.py
             python3 tools/dpip_return_reconcile.py
           fi
+          # Evidence obligations are intentionally scanned after reconciliation so a
+          # newly created/acquirable obligation can dispatch in the same controller run.
+          python3 tools/evidence_producer_controller.py
       - name: Detect stranded controller states after normal retries
         if: github.event_name != 'pull_request'
         env:

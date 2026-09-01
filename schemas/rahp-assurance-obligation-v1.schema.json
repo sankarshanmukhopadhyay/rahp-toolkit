@@ -3,107 +3,31 @@
   "$id": "https://example.invalid/rahp/schemas/rahp-assurance-obligation-v1.schema.json",
   "title": "RAHP assurance obligation v1",
   "type": "object",
-  "required": [
-    "schema",
-    "proposition_key",
-    "state",
-    "action_owner",
-    "artifact_to_produce",
-    "producer",
-    "lineage"
-  ],
+  "required": ["schema", "proposition_key", "evidence_contract_key", "state", "action_owner", "artifact_to_produce", "producer", "lineage"],
   "properties": {
     "schema": {"const": "rahp-assurance-obligation/v1"},
-    "proposition_key": {"type": "string", "minLength": 1},
-    "state": {
-      "enum": [
-        "model-gap",
-        "evidence-acquirable",
-        "evidence-external",
-        "evidence-stale",
-        "evidence-produced",
-        "remediation-required",
-        "upstream-action",
-        "controller-error"
-      ]
-    },
+    "proposition_key": {"type": "string", "pattern": "^rahp-obligation:[0-9a-f]{20}$"},
+    "evidence_contract_key": {"type": "string", "pattern": "^rahp-evidence-contract:[0-9a-f]{20}$"},
+    "state": {"enum": ["model-gap", "evidence-acquirable", "evidence-external", "evidence-stale", "evidence-produced", "remediation-required", "upstream-action", "controller-error"]},
     "action_owner": {
-      "type": "object",
-      "required": ["surface"],
-      "properties": {
-        "surface": {
-          "enum": [
-            "rahp",
-            "specialist-profile",
-            "evidence-producer",
-            "implementation",
-            "specification",
-            "operator",
-            "governance",
-            "external"
-          ]
-        },
-        "repository": {"type": "string"}
-      },
+      "type": "object", "required": ["surface"],
+      "properties": {"surface": {"enum": ["rahp", "specialist-profile", "evidence-producer", "implementation", "specification", "operator", "governance", "external"]}, "repository": {"type": "string"}},
       "additionalProperties": true
     },
     "artifact_to_produce": {
-      "type": "object",
-      "required": ["kind", "description"],
-      "properties": {
-        "kind": {
-          "enum": [
-            "evidence-requirement",
-            "runtime-evidence",
-            "test-fixture",
-            "implementation-remediation",
-            "spec-change",
-            "governance-decision",
-            "controller-repair",
-            "other"
-          ]
-        },
-        "description": {"type": "string", "minLength": 1}
-      },
+      "type": "object", "required": ["kind", "description"],
+      "properties": {"kind": {"enum": ["evidence-requirement", "runtime-evidence", "test-fixture", "implementation-remediation", "spec-change", "governance-decision", "controller-repair", "other"]}, "description": {"type": "string", "minLength": 1}},
       "additionalProperties": true
     },
     "producer": {
-      "type": "object",
-      "required": ["mode"],
-      "properties": {
-        "mode": {
-          "enum": ["registered-executable", "external", "not-yet-defined"]
-        },
-        "id": {"type": "string"}
-      },
+      "type": "object", "required": ["mode"],
+      "properties": {"mode": {"enum": ["registered-executable", "external", "not-yet-defined"]}, "id": {"type": "string"}, "repository": {"type": "string"}},
       "additionalProperties": true
     },
-    "source_pins": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["repository", "revision"],
-        "properties": {
-          "repository": {"type": "string", "minLength": 1},
-          "revision": {"type": "string", "minLength": 1}
-        },
-        "additionalProperties": true
-      }
-    },
-    "evidence_requirement_ids": {
-      "type": "array",
-      "items": {"type": "string"},
-      "uniqueItems": true
-    },
-    "lineage": {
-      "type": "array",
-      "items": {"type": "object"}
-    },
-    "supersedes": {
-      "type": "array",
-      "items": {"type": "string"},
-      "uniqueItems": true
-    }
+    "source_pins": {"type": "array", "items": {"type": "object", "required": ["repository", "revision"], "properties": {"repository": {"type": "string", "minLength": 1}, "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}, "additionalProperties": true}},
+    "evidence_requirement_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "lineage": {"type": "array", "items": {"type": "object"}},
+    "supersedes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
   },
   "additionalProperties": true
 }

@@ -1,0 +1,26 @@
+schema: rahp-evidence-producer-registry/v1
+version: 1
+producers:
+  - id: composed-unlinkability-v1
+    repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+    provenance_producer: trust-protocol-interop-lab
+    workflow: composed-ab-evidence.yml
+    ref: main
+    mode: registered-executable
+    evidence_class: runtime-upstream-observation
+    output_schema: interop-evidence-package/v1
+    artifact_prefix: assurance-evidence-
+    requirements:
+      - ER-REL-DID-AB
+      - ER-STATUS-AB
+      - ER-TASK-AB
+      - ER-VERIFIER-AB
+      - ER-CREDENTIAL-ID-AB
+      - ER-DEVICE-METADATA-AB
+    executable_groups:
+      relationship-and-credential:
+        requirements: [ER-REL-DID-AB, ER-STATUS-AB, ER-TASK-AB, ER-VERIFIER-AB, ER-CREDENTIAL-ID-AB]
+        workflow: composed-ab-evidence.yml
+      device-metadata:
+        requirements: [ER-DEVICE-METADATA-AB]
+        workflow: device-metadata-observer-ab-evidence.yml
