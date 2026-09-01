@@ -11,6 +11,8 @@ on:
       - tools/autonomous_assurance_controller.py
       - tools/assurance_obligation.py
       - tools/evidence_producer_controller.py
+      - tools/evidence_producer_scheduler.py
+      - tools/evidence_provenance_router.py
       - config/evidence-producers.yaml
       - schemas/rahp-assurance-obligation-v1.schema.json
       - tools/dpip_lifecycle.py
@@ -23,6 +25,8 @@ on:
     paths:
       - tools/assurance_obligation.py
       - tools/evidence_producer_controller.py
+      - tools/evidence_producer_scheduler.py
+      - tools/evidence_provenance_router.py
       - config/evidence-producers.yaml
       - schemas/rahp-assurance-obligation-v1.schema.json
       - tools/dpip_lifecycle.py
@@ -72,6 +76,8 @@ jobs:
           python3 tools/autonomous_assurance_controller.py --self-test
           python3 tools/assurance_obligation.py --self-test
           python3 tools/evidence_producer_controller.py --self-test
+          python3 tools/evidence_producer_scheduler.py --self-test
+          python3 tools/evidence_provenance_router.py --self-test
           python3 tools/dpip_lifecycle.py --self-test
           python3 tools/dpip_lifecycle_reconcile.py --self-test
           python3 tools/dpip_return_reconcile.py --self-test
@@ -93,17 +99,18 @@ jobs:
           if [ -n "$issue_number" ]; then
             python3 tools/dpip_lifecycle_reconcile.py --issue-number "$issue_number"
             python3 tools/dpip_return_reconcile.py --issue-number "$issue_number"
+            python3 tools/evidence_provenance_router.py --issue-number "$issue_number"
           else
             python3 tools/dpip_lifecycle_reconcile.py
             python3 tools/dpip_return_reconcile.py
+            python3 tools/evidence_provenance_router.py
           fi
-          # Evidence obligations are scanned after reconciliation so a newly
-          # acquirable obligation can execute in the same controller run.
-          python3 tools/evidence_producer_controller.py
-          # GITHUB_TOKEN-authored label changes do not recursively trigger the
-          # issues:labeled handoff workflow. Execute the existing idempotent
-          # handoff transport directly so evidence production and specialist
-          # reassessment form one autonomous lifecycle transaction.
+          # Only obligations whose current state can legitimately be advanced by a
+          # registered producer are scheduled. evidence-external and remediation-owned
+          # obligations are intentionally excluded.
+          python3 tools/evidence_producer_scheduler.py
+          # Evidence production and specialist handoff remain one autonomous lifecycle
+          # transaction. The handoff transport is idempotent and reuses existing referrals.
           python3 tools/dpip_handoff.py
       - name: Upload durable RAHP evidence outbox
         if: github.event_name != 'pull_request' && always()
