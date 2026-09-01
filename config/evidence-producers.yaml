@@ -4,28 +4,38 @@ qualification:
   governing_issue: 356
   governing_objective_issue: 311
   live_regressions: [310, 338, 339]
-  purpose: Record the live semantic-obligation producer qualification linkage; changes to this registry intentionally trigger the lifecycle controller.
+  purpose: >-
+    Record the live semantic-obligation producer qualification linkage. Registered
+    public producers are executed by the RAHP controller from immutable revisions;
+    RAHP does not require cross-repository Actions write credentials.
 producers:
   - id: composed-unlinkability-v1
     repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+    revision: 7e85df5be2213a8a75e1decdfc98a19073fb1155
     provenance_producer: trust-protocol-interop-lab
-    workflow: composed-ab-evidence.yml
-    ref: main
     mode: registered-executable
+    execution_mode: local-public-checkout
     evidence_class: runtime-upstream-observation
     output_schema: interop-evidence-package/v1
-    artifact_prefix: assurance-evidence-
     requirements:
       - ER-REL-DID-AB
       - ER-STATUS-AB
       - ER-TASK-AB
       - ER-VERIFIER-AB
       - ER-CREDENTIAL-ID-AB
-      - ER-DEVICE-METADATA-AB
     executable_groups:
       relationship-and-credential:
         requirements: [ER-REL-DID-AB, ER-STATUS-AB, ER-TASK-AB, ER-VERIFIER-AB, ER-CREDENTIAL-ID-AB]
-        workflow: composed-ab-evidence.yml
-      device-metadata:
-        requirements: [ER-DEVICE-METADATA-AB]
-        workflow: device-metadata-observer-ab-evidence.yml
+        entrypoint: experiments/dtg-protected-access/run_composed_ab.py
+        output_bundle: unlinkability-pressure-provided-evidence.json
+  - id: device-metadata-observer-v1
+    repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+    revision: 7e85df5be2213a8a75e1decdfc98a19073fb1155
+    provenance_producer: trust-protocol-interop-lab
+    mode: external-executable
+    reason: >-
+      The observer-bound device experiment requires pinned OpenVTC/VTI checkouts,
+      Rust/native build dependencies and is currently relevant only after the active
+      remediation-required obligation changes state. It is deliberately not advertised
+      as an automatically executable RAHP-local producer.
+    requirements: [ER-DEVICE-METADATA-AB]
