@@ -16,6 +16,7 @@ on:
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
       - tools/dpip_return_reconcile.py
+      - tools/dpip_handoff.py
       - .github/workflows/dpip-lifecycle.yml
   push:
     branches: [main]
@@ -27,6 +28,7 @@ on:
       - tools/dpip_lifecycle.py
       - tools/dpip_lifecycle_reconcile.py
       - tools/dpip_return_reconcile.py
+      - tools/dpip_handoff.py
       - .github/workflows/dpip-lifecycle.yml
   schedule:
     - cron: '47 * * * *'
@@ -73,6 +75,7 @@ jobs:
           python3 tools/dpip_lifecycle.py --self-test
           python3 tools/dpip_lifecycle_reconcile.py --self-test
           python3 tools/dpip_return_reconcile.py --self-test
+          python3 tools/dpip_handoff.py --self-test
       - name: Reconcile lifecycle, specialist returns, and active evidence obligations
         if: github.event_name != 'pull_request'
         env:
@@ -97,6 +100,11 @@ jobs:
           # Evidence obligations are scanned after reconciliation so a newly
           # acquirable obligation can execute in the same controller run.
           python3 tools/evidence_producer_controller.py
+          # GITHUB_TOKEN-authored label changes do not recursively trigger the
+          # issues:labeled handoff workflow. Execute the existing idempotent
+          # handoff transport directly so evidence production and specialist
+          # reassessment form one autonomous lifecycle transaction.
+          python3 tools/dpip_handoff.py
       - name: Upload durable RAHP evidence outbox
         if: github.event_name != 'pull_request' && always()
         uses: actions/upload-artifact@v4
