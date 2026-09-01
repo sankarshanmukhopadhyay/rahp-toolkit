@@ -87,6 +87,11 @@ def _canonical_strings(values: list[str] | None) -> list[str]:
     return sorted({str(value).strip() for value in (values or []) if str(value).strip()})
 
 
+def _digest(payload: dict[str, Any], prefix: str) -> str:
+    value = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()[:20]
+    return f"{prefix}:{value}"
+
+
 def proposition_key(
     *,
     target_profile: str,
@@ -95,23 +100,35 @@ def proposition_key(
     evidence_requirement_ids: list[str] | None = None,
     material_boundary: str = "",
 ) -> str:
-    """Return stable semantic identity independent of issue/referral lineage.
+    """Return durable semantic identity for the assurance proposition.
 
-    Immutable source revisions deliberately do not participate directly. A source change
-    creates a new obligation only when the material boundary/proposition itself changes;
-    otherwise it advances lineage and may move the obligation to evidence-stale.
+    Evidence requirement IDs and source revisions deliberately do not participate in
+    durable identity. They refine how the same proposition is tested and may change as
+    a model gap is repaired or evidence becomes stale. Including them here would create
+    a second active obligation merely because the evidence contract became more precise.
+
+    ``evidence_requirement_ids`` remains in the signature for source compatibility with
+    callers that already pass it; use :func:`evidence_contract_key` when evidence-contract
+    identity is needed.
     """
     payload = {
         "target_profile": target_profile.strip(),
         "subject_id": subject_id.strip(),
         "proposition_ids": _canonical_strings(proposition_ids),
-        "evidence_requirement_ids": _canonical_strings(evidence_requirement_ids),
         "material_boundary": material_boundary.strip(),
     }
     if not payload["target_profile"] or not payload["subject_id"]:
         raise ValueError("target_profile and subject_id are required")
-    digest = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()[:20]
-    return f"rahp-obligation:{digest}"
+    return _digest(payload, "rahp-obligation")
+
+
+def evidence_contract_key(proposition: str, evidence_requirement_ids: list[str] | None = None) -> str:
+    if not proposition.strip():
+        raise ValueError("proposition key is required")
+    return _digest({
+        "proposition_key": proposition.strip(),
+        "evidence_requirement_ids": _canonical_strings(evidence_requirement_ids),
+    }, "rahp-evidence-contract")
 
 
 def new_obligation(
@@ -131,70 +148,74 @@ def new_obligation(
     if state not in STATE_DEFAULTS:
         raise ValueError(f"unsupported obligation state {state!r}")
     defaults = STATE_DEFAULTS[state]
+    key = proposition_key(
+        target_profile=target_profile,
+        subject_id=subject_id,
+        proposition_ids=proposition_ids,
+        material_boundary=material_boundary,
+    )
+    requirement_ids = _canonical_strings(evidence_requirement_ids)
     return {
         "schema": SCHEMA,
-        "proposition_key": proposition_key(
-            target_profile=target_profile,
-            subject_id=subject_id,
-            proposition_ids=proposition_ids,
-            evidence_requirement_ids=evidence_requirement_ids,
-            material_boundary=material_boundary,
-        ),
+        "proposition_key": key,
+        "evidence_contract_key": evidence_contract_key(key, requirement_ids),
         "state": state,
         "action_owner": deepcopy(action_owner or defaults["action_owner"]),
         "artifact_to_produce": deepcopy(artifact_to_produce or defaults["artifact_to_produce"]),
         "producer": deepcopy(producer or defaults["producer"]),
         "source_pins": deepcopy(source_pins or []),
-        "evidence_requirement_ids": _canonical_strings(evidence_requirement_ids),
+        "evidence_requirement_ids": requirement_ids,
         "lineage": deepcopy(lineage or []),
         "supersedes": [],
     }
 
 
+def transition_obligation(existing: dict[str, Any], *, state: str, evidence_requirement_ids: list[str] | None = None,
+                          source_pins: list[dict[str, Any]] | None = None, lineage: dict[str, Any] | None = None,
+                          action_owner: dict[str, Any] | None = None, artifact_to_produce: dict[str, Any] | None = None,
+                          producer: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Advance an active obligation without changing its durable proposition identity."""
+    if state not in STATE_DEFAULTS:
+        raise ValueError(f"unsupported obligation state {state!r}")
+    out = deepcopy(existing)
+    out["schema"] = SCHEMA
+    out["state"] = state
+    ids = _canonical_strings(evidence_requirement_ids if evidence_requirement_ids is not None else out.get("evidence_requirement_ids"))
+    out["evidence_requirement_ids"] = ids
+    out["evidence_contract_key"] = evidence_contract_key(str(out["proposition_key"]), ids)
+    if source_pins is not None:
+        out["source_pins"] = deepcopy(source_pins)
+    defaults = STATE_DEFAULTS[state]
+    out["action_owner"] = deepcopy(action_owner or defaults["action_owner"])
+    out["artifact_to_produce"] = deepcopy(artifact_to_produce or defaults["artifact_to_produce"])
+    out["producer"] = deepcopy(producer or defaults["producer"])
+    history = out.setdefault("lineage", [])
+    if lineage is not None and lineage not in history:
+        history.append(deepcopy(lineage))
+    out.setdefault("supersedes", [])
+    return out
+
+
 def self_test() -> int:
-    first = proposition_key(
-        target_profile="dtg",
-        subject_id="relationship-correlation-privacy",
-        proposition_ids=["P5", "P2", "P4"],
-        material_boundary="relationship edge correlation",
-    )
-    replay = proposition_key(
-        target_profile="dtg",
-        subject_id="relationship-correlation-privacy",
-        proposition_ids=["P4", "P2", "P5"],
-        material_boundary="relationship edge correlation",
-    )
+    first = proposition_key(target_profile="dtg", subject_id="relationship-correlation-privacy", proposition_ids=["P5", "P2", "P4"], material_boundary="relationship edge correlation")
+    replay = proposition_key(target_profile="dtg", subject_id="relationship-correlation-privacy", proposition_ids=["P4", "P2", "P5"], material_boundary="relationship edge correlation")
     assert first == replay
+    refined = proposition_key(target_profile="dtg", subject_id="relationship-correlation-privacy", proposition_ids=["P2", "P4", "P5"], evidence_requirement_ids=["ER-REL-DID-AB"], material_boundary="relationship edge correlation")
+    assert refined == first, "evidence-contract refinement must not create a new active obligation"
+    changed_boundary = proposition_key(target_profile="dtg", subject_id="relationship-correlation-privacy", proposition_ids=["P2", "P4", "P5"], material_boundary="different material boundary")
+    assert changed_boundary != first
 
-    distinct = proposition_key(
-        target_profile="dtg",
-        subject_id="relationship-correlation-privacy",
-        proposition_ids=["P2", "P4", "P5"],
-        evidence_requirement_ids=["ER-RELATIONSHIP-AB"],
-        material_boundary="relationship edge correlation",
-    )
-    assert distinct != first
+    gap = new_obligation(target_profile="dtg", subject_id="credential-id-correlation", state="model-gap", proposition_ids=["CREDENTIAL-ID-CROSS-CONTEXT"])
+    acquired = transition_obligation(gap, state="evidence-acquirable", evidence_requirement_ids=["ER-CREDENTIAL-ID-AB"], producer={"mode": "registered-executable", "id": "composed-unlinkability-v1"})
+    assert acquired["proposition_key"] == gap["proposition_key"]
+    assert acquired["evidence_contract_key"] != gap["evidence_contract_key"]
+    assert acquired["action_owner"]["surface"] == "evidence-producer"
 
-    gap = new_obligation(
-        target_profile="dtg",
-        subject_id="credential-id-correlation",
-        state="model-gap",
-        proposition_ids=["CREDENTIAL-ID-CROSS-CONTEXT"],
-    )
-    assert gap["action_owner"]["surface"] == "specialist-profile"
-    assert gap["artifact_to_produce"]["kind"] == "evidence-requirement"
-    assert gap["producer"]["mode"] == "not-yet-defined"
-
-    failed = new_obligation(
-        target_profile="dtg",
-        subject_id="device-metadata-privacy",
-        state="remediation-required",
-        evidence_requirement_ids=["ER-DEVICE-METADATA-AB"],
-    )
-    assert failed["action_owner"]["surface"] == "implementation"
+    failed = transition_obligation(acquired, state="remediation-required")
+    assert failed["proposition_key"] == gap["proposition_key"]
     assert failed["artifact_to_produce"]["kind"] == "implementation-remediation"
 
-    print("PASS semantic assurance obligation identity and ownership defaults")
+    print("PASS semantic obligation identity survives model, evidence and remediation transitions")
     return 0
 
 
