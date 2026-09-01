@@ -3,6 +3,7 @@ version: 1
 producers:
   - id: composed-unlinkability-v1
     repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+    provenance_producer: trust-protocol-interop-lab
     workflow: composed-ab-evidence.yml
     ref: main
     mode: registered-executable
