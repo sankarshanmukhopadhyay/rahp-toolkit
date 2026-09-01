@@ -1,5 +1,10 @@
 schema: rahp-evidence-producer-registry/v1
 version: 1
+qualification:
+  governing_issue: 356
+  governing_objective_issue: 311
+  live_regressions: [310, 338, 339]
+  purpose: Record the live semantic-obligation producer qualification linkage; changes to this registry intentionally trigger the lifecycle controller.
 producers:
   - id: composed-unlinkability-v1
     repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
