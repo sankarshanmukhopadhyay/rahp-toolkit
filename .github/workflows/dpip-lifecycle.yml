@@ -78,9 +78,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           DPIP_HANDOFF_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
-          EVIDENCE_PRODUCER_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
           RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
           DPIP_REPOSITORY: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+          RAHP_EVIDENCE_OUTBOX: ${{ runner.temp }}/rahp-evidence-outbox
           EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
           INPUT_ISSUE_NUMBER: ${{ inputs.issue_number }}
         shell: bash
@@ -94,9 +94,17 @@ jobs:
             python3 tools/dpip_lifecycle_reconcile.py
             python3 tools/dpip_return_reconcile.py
           fi
-          # Evidence obligations are intentionally scanned after reconciliation so a
-          # newly created/acquirable obligation can dispatch in the same controller run.
+          # Evidence obligations are scanned after reconciliation so a newly
+          # acquirable obligation can execute in the same controller run.
           python3 tools/evidence_producer_controller.py
+      - name: Upload durable RAHP evidence outbox
+        if: github.event_name != 'pull_request' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rahp-evidence-outbox-${{ github.run_id }}
+          path: ${{ runner.temp }}/rahp-evidence-outbox/
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Detect stranded controller states after normal retries
         if: github.event_name != 'pull_request'
         env:
