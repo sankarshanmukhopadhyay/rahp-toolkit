@@ -2,9 +2,9 @@
 """Drive registered assurance evidence producers for active RAHP obligations.
 
 RAHP owns orchestration. Producers own observation. Specialists own interpretation.
-The controller therefore dispatches a registered producer, watches its durable GitHub
-Actions artifact outbox, validates attribution/contract shape, and enqueues a comparable
-specialist reassessment without converting the observation into an assurance judgment.
+The controller dispatches a configured producer, watches its durable GitHub Actions
+artifact outbox, validates attribution/contract shape, and enqueues a comparable
+specialist reassessment without converting observations into assurance judgments.
 """
 from __future__ import annotations
 
@@ -37,6 +37,9 @@ def load_registry(path: Path = REGISTRY_PATH) -> dict[str, Any]:
     value = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict) or value.get("schema") != "rahp-evidence-producer-registry/v1":
         raise ValueError("invalid evidence producer registry")
+    for producer in value.get("producers", []) or []:
+        if producer.get("mode") == "registered-executable" and not producer.get("provenance_producer"):
+            raise ValueError(f"registered producer {producer.get('id')} lacks provenance_producer")
     return value
 
 
@@ -94,6 +97,7 @@ def validate_evidence_bundle(bundle: dict[str, Any], required_ids: list[str], pr
     if not isinstance(records, list):
         return errors + ["provided_evidence must be a list"]
     by_id = {str(r.get("requirement_id")): r for r in records if isinstance(r, dict) and r.get("requirement_id")}
+    expected_provenance = str(producer.get("provenance_producer") or "")
     for rid in required_ids:
         record = by_id.get(rid)
         if not record:
@@ -115,7 +119,7 @@ def validate_evidence_bundle(bundle: dict[str, Any], required_ids: list[str], pr
                 if not isinstance(pin, dict) or not str(pin.get("repository") or "") or not SHA40.fullmatch(str(pin.get("revision") or "")):
                     errors.append(f"{rid}: invalid immutable source pin")
         provenance = record.get("provenance")
-        if not isinstance(provenance, dict) or provenance.get("producer") != "trust-protocol-interop-lab":
+        if not isinstance(provenance, dict) or provenance.get("producer") != expected_provenance:
             errors.append(f"{rid}: producer provenance mismatch")
         if not isinstance(record.get("surfaces"), dict) or not record.get("surfaces"):
             errors.append(f"{rid}: surfaces missing")
@@ -232,16 +236,18 @@ def self_test() -> int:
     key = dispatch_key(obligation, resolved[0]["id"])
     assert key == dispatch_key(obligation, resolved[0]["id"])
     assert resolve_producer(["ER-UNKNOWN"], registry) is None
-    record = {"schema": "interop-evidence-package/v1", "requirement_id": "ER-CREDENTIAL-ID-AB", "evidence_class": "runtime-upstream-observation", "experiment": {"kind": "unlinkability-pressure-case", "expected_join": "must-not-emerge", "observed_join": "not-detected"}, "observer": {"model": "distinct", "contexts": [{"id": "A"}, {"id": "B"}]}, "provenance": {"producer": "trust-protocol-interop-lab"}, "source_pins": [{"repository": "example/runtime", "revision": "a" * 40}], "surfaces": {"credential_identifier": {"classification": "fresh"}}}
+    record = {"schema": "interop-evidence-package/v1", "requirement_id": "ER-CREDENTIAL-ID-AB", "evidence_class": "runtime-upstream-observation", "experiment": {"kind": "unlinkability-pressure-case", "expected_join": "must-not-emerge", "observed_join": "not-detected"}, "observer": {"model": "distinct", "contexts": [{"id": "A"}, {"id": "B"}]}, "provenance": {"producer": resolved[0]["provenance_producer"]}, "source_pins": [{"repository": "example/runtime", "revision": "a" * 40}], "surfaces": {"credential_identifier": {"classification": "fresh"}}}
     bundle = {"schema": "interop-evidence-bundle/v1", "provided_evidence": [record]}
     assert validate_evidence_bundle(bundle, ["ER-CREDENTIAL-ID-AB"], resolved[0]) == []
-    bad = json.loads(json.dumps(bundle)); bad["provided_evidence"][0]["observer"]["contexts"] = [{"id": "A"}]
-    assert any("observer" in x for x in validate_evidence_bundle(bad, ["ER-CREDENTIAL-ID-AB"], resolved[0]))
+    bad = json.loads(json.dumps(bundle)); bad["provided_evidence"][0]["provenance"]["producer"] = "different-producer"
+    assert any("provenance" in x for x in validate_evidence_bundle(bad, ["ER-CREDENTIAL-ID-AB"], resolved[0]))
+    bad_observer = json.loads(json.dumps(bundle)); bad_observer["provided_evidence"][0]["observer"]["contexts"] = [{"id": "A"}]
+    assert any("observer" in x for x in validate_evidence_bundle(bad_observer, ["ER-CREDENTIAL-ID-AB"], resolved[0]))
     body = "<!-- rahp-assurance-obligation:v1:rahp-obligation:abc -->\n```yaml\n" + yaml.safe_dump({"obligation": obligation}, sort_keys=False) + "```\n"
     assert parse_obligation(body)["proposition_key"] == obligation["proposition_key"]
     produced = transition_obligation(obligation, state="evidence-produced", evidence_requirement_ids=["ER-CREDENTIAL-ID-AB"])
     assert produced["proposition_key"] == obligation["proposition_key"]
-    print("PASS evidence producer resolution, idempotent dispatch identity, provenance validation and stable obligation transition")
+    print("PASS target-agnostic producer resolution, idempotent dispatch identity, configured provenance validation and stable obligation transition")
     return 0
 
 
