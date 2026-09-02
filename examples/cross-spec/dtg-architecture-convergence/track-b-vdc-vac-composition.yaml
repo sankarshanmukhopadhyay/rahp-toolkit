@@ -1,0 +1,153 @@
+review:
+  id: DTG-371-TRACK-B
+  status: complete
+  title: DTG architecture convergence Track B — VDC × VAC non-substitution and effective-authority composition
+  reviewed_on: '2026-09-02'
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  trigger_issue: 374
+  proposition_matrix: examples/cross-spec/dtg-architecture-convergence/proposition-matrix.yaml
+  evidence_grade: source-pinned-executable-semantic-composition
+
+  target:
+    vdc:
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 19
+      head_sha: ad5876f1b96e2149adec84d37d6595b4a212db9c
+      authority_status: proposed-upstream
+    vac:
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 29
+      head_sha: 84650749afd48798e1c8919a95be359c0367a1c9
+      authority_status: proposed-upstream
+    execution_evidence:
+      repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+      pull_request: 92
+      branch: exp/dtg-architecture-convergence-371
+      result: results/dtg-vdc-vac-composition/run-results.json
+
+  scope:
+    included:
+      - delegation-versus-authority-non-substitution
+      - delegation-scope-intersection
+      - principal-current-authority
+      - delegation-current-state
+      - delegate-independent-eligibility
+      - task-and-invocation-binding
+    excluded:
+      - treating VDC or VAC as adopted DTG semantics
+      - final wire-format or cryptographic interoperability
+      - VAC attenuation-chain mechanics owned by Track C
+      - full end-to-end actuation semantics owned by Track G
+
+  summary:
+    overall_assessment: SUPPORTED_WITH_BOUNDED_RESIDUALS
+    assurance_posture: AMBER
+    rationale: >-
+      The pinned VDC and VAC proposals establish a coherent semantic boundary: delegation answers
+      whether an actor may act in a principal's name, while authority answers whether the relevant
+      party may perform the requested action. Deterministic Interop Lab execution demonstrates that
+      the proposed composition can fail closed across all required non-substitution cases. The result
+      remains semantic experimental evidence rather than proof of final DTG wire interoperability or
+      a complete actuation contract.
+
+  proposition_results:
+    - proposition_id: DTG-371-P06
+      result: supported-by-proposed-source-and-semantic-execution
+      evidence_class: specification-plus-composition-test
+      evidence:
+        - trustoverip/dtgwg-cred-spec#19@ad5876f1b96e2149adec84d37d6595b4a212db9c
+        - trustoverip/dtgwg-cred-spec#29@84650749afd48798e1c8919a95be359c0367a1c9
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#92
+      judgment: >-
+        VDC and VAC remain non-substitutable in every executed vector. Authority without delegation
+        cannot authorize acting in another's name, and delegation without principal authority cannot
+        authorize the requested act.
+      residual: final-upstream-adoption-and-wire-evidence
+
+    - proposition_id: DTG-371-P07
+      result: supported-by-semantic-execution
+      evidence_class: specification-plus-runtime-composition
+      evidence:
+        - trustoverip/dtgwg-cred-spec#19@ad5876f1b96e2149adec84d37d6595b4a212db9c
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#92
+      judgment: >-
+        The executable decision is the intersection of current delegation scope and principal authority
+        scope. A write request is rejected when the principal may write but the delegation appoints only read.
+      residual: cryptographic-and-native-artifact-realization
+
+    - proposition_id: DTG-371-P09
+      result: supported-at-semantic-current-state-boundary
+      evidence_class: runtime-current-state
+      evidence:
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#92
+        - examples/cross-spec/credential-zkp-trust-tasks/pressure-test.yaml
+      judgment: >-
+        Withdrawal of principal authority fails the request while delegation remains otherwise valid,
+        and revocation of delegation fails the request while principal authority remains valid. The test
+        therefore preserves lifecycle-state independence rather than relying on standing artifact validity.
+      residual: native-status-and-revocation-evidence-for-final-credential-constructions
+
+    - proposition_id: DTG-371-P14
+      result: partial-support
+      evidence_class: end-to-end-executable-composition
+      evidence:
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#92
+      judgment: >-
+        The experiment establishes the delegation/authority/eligibility/invocation slice of the broader
+        actuation invariant and rejects invocation mismatch despite otherwise valid standing predicates.
+        It does not yet establish the complete identity, relationship, privacy, policy, replay and side-effect
+        boundary reserved for Track G.
+      action_owner:
+        surface: interop-test-harness
+        repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+      artifact_to_produce:
+        kind: runtime-evidence
+        description: Complete Track G actuation composition using the bounded evidence from Tracks A-F.
+
+  executed_vectors:
+    - id: VDV-POS-001
+      expected: allow
+      result: allow
+      proposition_ids: [DTG-371-P06, DTG-371-P07, DTG-371-P09]
+    - id: VDV-NEG-001
+      expected: deny
+      result: deny
+      reason: delegation does not manufacture absent principal authority
+    - id: VDV-NEG-002
+      expected: deny
+      result: deny
+      reason: authority does not manufacture representation
+    - id: VDV-NEG-003
+      expected: deny
+      result: deny
+      reason: delegation scope is narrower than principal authority and bounds the effective action
+    - id: VDV-NEG-004
+      expected: deny
+      result: deny
+      reason: principal authority withdrawal takes effect independently of VDC validity
+    - id: VDV-NEG-005
+      expected: deny
+      result: deny
+      reason: VDC revocation takes effect independently of principal authority
+    - id: VDV-NEG-006
+      expected: deny
+      result: deny
+      reason: independently required delegate eligibility remains governance-owned and non-substitutable
+    - id: VDV-NEG-007
+      expected: deny
+      result: deny
+      reason: task/invocation mismatch is not repaired by otherwise valid standing artifacts
+
+  terminal_disposition:
+    result: SUPPORTED_WITH_BOUNDED_RESIDUALS
+    supported:
+      - DTG-371-P06
+      - DTG-371-P07
+      - DTG-371-P09
+    partial:
+      - DTG-371-P14
+    conclusion: >-
+      Track B materially supports the proposed VDC/VAC separation and intersection model. No executed
+      case permits delegation to synthesize authority or authority to synthesize representation. The
+      remaining obligations are not a semantic contradiction in the pair; they are native credential,
+      cryptographic/current-state and complete actuation evidence that belong to later tracks.
