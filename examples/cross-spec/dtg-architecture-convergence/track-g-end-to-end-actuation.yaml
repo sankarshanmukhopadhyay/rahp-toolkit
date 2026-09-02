@@ -1,0 +1,223 @@
+review:
+  id: DTG-371-TRACK-G
+  status: complete
+  title: DTG architecture convergence Track G — end-to-end actuation invariant and composite execution pressure test
+  reviewed_on: '2026-09-02'
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  trigger_issue: 379
+  proposition_matrix: examples/cross-spec/dtg-architecture-convergence/proposition-matrix.yaml
+  evidence_grade: source-pinned-executable-composition-plus-bounded-specialist-residuals
+
+  sources:
+    correlation_scope: trustoverip/dtgwg-cred-spec#30@b3840f430f5bd01addab95881350a7f860e763e2
+    vdc: trustoverip/dtgwg-cred-spec#19@ad5876f1b96e2149adec84d37d6595b4a212db9c
+    vac: trustoverip/dtgwg-cred-spec#29@84650749afd48798e1c8919a95be359c0367a1c9
+    data_rooms: https://docs.fpp.storm.ws/data-rooms-concept.html
+    interop_execution:
+      repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+      pull_request: 96
+      merged_commit: 727bd56facea7fa57f2cf3d93be82b011167ae78
+      authority_status: experimental-composition-evidence
+    privacy_specialist:
+      repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+      pull_request: 185
+      authority_status: specialist-evidence-contract
+
+  actuation_invariant:
+    authority_status: rahp-inferred-composition
+    proposition_id: DTG-371-P14
+    statement: >-
+      A consequential operation may execute only when every required current actor/relationship,
+      representation/delegation, authority, governance/policy, task/invocation, proof-binding,
+      privacy-boundary and effect-admission condition independently holds at the actuation boundary.
+      No valid layer may enlarge, substitute for or synthesize another.
+    one_effect_extension:
+      proposition_id: DTG-371-P15
+      statement: >-
+        Successful credential, proof and authority verification does not establish exactly-once execution;
+        replay and prior-effect state must be independently evaluated before a consequential side effect.
+
+  track_inputs:
+    - track: A
+      issue: 373
+      result: INDETERMINATE
+      contribution: >-
+        Correlation-scope semantics are coherent at the proposed-source level, but declaration does not prove
+        counterparty behavior and runtime effective correlation remains a specialist evidence obligation.
+    - track: B
+      issue: 374
+      result: SUPPORTED_WITH_BOUNDED_RESIDUALS
+      contribution: >-
+        Delegation and authority are non-substitutable; effective represented ability is their required
+        intersection with current principal authority and any independently required delegate eligibility.
+    - track: C
+      issue: 375
+      result: SUPPORTED_WITH_BOUNDED_RESIDUALS
+      contribution: >-
+        VAC attenuation is monotonic across action, scope, time, audience and chain constraints; stale or
+        revoked parent state independently denies use.
+    - track: D
+      issue: 376
+      result: PARTIALLY_SUPPORTED
+      contribution: >-
+        Same-subject/common-control is an independent composition predicate; semantic pooling attacks are
+        rejected, while native production ZKP construction and runtime unlinkability remain separate evidence needs.
+    - track: E
+      issue: 377
+      result: GOVERNANCE_GAP
+      contribution: >-
+        Cross-governance action semantics require an explicit mapping contract; lexical equality or implicit
+        hierarchy cannot be treated as authority equivalence.
+    - track: F
+      issue: 378
+      result: SUPPORTED_WITH_APPLICABILITY_BOUNDARIES
+      contribution: >-
+        Open node taxonomy is viable only while each credential preserves independent issuer/subject/target
+        applicability rules; node status itself grants no credential semantics.
+
+  composite_execution:
+    scenario: verifiable-data-room
+    scenario_authority_status: informative-design
+    evidence_repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+    evidence_pull_request: 96
+    evidence_commit: 727bd56facea7fa57f2cf3d93be82b011167ae78
+    repository_assurance: PASS
+    dedicated_actuation_workflow: PASS
+    claim_boundary: >-
+      The experiment is deterministic semantic composition evidence. It does not establish final DTG normative
+      text, credential-wire interoperability, production ZKP construction, deployment privacy, or universal
+      federation semantics.
+    independently_checked_conditions:
+      - actor-and-relationship-validity
+      - membership-where-required
+      - delegation-or-representation-where-required
+      - current-authority-and-action-scope
+      - hidden-subject-or-common-control-binding
+      - current-governance-policy
+      - task-purpose-audience-and-invocation-binding
+      - privacy-boundary
+      - replay-and-prior-effect-state
+      - source-pin-freshness
+    negative_vectors:
+      - revoked-or-absent-authority
+      - required-representation-missing
+      - hidden-subject-mismatch
+      - task-or-invocation-mismatch
+      - policy-change-before-actuation
+      - duplicate-effect-attempt
+      - privacy-boundary-failure
+      - stale-upstream-source-pin
+    judgment: >-
+      The experiment falsifies the idea that individually valid credentials are sufficient for consequential
+      execution. Each negative case is denied or marked stale at its own boundary, while the positive case is
+      admitted only when every required predicate is simultaneously current and satisfied.
+
+  proposition_results:
+    - proposition_id: DTG-371-P02
+      result: evidence-required
+      judgment: >-
+        Declared correlation scope remains insufficient to establish deployment privacy. Track G consumes the
+        privacy predicate as an independent gate but does not manufacture the runtime A/B observations DPIP requires.
+      owner: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+      artifact_required: attributable runtime A/B privacy observations against immutable component pins
+    - proposition_id: DTG-371-P06
+      result: supported-at-experimental-composition-boundary
+      judgment: Delegation and authority remain independently required and non-substitutable.
+    - proposition_id: DTG-371-P07
+      result: supported-at-experimental-composition-boundary
+      judgment: Represented action is denied when either delegation scope or principal current authority is insufficient.
+    - proposition_id: DTG-371-P08
+      result: supported-at-experimental-composition-boundary
+      judgment: Widened attenuation does not survive the composed authority gate.
+    - proposition_id: DTG-371-P09
+      result: supported-at-experimental-current-state-boundary
+      judgment: Stale, expired, revoked or superseded required authority/delegation cannot be rescued by cryptographic validity.
+    - proposition_id: DTG-371-P10
+      result: partially-supported
+      judgment: >-
+        The actuation composition requires same-subject/common-control evidence and rejects semantic pooling, but
+        a production native ZKP construction remains an independent Interop/ZKP-profile artifact.
+    - proposition_id: DTG-371-P11
+      result: governance-gap-bounded
+      judgment: Foreign action semantics require an explicit attributable mapping contract before authority reliance.
+    - proposition_id: DTG-371-P12
+      result: supported-with-applicability-boundaries
+      judgment: Node identity never substitutes for credential-specific applicability.
+    - proposition_id: DTG-371-P13
+      result: evidence-required
+      judgment: >-
+        Privacy is correctly represented as an independent actuation predicate, but effective cross-context
+        correlation remains dependent on fresh DPIP runtime evidence rather than the semantic experiment.
+      owner: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+    - proposition_id: DTG-371-P14
+      result: supported-at-experimental-semantic-actuation-boundary
+      judgment: >-
+        The Data Room pressure test demonstrates a deterministic consequential-action decision in which component
+        validity cannot manufacture composition validity and every required current predicate remains attributable.
+    - proposition_id: DTG-371-P15
+      result: supported-at-experimental-semantic-actuation-boundary
+      judgment: >-
+        Duplicate/replayed requests are independently denied after prior-effect state is present; successful
+        credential verification is not treated as exactly-once execution evidence.
+
+  residual_obligations:
+    - id: R-PRIVACY-RUNTIME
+      classification: evidence-required
+      owner: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+      artifact: fresh attributable runtime A/B correlation/privacy evidence
+      affects: [DTG-371-P02, DTG-371-P13]
+    - id: R-ZKP-NATIVE
+      classification: implementation-evidence
+      owner: sankarshanmukhopadhyay/trust-protocol-interop-lab
+      artifact: native same-subject/common-control proof construction and adversarial vectors
+      affects: [DTG-371-P10, DTG-371-P13]
+    - id: R-ACTION-FEDERATION
+      classification: governance-gap
+      owner: upstream-specification-or-profile-governance
+      artifact: explicit cross-governance action semantic mapping contract
+      affects: [DTG-371-P11]
+    - id: R-SCOPE-CARRIAGE
+      classification: upstream-clarification
+      owner: trustoverip/dtgwg-cred-spec
+      artifact: authoritative decision or profile for correlation-scope declaration carriage
+      affects: [DTG-371-P05]
+    - id: R-DURABILITY
+      classification: implementation-evidence
+      owner: implementation-or-interop-test-harness
+      artifact: long-lived pairwise identifier rotation/recovery lifecycle evidence
+      affects: [DTG-371-P04]
+    - id: R-UPSTREAM-ADOPTION
+      classification: source-authority
+      owner: trustoverip/dtgwg-cred-spec
+      artifact: disposition of proposed PRs #30, #19 and #29
+      affects: [all-proposed-upstream-propositions]
+
+  architectural_conclusion:
+    overall_assessment: DEFENSIBLE_EXPERIMENTAL_ACTUATION_BOUNDARY
+    assurance_posture: AMBER
+    statement: >-
+      The emerging DTG architecture now has sufficient source-pinned and executable evidence to support the
+      architectural hypothesis that a DTG graph can participate in governed authorization and consequential-action
+      decisions without collapsing correlation scope, relationship, delegation, authority, policy, proof binding
+      and execution into one credential-validity test. The strongest supported claim is therefore not that DTG is
+      already a complete executable authorization system, but that the proposed primitives compose into a defensible
+      experimental actuation boundary when their independence is preserved.
+    why_not_green: >-
+      GREEN would overstate the evidence. Runtime privacy remains evidence-required, native same-subject ZKP evidence
+      is incomplete, federated action semantics require a governance contract, correlation-scope carriage and some
+      lifecycle behavior remain unresolved, and the core VDC/VAC/correlation-scope inputs are still proposed upstream.
+    upstream_interpretation: >-
+      Glenn Gore's observation that DTG is moving beyond a simple connection graph toward a network with rules and
+      actions is materially supported as an architectural direction. RAHP evidence sharpens the qualification: the
+      network can support governed action only when relationship, delegation, authority, policy, privacy and actuation
+      remain independently checkable and current; no one layer is permitted to manufacture another.
+
+  terminal_disposition:
+    result: DEFENSIBLE_EXPERIMENTAL_ACTUATION_BOUNDARY
+    posture: AMBER
+    closes_track: true
+    conclusion: >-
+      Track G completes the architecture-convergence assessment wave. The composite design is coherent enough to
+      execute deterministic positive and adversarial semantic cases, and the remaining uncertainty is now bounded
+      to named evidence, governance, implementation and upstream-authority obligations rather than an unresolved
+      architectural contradiction.
