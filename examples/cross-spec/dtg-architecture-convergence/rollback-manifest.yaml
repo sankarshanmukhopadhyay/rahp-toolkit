@@ -1,0 +1,169 @@
+manifest:
+  schema: rahp-experimental-wave-rollback/v1
+  id: DTG-ARCH-CONVERGENCE-371-ROLLBACK
+  title: Discussion 371 architecture-convergence rollback and reversibility manifest
+  status: active
+  created_on: '2026-09-02'
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  purpose: >-
+    Record the exact repository baselines, merged work, dependency order and preservation rules
+    needed to unwind or selectively invalidate the DTG architecture-convergence experiment if
+    upstream rejects, supersedes or materially redesigns the proposed correlation-scope, VDC or VAC semantics.
+
+  non_destructive_rule: >-
+    Do not reset shared repository history to a historical SHA. Perform rollback through explicit
+    revert/reconciliation PRs so unrelated work merged after the baseline is preserved and the
+    experiment/reversal remains auditable.
+
+  restoration_targets:
+    semantic_pre_371:
+      preferred: true
+      description: >-
+        Remove or disable abandoned #371-specific semantics and executable fixtures while preserving
+        generic assurance capabilities and historical assessment evidence that remain valid independently
+        of the rejected upstream proposal.
+    exact_historical_snapshot:
+      preferred: false
+      description: >-
+        The baseline SHAs identify exact pre-wave repository snapshots for forensic comparison or a
+        temporary reconstruction branch. They are not the recommended target for rewriting main history.
+
+  upstream_dependencies:
+    - id: correlation-scope
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 30
+      pinned_head: b3840f430f5bd01addab95881350a7f860e763e2
+      authority_at_assessment: proposed-upstream
+    - id: vdc
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 19
+      pinned_head: ad5876f1b96e2149adec84d37d6595b4a212db9c
+      authority_at_assessment: proposed-upstream
+    - id: vac
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 29
+      pinned_head: 84650749afd48798e1c8919a95be359c0367a1c9
+      authority_at_assessment: proposed-upstream
+    - id: data-rooms
+      url: https://docs.fpp.storm.ws/data-rooms-concept.html
+      authority_at_assessment: informative-design
+      rollback_effect: pressure-test-only
+
+  repositories:
+    rahp_toolkit:
+      repository: sankarshanmukhopadhyay/rahp-toolkit
+      pre_wave_baseline: 01709444949458961ba6edf416eeb4dda63d3cba
+      baseline_basis: base SHA of first accepted #371 PR (#381)
+      merged_prs:
+        - {pr: 381, track: proposition-matrix, issue: 372, head: 88fa74d56f91d65ff7d5ca942c58b02fa89a6e6f}
+        - {pr: 385, track: A-correlation-scope, issue: 373, head: 016a39dbea6e896453f7ee22f5b21f26eaea2c45}
+        - {pr: 386, track: B-vdc-vac-composition, issue: 374, head: e7d19f94aec003c8dd4e6096e477d8a210a344ee}
+        - {pr: 387, track: C-vac-attenuation, issue: 375, head: 8e1e8f064d2986a88e7efd2de1542f4b3c89f572}
+        - {pr: 388, track: D-hidden-subject-binding, issue: 376, head: 93b1623ad1617b7fb4115f9b3db5d93ff7fe9388}
+        - {pr: 389, track: E-action-semantics, issue: 377, head: dcb1e9cd9792a39fa5d83c670260402f73864f66}
+        - {pr: 391, track: F-node-applicability, issue: 378, head: 7dc0f96a99d53169716405b2055a246775361c9a}
+        - {pr: 392, track: G-actuation, issue: 379, head: 109d6e4e6e01d35a42b58c6cb19431edf3df82c7}
+      superseded_not_merged:
+        - {pr: 380, reason: draft-replacement}
+        - {pr: 384, reason: polluted ancestry after squash merge}
+        - {pr: 390, reason: strict-check stale merge-base replacement}
+
+    dpip:
+      repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+      pre_wave_baseline: 4f3a4f559c0a1dbc6deb08f9078ebdc9d28828ee
+      baseline_basis: base SHA of #371 DPIP PR #185
+      merged_prs:
+        - {pr: 185, track: A-correlation-privacy-binding, head: ba19f403ef435b87787fecc52f006b0ac7fb1652}
+
+    interop_lab:
+      repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+      pre_wave_baseline: 0a43f59981c7ff7c62fc306b009511521e851ead
+      baseline_basis: base SHA of first #371 Interop PR (#92)
+      merged_prs:
+        - {pr: 92, track: B-vdc-vac-composition, head: 9a4f6a9cda295f4d977edbd76b7b07c460bb8c9e}
+        - {pr: 93, track: C-vac-attenuation, head: 363126b214b60635b184dee73915a165b35ac453}
+        - {pr: 94, track: D-hidden-subject-binding, head: 7292ac734b6bddfd37e7db9b9b832b20a93b2f8c}
+        - {pr: 95, track: E-action-semantics, head: 1bc3e35b52a88366637bdb39c6c2b40d3e711ac9}
+        - {pr: 96, track: G-data-room-actuation, head: a931618a523ffdfa0690dd8c3cef6aca7ee39752}
+
+  rollback_order:
+    full_reversal:
+      rationale: reverse dependency order; remove consumers before semantic foundations
+      steps:
+        - {repository: sankarshanmukhopadhyay/rahp-toolkit, pr: 392, track: G}
+        - {repository: sankarshanmukhopadhyay/trust-protocol-interop-lab, pr: 96, track: G}
+        - {repository: sankarshanmukhopadhyay/rahp-toolkit, pr: 391, track: F}
+        - {repository: sankarshanmukhopadhyay/rahp-toolkit, pr: 389, track: E}
+        - {repository: sankarshanmukhopadhyay/trust-protocol-interop-lab, pr: 95, track: E}
+        - {repository: sankarshanmukhopadhyay/rahp-toolkit, pr: 388, track: D}
+        - {repository: sankarshanmukhopadhyay/trust-protocol-interop-lab, pr: 94, track: D}
+        - {repository: sankarshanmukhopadhyay/rahp-toolkit, pr: 387, track: C}
+        - {repository: sankarshanmukhopadhyay/trust-protocol-interop-lab, pr: 93, track: C}
+        - {repository: sankarshanmukhopadhyay/rahp-toolkit, pr: 386, track: B}
+        - {repository: sankarshanmukhopadhyay/trust-protocol-interop-lab, pr: 92, track: B}
+        - {repository: sankarshanmukhopadhyay/rahp-toolkit, pr: 385, track: A}
+        - {repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile, pr: 185, track: A}
+        - {repository: sankarshanmukhopadhyay/rahp-toolkit, pr: 381, track: proposition-matrix}
+
+  selective_invalidation:
+    rule: >-
+      Prefer dependency-scoped invalidation over a full reversal. Mark affected proposition evidence stale
+      or superseded, identify dependent tracks from the canonical proposition matrix, revert only executable
+      or normative-assumption artifacts that no longer represent current upstream semantics, and rerun the
+      remaining unaffected evidence against current pins.
+    examples:
+      correlation_scope_rejected:
+        invalidate_propositions: [DTG-371-P01, DTG-371-P02, DTG-371-P03, DTG-371-P04, DTG-371-P05, DTG-371-P13]
+        primary_tracks: [A, F, G]
+        specialist_prs: [185]
+      vdc_rejected_or_redesigned:
+        invalidate_propositions: [DTG-371-P06, DTG-371-P07, DTG-371-P09, DTG-371-P14]
+        primary_tracks: [B, D, F, G]
+        interop_prs: [92, 94, 96]
+      vac_rejected_or_redesigned:
+        invalidate_propositions: [DTG-371-P06, DTG-371-P08, DTG-371-P09, DTG-371-P10, DTG-371-P11, DTG-371-P12, DTG-371-P14]
+        primary_tracks: [B, C, D, E, F, G]
+        interop_prs: [92, 93, 94, 95, 96]
+
+  preservation_policy:
+    preserve_historical_evidence: true
+    historical_transition:
+      authority_status: superseded-upstream
+      assurance_status: historical
+      rule: >-
+        Preserve the source-pinned assessment as evidence of what was tested against the historical proposal.
+        Do not present it as applicable to current DTG semantics after upstream supersession.
+    retain_generic_capabilities:
+      - component PASS does not imply composition PASS
+      - immutable source pinning and explicit source-authority status
+      - stale-source invalidation rather than silent PASS carry-forward
+      - semantic assurance obligation identity and owned residual artifacts
+      - separation of generic RAHP assessment from specialist DPIP and Interop evidence production
+      - evidence provenance and evidence-class discipline
+    do_not_retain_if_upstream_rejected:
+      - DTG-specific executable fixtures whose semantics depend on rejected proposal text
+      - #371-specific specialist bindings that no longer correspond to a live proposition
+      - CI invocations whose only purpose is executing superseded #371 fixtures
+      - active assurance conclusions that imply superseded upstream semantics remain current
+
+  execution_protocol:
+    - Open a rollback/reconciliation issue linked to Discussion #371 and this manifest.
+    - Record the upstream decision and immutable source proving rejection, supersession or redesign.
+    - Compute affected proposition IDs and dependent tracks before changing code.
+    - Create rollback branches from current main; never force-reset shared main.
+    - Revert/remove dependent consumer artifacts before foundational proposition artifacts.
+    - Preserve historical assessment records or move them to an explicitly historical/superseded state.
+    - Run each repository's full required CI after every bounded rollback PR.
+    - Rerun unaffected propositions against current upstream source pins.
+    - Reconcile RAHP terminal states and ensure no superseded proposition remains active evidence.
+    - Close the rollback issue only after all three repositories are internally green and cross-repository references are coherent.
+
+  acceptance_criteria:
+    - Exact pre-wave baselines are recorded for all three repositories.
+    - Every merged #371 PR is listed exactly once in its owning repository.
+    - Superseded but unmerged PRs are explicitly excluded from rollback execution.
+    - Full rollback order is reverse dependency ordered.
+    - Partial upstream reversal can be handled without reverting unrelated tracks.
+    - Historical source-pinned assessments are preserved without being represented as current assurance.
+    - Generic RAHP/DPIP/Interop capabilities are not removed merely because a DTG proposal is abandoned.
+    - A rollback never requires rewriting shared repository history.
