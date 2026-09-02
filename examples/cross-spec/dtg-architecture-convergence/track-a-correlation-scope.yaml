@@ -1,0 +1,226 @@
+review:
+  id: DTG-371-TRACK-A
+  status: complete
+  title: DTG architecture convergence Track A — declared correlation scope and disclosure semantics
+  reviewed_on: '2026-09-02'
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  trigger_issue: 373
+  proposition_matrix: examples/cross-spec/dtg-architecture-convergence/proposition-matrix.yaml
+  evidence_grade: source-pinned-plus-specialist-routing
+
+  target:
+    upstream_repository: trustoverip/dtgwg-cred-spec
+    proposal_pull_request: 30
+    proposal_head_sha: b3840f430f5bd01addab95881350a7f860e763e2
+    authority_status: proposed-upstream
+    specialist_profile: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+    specialist_branch: exp/dtg-architecture-convergence-371-privacy
+    specialist_pr: 185
+
+  scope:
+    included:
+      - role-versus-correlation-scope
+      - pairwise-directed-public-semantics
+      - holder-declaration-versus-counterparty-disclosure
+      - declaration-carriage
+      - correlation-scope-versus-identifier-durability
+      - deliberate-reconnection-common-control
+      - declared-observable-effective-correlation
+    excluded:
+      - treating PR #30 as ratified DTG normative text
+      - selecting the upstream declaration-carriage design on behalf of the WG
+      - claiming deployment privacy without attributable runtime evidence
+      - evaluating DID methods beyond the lifecycle/privacy consequences relevant to this track
+
+  method:
+    rule: >-
+      Evaluate each canonical proposition independently and preserve the difference between
+      specification support, implementation evidence, runtime privacy evidence and unresolved
+      upstream design. A holder declaration is never promoted into proof of counterparty behavior.
+    falsification_bias: >-
+      Prefer contradiction and joinability cases: pairwise identifier reuse, community widening,
+      retained-metadata correlation and deliberate-reconnection leakage.
+
+  summary:
+    overall_assessment: INDETERMINATE
+    assurance_posture: AMBER
+    rationale: >-
+      The proposed three-value correlation model is internally coherent at specification level and
+      materially improves separation of role from correlation scope. However, two privacy propositions
+      require fresh runtime A/B evidence, identifier durability remains implementation-dependent, and
+      declaration carriage is intentionally unresolved upstream. These are bounded residual obligations,
+      not grounds to reject the proposal or infer a privacy PASS.
+
+  proposition_results:
+    - proposition_id: DTG-371-P01
+      result: supported-at-proposed-source
+      evidence_class: specification-analysis
+      evidence:
+        - trustoverip/dtgwg-cred-spec#30@b3840f430f5bd01addab95881350a7f860e763e2
+      judgment: >-
+        PR #30 cleanly separates credential-conferred role from holder-declared correlation scope.
+        No current source evidence requires a graph role to determine scope.
+      residual: none-at-this-source-pin
+      retest_when:
+        - PR #30 materially changes role/scope semantics or is superseded.
+
+    - proposition_id: DTG-371-P02
+      result: evidence-required
+      evidence_class: specification-plus-runtime-privacy
+      evidence:
+        - trustoverip/dtgwg-cred-spec#30@b3840f430f5bd01addab95881350a7f860e763e2
+        - sankarshanmukhopadhyay/dtg-privacy-implementation-profile#185
+      judgment: >-
+        The source explicitly distinguishes holder declaration from community disclosure, but runtime
+        behavior cannot be inferred from that text. A VTC or counterparty can widen effective exposure
+        while the holder's declaration remains unchanged.
+      action_owner:
+        surface: specialist-profile
+        repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+      artifact_to_produce:
+        kind: runtime-evidence
+        description: >-
+          Attributable A/B observations against immutable component pins showing whether identifiers,
+          status/resolution traffic, retained evidence and verifier transcripts widen correlation beyond
+          the holder-declared boundary.
+      evidence_requirement_ids:
+        - ER-REL-DID-AB
+        - ER-STATUS-AB
+        - ER-TASK-AB
+        - ER-VERIFIER-AB
+        - ER-CREDENTIAL-ID-AB
+
+    - proposition_id: DTG-371-P03
+      result: supported-at-proposed-source
+      evidence_class: specification-analysis
+      evidence:
+        - trustoverip/dtgwg-cred-spec#30@b3840f430f5bd01addab95881350a7f860e763e2
+      judgment: >-
+        The current proposal defines pairwise, directed and public as one correlation-intent axis.
+        Pairwise is falsifiable by contradictory reuse; public is observable; directed occupies the
+        holder-selected middle without reintroducing a community role into the scope axis.
+      residual: upstream-adoption-pending
+
+    - proposition_id: DTG-371-P04
+      result: evidence-required
+      evidence_class: specification-plus-implementation
+      evidence:
+        - trustoverip/dtgwg-cred-spec#30@b3840f430f5bd01addab95881350a7f860e763e2
+      judgment: >-
+        The proposal correctly states that durability follows credential/operational lifetime while
+        scope follows disclosure intent. Implementation evidence is still needed to demonstrate that
+        long-lived pairwise relationships retain rotation/recovery properties without forced correlation widening.
+      action_owner:
+        surface: implementation
+      artifact_to_produce:
+        kind: test-fixture
+        description: >-
+          Long-lived pairwise identifier lifecycle fixture exercising rotation/recovery and credential
+          continuity without deriving DID-method suitability from the scope label alone.
+
+    - proposition_id: DTG-371-P05
+      result: upstream-clarification
+      evidence_class: specification-plus-privacy-design
+      evidence:
+        - trustoverip/dtgwg-cred-spec#30@b3840f430f5bd01addab95881350a7f860e763e2
+        - sankarshanmukhopadhyay/dtg-privacy-implementation-profile#185
+      judgment: >-
+        Credential-carried and DID-document-carried declarations are not privacy-neutral alternatives.
+        They differ in resolver observability, availability coupling, caching/history and repeated
+        disclosure behavior. PR #30 intentionally leaves the carriage choice open, so RAHP must not
+        choose a normative placement locally.
+      action_owner:
+        surface: specification
+        repository: trustoverip/dtgwg-cred-spec
+      artifact_to_produce:
+        kind: spec-change
+        description: >-
+          Authoritative WG decision selecting or profiling declaration carriage, with lifecycle and
+          privacy consequences made explicit.
+
+    - proposition_id: DTG-371-P13
+      result: evidence-required
+      evidence_class: runtime-ab-privacy
+      evidence:
+        - examples/cross-spec/credential-zkp-trust-tasks/pressure-test.yaml
+        - sankarshanmukhopadhyay/dtg-privacy-implementation-profile#185
+      judgment: >-
+        Existing RAHP evidence already establishes that pairwise identifiers and selective disclosure can
+        coexist with wider effective correlation through retained protocol evidence. The new scope model
+        therefore needs fresh runtime evidence that separately records declared, observable and effective scope.
+      action_owner:
+        surface: specialist-profile
+        repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+      artifact_to_produce:
+        kind: runtime-evidence
+        description: >-
+          Fresh DPIP-bound A/B observation package for PR #30-era correlation semantics, including
+          deliberate join attempts across unrelated contexts.
+      evidence_requirement_ids:
+        - ER-REL-DID-AB
+        - ER-STATUS-AB
+        - ER-TASK-AB
+        - ER-VERIFIER-AB
+        - ER-CREDENTIAL-ID-AB
+
+  adversarial_cases:
+    - id: A-PAIRWISE-REUSE
+      proposition_ids: [DTG-371-P02, DTG-371-P03, DTG-371-P13]
+      expected: >-
+        Same identifier observed by two unrelated counterparties contradicts pairwise scope and fails
+        the affected privacy claim.
+    - id: A-COMMUNITY-WIDENING
+      proposition_ids: [DTG-371-P02, DTG-371-P13]
+      expected: >-
+        Holder intent remains pairwise but deployment privacy is FAIL/CONSTRAINED when community disclosure
+        widens observable/effective scope.
+    - id: A-RETAINED-JOIN
+      proposition_ids: [DTG-371-P13]
+      expected: >-
+        Credential-layer pairwise behavior cannot produce PASS when retained metadata lets unrelated contexts join.
+    - id: A-DELIBERATE-RECONNECT
+      proposition_ids: [DTG-371-P13]
+      expected: >-
+        Intentional common-control proof is permitted only within its bounded context and must not export an
+        unnecessary durable correlator.
+    - id: A-LONG-LIVED-PAIRWISE
+      proposition_ids: [DTG-371-P04]
+      expected: >-
+        Pairwise scope neither excuses inadequate rotation/recovery nor implies disposable identifiers.
+
+  ownership:
+    specification:
+      owns:
+        - scope vocabulary and semantics
+        - declaration carriage
+        - normative disclosure/governance obligations
+    dpip:
+      owns:
+        - runtime privacy evidence requirements
+        - declared/observable/effective correlation analysis
+        - bounded privacy disposition
+    rahp:
+      owns:
+        - composition inference
+        - proposition/result reconciliation
+        - residual owner/artifact routing
+    implementation_or_interop:
+      owns:
+        - lifecycle and deliberate-reconnection executable fixtures where selected constructions exist
+
+  terminal_disposition:
+    result: INDETERMINATE
+    reconciliation:
+      supported:
+        - DTG-371-P01
+        - DTG-371-P03
+      evidence_required:
+        - DTG-371-P02
+        - DTG-371-P04
+        - DTG-371-P13
+      upstream_clarification:
+        - DTG-371-P05
+    conclusion: >-
+      Track A does not expose a reason to collapse the proposed correlation-scope model. It instead
+      identifies a clean boundary: the model is coherent at specification level, while deployment privacy,
+      long-lived identifier behavior and declaration carriage remain independently owned obligations.
