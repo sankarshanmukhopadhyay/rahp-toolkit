@@ -3,6 +3,7 @@ review:
   status: complete
   title: DTG architecture convergence Track F — open node taxonomy and credential applicability boundaries
   reviewed_on: '2026-09-02'
+  revalidated_after_main_progression: '2026-09-02'
   parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
   trigger_issue: 378
   proposition_matrix: examples/cross-spec/dtg-architecture-convergence/proposition-matrix.yaml
