@@ -1,0 +1,118 @@
+review:
+  id: DTG-371-TRACK-F
+  status: complete
+  title: DTG architecture convergence Track F — open node taxonomy and credential applicability boundaries
+  reviewed_on: '2026-09-02'
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  trigger_issue: 378
+  proposition_matrix: examples/cross-spec/dtg-architecture-convergence/proposition-matrix.yaml
+  evidence_grade: source-pinned-semantic-analysis
+
+  sources:
+    correlation_scope: trustoverip/dtgwg-cred-spec#30@b3840f430f5bd01addab95881350a7f860e763e2
+    vac: trustoverip/dtgwg-cred-spec#29@84650749afd48798e1c8919a95be359c0367a1c9
+    vdc: trustoverip/dtgwg-cred-spec#19@ad5876f1b96e2149adec84d37d6595b4a212db9c
+    data_rooms: https://docs.fpp.storm.ws/data-rooms-concept.html
+
+  summary:
+    overall_assessment: SUPPORTED_WITH_APPLICABILITY_BOUNDARIES
+    assurance_posture: AMBER
+    rationale: >-
+      The emerging open node taxonomy is preferable to adding a new identifier type whenever a new
+      service/node kind appears. PR #30 removes identifier-role typing pressure, and PR #29 explicitly
+      accommodates service-like nodes. However, node eligibility and credential applicability are
+      separate questions. Credential semantics must determine whether a node is a valid issuer, subject
+      or target. Some applicability rules are clear from current semantics; others remain governance/profile
+      or upstream-clarification questions and must not be inferred from mere possession of a DID.
+
+  proposition_results:
+    - proposition_id: DTG-371-P12
+      result: supported-with-bounded-clarifications
+      evidence_class: specification-analysis
+      judgment: >-
+        Holding a DTG identifier and participating in graph relationships can make an entity a node, but
+        does not make the entity semantically eligible for every credential relation. The open taxonomy is
+        safe only if each credential retains its own applicability constraints.
+      residual: credential-specific applicability clarification where current proposed text is insufficient
+
+  node_classes:
+    - node: VTC
+      node_status: clearly-supported
+      examples:
+        - {credential: VMC, applicability: valid, reason: a community is explicitly capable of membership semantics}
+        - {credential: VRC, applicability: valid-when-relationship-semantics-hold, reason: community can participate in graph relationships}
+        - {credential: VAC, applicability: valid-when-governing-scope, reason: governing party can confer actions in its scope}
+    - node: VTN
+      node_status: clearly-supported
+      examples:
+        - {credential: VAC, applicability: valid-when-governing-scope, reason: proposed authority model allows governing scope issuer}
+        - {credential: VMC, applicability: requires-explicit-member-bearing-semantics, reason: node status alone does not establish membership collective semantics}
+    - node: person
+      node_status: clearly-supported
+      examples:
+        - {credential: VMC-target, applicability: invalid-by-default, reason: a person is not a collective merely because the person is a node}
+        - {credential: VRC, applicability: valid-when-relationship-semantics-hold, reason: persons can be parties to relationships}
+        - {credential: VAC-subject, applicability: valid-when-authority-issued, reason: a person may receive authority in own name}
+        - {credential: VDC-principal-or-delegate, applicability: valid-when-delegation-semantics-hold, reason: representation relation is separate from node class}
+    - node: AI-agent
+      node_status: explicitly-motivated-by-proposals
+      examples:
+        - {credential: VDC-delegate, applicability: valid-when-appointed, reason: agent delegation is a motivating use case}
+        - {credential: VAC-subject, applicability: valid-when-authority-issued, reason: attenuated agent authority is a motivating use case}
+        - {credential: VMC-target, applicability: invalid-by-default, reason: agent identity does not imply member-bearing collective}
+    - node: service-endpoint
+      node_status: supported-as-open-node-class
+      examples:
+        - {credential: VAC-subject, applicability: valid-when-governed-action-semantics-hold, reason: service may act in its own name}
+        - {credential: VRC, applicability: valid-when-relationship-semantics-hold, reason: service may participate in a relationship}
+        - {credential: VMC-target, applicability: requires-member-bearing-semantics, reason: service status alone is insufficient}
+    - node: mediator-or-registry-service
+      node_status: supported-as-open-node-class
+      examples:
+        - {credential: identifier-scope, applicability: public-where-intended, reason: PR #30 removes need for a special service identifier type}
+        - {credential: VMC-target, applicability: not-inferred, reason: discoverability/service operation does not create membership semantics}
+    - node: verifiable-data-room
+      node_status: informative-pressure-test-only
+      examples:
+        - {credential: VMC-target, applicability: plausible-if-room-governance-defines-members, reason: Data Room concept exercises membership but is not normative DTG evidence}
+        - {credential: VAC-issuer, applicability: plausible-if-room-governs-actions, reason: Data Room concept exercises authority but remains informative}
+        - {credential: VDC, applicability: depends-on-representation-use-case, reason: room identity alone does not require delegation semantics}
+
+  credential_boundaries:
+    - credential: VMC
+      positive_example: VTC with governed membership
+      negative_example: person merely holding a DTG identifier
+      rule: target must be semantically capable of membership; node status alone is insufficient
+    - credential: VRC
+      positive_example: two nodes with the relationship semantics required by the credential
+      negative_example: treating co-presence in the graph as a relationship without the required credential/consent semantics
+      rule: relationship semantics, not node type label, establish applicability
+    - credential: VPC
+      positive_example: identifier/persona relation satisfying VPC semantics
+      negative_example: assuming every directed identifier is automatically a persona assertion
+      rule: correlation scope and persona evidence remain separate
+    - credential: VDC
+      positive_example: agent explicitly appointed to act in a principal's name
+      negative_example: service with authority to act as itself but no appointment to represent another
+      rule: representation semantics determine applicability
+    - credential: VAC
+      positive_example: subject receiving named actions from party governing the scope
+      negative_example: endorsement or graph membership treated as permission
+      rule: governing authority and action scope determine applicability
+    - credential: VWC
+      positive_example: witness satisfying the credential's witness role and identifier requirements
+      negative_example: arbitrary node treated as witness merely because it is identifiable
+      rule: witness semantics remain credential-specific
+
+  data_room_judgment: >-
+    Verifiable Data Rooms do not require a new DTG identifier class. They are a useful test that a new
+    service-like participant can be modeled as a node while membership, authority, delegation, storage and
+    cryptographic roles remain separately asserted. Whether a Data Room is a valid VMC target or VAC issuer
+    follows from its governed capabilities, not from the label "Data Room" itself.
+
+  terminal_disposition:
+    result: SUPPORTED_WITH_APPLICABILITY_BOUNDARIES
+    conclusion: >-
+      Track F supports an open-ended node model provided credential applicability remains independently
+      constrained. The key invariant is preserved: `is a DTG node` does not imply `is a valid participant
+      in every credential relation`. No Data Room-specific rule needs to be hard-coded into RAHP or DTG Core.
