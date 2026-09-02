@@ -1,0 +1,302 @@
+matrix:
+  schema: rahp-proposition-matrix/v1
+  id: DTG-ARCH-CONVERGENCE-371
+  title: DTG architecture convergence proposition and evidence matrix
+  status: experimental
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  trigger_issue: 372
+  created_on: '2026-09-02'
+  authority_rule: >-
+    This matrix distinguishes adopted upstream semantics, proposed upstream semantics,
+    informative design material and RAHP inference. A proposition MUST NOT be promoted
+    to a stronger authority class merely because an experimental implementation passes.
+  evidence_rule: >-
+    Missing or non-comparable evidence remains missing. Component PASS does not imply
+    composition PASS. Runtime privacy, lifecycle and actuation claims require the evidence
+    class stated by each proposition.
+  sources:
+    - id: SRC-CORRELATION-SCOPE
+      kind: pull-request
+      authority_status: proposed-upstream
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 30
+      head_sha: b3840f430f5bd01addab95881350a7f860e763e2
+      url: https://github.com/trustoverip/dtgwg-cred-spec/pull/30
+      pin_status: immutable-revision
+      purpose: Holder-declared pairwise, directed and public correlation scope; retirement of role-typed VID vocabulary.
+    - id: SRC-VID-STRUCTURE
+      kind: issue
+      authority_status: proposed-upstream
+      repository: trustoverip/dtgwg-cred-spec
+      issue: 22
+      url: https://github.com/trustoverip/dtgwg-cred-spec/issues/22
+      pin_status: mutable-thread
+      purpose: Deliberation and evidence leading to the correlation-scope structure adopted by PR #30.
+    - id: SRC-CORRELATION-NAMING
+      kind: discussion
+      authority_status: proposed-upstream
+      repository: trustoverip/dtgwg-cred-tf
+      discussion: 41
+      url: https://github.com/trustoverip/dtgwg-cred-tf/discussions/41
+      pin_status: mutable-thread
+      purpose: Naming and conceptual convergence on pairwise, directed and public.
+    - id: SRC-VDC
+      kind: pull-request
+      authority_status: proposed-upstream
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 19
+      head_sha: ad5876f1b96e2149adec84d37d6595b4a212db9c
+      url: https://github.com/trustoverip/dtgwg-cred-spec/pull/19
+      pin_status: immutable-revision
+      purpose: Proposed delegation credential and explicit separation of delegation from authority.
+    - id: SRC-VAC
+      kind: pull-request
+      authority_status: proposed-upstream
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 29
+      head_sha: 84650749afd48798e1c8919a95be359c0367a1c9
+      url: https://github.com/trustoverip/dtgwg-cred-spec/pull/29
+      pin_status: immutable-revision
+      purpose: Proposed authority credential, attenuation and membership/authority same-subject requirement.
+    - id: SRC-DATA-ROOMS
+      kind: design-concept
+      authority_status: informative-design
+      url: https://docs.fpp.storm.ws/data-rooms-concept.html
+      pin_status: mutable-web-document
+      observed_on: '2026-09-02'
+      purpose: Informative composite pressure test; not normative DTG specification text.
+    - id: SRC-RAHP-CZT
+      kind: repository-evidence
+      authority_status: rahp-evidence
+      repository: sankarshanmukhopadhyay/rahp-toolkit
+      path: examples/cross-spec/credential-zkp-trust-tasks/pressure-test.yaml
+      url: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/examples/cross-spec/credential-zkp-trust-tasks/pressure-test.yaml
+      pin_status: repository-main-reference
+      purpose: Existing RAHP evidence that component validity does not establish composed privacy, current authority or one-effect execution.
+  reassessment:
+    stale_when:
+      - A pinned PR head SHA changes and the changed text is relevant to a proposition that cites it.
+      - An open upstream issue/discussion reaches a materially different resolution.
+      - Verifiable Data Rooms changes a pressure-test assumption used by a downstream vector.
+      - A proposed upstream primitive is merged, rejected, superseded or substantially redesigned.
+    rule: >-
+      Mark dependent experimental evidence stale, preserve the historical result and rerun
+      against the new immutable source boundary. Do not rewrite prior findings in place.
+  propositions:
+    - id: DTG-371-P01
+      family: correlation-scope
+      statement: Roles are conferred by credentials; identifier correlation scope is a separate holder-declared property.
+      authority_status: proposed-upstream
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-CORRELATION-SCOPE, SRC-VID-STRUCTURE, SRC-CORRELATION-NAMING]
+      required_evidence_class: specification-analysis
+      current_evidence:
+        status: available
+        references: [SRC-CORRELATION-SCOPE]
+      falsification_condition: >-
+        Proposed normative text or a valid DTG construction requires role identity to determine correlation scope,
+        or permits two role labels to impose incompatible scope conclusions on one identifier.
+      remediation_owner: specification
+      dependent_issues: [373, 378]
+    - id: DTG-371-P02
+      family: correlation-scope
+      statement: A holder-declared correlation scope does not by itself establish how a counterparty or community actually discloses the identifier.
+      authority_status: proposed-upstream
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-CORRELATION-SCOPE]
+      required_evidence_class: specification-plus-runtime-privacy
+      current_evidence:
+        status: partial
+        references: [SRC-CORRELATION-SCOPE]
+        gap: Runtime disclosure/effective-correlation evidence remains deployment and composition dependent.
+      falsification_condition: >-
+        An implementation treats pairwise declaration as sufficient privacy evidence while exposing the same identifier
+        outside the declared counterparty boundary, or the specification permits such inference.
+      remediation_owner: [specification, governance, implementation, specialist-profile]
+      dependent_issues: [373, 379]
+    - id: DTG-371-P03
+      family: correlation-scope
+      statement: The three proposed scope values are pairwise, directed and public, ordered from narrower to wider correlation intent.
+      authority_status: proposed-upstream
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-CORRELATION-SCOPE, SRC-CORRELATION-NAMING]
+      required_evidence_class: specification-analysis
+      current_evidence:
+        status: available
+        references: [SRC-CORRELATION-SCOPE]
+      falsification_condition: Upstream changes the vocabulary, ordering or semantics, or introduces a non-comparable fourth scope.
+      remediation_owner: specification
+      dependent_issues: [373]
+    - id: DTG-371-P04
+      family: correlation-scope
+      statement: Correlation scope and identifier durability/DID-method requirements are independent dimensions.
+      authority_status: proposed-upstream
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-CORRELATION-SCOPE]
+      required_evidence_class: specification-plus-implementation
+      current_evidence:
+        status: partial
+        references: [SRC-CORRELATION-SCOPE]
+        gap: Implementation evidence is required for long-lived pairwise identifiers and key-rotation/lifecycle behavior.
+      falsification_condition: An implementation or profile derives a durability guarantee solely from correlation scope and fails credential-lifetime requirements.
+      remediation_owner: [specification, implementation, profile]
+      dependent_issues: [373]
+    - id: DTG-371-P05
+      family: correlation-scope
+      statement: The placement of the correlation-scope declaration is unresolved and materially affects privacy, lifecycle and verifier dependencies.
+      authority_status: proposed-upstream-open-question
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-CORRELATION-SCOPE]
+      required_evidence_class: specification-plus-privacy-design
+      current_evidence:
+        status: model-open
+        references: [SRC-CORRELATION-SCOPE]
+      falsification_condition: >-
+        A carriage choice is treated as semantically neutral despite introducing materially different resolution,
+        historical interpretation, availability or observability properties.
+      remediation_owner: specification
+      dependent_issues: [373]
+    - id: DTG-371-P06
+      family: delegation-authority
+      statement: Delegation/representation and authority are distinct propositions; neither implies or manufactures the other.
+      authority_status: proposed-upstream
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-VDC, SRC-VAC]
+      required_evidence_class: specification-plus-composition-test
+      current_evidence:
+        status: partial
+        references: [SRC-VDC, SRC-VAC]
+        gap: Executable composition evidence is not yet present for the proposed pair.
+      falsification_condition: >-
+        A verifier can validly authorize acting in another party's name from VAC alone, or can authorize an action
+        from VDC alone when the represented principal lacks the required current authority.
+      remediation_owner: [specification, implementation]
+      dependent_issues: [374, 379]
+    - id: DTG-371-P07
+      family: delegation-authority
+      statement: Effective delegated ability is bounded by the intersection of the delegation chain and the represented principal's current ability, never their union.
+      authority_status: proposed-upstream
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-VDC]
+      required_evidence_class: specification-plus-runtime-composition
+      current_evidence:
+        status: partial
+        references: [SRC-VDC, SRC-RAHP-CZT]
+        gap: The VDC proposal defines the semantic boundary; executable VDC x VAC/current-state evidence remains absent.
+      falsification_condition: A delegate succeeds for an action outside either the VDC appointment or the principal's current permitted envelope.
+      remediation_owner: [specification, implementation, governance]
+      dependent_issues: [374, 379]
+    - id: DTG-371-P08
+      family: authority-attenuation
+      statement: An attenuated VAC must never widen the authority represented by its parent chain.
+      authority_status: proposed-upstream
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-VAC]
+      required_evidence_class: executable-negative-tests
+      current_evidence:
+        status: evidence-required
+        references: [SRC-VAC]
+        gap: Proposed text exists; deterministic widening/rejection vectors are not yet owned by RAHP evidence.
+      falsification_condition: >-
+        A derived VAC is accepted after adding an action, widening scope, extending validity, bypassing audience binding
+        or otherwise exceeding any parent constraint.
+      remediation_owner: [specification, implementation, interop-test-harness]
+      dependent_issues: [375, 379]
+    - id: DTG-371-P09
+      family: authority-lifecycle
+      statement: Cryptographic validity of a VAC or VDC is insufficient when required current authority/delegation lifecycle state is expired, revoked, superseded or otherwise invalid.
+      authority_status: rahp-inferred-composition
+      authoritative_owner: composition-contract
+      sources: [SRC-VDC, SRC-VAC, SRC-RAHP-CZT]
+      required_evidence_class: runtime-current-state
+      current_evidence:
+        status: partial
+        references: [SRC-RAHP-CZT]
+        gap: Existing RAHP evidence establishes the generic action-time authority risk; VAC/VDC-specific execution evidence is pending.
+      falsification_condition: A consequential action succeeds after required authority/delegation current-state invalidation solely because signatures remain valid.
+      remediation_owner: [specification, composition-profile, implementation]
+      dependent_issues: [374, 375, 379]
+    - id: DTG-371-P10
+      family: proof-composition
+      statement: When membership and authority or other jointly required credentials hide their subjects, the proof must establish the required same-subject/common-control relation.
+      authority_status: proposed-upstream
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-VAC]
+      required_evidence_class: executable-positive-negative-zkp
+      current_evidence:
+        status: evidence-required
+        references: [SRC-VAC]
+        gap: The normative proposition is proposed; concrete ZKP constructions and adversarial fixtures remain to be evidenced.
+      falsification_condition: Individually valid credentials belonging to different subjects can be pooled and accepted as one subject satisfying all predicates.
+      remediation_owner: [specification, zkp-profile, interop-test-harness]
+      dependent_issues: [376, 379]
+    - id: DTG-371-P11
+      family: action-semantics
+      statement: Lexically identical action strings from different governance scopes do not have equivalent semantics unless an explicit semantic contract establishes equivalence.
+      authority_status: proposed-upstream-design-constraint
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-VAC]
+      required_evidence_class: specification-plus-cross-governance-negative-test
+      current_evidence:
+        status: partial
+        references: [SRC-VAC]
+        gap: Cross-governance interoperability semantics remain unresolved.
+      falsification_condition: A foreign verifier silently treats a local action token as equivalent or broader without an explicit mapping/profile/governance contract.
+      remediation_owner: [specification, profile, governance]
+      dependent_issues: [377, 379]
+    - id: DTG-371-P12
+      family: node-semantics
+      statement: Being a DTG node does not make an entity a semantically valid issuer, subject or target for every DTG credential type.
+      authority_status: proposed-upstream-design-constraint
+      authoritative_owner: trustoverip/dtgwg-cred-spec
+      sources: [SRC-VAC, SRC-CORRELATION-SCOPE, SRC-DATA-ROOMS]
+      required_evidence_class: specification-analysis-plus-model-vectors
+      current_evidence:
+        status: partial
+        references: [SRC-VAC, SRC-CORRELATION-SCOPE]
+        gap: Applicability boundaries across newly admitted node classes require explicit enumeration/test vectors.
+      falsification_condition: A new node class acquires membership, delegation, authority or other credential semantics solely because it holds an identifier.
+      remediation_owner: [specification, profile]
+      dependent_issues: [378, 379]
+    - id: DTG-371-P13
+      family: privacy-composition
+      statement: Declared correlation scope, observable protocol metadata and effective retained-interaction correlation must be assessed separately.
+      authority_status: rahp-inferred-composition
+      authoritative_owner: rahp-plus-specialist-profile
+      sources: [SRC-CORRELATION-SCOPE, SRC-RAHP-CZT, SRC-DATA-ROOMS]
+      required_evidence_class: runtime-ab-privacy
+      current_evidence:
+        status: partial
+        references: [SRC-RAHP-CZT]
+        gap: New correlation-scope and Data Room compositions require fresh DPIP-bound runtime evidence.
+      falsification_condition: Two unrelated relying contexts correlate a subject/relationship beyond declared scope using retained metadata, resolution, status or outcome surfaces.
+      remediation_owner: [specialist-profile, implementation, governance]
+      dependent_issues: [373, 376, 379]
+    - id: DTG-371-P14
+      family: actuation
+      statement: Individually valid identity, relationship, delegation, authority and proof artifacts are insufficient for consequential execution unless all required current policy, task/invocation and binding conditions also hold at the actuation boundary.
+      authority_status: rahp-inferred-composition
+      authoritative_owner: composition-contract
+      sources: [SRC-VDC, SRC-VAC, SRC-RAHP-CZT, SRC-DATA-ROOMS]
+      required_evidence_class: end-to-end-executable-composition
+      current_evidence:
+        status: evidence-required
+        references: [SRC-RAHP-CZT]
+        gap: Existing RAHP findings motivate the invariant; the proposed VDC/VAC/correlation-scope stack has not yet been executed end to end.
+      falsification_condition: A consequential effect occurs when any required layer is absent, stale, mismatched or substituted by another valid layer.
+      remediation_owner: [specification, composition-profile, implementation, interop-test-harness]
+      dependent_issues: [374, 375, 376, 377, 378, 379]
+    - id: DTG-371-P15
+      family: one-effect-execution
+      statement: Successful credential/proof/authority verification does not establish exactly-once consequential execution or safe replay handling.
+      authority_status: rahp-inferred-composition
+      authoritative_owner: composition-contract
+      sources: [SRC-RAHP-CZT, SRC-DATA-ROOMS]
+      required_evidence_class: end-to-end-replay-and-outcome
+      current_evidence:
+        status: partial
+        references: [SRC-RAHP-CZT]
+        gap: Data Room and VDC/VAC-specific replay/one-effect vectors remain to be executed.
+      falsification_condition: A duplicate or retried request produces more than one consequential effect while all reused evidence remains cryptographically valid.
+      remediation_owner: [trust-task-profile, implementation, composition-profile]
+      dependent_issues: [379]
