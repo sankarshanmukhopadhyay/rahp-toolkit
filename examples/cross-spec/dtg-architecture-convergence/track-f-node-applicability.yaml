@@ -69,7 +69,7 @@ review:
     - node: mediator-or-registry-service
       node_status: supported-as-open-node-class
       examples:
-        - {credential: identifier-scope, applicability: public-where-intended, reason: PR #30 removes need for a special service identifier type}
+        - {credential: identifier-scope, applicability: public-where-intended, reason: PR-30 removes need for a special service identifier type}
         - {credential: VMC-target, applicability: not-inferred, reason: discoverability/service operation does not create membership semantics}
     - node: verifiable-data-room
       node_status: informative-pressure-test-only
