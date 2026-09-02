@@ -1,0 +1,80 @@
+review:
+  id: DTG-371-TRACK-E
+  status: complete
+  title: DTG architecture convergence Track E — action-vocabulary governance and cross-domain authority semantics
+  reviewed_on: '2026-09-02'
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  trigger_issue: 377
+  proposition_matrix: examples/cross-spec/dtg-architecture-convergence/proposition-matrix.yaml
+  evidence_grade: source-pinned-executable-semantic-composition
+
+  target:
+    repository: trustoverip/dtgwg-cred-spec
+    pull_request: 29
+    head_sha: 84650749afd48798e1c8919a95be359c0367a1c9
+    authority_status: proposed-upstream
+    execution_evidence:
+      repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+      pull_request: 95
+      result: results/dtg-action-vocabulary/run-results.json
+
+  summary:
+    overall_assessment: GOVERNANCE_GAP_FOR_FEDERATED_RELIANCE
+    assurance_posture: AMBER
+    rationale: >-
+      Scope-local action strings are coherent and fail closed when interpreted by the same governing
+      authority, but lexical equality is not a safe interoperability contract across governance domains.
+      Executable vectors demonstrate that same-token/different-domain and implicit hierarchy cases must
+      be rejected unless an explicit semantic mapping exists. The remaining problem is therefore not that
+      VAC Core must necessarily define a universal vocabulary; it is that federated reliance requires an
+      attributable mapping/profile/governance artifact that verifiers can evaluate.
+
+  proposition_results:
+    - proposition_id: DTG-371-P11
+      result: governance-gap-for-federated-reliance
+      evidence_class: specification-plus-composition-test
+      evidence:
+        - trustoverip/dtgwg-cred-spec#29@84650749afd48798e1c8919a95be359c0367a1c9
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#95
+      judgment: >-
+        Action token equality does not establish semantic equality. A verifier outside the issuing
+        governance domain must have an explicit mapping/profile/schema/governance contract before it can
+        rely on the action. Likewise, `admin` does not imply `write` unless the applicable governance has
+        declared that relation.
+      action_owner:
+        surface: governance-or-profile
+        repository: not-yet-determined
+      artifact_to_produce:
+        kind: governance-decision
+        description: >-
+          Define the interoperable semantic contract for federated action interpretation: e.g. namespaced
+          vocabulary, profile mapping, schema reference, governance mapping, or another explicit mechanism.
+
+  executed_vectors:
+    - {id: AV-POS-001, result: allow, reason: explicit local semantic mapping}
+    - {id: AV-NEG-001, result: deny, reason: same token across governance without mapping}
+    - {id: AV-NEG-002, result: deny, reason: undeclared admin-to-write hierarchy}
+    - {id: AV-NEG-003, result: deny, reason: foreign action cannot be semantically upgraded}
+    - {id: AV-POS-002, result: allow, reason: explicit namespaced/profile mapping candidate}
+    - {id: AV-POS-003, result: allow, reason: hierarchy explicitly declared by applicable governance}
+
+  design_options:
+    - option: core-shared-vocabulary
+      assessment: possible-but-not-required-by-current-evidence
+      consequence: strongest global interoperability but greatest DTG Core coupling
+    - option: namespaced-actions
+      assessment: viable-candidate
+      consequence: preserves local governance while making semantic authority explicit
+    - option: profile-or-schema-mapping
+      assessment: viable-candidate
+      consequence: moves federation semantics into an explicit interoperable contract
+    - option: governance-bilateral-mapping
+      assessment: viable-but-operationally-heavier
+      consequence: local flexibility with more governance/discovery dependency
+
+  terminal_disposition:
+    result: GOVERNANCE_GAP
+    conclusion: >-
+      Track E does not justify forcing a universal action vocabulary into DTG Core. It does establish a
+      firm assurance boundary: cross-domain authority cannot rely on bare action strings. An explicit,
+      attributable semantic mapping artifact is required before federated reliance can be considered safe.
