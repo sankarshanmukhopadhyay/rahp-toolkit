@@ -1,0 +1,88 @@
+review:
+  id: DTG-371-TRACK-C
+  status: complete
+  title: DTG architecture convergence Track C — VAC attenuation, chain integrity and revocation propagation
+  reviewed_on: '2026-09-02'
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  trigger_issue: 375
+  proposition_matrix: examples/cross-spec/dtg-architecture-convergence/proposition-matrix.yaml
+  evidence_grade: source-pinned-executable-semantic-composition
+
+  target:
+    repository: trustoverip/dtgwg-cred-spec
+    pull_request: 29
+    head_sha: 84650749afd48798e1c8919a95be359c0367a1c9
+    authority_status: proposed-upstream
+    execution_evidence:
+      repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+      pull_request: 93
+      result: results/dtg-vac-attenuation/run-results.json
+
+  summary:
+    overall_assessment: SUPPORTED_WITH_BOUNDED_RESIDUALS
+    assurance_posture: AMBER
+    rationale: >-
+      The proposed VAC attenuation model is coherent and executable as a monotonic narrowing rule.
+      Deterministic evidence rejects widening across action, governed scope, expiry, audience and chain
+      depth, and independently rejects incomplete chains, revoked roots/intermediates and stale current-state
+      evidence. This materially supports the security property, while final cryptographic credential/status
+      realization remains outside the semantic experiment.
+
+  proposition_results:
+    - proposition_id: DTG-371-P08
+      result: supported-by-proposed-source-and-semantic-execution
+      evidence_class: specification-plus-composition-test
+      evidence:
+        - trustoverip/dtgwg-cred-spec#29@84650749afd48798e1c8919a95be359c0367a1c9
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#93
+      judgment: >-
+        A derived authority succeeds only when every authority-relevant dimension is equal to or narrower
+        than its parent. The experiment separately falsifies action widening, scope widening, later expiry,
+        audience substitution and excessive chain depth.
+      residual: native-credential-and-cryptographic-chain-realization
+
+    - proposition_id: DTG-371-P09
+      result: supported-at-semantic-current-state-boundary
+      evidence_class: runtime-current-state
+      evidence:
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#93
+      judgment: >-
+        A cryptographically/structurally plausible child is rejected when the root is revoked, an
+        intermediate is revoked, the required chain is incomplete, or current-state evidence is stale.
+        Current authority is therefore not substituted by historical signature validity.
+      residual: native-status-resolution-and-revocation-evidence
+
+  executed_vectors:
+    positive: VAC-POS-001
+    negative:
+      - {id: VAC-NEG-001, property: action widening}
+      - {id: VAC-NEG-002, property: scope widening}
+      - {id: VAC-NEG-003, property: expiry widening}
+      - {id: VAC-NEG-004, property: audience substitution}
+      - {id: VAC-NEG-005, property: incomplete chain}
+      - {id: VAC-NEG-006, property: excessive chain depth}
+      - {id: VAC-NEG-007, property: revoked root}
+      - {id: VAC-NEG-008, property: revoked intermediate}
+      - {id: VAC-NEG-009, property: stale current-state evidence}
+
+  ownership:
+    upstream_specification:
+      owns:
+        - normative attenuation dimensions
+        - chain representation and depth rules
+        - final status/revocation semantics
+    interop_lab:
+      owns:
+        - deterministic composition vectors and evidence
+        - future native-artifact realization where available
+    rahp:
+      owns:
+        - assurance inference and residual routing
+
+  terminal_disposition:
+    result: SUPPORTED_WITH_BOUNDED_RESIDUALS
+    supported: [DTG-371-P08, DTG-371-P09]
+    conclusion: >-
+      Track C finds no semantic widening path in the tested attenuation model. Remaining uncertainty is
+      concentrated in native credential, chain, status and cryptographic implementation evidence rather
+      than an unresolved contradiction in the proposed attenuation rule.
