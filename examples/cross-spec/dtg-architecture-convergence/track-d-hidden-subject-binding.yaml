@@ -1,0 +1,77 @@
+review:
+  id: DTG-371-TRACK-D
+  status: complete
+  title: DTG architecture convergence Track D — hidden-subject binding across membership, delegation and authority
+  reviewed_on: '2026-09-02'
+  parent_discussion: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/discussions/371
+  trigger_issue: 376
+  proposition_matrix: examples/cross-spec/dtg-architecture-convergence/proposition-matrix.yaml
+  evidence_grade: source-pinned-semantic-composition-with-cryptographic-residual
+
+  sources:
+    vac: trustoverip/dtgwg-cred-spec#29@84650749afd48798e1c8919a95be359c0367a1c9
+    vdc: trustoverip/dtgwg-cred-spec#19@ad5876f1b96e2149adec84d37d6595b4a212db9c
+    interop_evidence: sankarshanmukhopadhyay/trust-protocol-interop-lab#94
+    privacy_evidence_contract: sankarshanmukhopadhyay/dtg-privacy-implementation-profile#185
+
+  summary:
+    overall_assessment: PARTIALLY_SUPPORTED
+    assurance_posture: AMBER
+    rationale: >-
+      The semantic composition rule is clear and executable: independently valid hidden-subject
+      credentials cannot satisfy a joint proposition unless the required same-subject/common-control
+      relation is independently evidenced. Negative vectors reject membership/authority pooling,
+      delegation/authority subject mismatch, false common control and context replay. However, the
+      experiment models the required binding predicate; it does not yet demonstrate the production
+      ZKP construction that proves it without unnecessary correlation. Cryptographic and privacy
+      realization therefore remain evidence-required.
+
+  proposition_results:
+    - proposition_id: DTG-371-P10
+      result: supported-at-semantic-composition-boundary
+      evidence_class: specification-plus-composition-test
+      evidence:
+        - trustoverip/dtgwg-cred-spec#29@84650749afd48798e1c8919a95be359c0367a1c9
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#94
+      judgment: >-
+        The required binding relation is not inferred from independent credential validity. VMC + VAC
+        from different hidden subjects, VDC + VAC for different delegates, and false common-control
+        cases all fail despite otherwise-valid component evidence.
+      residual:
+        state: evidence-required
+        artifact: native cryptographic same-subject/common-control construction and negative proof vectors
+        owner: sankarshanmukhopadhyay/trust-protocol-interop-lab
+
+    - proposition_id: DTG-371-P13
+      result: evidence-required
+      evidence_class: runtime-ab-privacy
+      evidence:
+        - sankarshanmukhopadhyay/trust-protocol-interop-lab#94
+        - sankarshanmukhopadhyay/dtg-privacy-implementation-profile#185
+      judgment: >-
+        Deliberate reconnection is acceptable only when bounded to the intended verifier/context and
+        does not export a durable correlator. The semantic test rejects correlator export and context
+        replay, but runtime privacy observations remain necessary to demonstrate effective unlinkability.
+      evidence_requirement_ids:
+        - ER-REL-DID-AB
+        - ER-VERIFIER-AB
+        - ER-CREDENTIAL-ID-AB
+      action_owner:
+        surface: specialist-profile
+        repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+
+  executed_vectors:
+    - {id: HSB-POS-001, expected: allow, result: allow}
+    - {id: HSB-NEG-001, expected: deny, result: deny, reason: VMC and VAC hidden subjects are not bound}
+    - {id: HSB-NEG-002, expected: deny, result: deny, reason: VDC and VAC refer to different delegates}
+    - {id: HSB-NEG-003, expected: deny, result: deny, reason: pairwise identifiers do not share proven control}
+    - {id: HSB-NEG-004, expected: deny, result: deny, reason: proof relation replayed outside bound context}
+    - {id: HSB-NEG-005, expected: deny, result: deny, reason: deliberate reconnection exports durable correlator}
+
+  terminal_disposition:
+    result: PARTIALLY_SUPPORTED
+    conclusion: >-
+      Track D closes the semantic credential-pooling ambiguity: a composite verifier must require and
+      verify the binding relation itself. The remaining gap is evidence, not semantics — native ZKP
+      construction and runtime privacy evidence are still required before the hidden-subject composition
+      property can be promoted to a stronger assurance conclusion.
