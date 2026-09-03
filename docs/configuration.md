@@ -7,7 +7,7 @@ parent: Adopt RAHP
 ---
 # Configuration-driven adoption
 
-RAHP uses a YAML file as the boundary between the portable engine contract and a deployment. The independent DTG and CAWG/C2PA deployments prove this configuration boundary, while v0.8 makes the execution/result contract language-neutral. An adopter does **not** need to copy the DTG instance, import DTG issues, use DTG corpora, or connect to the DTG Portfolio Monitor.
+RAHP uses a YAML file as the boundary between the portable engine contract and a deployment. Independent DTG and CAWG/C2PA deployments demonstrate that boundary, while the current engine/result contracts remain language-neutral compatibility authorities. An adopter does **not** need to copy the DTG instance, import DTG issues, use DTG corpora, or connect to the DTG Portfolio Monitor.
 
 ## Minimal configuration
 
@@ -75,14 +75,15 @@ The canonical schema is [`method/schema/rahp-config.schema.json`](../method/sche
 
 [`profiles/dtg/rahp.yaml`](../profiles/dtg/rahp.yaml) demonstrates the engine across DTG ZKP, Credential Specification, and Trust Tasks repositories. Its `extensions.portfolio_registry` entry is explicitly optional. The DTG corpora, canonical `data/`, Task Force actions, `RP-001`, and other governance records remain useful evidence for that deployment, but a different Working Group does not load or run them merely to use RAHP.
 
-## What the engine does not do
+## Configured review versus autonomous assurance
 
-Configuration makes target resolution and workflow orchestration portable; it does not automate judgement. RAHP can resolve revisions, prepare repositories, scaffold review records, validate records, and render evidence. A human or AI-assisted reviewer remains responsible for examining target material, determining whether a finding is defensible, recording evidence, and proposing disposition.
+Configuration supports portable target resolution and review orchestration. The `tools/rahp.py review` path scaffolds and validates evidence-bearing review records; completion of that command does not manufacture a finding or assurance conclusion. A human or AI-assisted reviewer must still substantiate findings recorded through that review path.
 
+RAHP also contains a qualified autonomous controller lifecycle for supported assurance flows. In that lifecycle the controller, rather than GitHub workflow choreography, owns assessment state, specialist routing, reconciliation and terminalization. The distinction is important: **review tooling can require reviewer judgement while controller lifecycle transitions remain machine-owned**. See [How RAHP works](how-rahp-works.md) and [Continuous assurance](continuous-assurance.md).
 
 ## Review retention
 
-v0.8 supports optional deployment retention settings under `assessment.retention`:
+Optional deployment retention settings are available under `assessment.retention`:
 
 ```yaml
 assessment:
