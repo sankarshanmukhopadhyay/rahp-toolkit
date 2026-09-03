@@ -1660,7 +1660,7 @@ The immediate objective is not to change code. It is to establish a common archi
 - RFC 2119, *Key words for use in RFCs to Indicate Requirement Levels*.
 - RFC 8174, *Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words*.
 - Trust over IP Decentralized Trust Graph work: https://github.com/trustoverip
-- OpenVTC repositories: https://github.com/openwallet-foundation-labs/openvtc (or current authoritative OpenVTC project location where different)
+- OpenVTC repositories: https://github.com/OpenVTC/openvtc
 - RAHP Toolkit: https://github.com/sankarshanmukhopadhyay/rahp-toolkit
 - DTG Privacy Implementation Profile: https://github.com/sankarshanmukhopadhyay/dtg-privacy-implementation-profile
 - Trust Protocol Interop Lab: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab
