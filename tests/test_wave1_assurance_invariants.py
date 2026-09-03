@@ -19,9 +19,19 @@ class EvidenceAsymmetryTests(unittest.TestCase):
         })
         self.assertEqual(result["outcome"], "FAIL")
 
+    def test_unavailable_essential_service_evidence_needs_recovery_route(self):
+        result = evaluate_evidence_asymmetry({
+            "preferred_evidence_available": False,
+            "essential_service": True,
+            "decision": "DENY",
+            "denial_reason": "insufficient-evidence",
+        })
+        self.assertEqual(result["outcome"], "FAIL")
+
     def test_missing_evidence_can_preserve_uncertainty_and_escalate(self):
         result = evaluate_evidence_asymmetry({
             "preferred_evidence_available": False,
+            "essential_service": True,
             "decision": "ESCALATE",
             "alternative_evidence_route": True,
         })
