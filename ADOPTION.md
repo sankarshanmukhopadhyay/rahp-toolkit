@@ -7,7 +7,9 @@ parent: Adopt RAHP
 ---
 # Adopting RAHP
 
-RAHP is adopted through configuration. A Working Group, developer, standards project, assurance team, or independent reviewer can use the toolkit without inheriting either bundled deployment. DTG and CAWG/C2PA are examples of the same portable contract, not parent environments that a new adopter must copy.
+RAHP is adopted through configuration. A Working Group, developer, standards project, assurance team, or independent reviewer can use the toolkit without inheriting a bundled deployment. DTG and CAWG/C2PA are examples of the same portable RAHP contracts, not parent environments that a new adopter must copy.
+
+The current stable product boundary is described by `PROJECT-STATUS.yaml`, the engine/result/evidence contracts, and the v2.1 release qualification. Historical release notes remain evidence of earlier boundaries; they are not current adoption instructions.
 
 ## 1. Checkout and install
 
@@ -62,20 +64,22 @@ python3 tools/rahp.py review --config rahp.yaml --target specification --mode se
 python3 tools/rahp.py review --config rahp.yaml --target specification --mode combined
 ```
 
-The CLI scaffolds review records with repository and commit provenance under the ignored `.rahp/` working area. It does not infer findings. Inspect the target and populate evidence-backed findings. Do not commit run logs or draft scaffolds merely because a run completed; promote only deliberate worked examples, and preserve deployment decisions as compact durable review/disposition records. See `docs/review-modes.md` and `docs/evidence-retention.md`.
+The configured review CLI resolves target provenance and scaffolds canonical review records under the ignored `.rahp/` working area. It does not make an evidence-backed finding merely because a command completed. Examine the target, record defensible findings, render and validate the resulting records, and deliberately promote only maintained exemplars or compact deployment dispositions.
+
+This manual/configured review path is distinct from RAHP's qualified autonomous controller lifecycle. The controller owns assessment state, specialist routing, reconciliation and terminalization for supported automated assurance flows; a successful GitHub workflow or CLI invocation is not itself an assurance conclusion. See `docs/how-rahp-works.md`, `docs/review-modes.md` and `docs/evidence-retention.md`.
 
 ## What you do not inherit
 
-A new deployment does not inherit another deployment's governance or assessment state. You do not need the DTG Portfolio Monitor, DTG scenario corpora, DTG governance queue, `RP-001`, canonical DTG `data/` records, CAWG `CRK-*` risks, or CAWG/C2PA monitoring state. Adopt only the method and capabilities your deployment needs.
+A new deployment does not inherit another deployment's governance or assessment state. You do not need the DTG Portfolio Monitor, DTG scenario corpora, DTG governance queue, `RP-001`, canonical DTG `data/` records, CAWG `CRK-*` risks, or CAWG/C2PA monitoring state. Adopt only the method, contracts and capabilities your deployment needs.
 
-This separation remains a core invariant: **shared engine contract, independent deployment context**. v0.8 additionally makes the engine boundary language-neutral.
+This separation remains a core invariant: **shared portable contracts, independent deployment context**. Language-neutral execution/result boundaries are compatibility properties of the current engine contracts, not requirements to adopt any historical deployment shape.
 
 ## Optional richer use
 
-Once a project needs recurring scenarios, governed risk/control catalogues, evidence contracts, or source-drift monitoring, it can adopt those RAHP capabilities deliberately. They are not prerequisites for the first configured assessment.
+Once a project needs recurring scenarios, governed risk/control catalogues, evidence contracts, specialist routing, source-drift monitoring or continuous reassessment, it can adopt those RAHP capabilities deliberately. They are not prerequisites for the first configured review.
 
-See `docs/configuration.md` for the complete configuration model and `docs/portability.md` for the portability contract demonstrated by the independent DTG and CAWG/C2PA deployments.
+See `docs/configuration.md` for the configuration model, `docs/portability.md` for the portability contract, and `docs/continuous-assurance.md` for the machine-owned lifecycle used after material change.
 
 ## Portable assurance catalogue
 
-RAHP v1.1 ships reusable `HRM-*`, `RKP-*`, `CTP-*`, `GRP-*`, `ATP-*` and `EVP-*` patterns under `method/catalogue/`. Adopters may reference or specialize these patterns, but should keep deployment-specific risks, evidence, governance decisions and dispositions in their own deployment state. Do not copy the bundled DTG `data/` merely to obtain the portable catalogue.
+The reusable catalogue under `method/catalogue/` contains portable `HRM-*`, `RKP-*`, `CTP-*`, `GRP-*`, `ATP-*` and `EVP-*` patterns. Adopters may reference or specialize these patterns, but should keep deployment-specific risks, evidence, governance decisions and dispositions in their own deployment state. Do not copy the bundled DTG `data/` merely to obtain the portable catalogue.
