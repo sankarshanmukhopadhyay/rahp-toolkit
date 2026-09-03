@@ -7,7 +7,7 @@ parent: Learn RAHP
 ---
 # Continuous assurance
 
-RAHP does not treat an assessment as a timeless verdict. Continuous governed assurance preserves what was assessed, what changed, which evidence still carries weight, what must be retested and who is authorized to disposition the result.
+RAHP does not treat an assessment as a timeless verdict. Continuous governed assurance preserves what was assessed, what changed, which evidence still carries weight, what must be retested and which authority may disposition resulting obligations.
 
 This page is a map of that lifecycle. The detailed contracts remain in their dedicated pages.
 
@@ -18,32 +18,35 @@ material target change
   → impact selection
   → evidence freshness evaluation
   → retained / weakened / invalidated evidence
-  → focused assessment or retest
-  → assurance delta
-  → residual obligation + remediation
-  → policy gate: PASS | FAIL | INDETERMINATE
-  → independent authority verification
-  → governed disposition / publication
+  → focused reassessment
+  → specialist routing when applicable
+  → RAHP reconciliation
+  → PASS | FAIL | NOT_APPLICABLE | INDETERMINATE
+  → durable residual/action
+  → citable terminal assurance record
+  → separately governed disposition / publication when required
   → current assurance posture
 ```
 
+The controller owns supported lifecycle transitions and terminalization. Governance authority remains separate: producing a terminal assurance record does not itself authorize publication, risk acceptance, closure or other governed action.
+
 The purpose is to avoid two opposite failures: rerunning everything after every change, or allowing old assurance claims to survive after their evidence has become stale.
 
-## Assurance states
+## Assurance outcomes and residual states
 
-RAHP uses normalized residual states rather than a single assurance score:
+RAHP's current controller outcomes are evidence-conservative:
 
-| State | Meaning |
+| Outcome | Meaning |
 |---|---|
-| `assured` | Required propositions are supported by sufficient evidence. |
-| `controlled` | The risk exists, but effective controls and assurance evidence are present. |
-| `finding` | Evidence supports an actionable residual defect. |
-| `assurance-gap` | The property/control may exist, but evidence is incomplete. |
-| `review-required` | Automation cannot safely determine the conclusion. |
-| `not-assessed` | The proposition was not sufficiently evaluated. |
-| `not-applicable` | The proposition is outside applicable scope. |
+| `PASS` | The assessed proposition is supported within the recorded scope and evidence boundary. |
+| `FAIL` | Evidence supports a material adverse finding or failed proposition. |
+| `NOT_APPLICABLE` | The proposition or specialist path does not apply to the assessed subject/scope. |
+| `INDETERMINATE/evidence-required` | The required evidence is absent or insufficient; missing evidence never becomes PASS. |
+| `INDETERMINATE/model-gap` | The current model cannot safely classify or resolve the observed surface. |
 
-**Zero findings is not equivalent to assured.** A successful workflow is likewise not an assurance conclusion: execution may be green while the current posture remains AMBER because evidence is incomplete or the policy gate is `INDETERMINATE`. `INDETERMINATE` is never silently converted to PASS. See [Assurance evaluation](assurance-evaluation.md) and [Interpreting results](interpreting-results.md).
+Deployment posture may additionally describe retained conditions such as findings, controlled risks, evidence gaps, remediation obligations or unassessed surfaces. Those posture labels are projections over evidence and terminal records, not substitutes for the controller's canonical terminal outcome.
+
+**Zero findings is not equivalent to assured.** A successful workflow is likewise not an assurance conclusion. Workflow execution may be green while the terminal assurance record is adverse or indeterminate. `INDETERMINATE` is never silently converted to PASS. See [Assurance evaluation](assurance-evaluation.md) and [Interpreting results](interpreting-results.md).
 
 ## 1. Determine what changed
 
@@ -53,13 +56,13 @@ See [Assurance graph and impact analysis](assurance-graph-impact.md).
 
 ## 2. Re-evaluate evidence
 
-Evidence can remain current, become weaker, become invalid, or require human review. Provenance and freshness are explicit so a later assessment does not silently reuse an obsolete source.
+Evidence can remain current, become weaker, become invalid, or require further examination. Provenance and freshness are explicit so a later assessment does not silently reuse an obsolete source.
 
 See [Evidence provenance and freshness](evidence-freshness-delta.md) and [Evidence classification](evidence-classification.md).
 
 ## 3. Preserve assessment lineage
 
-A reassessment should preserve the prior record and state the delta. Findings may be retained, refined, weakened, resolved or superseded depending on current evidence.
+A reassessment should preserve the prior record and state the delta. Findings may be retained, refined, weakened, resolved or superseded depending on current evidence. Replay of the same immutable source pin remains idempotent; a new pin creates a new reassessment identity with lineage.
 
 See [Assurance lineage](assurance-lineage.md) and [Review evidence and retention](evidence-retention.md).
 
@@ -69,17 +72,17 @@ Remediation is not closure. RAHP records the proposed or implemented change, the
 
 See [Remediation and retesting](remediation-lifecycle.md).
 
-## 5. Apply policy without manufacturing authority
+## 5. Keep policy separate from authority
 
-A policy gate can return `PASS`, `FAIL` or `INDETERMINATE`. That result does not itself authorize publication, risk acceptance or closure. `INDETERMINATE` remains a non-green assurance outcome until evidence or governed disposition resolves the uncertainty.
+A policy or assurance evaluation can return a determinate or indeterminate result. That result does not itself authorize publication, risk acceptance or closure. Authority is independently scoped to actions such as `observe`, `assess`, `disposition`, `remediate`, `publish`, `accept-risk`, `close` and `reopen`. Repository permissions are not automatically governance authority.
 
-Authority is independently scoped to actions such as `observe`, `assess`, `disposition`, `remediate`, `publish`, `accept-risk`, `close` and `reopen`. Repository permissions are not automatically governance authority.
+This separation does **not** introduce a human-only controller transition. The controller can reach a citable terminal assurance state without operator lifecycle shepherding; a later governed business or governance action may still require an authorized actor.
 
 See [Authority and policy gates](authority-policy-gates.md).
 
 ## 6. Publish current posture
 
-Assurance posture presents the current state without hiding uncertainty behind a synthetic percentage. It can distinguish confirmed findings from evidence gaps, review obligations and controlled risks.
+Assurance posture presents the current state without hiding uncertainty behind a synthetic percentage. It can distinguish confirmed findings from evidence gaps, remediation obligations, controlled risks and unassessed surfaces.
 
 See [Assurance posture](assurance-posture.md).
 
