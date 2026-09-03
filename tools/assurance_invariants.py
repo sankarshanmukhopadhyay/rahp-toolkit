@@ -26,7 +26,9 @@ def evaluate_evidence_asymmetry(context: dict[str, Any]) -> dict[str, Any]:
     The evaluator does not require insufficient evidence to be accepted. A
     policy may deny or defer because required evidence is absent, provided it
     does not reinterpret absence as fraud, ineligibility, low trustworthiness,
-    or another unsupported negative fact.
+    or another unsupported negative fact. Essential-service contexts also need
+    a declared alternate-evidence or human-review route when preferred evidence
+    is unavailable through no finding about the subject.
     """
     preferred_available = context.get("preferred_evidence_available")
     adverse_inference = context.get("adverse_inference")
@@ -40,6 +42,10 @@ def evaluate_evidence_asymmetry(context: dict[str, Any]) -> dict[str, Any]:
         return _result("FAIL", "evidence-absence-converted-to-adverse-inference")
 
     if not preferred_available:
+        if context.get("essential_service") and not (
+            context.get("alternative_evidence_route") or context.get("human_review_route")
+        ):
+            return _result("FAIL", "essential-service-recovery-route-absent")
         if decision in {"INDETERMINATE", "DEFER", "ESCALATE"}:
             return _result("PASS", "uncertainty-preserved")
         if decision == "DENY" and context.get("denial_reason") == "insufficient-evidence":
