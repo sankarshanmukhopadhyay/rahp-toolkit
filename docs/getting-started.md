@@ -7,7 +7,7 @@ parent: Learn RAHP
 ---
 # Getting started
 
-This page is the shortest path from a fresh checkout to a useful RAHP review. It routes to the detailed method pages rather than duplicating them.
+This page is the canonical shortest path from a fresh checkout to a useful RAHP review. It routes to the detailed method pages rather than duplicating them.
 
 ## 1. Install and validate
 
@@ -69,24 +69,30 @@ See [Corpus synchronization and provenance](corpus-synchronization.md) and [Revi
 
 ## 6. Interpret conservatively
 
-RAHP distinguishes several residual states. In particular, **no finding does not mean assured**. Evidence may still be incomplete, stale, inapplicable or require human disposition.
+RAHP distinguishes evaluation residuals, controller terminal outcomes and deployment/portfolio posture. In particular, **zero findings does not mean assured**. Evidence may still be incomplete, stale, inapplicable or outside the current model.
 
-Use [Assurance evaluation](assurance-evaluation.md), [Interpreting results](interpreting-results.md), and [Continuous assurance](continuous-assurance.md) when moving from a one-time assessment to durable assurance.
+A green command or workflow is execution evidence, not an assurance conclusion. For autonomous controller flows, read the citable terminal assurance record: valid outcomes include PASS, FAIL, NOT_APPLICABLE and explicit INDETERMINATE states.
+
+Use [Assurance evaluation](assurance-evaluation.md), [Interpreting results](interpreting-results.md), and [Continuous assurance](continuous-assurance.md) when moving from a one-time review to durable assurance.
 
 ## 7. After a material change
 
-Do not automatically rerun everything. Use impact analysis and evidence freshness to determine what must be reassessed, then preserve the old record and record the assurance delta.
+Do not automatically rerun everything. Use impact analysis and evidence freshness to determine what must be reassessed, preserve the old record, and create explicit reassessment lineage for a new immutable source pin.
 
-The lifecycle is:
+The current lifecycle is:
 
 ```text
 material change
   → impacted propositions
   → evidence freshness
   → focused reassessment
-  → finding / gap / controlled / assured
-  → remediation and retest
-  → governed disposition
+  → specialist routing when applicable
+  → RAHP reconciliation
+  → terminal assurance outcome
+  → residual/action
+  → current posture / governed disposition
 ```
 
-See [Assurance graph and impact analysis](assurance-graph-impact.md), [Evidence provenance and freshness](evidence-freshness-delta.md), and [Remediation and retesting](remediation-lifecycle.md).
+The controller owns supported assurance-state transitions and terminalization; governance authority for publication, risk acceptance, closure or other consequential actions remains separate.
+
+See [Assurance graph and impact analysis](assurance-graph-impact.md), [Evidence provenance and freshness](evidence-freshness-delta.md), [Remediation and retesting](remediation-lifecycle.md), and [Authority and policy gates](authority-policy-gates.md).
