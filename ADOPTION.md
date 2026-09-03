@@ -72,7 +72,7 @@ This manual/configured review path is distinct from RAHP's qualified autonomous 
 
 A new deployment does not inherit another deployment's governance or assessment state. You do not need the DTG Portfolio Monitor, DTG scenario corpora, DTG governance queue, `RP-001`, canonical DTG `data/` records, CAWG `CRK-*` risks, or CAWG/C2PA monitoring state. Adopt only the method, contracts and capabilities your deployment needs.
 
-This separation remains a core invariant: **shared portable contracts, independent deployment context**. Language-neutral execution/result boundaries are compatibility properties of the current engine contracts, not requirements to adopt any historical deployment shape.
+This separation remains a core invariant: **shared engine contract, independent deployment context**. The engine/result boundaries are portable and language-neutral; deployment-specific governance, evidence, findings and dispositions remain local to the adopting context.
 
 ## Optional richer use
 
