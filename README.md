@@ -3,11 +3,43 @@
 **Risk Assessment & Harms Prevention**  
 Release v2.1.0 (stable) · Common Acacia Blue · CC-BY 4.0
 
-RAHP Toolkit is a **portable assurance execution and monitoring plane** for pressure-testing standards, protocols, implementations, changesets and composed trust systems against human harms, governance failures, adversarial conditions, privacy/security risks and resilience failures.
+RAHP Toolkit helps teams determine whether a trust system actually deserves confidence.
 
-> **Project identity:** RAHP is the reusable method, contracts and machine-owned assurance lifecycle. Repositories are evidence/source containers; the unit of assurance may instead be a specification, requirement, protocol surface, cross-specification interaction, composition, flow, implementation, deployment proposition, portfolio or changeset. DTG, CAWG/C2PA, A2A, OpenVTC, ARPA and other projects remain independently scoped deployments or qualification consumers.
+Standards, protocols and implementations can all appear correct in isolation while still producing privacy failures, governance gaps, security weaknesses, resilience failures or human harms when used in practice or combined with other components. A green workflow, a passing component test, or the absence of an obvious finding is not enough to establish assurance.
 
-## What RAHP does
+RAHP provides a reusable assurance method and execution plane for pressure-testing those systems against explicit propositions, scenarios, risks and evidence. It can assess a specification, requirement, protocol surface, implementation, deployment, changeset, cross-specification interaction, composition, flow or portfolio.
+
+A typical RAHP assessment traces:
+
+```text
+persona/scenario
+  → harm/risk
+  → proposition
+  → control/guardrail
+  → evidence
+  → inference
+  → actionable recommendation
+```
+
+The result is not merely a list of findings. RAHP produces a citable assurance record that identifies what was tested, what evidence was available, what remains unknown, where remediation belongs, and what terminal conclusion is justified.
+
+RAHP is deliberately evidence-conservative: **missing evidence never becomes PASS**. Workflow success is not assurance success. A component PASS never automatically implies a composition PASS.
+
+> **Bounded product claim:** RAHP is qualified, within the tested contract and subject boundaries, as a zero-touch autonomous assurance monitoring plane that can fail closed into citable, actionable terminal assurance states without operator lifecycle shepherding.
+
+This does not mean every assessment is GREEN, and it is not a claim of universal or production-wide assurance. Trustworthy autonomous termination includes adverse and indeterminate outcomes.
+
+## When RAHP is useful
+
+RAHP is useful when you need to:
+
+- evaluate whether a specification actually supports the trust, governance, security, privacy or resilience claims made about it;
+- pressure-test interactions between multiple specifications or protocols rather than assuming component correctness composes safely;
+- assess whether an implementation or deployment preserves the assumptions of its normative baseline;
+- determine whether a material change invalidates prior assurance evidence and requires reassessment;
+- run continuous or repeated assurance without silently converting missing, stale or insufficient evidence into success.
+
+## How the engine executes the method
 
 RAHP turns a source/change observation into attributable assurance knowledge through a canonical lifecycle:
 
@@ -43,21 +75,15 @@ Current capabilities include:
 - source-pinned corpora, cross-specification scenarios and bounded source/specification assertion adapters;
 - continuous governed assurance through freshness, impact analysis, scoped authority and current posture.
 
-RAHP is deliberately evidence-conservative: **zero findings is not equivalent to assured**. Missing evidence never becomes PASS. Workflow success is not assurance success. A component PASS never automatically implies a composition PASS.
-
 ## Current architecture
 
 The post-v2.0 architecture was qualified through #311/#318 and PR #319 across materially different A2A, CAWG/C2PA and DTG subjects. The clean-room qualification exercised standalone specification, cross-specification, implementation/source-code and composition subjects; no-specialist and specialist terminal paths; NOT_APPLICABLE and INDETERMINATE outcomes; model gaps; replay identity; new-pin reassessment lineage; durable outbox state; deliberately injected cross-repository transport failure and automatic recovery.
 
 Qualification run `33350790322` completed with **zero operator actions after the trigger and zero stranded runs**. Durable evidence is committed at `clean-room/qualification/evidence-33350790322.json`; the human report is `docs/zero-touch-qualification-2026-08-31.md`.
 
-The bounded product claim is:
+For the conceptual model, including the distinction between the assurance method and the assurance execution plane, see [How RAHP works](docs/how-rahp-works.md).
 
-> RAHP is qualified, within the tested contract and subject boundaries, as a zero-touch autonomous assurance monitoring plane that can fail closed into citable, actionable terminal assurance states without operator lifecycle shepherding.
-
-This does not mean every assessment is GREEN. Trustworthy autonomous termination includes adverse and indeterminate outcomes.
-
-**Bundled DTG exemplar:** the repository includes a DTG deployment profile, source-pinned scenario corpora and cross-specification examples as one qualification/adoption consumer. They demonstrate portable RAHP capabilities but are not dependencies of the generic method or engine contracts.
+**Bundled DTG exemplar:** RAHP originated in Trust over IP Digital Trust Ecosystem work, where the method was developed and pressure-tested against concrete trust-architecture questions. This repository preserves that provenance while operating as an independently reusable assurance toolkit. The bundled DTG deployment profile, source-pinned scenario corpora and cross-specification examples are qualification/adoption consumers rather than dependencies of the generic method or engine contracts. A2A, CAWG/C2PA, OpenVTC, ARPA and other projects can likewise act as independently scoped assurance subjects or consumers.
 
 ## Quick start
 
