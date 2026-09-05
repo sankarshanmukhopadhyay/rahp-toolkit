@@ -1,0 +1,13 @@
+manifest:
+  id: DTG-371-WD02-TRACK-A
+  issue: 433
+  status: pr-ready
+  historical_evidence_preserved: true
+  upstream_mutation: false
+  current_result: INDETERMINATE
+  assurance_posture: AMBER
+  stop_before: [VDC-PR-19, VAC-PR-29]
+  specialist:
+    repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+    result: INDETERMINATE
+    assurance_posture: AMBER
