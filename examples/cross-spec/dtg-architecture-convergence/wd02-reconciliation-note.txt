@@ -1,0 +1,1 @@
+DTG-371 Track A WD02 source transition; INDETERMINATE/AMBER; upstream read-only; stop before VDC/VAC.
