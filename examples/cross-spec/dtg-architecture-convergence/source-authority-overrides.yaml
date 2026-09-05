@@ -1,0 +1,30 @@
+overrides:
+  schema: rahp-source-authority-overrides/v1
+  rationale: >-
+    Preserve the canonical historical proposition matrix and source pins while recording
+    later upstream authority transitions as additive evidence.
+  effective_on: '2026-09-06'
+  entries:
+    - source_id: SRC-CORRELATION-SCOPE
+      historical_authority: proposed-upstream
+      current_authority: adopted-upstream-main
+      adopted_revision: c8ef706b4d407a3a68a26b5fe2ce554c43674683
+      applies_to:
+        - DTG-371-P01
+        - DTG-371-P02
+        - DTG-371-P03
+        - DTG-371-P04
+      note: >-
+        P05 is handled as a modified proposition because the carriage question narrowed;
+        P13 remains RAHP-inferred composition even though its declared-scope input is adopted.
+    - source_id: SRC-VDC
+      historical_authority: proposed-upstream
+      current_authority: proposed-upstream
+      applies_to: [DTG-371-P06, DTG-371-P07, DTG-371-P09, DTG-371-P14]
+    - source_id: SRC-VAC
+      historical_authority: proposed-upstream
+      current_authority: proposed-upstream
+      applies_to: [DTG-371-P06, DTG-371-P08, DTG-371-P09, DTG-371-P10, DTG-371-P11, DTG-371-P12, DTG-371-P14]
+  rule: >-
+    An override changes the authority used by a current reconciliation; it never rewrites
+    the authority recorded by historical source-pinned evidence.
