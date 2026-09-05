@@ -16,7 +16,7 @@ jobs:
       typescript_reason: ${{ steps.classify.outputs.reason }}
       typescript_affected_paths: ${{ steps.classify.outputs.affected_paths }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Classify TypeScript conformance impact
@@ -77,14 +77,14 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Validate GitHub Actions workflow syntax
         uses: raven-actions/actionlint@v2
         with:
           version: '1.7.12'
           shellcheck: false
           pyflakes: false
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
           cache: pip
@@ -224,9 +224,9 @@ jobs:
             echo "## TypeScript conformance: SKIPPED" >> "$GITHUB_STEP_SUMMARY"
             echo "- No TypeScript/Python contract assurance paths were affected." >> "$GITHUB_STEP_SUMMARY"
           fi
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: needs.impact.outputs.typescript_required == 'true'
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         if: needs.impact.outputs.typescript_required == 'true'
         with:
           python-version: '3.11'
@@ -235,7 +235,7 @@ jobs:
       - name: Install Python dependencies
         if: needs.impact.outputs.typescript_required == 'true'
         run: pip install -r requirements.txt
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         if: needs.impact.outputs.typescript_required == 'true'
         with:
           node-version: '22'
