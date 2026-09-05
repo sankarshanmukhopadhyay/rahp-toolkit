@@ -1,0 +1,28 @@
+residuals:
+  id: DTG-371-WD02-TRACK-A-RESIDUALS
+  source_reconciliation: track-a-wd02-reconciliation.yaml
+  items:
+    - proposition_id: DTG-371-P02
+      state: evidence-required
+      owner: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+      requirements: [ER-REL-DID-AB, ER-STATUS-AB, ER-TASK-AB, ER-VERIFIER-AB, ER-CREDENTIAL-ID-AB]
+    - proposition_id: DTG-371-P04
+      state: evidence-required
+      owner: implementation-or-interop
+      requirement: long-lived-pairwise-lifecycle-rotation-recovery
+    - proposition_id: DTG-371-P05
+      state: narrowed-residual
+      owner: [profile, implementation]
+      requirement: credential-carriage-observability-retention-lifecycle
+    - proposition_id: DTG-371-P13
+      state: evidence-required
+      owner: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+      requirements: [ER-REL-DID-AB, ER-STATUS-AB, ER-TASK-AB, ER-VERIFIER-AB, ER-CREDENTIAL-ID-AB]
+    - id: digest-binder-enumerability
+      state: external-dependency
+      source: trustoverip/dtgwg-cred-spec#38
+      owner: upstream-specification
+      local_rule: observe-and-test-joinability-do-not-invent-normative-fix
+  aggregate:
+    result: INDETERMINATE
+    assurance_posture: AMBER
