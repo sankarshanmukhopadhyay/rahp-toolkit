@@ -101,10 +101,16 @@ jobs:
           day = '${{ steps.snapshot.outputs.date }}'
           source_url = '${{ steps.snapshot.outputs.url }}'
           lineage = '${{ inputs.assessment_lineage || '' }}'.strip()
+          # Controller identity is epoch-scoped. Bounded child reviews may continue to
+          # coalesce by proposition, but a later portfolio snapshot must never enlarge
+          # the evidence boundary of an earlier still-open controller (#424).
+          controller_key = f'dtg:portfolio:material-change-set:{day}'
+          if lineage:
+              controller_key += f':lineage:{lineage}'
           lines = [
               '# DTG Portfolio Monitor → RAHP assurance controller',
               '',
-              f"<!-- rahp-assessment-key:{'dtg:portfolio:material-change-set:lineage:' + lineage if lineage else 'dtg:portfolio:material-change-set'} -->",
+              f'<!-- rahp-assessment-key:{controller_key} -->',
               *([f'<!-- rahp-clean-room-lineage:{lineage} -->'] if lineage else []),
               f'<!-- rahp-portfolio-snapshot:{day} -->',
               '<!-- dtg-routing-policy:v3-semantic -->',
@@ -127,13 +133,15 @@ jobs:
               '',
               'Portfolio Monitor detects/classifies. RAHP owns assurance routing and RAHP assessments. Privacy-relevant findings are promoted through the canonical RAHP → DPIP transport. DPIP owns applicability/evidence/privacy conclusion and returns the disposition to RAHP.',
               '',
+              'Controller records are snapshot/epoch scoped. Re-publication of the same snapshot is idempotent; a later snapshot receives a new controller key. Bounded child reviews may coalesce across observations only when their proposition identity intentionally remains stable and provenance stays visible.',
+              '',
               '## Closure rule',
               '',
-              'Do not close this controller while any routed RAHP review, DPIP referral, or UNMAPPED qualifying finding remains outstanding. Unknown semantics remain explicit rather than being silently dropped.',
+              'Do not close this controller while any routed RAHP review, DPIP referral, or UNMAPPED qualifying finding from this epoch remains outstanding unless ownership has been explicitly transferred to a durable successor. Unknown semantics remain explicit rather than being silently dropped.',
           ]
           body = '\n'.join(lines) + '\n'
           event = {
-              'assessment_key': ('dtg:portfolio:material-change-set:lineage:' + lineage) if lineage else 'dtg:portfolio:material-change-set',
+              'assessment_key': controller_key,
               'observed_at': day,
               'source': 'dtg-portfolio-monitor',
               'title': f'DTG portfolio materiality assessment required — {day}',

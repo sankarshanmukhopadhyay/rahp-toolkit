@@ -6,6 +6,8 @@ Operational contract:
   issue creation to the canonical RAHP repository.
 - Reuses/coalesces an existing open assessment key where possible instead of creating
   one issue per observation; the resulting issue is a durable work owner, not a finding.
+- Controller keys are epoch-scoped by their producer. Bounded child/repository keys may
+  remain proposition-scoped where intentional; this publisher coalesces exact keys only.
 - May create issues or append trigger comments/metadata through the GitHub API.
 - Publication does not execute the assessment and issue creation does not imply that a
   target is unsafe or that DPIP is required.
@@ -160,16 +162,52 @@ def coalesce_issue(repo: str, issue: dict[str, Any], event: dict[str, Any], toke
     return True
 
 
+def self_test() -> None:
+    """Regression coverage for exact-key coalescing and epoch separation (#424)."""
+    issues = [
+        {
+            "state": "open",
+            "number": 343,
+            "body": "<!-- rahp-assessment-key:dtg:portfolio:material-change-set:2026-08-31 -->",
+        },
+        {
+            "state": "open",
+            "number": 420,
+            "body": "<!-- rahp-assessment-key:dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf -->",
+        },
+    ]
+    index = open_issue_by_key(issues)
+    assert index["dtg:portfolio:material-change-set:2026-08-31"]["number"] == 343
+    assert "dtg:portfolio:material-change-set:2026-09-01" not in index
+    assert "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a" not in index
+    assert index["dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf"]["number"] == 420
+
+    same_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-08-31", "observed_at": "2026-08-31"}
+    later_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-09-01", "observed_at": "2026-09-01"}
+    lineage_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a", "observed_at": "2026-08-31"}
+    assert index.get(same_epoch["assessment_key"], {}).get("number") == 343
+    assert index.get(later_epoch["assessment_key"]) is None
+    assert index.get(lineage_epoch["assessment_key"]) is None
+    assert event_marker(same_epoch) == "<!-- rahp-trigger:dtg:portfolio:material-change-set:2026-08-31@2026-08-31 -->"
+    print("self-test: exact-key coalescing preserves epoch and lineage boundaries")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--events", type=Path, required=True)
+    ap.add_argument("--events", type=Path)
     ap.add_argument(
         "--repository",
         default=CANONICAL_RAHP_ISSUE_REPOSITORY,
         help="RAHP issue repository; non-canonical destinations are rejected",
     )
     ap.add_argument("--result-json", type=Path, help="write created/coalesced issue references")
+    ap.add_argument("--self-test", action="store_true", help="run publisher regression tests and exit")
     args = ap.parse_args()
+    if args.self_test:
+        self_test()
+        return 0
+    if args.events is None:
+        raise SystemExit("--events is required unless --self-test is used")
     try:
         args.repository = enforce_publication_repository(args.repository)
     except ValueError as exc:
