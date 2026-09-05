@@ -1,0 +1,70 @@
+reconciliation:
+  schema: rahp-source-transition-reconciliation/v1
+  id: DTG-371-TRACK-A-WD02-2026-09-06
+  status: bounded-reconciliation
+  parent_issue: 433
+  source_transition_issue: 397
+  historical_assessment: examples/cross-spec/dtg-architecture-convergence/track-a-correlation-scope.yaml
+  repository_boundary: upstream-trustoverip-read-only
+  source_transition:
+    historical:
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 30
+      head_sha: b3840f430f5bd01addab95881350a7f860e763e2
+      authority_status: proposed-upstream
+    adopted:
+      repository: trustoverip/dtgwg-cred-spec
+      pull_request: 30
+      merge_commit: c8ef706b4d407a3a68a26b5fe2ce554c43674683
+      merged_on: '2026-09-05'
+      authority_status: adopted-upstream-main
+    adjacent_adopted_sources:
+      - pull_request: 27
+        merge_commit: 879e7f7598de7e2d6499f3f4c012a2603afd63d7
+      - pull_request: 26
+        merge_commit: b9f678ae20275b0a9b4197c809d42fac13ba447a
+  proposition_reconciliation:
+    - proposition_id: DTG-371-P01
+      classification: confirmed
+      authority_transition: proposed-upstream-to-adopted-upstream-main
+      evidence_action: retain-historical-spec-analysis
+    - proposition_id: DTG-371-P02
+      classification: confirmed-with-residual
+      authority_transition: proposed-upstream-to-adopted-upstream-main
+      evidence_action: specialist-runtime-evidence-still-required
+    - proposition_id: DTG-371-P03
+      classification: confirmed
+      authority_transition: proposed-upstream-to-adopted-upstream-main
+      evidence_action: retain-historical-spec-analysis
+    - proposition_id: DTG-371-P04
+      classification: confirmed-with-residual
+      authority_transition: proposed-upstream-to-adopted-upstream-main
+      evidence_action: implementation-evidence-still-required
+    - proposition_id: DTG-371-P05
+      classification: modified
+      authority_transition: proposed-upstream-open-question-to-adopted-carriage-direction
+      evidence_action: profile-and-implementation-check
+    - proposition_id: DTG-371-P12
+      classification: unaffected
+      evidence_action: no-rerun-from-pr30-merge-alone
+    - proposition_id: DTG-371-P13
+      classification: confirmed-with-residual
+      authority_transition: rahp-inferred-composition-unchanged
+      evidence_action: fresh-dpip-runtime-ab-evidence-required
+    - proposition_id: DTG-371-P10
+      classification: unaffected
+      evidence_action: no-rerun-from-pr30-merge-alone
+    - proposition_id: DTG-371-P14
+      classification: unaffected-with-context-update
+      evidence_action: no-full-rerun-until-vdc-vac-source-transition
+  residual_dependencies:
+    - upstream_issue: trustoverip/dtgwg-cred-spec#38
+      topic: digest-valued-binder-enumerability-and-blinding
+      disposition: tracked-residual-no-local-normative-invention
+  terminal_disposition:
+    result: INDETERMINATE
+    assurance_posture: AMBER
+    reason: >-
+      Specification authority strengthened and declaration-carriage uncertainty narrowed,
+      but runtime A/B privacy evidence and implementation lifecycle evidence remain absent;
+      VDC/VAC are still provisional. Selective reconciliation does not justify automatic GREEN.
