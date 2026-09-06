@@ -1,0 +1,136 @@
+schema: rahp-track-a-current-implementation-evidence-plan/v1
+track: DTG-371-Track-A
+purpose: >-
+  Define the minimum current-implementation evidence wave for the merged WD02
+  correlation-scope propositions. Historical Dogwood observations remain valid
+  historical records but are not admissible as evidence of current OpenVTC behaviour.
+
+normative_baseline:
+  repository: trustoverip/dtgwg-cred-spec
+  correlation_scope_merge:
+    pull_request: 30
+    merge_revision: c8ef706b4d407a3a68a26b5fe2ce554c43674683
+    authority_status: adopted-upstream-main
+
+implementation_baseline:
+  repository: OpenVTC/verifiable-trust-infrastructure
+  selection: current-main
+  revision: e393e38da4941202143e293b555413d8c86ef3b3
+  observed_at: '2026-09-06'
+  latest_published_component_release_observed:
+    tag: vta-service-v0.23.4
+    commit: d294ecb36014d00cf1262a5c732aa47870fc1566
+    published_at: '2026-09-01T14:02:39Z'
+  note: >-
+    Current main is intentionally selected rather than Dogwood or the latest
+    component release because main is 26 commits ahead of vta-service-v0.23.4
+    and includes material post-release implementation changes. Evidence produced
+    by this wave MUST pin the exact implementation revision actually executed.
+
+historical_comparator:
+  name: VTI-Dogwood-RC-1
+  repository: OpenVTC/verifiable-trust-infrastructure
+  revision: cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b
+  admissibility: historical-comparator-only
+  rule: >-
+    Dogwood evidence may inform test-vector selection and regression comparison.
+    It MUST NOT satisfy a current-baseline evidence requirement and MUST NOT be
+    relabelled as evidence of current OpenVTC behaviour.
+
+propositions:
+  - id: DTG-371-P02
+    question: declared correlation scope versus actual disclosure/effective correlation
+    evidence_requirements:
+      - ER-REL-DID-AB
+      - ER-STATUS-AB
+      - ER-TASK-AB
+      - ER-VERIFIER-AB
+  - id: DTG-371-P13
+    question: declared, observable and effective correlation remain distinct and aligned
+    evidence_requirements:
+      - ER-REL-DID-AB
+      - ER-STATUS-AB
+      - ER-TASK-AB
+      - ER-VERIFIER-AB
+  - id: DTG-371-P04
+    question: correlation scope and identifier durability remain independent in implementation
+    evidence_requirements:
+      - ER-REL-DID-AB
+      - ER-VERIFIER-AB
+    note: >-
+      Exercise fresh and durable identifier choices without inferring that
+      durability determines declared correlation scope.
+
+minimum_execution:
+  producer_surface: sankarshanmukhopadhyay/trust-protocol-interop-lab
+  producer_capability: composed-unlinkability-v1
+  target_repository: OpenVTC/verifiable-trust-infrastructure
+  target_revision: e393e38da4941202143e293b555413d8c86ef3b3
+  contexts: 2
+  observer_model: distinct-verifier-contexts
+  required_evidence:
+    ER-REL-DID-AB:
+      observe:
+        - relationship identifier or current semantic equivalent
+        - edge identifier or current semantic equivalent
+        - equivalent relationship binder
+      compare_to_dogwood: true
+    ER-STATUS-AB:
+      observe:
+        - materially executed status handle and endpoint
+        - materially executed policy-discovery handle and endpoint
+      compare_to_dogwood: false
+    ER-TASK-AB:
+      observe:
+        - materially executed Trust Task identifier and thread/context identifier
+        - retained relationship evidence
+        - retained outcome evidence
+      compare_to_dogwood: false
+    ER-VERIFIER-AB:
+      observe:
+        - verifier transcript
+        - challenge
+        - purpose
+        - transaction context
+        - deliberate join attempt
+      compare_to_dogwood: true
+  controls:
+    - preserve a seeded positive-control join so the harness demonstrates detection
+    - distinguish seeded correlation from discovered correlation
+    - record absent versus unexercised surfaces separately
+    - pin all upstream implementation and producer revisions immutably
+
+reuse_judgment:
+  interop_lab_composition_evidence:
+    status: reusable-for-harness-and-test-design
+    limitation: >-
+      Evidence whose implementation_repository is the Interop Lab demonstrates
+      producer/composition behaviour, not behaviour attributable to OpenVTC.
+  dogwood_runtime_evidence:
+    status: historical-regression-comparator
+    limitation: previous-release evidence cannot discharge current implementation obligations
+
+handoff:
+  dpip:
+    action: create-new-pinned-comparable-examination
+    required_ids:
+      - ER-REL-DID-AB
+      - ER-STATUS-AB
+      - ER-TASK-AB
+      - ER-VERIFIER-AB
+    rule: >-
+      DPIP independently decides evidence-class acceptance, applicability,
+      sufficiency and privacy consequence. Missing or unexercised current-target
+      evidence remains INDETERMINATE/evidence-required.
+  rahp:
+    action: reconcile-specialist-return
+    rule: >-
+      No automatic GREEN follows from a successful producer workflow or a
+      no-join observation. Reconcile only the propositions supported by the
+      pinned current-target evidence and DPIP conclusion.
+
+stop_rule: >-
+  Do not generalize the Interop Lab producer or create new framework machinery.
+  Execute only the minimum current-target observations required above; if a
+  surface does not exist or cannot be exercised in current OpenVTC, record that
+  as an implementation/evidence finding rather than synthesizing an equivalent.
