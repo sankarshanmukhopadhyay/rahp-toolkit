@@ -9,7 +9,7 @@ parent: Learn RAHP
 
 RAHP does not treat an assessment as a timeless verdict. Continuous governed assurance preserves what was assessed, what changed, which evidence still carries weight, what must be retested and which authority may disposition resulting obligations.
 
-This page is a map of that lifecycle. The detailed contracts remain in their dedicated pages.
+This page is the canonical map of the post-change lifecycle. Result semantics are owned by [Interpreting results](interpreting-results.md); the detailed lifecycle contracts remain in their dedicated pages.
 
 ## Lifecycle
 
@@ -21,7 +21,7 @@ material target change
   → focused reassessment
   → specialist routing when applicable
   → RAHP reconciliation
-  → PASS | FAIL | NOT_APPLICABLE | INDETERMINATE
+  → terminal assurance outcome
   → durable residual/action
   → citable terminal assurance record
   → separately governed disposition / publication when required
@@ -32,21 +32,7 @@ The controller owns supported lifecycle transitions and terminalization. Governa
 
 The purpose is to avoid two opposite failures: rerunning everything after every change, or allowing old assurance claims to survive after their evidence has become stale.
 
-## Assurance outcomes and residual states
-
-RAHP's current controller outcomes are evidence-conservative:
-
-| Outcome | Meaning |
-|---|---|
-| `PASS` | The assessed proposition is supported within the recorded scope and evidence boundary. |
-| `FAIL` | Evidence supports a material adverse finding or failed proposition. |
-| `NOT_APPLICABLE` | The proposition or specialist path does not apply to the assessed subject/scope. |
-| `INDETERMINATE/evidence-required` | The required evidence is absent or insufficient; missing evidence never becomes PASS. |
-| `INDETERMINATE/model-gap` | The current model cannot safely classify or resolve the observed surface. |
-
-Deployment posture may additionally describe retained conditions such as findings, controlled risks, evidence gaps, remediation obligations or unassessed surfaces. Those posture labels are projections over evidence and terminal records, not substitutes for the controller's canonical terminal outcome.
-
-**Zero findings is not equivalent to assured.** A successful workflow is likewise not an assurance conclusion. Workflow execution may be green while the terminal assurance record is adverse or indeterminate. `INDETERMINATE` is never silently converted to PASS. See [Assurance evaluation](assurance-evaluation.md) and [Interpreting results](interpreting-results.md).
+For the meanings of controller outcomes, evaluation residuals and posture projections—and why workflow success or zero findings is not assurance—use [Interpreting results](interpreting-results.md). [Assurance evaluation](assurance-evaluation.md) defines the portable evidence-rich evaluation object.
 
 ## 1. Determine what changed
 
@@ -99,14 +85,6 @@ python3 tools/assurance_posture.py \
 
 ## How this relates to one-time pressure testing
 
-A normal pressure test answers what the evidence supports at a pinned target revision. Continuous assurance adds the machinery for what happens **afterward**:
-
-- target changes;
-- source corpora are re-baselined;
-- controls are implemented;
-- evidence expires or becomes unavailable;
-- findings are challenged;
-- remediation is completed; or
-- a governance authority changes the disposition.
+A normal pressure test answers what the evidence supports at a pinned target revision. Continuous assurance adds the machinery for what happens **afterward**: target or corpus changes, control implementation, evidence expiry, challenges, remediation, and governed disposition changes.
 
 The original evidence remains part of lineage; the current posture is a new evidence-backed state, not a rewritten history.
