@@ -1,0 +1,78 @@
+reconciliation:
+  schema: rahp-current-implementation-reconciliation/v1
+  id: DTG-371-TRACK-A-CURRENT-OPENVTC-2026-09-06
+  status: bounded-reconciliation
+  source_transition_issue: 397
+  normative_baseline:
+    repository: trustoverip/dtgwg-cred-spec
+    pull_request: 30
+    merge_commit: c8ef706b4d407a3a68a26b5fe2ce554c43674683
+    authority_status: adopted-upstream-main
+  implementation_evidence:
+    repository: OpenVTC/verifiable-trust-infrastructure
+    revision: e393e38da4941202143e293b555413d8c86ef3b3
+    producer_repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+    producer_commit: 2deac6073ed40a9910ac3bdfff3fbfe18cc9deb4
+    workflow_run: 34028158162
+    artifact_id: 9987775337
+    artifact_digest: sha256:c2ef32c1ea4ca46ae6df1cbe63db0c8f86693dce231bf8696ae9303855d1fbd5
+    evidence_class: runtime-upstream-observation
+    dogwood_role: historical-regression-comparator-only
+  observed_surfaces:
+    ER-REL-DID-AB:
+      disposition: materially-exercised
+      equivalent_relationship_binder: fresh
+      relationship_did: absent-on-executed-path
+      edge_identifier: absent-on-executed-path
+    ER-VERIFIER-AB:
+      disposition: materially-exercised
+      verifier_transcript: fresh
+      challenge: fresh
+      purpose: fresh
+      transaction_context: fresh
+      deliberate_join_result: not-detected
+    ER-STATUS-AB:
+      disposition: not-evidenced
+      execution: not-executed
+    ER-TASK-AB:
+      disposition: not-evidenced
+      execution: not-executed
+    ER-CREDENTIAL-ID-AB:
+      disposition: partially-evidenced
+      note: verifier transcript executed; credential, presentation, proof/request and status identifier surfaces not executed
+  specialist_return:
+    repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+    pull_request: 209
+    merge_commit: 49060d7ddbd83020568a2d83a694392e8b305819
+    result: INDETERMINATE
+    reason: evidence-required
+  proposition_reconciliation:
+    - proposition_id: DTG-371-P02
+      classification: current-runtime-evidence-partial
+      evidence_action: retain-evidence-required-for-status-task-and-credential-surfaces
+    - proposition_id: DTG-371-P04
+      classification: current-runtime-evidence-supportive-but-bounded
+      evidence_action: fresh-binder-observation-does-not-establish-universal-scope-durability-behaviour
+    - proposition_id: DTG-371-P13
+      classification: current-runtime-evidence-partial
+      evidence_action: effective-correlation-claim-remains-incomplete
+  terminal_disposition:
+    result: INDETERMINATE
+    assurance_posture: AMBER
+    reason: >-
+      Current source-pinned OpenVTC evidence materially improves the Track A record:
+      the executed relationship/verifier path used fresh binders and no deliberate
+      cross-context join was detected. However status/policy-discovery, Trust Task
+      retention and most credential identifier surfaces were not executed. DPIP
+      therefore returns INDETERMINATE/evidence-required, and RAHP does not promote
+      a successful workflow or bounded no-join observation to GREEN.
+  remaining_work:
+    scope: bounded-missing-runtime-surfaces-only
+    requirements:
+      - ER-STATUS-AB
+      - ER-TASK-AB
+      - ER-CREDENTIAL-ID-AB
+    rule: >-
+      Exercise only surfaces genuinely available in the current implementation or
+      composition. If a surface is unavailable, record that implementation finding;
+      do not synthesize a substitute or expand the evidence framework.
