@@ -7,6 +7,7 @@
     {"version":"v1.8.0","codename":"Common Map","status":"published"},
     {"version":"v1.9.0","codename":"Lesser Mime","status":"published"},
     {"version":"v2.0.0","codename":"Blue Mormon","status":"published"},
-    {"version":"v2.1.0","codename":"Common Acacia Blue","status":"candidate"}
+    {"version":"v2.1.0","codename":"Common Acacia Blue","status":"published"},
+    {"version":"v2.2.0","codename":"Common Four-ring","status":"candidate"}
   ]
 }

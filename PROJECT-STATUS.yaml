@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 2.1.0
-development_target: 2.1.0
+stable_release: 2.2.0
+development_target: 2.2.0
 release_status: released
 qualification_status: qualified
-qualification_contract: method/v2.1-release-qualification.yaml
+qualification_contract: method/v2.2-release-qualification.yaml
 release_name:
-  common_name: Common Acacia Blue
-  scientific_name: Surendra quercetorum
+  common_name: Common Four-ring
+  scientific_name: Ypthima huebneri
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-08-31'
+  selected_on: '2026-09-07'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -29,9 +29,8 @@ release_naming:
   selection: random-at-release-time
   candidate_rule: governed-random-unused-candidate
 release_intent: >-
-  v2.1.0 Qualified Autonomous Assurance Plane packages the post-#311 canonical
-  machine-owned assurance lifecycle, multi-granularity subject model, autonomous
-  controller, watchdog, citable human+machine terminal records, durable specialist
-  return semantics, engine-owned clean-room execution and multi-target zero-touch
-  qualification. Valid autonomous outcomes include adverse and indeterminate states;
-  missing evidence never becomes PASS and component PASS never implies composition PASS.
+  v2.2.0 Evidence Production and Realization Assurance packages semantic assurance
+  obligations, deterministic evidence-producer ownership and dispatch, provenance
+  routing, bounded assurance invariants, current-portfolio clean-room execution and
+  explicit normative-versus-realization separation. The DTG current-portfolio AMBER
+  result is qualification evidence, not a claim that the consumer portfolio is GREEN.

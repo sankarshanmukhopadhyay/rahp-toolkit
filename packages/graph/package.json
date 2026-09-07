@@ -1,1 +1,1 @@
-{"name":"@rahp/graph","version":"2.1.0","type":"module","main":"dist/index.js","types":"dist/index.d.ts","scripts":{"build":"tsc -p tsconfig.json"},"dependencies":{}}
+{"name":"@rahp/graph","version":"2.2.0","type":"module","main":"dist/index.js","types":"dist/index.d.ts","scripts":{"build":"tsc -p tsconfig.json"},"dependencies":{}}
