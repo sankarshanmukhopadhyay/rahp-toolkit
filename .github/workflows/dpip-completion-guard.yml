@@ -1,0 +1,45 @@
+name: Guard DPIP completion labels on live obligations
+
+on:
+  pull_request:
+    paths:
+      - tools/dpip_completion_guard.py
+      - tools/evidence_producer_controller.py
+      - .github/workflows/dpip-completion-guard.yml
+  push:
+    branches: [main]
+    paths:
+      - tools/dpip_completion_guard.py
+      - tools/evidence_producer_controller.py
+      - .github/workflows/dpip-completion-guard.yml
+  schedule:
+    - cron: '53 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: rahp-dpip-completion-guard-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Test completion-label invariant
+        run: python3 tools/dpip_completion_guard.py --self-test
+      - name: Reconcile stale completion labels
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
+        run: python3 tools/dpip_completion_guard.py
