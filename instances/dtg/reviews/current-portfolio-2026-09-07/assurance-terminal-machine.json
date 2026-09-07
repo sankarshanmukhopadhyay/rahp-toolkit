@@ -1,0 +1,99 @@
+{
+  "schema": "rahp-assurance-run-state/v1",
+  "assessment_id": "rahp:6b0ca36772a0184645c5",
+  "correlation_key": "dtg-current-portfolio-2026-09-07",
+  "subject": {
+    "type": "portfolio-composition",
+    "id": "DTG-VTC-CURRENT-PORTFOLIO-2026-09-07",
+    "components": [
+      "DTG Credential Specification",
+      "DTG Trust Tasks",
+      "OpenVTC VTI",
+      "OpenVTC dtg-credentials",
+      "DPIP",
+      "Interop Lab"
+    ]
+  },
+  "source_pins": [
+    {"repository": "OpenVTC/verifiable-trust-infrastructure", "revision": "3f21929ae5ce870f7c17726120d4aa1c1acbf13c"},
+    {"repository": "trustoverip/dtgwg-cred-spec", "revision": "37074bdcd861c51f3e5b7868ce700832b17b73ce"},
+    {"repository": "trustoverip/dtgwg-trust-tasks-tf", "revision": "84a4329a5f797dec9d240c83ab5d564c120dde8f"},
+    {"repository": "OpenVTC/dtg-credentials", "revision": "5cb04fab2d9272ee891b352a4886343ccc86b52b"},
+    {"repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile", "revision": "49060d7ddbd83020568a2d83a694392e8b305819"},
+    {"repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab", "revision": "52dbb22479a05554e7fa2745362b22c01f714095"}
+  ],
+  "scope": "Current DTG normative stack and current OpenVTC realization, reconciled with source-compatible privacy and executable composition evidence.",
+  "non_scope": "Production deployment certification, unpinned future upstream work, and claims about implementation paths not represented by the immutable source set.",
+  "personas": ["principal", "delegate or agent", "verifier", "service operator"],
+  "scenarios": [
+    "A consequential action is attempted through a DTG credential and Trust Task composition.",
+    "A holder or delegate crosses relying contexts and correlation surfaces are examined.",
+    "A verifier relies on current authority, delegation, task semantics and implementation behavior."
+  ],
+  "risks": [
+    "delegation being mistaken for authority",
+    "stale or over-broad authority surviving lifecycle change",
+    "capability or key possession being mistaken for permission to act",
+    "replay or invocation mismatch producing unintended actuation",
+    "cross-context correlation through identifiers, status, policy or retained evidence",
+    "normative and implementation versions diverging while appearing aligned"
+  ],
+  "harms": [
+    "unauthorized consequential action",
+    "loss of confidentiality or unlinkability",
+    "incorrect attribution of delegated action",
+    "false assurance caused by implementation/specification drift"
+  ],
+  "assurance_propositions": [
+    "delegation cannot substitute for current authority and authority cannot substitute for representation",
+    "current implementation materially conforms to adopted VDC semantics where it claims support",
+    "Trust Task authorization and invocation boundaries do not enlarge credential authority",
+    "replay/idempotency behavior does not create a second authorization path",
+    "presenter, subject and relationship bindings are preserved across the composed path",
+    "correlation scope and disclosure behavior do not create unnecessary durable cross-context joins",
+    "status/policy discovery and retained task evidence do not silently become correlation surfaces",
+    "capability, key possession and authority remain non-collapsible at consequential actuation boundaries",
+    "Trust Tasks and Credential Specification compose without introducing a semantic authority gap",
+    "the current OpenVTC realization is distinguishable from the normative baseline wherever it is divergent or incomplete"
+  ],
+  "requirements_examined": [
+    "ER-VDC-VAC-NON-SUBSTITUTION",
+    "current VDC realization support",
+    "credential-to-Trust-Task actuation and replay evidence",
+    "effective-correlation runtime evidence"
+  ],
+  "cross_spec_assumptions": [],
+  "evidence": [
+    {
+      "requirement_id": "ER-VDC-VAC-NON-SUBSTITUTION",
+      "class": "runtime-observation",
+      "result": "SATISFIED",
+      "attempt_state": "EXECUTED",
+      "surface_classifications": ["verified"],
+      "provenance": {
+        "producer": "vdc-vac-non-substitution",
+        "producer_revision": "52dbb22479a05554e7fa2745362b22c01f714095",
+        "attribution": "composition-runtime:Interop-Lab",
+        "evidence_file": "output/vdc-vac-non-substitution.json"
+      }
+    }
+  ],
+  "tests": ["DTG VDC × VAC semantic non-substitution negative vectors"],
+  "inference": "The current portfolio has bounded executable assurance but lacks enough current realization/runtime evidence to defend end-to-end GREEN, especially for merged VDC conformance, credential-to-task actuation/replay, and effective-correlation surfaces.",
+  "confidence": "bounded by named evidence and assessor result",
+  "boundedness": "Conclusion applies only to the configured subject, immutable pins and evidence classes represented in this run.",
+  "state": "TERMINAL_INDETERMINATE_EVIDENCE_REQUIRED",
+  "terminal": true,
+  "outcome": "INDETERMINATE",
+  "reason_code": "portfolio-evidence-required",
+  "residuals": [
+    {"id": "rahp:6b0ca36772a0184645c5:residual", "summary": "The current portfolio has bounded executable assurance but lacks enough current realization/runtime evidence to defend end-to-end GREEN, especially for merged VDC conformance, credential-to-task actuation/replay, and effective-correlation surfaces."}
+  ],
+  "actions": [
+    {"surface": "assurance-model", "action": "Resolve the evidence-required and implementation-divergence propositions emitted by the portfolio matrix.", "acceptance_criterion": "A new immutable comparable run removes each residual by attributable implementation or runtime evidence, or records a durable external blocker."}
+  ],
+  "harm_traceability": [
+    {"persona": "principal", "scenario": "delegate attempts a consequential action", "harm": "unauthorized consequential action", "proposition": "delegation and authority remain non-substitutable", "control": "simultaneous current delegation, authority, eligibility and invocation checks", "conclusion": "PASS", "evidence": "ER-VDC-VAC-NON-SUBSTITUTION"}
+  ],
+  "lineage": {"clean_room": true, "historical_inputs_used": false, "run": {"issue": 446, "lineage_prefix": "dtg-current-portfolio-2026-09-07", "instance": "dtg", "snapshot": "2026-09-07"}}
+}
