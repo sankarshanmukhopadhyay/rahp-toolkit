@@ -41,8 +41,8 @@ jobs:
         profile: ${{ fromJSON(github.event_name == 'pull_request' && '["full-validation","cross-spec-dtg-tt-credspec","cross-spec-dtg-full"]' || format('["{0}"]', inputs.profile)) }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
           cache: pip
@@ -76,7 +76,7 @@ jobs:
               print(f"| {c['seconds']:.3f} | {c['exit_code']} | `{c['command']}` |")
           PY
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: rahp-execution-benchmark-${{ matrix.profile }}

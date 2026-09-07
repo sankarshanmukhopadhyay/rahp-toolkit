@@ -20,8 +20,8 @@ jobs:
   review:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
@@ -30,7 +30,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 tools/corpus_review.py "${{ inputs.corpus_id }}" --output build/corpus-review.md
       - run: cat build/corpus-review.md >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: corpus-review-${{ inputs.corpus_id }}
           path: build/corpus-review.md
