@@ -132,7 +132,7 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v2.2.0 packages semantic assurance obligations, evidence-producer control and provenance routing, bounded assurance invariants, current-portfolio clean-room execution and explicit normative-versus-realization separation. Historical v2.1.0 **Common Acacia Blue** remains the immutable Qualified Autonomous Assurance Plane release. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization release.
+v2.2.0 packages semantic assurance obligations, evidence-producer control and provenance routing, bounded assurance invariants, current-portfolio clean-room execution and explicit normative-versus-realization separation. Historical v2.1.0 **Common Acacia Blue** remains the immutable Qualified Autonomous Assurance Plane release. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization release. Historical v1.7.0 **Common Palmfly** remains the immutable Assurance Operations and Complete DTG Cross-Spec Coverage release record. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record.
 
 Useful release surfaces:
 
