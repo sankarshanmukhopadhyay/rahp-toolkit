@@ -88,6 +88,12 @@
       "Trust Tasks and Credential Specification compose without introducing a semantic authority gap",
       "the current OpenVTC realization is distinguishable from the normative baseline wherever it is divergent or incomplete"
     ],
+    "requirements_examined": [
+      "ER-VDC-VAC-NON-SUBSTITUTION",
+      "current VDC realization support",
+      "credential-to-Trust-Task actuation and replay evidence",
+      "effective-correlation runtime evidence"
+    ],
     "required_evidence": ["ER-VDC-VAC-NON-SUBSTITUTION"],
     "tests": ["DTG VDC × VAC semantic non-substitution negative vectors"],
     "harm_traceability": [
@@ -96,7 +102,8 @@
         "scenario": "delegate attempts a consequential action",
         "harm": "unauthorized consequential action",
         "proposition": "delegation and authority remain non-substitutable",
-        "control": "simultaneous current delegation, authority, eligibility and invocation checks"
+        "control": "simultaneous current delegation, authority, eligibility and invocation checks",
+        "conclusion": "PASS"
       }
     ],
     "actions": [
