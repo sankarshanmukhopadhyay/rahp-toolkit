@@ -101,7 +101,7 @@
     ],
     "actions": [
       {
-        "surface": "portfolio-assurance",
+        "surface": "assurance-model",
         "action": "Resolve the evidence-required and implementation-divergence propositions emitted by the portfolio matrix.",
         "acceptance_criterion": "A new immutable comparable run removes each residual by attributable implementation or runtime evidence, or records a durable external blocker."
       }
