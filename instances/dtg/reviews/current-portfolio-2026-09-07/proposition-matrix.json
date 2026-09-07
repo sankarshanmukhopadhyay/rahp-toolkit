@@ -1,0 +1,42 @@
+{
+  "schema": "rahp-dtg-current-portfolio-matrix/v1",
+  "assessment_epoch": "2026-09-07",
+  "subject": {
+    "type": "portfolio-composition",
+    "id": "DTG-VTC-CURRENT-PORTFOLIO-2026-09-07",
+    "components": ["DTG Credential Specification", "DTG Trust Tasks", "OpenVTC VTI", "OpenVTC dtg-credentials", "DPIP", "Interop Lab"]
+  },
+  "source_pins": {
+    "target": {"repository": "OpenVTC/verifiable-trust-infrastructure", "revision": "3f21929ae5ce870f7c17726120d4aa1c1acbf13c"},
+    "credential_spec": {"repository": "trustoverip/dtgwg-cred-spec", "revision": "37074bdcd861c51f3e5b7868ce700832b17b73ce"},
+    "trust_tasks": {"repository": "trustoverip/dtgwg-trust-tasks-tf", "revision": "84a4329a5f797dec9d240c83ab5d564c120dde8f"},
+    "dtg_credentials": {"repository": "OpenVTC/dtg-credentials", "revision": "5cb04fab2d9272ee891b352a4886343ccc86b52b"},
+    "dpip": {"repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile", "revision": "49060d7ddbd83020568a2d83a694392e8b305819"},
+    "interop": {"repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab", "revision": "52dbb22479a05554e7fa2745362b22c01f714095"}
+  },
+  "propositions": [
+    {"id": "P01", "proposition": "delegation cannot substitute for current authority and authority cannot substitute for representation", "judgment": "PASS", "evidence_state": "verified", "rationale": "The pinned Interop Lab negative vectors execute both substitution directions and all expected deny/allow outcomes match.", "implementation_state": "supported"},
+    {"id": "P02", "proposition": "current implementation materially conforms to adopted VDC semantics where it claims support", "judgment": "INDETERMINATE", "evidence_state": "partially_verified", "rationale": "The current dtg-credentials tree exposes a VDC constructor, but the assessor does not find the merged delegation.scope and delegation.accepts surfaces required by adopted #19. This is implementation-version divergence, not a defect in the specification.", "implementation_state": "divergent"},
+    {"id": "P03", "proposition": "Trust Task authorization and invocation boundaries do not enlarge credential authority", "judgment": "INDETERMINATE", "evidence_state": "execution_evidence_pending", "rationale": "Current normative and implementation sources are pinned, but this clean run has no current end-to-end actuation trace proving the credential-to-task authorization boundary.", "implementation_state": "not-observable"},
+    {"id": "P04", "proposition": "replay/idempotency behavior does not create a second authorization path", "judgment": "INDETERMINATE", "evidence_state": "execution_evidence_pending", "rationale": "Trust Tasks defines replay/idempotency semantics, but the portfolio run lacks a current cross-layer replay trace through the consuming OpenVTC path.", "implementation_state": "not-observable"},
+    {"id": "P05", "proposition": "presenter, subject and relationship bindings are preserved across the composed path", "judgment": "INDETERMINATE", "evidence_state": "partially_verified", "rationale": "Existing source-compatible evidence is bounded to selected paths; this run does not establish preservation across all current credential/task compositions.", "implementation_state": "not-observable"},
+    {"id": "P06", "proposition": "correlation scope and disclosure behavior do not create unnecessary durable cross-context joins", "judgment": "INDETERMINATE", "evidence_state": "execution_evidence_pending", "rationale": "The pinned DPIP source continues to record evidence-required privacy disposition; successful bounded no-join observations are insufficient for portfolio-wide effective-correlation PASS.", "implementation_state": "not-observable"},
+    {"id": "P07", "proposition": "status/policy discovery and retained task evidence do not silently become correlation surfaces", "judgment": "INDETERMINATE", "evidence_state": "execution_evidence_pending", "rationale": "Current-source A/B execution for status/policy discovery and retained Trust Task evidence is not supplied by this run.", "implementation_state": "not-observable"},
+    {"id": "P08", "proposition": "capability, key possession and authority remain non-collapsible at consequential actuation boundaries", "judgment": "INDETERMINATE", "evidence_state": "partially_verified", "rationale": "Current Trust Tasks/VTI sources contain increasingly explicit capability separation, but source structure alone cannot prove consequential actuation non-collapsibility end to end.", "implementation_state": "not-observable"},
+    {"id": "P09", "proposition": "Trust Tasks and Credential Specification compose without introducing a semantic authority gap", "judgment": "INDETERMINATE", "evidence_state": "partially_verified", "rationale": "Semantic non-substitution is proven, but current invocation, lifecycle, replay and implementation-conformance evidence is incomplete for the full composition.", "implementation_state": "not-observable"},
+    {"id": "P10", "proposition": "the current OpenVTC realization is distinguishable from the normative baseline wherever it is divergent or incomplete", "judgment": "PASS", "evidence_state": "verified", "rationale": "The clean run keeps normative Credential Spec and Trust Tasks pins separate from VTI and dtg-credentials realization pins and records implementation divergence instead of collapsing it into normative PASS.", "implementation_state": "supported"}
+  ],
+  "summary": {
+    "pass": 2,
+    "fail": 0,
+    "indeterminate": 8,
+    "not_applicable": 0,
+    "portfolio_posture": "AMBER",
+    "reason": "The portfolio proves bounded delegation/authority non-substitution and explicit spec/implementation separation, but current implementation conformance, actuation, replay and privacy evidence remain incomplete."
+  },
+  "residuals": [
+    {"owner": "OpenVTC implementation / future retest", "surface": "VDC merged #19 realization", "condition": "Current implementation exposes the adopted VDC scope, acceptance, lifecycle and binding contract."},
+    {"owner": "Interop Lab", "surface": "credential-to-Trust-Task actuation", "condition": "A current source-pinned consuming path can execute negative authority/invocation/replay vectors."},
+    {"owner": "DPIP + Interop Lab", "surface": "effective correlation", "condition": "Current A/B evidence exercises status/policy, retained task evidence and credential-carriage surfaces where implemented."}
+  ]
+}
