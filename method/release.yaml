@@ -1,22 +1,22 @@
 version: 1
 contract: rahp-release-declaration-v1
 release:
-  version: 2.1.0
-  tag: v2.1.0
+  version: 2.2.0
+  tag: v2.2.0
   status: released
   qualification_status: qualified
-  title: RAHP Toolkit v2.1.0 — Common Acacia Blue
-  theme: Qualified Autonomous Assurance Plane
+  title: RAHP Toolkit v2.2.0 — Common Four-ring
+  theme: Evidence Production and Realization Assurance
   name:
-    common: Common Acacia Blue
-    scientific: Surendra quercetorum
+    common: Common Four-ring
+    scientific: Ypthima huebneri
     source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-    selected_on: '2026-08-31'
+    selected_on: '2026-09-07'
   qualification:
-    manifest: method/v2.1-release-qualification.yaml
-    validator: tools/validate_v21_release.py
+    manifest: method/v2.2-release-qualification.yaml
+    validator: tools/validate_v22_release.py
     checks: [tools/validate_scenario_corpora.py, tools/validate_pressure_tests.py, tools/validate_engine_contract.py, tools/validate_security_reviews.py, tools/validate_combined_reviews.py, tools/validate_assessment_queue.py, tools/validate_workflow_governance.py]
-  notes: {path: docs/releases/v2.1.0.md}
+  notes: {path: docs/releases/v2.2.0.md}
   compatibility: {engine_contract: rahp-engine-contract-v1, normalized_result_schema: 1, evidence_retention_contract: rahp-evidence-retention-v1}
 publication:
   workflow: .github/workflows/release.yml

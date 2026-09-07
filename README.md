@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.1.0 (stable) · Common Acacia Blue · CC-BY 4.0
+Release v2.2.0 (stable) · Common Four-ring · CC-BY 4.0
 
 RAHP Toolkit helps teams determine whether a trust system actually deserves confidence.
 
@@ -25,7 +25,7 @@ The result is not merely a list of findings. RAHP produces a citable assurance r
 
 RAHP is deliberately evidence-conservative: **missing evidence never becomes PASS**. Workflow success is not assurance success. A component PASS never automatically implies a composition PASS.
 
-> **Bounded product claim:** RAHP is qualified, within the tested contract and subject boundaries, as a zero-touch autonomous assurance monitoring plane that can fail closed into citable, actionable terminal assurance states without operator lifecycle shepherding.
+> **Bounded product claim:** RAHP is qualified, within the tested contract and subject boundaries, as an autonomous assurance plane that can turn evidence/model/remediation gaps into attributable obligations and evidence-production paths while preserving fail-closed terminal semantics and explicit realization/runtime uncertainty.
 
 This does not mean every assessment is GREEN, and it is not a claim of universal or production-wide assurance. Trustworthy autonomous termination includes adverse and indeterminate outcomes.
 
@@ -50,6 +50,7 @@ subject/change observation
   → bounded RAHP assessment
   → specialist routing when applicable
   → specialist examination + durable return
+  → assurance obligation / evidence production when required
   → RAHP reconciliation
   → residual/action
   → citable terminal assurance record
@@ -64,12 +65,16 @@ Current capabilities include:
 - deterministic assessment identity, replay/idempotency and new-pin reassessment lineage;
 - engine-owned clean-room isolation and terminal execution;
 - target-agnostic autonomous assessment control;
+- semantic `rahp-assurance-obligation/v1` identity for evidence/model/remediation residuals;
+- registered evidence-producer ownership, scheduling and provenance routing;
 - versioned portable specialist contracts, including `rahp-assessor-result/v1`;
 - durable retryable specialist-return/outbox semantics with compatible specialists;
 - watchdog detection of stranded transient states;
 - explicit PASS, FAIL, NOT_APPLICABLE, INDETERMINATE/evidence-required and INDETERMINATE/model-gap outcomes;
 - citable materially equivalent machine-readable and human-readable terminal records;
 - evidence-class integrity across static specification evidence, fixtures/synthetic tests, runtime observations and governance evidence;
+- explicit normative-baseline versus implementation/realization separation;
+- bounded assurance invariants across authority/actor dependency, evidence topology and human choice;
 - action-target precision across specification, composition/profile, implementation, evidence/test, deployment/operator, governance/redress and consumer-experience surfaces;
 - human-harm traceability from persona/scenario through harm/risk, proposition, control/guardrail, evidence, inference and recommendation;
 - source-pinned corpora, cross-specification scenarios and bounded source/specification assertion adapters;
@@ -77,9 +82,9 @@ Current capabilities include:
 
 ## Current architecture
 
-The post-v2.0 architecture was qualified through #311/#318 and PR #319 across materially different A2A, CAWG/C2PA and DTG subjects. The clean-room qualification exercised standalone specification, cross-specification, implementation/source-code and composition subjects; no-specialist and specialist terminal paths; NOT_APPLICABLE and INDETERMINATE outcomes; model gaps; replay identity; new-pin reassessment lineage; durable outbox state; deliberately injected cross-repository transport failure and automatic recovery.
+v2.2.0 builds on the v2.1.0 autonomous lifecycle by making evidence-production obligations and realization evidence first-class. The current-portfolio clean-room #446 / PR #447 demonstrates that bounded executable propositions can PASS while implementation, actuation, replay and privacy propositions remain explicitly INDETERMINATE when current evidence is absent.
 
-Qualification run `33350790322` completed with **zero operator actions after the trigger and zero stranded runs**. Durable evidence is committed at `clean-room/qualification/evidence-33350790322.json`; the human report is `docs/zero-touch-qualification-2026-08-31.md`.
+The source-pinned current-portfolio run `34073261344` produced assessment `rahp:6b0ca36772a0184645c5` and a durable AMBER terminal record under `instances/dtg/reviews/current-portfolio-2026-09-07/`. This consumer result is qualification evidence for RAHP's inference discipline; it is not a claim that the DTG/OpenVTC portfolio is GREEN.
 
 For the conceptual model, including the distinction between the assurance method and the assurance execution plane, see [How RAHP works](docs/how-rahp-works.md).
 
@@ -107,17 +112,17 @@ For a guided first run, use [Getting started](docs/getting-started.md). For the 
 | Understand continuous reassessment | [Continuous assurance](docs/continuous-assurance.md) |
 | Adopt RAHP for another project | [Adopting RAHP](ADOPTION.md) and [Configuration](docs/configuration.md) |
 | Develop or integrate the toolkit | [Developer guide](docs/developer-guide.md) |
-| Review zero-touch qualification | [Qualification report](docs/zero-touch-qualification-2026-08-31.md) |
+| Review v2.2 release qualification | [v2.2.0 release notes](docs/releases/v2.2.0.md) |
 
 ## Scenario and assurance coverage
 
-The reusable catalogue under `method/catalogue/` contains portable assurance patterns across harms, risks, controls, guardrails, assurance tests and evidence patterns. Packaged scenario adapters include DTG, CAWG/C2PA and other interface/composition cases, including the seven-row adversarial false-independence corpus. Apparent multiplicity, depth, threshold satisfaction, actor distinctness or artifact validity must not automatically be upgraded into evidence independence or completeness.
+The reusable catalogue under `method/catalogue/` contains portable assurance patterns across harms, risks, controls, guardrails, assurance tests and evidence patterns. Packaged scenario adapters include DTG, CAWG/C2PA and other interface/composition cases, including adversarial false-independence and authority/composition cases. Apparent multiplicity, depth, threshold satisfaction, actor distinctness or artifact validity must not automatically be upgraded into evidence independence or completeness.
 
 See [Scenario corpora](docs/scenario-corpora.md) and [Cross-spec pressure testing](docs/cross-spec-pressure-testing.md).
 
 ## Current release
 
-v2.1.0 **Common Acacia Blue** (*Surendra quercetorum*) is the stable **Qualified Autonomous Assurance Plane** release.
+v2.2.0 **Common Four-ring** (*Ypthima huebneri*) is the stable **Evidence Production and Realization Assurance** release.
 
 The release is additive at the product level and preserves the existing compatibility authorities:
 
@@ -127,12 +132,12 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-v2.1.0 packages the post-#311 canonical assurance FSM, autonomous controller, watchdog, terminal assurance records, multi-subject clean-room execution, source/spec assertion adapters and the multi-target zero-touch qualification evidence. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization record. Historical v1.7.0 **Common Palmfly** remains the immutable Assurance Operations and Complete DTG Cross-Spec Coverage release record. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release record.
+v2.2.0 packages semantic assurance obligations, evidence-producer control and provenance routing, bounded assurance invariants, current-portfolio clean-room execution and explicit normative-versus-realization separation. Historical v2.1.0 **Common Acacia Blue** remains the immutable Qualified Autonomous Assurance Plane release. Historical v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization release.
 
 Useful release surfaces:
 
-- [v2.1.0 release notes](docs/releases/v2.1.0.md)
-- [v2.1 qualification contract](method/v2.1-release-qualification.yaml)
+- [v2.2.0 release notes](docs/releases/v2.2.0.md)
+- [v2.2 qualification contract](method/v2.2-release-qualification.yaml)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
 - [Release history](CHANGELOG.md)
