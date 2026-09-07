@@ -46,4 +46,4 @@ First-class capabilities now include:
 
 ## Historical roadmap
 
-v2.1.0 **Common Acacia Blue** remains the immutable Qualified Autonomous Assurance Plane boundary. v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization boundary. Historical release notes and qualification records remain evidence rather than being rewritten into the current roadmap.
+v2.1.0 **Common Acacia Blue** remains the immutable Qualified Autonomous Assurance Plane boundary. v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization boundary. Historical v1.7.0 **Common Palmfly** remains the immutable Assurance Operations and Complete DTG Cross-Spec Coverage release boundary. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release boundary. Historical release notes and qualification records remain evidence rather than being rewritten into the current roadmap.
