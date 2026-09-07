@@ -120,7 +120,14 @@
         "cwd": "interop",
         "revision": "52dbb22479a05554e7fa2745362b22c01f714095",
         "attribution": "composition-runtime:Interop-Lab",
-        "command": "python experiments/dtg-vdc-vac-composition/run.py > ../output/vdc-vac-non-substitution.json"
+        "command": [
+          "python",
+          "../rahp/tools/vdc_vac_evidence_adapter.py",
+          "--interop-root",
+          ".",
+          "--output",
+          "../output/vdc-vac-non-substitution.json"
+        ]
       }
     },
     "requirements": [
