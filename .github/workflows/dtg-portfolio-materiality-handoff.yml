@@ -14,6 +14,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/dtg-portfolio-materiality-handoff.yml'
+      - 'tools/fetch_dtg_portfolio_snapshot.py'
       - 'tools/dtg_portfolio_routing.py'
       - 'instances/dtg/assurance-routing.yaml'
       - 'instances/dtg/finding-normalization.yaml'
@@ -41,34 +42,15 @@ jobs:
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
 
-      - name: Fetch current Portfolio Monitor snapshot
+      - name: Validate Portfolio Monitor snapshot fetch contract
+        run: python3 tools/fetch_dtg_portfolio_snapshot.py --self-test
+
+      - name: Fetch newest recent Portfolio Monitor snapshot
         id: snapshot
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import json, os, pathlib, urllib.error, urllib.request
-          from datetime import datetime, timezone
-          day = datetime.now(timezone.utc).date().isoformat()
-          year, month, date = day.split('-')
-          url = ('https://raw.githubusercontent.com/sankarshanmukhopadhyay/'
-                 f'dtg-portfolio-monitor/main/data/findings/{year}/{month}/{date}.json')
-          try:
-              with urllib.request.urlopen(url, timeout=30) as response:
-                  findings = json.load(response)
-          except urllib.error.HTTPError as exc:
-              if exc.code == 404:
-                  raise SystemExit(f'Expected Portfolio Monitor snapshot is missing: {url}') from exc
-              raise
-          if not isinstance(findings, list):
-              raise SystemExit('Portfolio Monitor findings snapshot must be a JSON array')
-          build = pathlib.Path('build/dtg-routing')
-          build.mkdir(parents=True, exist_ok=True)
-          (build / 'findings.json').write_text(json.dumps(findings, indent=2) + '\n', encoding='utf-8')
-          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
-              out.write(f'date={day}\n')
-              out.write(f'url={url}\n')
-          print(f'Fetched {len(findings)} findings from {url}')
-          PY
+        run: >-
+          python3 tools/fetch_dtg_portfolio_snapshot.py
+          --lookback-days 2
+          --output build/dtg-routing/findings.json
 
       - name: Validate and execute machine-readable assurance routing
         run: |
@@ -115,7 +97,7 @@ jobs:
               f'<!-- rahp-portfolio-snapshot:{day} -->',
               '<!-- dtg-routing-policy:v3-semantic -->',
               '',
-              'RAHP consumed the current Portfolio Monitor snapshot, normalized source findings through the DTG instance adapter, and applied semantic assurance routing.',
+              'RAHP consumed the newest recent Portfolio Monitor snapshot, normalized source findings through the DTG instance adapter, and applied semantic assurance routing.',
               '',
               '## Proposition',
               '',
@@ -230,6 +212,7 @@ jobs:
         run: |
           echo '## DTG Portfolio Monitor → RAHP → DPIP pipeline' >> "$GITHUB_STEP_SUMMARY"
           echo '- Snapshot: `${{ steps.snapshot.outputs.date }}`' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Snapshot age: `${{ steps.snapshot.outputs.age_days || 'unknown' }}` day(s)' >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${{ inputs.assessment_lineage || '' }}" ]; then
             echo '- Clean-room lineage: `${{ inputs.assessment_lineage }}`' >> "$GITHUB_STEP_SUMMARY"
           fi
