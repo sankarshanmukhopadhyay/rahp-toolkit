@@ -1,0 +1,79 @@
+name: Current DTG portfolio clean-room assurance
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/current-portfolio-clean-room.yml'
+      - 'clean-room/current-portfolio-run-spec.json'
+      - 'tools/current_portfolio_assessor.py'
+      - 'tools/clean_room.py'
+      - 'tools/clean_room_execute.py'
+      - 'tools/evidence_probe_orchestrator.py'
+      - 'tools/autonomous_assurance_controller.py'
+      - 'tools/assurance_fsm.py'
+      - 'tools/assurance_record.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  assess:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout RAHP under test
+        uses: actions/checkout@v4
+        with:
+          path: rahp
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install RAHP dependencies
+        run: python -m pip install --disable-pip-version-check -r rahp/requirements.txt
+
+      - name: Validate clean-room engine and portfolio assessor
+        run: |
+          python rahp/tools/assurance_fsm.py --self-test
+          python rahp/tools/assurance_record.py --self-test
+          python rahp/tools/autonomous_assurance_controller.py --self-test
+          python rahp/tools/clean_room_execute.py --self-test
+          python -m py_compile rahp/tools/current_portfolio_assessor.py
+
+      - name: Execute current portfolio clean-room assessment
+        run: |
+          python rahp/tools/clean_room_execute.py \
+            --spec rahp/clean-room/current-portfolio-run-spec.json \
+            --rahp rahp \
+            --workspace "$GITHUB_WORKSPACE" \
+            --nonce "$GITHUB_RUN_ID"
+
+      - name: Require terminal AMBER assessment package
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          out=pathlib.Path('output')
+          terminal=json.loads((out/'clean-room-terminal.json').read_text())
+          record=json.loads((out/'assurance-terminal-machine.json').read_text())
+          matrix=json.loads((out/'current-portfolio-matrix.json').read_text())
+          assert terminal['terminal'] is True and terminal['stranded'] is False, terminal
+          assert record['terminal'] is True, record
+          assert record['outcome'] == 'INDETERMINATE', record
+          assert record['reason_code'] == 'portfolio-evidence-required', record
+          assert matrix['summary']['portfolio_posture'] == 'AMBER', matrix['summary']
+          assert matrix['summary']['pass'] >= 1, matrix['summary']
+          assert matrix['summary']['indeterminate'] >= 1, matrix['summary']
+          assert len(record['source_pins']) >= 6, record['source_pins']
+          print(json.dumps(matrix['summary'], indent=2))
+          PY
+
+      - name: Upload current portfolio assurance package
+        uses: actions/upload-artifact@v4
+        with:
+          name: dtg-current-portfolio-assurance-${{ github.run_id }}
+          path: output/
+          if-no-files-found: error
