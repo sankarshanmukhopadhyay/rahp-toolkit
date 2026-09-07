@@ -13,11 +13,11 @@ v2.2.0 packages **Evidence Production and Realization Assurance** on top of the 
 
 First-class capabilities now include:
 
-- **Durable assessment, finding and obligation lineage**
+- **Durable assessment and finding lineage** — extended in v2.2 with semantic assurance-obligation lineage.
 - **Governed remediation and retest**
 - **Assurance graph and impact analysis**
-- **Evidence production, provenance, freshness and delta**
-- **Executable authority, policy and composition gates**
+- **Evidence provenance, freshness and delta** — extended in v2.2 with accountable evidence production and producer routing.
+- **Executable authority and policy gates** — extended in v2.2 with composition and realization pressure testing.
 - **Normative-versus-realization separation**
 - **Portfolio and deployment presentation**
 - **Release qualification**
