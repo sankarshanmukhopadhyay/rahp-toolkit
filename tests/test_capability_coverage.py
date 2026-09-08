@@ -1,3 +1,4 @@
+from tools.assurance_state import freshness_from_basis
 from tools.capability_coverage import completeness, validate
 
 
@@ -53,3 +54,21 @@ def test_evidence_required_is_explicit_not_pass():
     summary = completeness(doc)
     assert summary["evidence_required"] == 1
     assert summary["satisfied"] == 0
+
+
+def test_stale_source_evidence_requires_reassessment():
+    """Coverage source changes must feed the existing RAHP freshness semantics."""
+    doc = record()
+    evidence = doc["coverage"]["propositions"][0]["evidence"][0]
+    basis = [
+        {
+            "source": evidence["source"],
+            "revision": evidence["revision"],
+            "effect": "invalidating",
+        }
+    ]
+
+    status, reassessment_required = freshness_from_basis(basis)
+
+    assert status == "stale"
+    assert reassessment_required is True
