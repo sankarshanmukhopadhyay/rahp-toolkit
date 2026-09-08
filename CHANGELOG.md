@@ -7,6 +7,23 @@ parent: Reference
 ---
 # Changelog
 
+## Unreleased — v2.3.0 development line
+
+### Added / advanced
+
+- Generic capability-coverage validation across DTG Persona and Data Rooms without adding consumer-specific semantics to RAHP core.
+- Canonical Data Rooms proposition catalogue under `profiles/dtg/coverage/data-rooms.yaml`, with later evidence maturity tracked separately under #481.
+- WD02 source/evidence reconciliation against the adopted Credential Specification baseline, including fresh VDC × VAC composition and action-time VDC × VAC × Trust Task evidence.
+- Attributable OpenVTC A/B privacy evidence returned through DPIP for relationship/verifier, status, Trust Task and policy-discovery surfaces.
+- Current OpenVTC Data Rooms target-native evidence advancing the propositions presently supported by the implementation while retaining explicit residuals for absent private-room, witnessed-anchoring, migration, operator and composed-runtime surfaces.
+- Durable WD02 common-control residual isolation under #482 rather than treating identifier association, request-level proof-of-possession or local reference behavior as normative common-control proof.
+
+### Release posture
+
+v2.3.0 is **not released**. Release preparation is intentionally held until #481 and #482 reach stable, source-backed dispositions. This does not require either residual to become GREEN; it requires the remaining external/runtime dependency to be explicit and terminally understandable.
+
+The stable release remains v2.2.0 **Common Four-ring**. No unreleased development result changes the v2.2.0 qualification contract or its immutable release record.
+
 ## v2.2.0 — 2026-09-07 — Common Four-ring
 
 ### Added
