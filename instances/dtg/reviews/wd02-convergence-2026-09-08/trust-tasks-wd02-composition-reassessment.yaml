@@ -1,0 +1,79 @@
+assessment:
+  id: trust-tasks-wd02-composition-2026-09-08
+  review_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/428
+  composition: trust-tasks--credential-spec
+  source_pins:
+    trust_tasks:
+      repository: trustoverip/dtgwg-trust-tasks-tf
+      revision: 84a4329a5f797dec9d240c83ab5d564c120dde8f
+      review: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/466
+    credential_spec:
+      repository: trustoverip/dtgwg-cred-spec
+      revision: 67149716032318f7f29770e5d3e6f0d35e52b8c3
+      designation: Working Draft 02
+  prior_assessment:
+    credential_spec_revision: 2b403b607aaec9d84f78189a55337c677f3cd2ed
+    status: superseded-by-this-reassessment
+  findings:
+    - id: F-001
+      title: authority and lifecycle coherence
+      prior: open-critical
+      outcome: modified-and-materially-narrowed
+      severity: high
+      strengthening:
+        - WD02 defines VDC delegation separately from authority
+        - WD02 defines VAC authority and VDC-VAC intersection semantics
+        - VDC requires acceptance and bounded redelegation
+        - authority remains evaluated independently at consequential action time
+        - existing Interop Lab actuation/non-substitution cases fail closed when delegation, authority, eligibility or invocation binding is absent/currently invalid
+      residual: >-
+        Trust Tasks and Credential Spec still do not by themselves define one portable composed runtime
+        authority resolver across task ACL/state, credential status, governance policy and deployment state.
+        Implementation evidence remains provenance-scoped and cannot be promoted to universal specification assurance.
+      disposition: evidence-required-at-composition-runtime
+    - id: F-002
+      title: execution outcome binding and replay
+      prior: open-high
+      outcome: modified-and-narrowed
+      severity: high
+      strengthening:
+        - WD02 defines uniform digestMultibase binding and canonicalization
+        - Trust Tasks provides task-level issuedAt, request-response binding and duplicate-execution defence
+        - VDC invocation remains a distinct task-layer concern rather than being inferred from credential validity
+      residual: >-
+        A valid credential digest or valid credential chain still does not prove that a consequential
+        Trust Task executed once, produced an authoritative effect, or remains current after task/policy state changes.
+      disposition: open-cross-spec-non-inference
+    - id: F-003
+      title: privacy composition and contestability
+      prior: open-high
+      outcome: modified-and-narrowed
+      severity: high
+      strengthening:
+        - WD02 adopts pairwise-directed-public declared correlation scope
+        - WD02 adopts effective disclosure as the wider/max-of-halves exposure
+        - Trust Tasks makes additional lifecycle and adverse-decision evidence explicit
+      residual: >-
+        Status/policy discovery, task/thread identifiers, retained evidence, delegation/authority chains,
+        verifier transcripts and errors can still compose into correlation. Target-attributable runtime privacy
+        evidence remains external under RAHP #338; no-link results from Interop Lab are not relabelled as target evidence.
+      disposition: evidence-required-dpip-and-governance
+  composition_judgment:
+    terminal_state: AMBER
+    prior_findings_preserved: true
+    finding_count: 3
+    interpretation: >-
+      WD02 materially improves the seam and lowers the breadth of F-001 while strengthening F-002/F-003 controls,
+      but the composition does not become GREEN merely because both component specifications are stronger.
+  evidence_provenance:
+    - source: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/cases/dtg-data-room-actuation
+      class: experimental-composition-evidence
+      promotion_rule: cannot substitute for target implementation or deployment evidence
+    - source: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/cases/dtg-vdc-vac-composition
+      class: experimental-semantic-composition-evidence
+      promotion_rule: validates non-substitution vectors only within its claim boundary
+    - source: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/338
+      class: durable-external-runtime-privacy-obligation
+  closure_rule: >-
+    This reassessment makes #428 current against WD02. The durable issue may remain open while its three
+    narrowed residuals lack the stated composition/runtime/privacy evidence; source staleness is no longer the reason.
