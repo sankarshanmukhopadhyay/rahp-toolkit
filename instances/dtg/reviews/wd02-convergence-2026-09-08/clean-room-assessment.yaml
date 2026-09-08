@@ -1,0 +1,94 @@
+assessment:
+  id: dtg-wd02-clean-room-2026-09-08
+  subject:
+    repository: trustoverip/dtgwg-cred-spec
+    revision: 67149716032318f7f29770e5d3e6f0d35e52b8c3
+    designation: Working Draft 02
+  method: bounded-clean-room-reconciliation
+  evidence_grade: source-pinned-with-specialist-residuals
+  terminal_state: AMBER
+  rationale: >-
+    WD02 source convergence is complete and several specification-level assurance propositions
+    are materially strengthened, but runtime privacy evidence, common-control proof and fresh
+    Trust Tasks composition evidence remain incomplete. Missing evidence is retained explicitly
+    rather than promoted to PASS.
+  propositions:
+    - id: WD02-B1
+      theme: verifier-relative-edge-verifiability
+      outcome: strengthened
+      maturity: specification
+      evidence:
+        - trustoverip/dtgwg-cred-spec#26
+      residual: executable two-verifier implementation evidence not required to establish the specification wording, but required for implementation assurance
+    - id: WD02-C1
+      theme: declared-correlation-scope
+      outcome: strengthened
+      maturity: specification
+      evidence:
+        - trustoverip/dtgwg-cred-spec#30
+      residual: target-attributable runtime correlation evidence remains external under RAHP #338
+    - id: WD02-C2
+      theme: asymmetric-effective-disclosure
+      outcome: strengthened
+      maturity: specification
+      evidence:
+        - trustoverip/dtgwg-cred-spec#27
+        - trustoverip/dtgwg-cred-spec#30
+      residual: runtime composition evidence required for observable correlation claims
+    - id: WD02-D
+      theme: VDC-delegation
+      outcome: strengthened
+      maturity: specification
+      evidence:
+        - trustoverip/dtgwg-cred-spec#19
+      residual: positive-negative-lifecycle implementation evidence must remain provenance-scoped
+    - id: WD02-E
+      theme: VAC-authority-and-VDC-VAC-composition
+      outcome: strengthened
+      maturity: specification
+      evidence:
+        - trustoverip/dtgwg-cred-spec#29
+      residual: executable composition evidence is informative for implementations and does not replace specification authority
+    - id: WD02-F1
+      theme: common-control-linkage
+      outcome: unresolved
+      maturity: specification
+      evidence:
+        - trustoverip/dtgwg-cred-spec#26
+        - trustoverip/dtgwg-cred-spec#29
+      residual: explicit unencoded linkage remains; common control must not be inferred from identifier association
+    - id: WD02-G
+      theme: digest-encoding-and-binding
+      outcome: strengthened
+      maturity: specification
+      evidence:
+        - trustoverip/dtgwg-cred-spec#19
+        - trustoverip/dtgwg-cred-spec#29
+      residual: conformance/tamper evidence belongs to implementation evidence class
+    - id: WD02-H
+      theme: trust-tasks-composition
+      outcome: evidence-required
+      maturity: composition
+      evidence:
+        - https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/428
+      residual: prior source-pinned composition review predates WD02 and must be refreshed
+  specialist_returns:
+    - provider: DPIP
+      revision: c9a72201d2011557baeefa91bb00ea6c4516e337
+      disposition: evidence-incomplete
+      scope: private Data Room observability contract; demonstrates fail-closed evidence handling, not WD02 target-runtime privacy
+    - provider: Interop-Lab
+      scope: reusable authority, subject-binding and Persona-room composition evidence
+      disposition: pending-final-merge-for-IC-DTG-PERSONA-ROOM-001
+  invariants:
+    - workflow success is not assurance success
+    - specification strengthening does not imply implementation or deployment assurance
+    - Lab evidence is not relabelled as target implementation evidence
+    - unresolved common-control linkage remains explicit
+    - historical #371/#372 evidence stays immutable at its original source pins
+  next_reconciliation:
+    - refresh RAHP #428 against Trust Tasks current pin and WD02 revision
+    - reconcile RAHP #397 source movement as confirmed/superseded/current per proposition
+    - reconcile RAHP #398 against adopted VDC/VAC semantics and available Lab evidence
+    - advance RAHP #468 from pre-VAC pin to final WD02 pin
+    - retain RAHP #338 as external runtime-evidence obligation until attributable evidence exists
