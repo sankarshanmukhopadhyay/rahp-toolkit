@@ -60,9 +60,10 @@ workstreams:
       - cases/dtg-hidden-subject-binding/scenario.yaml
       - cases/dtg-vac-attenuation/scenario.yaml
       - cases/dtg-vdc-vac-composition/
-    persona_room_case: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/pull/168
+      - cases/dtg-persona-room-composition/scenario.yaml
+    persona_room_revision: a298deec09c9431a4a051dd94f17d5e22f15388c
   J_clean_room:
-    state: executable-with-residuals
+    state: completed-amber
     rule: terminal AMBER/INDETERMINATE is valid when evidence-required or unresolved propositions remain
 
 specialist_evidence:
@@ -75,8 +76,10 @@ specialist_evidence:
     reason: private-room serving is disabled at the pinned OpenVTC implementation; no runtime unlinkability PASS is inferred
   interop_persona_rooms:
     repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
-    pull_request: 168
-    current_state: pending-CI-and-merge
+    revision: a298deec09c9431a4a051dd94f17d5e22f15388c
+    issue: 167
+    case: IC-DTG-PERSONA-ROOM-001
+    current_result: bounded-composition-evidence-with-runtime-residuals
 
 terminal_boundary:
   source_convergence: SATISFIED
