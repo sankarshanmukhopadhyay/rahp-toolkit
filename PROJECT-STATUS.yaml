@@ -1,6 +1,6 @@
 project: rahp-toolkit
 stable_release: 2.2.0
-development_target: 2.2.0
+development_target: 2.3.0
 release_status: released
 qualification_status: qualified
 qualification_contract: method/v2.2-release-qualification.yaml
@@ -34,3 +34,10 @@ release_intent: >-
   routing, bounded assurance invariants, current-portfolio clean-room execution and
   explicit normative-versus-realization separation. The DTG current-portfolio AMBER
   result is qualification evidence, not a claim that the consumer portfolio is GREEN.
+development_posture: >-
+  v2.3.0 is the current unreleased development target. Post-v2.2 work includes
+  generic capability-coverage validation across Persona and Data Rooms, WD02
+  source/evidence reconciliation, attributable OpenVTC privacy evidence, and
+  proposition-level Data Rooms runtime evidence. Releases remain intentionally held
+  while RAHP #481 and #482 reach stable residual dispositions; this does not change
+  the stable v2.2.0 qualification claim.
