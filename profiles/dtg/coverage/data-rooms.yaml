@@ -1,0 +1,299 @@
+coverage:
+  id: dtg-data-rooms-architecture-2026-09-08
+  subject: dtg-data-rooms
+  maturity: architectural
+  baseline:
+    assessed_on: 2026-09-08
+    normative_source:
+      source: trustoverip/dtgwg-trust-tasks-tf
+      revision: 84a4329a5f797dec9d240c83ab5d564c120dde8f
+      rahp_review: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/466
+    design_source:
+      source: OpenVTC/verifiable-trust-infrastructure
+      revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+      path: docs/02-vta/data-rooms.md
+      rahp_review: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/470
+  claim_boundary: >-
+    This record is an architectural baseline. Partial OpenVTC implementation exists at
+    the pinned revision, but those implementation observations are not promoted into
+    this architectural record and do not establish runtime or deployment assurance.
+    Private-room serving remains explicitly incomplete at the pinned state.
+  maturity_posture:
+    architecture: assessed
+    specification: current-state-dependent
+    implementation: EVIDENCE_REQUIRED
+    runtime_privacy: EVIDENCE_REQUIRED
+    composition: EVIDENCE_REQUIRED
+  scenarios:
+    - id: SC-ROOM-COMMUNITY-MEMORY-001
+      context: Shared community knowledge and memory for members and agents.
+      pressures:
+        - malicious instruction injection
+        - conflicting guidance
+        - stale or superseded guidance
+        - contributor removal
+        - agent inference of authority from published content
+    - id: SC-ROOM-FAMILY-PRIVATE-001
+      context: Family shared room plus subset private rooms.
+      pressures:
+        - room enumeration
+        - membership inference
+        - purpose, title and notification metadata leakage
+        - agent cross-room disclosure
+        - removed-member access versus already-disclosed copies
+    - id: SC-ROOM-BUSINESS-COLLAB-001
+      context: Internal team and cross-organization collaboration.
+      pressures:
+        - offboarding
+        - external collaborator scope
+        - onward delegation
+        - ownership continuity
+        - authority-to-disclose versus ability-to-write
+        - agent-mediated data sharing
+    - id: SC-ROOM-RESILIENT-COMMUNITY-001
+      context: Private association using hostile or unreliable infrastructure.
+      pressures:
+        - host membership reconstruction
+        - suppression of renewal, transfer or state
+        - witness collusion and false independence
+        - owner disappearance versus false absence
+        - selective service denial
+        - traffic-analysis leakage
+    - id: SC-ROOM-MULTICONTEXT-AGENT-001
+      context: Same holder or agent participates across family, business and community rooms while holding Persona state.
+      pressures:
+        - cross-context aggregation
+        - inference across independently legitimate views
+        - disclosure without distinct authority
+        - authority enlargement from retrieved content
+  propositions:
+    - id: P-ROOM-001
+      title: Host authorization independence
+      pattern: authority-non-composition
+      provider: external
+      judgment: SATISFIED
+      assessed_at_maturity: architectural
+      statement: Room operations derive authorization from room-recognized authority rather than host-local membership ACLs.
+      evidence_required:
+        - architectural rule that room authorization is evaluated from room-recognized credentials or authority chains
+        - explicit rejection of host-local roster, session or ACL state as the authorization authority
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: docs/02-vta/data-rooms.md
+          claim: The design states that authorization is verified against the room DID and not a host ACL, session or roster.
+
+    - id: P-ROOM-002
+      title: Membership and authority subject binding
+      pattern: capability-chain-integrity
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Membership and action-authority evidence must bind to the same authorized root principal; mixed-principal evidence must not synthesize authority.
+      evidence_required:
+        - explicit subject-binding rule across membership and action-authority evidence
+        - adversarial mixed-principal composition scenario
+      evidence: []
+      residual: The room credential chain is described, but the pinned design evidence does not directly establish the mixed-principal negative case.
+
+    - id: P-ROOM-003
+      title: Capability attenuation
+      pattern: capability-attenuation
+      provider: external
+      judgment: SATISFIED
+      assessed_at_maturity: architectural
+      statement: Derived agent authority narrows monotonically in verbs, resources, expiry and audience.
+      evidence_required:
+        - architectural rule that delegated room capability is a strict subset of upstream authority
+        - attenuation dimensions include action, resource, temporal and audience scope
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: docs/02-vta/data-rooms.md
+          claim: The presentation oracle is designed to attenuate room action authority rather than manufacture broader authority.
+
+    - id: P-ROOM-004
+      title: Capability-chain integrity
+      pattern: capability-chain-integrity
+      provider: external
+      judgment: SATISFIED
+      assessed_at_maturity: architectural
+      statement: Authorization verifies the complete required authority chain rather than accepting an isolated leaf grant.
+      evidence_required:
+        - architectural requirement to verify the complete credential or capability chain to the room authority root
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: docs/02-vta/data-rooms.md
+          claim: Authorization is defined through a credential chain verified against the room DID.
+
+    - id: P-ROOM-005
+      title: Lifecycle and current-authority integrity
+      pattern: lifecycle-current-authority-integrity
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Removal, expiry, revocation and recovery semantics prevent historical valid authority from silently becoming current authority.
+      evidence_required:
+        - explicit lifecycle state machine for removal, expiry, revocation, renewal and recovery
+        - replay of historical authority after removal or expiry must be rejected
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: docs/02-vta/data-rooms.md
+          claim: Succession is designed, but witnessed renewal anchoring remains unimplemented at the pinned state.
+      residual: Lifecycle direction is present but current-authority behavior needs executable adversarial evidence.
+
+    - id: P-ROOM-006
+      title: Host confidentiality
+      pattern: confidentiality-boundary
+      provider: external
+      judgment: SATISFIED
+      assessed_at_maturity: architectural
+      statement: A private-room host cannot obtain room plaintext through ordinary protocol operation within the stated threat model.
+      evidence_required:
+        - design separates host storage and transport from member-held decryption authority
+        - host is not an MLS group key holder in the ordinary protocol path
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: docs/02-vta/data-rooms.md
+          claim: The host stores and serves room material but the VTA holds room credentials and MLS state; the host is not a member-list or MLS-key authority.
+      residual: This is an architectural confidentiality conclusion only; implementation, endpoint and operational leakage remain separately assessable.
+
+    - id: P-ROOM-007
+      title: Membership unlinkability
+      pattern: unlinkability-correlation
+      provider: dpip
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Where private membership is claimed, observable host or runtime behavior does not expose enough information to reconstruct a member identity within the declared threat model.
+      evidence_required:
+        - DPIP observability analysis across host records, traffic, status and authorization transcripts
+        - runtime A/B evidence for linkability under the declared adversary
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: docs/02-vta/data-rooms.md
+          claim: The private tier is designed around unlinkable host action proof but explicitly does not serve at the pinned state pending same-subject ZK support.
+      residual: Architectural intent does not establish runtime unlinkability.
+
+    - id: P-ROOM-008
+      title: Invitation and key-establishment privacy
+      pattern: unlinkability-correlation
+      provider: dpip
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Invitation and key-establishment flows do not defeat later membership privacy by becoming an earlier membership oracle.
+      evidence_required:
+        - DPIP analysis of invitation, key-package, welcome and commit observability
+        - negative runtime evidence against invitation-to-member correlation
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: docs/02-vta/data-rooms.md
+          claim: The design includes key-package, welcome and commit flows but does not itself prove metadata unlinkability.
+
+    - id: P-ROOM-009
+      title: Fork and equivocation detectability
+      pattern: rollback-freshness-integrity
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Host equivocation in group state becomes detectable within the documented architectural bound.
+      evidence_required:
+        - explicit detection bound for divergent room or group state
+        - adversarial host equivocation scenario with observable detection outcome
+      evidence: []
+      residual: No pinned evidence directly establishes equivocation detection bounds.
+
+    - id: P-ROOM-010
+      title: Rollback and freshness integrity
+      pattern: rollback-freshness-integrity
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Clients can distinguish stale or rolled-back state from state meeting the accepted freshness floor.
+      evidence_required:
+        - declared freshness floor and monotonic state rule
+        - replay or rollback scenario demonstrating rejection or explicit stale status
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: docs/02-vta/data-rooms.md
+          claim: Witnessed renewal anchoring is identified but not implemented at the pinned state.
+
+    - id: P-ROOM-011
+      title: Operator independence
+      pattern: operator-independence
+      provider: human-judgment
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Witness and host independence is assessed at the level of effective operator and control, not merely distinct services or identifiers.
+      evidence_required:
+        - governance evidence for operator ownership and control relationships
+        - false-independence scenario covering common control behind distinct endpoints
+      evidence: []
+      residual: Cryptographic or service distinctness cannot establish organizational independence.
+
+    - id: P-ROOM-012
+      title: Recovery authority bounds
+      pattern: lifecycle-current-authority-integrity
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Recovery or quorum machinery cannot re-create authority deliberately removed through normal governance unless that behavior is explicitly authorized.
+      evidence_required:
+        - explicit recovery-authority rule and governance boundary
+        - negative scenario where recovery attempts to resurrect removed authority
+      evidence: []
+
+    - id: P-ROOM-013
+      title: Host migration continuity
+      pattern: rollback-freshness-integrity
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Moving a room preserves authorization semantics and defines stale endpoint, in-flight write and state-continuity behavior.
+      evidence_required:
+        - migration state transition with source and destination authority continuity
+        - stale endpoint and in-flight write adversarial scenarios
+      evidence: []
+      residual: Read mirrors and broader migration continuity are not established by the pinned design state.
+
+    - id: P-ROOM-014
+      title: Shared-memory instruction isolation
+      pattern: untrusted-agent-input
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Room content remains data unless separately authorized as instruction; retrieved content alone cannot enlarge agent authority.
+      evidence_required:
+        - agent execution rule separating retrieved content from instruction authority
+        - malicious room-content prompt or instruction injection scenario
+      evidence: []
+      residual: Room authorization does not by itself establish agent instruction isolation.
+
+    - id: P-ROOM-015
+      title: Provenance at recall
+      pattern: provenance-preservation
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Agent recall preserves enough authorship and provenance for downstream reasoning and human review.
+      evidence_required:
+        - recall representation preserving authorship or source provenance
+        - negative scenario showing conflicting or superseded guidance is not flattened into unattributed memory
+      evidence: []
+
+    - id: P-ROOM-016
+      title: Human content isolation
+      pattern: human-untrusted-content-handling
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: architectural
+      statement: Member-authored room content is treated as untrusted on human-facing rendering surfaces as well as agent-facing surfaces.
+      evidence_required:
+        - human-facing renderer escaping or isolation rule
+        - adversarial content fixture covering active or deceptive content
+      evidence: []
