@@ -14,10 +14,10 @@ JUDGMENTS = {"SATISFIED", "UNSATISFIED", "INDETERMINATE", "EVIDENCE_REQUIRED", "
 PROVIDERS = {"rahp", "dpip", "interop-lab", "external", "human-judgment"}
 PATTERNS = {
     "context-isolation", "positive-disclosure", "provenance-preservation",
-    "authority-non-composition", "capability-attenuation", "capability-chain-integrity",
-    "lifecycle-current-authority-integrity", "confidentiality-boundary",
-    "unlinkability-correlation", "rollback-freshness-integrity", "operator-independence",
-    "untrusted-agent-input", "human-untrusted-content-handling",
+    "atomic-resolution-integrity", "authority-non-composition", "capability-attenuation",
+    "capability-chain-integrity", "lifecycle-current-authority-integrity",
+    "confidentiality-boundary", "unlinkability-correlation", "rollback-freshness-integrity",
+    "operator-independence", "untrusted-agent-input", "human-untrusted-content-handling",
     "cross-context-aggregation-non-inference",
 }
 
