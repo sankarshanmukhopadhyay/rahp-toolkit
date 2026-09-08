@@ -22,15 +22,34 @@ First-class capabilities now include:
 - **Portfolio and deployment presentation**
 - **Release qualification**
 
-## Post-release priorities
+## Current development boundary — v2.3.0 unreleased
 
-1. **Runtime evidence closure:** execute current credential-to-Trust-Task actuation, replay and binding vectors where implementations expose them.
-2. **Privacy runtime evidence:** produce current A/B evidence for effective correlation, status/policy discovery and retained evidence surfaces.
-3. **Realization conformance:** retest implementation surfaces when adopted normative semantics become implemented.
-4. **Adoption and portability:** validate additional non-DTG consumers against unchanged generic controller contracts.
-5. **Specialist ecosystem:** add specialists through versioned contracts/shared fixtures rather than target-specific core logic.
-6. **Operational observability:** improve controller telemetry and longitudinal posture while keeping workflow success separate from assurance success.
-7. **Composition pressure testing:** expand end-to-end flow coverage without promoting component conclusions.
+The current development target is **v2.3.0**. The release is intentionally held while the two durable residual owners created by the 2026-09-08 convergence/evidence tranche reach stable dispositions:
+
+- [#481](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/481) — Data Rooms implementation/runtime/deployment evidence maturity;
+- [#482](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/482) — WD02 common-control/same-subject proof semantics.
+
+This is a release-management boundary, not an assurance shortcut: neither issue has to be forced to GREEN. Each must instead reach a stable, source-backed disposition that makes the remaining external or deployment dependency explicit.
+
+## Completed post-v2.2 tranche
+
+The first two former post-release priorities are now materially complete for the currently exposed implementation surfaces:
+
+1. **Runtime/action-time evidence:** current VDC × VAC × Trust Task composition was executed and reconciled. Missing exact current-authority evaluation remains explicit as `INDETERMINATE/BLOCKED` rather than being inferred from credential/task validity.
+2. **Privacy runtime evidence:** attributable OpenVTC A/B evidence now covers relationship/verifier, status, Trust Task and policy-discovery surfaces. DPIP returned a bounded SATISFIED result for the exercised runtime scope without claiming deployment-wide unlinkability.
+3. **WD02 convergence and composition:** adopted WD02 source is pinned and reconciled; fresh VDC × VAC and common-control negative evidence exists; the unresolved normative common-control primitive is isolated under #482.
+4. **Data Rooms capability/evidence:** the architectural proposition catalogue is canonical under `profiles/dtg/coverage/data-rooms.yaml`; current target-native OpenVTC room evidence advanced the propositions that the implementation can presently support; remaining gaps are isolated under #481 rather than treated as missing RAHP-core capability.
+
+## Current priorities
+
+1. **Stabilize #481:** reassess only when private-room ZK execution, witnessed anchoring/freshness, migration, operator-control, or composed agent/human runtime evidence becomes available.
+2. **Stabilize #482:** consume upstream common-control/same-subject semantics when sufficiently normative and evidenceable; do not substitute identifier association, request PoP, or local reference behavior for the missing primitive.
+3. **Release preparation:** once #481/#482 are stable, cut coordinated but independently versioned RAHP/DPIP/Interop releases through their governed release paths.
+4. **Realization conformance:** continue selective retest when adopted normative semantics become implemented rather than rerunning unrelated portfolio surfaces.
+5. **Adoption and portability:** validate additional non-DTG consumers against unchanged generic controller contracts.
+6. **Specialist ecosystem:** add specialists through versioned contracts/shared fixtures rather than target-specific core logic.
+7. **Operational observability:** improve controller telemetry and longitudinal posture while keeping workflow success separate from assurance success.
+8. **Composition pressure testing:** expand end-to-end flow coverage without promoting component conclusions.
 
 ## Non-regression rules
 
