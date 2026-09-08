@@ -14,9 +14,11 @@ Providers identify the source/owner of evidence, not the final assurance authori
 
 ## Generic patterns
 
-The initial registry covers context isolation, positive disclosure, provenance preservation, authority non-composition, capability attenuation and chain integrity, lifecycle/current-authority integrity, confidentiality boundaries, unlinkability/correlation, rollback/freshness integrity, operator independence, untrusted agent input, human handling of untrusted content, and cross-context aggregation/non-inference.
+The registry covers context isolation, positive disclosure, provenance preservation, atomic resolution integrity, authority non-composition, capability attenuation and chain integrity, lifecycle/current-authority integrity, confidentiality boundaries, unlinkability/correlation, rollback/freshness integrity, operator independence, untrusted agent input, human handling of untrusted content, and cross-context aggregation/non-inference.
 
-Subject-specific vocabulary belongs in instance coverage packs, not in this registry.
+`atomic-resolution-integrity` applies when a multi-reference resolution or projection must fail as a unit rather than silently emit a misleading partial result. It is intentionally generic: subject-specific concepts such as Persona profiles or credential bundles belong in coverage packs, not in the core pattern name.
+
+Subject-specific vocabulary belongs in instance or profile coverage packs, not in this registry.
 
 ## Example
 
@@ -40,12 +42,26 @@ coverage:
 
 Evidence references should retain source identity and revision. RAHP's existing freshness/reconciliation machinery remains authoritative for determining whether a source change makes evidence stale or requires retest; coverage does not introduce a competing freshness state machine.
 
+## Subject-specific packs
+
+The DTG deployment profile stores subject-specific coverage under `profiles/dtg/coverage/`.
+
+`profiles/dtg/coverage/persona.yaml` is the first substantial consumer. It binds DTG Persona propositions to generic RAHP patterns and pins both the Trust Tasks normative revision and the OpenVTC implementation revision used as evidence. The pack deliberately leaves correlation, cross-context aggregation, composed agent authority, broader version integrity, provenance and unresolved atomicity evidence as `EVIDENCE_REQUIRED` where the pinned evidence does not directly establish the claim.
+
+This is the intended usage model: a subject pack may expose a reusable assurance pattern missing from the registry, but any registry extension must remain subject-neutral. It must not add `Persona`, `Room`, `MLS`, `VAC`, `VMC`, or other consumer-specific semantics to RAHP core.
+
 ## Validation and reporting
 
 Run:
 
 ```bash
 python3 tools/capability_coverage.py path/to/coverage.yaml --summary
+```
+
+For the DTG Persona baseline:
+
+```bash
+python3 tools/capability_coverage.py profiles/dtg/coverage/persona.yaml --summary
 ```
 
 The summary reports propositions defined and assessed, plus counts for each judgment. Validation rejects duplicate/missing proposition identifiers, unknown maturity/provider/judgment/pattern values, satisfaction without required evidence, and implicit maturity promotion.
