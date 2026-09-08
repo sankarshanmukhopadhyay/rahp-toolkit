@@ -1,0 +1,88 @@
+review:
+  id: wd02-convergence-2026-09-08
+  tracker: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/474
+  subject: trustoverip/dtgwg-cred-spec
+  maturity: specification
+  integrated_wd02:
+    revision: 67149716032318f7f29770e5d3e6f0d35e52b8c3
+    status: Working Draft 02
+    evidence: upstream commit #44 records that the #27, #26, #30, #19, #29 merge sequence landed and moves the WD02 tag to this commit
+  merge_sequence:
+    - pr: 27
+      merge_sha: 879e7f7598de7e2d6499f3f4c012a2603afd63d7
+      semantics: effective disclosure / max-of-halves
+    - pr: 26
+      merge_sha: b9f678ae20275b0a9b4197c809d42fac13ba447a
+      semantics: verifier-relative edge verifiability
+    - pr: 30
+      merge_sha: c8ef706b4d407a3a68a26b5fe2ce554c43674683
+      semantics: declared correlation scope pairwise-directed-public
+    - pr: 19
+      merge_sha: 37074bdcd861c51f3e5b7868ce700832b17b73ce
+      semantics: VDC delegation and digest encoding
+    - pr: 29
+      merge_sha: 4f7e66b6dfcd8eddc212c8002351a6ad814c60e1
+      semantics: VAC authority and VDC-VAC composition
+  historical_evidence_policy: preserve original #371/#372 pins; source movement is selective invalidation, never historical rewrite
+
+workstreams:
+  A_source_control:
+    state: confirmed
+    conclusion: integrated WD02 source gate cleared
+  B_edge_verifiability:
+    state: strengthened-at-specification
+    conclusion: verifier relativity is explicit; implementation/runtime two-verifier evidence remains a separate maturity claim
+  C_correlation_and_disclosure:
+    state: partially-confirmed-evidence-required
+    conclusion: declared scope and max-of-halves semantics are adopted; runtime correlation absence remains evidence-required
+    durable_privacy_owner: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/338
+    provenance_boundary: Interop Lab A/B evidence must not be relabelled as target implementation evidence
+  D_vdc_delegation:
+    state: strengthened-at-specification
+    conclusion: acceptance is mandatory; maxDepth fails closed; delegation is not authority; action-time authority remains independently evaluated
+  E_vac_authority:
+    state: strengthened-at-specification
+    conclusion: VAC authority is explicit and attenuable; VDC and VAC compose by intersection and remain non-collapsible
+  F_common_control:
+    state: unresolved
+    conclusion: WD02 explicitly retains the common-control linkage as an unencoded dependency; no PASS by identifier association
+  G_digest_binding:
+    state: strengthened-at-specification
+    conclusion: digestMultibase and canonicalization rules are adopted; executable tamper/conformance evidence remains separately attributable
+  H_trust_tasks_composition:
+    state: reassessment-required
+    prior_review: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/428
+    reason: prior review is pinned to pre-WD02 Credential Spec state
+  I_implementation_composition:
+    state: partially-available
+    existing_lab_cases:
+      - cases/dtg-data-room-actuation/scenario.yaml
+      - cases/dtg-hidden-subject-binding/scenario.yaml
+      - cases/dtg-vac-attenuation/scenario.yaml
+      - cases/dtg-vdc-vac-composition/
+    persona_room_case: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/pull/168
+  J_clean_room:
+    state: executable-with-residuals
+    rule: terminal AMBER/INDETERMINATE is valid when evidence-required or unresolved propositions remain
+
+specialist_evidence:
+  dpip_data_rooms:
+    repository: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+    revision: c9a72201d2011557baeefa91bb00ea6c4516e337
+    issue: 214
+    contract: dpip-data-room-observability/v1
+    current_result: evidence-incomplete
+    reason: private-room serving is disabled at the pinned OpenVTC implementation; no runtime unlinkability PASS is inferred
+  interop_persona_rooms:
+    repository: sankarshanmukhopadhyay/trust-protocol-interop-lab
+    pull_request: 168
+    current_state: pending-CI-and-merge
+
+terminal_boundary:
+  source_convergence: SATISFIED
+  specification_semantics: PARTIALLY_SATISFIED
+  implementation_evidence: EVIDENCE_REQUIRED
+  runtime_privacy: EVIDENCE_REQUIRED
+  common_control: INDETERMINATE
+  composition: REASSESSMENT_REQUIRED
+  portfolio_green_allowed: false
