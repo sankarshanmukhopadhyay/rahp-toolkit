@@ -1,0 +1,193 @@
+coverage:
+  id: dtg-persona-implementation-2026-09-08
+  subject: dtg-persona
+  maturity: implementation
+  baseline:
+    assessed_on: 2026-09-08
+    normative_source:
+      source: trustoverip/dtgwg-trust-tasks-tf
+      revision: 84a4329a5f797dec9d240c83ab5d564c120dde8f
+      rahp_review: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/466
+    implementation_source:
+      source: OpenVTC/verifiable-trust-infrastructure
+      revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+      rahp_review: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/470
+  claim_boundary: >-
+    This pack records implementation-stage assurance only. It does not promote
+    implementation evidence into runtime or deployment assurance. Correlation,
+    aggregation and agent-boundary claims remain evidence-required where the
+    pinned implementation evidence does not directly falsify the negative case.
+  propositions:
+    - id: P-PER-001
+      title: Context isolation
+      pattern: context-isolation
+      provider: external
+      judgment: SATISFIED
+      assessed_at_maturity: implementation
+      statement: >-
+        A caller authorized only within one context MUST NOT discover agent-scoped
+        Persona data or Persona data belonging to another context.
+      evidence_required:
+        - executable negative evidence that a context-scoped caller cannot reach the agent-scoped attribute pool
+        - executable negative evidence that one context cannot read another context's Persona state
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-service/src/trust_tasks/persona.rs
+          claim: Persona task reach is classified across the agent/context boundary and unknown task reach fails closed.
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-service/tests/persona_trust_task.rs
+          claim: Service-level tests exercise the Persona trust-task boundary from the opposite side of the access path.
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-persona/README.md
+          claim: Authorization, types, addressing and schema independently prevent context-to-pool reads.
+
+    - id: P-PER-002
+      title: Positive disclosure
+      pattern: positive-disclosure
+      provider: external
+      judgment: SATISFIED
+      assessed_at_maturity: implementation
+      statement: >-
+        A profile MUST disclose only claims explicitly included in that profile.
+        Adding a new source attribute MUST NOT implicitly enlarge an existing profile.
+      evidence_required:
+        - implementation evidence that disclosure resolves the selected profile rather than enumerating the holder pool
+        - negative evidence that disclosure cannot bypass preview/selection
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-persona/src/disclosure.rs
+          claim: Disclosure is previewed from explicit requested/profile material before presentation.
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-persona/README.md
+          claim: Present consumes a single-use token minted by preview; there is no one-call disclosure path.
+
+    - id: P-PER-003
+      title: Provenance preservation
+      pattern: provenance-preservation
+      provider: external
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: implementation
+      statement: >-
+        Projection, resolution and disclosure MUST preserve enough provenance to
+        distinguish supported claims, inline values and other provenance states.
+      evidence_required:
+        - executable evidence covering provenance state across materialisation, resolution and disclosure
+        - negative evidence that projection cannot erase a provenance distinction needed by a verifier or holder
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-persona/src/model.rs
+          claim: Implementation models resolved and materialised claim shapes separately.
+      residual: Static/model evidence exists, but the pinned evidence set does not directly establish end-to-end provenance preservation across disclosure.
+
+    - id: P-PER-004
+      title: Atomic resolution
+      pattern: atomic-resolution-integrity
+      provider: external
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: implementation
+      statement: >-
+        A profile or disclosure operation MUST NOT silently produce a partial projection
+        where required references fail resolution and the contract requires all-or-nothing behaviour.
+      evidence_required:
+        - executable negative test with one required reference unavailable
+        - evidence that the operation refuses rather than emits a misleading partial projection
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-persona/README.md
+          claim: Stale claims refuse the whole disclosure rather than quietly shrinking it.
+      residual: The refusal invariant is documented, but the pinned evidence set does not directly prove every required-reference failure path.
+
+    - id: P-PER-005
+      title: Version integrity
+      pattern: rollback-freshness-integrity
+      provider: external
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: implementation
+      statement: >-
+        Pinned or expected versions MUST NOT silently resolve against materially different state.
+      evidence_required:
+        - executable stale-version or expected-version mismatch evidence
+        - negative evidence that no fallback silently substitutes materially different Persona state
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-persona/README.md
+          claim: A claim stale between preview and present is refused and an expired preview is not silently re-derived.
+      residual: Disclosure freshness is evidenced directionally; broader expected-version integrity needs direct executable evidence.
+
+    - id: P-PER-006
+      title: Authority separation
+      pattern: authority-non-composition
+      provider: external
+      judgment: SATISFIED
+      assessed_at_maturity: implementation
+      statement: >-
+        Possession or readability of Persona state MUST NOT itself constitute authority to disclose it.
+      evidence_required:
+        - implementation evidence for a distinct disclosure authorization path
+        - evidence that readable state alone cannot invoke disclosure outside the applicable context/authorization boundary
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-persona/README.md
+          claim: Disclosure requires preview and a single-use presentation token; holder-scoped access is independently guarded.
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-service/src/trust_tasks/persona.rs
+          claim: Task reach and authorization are explicit rather than derived from storage possession.
+
+    - id: P-PER-007
+      title: Agent boundary
+      pattern: capability-attenuation
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: implementation
+      statement: >-
+        An agent MUST NOT gain Persona access or disclosure capability beyond principal
+        authority and the applicable execution context.
+      evidence_required:
+        - composed principal-to-agent negative scenario with deliberately narrower agent authority
+        - evidence that broader Persona read/disclosure is rejected across the full composed path
+      evidence: []
+      residual: Repository-local implementation evidence is insufficient to establish the composed principal/agent execution boundary.
+
+    - id: P-PER-008
+      title: Cross-context correlation
+      pattern: unlinkability-correlation
+      provider: dpip
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: implementation
+      statement: >-
+        Persona operations MUST NOT introduce unnecessary durable correlation across
+        otherwise separate trust contexts.
+      evidence_required:
+        - DPIP analysis or runtime A/B evidence for cross-context observability and linkability
+        - evidence covering whole-credential, self-asserted and derived-proof disclosure modes
+      evidence:
+        - source: OpenVTC/verifiable-trust-infrastructure
+          revision: 0a5897f0acf9e16eec8ee88ccb74d7b1afb0bd87
+          path: vta-persona/src/correlation.rs
+          claim: Implementation includes correlation analysis and a per-agent blinded value index.
+      residual: Static implementation mechanisms do not prove absence of durable correlation in composed/runtime use; route to DPIP.
+
+    - id: P-PER-009
+      title: Cross-context aggregation and non-inference
+      pattern: cross-context-aggregation-non-inference
+      provider: interop-lab
+      judgment: EVIDENCE_REQUIRED
+      assessed_at_maturity: implementation
+      statement: >-
+        Legitimate access to Persona material in multiple contexts MUST NOT automatically
+        authorize aggregation, inference or disclosure across those contexts.
+      evidence_required:
+        - negative composed scenario combining independently legitimate context views without aggregation authority
+        - evidence that combined disclosure/inference is rejected or requires a distinct explicit authority
+      evidence: []
+      residual: Context isolation reduces reachability but does not itself establish policy against aggregation by an actor legitimately present in multiple contexts.
