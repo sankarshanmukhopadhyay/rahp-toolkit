@@ -46,9 +46,13 @@ Evidence references should retain source identity and revision. RAHP's existing 
 
 The DTG deployment profile stores subject-specific coverage under `profiles/dtg/coverage/`.
 
-`profiles/dtg/coverage/persona.yaml` is the first substantial consumer. It binds DTG Persona propositions to generic RAHP patterns and pins both the Trust Tasks normative revision and the OpenVTC implementation revision used as evidence. The pack deliberately leaves correlation, cross-context aggregation, composed agent authority, broader version integrity, provenance and unresolved atomicity evidence as `EVIDENCE_REQUIRED` where the pinned evidence does not directly establish the claim.
+`profiles/dtg/coverage/persona.yaml` binds DTG Persona propositions to generic RAHP patterns and pins both the Trust Tasks normative revision and the OpenVTC implementation revision used as evidence. The pack deliberately leaves correlation, cross-context aggregation, composed agent authority, broader version integrity, provenance and unresolved atomicity evidence as `EVIDENCE_REQUIRED` where the pinned evidence does not directly establish the claim.
 
-This is the intended usage model: a subject pack may expose a reusable assurance pattern missing from the registry, but any registry extension must remain subject-neutral. It must not add `Persona`, `Room`, `MLS`, `VAC`, `VMC`, or other consumer-specific semantics to RAHP core.
+`profiles/dtg/coverage/data-rooms.yaml` is an architectural-stage Data Rooms baseline. It exercises the same generic registry across authorization, capability chains, lifecycle, confidentiality, privacy, freshness, operator independence, recovery, migration, agent-input safety, recall provenance and human-content handling. It also records five materially different scenario families rather than treating “Data Rooms” as one generic operating context.
+
+The Data Rooms pack is intentionally maturity-separated. A design proposition can be `SATISFIED` at `architectural` maturity while the corresponding implementation, runtime-privacy or composition posture remains `EVIDENCE_REQUIRED`. Partial OpenVTC implementation observed at the pinned source state does not automatically upgrade the architectural baseline. In particular, architectural host confidentiality does not imply runtime membership unlinkability, and cryptographic or service distinctness does not establish operator independence.
+
+This is the intended usage model: a subject pack may expose a reusable assurance pattern missing from the registry, but any registry extension must remain subject-neutral. It must not add `Persona`, `Room`, `MLS`, `VAC`, `VMC`, or other consumer-specific semantics to RAHP core. The Data Rooms exercise required no new core pattern, which provides a second independent consumer check on the generic registry introduced by #463.
 
 ## Validation and reporting
 
@@ -62,6 +66,12 @@ For the DTG Persona baseline:
 
 ```bash
 python3 tools/capability_coverage.py profiles/dtg/coverage/persona.yaml --summary
+```
+
+For the DTG Data Rooms architectural baseline:
+
+```bash
+python3 tools/capability_coverage.py profiles/dtg/coverage/data-rooms.yaml --summary
 ```
 
 The summary reports propositions defined and assessed, plus counts for each judgment. Validation rejects duplicate/missing proposition identifiers, unknown maturity/provider/judgment/pattern values, satisfaction without required evidence, and implicit maturity promotion.
