@@ -16,7 +16,7 @@ additional_pins:
   openvtc_dtg_credentials: 985b81042fd7675b14c70af76cb2d009e94618a8
   dpip: 69020c23eeb0aa53aba17e1919a751288c06d6a7
   zkp_fork: aafb4e819dab8b28a6151ab187f78c6498cc0784
-  graduation_rahip: 72b1e606fb1aa17b3e578e180b7b362205ecaaf3
+  graduation_rahp: 72b1e606fb1aa17b3e578e180b7b362205ecaaf3
 known_residual_owners:
   - rahp-toolkit#510
   - rahp-toolkit#481
