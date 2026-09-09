@@ -16,6 +16,8 @@ on:
       - '.github/workflows/dtg-portfolio-materiality-handoff.yml'
       - 'tools/fetch_dtg_portfolio_snapshot.py'
       - 'tools/dtg_portfolio_routing.py'
+      - 'tools/dtg_portfolio_baseline.py'
+      - 'instances/dtg/baselines/current.yaml'
       - 'instances/dtg/assurance-routing.yaml'
       - 'instances/dtg/finding-normalization.yaml'
       - 'tools/finding_model.py'
@@ -42,6 +44,40 @@ jobs:
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
 
+      - name: Resolve explicit portfolio baseline lineage
+        id: baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          lineage='${{ inputs.assessment_lineage || '' }}'
+          if [ -z "$lineage" ] && [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            if python3 - <<'PY'
+          import json, os, sys
+          target = 'instances/dtg/baselines/current.yaml'
+          event = json.load(open(os.environ['GITHUB_EVENT_PATH'], encoding='utf-8'))
+          changed = set()
+          for commit in event.get('commits', []):
+              changed.update(commit.get('added', []))
+              changed.update(commit.get('modified', []))
+              changed.update(commit.get('removed', []))
+          head = event.get('head_commit') or {}
+          changed.update(head.get('added', []))
+          changed.update(head.get('modified', []))
+          changed.update(head.get('removed', []))
+          sys.exit(0 if target in changed else 1)
+          PY
+            then
+              python3 tools/dtg_portfolio_baseline.py --self-test
+              lineage="$(python3 tools/dtg_portfolio_baseline.py instances/dtg/baselines/current.yaml --field lineage)"
+            fi
+          fi
+          echo "lineage=$lineage" >> "$GITHUB_OUTPUT"
+          if [ -n "$lineage" ]; then
+            echo "Using explicit assessment lineage: $lineage"
+          else
+            echo "No explicit lineage; using normal snapshot/date-scoped controller identity."
+          fi
+
       - name: Validate Portfolio Monitor snapshot fetch contract
         run: python3 tools/fetch_dtg_portfolio_snapshot.py --self-test
 
@@ -60,7 +96,7 @@ jobs:
             --normalization-policy instances/dtg/finding-normalization.yaml \
             --snapshot-date '${{ steps.snapshot.outputs.date }}' \
             --out-dir build/dtg-routing \
-            --assessment-lineage '${{ inputs.assessment_lineage || '' }}' \
+            --assessment-lineage '${{ steps.baseline.outputs.lineage }}' \
             --self-test
           python3 tools/dtg_portfolio_routing.py \
             --findings build/dtg-routing/findings.json \
@@ -68,7 +104,7 @@ jobs:
             --normalization-policy instances/dtg/finding-normalization.yaml \
             --snapshot-date '${{ steps.snapshot.outputs.date }}' \
             --out-dir build/dtg-routing \
-            --assessment-lineage '${{ inputs.assessment_lineage || '' }}'
+            --assessment-lineage '${{ steps.baseline.outputs.lineage }}'
 
       - name: Build portfolio controller event
         shell: bash
@@ -82,7 +118,7 @@ jobs:
               counts[item['outcome']] = counts.get(item['outcome'], 0) + 1
           day = '${{ steps.snapshot.outputs.date }}'
           source_url = '${{ steps.snapshot.outputs.url }}'
-          lineage = '${{ inputs.assessment_lineage || '' }}'.strip()
+          lineage = '${{ steps.baseline.outputs.lineage }}'.strip()
           # Controller identity is epoch-scoped. Bounded child reviews may continue to
           # coalesce by proposition, but a later portfolio snapshot must never enlarge
           # the evidence boundary of an earlier still-open controller (#424).
@@ -191,7 +227,7 @@ jobs:
             echo 'No registered cross-spec composition was implicated.'
             exit 0
           fi
-          lineage='${{ inputs.assessment_lineage || '' }}'
+          lineage='${{ steps.baseline.outputs.lineage }}'
           while IFS= read -r composition; do
             [ -n "$composition" ] || continue
             echo "Dispatching RAHP DTG pressure test via generic executor: $composition"
@@ -213,8 +249,8 @@ jobs:
           echo '## DTG Portfolio Monitor → RAHP → DPIP pipeline' >> "$GITHUB_STEP_SUMMARY"
           echo '- Snapshot: `${{ steps.snapshot.outputs.date }}`' >> "$GITHUB_STEP_SUMMARY"
           echo '- Snapshot age: `${{ steps.snapshot.outputs.age_days || 'unknown' }}` day(s)' >> "$GITHUB_STEP_SUMMARY"
-          if [ -n "${{ inputs.assessment_lineage || '' }}" ]; then
-            echo '- Clean-room lineage: `${{ inputs.assessment_lineage }}`' >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ steps.baseline.outputs.lineage }}" ]; then
+            echo '- Clean-room lineage: `${{ steps.baseline.outputs.lineage }}`' >> "$GITHUB_STEP_SUMMARY"
           fi
           jq -r 'group_by(.outcome) | map("- " + .[0].outcome + ": " + (length|tostring)) | .[]' build/dtg-routing/routing.json >> "$GITHUB_STEP_SUMMARY" || true
           if [ -s build/dtg-routing/unresolved.json ] && [ "$(jq length build/dtg-routing/unresolved.json)" -gt 0 ]; then

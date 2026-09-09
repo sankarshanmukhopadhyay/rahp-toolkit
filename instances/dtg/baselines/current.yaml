@@ -1,0 +1,29 @@
+schema: rahp-dtg-portfolio-baseline/v1
+lineage: post-graduation-2026-09-09-v1
+purpose: post-graduation-full-portfolio-rebaseline
+created_at: '2026-09-09'
+claim_boundary: >-
+  These pins define the evidence epoch for a fresh full DTG portfolio RAHP run.
+  They do not imply that every repository or proposition is conformant, current
+  at deployment time, or assurance-green. Historical evidence remains historical;
+  missing specialist or runtime evidence remains explicit.
+pins:
+  trust_tasks: beb5ed6d9995b8deebae5a8c17a2ae7d4be280ab
+  credential_spec: 67149716032318f7f29770e5d3e6f0d35e52b8c3
+  openvtc_vti: 1d9d3672c4a538c84b8263229619ae3bb4342b26
+  interop_lab: dc8bbbb954c18b4639e0e68d84b51101dcd6900a
+additional_pins:
+  openvtc_dtg_credentials: 985b81042fd7675b14c70af76cb2d009e94618a8
+  dpip: 69020c23eeb0aa53aba17e1919a751288c06d6a7
+  zkp_fork: aafb4e819dab8b28a6151ab187f78c6498cc0784
+  graduation_rahp: 72b1e606fb1aa17b3e578e180b7b362205ecaaf3
+known_residual_owners:
+  - rahp-toolkit#510
+  - rahp-toolkit#481
+  - rahp-toolkit#482
+  - rahp-toolkit#500
+  - dtg-privacy-implementation-profile#58
+notes:
+  - Full portfolio outcome is allowed to be AMBER or INDETERMINATE where evidence warrants it.
+  - workflow green is not assurance green.
+  - component conformance is not composition conformance.
