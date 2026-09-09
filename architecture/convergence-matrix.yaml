@@ -1,14 +1,14 @@
 version: 1
-parent_issue: RAHP #501
+parent_issue: "RAHP #501"
 steady_state:
   rahp: assurance control plane
   dpip: specialist privacy assessor and privacy semantics owner
   interop_lab: executable evidence plane and target-specific pressure-test environment
 completed_graduation_dependencies:
-  - RAHP #490
-  - RAHP #491
-  - DPIP #221
-  - RAHP #506
+  - "RAHP #490"
+  - "RAHP #491"
+  - "DPIP #221"
+  - "RAHP #506"
 stable_primitives:
   - id: assessment-request
     owner: RAHP
