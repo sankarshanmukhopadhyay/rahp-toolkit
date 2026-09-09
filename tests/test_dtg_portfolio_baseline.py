@@ -7,6 +7,9 @@ import yaml
 from tools.dtg_portfolio_baseline import load_baseline
 
 
+CURRENT_BASELINE = Path(__file__).parents[1] / "instances/dtg/baselines/current.yaml"
+
+
 class DtgPortfolioBaselineTests(unittest.TestCase):
     def write_manifest(self, data):
         td = tempfile.TemporaryDirectory()
@@ -32,6 +35,11 @@ class DtgPortfolioBaselineTests(unittest.TestCase):
         result = load_baseline(path)
         self.assertEqual("post-graduation-2026-09-09", result["lineage"])
         self.assertEqual("c" * 40, result["pins"]["openvtc_vti"])
+
+    def test_repository_current_baseline_is_valid(self):
+        result = load_baseline(CURRENT_BASELINE)
+        self.assertEqual("rahp-dtg-portfolio-baseline/v1", result["schema"])
+        self.assertTrue(result["lineage"].startswith("post-graduation-"))
 
     def test_missing_required_pin_fails_closed(self):
         td, path = self.write_manifest(
