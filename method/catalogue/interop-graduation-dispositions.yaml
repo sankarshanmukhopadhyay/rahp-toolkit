@@ -47,7 +47,7 @@ candidates:
       constructions must not be promoted into a generic pattern as though interoperability
       semantics were settled.
     generic_patterns: [ATP-ID-01, ATP-COMP-01]
-    dependency: RAHP #500
+    dependency: "RAHP #500"
     action: Revisit only after semantic stability and reusable evidence across more than one consumer.
 
   - id: operator-effective-control-independence
