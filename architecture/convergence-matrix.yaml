@@ -67,32 +67,32 @@ mechanisms:
     mechanism: clean-room assessment executor
     responsibility: isolated generic assurance execution and citable terminal record
     classification: KEEP
-    evidence: `.github/workflows/clean-room-assessment.yml` self-tests the FSM/controller and requires terminal machine/human output; the DTG current-portfolio job is a profile run of the same engine.
+    evidence: .github/workflows/clean-room-assessment.yml self-tests the FSM/controller and requires terminal machine/human output; the DTG current-portfolio job is a profile run of the same engine.
     action: Retain as the canonical isolated assurance executor; keep DTG inputs behind run specifications/profile data.
   - repository: RAHP
     mechanism: materiality and routing engine
     responsibility: normalize findings and decide RAHP, specialist or composition routing
     classification: KEEP
-    evidence: DTG Portfolio Monitor handoff invokes generic finding/routing semantics through `instances/dtg/assurance-routing.yaml` and publishes explicit controller/referral events.
+    evidence: DTG Portfolio Monitor handoff invokes generic finding/routing semantics through instances/dtg/assurance-routing.yaml and publishes explicit controller/referral events.
     action: Retain generic routing authority in RAHP; keep DTG vocabulary and source-monitor details in the instance adapter.
   - repository: RAHP
     mechanism: DTG portfolio materiality handoff
     responsibility: DTG instance adapter into generic RAHP routing
     classification: KEEP
-    evidence: `.github/workflows/dtg-portfolio-materiality-handoff.yml` explicitly states Portfolio Monitor detects/classifies while RAHP owns assurance routing and DPIP owns privacy conclusions.
+    evidence: .github/workflows/dtg-portfolio-materiality-handoff.yml explicitly states Portfolio Monitor detects/classifies while RAHP owns assurance routing and DPIP owns privacy conclusions.
     action: Retain as instance orchestration, not generic core; new ecosystems should supply their own adapter/policy rather than modify RAHP semantics.
   - repository: RAHP
     mechanism: RAHP-DPIP lifecycle reconciler
     responsibility: specialist handoff, evidence obligation scheduling, return reconciliation and stranded-state detection
     classification: KEEP
-    evidence: `.github/workflows/dpip-lifecycle.yml` performs one lifecycle transaction over obligation, producer, handoff and return contracts and states specialist completion is telemetry, not assurance resolution.
+    evidence: .github/workflows/dpip-lifecycle.yml performs one lifecycle transaction over obligation, producer, handoff and return contracts and states specialist completion is telemetry, not assurance resolution.
     action: Retain as the canonical specialist lifecycle boundary; avoid creating parallel specialist-specific state machines.
   - repository: RAHP
     mechanism: legacy/special-purpose DPIP handoff surfaces
     responsibility: transport compatibility and explicit handoff entry points
     classification: DEFER
-    evidence: Dedicated `dpip-handoff.yml` remains alongside the canonical lifecycle workflow; current convergence evidence does not prove safe deletion for every event/retry consumer.
-    action: Treat `dpip-lifecycle.yml` as semantic authority and retire compatibility entry points only after consumer/event equivalence is demonstrated.
+    evidence: Dedicated dpip-handoff.yml remains alongside the canonical lifecycle workflow; current convergence evidence does not prove safe deletion for every event/retry consumer.
+    action: Treat dpip-lifecycle.yml as semantic authority and retire compatibility entry points only after consumer/event equivalence is demonstrated.
   - repository: RAHP
     mechanism: DTG assurance reconcile workflow
     responsibility: instance-level reconciliation trigger
@@ -103,7 +103,7 @@ mechanisms:
     mechanism: executable evidence producer contract
     responsibility: target-neutral evidence execution/provenance/freshness envelope
     classification: GENERALISE
-    evidence: RAHP #490/#504 introduced `rahp-evidence-producer-result/v1`; current Interop Data Room producer emits it while retaining target execution outside RAHP.
+    evidence: RAHP #490/#504 introduced rahp-evidence-producer-result/v1; current Interop Data Room producer emits it while retaining target execution outside RAHP.
     action: Use this contract for new producers; do not add target vocabulary to RAHP core.
   - repository: RAHP
     mechanism: portable specialist result contract
@@ -121,7 +121,7 @@ mechanisms:
     mechanism: cross-spec pressure-test launcher
     responsibility: generic composition execution routing
     classification: KEEP
-    evidence: DTG materiality routing dispatches registered compositions through the generic `cross-spec-pressure-test.yml` executor and profile registry.
+    evidence: DTG materiality routing dispatches registered compositions through the generic cross-spec-pressure-test.yml executor and profile registry.
     action: Retain generic executor; composition declarations and target mappings remain profile-owned.
   - repository: RAHP
     mechanism: DTG repository review worker
@@ -139,7 +139,7 @@ mechanisms:
     mechanism: RAHP intake
     responsibility: admit structurally/semantically valid privacy examination requests
     classification: KEEP
-    evidence: `.github/workflows/rahp-intake.yml` is event-driven with scheduled recovery and explicitly says admission is not privacy PASS, evidence sufficiency or RAHP GREEN.
+    evidence: .github/workflows/rahp-intake.yml is event-driven with scheduled recovery and explicitly says admission is not privacy PASS, evidence sufficiency or RAHP GREEN.
     action: Retain as the specialist admission transition; do not move materiality or terminal judgment into DPIP.
   - repository: DPIP
     mechanism: examination setup and execution
@@ -151,7 +151,7 @@ mechanisms:
     mechanism: evidence plan and acquire
     responsibility: specialist evidence planning/acquisition transitions
     classification: KEEP
-    evidence: Separate `rahp-evidence-plan.yml` and `rahp-evidence-acquire.yml` surfaces represent retryable lifecycle stages rather than competing assurance authorities.
+    evidence: Separate rahp-evidence-plan.yml and rahp-evidence-acquire.yml surfaces represent retryable lifecycle stages rather than competing assurance authorities.
     action: Retain stage boundaries while they provide durable retry/recovery semantics; use RAHP producer/provenance contracts instead of duplicating generic envelopes.
   - repository: DPIP
     mechanism: privacy observability contract and evaluator
@@ -163,13 +163,13 @@ mechanisms:
     mechanism: RAHP return outbox and acknowledgement
     responsibility: durable delivery of terminal specialist disposition
     classification: KEEP
-    evidence: `.github/workflows/rahp-return.yml` persists/retries delivery and explicitly states successful delivery is not RAHP portfolio GREEN.
+    evidence: .github/workflows/rahp-return.yml persists/retries delivery and explicitly states successful delivery is not RAHP portfolio GREEN.
     action: Retain durable return semantics; RAHP remains terminal reconciliation owner.
   - repository: DPIP
     mechanism: profile validation and release workflows
     responsibility: DPIP repository quality, profile conformance and release lifecycle
     classification: KEEP
-    evidence: `validate-profiles.yml` and release workflows are repository/specialist infrastructure, not RAHP orchestration.
+    evidence: validate-profiles.yml and release workflows are repository/specialist infrastructure, not RAHP orchestration.
     action: Retain as DPIP-owned infrastructure.
   - repository: Interop Lab
     mechanism: current OpenVTC A/B evidence-export family
