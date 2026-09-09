@@ -55,6 +55,78 @@ mapping_rules:
       affected_surfaces: [specification-interface]
       change_kind: [dependency-change]
 
+  - id: persona-provenance-boundary
+    repository_regex: '^(OpenVTC/|trustoverip/dtgwg-trust-tasks-tf$)'
+    title_regex: '(persona).*(present|operator surface|preview|projection|provenance|context-local)|(resolved entry is a projection)'
+    semantics:
+      dimensions: [composition, security, privacy]
+      concerns: [provenance, context-boundary]
+      affected_surfaces: [persona-projection, operator-surface, presentation-boundary]
+      change_kind: [behavior-change]
+
+  - id: admin-scope-authority
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-trust-tasks-tf)$'
+    title_regex: '(provision).*(unrestricted admin|admin lives|how far it reaches|admin.*reach)'
+    semantics:
+      dimensions: [authorization, security, composition]
+      concerns: [admin-scope, authority-boundary]
+      affected_surfaces: [provisioning, administrative-authority]
+      change_kind: [behavior-change]
+
+  - id: credential-retrieval-disclosure
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-trust-tasks-tf)$'
+    title_regex: '(credentials/list|vault/credentials|returns a member.s credential bodies|credential bodies)'
+    semantics:
+      dimensions: [authorization, privacy, composition]
+      concerns: [credential-disclosure, retrieval-authority]
+      affected_surfaces: [credential-store, trust-task-response]
+      change_kind: [behavior-change]
+
+  - id: data-room-custody-lifecycle
+    repository_regex: '^(OpenVTC/|trustoverip/dtgwg-trust-tasks-tf$)'
+    title_regex: '(rooms|data rooms|epoch key chain|epoch link|group custody|presentation oracle)'
+    semantics:
+      dimensions: [authorization, lifecycle, composition, security]
+      concerns: [data-room-custody, key-lifecycle, membership-authority]
+      affected_surfaces: [room-membership, epoch-key-chain, room-storage, presentation-boundary]
+      change_kind: [behavior-change]
+
+  - id: backup-evidence-integrity
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: '(backup).*(spec debt|audit|evidence|family)'
+    semantics:
+      dimensions: [lifecycle, security]
+      concerns: [evidence-integrity, recovery-boundary]
+      affected_surfaces: [backup, retained-state, audit-evidence]
+      change_kind: [behavior-change]
+
+  - id: untrusted-input-fail-closed
+    repository_regex: '^OpenVTC/'
+    title_regex: '(recalled memory as untrusted data|unaddressed consent request is refused|page-task refusal)'
+    semantics:
+      dimensions: [security, authorization]
+      concerns: [untrusted-input, fail-closed]
+      affected_surfaces: [agent-memory, inbound-request, consent-boundary]
+      change_kind: [behavior-change]
+
+  - id: binder-enumerability-privacy
+    repository_regex: '^trustoverip/dtgwg-cred-spec$'
+    title_regex: '(binder).*(unsalted|enumerable|blinding)|(unsalted).*(digest|binder)'
+    semantics:
+      dimensions: [privacy, security]
+      concerns: [enumerability, correlation]
+      affected_surfaces: [credential-binder, digest-reference]
+      change_kind: [behavior-change]
+
+  - id: routine-release-or-plan
+    repository_regex: '^trustoverip/'
+    title_regex: '(chore: release v[0-9]+\.[0-9]+\.[0-9]+|WD02 merge plan)'
+    semantics:
+      dimensions: [release]
+      concerns: [aggregation]
+      affected_surfaces: [release-artifact, editorial-plan]
+      change_kind: [release-change]
+
   - id: openvtc-security-combined
     repository_regex: '^OpenVTC/'
     title_regex: '(auth|keyId|internal key|signed|proof|personhood|conformance|invitation|lifecycle|cache)'
@@ -75,7 +147,7 @@ mapping_rules:
 
   - id: trust-tasks-framework-covered
     repository_regex: '^trustoverip/dtgwg-trust-tasks-(tf|spec)$'
-    title_regex: '(framework|registry|generated types|typed signing|dispatch|application-state|refusal|removal|publish)'
+    title_regex: '(framework|registry|generated types|typed signing|dispatch|application-state|refusal|removal|publish|registered acl/change-role task)'
     semantics:
       dimensions: [composition, lifecycle]
       concerns: [framework-alignment]
