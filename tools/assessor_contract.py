@@ -6,7 +6,7 @@ from typing import Any
 import jsonschema
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SCHEMA = ROOT / "method" / "schema" / "assessor-result.schema.json"
+SCHEMA = ROOT / "schemas" / "rahp-assessor-result-v1.schema.json"
 
 
 def validate_result(value: dict[str, Any]) -> list[str]:
