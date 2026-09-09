@@ -1,0 +1,97 @@
+version: 1
+source_issue: 491
+rule: >-
+  Graduate a reusable assurance concept only when it remains meaningful if the original
+  implementation/protocol target is replaced. Prefer existing generic patterns over new
+  overlapping catalogue entries.
+forbidden_generic_vocabulary:
+  - OpenVTC
+  - VDC
+  - VAC
+  - VMC
+  - Trust Task
+  - Data Room
+  - Persona
+candidates:
+  - id: action-time-authority-integrity
+    disposition: already-covered
+    rationale: >-
+      Current authority, revocation/freshness, cross-spec lifecycle and replay boundaries
+      are already represented without target vocabulary.
+    generic_patterns: [ATP-AUTH-01, ATP-AUTH-02, ATP-COMP-02, ATP-OPS-02]
+    consumers:
+      - family: dtg-derived
+        case: VDC/VAC/Trust-Task action-time composition
+      - family: independent
+        case: protected delegated action / generic authority boundary
+    action: Add stronger mappings/examples where useful; do not add a duplicate core pattern.
+
+  - id: evidence-authority-non-substitution
+    disposition: already-covered
+    rationale: >-
+      Evidence, lineage, credential validity or completion facts cannot silently become a
+      distinct current-authority fact under the existing authority and composition patterns.
+    generic_patterns: [ATP-AUTH-01, ATP-COMP-01, ATP-DEL-03]
+    consumers:
+      - family: dtg-derived
+        case: VDC/VAC/Trust-Task non-substitution
+      - family: independent
+        case: delegated-action evidence versus current authority
+    action: Reuse existing patterns and retain target-specific negative vectors in the Lab.
+
+  - id: common-control-same-subject-integrity
+    disposition: defer
+    rationale: >-
+      The reusable assurance concern is real, but the normative common-control/same-subject
+      semantic dependency remains under active coordination in RAHP #500. Candidate proof
+      constructions must not be promoted into a generic pattern as though interoperability
+      semantics were settled.
+    generic_patterns: [ATP-ID-01, ATP-COMP-01]
+    dependency: "RAHP #500"
+    action: Revisit only after semantic stability and reusable evidence across more than one consumer.
+
+  - id: operator-effective-control-independence
+    disposition: profile-specific
+    rationale: >-
+      DTG Data Rooms P-ROOM-011 correctly tests effective operator/control rather than
+      distinct endpoints or identifiers. Existing generic governance/dependency controls are
+      relevant, but the repository does not yet carry a second independent consumer with
+      equivalent evidence semantics. Premature graduation would overstate portability.
+    generic_patterns: [ATP-GOV-01, ATP-PE-01]
+    profile_owner: profiles/dtg/coverage/data-rooms.yaml#P-ROOM-011
+    action: Keep as profile-level proposition and gather an independent consumer before proposing a new/refined ATP pattern.
+
+  - id: retrieved-content-authority-separation
+    disposition: already-covered
+    rationale: >-
+      Authorization cannot be inferred from possession/readability/content presence, and an
+      agent cannot act beyond its current mandate. Cross-spec facts also cannot silently
+      substitute for authority. These existing propositions cover the assurance boundary;
+      content-specific attack execution remains case-owned.
+    generic_patterns: [ATP-AUTH-01, ATP-AGT-01, ATP-COMP-01]
+    consumers:
+      - family: dtg-derived
+        case: Persona/Data-Room multi-context agent retrieval
+      - family: independent
+        case: generic agent retrieval followed by consequential action
+    action: Map target cases to existing patterns rather than introducing a content-source-specific core pattern.
+
+  - id: provenance-preservation-across-recall-composition
+    disposition: profile-specific
+    rationale: >-
+      Persona P-PER-003 establishes a concrete provenance-preservation proposition, while the
+      generic catalogue currently covers delegation provenance and external action provenance.
+      Those are adjacent but not equivalent to arbitrary shared-memory recall/composition.
+      A second independent consumer is required before expanding generic semantics.
+    generic_patterns: [ATP-DEL-02]
+    profile_owner: profiles/dtg/coverage/persona.yaml#P-PER-003
+    action: Retain the profile proposition and gather cross-domain evidence before any generic catalogue refinement.
+
+  - id: human-facing-untrusted-content-handling
+    disposition: lab-only
+    rationale: >-
+      The Data Room pressure case is important, but current evidence is scenario/security-bound
+      and the generic RAHP catalogue does not yet contain an equivalence-proven human-rendering
+      assurance primitive. A single Lab scenario is insufficient basis for a new core pattern.
+    generic_patterns: []
+    action: Keep adversarial rendering fixtures in the Lab; revisit after a second consumer and explicit reusable evidence contract exist.
