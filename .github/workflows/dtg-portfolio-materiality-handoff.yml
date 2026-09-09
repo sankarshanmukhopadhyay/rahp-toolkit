@@ -52,9 +52,14 @@ jobs:
           lineage='${{ inputs.assessment_lineage || '' }}'
           if [ -z "$lineage" ] && [ "$GITHUB_EVENT_NAME" = "push" ]; then
             target='instances/dtg/baselines/current.yaml'
-            if git show --pretty='' --name-only "$GITHUB_SHA" | grep -Fxq "$target"; then
-              python3 tools/dtg_portfolio_baseline.py --self-test
-              lineage="$(python3 tools/dtg_portfolio_baseline.py "$target" --field lineage)"
+            before='${{ github.event.before }}'
+            zero='0000000000000000000000000000000000000000'
+            if [ -n "$before" ] && [ "$before" != "$zero" ]; then
+              git fetch --no-tags --depth=1 origin "$before"
+              if git diff --name-only "$before" "$GITHUB_SHA" -- "$target" | grep -Fxq "$target"; then
+                python3 tools/dtg_portfolio_baseline.py --self-test
+                lineage="$(python3 tools/dtg_portfolio_baseline.py "$target" --field lineage)"
+              fi
             fi
           fi
           echo "lineage=$lineage" >> "$GITHUB_OUTPUT"
