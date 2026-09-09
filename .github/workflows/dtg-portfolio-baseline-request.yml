@@ -1,0 +1,48 @@
+name: Dispatch explicit DTG portfolio baseline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'instances/dtg/baselines/current.yaml'
+      - '.github/workflows/dtg-portfolio-baseline-request.yml'
+      - 'tools/dtg_portfolio_baseline.py'
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: dtg-portfolio-baseline-request
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout RAHP
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Install manifest dependency
+        run: python -m pip install --disable-pip-version-check pyyaml
+      - name: Validate baseline contract
+        run: |
+          python tools/dtg_portfolio_baseline.py --self-test
+          python tools/dtg_portfolio_baseline.py instances/dtg/baselines/current.yaml
+      - name: Dispatch clean portfolio lineage
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          lineage="$(python tools/dtg_portfolio_baseline.py instances/dtg/baselines/current.yaml --field lineage)"
+          echo "Dispatching DTG portfolio assessment lineage: $lineage"
+          gh workflow run dtg-portfolio-materiality-handoff.yml \
+            --ref main \
+            -f assessment_lineage="$lineage"
+          echo "### DTG portfolio baseline dispatched" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Lineage: \`$lineage\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Manifest: \`instances/dtg/baselines/current.yaml\`" >> "$GITHUB_STEP_SUMMARY"
