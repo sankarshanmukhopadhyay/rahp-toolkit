@@ -1,0 +1,191 @@
+version: 1
+parent_issue: "RAHP #501"
+steady_state:
+  rahp: assurance control plane
+  dpip: specialist privacy assessor and privacy semantics owner
+  interop_lab: executable evidence plane and target-specific pressure-test environment
+completed_graduation_dependencies:
+  - "RAHP #490"
+  - "RAHP #491"
+  - "DPIP #221"
+  - "RAHP #506"
+stable_primitives:
+  - id: assessment-request
+    owner: RAHP
+    contract_or_surface: RAHP assessment/controller issue and assurance obligation contracts
+    non_inference: An assessment request does not imply materiality, evidence sufficiency, or terminal assurance.
+  - id: materiality-and-routing
+    owner: RAHP
+    contract_or_surface: generic finding/materiality routing with instance adapters such as DTG assurance-routing policy
+    non_inference: A routed finding is not an assurance finding or privacy conclusion by itself.
+  - id: assurance-obligation
+    owner: RAHP
+    contract_or_surface: rahp-assurance-obligation/v1 and controller state
+    non_inference: An open obligation records work required; missing evidence is not PASS.
+  - id: evidence-requirement
+    owner: RAHP
+    contract_or_surface: obligation evidence requirements and registered producer routing
+    non_inference: A producer being registered or runnable does not establish that required evidence exists.
+  - id: portable-evidence-producer-result
+    owner: RAHP
+    contract_or_surface: rahp-evidence-producer-result/v1 graduated by RAHP issue 490
+    non_inference: Producer workflow success and local observations do not imply specialist or terminal assurance PASS.
+  - id: privacy-observability-semantics
+    owner: DPIP
+    contract_or_surface: dpip-privacy-observability-result/v1 and DPIP issue 221 observer/experiment semantics
+    non_inference: Absence of an observed join supports only the bounded observer/threat-model proposition actually exercised.
+  - id: privacy-interpretation
+    owner: DPIP
+    contract_or_surface: DPIP examination/evaluation logic and bounded PASS/FAIL/CONSTRAINED/INDETERMINATE/NOT_APPLICABLE outcomes
+    non_inference: DPIP specialist PASS is not terminal RAHP assurance PASS or portfolio GREEN.
+  - id: portable-specialist-result
+    owner: RAHP
+    contract_or_surface: authoritative rahp-assessor-result/v1 contract singularized by RAHP issue 506
+    non_inference: Successful delivery or schema validation of a specialist result does not determine terminal assurance.
+  - id: target-specific-execution
+    owner: Interop Lab
+    contract_or_surface: source-pinned runners, target adapters and reusable evidence workflows
+    non_inference: Target execution green establishes only the bounded observations produced at the pinned implementation state.
+  - id: case-fixtures-and-raw-observations
+    owner: Interop Lab
+    contract_or_surface: Interop cases, characterization fixtures, adversarial vectors and evidence artifacts
+    non_inference: A case fixture or successful vector cannot manufacture missing normative semantics or deployment-wide evidence.
+  - id: generic-assurance-pattern-meaning
+    owner: RAHP
+    contract_or_surface: portable assurance catalogue and RAHP issue 491 graduation discipline
+    non_inference: Mapping a target proposition to a generic pattern does not make the target proposition satisfied.
+  - id: terminal-reconciliation
+    owner: RAHP
+    contract_or_surface: assurance FSM/controller/record and specialist-return reconciliation
+    non_inference: Workflow completion, specialist completion, and evidence availability remain inputs; only RAHP owns terminal assurance state.
+  - id: freshness-and-invalidation
+    owner: RAHP
+    contract_or_surface: source pins, evidence freshness, invalidation and assurance-delta machinery
+    non_inference: Historical green evidence is not current assurance after a material source or deployment change.
+mechanisms:
+  - repository: RAHP
+    mechanism: clean-room assessment executor
+    responsibility: isolated generic assurance execution and citable terminal record
+    classification: KEEP
+    evidence: .github/workflows/clean-room-assessment.yml self-tests the FSM/controller and requires terminal machine/human output; the DTG current-portfolio job is a profile run of the same engine.
+    action: Retain as the canonical isolated assurance executor; keep DTG inputs behind run specifications/profile data.
+  - repository: RAHP
+    mechanism: materiality and routing engine
+    responsibility: normalize findings and decide RAHP, specialist or composition routing
+    classification: KEEP
+    evidence: DTG Portfolio Monitor handoff invokes generic finding/routing semantics through instances/dtg/assurance-routing.yaml and publishes explicit controller/referral events.
+    action: Retain generic routing authority in RAHP; keep DTG vocabulary and source-monitor details in the instance adapter.
+  - repository: RAHP
+    mechanism: DTG portfolio materiality handoff
+    responsibility: DTG instance adapter into generic RAHP routing
+    classification: KEEP
+    evidence: .github/workflows/dtg-portfolio-materiality-handoff.yml explicitly states Portfolio Monitor detects/classifies while RAHP owns assurance routing and DPIP owns privacy conclusions.
+    action: Retain as instance orchestration, not generic core; new ecosystems should supply their own adapter/policy rather than modify RAHP semantics.
+  - repository: RAHP
+    mechanism: RAHP-DPIP lifecycle reconciler
+    responsibility: specialist handoff, evidence obligation scheduling, return reconciliation and stranded-state detection
+    classification: KEEP
+    evidence: .github/workflows/dpip-lifecycle.yml performs one lifecycle transaction over obligation, producer, handoff and return contracts and states specialist completion is telemetry, not assurance resolution.
+    action: Retain as the canonical specialist lifecycle boundary; avoid creating parallel specialist-specific state machines.
+  - repository: RAHP
+    mechanism: legacy/special-purpose DPIP handoff surfaces
+    responsibility: transport compatibility and explicit handoff entry points
+    classification: DEFER
+    evidence: Dedicated dpip-handoff.yml remains alongside the canonical lifecycle workflow; current convergence evidence does not prove safe deletion for every event/retry consumer.
+    action: Treat dpip-lifecycle.yml as semantic authority and retire compatibility entry points only after consumer/event equivalence is demonstrated.
+  - repository: RAHP
+    mechanism: DTG assurance reconcile workflow
+    responsibility: instance-level reconciliation trigger
+    classification: DEFER
+    evidence: DTG-specific reconcile surface remains separate from the generic lifecycle/controller machinery and may still serve existing issue/event consumers.
+    action: Keep as an instance shim until event-consumer equivalence proves it can be folded without losing idempotency or provenance.
+  - repository: RAHP
+    mechanism: executable evidence producer contract
+    responsibility: target-neutral evidence execution/provenance/freshness envelope
+    classification: GENERALISE
+    evidence: RAHP issues 490/504 introduced rahp-evidence-producer-result/v1; current Interop Data Room producer emits it while retaining target execution outside RAHP.
+    action: Use this contract for new producers; do not add target vocabulary to RAHP core.
+  - repository: RAHP
+    mechanism: portable specialist result contract
+    responsibility: target-neutral specialist return consumed by RAHP
+    classification: GENERALISE
+    evidence: RAHP issues 506/507 made the live method schema the singular v1 authority after DPIP/RAHP divergence was exposed by real integration.
+    action: External specialists validate against the authoritative contract; incompatible future changes require explicit versioning.
+  - repository: RAHP
+    mechanism: portable assurance catalogue
+    responsibility: generic target-neutral assurance meaning
+    classification: GENERALISE
+    evidence: RAHP issues 491/508 dispositioned seven Interop-derived candidates with portability tests and added no duplicate pattern where existing semantics were sufficient.
+    action: Continue incubation-to-graduation discipline; target-specific propositions remain in profiles/Lab.
+  - repository: RAHP
+    mechanism: cross-spec pressure-test launcher
+    responsibility: generic composition execution routing
+    classification: KEEP
+    evidence: DTG materiality routing dispatches registered compositions through the generic cross-spec-pressure-test.yml executor and profile registry.
+    action: Retain generic executor; composition declarations and target mappings remain profile-owned.
+  - repository: RAHP
+    mechanism: DTG repository review worker
+    responsibility: source/ecosystem-specific observation and review input
+    classification: KEEP
+    evidence: Dedicated DTG worker is an instance acquisition surface, not the terminal assurance engine.
+    action: Keep DTG-specific source knowledge outside generic controller semantics.
+  - repository: RAHP
+    mechanism: evidence freshness and invalidation
+    responsibility: provenance, source-pin validity and assurance delta
+    classification: KEEP
+    evidence: RAHP validation includes evidence freshness/delta and source-pinned clean-room outputs; historical evidence remains bounded to its epoch.
+    action: Retain as generic assurance semantics shared by all profiles and producers.
+  - repository: DPIP
+    mechanism: RAHP intake
+    responsibility: admit structurally/semantically valid privacy examination requests
+    classification: KEEP
+    evidence: .github/workflows/rahp-intake.yml is event-driven with scheduled recovery and explicitly says admission is not privacy PASS, evidence sufficiency or RAHP GREEN.
+    action: Retain as the specialist admission transition; do not move materiality or terminal judgment into DPIP.
+  - repository: DPIP
+    mechanism: examination setup and execution
+    responsibility: privacy-specific examination lifecycle and causal interpretation
+    classification: KEEP
+    evidence: setup/execute workflows are explicit state transitions; execution permits PASS/FAIL/CONSTRAINED/INDETERMINATE/NOT_APPLICABLE and says workflow success is not privacy PASS.
+    action: Retain privacy-specific lifecycle transitions; consolidate only transport boilerplate if separately equivalence-proven.
+  - repository: DPIP
+    mechanism: evidence plan and acquire
+    responsibility: specialist evidence planning/acquisition transitions
+    classification: KEEP
+    evidence: Separate rahp-evidence-plan.yml and rahp-evidence-acquire.yml surfaces represent retryable lifecycle stages rather than competing assurance authorities.
+    action: Retain stage boundaries while they provide durable retry/recovery semantics; use RAHP producer/provenance contracts instead of duplicating generic envelopes.
+  - repository: DPIP
+    mechanism: privacy observability contract and evaluator
+    responsibility: reusable observer-plane, comparison and bounded privacy semantics
+    classification: GENERALISE
+    evidence: DPIP issue 221 completed with versioned implementation-neutral semantics, positive/negative/incomplete/outside-threat-model fixtures and a real Interop producer path.
+    action: Make this the canonical reusable privacy observation model; target-specific observation collection stays in Interop/producer code.
+  - repository: DPIP
+    mechanism: RAHP return outbox and acknowledgement
+    responsibility: durable delivery of terminal specialist disposition
+    classification: KEEP
+    evidence: .github/workflows/rahp-return.yml persists/retries delivery and explicitly states successful delivery is not RAHP portfolio GREEN.
+    action: Retain durable return semantics; RAHP remains terminal reconciliation owner.
+  - repository: DPIP
+    mechanism: profile validation and release workflows
+    responsibility: DPIP repository quality, profile conformance and release lifecycle
+    classification: KEEP
+    evidence: validate-profiles.yml and release workflows are repository/specialist infrastructure, not RAHP orchestration.
+    action: Retain as DPIP-owned infrastructure.
+  - repository: Interop Lab
+    mechanism: current OpenVTC A/B evidence-export family
+    responsibility: target-specific source-pinned A/B observations and compatibility evidence export
+    classification: CONSOLIDATE
+    evidence: Lab issues/PRs 195/196 characterized four workflows; 197/198 migrated Track B task first; 199/200 then migrated Track A and status after live-equivalence evidence. Policy was deliberately excluded.
+    action: Use the reusable workflow/common runner for characterized two-artifact members; add declarative members rather than new end-to-end pipelines where semantics fit.
+  - repository: Interop Lab
+    mechanism: Track B policy DPIP-to-RAHP integration producer
+    responsibility: target execution plus live specialist integration pressure test
+    classification: DEFER
+    evidence: Characterization shows immutable OpenVTC, DPIP and RAHP pins, four artifacts and an additional specialist evaluation/consumer-validation chain.
+    action: Retain separately until another producer demonstrates the same specialist-integration lifecycle and equivalence supports reuse.
+  - repository: Interop Lab
+    mechanism: target-specific specialist/runtime workflows
+    responsibility: source-pinned execution, adversarial harnesses, PDC evidence, Data Rooms, personhood transport and historical regression
+    classification: KEEP
+    evidence: Lab issue 188 final workflow matrix records materially distinct external dependency, runtime, evidence, privilege, failure and historical boundaries for each retained bespoke workflow.
+    action: Keep target execution in the Lab; apply the documented new-workflow admission rule and retire only on evidence-backed supersession.
