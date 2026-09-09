@@ -28,11 +28,11 @@ stable_primitives:
     non_inference: A producer being registered or runnable does not establish that required evidence exists.
   - id: portable-evidence-producer-result
     owner: RAHP
-    contract_or_surface: rahp-evidence-producer-result/v1 graduated by RAHP #490
+    contract_or_surface: rahp-evidence-producer-result/v1 graduated by RAHP issue 490
     non_inference: Producer workflow success and local observations do not imply specialist or terminal assurance PASS.
   - id: privacy-observability-semantics
     owner: DPIP
-    contract_or_surface: dpip-privacy-observability-result/v1 and DPIP #221 observer/experiment semantics
+    contract_or_surface: dpip-privacy-observability-result/v1 and DPIP issue 221 observer/experiment semantics
     non_inference: Absence of an observed join supports only the bounded observer/threat-model proposition actually exercised.
   - id: privacy-interpretation
     owner: DPIP
@@ -40,7 +40,7 @@ stable_primitives:
     non_inference: DPIP specialist PASS is not terminal RAHP assurance PASS or portfolio GREEN.
   - id: portable-specialist-result
     owner: RAHP
-    contract_or_surface: authoritative rahp-assessor-result/v1 contract singularized by RAHP #506
+    contract_or_surface: authoritative rahp-assessor-result/v1 contract singularized by RAHP issue 506
     non_inference: Successful delivery or schema validation of a specialist result does not determine terminal assurance.
   - id: target-specific-execution
     owner: Interop Lab
@@ -52,7 +52,7 @@ stable_primitives:
     non_inference: A case fixture or successful vector cannot manufacture missing normative semantics or deployment-wide evidence.
   - id: generic-assurance-pattern-meaning
     owner: RAHP
-    contract_or_surface: portable assurance catalogue and RAHP #491 graduation discipline
+    contract_or_surface: portable assurance catalogue and RAHP issue 491 graduation discipline
     non_inference: Mapping a target proposition to a generic pattern does not make the target proposition satisfied.
   - id: terminal-reconciliation
     owner: RAHP
@@ -103,19 +103,19 @@ mechanisms:
     mechanism: executable evidence producer contract
     responsibility: target-neutral evidence execution/provenance/freshness envelope
     classification: GENERALISE
-    evidence: RAHP #490/#504 introduced rahp-evidence-producer-result/v1; current Interop Data Room producer emits it while retaining target execution outside RAHP.
+    evidence: RAHP issues 490/504 introduced rahp-evidence-producer-result/v1; current Interop Data Room producer emits it while retaining target execution outside RAHP.
     action: Use this contract for new producers; do not add target vocabulary to RAHP core.
   - repository: RAHP
     mechanism: portable specialist result contract
     responsibility: target-neutral specialist return consumed by RAHP
     classification: GENERALISE
-    evidence: RAHP #506/#507 made the live method schema the singular v1 authority after DPIP/RAHP divergence was exposed by real integration.
+    evidence: RAHP issues 506/507 made the live method schema the singular v1 authority after DPIP/RAHP divergence was exposed by real integration.
     action: External specialists validate against the authoritative contract; incompatible future changes require explicit versioning.
   - repository: RAHP
     mechanism: portable assurance catalogue
     responsibility: generic target-neutral assurance meaning
     classification: GENERALISE
-    evidence: RAHP #491/#508 dispositioned seven Interop-derived candidates with portability tests and added no duplicate pattern where existing semantics were sufficient.
+    evidence: RAHP issues 491/508 dispositioned seven Interop-derived candidates with portability tests and added no duplicate pattern where existing semantics were sufficient.
     action: Continue incubation-to-graduation discipline; target-specific propositions remain in profiles/Lab.
   - repository: RAHP
     mechanism: cross-spec pressure-test launcher
@@ -157,7 +157,7 @@ mechanisms:
     mechanism: privacy observability contract and evaluator
     responsibility: reusable observer-plane, comparison and bounded privacy semantics
     classification: GENERALISE
-    evidence: DPIP #221 completed with versioned implementation-neutral semantics, positive/negative/incomplete/outside-threat-model fixtures and a real Interop producer path.
+    evidence: DPIP issue 221 completed with versioned implementation-neutral semantics, positive/negative/incomplete/outside-threat-model fixtures and a real Interop producer path.
     action: Make this the canonical reusable privacy observation model; target-specific observation collection stays in Interop/producer code.
   - repository: DPIP
     mechanism: RAHP return outbox and acknowledgement
@@ -175,7 +175,7 @@ mechanisms:
     mechanism: current OpenVTC A/B evidence-export family
     responsibility: target-specific source-pinned A/B observations and compatibility evidence export
     classification: CONSOLIDATE
-    evidence: Lab #195/#196 characterized four workflows; #197/#198 migrated Track B task first; #199/#200 then migrated Track A and status after live-equivalence evidence. Policy was deliberately excluded.
+    evidence: Lab issues/PRs 195/196 characterized four workflows; 197/198 migrated Track B task first; 199/200 then migrated Track A and status after live-equivalence evidence. Policy was deliberately excluded.
     action: Use the reusable workflow/common runner for characterized two-artifact members; add declarative members rather than new end-to-end pipelines where semantics fit.
   - repository: Interop Lab
     mechanism: Track B policy DPIP-to-RAHP integration producer
@@ -187,5 +187,5 @@ mechanisms:
     mechanism: target-specific specialist/runtime workflows
     responsibility: source-pinned execution, adversarial harnesses, PDC evidence, Data Rooms, personhood transport and historical regression
     classification: KEEP
-    evidence: Lab #188 final workflow matrix records materially distinct external dependency, runtime, evidence, privilege, failure and historical boundaries for each retained bespoke workflow.
+    evidence: Lab issue 188 final workflow matrix records materially distinct external dependency, runtime, evidence, privilege, failure and historical boundaries for each retained bespoke workflow.
     action: Keep target execution in the Lab; apply the documented new-workflow admission rule and retire only on evidence-backed supersession.
