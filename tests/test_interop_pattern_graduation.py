@@ -1,4 +1,5 @@
 import pathlib
+import re
 import unittest
 
 import yaml
@@ -6,6 +7,13 @@ import yaml
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DISPOSITIONS = ROOT / "method" / "catalogue" / "interop-graduation-dispositions.yaml"
 ASSURANCE = ROOT / "method" / "catalogue" / "assurance-patterns.yaml"
+
+
+def contains_term(text: str, term: str) -> bool:
+    """Match target vocabulary as a word/phrase, not as a substring of ordinary words."""
+    words = [re.escape(part) for part in term.lower().split()]
+    pattern = r"(?<![a-z0-9])" + r"\s+".join(words) + r"(?![a-z0-9])"
+    return re.search(pattern, text.lower()) is not None
 
 
 class InteropPatternGraduationTests(unittest.TestCase):
@@ -51,13 +59,18 @@ class InteropPatternGraduationTests(unittest.TestCase):
                 self.assertIn("independent", families)
 
     def test_generic_pattern_text_does_not_import_target_vocabulary(self):
-        forbidden = [value.lower() for value in self.dispositions["forbidden_generic_vocabulary"]]
+        forbidden = self.dispositions["forbidden_generic_vocabulary"]
         for candidate in self.dispositions["candidates"]:
             for pattern_id in candidate.get("generic_patterns", []):
-                rendered = yaml.safe_dump(self.patterns[pattern_id], sort_keys=True).lower()
-                for token in forbidden:
-                    with self.subTest(candidate=candidate["id"], pattern=pattern_id, token=token):
-                        self.assertNotIn(token, rendered)
+                rendered = yaml.safe_dump(self.patterns[pattern_id], sort_keys=True)
+                for term in forbidden:
+                    with self.subTest(candidate=candidate["id"], pattern=pattern_id, term=term):
+                        self.assertFalse(contains_term(rendered, term))
+
+    def test_vac_guard_does_not_false_match_privacy(self):
+        self.assertFalse(contains_term("privacy and inference", "VAC"))
+        self.assertTrue(contains_term("VDC and VAC composition", "VAC"))
+        self.assertTrue(contains_term("Data Room execution", "Data Room"))
 
     def test_unsettled_common_control_is_not_graduated(self):
         candidate = next(c for c in self.dispositions["candidates"] if c["id"] == "common-control-same-subject-integrity")
