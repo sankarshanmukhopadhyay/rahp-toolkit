@@ -1,0 +1,56 @@
+{
+  "schema": "rahp-evidence-producer-result/v1",
+  "producer": {
+    "id": "interop-lab:data-room-runtime",
+    "implementation": "experiments/dtg-data-room-runtime/run_current_openvtc.py",
+    "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+    "revision": "5888af18d5b0fddeed44f5fcc783b30efbd13cbb"
+  },
+  "obligation": {
+    "proposition_key": "rahp-obligation:11111111111111111111",
+    "evidence_contract_key": "rahp-evidence-contract:22222222222222222222",
+    "evidence_requirement_ids": ["P-ROOM-009"]
+  },
+  "source": {
+    "pins": [{
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "revision": "56cd6e5b7116777f1d9734e76c9a7b0569870e19",
+      "role": "implementation"
+    }]
+  },
+  "execution": {
+    "id": "github-actions:34299611845:1",
+    "runner": "run_current_openvtc.py",
+    "timestamp": "2026-09-09T01:35:00Z",
+    "determinism": "environment-dependent",
+    "status": "succeeded"
+  },
+  "evidence": {
+    "status": "observed",
+    "evidence_class": "runtime-upstream-observation",
+    "artifacts": [{
+      "name": "current-openvtc-data-room-evidence.json",
+      "media_type": "application/json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provenance": {"producer_id": "interop-lab:data-room-runtime"}
+    }],
+    "observations": [{
+      "case": "IC-DTG-DATA-ROOM-RUNTIME-001",
+      "propositions": {"P-ROOM-009": {"state": "EVIDENCE_REQUIRED"}}
+    }]
+  },
+  "claim_boundary": {
+    "supports": ["bounded observations for IC-DTG-DATA-ROOM-RUNTIME-001"],
+    "does_not_support": ["terminal assurance PASS", "deployment-wide inference"],
+    "limitations": ["Missing evidence remains a residual rather than PASS."],
+    "residual_uncertainty": "Missing evidence remains a residual rather than PASS."
+  },
+  "freshness": {
+    "valid_against": [{
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "revision": "56cd6e5b7116777f1d9734e76c9a7b0569870e19",
+      "role": "implementation"
+    }],
+    "invalidation_keys": ["source:OpenVTC/verifiable-trust-infrastructure@56cd6e5b7116777f1d9734e76c9a7b0569870e19"]
+  }
+}
