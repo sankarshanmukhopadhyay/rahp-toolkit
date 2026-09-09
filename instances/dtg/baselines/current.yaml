@@ -1,5 +1,5 @@
 schema: rahp-dtg-portfolio-baseline/v1
-lineage: post-graduation-2026-09-09-v1
+lineage: post-graduation-2026-09-09-v2
 purpose: post-graduation-full-portfolio-rebaseline
 created_at: '2026-09-09'
 claim_boundary: >-
@@ -24,6 +24,8 @@ known_residual_owners:
   - rahp-toolkit#500
   - dtg-privacy-implementation-profile#58
 notes:
+  - v1 merged successfully but push-event file metadata did not expose the manifest change, so that run remained normal date-scoped routing and is not the clean-room baseline.
+  - v2 is the first intended post-graduation clean-room portfolio lineage.
   - Full portfolio outcome is allowed to be AMBER or INDETERMINATE where evidence warrants it.
   - workflow green is not assurance green.
   - component conformance is not composition conformance.
