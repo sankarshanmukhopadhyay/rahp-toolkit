@@ -19,4 +19,10 @@ The assurance chain is `harm ← risk → control → guardrail/assurance → ev
 
 Every `RKP-*` record says whether a guardrail is `required`, `conditional`, or `control_sufficient`. This prevents the coverage report from treating every risk without a guardrail as the same kind of gap. A required guardrail that has no `GRP-*` mapping is a validation error.
 
+## Pattern graduation
+
+Interop/implementation pressure cases do not automatically become new generic catalogue patterns. Candidate abstractions are dispositioned against existing catalogue semantics and portability evidence first. The current machine-readable graduation decisions live in [`interop-graduation-dispositions.yaml`](interop-graduation-dispositions.yaml); the method and review checklist are documented in [`docs/interop-pattern-graduation.md`](../../docs/interop-pattern-graduation.md).
+
+The default is to reuse or refine existing generic patterns. A new core pattern is justified only when the proposition remains meaningful after replacing the original target and cannot be represented without semantic distortion.
+
 For simple-English definitions of these terms, see [`method/glossary/`](../glossary/README.md).
