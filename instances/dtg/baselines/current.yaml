@@ -1,5 +1,5 @@
 schema: rahp-dtg-portfolio-baseline/v1
-lineage: post-graduation-2026-09-09-v3
+lineage: post-graduation-2026-09-09-v4
 purpose: post-graduation-full-portfolio-rebaseline
 created_at: '2026-09-09'
 claim_boundary: >-
@@ -24,10 +24,12 @@ known_residual_owners:
   - https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/500
   - https://github.com/sankarshanmukhopadhyay/dtg-privacy-implementation-profile/issues/58
 prior_clean_room_controller: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/517
+prior_date_scoped_controller: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/523
 notes:
-  - v1 merged successfully but push-event file metadata did not expose the manifest change, so that run remained normal date-scoped routing and is not the clean-room baseline.
+  - v1 merged successfully but did not establish a clean-room lineage.
   - v2 was the first true post-graduation clean-room lineage and exposed 28 UNMAPPED qualifying findings in https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/517.
-  - v3 exercises the registered semantic dispositions added from the v2 characterization fixture; unknown future semantics must still fail closed to UNMAPPED.
+  - v3 proved the generalized routing rules against the current 2026-09-09 snapshot with zero UNMAPPED findings, but shallow-checkout change detection left that execution date-scoped at https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/523.
+  - v4 is the acceptance lineage: baseline activation is detected by diffing the pushed commit against GitHub's explicit before SHA.
   - Full portfolio outcome is allowed to be AMBER or INDETERMINATE where evidence warrants it.
   - workflow green is not assurance green.
   - component conformance is not composition conformance.
