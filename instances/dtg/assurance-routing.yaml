@@ -101,6 +101,86 @@ semantic_rules:
     outcome: combined
     review_mode: combined
 
+  - id: data-room-custody-lifecycle
+    when:
+      dimensions: [authorization, lifecycle, composition, security]
+      concerns: [data-room-custody, key-lifecycle, membership-authority]
+    outcome: combined
+    review_mode: combined
+
+  - id: persona-provenance-boundary
+    when:
+      dimensions: [composition, security, privacy]
+      concerns: [provenance, context-boundary]
+    outcome: combined
+    review_mode: combined
+
+  - id: admin-scope-authority
+    when:
+      dimensions: [authorization, security, composition]
+      concerns: [admin-scope, authority-boundary]
+    outcome: combined
+    review_mode: combined
+
+  - id: credential-retrieval-disclosure
+    when:
+      dimensions: [authorization, privacy, composition]
+      concerns: [credential-disclosure, retrieval-authority]
+    outcome: combined
+    review_mode: combined
+
+  - id: backup-evidence-integrity
+    when:
+      dimensions: [lifecycle, security]
+      concerns: [evidence-integrity, recovery-boundary]
+    outcome: combined
+    review_mode: combined
+
+  - id: untrusted-input-fail-closed
+    when:
+      dimensions: [security, authorization]
+      concerns: [untrusted-input, fail-closed]
+    outcome: no-action
+    rationale: >-
+      Treating recalled memory as untrusted data and refusing unaddressed inbound
+      consent requests are assurance-strengthening fail-closed boundaries. Preserve
+      the observations in the portfolio evidence, but do not create duplicate review
+      work unless a separate finding shows the boundary is bypassed or weakened.
+
+  - id: binder-enumerability-privacy
+    when:
+      dimensions: [privacy, security]
+      concerns: [enumerability, correlation]
+    outcome: dpip
+    dpip:
+      affected_interactions: [credential-proof-trust-task-consequential-execution]
+      affected_reference_flows:
+        - "DTG Credential -> digest-valued binder -> retained/composed verification evidence"
+      affected_invariants:
+        - no-unnecessary-cross-context-correlation
+        - retained-evidence-does-not-defeat-selective-disclosure
+      affected_claims:
+        - pairwise-identifiers-preserve-declared-correlation-scope
+        - retained-task-proof-status-and-outcome-evidence-do-not-enable-unintended-linkage
+      suspected_surfaces:
+        - unsalted digest-valued binders
+        - enumerable credential references
+        - retained verification evidence
+      question: >-
+        Can an observer enumerate or precompute unsalted digest-valued credential
+        binders, or join them across contexts, so that retained or composed evidence
+        reveals relationships beyond the intended disclosure and correlation scope?
+
+  - id: routine-release-or-plan
+    when:
+      dimensions: [release]
+      concerns: [aggregation]
+    outcome: no-action
+    rationale: >-
+      Release markers and editorial merge plans aggregate already-visible constituent
+      changes. They remain in the portfolio evidence but do not create an additional
+      assurance proposition unless another semantic rule identifies material behavior.
+
   - id: openvtc-security-combined
     when:
       dimensions: [security, lifecycle]
@@ -207,6 +287,74 @@ finding_rules:
     title_regex: '(trust-tasks-rs|specification dependency|spec dependency|specs now define|schema dependency)'
     review_mode: combined
 
+  - id: data-room-custody-lifecycle
+    outcome: combined
+    repository_regex: '^(OpenVTC/|trustoverip/dtgwg-trust-tasks-tf$)'
+    title_regex: '(rooms|data rooms|epoch key chain|epoch link|group custody|presentation oracle)'
+    review_mode: combined
+
+  - id: persona-provenance-boundary
+    outcome: combined
+    repository_regex: '^(OpenVTC/|trustoverip/dtgwg-trust-tasks-tf$)'
+    title_regex: '(persona).*(present|operator surface|preview|projection|provenance|context-local)|(resolved entry is a projection)'
+    review_mode: combined
+
+  - id: admin-scope-authority
+    outcome: combined
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-trust-tasks-tf)$'
+    title_regex: '(provision).*(unrestricted admin|admin lives|how far it reaches|admin.*reach)'
+    review_mode: combined
+
+  - id: credential-retrieval-disclosure
+    outcome: combined
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-trust-tasks-tf)$'
+    title_regex: '(credentials/list|vault/credentials|returns a member.s credential bodies|credential bodies)'
+    review_mode: combined
+
+  - id: backup-evidence-integrity
+    outcome: combined
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: '(backup).*(spec debt|audit|evidence|family)'
+    review_mode: combined
+
+  - id: untrusted-input-fail-closed
+    outcome: no-action
+    repository_regex: '^OpenVTC/'
+    title_regex: '(recalled memory as untrusted data|unaddressed consent request is refused|page-task refusal)'
+    rationale: >-
+      Treating recalled memory as untrusted data and refusing unaddressed inbound
+      consent requests are assurance-strengthening fail-closed boundaries.
+
+  - id: binder-enumerability-privacy
+    outcome: dpip
+    repository_regex: '^trustoverip/dtgwg-cred-spec$'
+    title_regex: '(binder).*(unsalted|enumerable|blinding)|(unsalted).*(digest|binder)'
+    dpip:
+      affected_interactions: [credential-proof-trust-task-consequential-execution]
+      affected_reference_flows:
+        - "DTG Credential -> digest-valued binder -> retained/composed verification evidence"
+      affected_invariants:
+        - no-unnecessary-cross-context-correlation
+        - retained-evidence-does-not-defeat-selective-disclosure
+      affected_claims:
+        - pairwise-identifiers-preserve-declared-correlation-scope
+        - retained-task-proof-status-and-outcome-evidence-do-not-enable-unintended-linkage
+      suspected_surfaces:
+        - unsalted digest-valued binders
+        - enumerable credential references
+        - retained verification evidence
+      question: >-
+        Can an observer enumerate or precompute unsalted digest-valued credential
+        binders, or join them across contexts, so that retained or composed evidence
+        reveals relationships beyond the intended disclosure and correlation scope?
+
+  - id: routine-release-or-plan
+    outcome: no-action
+    repository_regex: '^trustoverip/'
+    title_regex: '(chore: release v[0-9]+\.[0-9]+\.[0-9]+|WD02 merge plan)'
+    rationale: >-
+      Release markers and editorial merge plans aggregate already-visible constituent changes.
+
   - id: openvtc-security-combined
     outcome: combined
     repository_regex: '^OpenVTC/'
@@ -228,7 +376,7 @@ finding_rules:
   - id: trust-tasks-framework-covered
     outcome: covered
     repository_regex: '^trustoverip/dtgwg-trust-tasks-(tf|spec)$'
-    title_regex: '(framework|registry|generated types|typed signing|dispatch|application-state|refusal|removal|publish)'
+    title_regex: '(framework|registry|generated types|typed signing|dispatch|application-state|refusal|removal|publish|registered acl/change-role task)'
     covered_by: trust-tasks--credential-spec
 
 fallback:
