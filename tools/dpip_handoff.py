@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Transport explicitly promoted RAHP privacy referrals to DPIP.
 
-RAHP owns promotion of a privacy question. Once promoted, this transport preserves
-canonical examination identifiers, immutable source pins, evidence requirements,
-supplied evidence bindings and human-readable presentation metadata without making
-the DPIP privacy judgment.
+RAHP owns promotion of a privacy question. This transport separates durable
+proposition identity, source-referral identity, and bounded DPIP examination
+identity without making a privacy judgment.
 """
 from __future__ import annotations
 
@@ -26,6 +25,8 @@ DEFAULT_DPIP_REPO = "sankarshanmukhopadhyay/dtg-privacy-implementation-profile"
 REQUESTED = "assurance:dpip-requested"
 OPEN = "assurance:dpip-open"
 COMPLETE = "assurance:dpip-complete"
+SOURCE_LABEL = "source:rahp"
+RUN_COMPLETE = "run:complete"
 CANONICAL_KEYS = (
     "interaction_ids", "reference_flow_ids", "invariant_ids", "claim_ids",
     "profile_ids", "evidence_requirement_ids",
@@ -42,7 +43,7 @@ def api(method: str, repo: str, path: str, token: str, payload: Any | None = Non
     data = None if payload is None else json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data, method=method, headers={
         "Accept": "application/vnd.github+json",
-        "User-Agent": "rahp-dpip-handoff/1.4",
+        "User-Agent": "rahp-dpip-handoff/2.0",
         "X-GitHub-Api-Version": "2022-11-28",
         "Authorization": f"Bearer {token}",
         **({"Content-Type": "application/json"} if data is not None else {}),
@@ -184,18 +185,74 @@ def validate_payload(payload: dict[str, Any]) -> list[str]:
     return errors
 
 
-def identity(source_issue: int, payload: dict[str, Any]) -> tuple[str, str]:
+def _digest(material: Any, length: int = 20) -> str:
+    encoded = json.dumps(material, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(encoded).hexdigest()[:length]
+
+
+def proposition_material(payload: dict[str, Any]) -> dict[str, Any]:
+    canonical = {k: v for k, v in canonical_contract(payload).items() if k != "descriptors"}
+    return {
+        "affected_interactions": payload.get("affected_interactions", []),
+        "affected_reference_flows": payload.get("affected_reference_flows", []),
+        "affected_invariants": payload.get("affected_invariants", []),
+        "affected_claims": payload.get("affected_claims", []),
+        "suspected_surfaces": payload.get("suspected_surfaces", []),
+        "canonical": canonical,
+        "question": str(payload.get("question", "")).strip(),
+    }
+
+
+def proposition_id(payload: dict[str, Any]) -> str:
+    return f"rahp-proposition:{_digest(proposition_material(payload))}"
+
+
+def examination_material(payload: dict[str, Any]) -> dict[str, Any]:
     source = payload["source_change"]
-    target_material = {key: payload.get(key, []) for key in (
-        "affected_interactions", "affected_reference_flows", "affected_invariants",
-        "affected_claims", "suspected_surfaces")}
-    target_material["canonical"] = canonical_contract(payload)
-    target_material["source_pins"] = source_pins(payload)
-    target_material["provided_evidence"] = provided_evidence(payload)
-    target_material["question"] = payload.get("question", "")
-    digest = hashlib.sha256(json.dumps(target_material, sort_keys=True, separators=(",", ":")).encode()).hexdigest()[:16]
+    return {
+        "proposition_id": proposition_id(payload),
+        "changed_artifact": {
+            "repository": str(source.get("repository") or "").strip(),
+            "revision": str(source.get("revision") or "").strip(),
+        },
+        "source_pins": source_pins(payload),
+        "provided_evidence": provided_evidence(payload),
+        "requested_scope": proposition_material(payload),
+    }
+
+
+def examination_key(payload: dict[str, Any]) -> str:
+    return _digest(examination_material(payload))
+
+
+def referral_id(source_issue: int, payload: dict[str, Any]) -> str:
+    source = payload["source_change"]
+    return _digest({
+        "source_issue": source_issue,
+        "lineage": lineage_id(source),
+        "revision": source.get("revision"),
+        "examination_key": examination_key(payload),
+    })
+
+
+def identity(source_issue: int, payload: dict[str, Any]) -> tuple[str, str]:
+    """Return the legacy source-specific marker plus semantic examination digest."""
+    source = payload["source_change"]
+    digest = examination_key(payload)[:16]
     marker = f"<!-- rahp-dpip-handoff:{source_issue}:{lineage_id(source)}:{source['revision']}:{digest} -->"
     return marker, digest
+
+
+def proposition_marker(payload: dict[str, Any]) -> str:
+    return f"<!-- rahp-dpip-proposition:{proposition_id(payload)} -->"
+
+
+def examination_marker(payload: dict[str, Any]) -> str:
+    return f"<!-- rahp-dpip-examination:{examination_key(payload)} -->"
+
+
+def referral_marker(source_issue: int, payload: dict[str, Any]) -> str:
+    return f"<!-- rahp-dpip-referral:{source_issue}:{referral_id(source_issue, payload)} -->"
 
 
 def issue_has_label(issue: dict[str, Any], label: str) -> bool:
@@ -207,28 +264,71 @@ def list_requested(repo: str, token: str) -> list[dict[str, Any]]:
     return api("GET", repo, f"issues?state=open&labels={label}&per_page=100", token) or []
 
 
-def find_existing(dpip_repo: str, token: str, marker: str) -> dict[str, Any] | None:
-    label = urllib.parse.quote("source:rahp", safe="")
+def issue_comments(repo: str, number: int, token: str) -> list[dict[str, Any]]:
+    return api("GET", repo, f"issues/{number}/comments?per_page=100", token) or []
+
+
+def issue_text(issue: dict[str, Any], comments: list[dict[str, Any]]) -> str:
+    return "\n".join([issue.get("body") or "", *[(c.get("body") or "") for c in comments]])
+
+
+def find_existing(dpip_repo: str, token: str, source_marker: str, exam_marker: str, ref_marker: str) -> tuple[dict[str, Any] | None, str | None]:
+    label = urllib.parse.quote(SOURCE_LABEL, safe="")
     issues = api("GET", dpip_repo, f"issues?state=all&labels={label}&per_page=100", token) or []
+
+    # Exact source-referral retry takes precedence and remains backward compatible.
     for issue in issues:
-        if marker in (issue.get("body") or ""):
-            return issue
-    return None
+        comments = issue_comments(dpip_repo, issue["number"], token)
+        text = issue_text(issue, comments)
+        if source_marker in text or ref_marker in text:
+            return issue, "source-retry"
+
+    # Cross-source semantic convergence is safe only for the same examination epoch.
+    active: dict[str, Any] | None = None
+    terminal: dict[str, Any] | None = None
+    for issue in issues:
+        comments = issue_comments(dpip_repo, issue["number"], token)
+        if exam_marker not in issue_text(issue, comments):
+            continue
+        is_terminal = issue.get("state") == "closed" or issue_has_label(issue, RUN_COMPLETE)
+        if is_terminal:
+            terminal = terminal or issue
+        else:
+            active = active or issue
+    if active is not None:
+        return active, "active-equivalent"
+    if terminal is not None:
+        return terminal, "terminal-equivalent"
+    return None, None
 
 
-def create_intake(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], payload: dict[str, Any], marker: str, dpip_token: str) -> dict[str, Any]:
+def source_data(rahp_repo: str, rahp_issue: dict[str, Any], payload: dict[str, Any]) -> dict[str, Any]:
     source = payload["source_change"]
-    source_data: dict[str, Any] = {
-        "system": "RAHP", "repository": rahp_repo, "issue": rahp_issue["number"],
-        "changed_artifact": {"repository": source["repository"], "revision": source["revision"], **({"pull_request": source["pull_request"]} if source.get("pull_request") else {})},
+    data: dict[str, Any] = {
+        "system": "RAHP",
+        "repository": rahp_repo,
+        "issue": rahp_issue["number"],
+        "changed_artifact": {
+            "repository": source["repository"],
+            "revision": source["revision"],
+            **({"pull_request": source["pull_request"]} if source.get("pull_request") else {}),
+        },
         "source_pins": source_pins(payload),
+        "identities": {
+            "proposition_id": proposition_id(payload),
+            "referral_id": f"rahp-referral:{referral_id(rahp_issue['number'], payload)}",
+            "examination_key": examination_key(payload),
+        },
     }
     if source.get("gatherer_run_id"):
-        source_data["gatherer"] = {"run_id": source["gatherer_run_id"], **({"event_id": source["gatherer_event_id"]} if source.get("gatherer_event_id") else {})}
+        data["gatherer"] = {"run_id": source["gatherer_run_id"], **({"event_id": source["gatherer_event_id"]} if source.get("gatherer_event_id") else {})}
     if source.get("monitor_fingerprint"):
-        source_data["portfolio_monitor"] = {"fingerprint": source["monitor_fingerprint"], **({"finding_id": source["monitor_finding_id"]} if source.get("monitor_finding_id") else {})}
-    source_block = {"source": source_data}
-    requested_data = {key: value for key, value in {
+        data["portfolio_monitor"] = {"fingerprint": source["monitor_fingerprint"], **({"finding_id": source["monitor_finding_id"]} if source.get("monitor_finding_id") else {})}
+    return data
+
+
+def requested_data(payload: dict[str, Any]) -> dict[str, Any]:
+    return {key: value for key, value in {
         "interactions": payload.get("affected_interactions", []),
         "reference_flows": payload.get("affected_reference_flows", []),
         "invariants": payload.get("affected_invariants", []),
@@ -238,22 +338,53 @@ def create_intake(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], pa
         "provided_evidence": provided_evidence(payload),
         "question": payload.get("question", ""),
     }.items() if value}
-    requested = {"requested_examination": requested_data}
+
+
+def create_intake(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], payload: dict[str, Any], source_marker: str, dpip_token: str) -> dict[str, Any]:
+    source_block = {"source": source_data(rahp_repo, rahp_issue, payload)}
+    requested = {"requested_examination": requested_data(payload)}
     body = (
-        f"{marker}\n\n## Source\n\nAutomated handoff from `{rahp_repo}#{rahp_issue['number']}`.\n\n"
+        f"{source_marker}\n{proposition_marker(payload)}\n{examination_marker(payload)}\n{referral_marker(rahp_issue['number'], payload)}\n\n"
+        f"## Examination identity\n\n`{proposition_id(payload)}` / `{examination_key(payload)}`\n\n"
+        f"## Source\n\nAutomated handoff from `{rahp_repo}#{rahp_issue['number']}`.\n\n"
         f"```yaml\n{yaml.safe_dump(source_block, sort_keys=False).rstrip()}\n```\n\n"
         f"## Requested examination\n\n```yaml\n{yaml.safe_dump(requested, sort_keys=False).rstrip()}\n```\n\n"
-        "## Boundary\n\nRAHP transports supplied evidence without deciding whether it is sufficient. DPIP owns applicability, evidence-class acceptance, evidence assessment, scoped conclusion, and return disposition. Canonical identifiers are machine keys; DPIP must resolve them to human-readable titles and explanations in reviewer-facing output.\n"
+        "## Boundary\n\nRAHP transports supplied evidence without deciding whether it is sufficient. DPIP owns applicability, evidence-class acceptance, evidence assessment, scoped conclusion, and return disposition. This issue is one bounded examination epoch; terminal results are historical and new material evidence/revision/scope creates a new epoch.\n"
     )
     title = f"[RAHP intake] {rahp_issue['title'].removeprefix('[DPIP candidate] ').removeprefix('[DPIP requested] ')}"
-    return api("POST", dpip_repo, "issues", dpip_token, {"title": title[:256], "body": body, "assignees": ["sankarshanmukhopadhyay"], "labels": ["source:rahp", "run:requested"]})
+    return api("POST", dpip_repo, "issues", dpip_token, {"title": title[:256], "body": body, "assignees": ["sankarshanmukhopadhyay"], "labels": [SOURCE_LABEL, "run:requested"]})
 
 
-def transition_source(rahp_repo: str, issue_number: int, dpip_issue: dict[str, Any], token: str) -> None:
+def attach_referral(rahp_repo: str, dpip_repo: str, rahp_issue: dict[str, Any], payload: dict[str, Any], dpip_issue: dict[str, Any], dpip_token: str) -> None:
+    marker = referral_marker(rahp_issue["number"], payload)
+    comments = issue_comments(dpip_repo, dpip_issue["number"], dpip_token)
+    if marker in issue_text(dpip_issue, comments):
+        return
+    record = {"source_referral": source_data(rahp_repo, rahp_issue, payload)}
+    body = (
+        f"{marker}\n## Additional RAHP referral lineage\n\n"
+        f"This referral converges on examination `{examination_key(payload)}`; it does not create a new privacy judgment.\n\n"
+        f"```yaml\n{yaml.safe_dump(record, sort_keys=False).rstrip()}\n```"
+    )
+    api("POST", dpip_repo, f"issues/{dpip_issue['number']}/comments", dpip_token, {"body": body})
+
+
+def transition_source(rahp_repo: str, issue_number: int, dpip_issue: dict[str, Any], token: str, mode: str) -> None:
     comments = api("GET", rahp_repo, f"issues/{issue_number}/comments?per_page=100", token) or []
     backlink_marker = f"<!-- rahp-dpip-open:{dpip_issue['number']} -->"
+    terminal = dpip_issue.get("state") == "closed" or issue_has_label(dpip_issue, RUN_COMPLETE)
     if not any(backlink_marker in (comment.get("body") or "") for comment in comments):
-        api("POST", rahp_repo, f"issues/{issue_number}/comments", token, {"body": f"{backlink_marker}\nDPIP examination opened: {dpip_issue['html_url']}\n\nThe referral passed the RAHP promotion gate. DPIP now owns applicability and the scoped privacy conclusion."})
+        if terminal:
+            message = (
+                f"{backlink_marker}\nEquivalent completed DPIP examination: {dpip_issue['html_url']}\n\n"
+                "No historical examination is reopened. Return reconciliation will deliver the bounded terminal result to this referral; fresh material evidence/revision/scope requires a new examination epoch."
+            )
+        else:
+            message = (
+                f"{backlink_marker}\nDPIP examination opened: {dpip_issue['html_url']}\n\n"
+                "The referral passed the RAHP promotion gate. DPIP now owns applicability and the scoped privacy conclusion."
+            )
+        api("POST", rahp_repo, f"issues/{issue_number}/comments", token, {"body": message})
     api("POST", rahp_repo, f"issues/{issue_number}/labels", token, {"labels": [OPEN]})
     try:
         api("DELETE", rahp_repo, f"issues/{issue_number}/labels/{urllib.parse.quote(REQUESTED, safe='')}", token)
@@ -273,14 +404,18 @@ def run(rahp_repo: str, dpip_repo: str, rahp_token: str, dpip_token: str, issue_
             problems = validate_payload(payload)
             if problems:
                 raise ValueError("; ".join(problems))
-            marker, _ = identity(issue["number"], payload)
-            dpip_issue = find_existing(dpip_repo, dpip_token, marker)
+            source_marker, _ = identity(issue["number"], payload)
+            exam_marker = examination_marker(payload)
+            ref_marker = referral_marker(issue["number"], payload)
+            dpip_issue, mode = find_existing(dpip_repo, dpip_token, source_marker, exam_marker, ref_marker)
             if dpip_issue is None:
-                dpip_issue = create_intake(rahp_repo, dpip_repo, issue, payload, marker, dpip_token)
-                print(f"CREATED {dpip_repo}#{dpip_issue['number']} from {rahp_repo}#{issue['number']}")
+                dpip_issue = create_intake(rahp_repo, dpip_repo, issue, payload, source_marker, dpip_token)
+                mode = "created"
+                print(f"CREATED {dpip_repo}#{dpip_issue['number']} from {rahp_repo}#{issue['number']} examination={examination_key(payload)}")
             else:
-                print(f"EXISTS {dpip_repo}#{dpip_issue['number']} for {rahp_repo}#{issue['number']}")
-            transition_source(rahp_repo, issue["number"], dpip_issue, rahp_token)
+                attach_referral(rahp_repo, dpip_repo, issue, payload, dpip_issue, dpip_token)
+                print(f"REUSED {dpip_repo}#{dpip_issue['number']} for {rahp_repo}#{issue['number']} mode={mode}")
+            transition_source(rahp_repo, issue["number"], dpip_issue, rahp_token, mode or "unknown")
         except Exception as exc:
             failures += 1
             print(f"FAIL {rahp_repo}#{issue.get('number')}: {exc}", file=sys.stderr)
@@ -288,54 +423,73 @@ def run(rahp_repo: str, dpip_repo: str, rahp_token: str, dpip_token: str, issue_
 
 
 def self_test() -> int:
-    dogwood_sha = "cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b"
-    dogwood = {
-        "source_change": {"gatherer_run_id": "dogwood-rc1", "repository": "OpenVTC/verifiable-trust-infrastructure", "revision": dogwood_sha},
-        "question": "Does Dogwood RC-1 preserve correlation resistance across composed interactions?",
+    sha = "cb01d0a758863fb3a02f9f4eef2c4f15f56c4c3b"
+    base = {
+        "source_change": {"gatherer_run_id": "run-a", "repository": "OpenVTC/verifiable-trust-infrastructure", "revision": sha},
+        "question": "Does the composition preserve correlation resistance?",
         "canonical": {
             "interaction_ids": ["C3", "C5"],
             "reference_flow_ids": ["RF-001", "RF-003"],
             "claim_ids": ["C3-PC-5", "C5-PC-2"],
-            "evidence_requirement_ids": ["ER-REL-DID-AB", "ER-STATUS-AB", "ER-TASK-AB", "ER-VERIFIER-AB"],
-            "descriptors": [
-                {"id": "C3", "title": "Asymmetric cross-community relationship privacy"},
-                {"id": "C5", "title": "Privacy-preserving lifecycle evaluation and precedence"},
-            ],
+            "evidence_requirement_ids": ["ER-REL-DID-AB"],
+            "descriptors": [{"id": "C3", "title": "Human-readable metadata"}],
         },
     }
-    assert not validate_payload(dogwood)
-    assert source_pins(dogwood)[0]["revision"] == dogwood_sha
-    assert canonical_contract(dogwood)["interaction_ids"] == ["C3", "C5"]
-    digest1 = identity(225, dogwood)[1]
-    changed = json.loads(json.dumps(dogwood)); changed["canonical"]["evidence_requirement_ids"].append("ER-NEW")
-    assert identity(225, changed)[1] != digest1
+    assert not validate_payload(base)
+    assert source_pins(base)[0]["revision"] == sha
 
+    # Proposition identity survives referral/event and evidence changes.
+    same_proposition = json.loads(json.dumps(base))
+    same_proposition["source_change"]["gatherer_run_id"] = "run-b"
+    assert proposition_id(base) == proposition_id(same_proposition)
+    assert examination_key(base) == examination_key(same_proposition)
+    assert referral_id(10, base) != referral_id(11, base)
+
+    # Human-readable descriptors do not fork proposition identity.
+    descriptor_change = json.loads(json.dumps(base))
+    descriptor_change["canonical"]["descriptors"][0]["title"] = "Renamed presentation metadata"
+    assert proposition_id(base) == proposition_id(descriptor_change)
+
+    # Material semantic question change creates a new proposition.
+    semantic_change = json.loads(json.dumps(base))
+    semantic_change["question"] = "Does a different privacy proposition hold?"
+    assert proposition_id(base) != proposition_id(semantic_change)
+
+    # New evidence creates a new examination epoch but preserves proposition identity.
     evidence = {
         "requirement_id": "ER-REL-DID-AB",
         "evidence_class": "runtime-upstream-observation",
         "provenance": {
-            "producer": "trust-protocol-interop-lab",
-            "run_id": "run-001",
-            "observed_at": "2026-08-30T00:00:00Z",
+            "producer": "trust-protocol-interop-lab", "run_id": "run-001",
+            "observed_at": "2026-09-10T00:00:00Z",
             "implementation_repository": "OpenVTC/verifiable-trust-infrastructure",
-            "implementation_revision": dogwood_sha,
-            "context_a_run": "A-001",
-            "context_b_run": "B-001",
+            "implementation_revision": sha, "context_a_run": "A", "context_b_run": "B",
         },
-        "observation_summary": "Two-context runtime relationship observations.",
-        "surfaces": {"relationship_did": {"classification": "fresh", "context_a": "did:example:a", "context_b": "did:example:b"}},
+        "observation_summary": "Two-context observation.",
+        "surfaces": {"identifier": {"context_a": "a", "context_b": "b"}},
     }
-    supplied = json.loads(json.dumps(dogwood)); supplied["provided_evidence"] = [evidence]
+    supplied = json.loads(json.dumps(base)); supplied["provided_evidence"] = [evidence]
     assert not validate_payload(supplied)
-    assert identity(225, supplied)[1] != digest1
-    changed_evidence = json.loads(json.dumps(supplied)); changed_evidence["provided_evidence"][0]["provenance"]["run_id"] = "run-002"
-    assert identity(225, changed_evidence)[1] != identity(225, supplied)[1]
-    malformed = json.loads(json.dumps(supplied)); malformed["provided_evidence"][0]["provenance"]["implementation_revision"] = "main"
+    assert proposition_id(base) == proposition_id(supplied)
+    assert examination_key(base) != examination_key(supplied)
+
+    # Changed immutable source pin/revision creates a new examination epoch.
+    revised = json.loads(json.dumps(base))
+    revised["source_change"]["revision"] = "a" * 40
+    assert proposition_id(base) == proposition_id(revised)
+    assert examination_key(base) != examination_key(revised)
+
+    # Legacy source marker remains source-specific and interpretable.
+    assert identity(10, base)[0] != identity(11, base)[0]
+    assert examination_marker(base) == examination_marker(same_proposition)
+
+    malformed = json.loads(json.dumps(supplied))
+    malformed["provided_evidence"][0]["provenance"]["implementation_revision"] = "main"
     assert any("implementation_revision" in item for item in validate_payload(malformed))
 
     legacy = {"affected_interactions": ["C3"], "source_change": {"monitor_fingerprint": "abc123", "repository": "example/source", "revision": "deadbeef"}, "question": "Does correlation widen?"}
     assert not validate_payload(legacy)
-    print("PASS dpip_handoff self-test")
+    print("PASS dpip_handoff self-test: proposition/referral/examination identity and epoch separation")
     return 0
 
 
