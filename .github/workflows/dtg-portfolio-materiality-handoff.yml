@@ -2,6 +2,7 @@ name: Consume DTG Portfolio Monitor assurance signals
 
 on:
   schedule:
+    # Portfolio Monitor collects at 00:17 and 12:17 UTC. Allow collection/publish time.
     - cron: '7 1,13 * * *'
   workflow_dispatch:
     inputs:
@@ -62,6 +63,11 @@ jobs:
             fi
           fi
           echo "lineage=$lineage" >> "$GITHUB_OUTPUT"
+          if [ -n "$lineage" ]; then
+            echo "Using explicit assessment lineage: $lineage"
+          else
+            echo "No explicit lineage; using normal snapshot/date-scoped controller identity."
+          fi
 
       - name: Validate Portfolio Monitor snapshot fetch contract
         run: python3 tools/fetch_dtg_portfolio_snapshot.py --self-test
@@ -230,6 +236,7 @@ jobs:
           lineage='${{ steps.baseline.outputs.lineage }}'
           while IFS= read -r composition; do
             [ -n "$composition" ] || continue
+            echo "Dispatching RAHP DTG pressure test via generic executor: $composition"
             args=(
               -f registry_path="profiles/dtg/cross-spec-tests.yaml"
               -f composition_id="$composition"
