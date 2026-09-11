@@ -2,7 +2,6 @@ name: Consume DTG Portfolio Monitor assurance signals
 
 on:
   schedule:
-    # Portfolio Monitor collects at 00:17 and 12:17 UTC. Allow collection/publish time.
     - cron: '7 1,13 * * *'
   workflow_dispatch:
     inputs:
@@ -63,11 +62,6 @@ jobs:
             fi
           fi
           echo "lineage=$lineage" >> "$GITHUB_OUTPUT"
-          if [ -n "$lineage" ]; then
-            echo "Using explicit assessment lineage: $lineage"
-          else
-            echo "No explicit lineage; using normal snapshot/date-scoped controller identity."
-          fi
 
       - name: Validate Portfolio Monitor snapshot fetch contract
         run: python3 tools/fetch_dtg_portfolio_snapshot.py --self-test
@@ -135,6 +129,24 @@ jobs:
               f'- Dispositions: `{counts}`',
               f'- UNMAPPED findings: **{len(unresolved)}**',
               '',
+          ]
+          if unresolved:
+              lines.extend([
+                  '### UNMAPPED finding identities',
+                  '',
+                  'These qualifying findings were not semantically routed by the current policy. They remain explicit assurance obligations until dispositioned or transferred to a durable owner.',
+                  '',
+              ])
+              for item in unresolved:
+                  finding_id = item.get('finding_id', 'unknown')
+                  repository = item.get('repository', 'unknown')
+                  title = item.get('title', '(untitled finding)')
+                  evidence_urls = item.get('evidence_urls') or []
+                  lines.append(f'- `{finding_id}` — **{repository}**: {title}')
+                  for evidence_url in evidence_urls:
+                      lines.append(f'  - Evidence: {evidence_url}')
+              lines.append('')
+          lines.extend([
               '## Pipeline contract',
               '',
               'Portfolio Monitor detects/classifies. RAHP owns assurance routing and RAHP assessments. Privacy-relevant findings are promoted through the canonical RAHP → DPIP transport. DPIP owns applicability/evidence/privacy conclusion and returns the disposition to RAHP.',
@@ -144,7 +156,7 @@ jobs:
               '## Closure rule',
               '',
               'Do not close this controller while any routed RAHP review, DPIP referral, or UNMAPPED qualifying finding from this epoch remains outstanding unless ownership has been explicitly transferred to a durable successor. Unknown semantics remain explicit rather than being silently dropped.',
-          ]
+          ])
           body = '\n'.join(lines) + '\n'
           event = {
               'assessment_key': controller_key,
@@ -218,7 +230,6 @@ jobs:
           lineage='${{ steps.baseline.outputs.lineage }}'
           while IFS= read -r composition; do
             [ -n "$composition" ] || continue
-            echo "Dispatching RAHP DTG pressure test via generic executor: $composition"
             args=(
               -f registry_path="profiles/dtg/cross-spec-tests.yaml"
               -f composition_id="$composition"
