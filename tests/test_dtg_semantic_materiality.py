@@ -40,8 +40,8 @@ class DtgSemanticMaterialityTests(unittest.TestCase):
     def commit(self, subject):
         return {"commit": {"message": subject}}
 
-    def file(self, filename):
-        return {"filename": filename, "status": "modified", "additions": 1, "deletions": 1}
+    def file(self, filename, additions=1, deletions=1):
+        return {"filename": filename, "status": "modified", "additions": additions, "deletions": deletions}
 
     def test_151_like_release_fanout_still_escalates_real_semantic_change(self):
         files = [
@@ -133,6 +133,85 @@ class DtgSemanticMaterialityTests(unittest.TestCase):
         commits = [self.commit("chore: adjust workspace configuration")]
         classification, _, _ = MOD.classify(self.target, files, self.cfg, commits)
         self.assertEqual(classification, "assessment")
+
+    def test_601_normative_body_is_not_hidden_by_registry_path_scope(self):
+        target = {
+            "repository": "trustoverip/dtgwg-cred-spec",
+            "role": "normative-specification",
+            "reporting_weight": "critical",
+            "lifecycle": "active",
+            # Historical #601 shape: external registry admitted workflows but omitted spec/body.md.
+            "material_paths": [".github/workflows/**", "schemas/**", "specs/**", "**/*spec*.md"],
+        }
+        files = [
+            self.file(".github/workflows/menu.yml", 2, 2),
+            self.file("spec/body.md", 1016, 67),
+            self.file("spec/terms-and-definitions/vac.md", 24, 8),
+        ]
+        classification, matched, reasons = MOD.classify(target, files, self.cfg, [self.commit("feat!: publish WD02 credential semantics")])
+        self.assertEqual(classification, "assessment")
+        self.assertIn("spec/body.md", matched)
+        self.assertIn("spec/terms-and-definitions/vac.md", matched)
+        detail = MOD.semantic_assurance_surfaces("spec/body.md", target, self.cfg)
+        self.assertIn("normative-semantics", detail["surfaces"])
+        self.assertIn("role-semantic-path", detail["sources"])
+        self.assertTrue(any("semantic-only=" in reason for reason in reasons))
+
+    def test_604_persona_implementation_is_not_hidden_by_single_doc_match(self):
+        target = {
+            "repository": "OpenVTC/openvtc",
+            "role": "implementation",
+            "reporting_weight": "high",
+            "lifecycle": "active",
+            # Historical #604 shape: one design doc was configured while substantive source was omitted.
+            "material_paths": ["docs/**", ".github/workflows/**"],
+        }
+        files = [
+            self.file("docs/design/tui-architecture.md", 1, 0),
+            self.file("openvtc-core/src/persona/binding.rs", 409, 0),
+            self.file("openvtc-core/src/persona/correlation.rs", 324, 0),
+            self.file("openvtc-core/src/persona/disclosure.rs", 229, 0),
+            self.file("openvtc/src/state_handler/persona_actions.rs", 2113, 0),
+        ]
+        classification, matched, reasons = MOD.classify(target, files, self.cfg, [self.commit("feat(persona): implement binding and disclosure")])
+        self.assertEqual(classification, "assessment")
+        self.assertIn("openvtc-core/src/persona/binding.rs", matched)
+        self.assertIn("openvtc-core/src/persona/correlation.rs", matched)
+        self.assertIn("openvtc-core/src/persona/disclosure.rs", matched)
+        detail = MOD.semantic_assurance_surfaces("openvtc-core/src/persona/correlation.rs", target, self.cfg)
+        self.assertIn("privacy-correlation-disclosure", detail["surfaces"])
+        self.assertTrue(any("privacy-correlation-disclosure=" in reason for reason in reasons))
+
+    def test_unmapped_implementation_source_stays_visible_as_triage(self):
+        target = {
+            "repository": "OpenVTC/openvtc",
+            "role": "implementation",
+            "reporting_weight": "high",
+            "lifecycle": "active",
+            "material_paths": ["docs/**"],
+        }
+        files = [self.file("openvtc-core/src/widget/engine.rs", 40, 3)]
+        classification, matched, reasons = MOD.classify(target, files, self.cfg, [self.commit("refactor: change widget engine")])
+        self.assertEqual(classification, "triage")
+        self.assertEqual(matched, ["openvtc-core/src/widget/engine.rs"])
+        self.assertTrue(any("low-confidence" in reason for reason in reasons))
+
+    def test_known_good_vti_security_detection_remains_assessment(self):
+        target = {
+            "repository": "OpenVTC/verifiable-trust-infrastructure",
+            "role": "reference-implementation",
+            "reporting_weight": "critical",
+            "lifecycle": "active",
+            "material_paths": ["docs/**", "src/**", "**/src/**", ".github/workflows/**"],
+        }
+        files = [
+            self.file("src/key_custody/export.rs", 80, 12),
+            self.file("src/audit/evidence.rs", 50, 5),
+        ]
+        classification, _, reasons = MOD.classify(target, files, self.cfg, [self.commit("feat: constrain key export and record audit evidence")])
+        self.assertEqual(classification, "assessment")
+        self.assertTrue(any("key-custody-export-signing=" in reason for reason in reasons))
+        self.assertTrue(any("evidence-observability-audit=" in reason for reason in reasons))
 
 
 if __name__ == "__main__":
