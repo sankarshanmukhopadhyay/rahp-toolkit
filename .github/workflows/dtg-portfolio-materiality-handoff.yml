@@ -16,7 +16,6 @@ on:
       - '.github/workflows/dtg-portfolio-materiality-handoff.yml'
       - 'tools/fetch_dtg_portfolio_snapshot.py'
       - 'tools/dtg_portfolio_routing.py'
-      - 'tools/publish_assessment_issues.py'
       - 'tools/dtg_portfolio_baseline.py'
       - 'instances/dtg/baselines/current.yaml'
       - 'instances/dtg/assurance-routing.yaml'
