@@ -10,6 +10,7 @@ Operational contract:
   one issue per observation; the resulting issue is a durable work owner, not a finding.
 - A closed owner remains terminal unless an event explicitly requests a retest/reopen and
   supplies a reason. Re-observation alone never manufactures a successor issue.
+- Issues closed as duplicates never displace a non-duplicate durable owner.
 - Controller keys are epoch-scoped by their producer. Bounded child/repository keys may
   remain proposition-scoped where intentional; this publisher coalesces exact keys only.
 - May create issues, append trigger metadata, or explicitly reopen a terminal owner through
@@ -31,15 +32,11 @@ from typing import Any
 KEY_RE = re.compile(r"<!--\s*rahp-assessment-key:([^>]+?)\s*-->")
 LEGACY_DTG_RE = re.compile(r"<!--\s*rahp-dtg-change:([^@>]+)@[^>]+-->")
 
-# Publication authority invariant for this RAHP distribution. Assessment targets and
-# upstream remediation repositories are evidence metadata only; automated issue
-# creation is confined to the RAHP review repository.
 CANONICAL_RAHP_ISSUE_REPOSITORY = "sankarshanmukhopadhyay/rahp-toolkit"
 CANONICAL_RAHP_ASSIGNEES = ["sankarshanmukhopadhyay"]
 
 
 def enforce_publication_repository(repository: str) -> str:
-    """Reject any attempt to publish RAHP work items outside the RAHP repository."""
     repo = (repository or "").strip()
     if repo != CANONICAL_RAHP_ISSUE_REPOSITORY:
         raise ValueError(
@@ -77,9 +74,19 @@ def ensure_label(repo: str, label: str, token: str):
     except RuntimeError as exc:
         if " 404 " not in str(exc):
             raise
-    palette = {"assessment-required": "d73a4a", "cawg-instance": "1d76db", "dtg-instance": "5319e7", "cross-specification": "8250df", "change-triage": "d4c5f9"}
-    request("POST", f"https://api.github.com/repos/{repo}/labels", token,
-            {"name": label, "color": palette.get(label, "6f42c1"), "description": "RAHP automated assessment workflow"})
+    palette = {
+        "assessment-required": "d73a4a",
+        "cawg-instance": "1d76db",
+        "dtg-instance": "5319e7",
+        "cross-specification": "8250df",
+        "change-triage": "d4c5f9",
+    }
+    request(
+        "POST",
+        f"https://api.github.com/repos/{repo}/labels",
+        token,
+        {"name": label, "color": palette.get(label, "6f42c1"), "description": "RAHP automated assessment workflow"},
+    )
 
 
 def infer_issue_keys(issue: dict[str, Any]) -> set[str]:
@@ -95,7 +102,11 @@ def existing_issues(repo: str, token: str) -> list[dict[str, Any]]:
     issues: list[dict[str, Any]] = []
     page = 1
     while page <= 10:
-        items = request("GET", f"https://api.github.com/repos/{repo}/issues?state=all&per_page=100&page={page}", token)
+        items = request(
+            "GET",
+            f"https://api.github.com/repos/{repo}/issues?state=all&per_page=100&page={page}",
+            token,
+        )
         if not items:
             break
         issues.extend(i for i in items if "pull_request" not in i)
@@ -105,21 +116,26 @@ def existing_issues(repo: str, token: str) -> list[dict[str, Any]]:
     return issues
 
 
-def issue_owner_by_key(issues: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    """Index durable assessment owners, preferring an open owner over a closed owner.
+def owner_priority(issue: dict[str, Any]) -> tuple[int, int]:
+    """Rank durable owners: open > closed; non-duplicate > duplicate; then newer.
 
-    A closed issue does not stop owning its proposition. This is the core idempotency
-    boundary: repeated observations must resolve to the terminal owner rather than create
-    a new issue merely because that owner has been closed.
+    The state-reason test is intentionally independent of state because a duplicate can
+    be reopened manually; it must still not become canonical while a non-duplicate owner
+    exists for the same proposition key.
     """
+    is_open = issue.get("state") == "open"
+    is_duplicate = issue.get("state_reason") == "duplicate"
+    tier = (2 if is_open else 0) + (0 if is_duplicate else 1)
+    return tier, int(issue.get("number") or 0)
+
+
+def issue_owner_by_key(issues: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Index durable assessment owners across open and terminal issue states."""
     index: dict[str, dict[str, Any]] = {}
-    for issue in sorted(issues, key=lambda value: int(value.get("number") or 0), reverse=True):
+    for issue in issues:
         for key in infer_issue_keys(issue):
             current = index.get(key)
-            if current is None:
-                index[key] = issue
-                continue
-            if current.get("state") != "open" and issue.get("state") == "open":
+            if current is None or owner_priority(issue) > owner_priority(current):
                 index[key] = issue
     return index
 
@@ -174,7 +190,6 @@ def coalesce_issue(repo: str, issue: dict[str, Any], event: dict[str, Any], toke
         return False
     new_body = body.rstrip() + "\n" + trigger_appendix(event) + "\n"
     payload: dict[str, Any] = {"body": new_body}
-    # Repository-change events advance the visible work-item revision window.
     if event.get("source") == "repository-change" and event.get("title"):
         payload["title"] = event["title"]
     request("PATCH", f"https://api.github.com/repos/{repo}/issues/{issue['number']}", token, payload)
@@ -199,33 +214,46 @@ def reopen_owner(repo: str, issue: dict[str, Any], event: dict[str, Any], token:
 
 def self_test() -> None:
     """Regression coverage for proposition ownership, terminal suppression and epochs."""
+    backup_key = "dtg:portfolio:combined:backup-evidence-integrity"
+    alignment_key = "dtg:portfolio:combined:spec-dependency-alignment"
     issues = [
         {
             "state": "open",
+            "state_reason": None,
             "number": 343,
             "body": "<!-- rahp-assessment-key:dtg:portfolio:material-change-set:2026-08-31 -->",
         },
         {
             "state": "open",
+            "state_reason": None,
             "number": 420,
             "body": "<!-- rahp-assessment-key:dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf -->",
         },
         {
             "state": "closed",
+            "state_reason": "completed",
             "number": 589,
-            "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:backup-evidence-integrity -->",
+            "body": f"<!-- rahp-assessment-key:{backup_key} -->",
         },
-        # Regression fixture for the Sep 11 duplicate episode: the later closed duplicate
-        # must not steal ownership from an earlier still-open durable owner.
+        # Actual Sep 11 regression shape: a later duplicate with the same proposition key
+        # must never displace the completed original owner.
+        {
+            "state": "closed",
+            "state_reason": "duplicate",
+            "number": 614,
+            "body": f"<!-- rahp-assessment-key:{backup_key} -->",
+        },
         {
             "state": "open",
+            "state_reason": None,
             "number": 590,
-            "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:spec-dependency-alignment -->",
+            "body": f"<!-- rahp-assessment-key:{alignment_key} -->",
         },
         {
             "state": "closed",
+            "state_reason": "duplicate",
             "number": 615,
-            "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:spec-dependency-alignment -->",
+            "body": f"<!-- rahp-assessment-key:{alignment_key} -->",
         },
     ]
     index = issue_owner_by_key(issues)
@@ -233,14 +261,23 @@ def self_test() -> None:
     assert "dtg:portfolio:material-change-set:2026-09-01" not in index
     assert "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a" not in index
     assert index["dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf"]["number"] == 420
-    assert index["dtg:portfolio:combined:backup-evidence-integrity"]["number"] == 589
-    assert index["dtg:portfolio:combined:backup-evidence-integrity"]["state"] == "closed"
-    assert index["dtg:portfolio:combined:spec-dependency-alignment"]["number"] == 590
+    assert index[backup_key]["number"] == 589
+    assert index[backup_key]["state_reason"] == "completed"
+    assert index[alignment_key]["number"] == 590
 
-    same_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-08-31", "observed_at": "2026-08-31"}
-    later_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-09-01", "observed_at": "2026-09-01"}
-    lineage_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a", "observed_at": "2026-08-31"}
-    repeated_closed = {"assessment_key": "dtg:portfolio:combined:backup-evidence-integrity", "observed_at": "2026-09-12"}
+    same_epoch = {
+        "assessment_key": "dtg:portfolio:material-change-set:2026-08-31",
+        "observed_at": "2026-08-31",
+    }
+    later_epoch = {
+        "assessment_key": "dtg:portfolio:material-change-set:2026-09-01",
+        "observed_at": "2026-09-01",
+    }
+    lineage_epoch = {
+        "assessment_key": "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a",
+        "observed_at": "2026-08-31",
+    }
+    repeated_closed = {"assessment_key": backup_key, "observed_at": "2026-09-12"}
     invalidating_retest = {
         **repeated_closed,
         "reopen_closed": True,
@@ -255,7 +292,7 @@ def self_test() -> None:
     assert explicit_retest(malformed_retest) is False
     assert explicit_retest(invalidating_retest) is True
     assert event_marker(same_epoch) == "<!-- rahp-trigger:dtg:portfolio:material-change-set:2026-08-31@2026-08-31 -->"
-    print("self-test: proposition owners survive closure; repeated observations do not create successors")
+    print("self-test: durable proposition owners survive closure and duplicate observations")
 
 
 def main() -> int:
@@ -305,22 +342,41 @@ def main() -> int:
             if target.get("state") == "open":
                 if coalesce_issue(args.repository, target, event, token):
                     coalesced += 1
-                published.append({"action": "coalesced", "number": target.get("number"), "url": target.get("html_url"), "assessment_key": owner_key})
+                published.append({
+                    "action": "coalesced",
+                    "number": target.get("number"),
+                    "url": target.get("html_url"),
+                    "assessment_key": owner_key,
+                })
                 continue
             if explicit_retest(event):
                 target = reopen_owner(args.repository, target, event, token)
                 reopened += 1
                 if owner_key:
                     owner_by_key[owner_key] = target
-                published.append({"action": "reopened", "number": target.get("number"), "url": target.get("html_url"), "assessment_key": owner_key, "retest_reason": event.get("retest_reason")})
+                published.append({
+                    "action": "reopened",
+                    "number": target.get("number"),
+                    "url": target.get("html_url"),
+                    "assessment_key": owner_key,
+                    "retest_reason": event.get("retest_reason"),
+                })
                 continue
             suppressed += 1
-            print(f"[terminal-owner] #{target.get('number')} retains {owner_key}; observation recorded without successor issue")
-            published.append({"action": "terminal-owner", "number": target.get("number"), "url": target.get("html_url"), "assessment_key": owner_key, "observation": event_marker(event)})
+            print(
+                f"[terminal-owner] #{target.get('number')} retains {owner_key}; "
+                "observation recorded without successor issue"
+            )
+            published.append({
+                "action": "terminal-owner",
+                "number": target.get("number"),
+                "url": target.get("html_url"),
+                "assessment_key": owner_key,
+                "observation": event_marker(event),
+            })
             continue
 
         title = event["title"]
-        # Backward compatibility for unkeyed events generated by older tooling.
         if not key and title in known_titles:
             print(f"[dedupe-title] {title}")
             continue
@@ -341,13 +397,21 @@ def main() -> int:
         known_titles.add(title)
         if key:
             owner_by_key[key] = issue
-        published.append({"action": "created", "number": issue.get("number"), "url": issue.get("html_url"), "assessment_key": key})
+        published.append({
+            "action": "created",
+            "number": issue.get("number"),
+            "url": issue.get("html_url"),
+            "assessment_key": key,
+        })
         created += 1
 
     if args.result_json:
         args.result_json.parent.mkdir(parents=True, exist_ok=True)
         args.result_json.write_text(json.dumps({"issues": published}, indent=2) + "\n", encoding="utf-8")
-    print(f"created {created} issue(s); coalesced {coalesced} event(s); reopened {reopened}; terminal-owner suppressions {suppressed}")
+    print(
+        f"created {created} issue(s); coalesced {coalesced} event(s); "
+        f"reopened {reopened}; terminal-owner suppressions {suppressed}"
+    )
     return 0
 
 
