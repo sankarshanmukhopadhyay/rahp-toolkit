@@ -4,11 +4,13 @@
 Operational contract:
 - Consumes generated repository/architecture assessment events and confines automated
   issue creation to the canonical RAHP repository.
-- Reuses/coalesces an existing open assessment key where possible instead of creating
-  one issue per observation; the resulting issue is a durable work owner, not a finding.
+- Treats an assessment/proposition key as the durable work-owner identity across issue
+  lifecycle state. A repeated observation MUST NOT create a replacement issue merely
+  because the durable owner is closed.
+- Reuses/coalesces an existing open owner; for a closed owner it records the observation
+  without reopening unless the event carries an explicit invalidation/retest trigger.
 - Controller keys are epoch-scoped by their producer. Bounded child/repository keys may
   remain proposition-scoped where intentional; this publisher coalesces exact keys only.
-- May create issues or append trigger comments/metadata through the GitHub API.
 - Publication does not execute the assessment and issue creation does not imply that a
   target is unsafe or that DPIP is required.
 """
@@ -49,19 +51,24 @@ def enforce_publication_repository(repository: str) -> str:
 
 def request(method: str, url: str, token: str, payload=None):
     data = json.dumps(payload).encode() if payload is not None else None
-    req = urllib.request.Request(url, data=data, method=method, headers={
-        "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {token}",
-        "User-Agent": "rahp-assessment-issue-publisher/0.7.1",
-        "X-GitHub-Api-Version": "2022-11-28",
-    })
+    req = urllib.request.Request(
+        url,
+        data=data,
+        method=method,
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "User-Agent": "rahp-assessment-issue-publisher/0.8.0",
+            "X-GitHub-Api-Version": "2022-11-28",
+        },
+    )
     try:
-        with urllib.request.urlopen(req, timeout=30) as r:
-            raw = r.read().decode()
+        with urllib.request.urlopen(req, timeout=30) as response:
+            raw = response.read().decode()
             return json.loads(raw) if raw else {}
-    except urllib.error.HTTPError as e:
-        body = e.read().decode(errors="replace")
-        raise RuntimeError(f"GitHub API {method} {url} failed: {e.code} {body}") from e
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode(errors="replace")
+        raise RuntimeError(f"GitHub API {method} {url} failed: {exc.code} {body}") from exc
 
 
 def ensure_label(repo: str, label: str, token: str):
@@ -73,15 +80,29 @@ def ensure_label(repo: str, label: str, token: str):
     except RuntimeError as exc:
         if " 404 " not in str(exc):
             raise
-    palette = {"assessment-required": "d73a4a", "cawg-instance": "1d76db", "dtg-instance": "5319e7", "cross-specification": "8250df", "change-triage": "d4c5f9"}
-    request("POST", f"https://api.github.com/repos/{repo}/labels", token,
-            {"name": label, "color": palette.get(label, "6f42c1"), "description": "RAHP automated assessment workflow"})
+    palette = {
+        "assessment-required": "d73a4a",
+        "cawg-instance": "1d76db",
+        "dtg-instance": "5319e7",
+        "cross-specification": "8250df",
+        "change-triage": "d4c5f9",
+    }
+    request(
+        "POST",
+        f"https://api.github.com/repos/{repo}/labels",
+        token,
+        {
+            "name": label,
+            "color": palette.get(label, "6f42c1"),
+            "description": "RAHP automated assessment workflow",
+        },
+    )
 
 
 def infer_issue_keys(issue: dict[str, Any]) -> set[str]:
     """Return explicit keys plus the v0.7 DTG repository key when inferable."""
     body = issue.get("body") or ""
-    keys = {m.group(1).strip() for m in KEY_RE.finditer(body)}
+    keys = {match.group(1).strip() for match in KEY_RE.finditer(body)}
     for match in LEGACY_DTG_RE.finditer(body):
         keys.add(f"dtg:repository:{match.group(1).strip()}")
     return keys
@@ -91,24 +112,58 @@ def existing_issues(repo: str, token: str) -> list[dict[str, Any]]:
     issues: list[dict[str, Any]] = []
     page = 1
     while page <= 5:
-        items = request("GET", f"https://api.github.com/repos/{repo}/issues?state=all&per_page=100&page={page}", token)
+        items = request(
+            "GET",
+            f"https://api.github.com/repos/{repo}/issues?state=all&per_page=100&page={page}",
+            token,
+        )
         if not items:
             break
-        issues.extend(i for i in items if "pull_request" not in i)
+        issues.extend(item for item in items if "pull_request" not in item)
         if len(items) < 100:
             break
         page += 1
     return issues
 
 
-def open_issue_by_key(issues: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    index: dict[str, dict[str, Any]] = {}
-    for issue in issues:
-        if issue.get("state") != "open":
+def issues_by_key(issues: list[dict[str, Any]]) -> dict[str, dict[str, dict[str, Any]]]:
+    """Index durable proposition owners by key and lifecycle state.
+
+    GitHub returns issues newest-first. Sorting by issue number ensures that, if historic
+    duplicate materialisation already happened, the earliest keyed issue remains the
+    canonical durable owner instead of a later duplicate becoming authoritative.
+    """
+    index: dict[str, dict[str, dict[str, Any]]] = {"open": {}, "closed": {}}
+    for issue in sorted(issues, key=lambda item: int(item.get("number") or 0)):
+        state = issue.get("state")
+        if state not in index:
             continue
         for key in infer_issue_keys(issue):
-            index.setdefault(key, issue)
+            index[state].setdefault(key, issue)
     return index
+
+
+def resolve_owner(
+    index: dict[str, dict[str, dict[str, Any]]],
+    key: str | None,
+    related: str | None = None,
+) -> tuple[dict[str, Any] | None, str | None]:
+    """Resolve an existing durable owner, preferring an open owner when one exists."""
+    lookup = related or key
+    if not lookup:
+        return None, None
+    if lookup in index["open"]:
+        return index["open"][lookup], "open"
+    if lookup in index["closed"]:
+        return index["closed"][lookup], "closed"
+    return None, None
+
+
+def should_reopen_closed_owner(event: dict[str, Any]) -> bool:
+    """Require an explicit invalidation/retest signal before reopening terminal work."""
+    if event.get("reopen_closed_owner") is True:
+        return True
+    return bool((event.get("invalidation_reason") or "").strip() or (event.get("retest_reason") or "").strip())
 
 
 def event_marker(event: dict[str, Any]) -> str:
@@ -117,17 +172,18 @@ def event_marker(event: dict[str, Any]) -> str:
     return f"<!-- rahp-trigger:{key}@{stamp} -->"
 
 
-def trigger_appendix(event: dict[str, Any]) -> str:
+def trigger_appendix(event: dict[str, Any], owner_state: str) -> str:
     marker = event_marker(event)
     source = event.get("source", "assessment-event")
     lines = [
         "",
         "---",
         "",
-        "## Additional assessment trigger",
+        "## Additional assessment observation",
         "",
         marker,
         f"- Source: `{source}`",
+        f"- Durable owner state when observed: `{owner_state}`",
     ]
     if event.get("upstream_repository") and event.get("upstream_issue"):
         lines.append(f"- Upstream issue: `{event['upstream_repository']}#{event['upstream_issue']}`")
@@ -139,31 +195,52 @@ def trigger_appendix(event: dict[str, Any]) -> str:
         lines.append(f"- Theme: `{event['theme']}`")
     if event.get("affected_reviews"):
         lines.append(f"- Affected reviews: {', '.join(event['affected_reviews'])}")
-    lines.extend([
-        "",
-        "This observation has been coalesced into the open assessment. Review the new delta or discussion before dispositioning the work item.",
-    ])
+    if event.get("invalidation_reason"):
+        lines.append(f"- Invalidation reason: {event['invalidation_reason']}")
+    if event.get("retest_reason"):
+        lines.append(f"- Retest reason: {event['retest_reason']}")
+    lines.extend(
+        [
+            "",
+            (
+                "This observation has been coalesced into the durable proposition owner. "
+                "A closed owner is not reopened unless the event carries an explicit "
+                "invalidation or retest trigger."
+            ),
+        ]
+    )
     return "\n".join(lines)
 
 
-def coalesce_issue(repo: str, issue: dict[str, Any], event: dict[str, Any], token: str) -> bool:
+def coalesce_issue(
+    repo: str,
+    issue: dict[str, Any],
+    event: dict[str, Any],
+    token: str,
+    owner_state: str,
+    reopen: bool = False,
+) -> bool:
     body = issue.get("body") or ""
     marker = event_marker(event)
-    if marker in body:
+    if marker in body and not reopen:
         print(f"[dedupe-trigger] #{issue.get('number')} {marker}")
         return False
-    new_body = body.rstrip() + "\n" + trigger_appendix(event) + "\n"
+    new_body = body.rstrip() + "\n" + trigger_appendix(event, owner_state) + "\n"
     payload: dict[str, Any] = {"body": new_body}
-    # Repository-change events advance the visible work-item revision window.
-    if event.get("source") == "repository-change" and event.get("title"):
+    if reopen:
+        payload["state"] = "open"
+    # Repository-change events advance the visible work-item revision window only while
+    # the owner is active/reopened; closed terminal records keep their terminal title.
+    if event.get("source") == "repository-change" and event.get("title") and (owner_state == "open" or reopen):
         payload["title"] = event["title"]
     request("PATCH", f"https://api.github.com/repos/{repo}/issues/{issue['number']}", token, payload)
-    print(f"[coalesced] #{issue.get('number')} <- {event.get('assessment_key')}")
+    action = "reopened" if reopen else "coalesced"
+    print(f"[{action}] #{issue.get('number')} <- {event.get('assessment_key')}")
     return True
 
 
 def self_test() -> None:
-    """Regression coverage for exact-key coalescing and epoch separation (#424)."""
+    """Regression coverage for durable proposition ownership (#622)."""
     issues = [
         {
             "state": "open",
@@ -175,34 +252,69 @@ def self_test() -> None:
             "number": 420,
             "body": "<!-- rahp-assessment-key:dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf -->",
         },
+        {
+            "state": "closed",
+            "number": 584,
+            "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:delegation-credential-composition -->",
+        },
+        # Regression fixture: #611 was a later duplicate of the same proposition. The
+        # earliest keyed issue must remain canonical even after duplicate history exists.
+        {
+            "state": "closed",
+            "number": 611,
+            "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:delegation-credential-composition -->",
+        },
     ]
-    index = open_issue_by_key(issues)
-    assert index["dtg:portfolio:material-change-set:2026-08-31"]["number"] == 343
-    assert "dtg:portfolio:material-change-set:2026-09-01" not in index
-    assert "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a" not in index
-    assert index["dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf"]["number"] == 420
+    index = issues_by_key(issues)
+    assert index["open"]["dtg:portfolio:material-change-set:2026-08-31"]["number"] == 343
+    assert index["open"]["dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf"]["number"] == 420
+    assert index["closed"]["dtg:portfolio:combined:delegation-credential-composition"]["number"] == 584
 
-    same_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-08-31", "observed_at": "2026-08-31"}
-    later_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-09-01", "observed_at": "2026-09-01"}
-    lineage_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a", "observed_at": "2026-08-31"}
-    assert index.get(same_epoch["assessment_key"], {}).get("number") == 343
-    assert index.get(later_epoch["assessment_key"]) is None
-    assert index.get(lineage_epoch["assessment_key"]) is None
+    same_epoch = {
+        "assessment_key": "dtg:portfolio:material-change-set:2026-08-31",
+        "observed_at": "2026-08-31",
+    }
+    later_epoch = {
+        "assessment_key": "dtg:portfolio:material-change-set:2026-09-01",
+        "observed_at": "2026-09-01",
+    }
+    lineage_epoch = {
+        "assessment_key": "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a",
+        "observed_at": "2026-08-31",
+    }
+    owner, state = resolve_owner(index, same_epoch["assessment_key"])
+    assert owner and owner["number"] == 343 and state == "open"
+    owner, state = resolve_owner(index, later_epoch["assessment_key"])
+    assert owner is None and state is None
+    owner, state = resolve_owner(index, lineage_epoch["assessment_key"])
+    assert owner is None and state is None
+
+    repeated_closed = {
+        "assessment_key": "dtg:portfolio:combined:delegation-credential-composition",
+        "observed_at": "2026-09-11",
+    }
+    owner, state = resolve_owner(index, repeated_closed["assessment_key"])
+    assert owner and owner["number"] == 584 and state == "closed"
+    assert not should_reopen_closed_owner(repeated_closed)
+    assert should_reopen_closed_owner({**repeated_closed, "invalidation_reason": "normative semantic delta"})
+    assert should_reopen_closed_owner({**repeated_closed, "retest_reason": "new negative evidence"})
+    assert should_reopen_closed_owner({**repeated_closed, "reopen_closed_owner": True})
+
     assert event_marker(same_epoch) == "<!-- rahp-trigger:dtg:portfolio:material-change-set:2026-08-31@2026-08-31 -->"
-    print("self-test: exact-key coalescing preserves epoch and lineage boundaries")
+    print("self-test: durable proposition owners survive closure and duplicate history")
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--events", type=Path)
-    ap.add_argument(
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--events", type=Path)
+    parser.add_argument(
         "--repository",
         default=CANONICAL_RAHP_ISSUE_REPOSITORY,
         help="RAHP issue repository; non-canonical destinations are rejected",
     )
-    ap.add_argument("--result-json", type=Path, help="write created/coalesced issue references")
-    ap.add_argument("--self-test", action="store_true", help="run publisher regression tests and exit")
-    args = ap.parse_args()
+    parser.add_argument("--result-json", type=Path, help="write created/coalesced issue references")
+    parser.add_argument("--self-test", action="store_true", help="run publisher regression tests and exit")
+    args = parser.parse_args()
     if args.self_test:
         self_test()
         return 0
@@ -224,20 +336,45 @@ def main() -> int:
         return 0
 
     issues = existing_issues(args.repository, token)
-    open_by_key = open_issue_by_key(issues)
-    known_titles = {i.get("title", "") for i in issues}
-    created = coalesced = 0
+    owner_index = issues_by_key(issues)
+    known_titles = {issue.get("title", "") for issue in issues}
+    created = coalesced = reopened = observed_closed = 0
     published: list[dict[str, Any]] = []
 
     for event in events:
         key = event.get("assessment_key")
         related = event.get("related_assessment_key")
-        target = open_by_key.get(related) if related else None
-        target = target or (open_by_key.get(key) if key else None)
-        if target:
-            if coalesce_issue(args.repository, target, event, token):
-                coalesced += 1
-            published.append({"action": "coalesced", "number": target.get("number"), "url": target.get("html_url"), "assessment_key": key or related})
+        target, owner_state = resolve_owner(owner_index, key, related)
+        if target and owner_state:
+            reopen = owner_state == "closed" and should_reopen_closed_owner(event)
+            changed = coalesce_issue(
+                args.repository,
+                target,
+                event,
+                token,
+                owner_state=owner_state,
+                reopen=reopen,
+            )
+            if reopen:
+                reopened += 1
+                owner_index["closed"].pop(related or key, None)
+                owner_index["open"][related or key] = target
+                action = "reopened"
+            elif owner_state == "closed":
+                observed_closed += 1
+                action = "observed-closed-owner"
+            else:
+                if changed:
+                    coalesced += 1
+                action = "coalesced"
+            published.append(
+                {
+                    "action": action,
+                    "number": target.get("number"),
+                    "url": target.get("html_url"),
+                    "assessment_key": key or related,
+                }
+            )
             continue
 
         title = event["title"]
@@ -261,14 +398,24 @@ def main() -> int:
         print(f"[created] #{issue.get('number')} {title}")
         known_titles.add(title)
         if key:
-            open_by_key[key] = issue
-        published.append({"action": "created", "number": issue.get("number"), "url": issue.get("html_url"), "assessment_key": key})
+            owner_index["open"][key] = issue
+        published.append(
+            {
+                "action": "created",
+                "number": issue.get("number"),
+                "url": issue.get("html_url"),
+                "assessment_key": key,
+            }
+        )
         created += 1
 
     if args.result_json:
         args.result_json.parent.mkdir(parents=True, exist_ok=True)
         args.result_json.write_text(json.dumps({"issues": published}, indent=2) + "\n", encoding="utf-8")
-    print(f"created {created} issue(s); coalesced {coalesced} event(s)")
+    print(
+        f"created {created} issue(s); coalesced {coalesced} event(s); "
+        f"recorded {observed_closed} closed-owner observation(s); reopened {reopened} owner(s)"
+    )
     return 0
 
 
