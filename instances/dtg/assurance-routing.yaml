@@ -1,4 +1,4 @@
-version: 2
+version: 3
 qualification:
   materiality: [high, critical]
   assurance_impact: [potentially-breaking, breaking]
@@ -181,6 +181,74 @@ semantic_rules:
       changes. They remain in the portfolio evidence but do not create an additional
       assurance proposition unless another semantic rule identifies material behavior.
 
+  # Judgment-derived semantic dispositions from controller #629.
+  - id: vac-presenter-binding
+    when:
+      dimensions: [authorization, security, composition]
+      concerns: [presenter-binding, bearer-authority]
+    outcome: combined
+    review_mode: combined
+
+  - id: credential-status-lifecycle
+    when:
+      dimensions: [lifecycle, security]
+      concerns: [credential-status, revocation-enforcement]
+    outcome: combined
+    review_mode: combined
+
+  - id: ci-supply-chain-hardening
+    when:
+      dimensions: [repository-security]
+      concerns: [ci-hardening]
+    outcome: no-action
+    rationale: >-
+      Pinned Actions, reduced publish-token scope and dependency automation are
+      repository supply-chain hardening. Preserve the observation as operational
+      security evidence, but do not create an independent DTG semantic assessment.
+
+  - id: vec-vetting-profile-evidence
+    when:
+      dimensions: [composition]
+      concerns: [vetting-profile-evidence]
+    outcome: covered
+    covered_by: vetting-admission-composition
+
+  - id: vetting-admission-composition
+    when:
+      dimensions: [authorization, governance, privacy, composition, lifecycle]
+      concerns: [admission-authority, vetting, disclosure, grant-lifecycle]
+    outcome: combined
+    review_mode: combined
+    rationale: >-
+      Admission/vetter authority and privacy are one composed proposition. The bounded
+      RAHP review must promote the privacy/correlation question through the canonical
+      RAHP to DPIP handoff rather than resolving privacy locally.
+
+  - id: key-custody-service-authority
+    when:
+      dimensions: [security, authorization, lifecycle, composition]
+      concerns: [key-custody, key-export, service-authority]
+    outcome: combined
+    review_mode: combined
+
+  - id: dependency-version-covered
+    when:
+      dimensions: [composition, release]
+      concerns: [dependency-version]
+    outcome: covered
+    covered_by: constituent-material-findings
+
+  - id: defensive-did-resolution
+    when:
+      dimensions: [security]
+      concerns: [defensive-resolution, fail-closed]
+    outcome: no-action
+    rationale: >-
+      Refusing did:webvh resolution for local-only names or non-public addresses is a
+      fail-closed resolver restriction. Preserve it as negative security evidence;
+      create a separate review only when a registered composition depends on the
+      removed local-resolution behavior.
+
   - id: openvtc-security-combined
     when:
       dimensions: [security, lifecycle]
@@ -338,6 +406,7 @@ finding_rules:
         - retained-evidence-does-not-defeat-selective-disclosure
       affected_claims:
         - pairwise-identifiers-preserve-declared-correlation-scope
+        - zero-knowledge-disclosure-remains-private-after-task-wrapping
         - retained-task-proof-status-and-outcome-evidence-do-not-enable-unintended-linkage
       suspected_surfaces:
         - unsalted digest-valued binders
@@ -354,6 +423,54 @@ finding_rules:
     title_regex: '(chore: release v[0-9]+\.[0-9]+\.[0-9]+|WD02 merge plan)'
     rationale: >-
       Release markers and editorial merge plans aggregate already-visible constituent changes.
+
+  - id: vac-presenter-binding
+    outcome: combined
+    repository_regex: '^OpenVTC/dtg-credentials$'
+    title_regex: '(VAC).*(bearer credential|audience|presenter)|(bearer credential).*(VAC|audience)'
+    review_mode: combined
+
+  - id: credential-status-lifecycle
+    outcome: combined
+    repository_regex: '^OpenVTC/dtg-credentials$'
+    title_regex: 'credentialStatus'
+    review_mode: combined
+
+  - id: ci-supply-chain-hardening
+    outcome: no-action
+    repository_regex: '^OpenVTC/'
+    title_regex: '(pin actions to commit SHAs|scope the publish token|Dependabot)'
+    rationale: Repository supply-chain hardening does not independently change DTG semantic assurance.
+
+  - id: vec-vetting-profile-evidence
+    outcome: covered
+    repository_regex: '^trustoverip/dtgwg-cred-spec$'
+    title_regex: '(informative).*(identity-vetting|vetting).*(VEC)|(identity-vetting profile).*(VEC)'
+    covered_by: vetting-admission-composition
+
+  - id: vetting-admission-composition
+    outcome: combined
+    repository_regex: '^(OpenVTC/(openvtc|verifiable-trust-infrastructure)|trustoverip/dtgwg-cred-spec)$'
+    title_regex: '(vetted admission|peer identity vetting|guided join|vetter directory|vetter registry|automatic vetter grants|identity-vetting profile|identity vetting|QR tickets|grant resend)'
+    review_mode: combined
+
+  - id: key-custody-service-authority
+    outcome: combined
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: '(never leaving the VTA|never leaves the VTA|service can fetch the keys|export one key|retire seeds|export-mnemonic)'
+    review_mode: combined
+
+  - id: dependency-version-covered
+    outcome: covered
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: 'dtg-credentials.*[0-9]+\.[0-9]+.*[0-9]+\.[0-9]+'
+    covered_by: constituent-material-findings
+
+  - id: defensive-did-resolution
+    outcome: no-action
+    repository_regex: '^OpenVTC/vta-browser-plugin$'
+    title_regex: '(refuse to resolve).*did:webvh.*(local-only|non-public address)'
+    rationale: Fail-closed resolver hardening remains evidence unless a registered composition depends on local resolution.
 
   - id: openvtc-security-combined
     outcome: combined
