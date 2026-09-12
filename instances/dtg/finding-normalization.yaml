@@ -127,6 +127,80 @@ mapping_rules:
       affected_surfaces: [release-artifact, editorial-plan]
       change_kind: [release-change]
 
+  # Judgment-derived semantic coverage from controller #629 (2026-09-12).
+  # These rules classify proposition families, not snapshot-specific finding IDs.
+  - id: vac-presenter-binding
+    repository_regex: '^OpenVTC/dtg-credentials$'
+    title_regex: '(VAC).*(bearer credential|audience|presenter)|(bearer credential).*(VAC|audience)'
+    semantics:
+      dimensions: [authorization, security, composition]
+      concerns: [presenter-binding, bearer-authority, invocation-binding]
+      affected_surfaces: [credential, presentation-boundary, authority-state]
+      change_kind: [behavior-change]
+
+  - id: credential-status-lifecycle
+    repository_regex: '^OpenVTC/dtg-credentials$'
+    title_regex: 'credentialStatus'
+    semantics:
+      dimensions: [lifecycle, security]
+      concerns: [credential-status, revocation-enforcement]
+      affected_surfaces: [credential, status-discovery, verification-decision]
+      change_kind: [behavior-change]
+
+  - id: ci-supply-chain-hardening
+    repository_regex: '^OpenVTC/'
+    title_regex: '(pin actions to commit SHAs|scope the publish token|Dependabot)'
+    semantics:
+      dimensions: [repository-security]
+      concerns: [ci-hardening]
+      affected_surfaces: [ci-workflow, release-pipeline]
+      change_kind: [security-hardening]
+
+  - id: vec-vetting-profile-evidence
+    repository_regex: '^trustoverip/dtgwg-cred-spec$'
+    title_regex: '(informative).*(identity-vetting|vetting).*(VEC)|(identity-vetting profile).*(VEC)'
+    semantics:
+      dimensions: [composition]
+      concerns: [vetting-profile-evidence]
+      affected_surfaces: [specification-interface]
+      change_kind: [documentation-change]
+
+  - id: vetting-admission-composition
+    repository_regex: '^(OpenVTC/(openvtc|verifiable-trust-infrastructure)|trustoverip/dtgwg-cred-spec)$'
+    title_regex: '(vetted admission|peer identity vetting|guided join|vetter directory|vetter registry|automatic vetter grants|identity-vetting profile|identity vetting|QR tickets|grant resend)'
+    semantics:
+      dimensions: [authorization, governance, privacy, composition, lifecycle]
+      concerns: [admission-authority, vetting, disclosure, grant-lifecycle]
+      affected_surfaces: [admission-flow, vetter-registry, profile, ticket, grant-state]
+      change_kind: [behavior-change]
+
+  - id: key-custody-service-authority
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: '(never leaving the VTA|never leaves the VTA|service can fetch the keys|export one key|retire seeds|export-mnemonic)'
+    semantics:
+      dimensions: [security, authorization, lifecycle, composition]
+      concerns: [key-custody, key-export, service-authority]
+      affected_surfaces: [key-store, key-export, service-authority]
+      change_kind: [behavior-change]
+
+  - id: dependency-version-covered
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: 'dtg-credentials.*[0-9]+\.[0-9]+.*[0-9]+\.[0-9]+'
+    semantics:
+      dimensions: [composition, release]
+      concerns: [dependency-version]
+      affected_surfaces: [dependency-interface, release-artifact]
+      change_kind: [dependency-change]
+
+  - id: defensive-did-resolution
+    repository_regex: '^OpenVTC/vta-browser-plugin$'
+    title_regex: '(refuse to resolve).*did:webvh.*(local-only|non-public address)'
+    semantics:
+      dimensions: [security]
+      concerns: [defensive-resolution, fail-closed]
+      affected_surfaces: [did-resolution, network-boundary]
+      change_kind: [security-hardening]
+
   - id: openvtc-security-combined
     repository_regex: '^OpenVTC/'
     title_regex: '(auth|keyId|internal key|signed|proof|personhood|conformance|invitation|lifecycle|cache)'
