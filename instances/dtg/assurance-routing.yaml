@@ -406,7 +406,6 @@ finding_rules:
         - retained-evidence-does-not-defeat-selective-disclosure
       affected_claims:
         - pairwise-identifiers-preserve-declared-correlation-scope
-        - zero-knowledge-disclosure-remains-private-after-task-wrapping
         - retained-task-proof-status-and-outcome-evidence-do-not-enable-unintended-linkage
       suspected_surfaces:
         - unsalted digest-valued binders
