@@ -4,13 +4,17 @@
 Operational contract:
 - Consumes generated repository/architecture assessment events and confines automated
   issue creation to the canonical RAHP repository.
+- Treats the assessment/proposition key as durable ownership across both open and closed
+  issues. A new observation does not imply a new issue.
 - Reuses/coalesces an existing open assessment key where possible instead of creating
   one issue per observation; the resulting issue is a durable work owner, not a finding.
+- A closed owner remains terminal unless an event explicitly requests a retest/reopen and
+  supplies a reason. Re-observation alone never manufactures a successor issue.
 - Controller keys are epoch-scoped by their producer. Bounded child/repository keys may
   remain proposition-scoped where intentional; this publisher coalesces exact keys only.
-- May create issues or append trigger comments/metadata through the GitHub API.
-- Publication does not execute the assessment and issue creation does not imply that a
-  target is unsafe or that DPIP is required.
+- May create issues, append trigger metadata, or explicitly reopen a terminal owner through
+  the GitHub API. Publication does not execute the assessment and issue creation does not
+  imply that a target is unsafe or that DPIP is required.
 """
 from __future__ import annotations
 
@@ -52,7 +56,7 @@ def request(method: str, url: str, token: str, payload=None):
     req = urllib.request.Request(url, data=data, method=method, headers={
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {token}",
-        "User-Agent": "rahp-assessment-issue-publisher/0.7.1",
+        "User-Agent": "rahp-assessment-issue-publisher/0.8.0",
         "X-GitHub-Api-Version": "2022-11-28",
     })
     try:
@@ -90,7 +94,7 @@ def infer_issue_keys(issue: dict[str, Any]) -> set[str]:
 def existing_issues(repo: str, token: str) -> list[dict[str, Any]]:
     issues: list[dict[str, Any]] = []
     page = 1
-    while page <= 5:
+    while page <= 10:
         items = request("GET", f"https://api.github.com/repos/{repo}/issues?state=all&per_page=100&page={page}", token)
         if not items:
             break
@@ -101,14 +105,28 @@ def existing_issues(repo: str, token: str) -> list[dict[str, Any]]:
     return issues
 
 
-def open_issue_by_key(issues: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+def issue_owner_by_key(issues: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Index durable assessment owners, preferring an open owner over a closed owner.
+
+    A closed issue does not stop owning its proposition. This is the core idempotency
+    boundary: repeated observations must resolve to the terminal owner rather than create
+    a new issue merely because that owner has been closed.
+    """
     index: dict[str, dict[str, Any]] = {}
-    for issue in issues:
-        if issue.get("state") != "open":
-            continue
+    for issue in sorted(issues, key=lambda value: int(value.get("number") or 0), reverse=True):
         for key in infer_issue_keys(issue):
-            index.setdefault(key, issue)
+            current = index.get(key)
+            if current is None:
+                index[key] = issue
+                continue
+            if current.get("state") != "open" and issue.get("state") == "open":
+                index[key] = issue
     return index
+
+
+def explicit_retest(event: dict[str, Any]) -> bool:
+    """Return true only for an explicit, reasoned terminal-owner invalidation."""
+    return event.get("reopen_closed") is True and bool(str(event.get("retest_reason") or "").strip())
 
 
 def event_marker(event: dict[str, Any]) -> str:
@@ -139,9 +157,11 @@ def trigger_appendix(event: dict[str, Any]) -> str:
         lines.append(f"- Theme: `{event['theme']}`")
     if event.get("affected_reviews"):
         lines.append(f"- Affected reviews: {', '.join(event['affected_reviews'])}")
+    if event.get("retest_reason"):
+        lines.append(f"- Retest reason: {event['retest_reason']}")
     lines.extend([
         "",
-        "This observation has been coalesced into the open assessment. Review the new delta or discussion before dispositioning the work item.",
+        "This observation has been coalesced into the durable assessment owner. Review the new delta or discussion before dispositioning the work item.",
     ])
     return "\n".join(lines)
 
@@ -162,8 +182,23 @@ def coalesce_issue(repo: str, issue: dict[str, Any], event: dict[str, Any], toke
     return True
 
 
+def reopen_owner(repo: str, issue: dict[str, Any], event: dict[str, Any], token: str) -> dict[str, Any]:
+    """Reopen a terminal proposition owner only after an explicit invalidation signal."""
+    if not explicit_retest(event):
+        raise ValueError("closed assessment owner may only reopen with reopen_closed=true and retest_reason")
+    body = issue.get("body") or ""
+    marker = event_marker(event)
+    new_body = body if marker in body else body.rstrip() + "\n" + trigger_appendix(event) + "\n"
+    payload: dict[str, Any] = {"state": "open", "body": new_body}
+    if event.get("source") == "repository-change" and event.get("title"):
+        payload["title"] = event["title"]
+    reopened = request("PATCH", f"https://api.github.com/repos/{repo}/issues/{issue['number']}", token, payload)
+    print(f"[reopened] #{issue.get('number')} <- {event.get('assessment_key')}: {event.get('retest_reason')}")
+    return reopened
+
+
 def self_test() -> None:
-    """Regression coverage for exact-key coalescing and epoch separation (#424)."""
+    """Regression coverage for proposition ownership, terminal suppression and epochs."""
     issues = [
         {
             "state": "open",
@@ -175,21 +210,52 @@ def self_test() -> None:
             "number": 420,
             "body": "<!-- rahp-assessment-key:dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf -->",
         },
+        {
+            "state": "closed",
+            "number": 589,
+            "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:backup-evidence-integrity -->",
+        },
+        # Regression fixture for the Sep 11 duplicate episode: the later closed duplicate
+        # must not steal ownership from an earlier still-open durable owner.
+        {
+            "state": "open",
+            "number": 590,
+            "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:spec-dependency-alignment -->",
+        },
+        {
+            "state": "closed",
+            "number": 615,
+            "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:spec-dependency-alignment -->",
+        },
     ]
-    index = open_issue_by_key(issues)
+    index = issue_owner_by_key(issues)
     assert index["dtg:portfolio:material-change-set:2026-08-31"]["number"] == 343
     assert "dtg:portfolio:material-change-set:2026-09-01" not in index
     assert "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a" not in index
     assert index["dtg:repository:sankarshanmukhopadhyay/dtgwg-zkp-tf"]["number"] == 420
+    assert index["dtg:portfolio:combined:backup-evidence-integrity"]["number"] == 589
+    assert index["dtg:portfolio:combined:backup-evidence-integrity"]["state"] == "closed"
+    assert index["dtg:portfolio:combined:spec-dependency-alignment"]["number"] == 590
 
     same_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-08-31", "observed_at": "2026-08-31"}
     later_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-09-01", "observed_at": "2026-09-01"}
     lineage_epoch = {"assessment_key": "dtg:portfolio:material-change-set:2026-08-31:lineage:clean-a", "observed_at": "2026-08-31"}
+    repeated_closed = {"assessment_key": "dtg:portfolio:combined:backup-evidence-integrity", "observed_at": "2026-09-12"}
+    invalidating_retest = {
+        **repeated_closed,
+        "reopen_closed": True,
+        "retest_reason": "authoritative source changed a proposition premise",
+    }
+    malformed_retest = {**repeated_closed, "reopen_closed": True}
+
     assert index.get(same_epoch["assessment_key"], {}).get("number") == 343
     assert index.get(later_epoch["assessment_key"]) is None
     assert index.get(lineage_epoch["assessment_key"]) is None
+    assert explicit_retest(repeated_closed) is False
+    assert explicit_retest(malformed_retest) is False
+    assert explicit_retest(invalidating_retest) is True
     assert event_marker(same_epoch) == "<!-- rahp-trigger:dtg:portfolio:material-change-set:2026-08-31@2026-08-31 -->"
-    print("self-test: exact-key coalescing preserves epoch and lineage boundaries")
+    print("self-test: proposition owners survive closure; repeated observations do not create successors")
 
 
 def main() -> int:
@@ -224,20 +290,33 @@ def main() -> int:
         return 0
 
     issues = existing_issues(args.repository, token)
-    open_by_key = open_issue_by_key(issues)
+    owner_by_key = issue_owner_by_key(issues)
     known_titles = {i.get("title", "") for i in issues}
-    created = coalesced = 0
+    created = coalesced = reopened = suppressed = 0
     published: list[dict[str, Any]] = []
 
     for event in events:
         key = event.get("assessment_key")
         related = event.get("related_assessment_key")
-        target = open_by_key.get(related) if related else None
-        target = target or (open_by_key.get(key) if key else None)
+        target = owner_by_key.get(related) if related else None
+        target = target or (owner_by_key.get(key) if key else None)
         if target:
-            if coalesce_issue(args.repository, target, event, token):
-                coalesced += 1
-            published.append({"action": "coalesced", "number": target.get("number"), "url": target.get("html_url"), "assessment_key": key or related})
+            owner_key = related or key
+            if target.get("state") == "open":
+                if coalesce_issue(args.repository, target, event, token):
+                    coalesced += 1
+                published.append({"action": "coalesced", "number": target.get("number"), "url": target.get("html_url"), "assessment_key": owner_key})
+                continue
+            if explicit_retest(event):
+                target = reopen_owner(args.repository, target, event, token)
+                reopened += 1
+                if owner_key:
+                    owner_by_key[owner_key] = target
+                published.append({"action": "reopened", "number": target.get("number"), "url": target.get("html_url"), "assessment_key": owner_key, "retest_reason": event.get("retest_reason")})
+                continue
+            suppressed += 1
+            print(f"[terminal-owner] #{target.get('number')} retains {owner_key}; observation recorded without successor issue")
+            published.append({"action": "terminal-owner", "number": target.get("number"), "url": target.get("html_url"), "assessment_key": owner_key, "observation": event_marker(event)})
             continue
 
         title = event["title"]
@@ -261,14 +340,14 @@ def main() -> int:
         print(f"[created] #{issue.get('number')} {title}")
         known_titles.add(title)
         if key:
-            open_by_key[key] = issue
+            owner_by_key[key] = issue
         published.append({"action": "created", "number": issue.get("number"), "url": issue.get("html_url"), "assessment_key": key})
         created += 1
 
     if args.result_json:
         args.result_json.parent.mkdir(parents=True, exist_ok=True)
         args.result_json.write_text(json.dumps({"issues": published}, indent=2) + "\n", encoding="utf-8")
-    print(f"created {created} issue(s); coalesced {coalesced} event(s)")
+    print(f"created {created} issue(s); coalesced {coalesced} event(s); reopened {reopened}; terminal-owner suppressions {suppressed}")
     return 0
 
 
