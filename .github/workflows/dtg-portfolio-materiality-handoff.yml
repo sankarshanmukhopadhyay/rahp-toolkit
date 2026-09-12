@@ -72,6 +72,12 @@ jobs:
       - name: Validate Portfolio Monitor snapshot fetch contract
         run: python3 tools/fetch_dtg_portfolio_snapshot.py --self-test
 
+      - name: Validate assessment issue ownership contract
+        run: >-
+          python3 tools/publish_assessment_issues.py
+          --self-test
+          --repository "sankarshanmukhopadhyay/rahp-toolkit"
+
       - name: Fetch newest recent Portfolio Monitor snapshot
         id: snapshot
         run: >-
@@ -157,7 +163,7 @@ jobs:
               '',
               'Portfolio Monitor detects/classifies. RAHP owns assurance routing and RAHP assessments. Privacy-relevant findings are promoted through the canonical RAHP → DPIP transport. DPIP owns applicability/evidence/privacy conclusion and returns the disposition to RAHP.',
               '',
-              'Controller records are snapshot/epoch scoped. Re-publication of the same snapshot is idempotent; a later snapshot receives a new controller key. Bounded child reviews may coalesce across observations only when their proposition identity intentionally remains stable and provenance stays visible.',
+              'Controller records are snapshot/epoch scoped. Re-publication of the same snapshot is idempotent; a later snapshot receives a new controller key. Bounded child reviews resolve to durable proposition owners across observations and issue lifecycle state.',
               '',
               '## Closure rule',
               '',
@@ -216,12 +222,12 @@ jobs:
             while IFS= read -r number; do
               [ -n "$number" ] || continue
               issue_args+=(--issue-number "$number")
-            done < <(jq -r '.issues[]?.number // empty' build/dtg-routing/dpip-result.json)
+            done < <(jq -r '.issues[]? | select(.action == "created" or .action == "coalesced" or .action == "reopened") | .number // empty' build/dtg-routing/dpip-result.json)
           fi
           if [ "${#issue_args[@]}" -gt 0 ]; then
             python3 tools/dpip_handoff.py "${issue_args[@]}"
           else
-            python3 tools/dpip_handoff.py
+            echo 'No active/new RAHP privacy referral requires DPIP transport.'
           fi
 
       - name: Dispatch registered DTG cross-specification pressure tests
