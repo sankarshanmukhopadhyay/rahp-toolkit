@@ -25,8 +25,10 @@ class AssessmentQueueTests(unittest.TestCase):
             "state": "open",
             "body": "<!-- rahp-dtg-change:example/repo@abc123 -->",
         }]
-        index = MOD.open_issue_by_key(issues)
-        self.assertEqual(index["dtg:repository:example/repo"]["number"], 1)
+        index = MOD.issues_by_key(issues)
+        owner, state = MOD.resolve_owner(index, "dtg:repository:example/repo")
+        self.assertEqual(owner["number"], 1)
+        self.assertEqual(state, "open")
 
     def test_trigger_marker_is_stable_for_same_observation(self):
         event = {"assessment_key": "dtg:issue:example/repo#7", "observed_at": "2026-08-16T00:00:00Z"}
