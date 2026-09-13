@@ -21,6 +21,18 @@ Stable residuals are part of the release record, not release failures. Where an 
 4. **Upstream dependency hygiene:** open downstream propositions make ownership, evidence gaps and reassessment triggers legible; deferred evidence is distinguished from ordinary executable backlog.
 5. **Resilience/DRARM integration:** source findings remain source-preserving propositions and runtime claims become explicit evidence obligations at declared assurance depth.
 
+## Capability continuity retained in v2.3
+
+The release preserves the capabilities established in earlier qualified tranches while extending their evidence and coverage surfaces:
+
+- **Durable assessment and finding lineage** keeps terminal findings and their provenance inspectable across reassessment and source changes.
+- **Governed remediation and retest** preserves explicit remediation authority, closure evidence and retest lineage.
+- **Assurance graph and impact analysis** keeps dependency-aware change impact deterministic rather than inferred from repository activity alone.
+- **Evidence provenance, freshness and delta** preserves source identity, freshness semantics and explicit assurance-state transition evidence.
+- **Executable authority and policy gates** keep scope, revocation posture and PASS/FAIL/INDETERMINATE semantics machine-checkable.
+- **Portfolio and deployment presentation** remains a presentation layer over bounded assurance state rather than an alternative source of truth.
+- **Release qualification** remains an executable gate binding declared version, compatibility contracts, release notes and qualification evidence.
+
 ## Post-v2.3 priorities
 
 1. **Realization conformance:** selectively retest when adopted normative semantics become implemented.
