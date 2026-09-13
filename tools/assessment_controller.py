@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Finite RAHP assessment lifecycle controller."""
 from __future__ import annotations
-import argparse, json, pathlib, uuid
+import argparse, json, uuid
 from typing import Any
 
 STATES = (
@@ -9,6 +9,11 @@ STATES = (
     "EVIDENCE_REQUIRED", "EVIDENCE_READY", "ASSESSED", "TERMINAL",
 )
 TERMINALS = {"PASS", "FAIL", "INDETERMINATE", "NOT_APPLICABLE", "UNMAPPED"}
+RESILIENCE_DISPOSITIONS = {
+    "executed",
+    "not-applicable",
+    "required-but-not-executed",
+}
 ALLOWED = {
     "DISCOVERED": {"QUALIFIED", "TERMINAL"},
     "QUALIFIED": {"ROUTED", "TERMINAL"},
@@ -21,6 +26,72 @@ ALLOWED = {
 }
 
 
+def _resilience_record(
+    disposition: str,
+    reason: str,
+    provenance: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    if disposition not in RESILIENCE_DISPOSITIONS:
+        raise ValueError(f"invalid resilience disposition: {disposition}")
+    if not isinstance(reason, str) or not reason.strip():
+        raise ValueError("resilience disposition requires a non-empty reason")
+    if provenance is not None and not isinstance(provenance, dict):
+        raise ValueError("resilience provenance must be an object")
+    if disposition == "not-applicable" and not provenance:
+        raise ValueError("not-applicable resilience disposition requires provenance")
+    return {
+        "disposition": disposition,
+        "reason": reason.strip(),
+        **({"provenance": provenance} if provenance else {}),
+    }
+
+
+def resilience_disposition(record: dict[str, Any]) -> dict[str, Any]:
+    """Return a validated, fail-closed resilience disposition.
+
+    Historical v1 lifecycle records did not carry a capability manifest. They remain
+    readable, but absence is interpreted as unresolved rather than as a resilience
+    PASS. This compatibility rule is intentionally stricter than the legacy record.
+    """
+    capabilities = record.get("capabilities")
+    if capabilities is None:
+        return _resilience_record(
+            "required-but-not-executed",
+            "legacy assessment has no recorded resilience disposition",
+            {"source": "compatibility-default", "decision": "fail-closed"},
+        )
+    if not isinstance(capabilities, dict):
+        raise ValueError("assessment capabilities must be an object")
+    value = capabilities.get("resilience")
+    if value is None:
+        return _resilience_record(
+            "required-but-not-executed",
+            "assessment has no recorded resilience disposition",
+            {"source": "compatibility-default", "decision": "fail-closed"},
+        )
+    if not isinstance(value, dict):
+        raise ValueError("resilience capability record must be an object")
+    return _resilience_record(
+        str(value.get("disposition", "")),
+        value.get("reason"),
+        value.get("provenance"),
+    )
+
+
+def set_resilience_disposition(
+    record: dict[str, Any],
+    disposition: str,
+    reason: str,
+    provenance: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    value = _resilience_record(disposition, reason, provenance)
+    capabilities = record.setdefault("capabilities", {})
+    if not isinstance(capabilities, dict):
+        raise ValueError("assessment capabilities must be an object")
+    capabilities["resilience"] = value
+    return record
+
+
 def new_lifecycle(assessment_id: str, mode: str = "steady-state", lineage: dict[str, Any] | None = None) -> dict[str, Any]:
     if mode not in {"steady-state", "clean-room"}:
         raise ValueError("mode must be steady-state or clean-room")
@@ -30,6 +101,13 @@ def new_lifecycle(assessment_id: str, mode: str = "steady-state", lineage: dict[
         "mode": mode,
         "state": "DISCOVERED",
         **({"lineage": lineage} if lineage else {}),
+        "capabilities": {
+            "resilience": _resilience_record(
+                "required-but-not-executed",
+                "resilience applicability has not yet been resolved",
+                {"source": "controller-default", "decision": "fail-closed"},
+            )
+        },
         "history": [{"from": None, "to": "DISCOVERED", "reason": "assessment discovered"}],
         "blocking_reason": None,
     }
