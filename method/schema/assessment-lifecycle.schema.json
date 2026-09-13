@@ -13,6 +13,28 @@
     "terminal_outcome": {"enum": ["PASS", "FAIL", "INDETERMINATE", "NOT_APPLICABLE", "UNMAPPED"]},
     "blocking_reason": {"type": ["object", "null"]},
     "lineage": {"type": "object"},
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "resilience": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["disposition", "reason"],
+          "properties": {
+            "disposition": {"enum": ["executed", "not-applicable", "required-but-not-executed"]},
+            "reason": {"type": "string", "minLength": 1},
+            "provenance": {"type": "object"}
+          },
+          "allOf": [
+            {
+              "if": {"properties": {"disposition": {"const": "not-applicable"}}, "required": ["disposition"]},
+              "then": {"required": ["provenance"]}
+            }
+          ]
+        }
+      }
+    },
     "history": {
       "type": "array",
       "items": {
