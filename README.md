@@ -88,6 +88,22 @@ v2.3.0 **Common Five-ring** (*Ypthima baldus*) is the stable **Portable Coverage
 
 Historical release records remain immutable. Release presentation metadata follows the governed West Bengal butterfly naming policy; semantic versioning and contract identifiers remain the compatibility authority.
 
+## Release lineage
+
+| Version | Codename | Historical boundary |
+|---|---|---|
+| v2.3.0 | **Common Five-ring** | Portable Coverage and Source-Preserving Assurance |
+| v2.2.0 | **Common Four-ring** | Evidence Production and Realization Assurance |
+| v2.1.0 | **Common Acacia Blue** | Qualified Autonomous Assurance Plane |
+| v2.0.0 | **Blue Mormon** | Portable Assurance Engine Stabilization |
+| v1.9.0 | **Lesser Mime** | Historical qualified release |
+| v1.8.0 | **Common Map** | Historical qualified release |
+| v1.7.0 | **Common Palmfly** | Historical qualified release |
+| v1.6.0 | **Common Earl** | Historical qualified release |
+| v1.5.0 | **Purple Leaf Blue** | Historical qualified release |
+
+The table preserves release identity only; historical qualification records and release notes remain authoritative for what each earlier release actually established.
+
 ## Repository map
 
 | Path | Role |
