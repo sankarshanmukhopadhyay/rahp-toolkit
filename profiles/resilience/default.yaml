@@ -11,7 +11,7 @@ applicability:
   required_for:
     - implementation
     - architecture
-    - composition
+    - composed-system
     - deployment
   not_applicable_for:
     - governance-only
