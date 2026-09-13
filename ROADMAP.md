@@ -7,49 +7,29 @@ parent: Releases
 ---
 # RAHP roadmap
 
-## Current release boundary — v2.2.0 Common Four-ring
+## Current release boundary — v2.3.0 Common Five-ring
 
-v2.2.0 packages **Evidence Production and Realization Assurance** on top of the stable v2.1 autonomous assurance lifecycle. The release makes semantic evidence/remediation obligations, producer ownership, provenance routing and realization/runtime evidence boundaries first-class without changing the stable engine/result/evidence compatibility authorities.
+v2.3.0 packages **Portable Coverage and Source-Preserving Assurance** on top of the v2.2 evidence-production baseline. The release adds generic capability coverage, Persona/Data Rooms coverage packs, current realization-evidence reconciliation, source-preserving resilience propositions, deterministic runtime evidence obligations and explicit deferred-evidence semantics while preserving the stable v1 engine compatibility authority.
 
-First-class capabilities now include:
+Stable residuals are part of the release record, not release failures. Where an upstream semantic primitive, private runtime, operator/deployment observation or independent implementation is absent, RAHP keeps the exact proposition and future evidence trigger explicit rather than manufacturing closure.
 
-- **Durable assessment and finding lineage** — extended in v2.2 with semantic assurance-obligation lineage.
-- **Governed remediation and retest**
-- **Assurance graph and impact analysis**
-- **Evidence provenance, freshness and delta** — extended in v2.2 with accountable evidence production and producer routing.
-- **Executable authority and policy gates** — extended in v2.2 with composition and realization pressure testing.
-- **Normative-versus-realization separation**
-- **Portfolio and deployment presentation**
-- **Release qualification**
+## Completed v2.3 tranche
 
-## Current development boundary — v2.3.0 unreleased
+1. **Portable capability coverage:** generic coverage machinery now supports project-specific packs without moving consumer semantics into RAHP core.
+2. **Persona and Data Rooms:** proposition catalogues, evidence maturity and current implementation boundaries are represented as bounded assurance subjects.
+3. **Current realization evidence:** VTI/OpenVTC action-time, replay, resolved-effect, privacy and related evidence can be reconciled without treating component success as composition success.
+4. **Upstream dependency hygiene:** open downstream propositions make ownership, evidence gaps and reassessment triggers legible; deferred evidence is distinguished from ordinary executable backlog.
+5. **Resilience/DRARM integration:** source findings remain source-preserving propositions and runtime claims become explicit evidence obligations at declared assurance depth.
 
-The current development target is **v2.3.0**. The release is intentionally held while the two durable residual owners created by the 2026-09-08 convergence/evidence tranche reach stable dispositions:
+## Post-v2.3 priorities
 
-- [#481](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/481) — Data Rooms implementation/runtime/deployment evidence maturity;
-- [#482](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/482) — WD02 common-control/same-subject proof semantics.
-
-This is a release-management boundary, not an assurance shortcut: neither issue has to be forced to GREEN. Each must instead reach a stable, source-backed disposition that makes the remaining external or deployment dependency explicit.
-
-## Completed post-v2.2 tranche
-
-The first two former post-release priorities are now materially complete for the currently exposed implementation surfaces:
-
-1. **Runtime/action-time evidence:** current VDC × VAC × Trust Task composition was executed and reconciled. Missing exact current-authority evaluation remains explicit as `INDETERMINATE/BLOCKED` rather than being inferred from credential/task validity.
-2. **Privacy runtime evidence:** attributable OpenVTC A/B evidence now covers relationship/verifier, status, Trust Task and policy-discovery surfaces. DPIP returned a bounded SATISFIED result for the exercised runtime scope without claiming deployment-wide unlinkability.
-3. **WD02 convergence and composition:** adopted WD02 source is pinned and reconciled; fresh VDC × VAC and common-control negative evidence exists; the unresolved normative common-control primitive is isolated under #482.
-4. **Data Rooms capability/evidence:** the architectural proposition catalogue is canonical under `profiles/dtg/coverage/data-rooms.yaml`; current target-native OpenVTC room evidence advanced the propositions that the implementation can presently support; remaining gaps are isolated under #481 rather than treated as missing RAHP-core capability.
-
-## Current priorities
-
-1. **Stabilize #481:** reassess only when private-room ZK execution, witnessed anchoring/freshness, migration, operator-control, or composed agent/human runtime evidence becomes available.
-2. **Stabilize #482:** consume upstream common-control/same-subject semantics when sufficiently normative and evidenceable; do not substitute identifier association, request PoP, or local reference behavior for the missing primitive.
-3. **Release preparation:** once #481/#482 are stable, cut coordinated but independently versioned RAHP/DPIP/Interop releases through their governed release paths.
-4. **Realization conformance:** continue selective retest when adopted normative semantics become implemented rather than rerunning unrelated portfolio surfaces.
-5. **Adoption and portability:** validate additional non-DTG consumers against unchanged generic controller contracts.
-6. **Specialist ecosystem:** add specialists through versioned contracts/shared fixtures rather than target-specific core logic.
-7. **Operational observability:** improve controller telemetry and longitudinal posture while keeping workflow success separate from assurance success.
-8. **Composition pressure testing:** expand end-to-end flow coverage without promoting component conclusions.
+1. **Realization conformance:** selectively retest when adopted normative semantics become implemented.
+2. **Deferred evidence triggers:** reactivate portability/substitution and other deferred propositions only when genuine independently meaningful implementations or deployments exist.
+3. **Adoption and portability:** qualify additional non-DTG consumers against unchanged generic contracts.
+4. **Specialist ecosystem:** add specialists through versioned contracts/shared fixtures rather than target-specific core logic.
+5. **Operational observability:** improve controller telemetry, longitudinal posture and evidence freshness without conflating workflow success with assurance success.
+6. **Composition pressure testing:** expand end-to-end flow coverage and redress/continuity surfaces while preserving component/composition boundaries.
+7. **Resilience evidence depth:** exercise higher DRARM assurance levels with attributable runtime and operational evidence producers.
 
 ## Non-regression rules
 
@@ -61,8 +41,9 @@ The first two former post-release priorities are now materially complete for the
 - Static/source, synthetic, runtime and governance evidence remain distinct.
 - Normative convergence never silently becomes implementation conformance.
 - Component PASS never implies composition PASS.
-- Generic RAHP core remains independent of DTG, Dogwood, CAWG, A2A or any other target-specific controller vocabulary.
+- Source findings are not silently reinterpreted to fit a local catalogue.
+- Generic RAHP core remains independent of DTG, OpenVTC, CAWG, A2A or any other consumer vocabulary.
 
 ## Historical roadmap
 
-v2.1.0 **Common Acacia Blue** remains the immutable Qualified Autonomous Assurance Plane boundary. v2.0.0 **Blue Mormon** remains the immutable Portable Assurance Engine Stabilization boundary. Historical v1.7.0 **Common Palmfly** remains the immutable Assurance Operations and Complete DTG Cross-Spec Coverage release boundary. Historical v1.6.0 **Common Earl** remains the immutable Source-Pinned Coverage and Guided Adoption release boundary. Historical release notes and qualification records remain evidence rather than being rewritten into the current roadmap.
+v2.2.0 **Common Four-ring** remains the immutable Evidence Production and Realization Assurance boundary; v2.1.0 **Common Acacia Blue** remains the Qualified Autonomous Assurance Plane boundary; v2.0.0 **Blue Mormon** remains the Portable Assurance Engine Stabilization boundary. Historical release notes and qualification records remain evidence rather than being rewritten into the current roadmap.

@@ -8,15 +8,15 @@ instance:
     version_assessed: '0.1'
     review_date: 2026-08
     repository: https://example.invalid/spec
-  toolkit_version: v2.2.0
+  toolkit_version: v2.3.0
   licence: CC-BY-4.0
   maintainer: RAHP portability test fixture
 namespaces:
-  RK: {pattern: '^RK-[A-Z]{1,2}\d{2}$', record_type: risk, file: risks.yaml}
-  CT: {pattern: '^CT-\d{2}$', record_type: control, file: controls.yaml}
-  GR: {pattern: '^GR-\d{2}$', record_type: guardrail, file: guardrails.yaml}
-  AT: {pattern: '^AT-\d{2}$', record_type: assurance_test, file: assurance-tests.yaml}
-  M: {pattern: '^M-\d{2}$', record_type: metric, file: metrics.yaml}
+  RK: {pattern: '^RK-[A-Z]{1,2}\\d{2}$', record_type: risk, file: risks.yaml}
+  CT: {pattern: '^CT-\\d{2}$', record_type: control, file: controls.yaml}
+  GR: {pattern: '^GR-\\d{2}$', record_type: guardrail, file: guardrails.yaml}
+  AT: {pattern: '^AT-\\d{2}$', record_type: assurance_test, file: assurance-tests.yaml}
+  M: {pattern: '^M-\\d{2}$', record_type: metric, file: metrics.yaml}
 references:
   risk: {affected_metrics: M, guardrails: GR, controls: CT, assurance_tests: AT}
   control: {guardrails: GR, linked_risks: RK}
