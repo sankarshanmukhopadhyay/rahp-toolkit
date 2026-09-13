@@ -1,6 +1,6 @@
 version: 1
 id: rahp-versioning-v1
-stable_release: v2.2.0
+stable_release: v2.3.0
 contracts:
   engine: rahp-engine-contract-v1
   engine_family: 1
@@ -20,10 +20,7 @@ compatibility:
     additive_invariant_requires: minor_revision
     clarification_or_nonsemantic_fix_requires: no_revision_change
     rule: >-
-      Compatible additive evolution stays within the current engine contract family and
-      increments the minor contract revision. A change that invalidates an existing
-      conforming implementation or changes required operation semantics MUST create a
-      new engine contract family identifier.
+      Compatible additive evolution stays within the current engine contract family and increments the minor contract revision. A change that invalidates an existing conforming implementation or changes required operation semantics MUST create a new engine contract family identifier.
   normalized_result:
     breaking_change_requires: new_schema_version
     additive_optional_fields_may_preserve_version: true
@@ -31,15 +28,7 @@ compatibility:
     published_identifiers_are_stable: true
     reuse_after_retirement: forbidden
 conformance:
-  normative_sources:
-    - method/engine-contract.yaml
-    - method/schema/rahp-result.schema.json
-    - method/evidence-retention.yaml
-    - method/versioning.yaml
-  reference_implementations:
-    - python
-    - typescript
+  normative_sources: [method/engine-contract.yaml, method/schema/rahp-result.schema.json, method/evidence-retention.yaml, method/versioning.yaml]
+  reference_implementations: [python, typescript]
   rule: >-
-    Implementations MUST agree on shared conformance fixtures for operations they claim.
-    A claim to support engine revision N.M includes all requirements and fixtures from
-    earlier revisions in the same contract family.
+    Implementations MUST agree on shared conformance fixtures for operations they claim. A claim to support engine revision N.M includes all requirements and fixtures from earlier revisions in the same contract family.

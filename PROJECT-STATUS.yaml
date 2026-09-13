@@ -1,27 +1,25 @@
 project: rahp-toolkit
-stable_release: 2.2.0
+stable_release: 2.3.0
 development_target: 2.3.0
 release_status: released
 qualification_status: qualified
-qualification_contract: method/v2.2-release-qualification.yaml
+qualification_contract: method/v2.3-release-qualification.yaml
 release_name:
-  common_name: Common Four-ring
-  scientific_name: Ypthima huebneri
+  common_name: Common Five-ring
+  scientific_name: Ypthima baldus
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-09-07'
+  selected_on: '2026-09-13'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
   evidence_retention_contract: rahp-evidence-retention-v1
 portability:
   invariant: >-
-    Portable RAHP method and engine contracts MUST remain independent of any
-    deployment, repository host, specification family, implementation, or
-    governance community.
+    Portable RAHP method and engine contracts MUST remain independent of any deployment,
+    repository host, specification family, implementation, or governance community.
   demonstration_policy: >-
     DTG, OpenVTC, ARPA, CAWG/C2PA, A2A, and other project-specific assessments MAY
-    demonstrate portable capabilities but MUST NOT become dependencies of the
-    portable method or core conformance contract.
+    demonstrate portable capabilities but MUST NOT become dependencies of the portable method.
 release_naming:
   applies_from: 1.5.0
   convention: west-bengal-butterfly
@@ -29,15 +27,11 @@ release_naming:
   selection: random-at-release-time
   candidate_rule: governed-random-unused-candidate
 release_intent: >-
-  v2.2.0 Evidence Production and Realization Assurance packages semantic assurance
-  obligations, deterministic evidence-producer ownership and dispatch, provenance
-  routing, bounded assurance invariants, current-portfolio clean-room execution and
-  explicit normative-versus-realization separation. The DTG current-portfolio AMBER
-  result is qualification evidence, not a claim that the consumer portfolio is GREEN.
+  v2.3.0 Portable Coverage and Source-Preserving Assurance packages generic capability
+  coverage, Persona/Data Rooms coverage packs, current VTI/OpenVTC evidence reconciliation,
+  source-preserving DRARM propositions and deterministic runtime evidence obligations.
+  Evidence gaps and upstream dependencies remain explicit residuals rather than implied PASS.
 development_posture: >-
-  v2.3.0 is the current unreleased development target. Post-v2.2 work includes
-  generic capability-coverage validation across Persona and Data Rooms, WD02
-  source/evidence reconciliation, attributable OpenVTC privacy evidence, and
-  proposition-level Data Rooms runtime evidence. Releases remain intentionally held
-  while RAHP #481 and #482 reach stable residual dispositions; this does not change
-  the stable v2.2.0 qualification claim.
+  Post-v2.3 work should deepen realization conformance, non-DTG portability, specialist
+  interoperability and longitudinal observability while preserving the v1 engine contract,
+  result schema 1 and evidence-retention contract.
