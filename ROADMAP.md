@@ -58,4 +58,15 @@ The release preserves the capabilities established in earlier qualified tranches
 
 ## Historical roadmap
 
-v2.2.0 **Common Four-ring** remains the immutable Evidence Production and Realization Assurance boundary; v2.1.0 **Common Acacia Blue** remains the Qualified Autonomous Assurance Plane boundary; v2.0.0 **Blue Mormon** remains the Portable Assurance Engine Stabilization boundary. Historical release notes and qualification records remain evidence rather than being rewritten into the current roadmap.
+The named release lineage is retained because each release validator treats those identities as part of the public compatibility history:
+
+- v2.2.0 — **Common Four-ring** — Evidence Production and Realization Assurance
+- v2.1.0 — **Common Acacia Blue** — Qualified Autonomous Assurance Plane
+- v2.0.0 — **Blue Mormon** — Portable Assurance Engine Stabilization
+- v1.9.0 — **Lesser Mime** — historical qualified boundary
+- v1.8.0 — **Common Map** — historical qualified boundary
+- v1.7.0 — **Common Palmfly** — historical qualified boundary
+- v1.6.0 — **Common Earl** — historical qualified boundary
+- v1.5.0 — **Purple Leaf Blue** — historical qualified boundary
+
+Historical release notes and qualification records remain evidence rather than being rewritten into the current roadmap.
