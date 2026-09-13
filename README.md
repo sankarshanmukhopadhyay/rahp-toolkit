@@ -62,6 +62,14 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
+## Current architecture
+
+RAHP has a portable method/engine core plus consumer-specific profiles, instances, corpora and worked assessments. The generic engine owns lifecycle, proposition/evidence contracts, inference boundaries and terminal assurance semantics; consumer material demonstrates those contracts without becoming a dependency of the core.
+
+The **Bundled DTG exemplar** remains the deepest maintained portfolio demonstration and includes Credentials, Trust Tasks, ZKP/VDS, OpenVTC realization evidence and composition pressure tests. **CAWG/C2PA** remains a separate maintained consumer family demonstrating that the portable assurance model is not DTG-specific. A2A, ARPA and other consumers exercise additional portability and composition surfaces.
+
+DPIP is an independently governed privacy specialist that can return portable examination results to a compatible RAHP controller. The Trust Protocol Interop Lab is an independently governed evidence producer and composition-test environment. Neither repository is folded into RAHP authority: evidence and specialist results cross repository boundaries through explicit versioned contracts and provenance.
+
 ## Coordinated release context
 
 v2.3.0 is cut as the RAHP member of the September 2026 coordinated RAHP / DPIP / Trust Protocol Interop Lab release tranche. The repositories remain independently versioned and governed. RAHP owns assurance state and proposition/evidence reconciliation; DPIP owns composed privacy evaluation; the Interop Lab owns bounded executable interoperability evidence. Cross-repository evidence is linked by contracts and provenance, not by collapsing ownership.
