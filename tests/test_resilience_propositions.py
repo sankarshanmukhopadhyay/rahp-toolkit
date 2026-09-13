@@ -1,5 +1,6 @@
 import importlib.util
 import pathlib
+import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -85,8 +86,14 @@ class ResiliencePropositionTests(unittest.TestCase):
             MOD.normalize_drarm_result(result_for(finding("RLA-004", status="pass")))
 
     def test_mapping_cannot_mark_rule_both_mapped_and_unmapped(self):
-        with self.assertRaises(ValueError):
-            MOD.load_mapping(pathlib.Path(__file__).parent / "fixtures" / "missing-file.yaml")
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "mapping.yaml"
+            path.write_text(
+                "version: 1\nmappings:\n  RLA-004:\n    risk: RKP-OPS-02\nunmapped:\n  RLA-004:\n    rationale: conflict\n",
+                encoding="utf-8",
+            )
+            with self.assertRaises(ValueError):
+                MOD.load_mapping(path)
 
 
 if __name__ == "__main__":
