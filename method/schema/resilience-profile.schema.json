@@ -26,6 +26,22 @@
         "languages": {"type": "array", "items": {"type": "string"}}
       }
     },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required_for": {
+          "type": "array",
+          "items": {"enum": ["implementation", "specification", "architecture", "deployment", "composed-system", "mixed", "governance-only"]},
+          "uniqueItems": true
+        },
+        "not_applicable_for": {
+          "type": "array",
+          "items": {"enum": ["implementation", "specification", "architecture", "deployment", "composed-system", "mixed", "governance-only"]},
+          "uniqueItems": true
+        }
+      }
+    },
     "rules": {
       "type": "object", "additionalProperties": false,
       "properties": {
