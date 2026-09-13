@@ -40,6 +40,13 @@ v2.2.0 remains the immutable Evidence Production and Realization Assurance relea
 
 v2.1.0 remains the immutable Qualified Autonomous Assurance Plane release. See [v2.1.0 release notes](docs/releases/v2.1.0.md).
 
-## Prior release history
+## Named historical release lineage
 
-v2.0.0 **Blue Mormon** and earlier tagged releases remain immutable in Git history and release tags. Historical release-note files remain under [`docs/releases/`](docs/releases/).
+- v2.0.0 — **Blue Mormon**
+- v1.9.0 — **Lesser Mime**
+- v1.8.0 — **Common Map**
+- v1.7.0 — **Common Palmfly**
+- v1.6.0 — **Common Earl**
+- v1.5.0 — **Purple Leaf Blue**
+
+Earlier tagged releases remain immutable in Git history and release tags. Historical release-note files remain under [`docs/releases/`](docs/releases/) and remain authoritative for their original qualification boundaries.
