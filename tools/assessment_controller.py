@@ -47,12 +47,7 @@ def _resilience_record(
 
 
 def resilience_disposition(record: dict[str, Any]) -> dict[str, Any]:
-    """Return a validated, fail-closed resilience disposition.
-
-    Historical v1 lifecycle records did not carry a capability manifest. They remain
-    readable, but absence is interpreted as unresolved rather than as a resilience
-    PASS. This compatibility rule is intentionally stricter than the legacy record.
-    """
+    """Return a validated, fail-closed resilience disposition."""
     capabilities = record.get("capabilities")
     if capabilities is None:
         return _resilience_record(
@@ -90,6 +85,66 @@ def set_resilience_disposition(
         raise ValueError("assessment capabilities must be an object")
     capabilities["resilience"] = value
     return record
+
+
+def resilience_applicability(
+    target_class: str,
+    policy: dict[str, Any] | None = None,
+) -> dict[str, str]:
+    """Resolve resilience applicability from explicit target class and profile policy.
+
+    The decision deliberately avoids source-text keyword inference. Ambiguity fails
+    closed as unresolved, leaving the capability required-but-not-executed.
+    """
+    if not isinstance(target_class, str) or not target_class.strip():
+        raise ValueError("target_class must be a non-empty string")
+    target_class = target_class.strip()
+    policy = policy or {}
+    required = set(policy.get("required_for") or [])
+    not_applicable = set(policy.get("not_applicable_for") or [])
+    overlap = required & not_applicable
+    if overlap:
+        raise ValueError("resilience applicability policy conflicts for: " + ", ".join(sorted(overlap)))
+    if target_class in required:
+        return {"decision": "required", "target_class": target_class}
+    if target_class in not_applicable:
+        return {"decision": "not-applicable", "target_class": target_class}
+    return {"decision": "unresolved", "target_class": target_class}
+
+
+def apply_resilience_applicability(
+    record: dict[str, Any],
+    target_class: str,
+    policy: dict[str, Any] | None = None,
+    *,
+    policy_source: str = "profile-policy",
+) -> dict[str, Any]:
+    decision = resilience_applicability(target_class, policy)
+    provenance = {
+        "source": policy_source,
+        "target_class": decision["target_class"],
+        "decision": decision["decision"],
+    }
+    if decision["decision"] == "not-applicable":
+        return set_resilience_disposition(
+            record,
+            "not-applicable",
+            f"resilience policy marks target class {target_class!r} not applicable",
+            provenance,
+        )
+    if decision["decision"] == "required":
+        return set_resilience_disposition(
+            record,
+            "required-but-not-executed",
+            f"resilience assessment required for target class {target_class!r}",
+            provenance,
+        )
+    return set_resilience_disposition(
+        record,
+        "required-but-not-executed",
+        f"resilience applicability unresolved for target class {target_class!r}",
+        provenance,
+    )
 
 
 def new_lifecycle(assessment_id: str, mode: str = "steady-state", lineage: dict[str, Any] | None = None) -> dict[str, Any]:
