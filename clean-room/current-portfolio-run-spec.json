@@ -1,31 +1,31 @@
 {
   "schema": "rahp-clean-room-run/v2",
   "run": {
-    "issue": 446,
-    "lineage_prefix": "dtg-current-portfolio-2026-09-07",
+    "issue": 665,
+    "lineage_prefix": "dtg-current-portfolio-2026-09-14-clean-room",
     "instance": "dtg",
-    "snapshot": "2026-09-07"
+    "snapshot": "2026-09-14"
   },
   "target": {
     "repository": "OpenVTC/verifiable-trust-infrastructure",
-    "revision": "3f21929ae5ce870f7c17726120d4aa1c1acbf13c",
-    "release": "current-main-2026-09-07",
+    "revision": "76eae3f8093cc09fc6d47428833a158e326a981f",
+    "release": "portfolio-monitor-epoch-2026-09-14",
     "path": "target"
   },
   "resources": {
     "credential_spec": {
       "repository": "trustoverip/dtgwg-cred-spec",
-      "revision": "37074bdcd861c51f3e5b7868ce700832b17b73ce",
+      "revision": "32aeabf607fd8bf30b983897a5b5bc33342877b0",
       "path": "credential-spec"
     },
     "trust_tasks": {
       "repository": "trustoverip/dtgwg-trust-tasks-tf",
-      "revision": "84a4329a5f797dec9d240c83ab5d564c120dde8f",
+      "revision": "f40ba07de1c8b8608f38d86c96062da873515e6d",
       "path": "trust-tasks"
     },
     "dtg_credentials": {
       "repository": "OpenVTC/dtg-credentials",
-      "revision": "5cb04fab2d9272ee891b352a4886343ccc86b52b",
+      "revision": "66376c01c1f56033cd9ba0775eb8ce0030ff038c",
       "path": "dtg-credentials"
     },
     "dpip": {
@@ -41,7 +41,7 @@
   },
   "subject": {
     "type": "portfolio-composition",
-    "id": "DTG-VTC-CURRENT-PORTFOLIO-2026-09-07",
+    "id": "DTG-VTC-CLEAN-ROOM-2026-09-14",
     "components": [
       "DTG Credential Specification",
       "DTG Trust Tasks",
@@ -54,8 +54,8 @@
   "assurance_contract": {
     "material": true,
     "specialist_required": true,
-    "scope": "Current DTG normative stack and current OpenVTC realization, reconciled with source-compatible privacy and executable composition evidence.",
-    "non_scope": "Production deployment certification, unpinned future upstream work, and claims about implementation paths not represented by the immutable source set.",
+    "scope": "Classical clean-room assessment of the DTG/VTC state frozen at the 2026-09-14 Portfolio Monitor controller epoch. Prior RAHP issue dispositions are excluded from the analytical evidence basis; reconciliation occurs only after independent conclusions exist.",
+    "non_scope": "Production deployment certification, post-controller upstream commits, and prior downstream issue dispositions as substitutes for source evidence.",
     "personas": ["principal", "delegate or agent", "verifier", "service operator"],
     "scenarios": [
       "A consequential action is attempted through a DTG credential and Trust Task composition.",
@@ -78,7 +78,7 @@
     ],
     "assurance_propositions": [
       "delegation cannot substitute for current authority and authority cannot substitute for representation",
-      "current implementation materially conforms to adopted VDC semantics where it claims support",
+      "current implementation materially conforms to adopted VDC and VAC semantics where it claims support",
       "Trust Task authorization and invocation boundaries do not enlarge credential authority",
       "replay/idempotency behavior does not create a second authorization path",
       "presenter, subject and relationship bindings are preserved across the composed path",
@@ -86,11 +86,11 @@
       "status/policy discovery and retained task evidence do not silently become correlation surfaces",
       "capability, key possession and authority remain non-collapsible at consequential actuation boundaries",
       "Trust Tasks and Credential Specification compose without introducing a semantic authority gap",
-      "the current OpenVTC realization is distinguishable from the normative baseline wherever it is divergent or incomplete"
+      "the frozen OpenVTC realization is distinguishable from the normative baseline wherever it is divergent or incomplete"
     ],
     "requirements_examined": [
       "ER-VDC-VAC-NON-SUBSTITUTION",
-      "current VDC realization support",
+      "current VDC/VAC realization support",
       "credential-to-Trust-Task actuation and replay evidence",
       "effective-correlation runtime evidence"
     ],
@@ -109,16 +109,16 @@
     "actions": [
       {
         "surface": "assurance-model",
-        "action": "Resolve the evidence-required and implementation-divergence propositions emitted by the portfolio matrix.",
-        "acceptance_criterion": "A new immutable comparable run removes each residual by attributable implementation or runtime evidence, or records a durable external blocker."
+        "action": "Resolve evidence-required and implementation-divergence propositions emitted independently by this frozen clean-room run.",
+        "acceptance_criterion": "Each proposition is supported by attributable source/runtime evidence or remains explicitly INDETERMINATE; prior downstream dispositions are used only during post-run reconciliation."
       }
     ]
   },
   "assessment": {
-    "profile_id": "dtg-current-portfolio-clean-room-v1",
-    "title": "Current DTG/VTC portfolio clean-room assurance assessment",
-    "target_id": "current-openvtc-vti",
-    "target_title": "Current OpenVTC VTI realization",
+    "profile_id": "dtg-current-portfolio-clean-room-v2",
+    "title": "DTG/VTC 2026-09-14 classical clean-room assurance assessment",
+    "target_id": "openvtc-vti-2026-09-14-epoch",
+    "target_title": "OpenVTC VTI realization at Portfolio Monitor 2026-09-14 epoch",
     "mode": "combined"
   },
   "evidence_plan": {
@@ -127,14 +127,7 @@
         "cwd": "interop",
         "revision": "52dbb22479a05554e7fa2745362b22c01f714095",
         "attribution": "composition-runtime:Interop-Lab",
-        "command": [
-          "python",
-          "../rahp/tools/vdc_vac_evidence_adapter.py",
-          "--interop-root",
-          ".",
-          "--output",
-          "../output/vdc-vac-non-substitution.json"
-        ]
+        "command": ["python", "../rahp/tools/vdc_vac_evidence_adapter.py", "--interop-root", ".", "--output", "../output/vdc-vac-non-substitution.json"]
       }
     },
     "requirements": [
@@ -147,9 +140,7 @@
     ]
   },
   "assessor": {
-    "commands": [
-      "python rahp/tools/current_portfolio_assessor.py --spec rahp/clean-room/current-portfolio-run-spec.json --workspace . --output output/current-portfolio-assessor.json --matrix output/current-portfolio-matrix.json"
-    ],
+    "commands": ["python rahp/tools/current_portfolio_assessor.py --spec rahp/clean-room/current-portfolio-run-spec.json --workspace . --output output/current-portfolio-assessor.json --matrix output/current-portfolio-matrix.json"],
     "result_file": "output/current-portfolio-assessor.json"
   }
 }
