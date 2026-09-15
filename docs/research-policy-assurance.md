@@ -22,20 +22,38 @@ policy source
   -> policy-version delta and reassessment trigger
 ```
 
-The capability is implemented as an additive adapter in `tools/policy_subject.py` plus the research workflow in `tools/policy_assessment.py`. It does **not** modify `tools/assessment_controller.py`, the stable engine contract, terminal assurance semantics, or release metadata.
+The capability is implemented as additive research adapters and workflow tooling. It does **not** modify `tools/assessment_controller.py`, the stable engine contract, terminal assurance semantics, or release metadata.
 
 ## What is implemented
 
 | Workstream from #662 | Research implementation | Current boundary |
 |---|---|---|
 | W1 source acquisition/pinning | Local UTF-8 text/Markdown, URI/version/retrieval metadata, full-source SHA-256 | Remote retrieval and scanned/OCR inputs deliberately unsupported |
-| W2 structure/segmentation | Lossless paragraph-like spans with exact offsets, text and span hashes | Rich table/list/definition hierarchy is not yet reconstructed |
-| W3 proposition extraction | Conservative deterministic classification into the experimental proposition vocabulary | Actor/object/trigger field extraction remains future research |
+| W2 structure/segmentation | Exact source offsets/hashes plus structure-preserving Markdown ingestion for YAML front matter, heading hierarchy and list-item boundaries | Complete table semantics and cross-document traversal remain future work |
+| W3 proposition extraction | Conservative deterministic classification into the experimental proposition vocabulary | Actor/object/trigger extraction and richer definition semantics remain future research |
 | W4 human review | Accept/amend/reject decisions with machine proposal preserved and rationale required for material change | Split/merge UI operations are not implemented in this branch |
 | W5 risk/harm hypotheses | Small bounded mapping to existing portable RAHP risk patterns with explicit rationale | Mapping is intentionally incomplete and remains non-terminal |
 | W6 evidence/specialist routing | Runtime, UX, privacy/DPIP, legal/domain, human-judgment and RAHP evidence queue | No external specialist is invoked automatically |
 | W7 synthesis | Cold-reader Markdown/JSON report separating source, inference, evidence and uncertainty | No aggregate policy score is produced |
 | W8 change path | Deterministic proposition-aware source-version delta and reassessment flag | Semantic matching is deliberately conservative and research-grade |
+
+## Real-document pressure-test tranche
+
+The branch includes a bounded real-policy corpus under `examples/policy-assurance/real/`, derived from the public `github/site-policy` repository pinned at commit `b9578b546d2506febda1da2cd7431644d58e512c`. The upstream corpus is CC0 1.0.
+
+The fixtures retain separate provenance for the authoritative upstream blob and for the local research snapshot. RAHP calculates the assessment-source SHA over the actual retained bytes; it does not reuse the upstream blob SHA as if the snapshot were the complete upstream document.
+
+The real-corpus tests pressure-test:
+
+- YAML front matter as metadata rather than propositions;
+- heading hierarchy attached to each proposition;
+- list items as independent source spans;
+- exact source-offset reconstruction;
+- materially different policy models for acceptable-use and appeal/redress policies;
+- discretionary language remaining judgment-required;
+- portable risk mappings remaining hypotheses rather than terminal findings.
+
+See `examples/policy-assurance/real/README.md` and `tests/test_policy_real_corpus.py`.
 
 ## Run the experiment
 
@@ -46,6 +64,15 @@ python3 tools/policy_subject.py ingest \
   examples/policy-assurance/platform-terms-v1.md \
   --uri fixture://platform-terms-v1.md \
   --version v1 > /tmp/policy-subject.json
+```
+
+For structure-preserving Markdown ingestion:
+
+```bash
+python3 tools/policy_structure.py \
+  examples/policy-assurance/real/github-appeal-and-reinstatement.md \
+  --uri github-site-policy://appeal-and-reinstatement \
+  --version b9578b546d2506febda1da2cd7431644d58e512c
 ```
 
 Generate bounded RAHP hypotheses:
@@ -68,38 +95,11 @@ The default review path deliberately leaves ambiguous propositions at `JUDGMENT_
 
 ## Optional reviewed proposition decisions
 
-A review file is a JSON array. For example:
-
-```json
-[
-  {
-    "proposition_id": "pol-example",
-    "action": "amend",
-    "text": "Reviewed proposition text",
-    "reviewer": "human-reviewer",
-    "rationale": "Clarify the actor while preserving the source clause as immutable lineage."
-  }
-]
-```
-
-Supported research actions are `accept`, `amend` and `reject`. `amend` and `reject` require rationale. The immutable machine proposal and exact source span remain present in the review lineage.
+A review file is a JSON array. Supported research actions are `accept`, `amend` and `reject`. `amend` and `reject` require rationale. The immutable machine proposal and exact source span remain present in the review lineage.
 
 ## Runtime comparison
 
-Runtime evidence is supplied separately and MUST declare `evidence_class: runtime-observation`:
-
-```json
-[
-  {
-    "proposition_id": "pol-example",
-    "evidence_class": "runtime-observation",
-    "observed": false,
-    "evidence_ref": "run://example-001"
-  }
-]
-```
-
-The comparison result is `CONSISTENT`, `MISMATCH` or `INDETERMINATE`. None of these records is itself a terminal RAHP assurance result. Policy text cannot be passed as runtime evidence.
+Runtime evidence is supplied separately and MUST declare `evidence_class: runtime-observation`. The comparison result is `CONSISTENT`, `MISMATCH` or `INDETERMINATE`. None of these records is itself a terminal RAHP assurance result. Policy text cannot be passed as runtime evidence.
 
 ## Policy-version change
 
@@ -124,27 +124,9 @@ Missing remedy text is treated as an evidence gap, not proof that no remedy exis
 
 ## Tests and falsification evidence
 
-`tests/test_policy_subject.py` exercises:
+The research tests exercise source reconstruction and hashing, materially different policy fixtures, ambiguity preservation, non-terminal risk hypotheses, missing-redress `INDETERMINATE`, policy-change reassessment, evidence-class separation, tamper detection, explicit human-review lineage, rationale requirements, specialist routing, cold-reader synthesis, real-policy Markdown structure, and judgment-state transitions.
 
-- exact source-span reconstruction and hashing;
-- two materially different policy fixtures;
-- ambiguity preservation;
-- portable risk hypotheses remaining hypotheses;
-- missing-redress text remaining `INDETERMINATE`;
-- deterministic policy-change reassessment;
-- governance-source versus runtime-observation separation;
-- rejection of tampered source spans.
-
-`tests/test_policy_assessment.py` exercises:
-
-- explicit human-review boundaries;
-- preservation of machine proposals after amendments;
-- rationale requirements for material review changes;
-- runtime/privacy/UX/judgment/RAHP evidence routing;
-- non-terminal synthesis and cold-reader report content;
-- transition from `JUDGMENT_REQUIRED` to `EVIDENCE_REQUIRED` only after explicit review.
-
-The repository's standard `python3 -m unittest discover -s tests -p 'test_*.py'` CI command discovers both research test files automatically.
+The repository's standard `python3 -m unittest discover -s tests -p 'test_*.py'` CI command discovers the research test files automatically.
 
 ## What this branch deliberately does not claim
 
@@ -158,7 +140,7 @@ A future merge to stable `main` should require explicit evidence that:
 - proposition classification is useful enough after human review to justify maintenance cost;
 - policy inference does not weaken RAHP evidence or authority boundaries;
 - privacy/legal/domain specialist routing has a durable contract where needed;
-- richer document structure and incorporated-document handling have defensible semantics;
+- richer document structure, definitions and incorporated-document handling have defensible semantics;
 - policy delta behaviour is reliable enough for continuous assurance;
 - the end-user output is understandable without requiring knowledge of internal RAHP record types;
 - the full RAHP validation suite remains green;
