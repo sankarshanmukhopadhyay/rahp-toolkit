@@ -1,9 +1,10 @@
 ---
 title: GitHub Acceptable Use Policies
+fixture_scope: bounded-research-snapshot
 source_repository: github/site-policy
 source_path: Policies/acceptable-use-policies/github-acceptable-use-policies.md
 source_ref: b9578b546d2506febda1da2cd7431644d58e512c
-source_blob_sha: 5100dcce69b9b86beb8ecbe2d5b634700633d4df
+upstream_blob_sha: 5100dcce69b9b86beb8ecbe2d5b634700633d4df
 license: CC0-1.0
 retrieved_for_research: 2026-09-15
 ---
