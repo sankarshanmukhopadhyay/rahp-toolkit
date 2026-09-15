@@ -23,6 +23,9 @@ _HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 _LIST_ITEM = re.compile(r"^(\s*)(?:[*+-]|\d+[.)])\s+(.*)$")
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 _DEFINITION = re.compile(r"(?:[\"“])([^\"”]{1,80})(?:[\"”])\s+(?:means|refers to|is where|represents)\b", re.I)
+_ADDITIONAL_AMBIGUITY = (
+    ("open_ended_discretion", re.compile(r"\bin\s+(?:its|their|his|her)\s+discretion\b", re.I)),
+)
 
 
 def _trim_span(text: str, start: int, end: int) -> tuple[int, int, str]:
@@ -178,6 +181,10 @@ def ingest_structured_policy(
     for unit in structure["units"]:
         source_text = unit["source_span"]["text"]
         proposition_type, ambiguity = classify(source_text)
+        ambiguity = list(ambiguity)
+        for signal_name, pattern in _ADDITIONAL_AMBIGUITY:
+            if pattern.search(source_text) and signal_name not in ambiguity:
+                ambiguity.append(signal_name)
         proposition_id = "pol-" + sha256_text(
             f"{source_hash}:{unit['source_span']['start']}:{unit['source_span']['end']}"
         )[:16]
