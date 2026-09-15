@@ -1,4 +1,5 @@
 ---
+layout: default
 title: GitHub Acceptable Use Policies
 fixture_scope: bounded-research-snapshot
 source_repository: github/site-policy
