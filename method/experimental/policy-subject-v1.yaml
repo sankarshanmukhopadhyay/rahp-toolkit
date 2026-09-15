@@ -29,13 +29,19 @@ structure:
     - list-item boundaries
     - exact source offsets and source-span hashes
     - referenced Markdown links recorded without traversal
+    - quoted definition terms recorded as review candidates
+    - textual Section references recorded unresolved
+    - incorporated-document candidates distinguished from ordinary links
   invariants:
     - structural metadata MUST NOT silently become a policy proposition
     - source spans MUST reconstruct exact retained source bytes
     - incorporated or linked documents MUST NOT be silently traversed
+    - definition candidates MUST NOT silently rewrite proposition meaning
+    - Section references MUST remain unresolved until an explicit resolver/reviewer confirms the target
   deferred:
     - complete table semantics
-    - complete definition resolution
+    - complete definition resolution and term propagation
+    - precedence/conflict resolution across incorporated documents
     - remote acquisition and verification
     - scanned or OCR document handling
 
@@ -74,6 +80,18 @@ proposition:
   derivation:
     ingestion_value: direct-source-statement
     inferred_records_must_be_separate: true
+  experimental_facets:
+    status: review-candidate-only
+    fields:
+      - actors
+      - temporal_scope_candidates
+      - consequence_candidates
+      - section_references
+    derivation_value: deterministic-facet-candidate
+    invariants:
+      - facet candidates are never treated as reviewed facts
+      - absence of a facet is not evidence that the semantic element is absent
+      - facet candidates do not change terminal assurance semantics
 
 boundary:
   policy_evidence_class: governance-source
@@ -83,6 +101,8 @@ boundary:
   ai_output_is_assurance_evidence: false
   ambiguous_source_becomes_deterministic_finding: false
   missing_remedy_text_proves_no_redress: false
+  facet_candidates_are_reviewed_facts: false
+  references_are_silently_traversed: false
 
 research_outputs:
   risk_hypotheses:
@@ -104,4 +124,6 @@ graduation_gates:
   - demonstrate deterministic policy-change reassessment impact
   - preserve governance-source versus runtime-observation evidence separation
   - pressure-test representative real policy structure and provenance
+  - demonstrate reviewed definition/cross-reference/incorporation semantics without hidden traversal
+  - demonstrate that richer proposition facets improve review without becoming unreviewed assurance facts
   - record specialist routing for jurisdiction-dependent legal interpretation before any stable merge
