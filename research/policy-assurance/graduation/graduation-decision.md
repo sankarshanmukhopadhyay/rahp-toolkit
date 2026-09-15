@@ -1,8 +1,10 @@
 # Policy-as-subject graduation evidence decision
 
-Tracker: #668  
-Parent research: #662  
-Implementation PR: #667 (draft)  
+Tracker: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/668  
+Parent research: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/662  
+Implementation PR: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/667 (draft)  
+Research branch: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/research/policy-assurance-subjects-662  
+Reviewer guide: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/README.md  
 Measured implementation SHA: `0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce`
 
 ## Current disposition
@@ -11,7 +13,7 @@ Measured implementation SHA: `0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce`
 
 This is a graduation-study decision, not a statement that the implementation is incomplete. The engineering research vehicle is substantially complete and green. What remains is evidence about usefulness, reviewer burden and judgment stability from independent humans applying the fixed candidate to the registered corpus.
 
-A future `graduate-candidate` or `bounded-graduate-candidate` decision will still **not authorize merging #667 into `main`**. Positive graduation evidence should first be socialised on the research branch, external feedback sought, and only then should a separate stable-integration decision be considered.
+A future `graduate-candidate` or `bounded-graduate-candidate` decision will still **not authorize merging https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/667 into `main`**. Positive graduation evidence should first be socialised on the research branch, external feedback sought, and only then should a separate stable-integration decision be considered.
 
 ## Evidence register
 
@@ -66,9 +68,9 @@ The capability remains additive and experimental. Stable controller, engine cont
 
 ## Why the current decision is not `graduate-candidate`
 
-The missing evidence is not another parser feature. It is the central empirical question of #668: whether two independent humans find the extracted proposition model and downstream assurance workflow useful enough, stable enough and cheap enough to justify a stable capability.
+The missing evidence is not another parser feature. It is the central empirical question of https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/668: whether two independent humans find the extracted proposition model and downstream assurance workflow useful enough, stable enough and cheap enough to justify a stable capability.
 
-Calling the result `graduate-candidate` before collecting that evidence would turn the graduation exercise into a self-certification exercise and would violate the visible-judgment discipline used throughout #662.
+Calling the result `graduate-candidate` before collecting that evidence would turn the graduation exercise into a self-certification exercise and would violate the visible-judgment discipline used throughout https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/662.
 
 ## Socialisation readiness
 
@@ -95,4 +97,4 @@ This is the correct point to seek feedback because reviewers can now critique bo
 5. Reconcile disagreements in a third record without mutating either original review.
 6. Score one runtime-composition case and one policy-delta case.
 7. Update this decision against the five gates.
-8. If the result becomes `graduate-candidate` or `bounded-graduate-candidate`, keep #667 draft/on the research branch and begin a socialisation/feedback period rather than merging.
+8. If the result becomes `graduate-candidate` or `bounded-graduate-candidate`, keep https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/667 draft/on the research branch and begin a socialisation/feedback period rather than merging.
