@@ -24,13 +24,13 @@ _HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 _LIST_ITEM = re.compile(r"^(\s*)(?:[*+-]|\d+[.)])\s+(.*)$")
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 _DEFINITION = re.compile(
-    r"(?:[\"“])([^\"”]{1,80})(?:[\"”])\s+(?:means|refers to|is where|represents)\b",
+    r"(?:[\"“])([^\"”]{1,80})(?:[\"”])\s+(?:means|refers(?:\s*,[^,]{1,60},)?\s+to|is where|represents)\b",
     re.I,
 )
 _SECTION_REF = re.compile(r"\bSection\s+([A-Z](?:\.\d+)?|\d+(?:\.\d+)*)\b", re.I)
 _INCORPORATION = re.compile(
-    r"\b(?:applies? to you|incorporat(?:e|ed|es)|contained or referenced|subject to|must comply with)\b",
-    re.I,
+    r"\b(?:applies? to you|incorporat(?:e|ed|es)|contained or referenced|subject to|must comply with|agree(?:s|d)?\s+that\s+.{0,120}?\b(?:comply with|not\s+.{0,40}?violate))\b",
+    re.I | re.S,
 )
 _ACTOR_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("operator", re.compile(r"\b(?:GitHub|we|us|our)\b", re.I)),
