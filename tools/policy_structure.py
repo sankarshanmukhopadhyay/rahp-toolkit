@@ -2,9 +2,10 @@
 """Structure-preserving Markdown ingestion for RAHP policy research (#662).
 
 This module is intentionally experimental and additive. It preserves front matter,
-heading hierarchy, list-item boundaries, source offsets, and incorporated-document
-references before reusing the bounded proposition classification from
-``policy_subject``. It does not alter the stable RAHP controller.
+heading hierarchy, list-item boundaries, source offsets, definitions, and
+incorporated-document/cross-section references before reusing the bounded
+proposition classification from ``policy_subject``. It does not alter the stable
+RAHP controller.
 """
 
 from __future__ import annotations
@@ -22,7 +23,28 @@ from policy_subject import SCHEMA, classify, sha256_text
 _HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 _LIST_ITEM = re.compile(r"^(\s*)(?:[*+-]|\d+[.)])\s+(.*)$")
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
-_DEFINITION = re.compile(r"(?:[\"“])([^\"”]{1,80})(?:[\"”])\s+(?:means|refers to|is where|represents)\b", re.I)
+_DEFINITION = re.compile(
+    r"(?:[\"“])([^\"”]{1,80})(?:[\"”])\s+(?:means|refers to|is where|represents)\b",
+    re.I,
+)
+_SECTION_REF = re.compile(r"\bSection\s+([A-Z](?:\.\d+)?|\d+(?:\.\d+)*)\b", re.I)
+_INCORPORATION = re.compile(
+    r"\b(?:applies? to you|incorporat(?:e|ed|es)|contained or referenced|subject to|must comply with)\b",
+    re.I,
+)
+_ACTOR_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("operator", re.compile(r"\b(?:GitHub|we|us|our)\b", re.I)),
+    ("user", re.compile(r"\b(?:you|your|user|users)\b", re.I)),
+    ("third-party", re.compile(r"\b(?:third[- ]part(?:y|ies)|other parties?|affiliates?)\b", re.I)),
+)
+_TEMPORAL = re.compile(
+    r"\b(?:within\s+\d+\s+(?:days?|months?|years?)|for\s+up\s+to\s+\d+\s+(?:days?|months?|years?)|at any time|from time to time|when|after|before)\b",
+    re.I,
+)
+_CONSEQUENCE = re.compile(
+    r"\b(?:suspend|terminate|remove|refuse|restrict|disable|limit|modify|apply|reinstate|appeal)\b",
+    re.I,
+)
 _ADDITIONAL_AMBIGUITY = (
     ("open_ended_discretion", re.compile(r"\bin\s+(?:its|their|his|her)\s+discretion\b", re.I)),
 )
@@ -50,6 +72,29 @@ def _front_matter(text: str) -> tuple[dict[str, Any], int]:
     return data, closing + len("\n---\n")
 
 
+def _reference_kind(label: str, target: str, source_text: str) -> str:
+    if target.startswith("#"):
+        return "internal-anchor"
+    if _INCORPORATION.search(source_text):
+        return "incorporated-document-candidate"
+    return "external-reference"
+
+
+def _extract_facets(source_text: str) -> dict[str, Any]:
+    actors = [name for name, pattern in _ACTOR_PATTERNS if pattern.search(source_text)]
+    temporal = [match.group(0) for match in _TEMPORAL.finditer(source_text)]
+    consequences = [match.group(0).lower() for match in _CONSEQUENCE.finditer(source_text)]
+    section_refs = [match.group(1) for match in _SECTION_REF.finditer(source_text)]
+    return {
+        "actors": actors,
+        "temporal_scope_candidates": temporal,
+        "consequence_candidates": sorted(set(consequences)),
+        "section_references": section_refs,
+        "requires_review": True,
+        "derivation": "deterministic-facet-candidate",
+    }
+
+
 def parse_markdown_structure(text: str) -> dict[str, Any]:
     """Return source-preserving structural units without semantic assurance claims."""
     front_matter, body_start = _front_matter(text)
@@ -65,6 +110,7 @@ def parse_markdown_structure(text: str) -> dict[str, Any]:
     headings: list[dict[str, Any]] = []
     references: list[dict[str, Any]] = []
     definitions: list[dict[str, Any]] = []
+    section_references: list[dict[str, Any]] = []
 
     index = 0
     while index < len(lines) and offsets[index] < body_start:
@@ -140,16 +186,27 @@ def parse_markdown_structure(text: str) -> dict[str, Any]:
                     "unit_id": unit_id,
                     "label": label,
                     "target": target,
+                    "reference_kind": _reference_kind(label, target, source_text),
                     "traversed": False,
+                    "requires_review": True,
                 }
             )
-        definition = _DEFINITION.search(source_text)
-        if definition:
+        for match in _SECTION_REF.finditer(source_text):
+            section_references.append(
+                {
+                    "unit_id": unit_id,
+                    "section": match.group(1),
+                    "text": match.group(0),
+                    "resolved": False,
+                }
+            )
+        for definition in _DEFINITION.finditer(source_text):
             definitions.append(
                 {
                     "unit_id": unit_id,
                     "term": definition.group(1).strip(),
                     "source_span": unit["source_span"],
+                    "review_state": "candidate",
                 }
             )
 
@@ -159,6 +216,7 @@ def parse_markdown_structure(text: str) -> dict[str, Any]:
         "headings": headings,
         "units": units,
         "references": references,
+        "section_references": section_references,
         "definitions": definitions,
     }
 
@@ -177,6 +235,13 @@ def ingest_structured_policy(
 
     structure = parse_markdown_structure(text)
     source_hash = sha256_text(text)
+    definitions_by_unit: dict[str, list[str]] = {}
+    references_by_unit: dict[str, list[dict[str, Any]]] = {}
+    for definition in structure["definitions"]:
+        definitions_by_unit.setdefault(definition["unit_id"], []).append(definition["term"])
+    for reference in structure["references"]:
+        references_by_unit.setdefault(reference["unit_id"], []).append(reference)
+
     propositions: list[dict[str, Any]] = []
     for unit in structure["units"]:
         source_text = unit["source_span"]["text"]
@@ -201,6 +266,9 @@ def ingest_structured_policy(
                     "unit_kind": unit["kind"],
                     "heading_context": unit["heading_context"],
                 },
+                "definition_terms": definitions_by_unit.get(unit["id"], []),
+                "references": references_by_unit.get(unit["id"], []),
+                "facets": _extract_facets(source_text),
             }
         )
 
@@ -212,6 +280,8 @@ def ingest_structured_policy(
             "regulatory_conformance": False,
             "policy_is_runtime_evidence": False,
             "ai_output_is_assurance_evidence": False,
+            "facet_candidates_are_reviewed_facts": False,
+            "references_are_silently_traversed": False,
         },
         "source": {
             "uri": source_uri,
