@@ -1,9 +1,10 @@
 ---
 title: GitHub Appeal and Reinstatement
+fixture_scope: bounded-research-snapshot
 source_repository: github/site-policy
 source_path: Policies/acceptable-use-policies/github-appeal-and-reinstatement.md
 source_ref: b9578b546d2506febda1da2cd7431644d58e512c
-source_blob_sha: 2600be9eaafe0d8178c4a74d53e1785aea9186ba
+upstream_blob_sha: 2600be9eaafe0d8178c4a74d53e1785aea9186ba
 license: CC0-1.0
 retrieved_for_research: 2026-09-15
 ---
