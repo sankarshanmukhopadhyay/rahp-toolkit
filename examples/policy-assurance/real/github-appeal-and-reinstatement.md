@@ -1,4 +1,5 @@
 ---
+layout: default
 title: GitHub Appeal and Reinstatement
 fixture_scope: bounded-research-snapshot
 source_repository: github/site-policy
