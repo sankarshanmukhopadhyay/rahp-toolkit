@@ -1,5 +1,20 @@
 # RAHP Toolkit
 
+> **Research branch notice — policy documents as assurance subjects**
+>
+> You are viewing the experimental branch [`research/policy-assurance-subjects-662`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/research/policy-assurance-subjects-662). It explores whether source-pinned policy and governance documents can be treated as bounded RAHP assurance subjects without weakening source traceability, visible judgment, evidence-class separation, or specialist/legal authority boundaries.
+>
+> This branch is intentionally **not merged into `main`**. It is being retained for socialisation, independent review, and feedback even if the graduation exercise eventually supports a `graduate-candidate` disposition.
+>
+> **Start here if you are reviewing this branch:**
+> - Branch review guide: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/README.md
+> - Research issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/662
+> - Graduation evidence tracker: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/668
+> - Draft research PR: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/667
+> - Graduation protocol: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/protocol.md
+> - Corpus register: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/corpus.yaml
+> - Current decision record: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/graduation-decision.md
+
 **Risk Assessment & Harms Prevention**  
 Release v2.3.0 (stable) · Common Five-ring · CC-BY 4.0
 
