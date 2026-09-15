@@ -31,7 +31,7 @@ class RealPolicyCorpusPressureTests(unittest.TestCase):
         self.assertTrue(subject["document_structure"]["front_matter_excluded_from_propositions"])
         self.assertEqual("GitHub Acceptable Use Policies", subject["document_structure"]["front_matter"]["title"])
         combined = "\n".join(p["source_span"]["text"] for p in subject["propositions"])
-        self.assertNotIn("source_blob_sha:", combined)
+        self.assertNotIn("upstream_blob_sha:", combined)
         self.assertNotIn("retrieved_for_research:", combined)
 
     def test_heading_hierarchy_is_preserved_on_propositions(self):
@@ -84,6 +84,15 @@ class RealPolicyCorpusPressureTests(unittest.TestCase):
             for proposition in subject["propositions"]:
                 span = proposition["source_span"]
                 self.assertEqual(span["text"], text[span["start"]:span["end"]])
+
+    def test_incorporated_reference_is_recorded_but_not_traversed(self):
+        text = "## Terms\n\nYou must comply with the [Privacy Statement](/site-policy/privacy-policies/github-privacy-statement).\n"
+        structure = parse_markdown_structure(text)
+        self.assertEqual(1, len(structure["references"]))
+        reference = structure["references"][0]
+        self.assertEqual("Privacy Statement", reference["label"])
+        self.assertEqual("/site-policy/privacy-policies/github-privacy-statement", reference["target"])
+        self.assertFalse(reference["traversed"])
 
 
 if __name__ == "__main__":
