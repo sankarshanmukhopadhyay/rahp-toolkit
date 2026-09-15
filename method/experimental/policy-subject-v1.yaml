@@ -32,16 +32,20 @@ structure:
     - quoted definition terms recorded as review candidates
     - textual Section references recorded unresolved
     - incorporated-document candidates distinguished from ordinary links
+    - lexical definition-use candidates
+    - cross-document same-term definition-conflict candidates
+    - precedence-language candidates
   invariants:
     - structural metadata MUST NOT silently become a policy proposition
     - source spans MUST reconstruct exact retained source bytes
     - incorporated or linked documents MUST NOT be silently traversed
     - definition candidates MUST NOT silently rewrite proposition meaning
     - Section references MUST remain unresolved until an explicit resolver/reviewer confirms the target
+    - precedence/conflict candidates MUST remain judgment-required until explicit review
+    - reviewed precedence is a research interpretation, not a legal conclusion
   deferred:
     - complete table semantics
-    - complete definition resolution and term propagation
-    - precedence/conflict resolution across incorporated documents
+    - semantic definition propagation beyond lexical candidates
     - remote acquisition and verification
     - scanned or OCR document handling
 
@@ -93,6 +97,38 @@ proposition:
       - absence of a facet is not evidence that the semantic element is absent
       - facet candidates do not change terminal assurance semantics
 
+review:
+  contract: rahp-policy-review/v2
+  supported_actions:
+    - accept
+    - amend
+    - reject
+    - split
+    - merge
+  invariants:
+    - machine/source propositions and source spans are immutable lineage
+    - amend, reject, split and merge require explicit rationale
+    - split children retain the source parent identifier
+    - merge records retain every source parent identifier
+    - rejected propositions MUST NOT enter reviewed RAHP analysis
+    - unresolved ambiguous propositions MUST NOT enter reviewed RAHP analysis
+    - risk/harm hypotheses MUST be generated from the reviewed proposition set
+
+relationships:
+  contract: rahp-policy-relationships/v1
+  automatic_document_traversal: false
+  supported:
+    - lexical definition-use candidates
+    - incorporated-document relationship review
+    - cross-document definition-conflict candidates
+    - precedence-language candidates
+    - explicit reviewer precedence decisions
+  invariants:
+    - accepting an incorporated-document relationship does not fetch or traverse it
+    - cross-document conflicts remain judgment-required without explicit review
+    - precedence decisions require a reviewer rationale and selected subject digest
+    - precedence decisions are non-terminal and do not claim legal validity
+
 boundary:
   policy_evidence_class: governance-source
   policy_is_runtime_evidence: false
@@ -103,10 +139,19 @@ boundary:
   missing_remedy_text_proves_no_redress: false
   facet_candidates_are_reviewed_facts: false
   references_are_silently_traversed: false
+  rejected_propositions_enter_analysis: false
+  unreviewed_ambiguous_propositions_enter_analysis: false
 
 research_outputs:
   risk_hypotheses:
-    contract: rahp-policy-risk-hypotheses/v1
+    contract: rahp-policy-reviewed-risk-hypotheses/v1
+    source: reviewed proposition set
+    terminal_assurance: false
+  relationships:
+    contract: rahp-policy-relationships/v1
+    terminal_assurance: false
+  assessment:
+    contract: rahp-policy-assessment-research/v2
     terminal_assurance: false
   delta:
     contract: rahp-policy-delta/v1
@@ -118,12 +163,15 @@ research_outputs:
 
 graduation_gates:
   - demonstrate lossless clause/source traceability on at least two materially different policies
-  - distinguish source statements from RAHP inferences
+  - distinguish source statements from reviewed propositions and RAHP inferences
   - preserve ambiguity as judgment-required or indeterminate
+  - demonstrate accept/amend/reject/split/merge lineage without source mutation
+  - demonstrate that rejected and unresolved ambiguous propositions cannot drive RAHP hypotheses
   - reuse portable RAHP patterns without policy-specific changes to the stable controller
   - demonstrate deterministic policy-change reassessment impact
   - preserve governance-source versus runtime-observation evidence separation
   - pressure-test representative real policy structure and provenance
   - demonstrate reviewed definition/cross-reference/incorporation semantics without hidden traversal
+  - demonstrate cross-document definition conflicts and precedence decisions without automatic legal resolution
   - demonstrate that richer proposition facets improve review without becoming unreviewed assurance facts
   - record specialist routing for jurisdiction-dependent legal interpretation before any stable merge
