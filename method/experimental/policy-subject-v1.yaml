@@ -1,0 +1,86 @@
+contract_id: rahp-policy-subject-v1
+status: experimental
+issue: 662
+purpose: >-
+  Define the source-preservation and authority boundary for policy documents used
+  as bounded assurance subjects. This contract does not extend RAHP authority to
+  legal advice, regulatory certification, or runtime-conformance claims.
+
+source:
+  required:
+    - uri
+    - version
+    - sha256
+    - length
+  optional:
+    - retrieved_at
+  invariants:
+    - source identity and version are explicit
+    - the SHA-256 digest is calculated over the complete UTF-8 source text
+    - a revised source creates a new source digest and assessment lineage
+
+proposition:
+  required:
+    - id
+    - type
+    - source_span
+    - normalized_proposition
+    - derivation
+    - ambiguity_signals
+    - judgment_required
+  types:
+    - obligation
+    - permission
+    - prohibition
+    - discretion
+    - condition
+    - exception
+    - representation
+    - retention
+    - disclosure
+    - remedy
+    - termination
+    - delegation
+  source_span:
+    required:
+      - start
+      - end
+      - text
+      - sha256
+    invariants:
+      - offsets address the exact source text
+      - span digest matches the exact preserved span
+      - normalization never replaces or mutates the preserved source span
+  derivation:
+    ingestion_value: direct-source-statement
+    inferred_records_must_be_separate: true
+
+boundary:
+  policy_evidence_class: governance-source
+  policy_is_runtime_evidence: false
+  legal_advice: false
+  regulatory_conformance: false
+  ai_output_is_assurance_evidence: false
+  ambiguous_source_becomes_deterministic_finding: false
+  missing_remedy_text_proves_no_redress: false
+
+research_outputs:
+  risk_hypotheses:
+    contract: rahp-policy-risk-hypotheses/v1
+    terminal_assurance: false
+  delta:
+    contract: rahp-policy-delta/v1
+    changed_policy_requires_reassessment: true
+  runtime_comparison:
+    contract: rahp-policy-runtime-comparison/v1
+    required_runtime_evidence_class: runtime-observation
+    terminal_assurance: false
+
+graduation_gates:
+  - demonstrate lossless clause/source traceability on at least two materially different policies
+  - distinguish source statements from RAHP inferences
+  - preserve ambiguity as judgment-required or indeterminate
+  - reuse portable RAHP patterns without policy-specific changes to the stable controller
+  - demonstrate deterministic policy-change reassessment impact
+  - preserve governance-source versus runtime-observation evidence separation
+  - record specialist routing for jurisdiction-dependent legal interpretation before any stable merge
