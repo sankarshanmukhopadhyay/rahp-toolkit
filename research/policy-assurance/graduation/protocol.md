@@ -1,10 +1,12 @@
 # Policy-as-subject graduation evidence protocol
 
 Status: experimental research protocol  
-Tracker: #668  
-Parent research issue: #662  
-Implementation vehicle: draft PR #667  
-Candidate branch: `research/policy-assurance-subjects-662`
+Tracker: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/668  
+Parent research issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/662  
+Implementation vehicle: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/667  
+Candidate branch: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/research/policy-assurance-subjects-662
+
+Reviewer guide: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/README.md
 
 ## Decision boundary
 
@@ -171,7 +173,7 @@ The final evidence report makes an explicit judgment against five gates:
 - `continue-research`
 - `do-not-graduate`
 
-A positive result means **socialise and seek feedback on the branch**. It does not authorize merging draft PR #667 into `main`.
+A positive result means **socialise and seek feedback on the branch**. It does not authorize merging https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/667 into `main`.
 
 ## Evidence completeness states
 
