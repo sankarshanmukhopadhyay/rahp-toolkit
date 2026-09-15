@@ -16,8 +16,28 @@ source:
     - retrieved_at
   invariants:
     - source identity and version are explicit
-    - the SHA-256 digest is calculated over the complete UTF-8 source text
+    - the SHA-256 digest is calculated over the complete assessment-source UTF-8 text
+    - upstream repository/blob identity is recorded separately when a bounded research snapshot is used
     - a revised source creates a new source digest and assessment lineage
+
+structure:
+  status: experimental
+  supported:
+    - YAML front matter preserved as metadata and excluded from propositions
+    - Markdown heading hierarchy
+    - paragraph boundaries
+    - list-item boundaries
+    - exact source offsets and source-span hashes
+    - referenced Markdown links recorded without traversal
+  invariants:
+    - structural metadata MUST NOT silently become a policy proposition
+    - source spans MUST reconstruct exact retained source bytes
+    - incorporated or linked documents MUST NOT be silently traversed
+  deferred:
+    - complete table semantics
+    - complete definition resolution
+    - remote acquisition and verification
+    - scanned or OCR document handling
 
 proposition:
   required:
@@ -83,4 +103,5 @@ graduation_gates:
   - reuse portable RAHP patterns without policy-specific changes to the stable controller
   - demonstrate deterministic policy-change reassessment impact
   - preserve governance-source versus runtime-observation evidence separation
+  - pressure-test representative real policy structure and provenance
   - record specialist routing for jurisdiction-dependent legal interpretation before any stable merge
