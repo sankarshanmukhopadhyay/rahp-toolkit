@@ -42,7 +42,7 @@ PROPOSITION_TYPES = {
 _CLASSIFICATION_RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("prohibition", re.compile(r"\b(?:must not|shall not|may not|prohibited|forbidden)\b", re.I)),
     ("retention", re.compile(r"\b(?:retain|retention|stored? for|keep (?:your|the) data)\b", re.I)),
-    ("disclosure", re.compile(r"\b(?:disclose|share|provide|transfer)\b.*\b(?:third[- ]part|partner|affiliate|provider)\b", re.I)),
+    ("disclosure", re.compile(r"\b(?:disclose|share|provide|transfer)\b.*\b(?:third[- ]part(?:y|ies)?|partners?|affiliates?|providers?)\b", re.I)),
     ("remedy", re.compile(r"\b(?:appeal|challenge|complaint|complain|correct|correction|contest|redress|remedy)\b", re.I)),
     ("termination", re.compile(r"\b(?:terminate|termination|suspend|suspension|disable|close your account)\b", re.I)),
     ("delegation", re.compile(r"\b(?:delegate|delegation|agent|subcontract|third[- ]party (?:may|can|will) act)\b", re.I)),
@@ -76,7 +76,7 @@ _RISK_RULES: tuple[dict[str, Any], ...] = (
     {
         "id": "RKP-GOV-04",
         "name": "Responsibility fragmentation",
-        "when": re.compile(r"\b(?:third[- ]part|partner|affiliate|subcontract|service provider)\b", re.I),
+        "when": re.compile(r"\b(?:third[- ]part(?:y|ies)?|partners?|affiliates?|subcontracts?|service providers?)\b", re.I),
         "rationale": "The source introduces another responsible actor; accountability and remedy ownership may be fragmented.",
     },
     {
@@ -215,7 +215,7 @@ def map_risk_hypotheses(subject: dict[str, Any]) -> dict[str, Any]:
                         "proposition_id": proposition["id"],
                         "risk_pattern": rule["id"],
                         "risk_name": rule["name"],
-                        "derivation": "raHP-inference",
+                        "derivation": "rahp-inference",
                         "rationale": rule["rationale"],
                         "finding_state": "hypothesis",
                         "evidence_required": True,
