@@ -4,7 +4,10 @@
     "interop_revision": "1c3d3367329313cc0b7eb4a3bc972e221e4bc4d9",
     "interop_artifact_digest": "sha256:df03e239254f786108ba41ba1c84c8d3f57197a480ec22c15587271b90638a07",
     "dpip_revision": "90a4658e745c0f985e3a7cb8fc9decfb0234c699",
-    "dpip_pr": 267
+    "dpip_pr": 267,
+    "dpip_workflow_run": 35050504113,
+    "dpip_artifact": "dpip-human-power-privacy",
+    "dpip_artifact_digest": "sha256:a43297d3f2d30cab39aba3816515b364b0ab16e39a7ee9a1cff5960d29289ec4"
   },
   "rahp_contexts": {
     "compelled_disclosure": {
