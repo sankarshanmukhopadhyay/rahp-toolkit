@@ -1,0 +1,107 @@
+{
+  "schema": "rahp-human-power-reconciliation-input/v1",
+  "provenance": {
+    "interop_revision": "1c3d3367329313cc0b7eb4a3bc972e221e4bc4d9",
+    "interop_artifact_digest": "sha256:df03e239254f786108ba41ba1c84c8d3f57197a480ec22c15587271b90638a07",
+    "dpip_revision": "90a4658e745c0f985e3a7cb8fc9decfb0234c699",
+    "dpip_pr": 267,
+    "dpip_workflow_run": 35050504113,
+    "dpip_artifact": "dpip-human-power-privacy",
+    "dpip_artifact_digest": "sha256:a43297d3f2d30cab39aba3816515b364b0ab16e39a7ee9a1cff5960d29289ec4"
+  },
+  "rahp_contexts": {
+    "compelled_disclosure": {
+      "minimal_proof_available": true,
+      "expanded_disclosure_requested": true,
+      "expanded_disclosure_necessary": false,
+      "refusal_meaningfully_available": false,
+      "high_dependency_service": true,
+      "service_denied_on_refusal": true,
+      "correlation_or_minimization_depth_material": true
+    },
+    "proxy_inference": {
+      "consequential_use": true,
+      "feature": "community_membership",
+      "privacy_or_correlation_analysis_material": true,
+      "sensitive_or_social_proxy_risk": null,
+      "relevance_validated": null,
+      "necessity_supported": null,
+      "less_harmful_alternative_available": true,
+      "governance_approved": false
+    }
+  },
+  "dpip_results": [
+    {
+      "schema": "dpip-human-power-privacy-result/v1",
+      "dpip_issue": 190,
+      "outcome": "FAIL",
+      "reasons": [
+        "expanded-disclosure-exceeds-minimal-and-is-not-purpose-bound",
+        "stable-identifier-demand-expands-declared-correlation-scope",
+        "retention-expands-effective-scope-across-sessions"
+      ],
+      "evidence": {
+        "source_repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+        "source_revision": "1c3d3367329313cc0b7eb4a3bc972e221e4bc4d9",
+        "source_schema": "interop-human-power-evidence-package/v1",
+        "maturity": "synthetic-pressure-test",
+        "case_count": 13
+      },
+      "deployment_claim_supported": false,
+      "authority_boundary": {
+        "dpip_owns": ["privacy minimisation", "observability", "linkability/correlation", "privacy evidence sufficiency"],
+        "dpip_does_not_own": ["coercion", "power-asymmetry harm", "discrimination", "substantive decision legitimacy", "portfolio assurance"],
+        "terminal_owner": "RAHP"
+      },
+      "bounded_findings": {
+        "negative": [
+          "expanded-disclosure-exceeds-minimal-and-is-not-purpose-bound",
+          "stable-identifier-demand-expands-declared-correlation-scope",
+          "retention-expands-effective-scope-across-sessions"
+        ],
+        "counter_cases": [
+          "purpose-bound-enhanced-assurance-preserved",
+          "governed-stable-account-scope-remains-aligned"
+        ]
+      },
+      "residual": {
+        "deployment_runtime_required": true,
+        "reason": "synthetic pressure evidence validates the bounded privacy proposition and evaluator behavior but does not establish any target deployment behavior"
+      }
+    },
+    {
+      "schema": "dpip-human-power-privacy-result/v1",
+      "dpip_issue": 191,
+      "outcome": "INDETERMINATE",
+      "reasons": ["sensitive-or-social-inference-not-observed", "cross-context-proxy-effect-not-observed"],
+      "evidence": {
+        "source_repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+        "source_revision": "1c3d3367329313cc0b7eb4a3bc972e221e4bc4d9",
+        "source_schema": "interop-human-power-evidence-package/v1",
+        "maturity": "synthetic-pressure-test",
+        "case_count": 13
+      },
+      "deployment_claim_supported": false,
+      "authority_boundary": {
+        "dpip_owns": ["privacy minimisation", "observability", "linkability/correlation", "privacy evidence sufficiency"],
+        "dpip_does_not_own": ["coercion", "power-asymmetry harm", "discrimination", "substantive decision legitimacy", "portfolio assurance"],
+        "terminal_owner": "RAHP"
+      },
+      "bounded_findings": {
+        "observable_extra_feature": true,
+        "feature": "community_membership",
+        "controlled_outcome_difference": true,
+        "less_revealing_alternative_observed": true,
+        "discrimination_or_legitimacy_judgment": "not-made-by-dpip"
+      },
+      "residual": {
+        "evidence_required": [
+          "observer-bound mapping, if any, from trust metadata to the claimed sensitive/social characteristic",
+          "cross-context observation showing whether the metadata/inference is reusable or linkable beyond the bounded decision",
+          "target-specific provenance if a deployment claim is sought"
+        ],
+        "next_action": "request a target-specific Interop Lab runtime observation only when a concrete implementation surface is nominated"
+      }
+    }
+  ]
+}

@@ -147,6 +147,18 @@ jobs:
 
       - name: Test source-monitor resilience
         run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Execute bounded human-power DPIP reconciliation
+        run: >-
+          python3 tools/human_power_reconciliation.py
+          --input fixtures/human-power/dpip-reconciliation-input.json
+          --output "${{ runner.temp }}/rahp-human-power-reconciliation.json"
+          --check
+      - name: Upload human-power reconciliation evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: rahp-human-power-reconciliation
+          path: ${{ runner.temp }}/rahp-human-power-reconciliation.json
+          if-no-files-found: error
       - name: Validate DTG repository review worker
         run: python3 tools/dtg_repository_review_worker.py --self-test
       - name: Validate DTG controller incident publisher
