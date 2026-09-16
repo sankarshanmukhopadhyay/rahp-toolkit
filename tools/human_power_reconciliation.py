@@ -77,6 +77,7 @@ def reconcile(
     rahp_issue: int,
     dpip_revision: str,
     interop_revision: str,
+    evidence_provenance: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     _require(rahp_result.get("outcome") in OUTCOMES, "invalid RAHP outcome")
     validate_dpip_result(dpip_result)
@@ -91,6 +92,21 @@ def reconcile(
         dpip_residual = dpip_result.get("residual", {}).get("evidence_required", [])
         residual.extend(str(item) for item in dpip_residual)
 
+    provenance = {
+        "interop_revision": interop_revision,
+        "dpip_revision": dpip_revision,
+        "dpip_issue": dpip_result.get("dpip_issue"),
+    }
+    if evidence_provenance:
+        for key in (
+            "interop_artifact_digest",
+            "dpip_workflow_run",
+            "dpip_artifact",
+            "dpip_artifact_digest",
+        ):
+            if key in evidence_provenance:
+                provenance[key] = evidence_provenance[key]
+
     return {
         "schema": SCHEMA,
         "proposition": proposition,
@@ -98,11 +114,7 @@ def reconcile(
         "outcome": outcome,
         "reasons": reasons,
         "inputs": {"rahp": rahp_result, "dpip": dpip_result},
-        "provenance": {
-            "interop_revision": interop_revision,
-            "dpip_revision": dpip_revision,
-            "dpip_issue": dpip_result.get("dpip_issue"),
-        },
+        "provenance": provenance,
         "deployment_claim_supported": deployment_claim_supported,
         "residual_evidence_requirements": residual,
         "authority": {
@@ -132,6 +144,7 @@ def reconcile_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
             rahp_issue=161,
             dpip_revision=common["dpip_revision"],
             interop_revision=common["interop_revision"],
+            evidence_provenance=common,
         ),
         reconcile(
             "consequential-proxy-inference",
@@ -140,6 +153,7 @@ def reconcile_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
             rahp_issue=179,
             dpip_revision=common["dpip_revision"],
             interop_revision=common["interop_revision"],
+            evidence_provenance=common,
         ),
     ]
     return {
