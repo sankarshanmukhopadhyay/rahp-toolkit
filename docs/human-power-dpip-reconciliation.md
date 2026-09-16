@@ -27,14 +27,16 @@ A DPIP `FAIL` is therefore not mechanically a RAHP harm `FAIL`; a DPIP `PASS` is
 
 ## Immutable evidence lineage
 
-The checked-in reconciliation fixture pins:
+The checked-in reconciliation fixture pins both producing commits and post-merge evidence artifacts:
 
 - Interop Lab #121/#229 merge: `1c3d3367329313cc0b7eb4a3bc972e221e4bc4d9`
-- Interop artifact digest: `sha256:df03e239254f786108ba41ba1c84c8d3f57197a480ec22c15587271b90638a07`
+- Interop artifact `human-power-pressure-evidence`: `sha256:df03e239254f786108ba41ba1c84c8d3f57197a480ec22c15587271b90638a07`
 - DPIP #190/#191 implementation PR: `#267`
 - DPIP evaluator merge: `90a4658e745c0f985e3a7cb8fc9decfb0234c699`
+- DPIP post-merge workflow run: `35050504113`
+- DPIP artifact `dpip-human-power-privacy`: `sha256:a43297d3f2d30cab39aba3816515b364b0ab16e39a7ee9a1cff5960d29289ec4`
 
-The reconciliation refuses an Interop revision mismatch rather than joining specialist evidence to a different producer epoch.
+The reconciliation refuses an Interop revision mismatch rather than joining specialist evidence to a different producer epoch. Its machine-readable result also carries the Interop and DPIP artifact digests so later consumers can identify the exact evidence chain rather than relying only on narrative references.
 
 ## Reconciliation rules
 
@@ -82,6 +84,7 @@ Each reconciliation result uses `rahp-human-power-reconciliation/v1` and records
 - RAHP model result;
 - DPIP specialist result;
 - immutable Interop and DPIP revisions;
+- Interop and DPIP evidence artifact lineage where available;
 - terminal bounded outcome;
 - deployment-claim flag;
 - residual evidence requirements;
@@ -98,6 +101,8 @@ python tools/human_power_reconciliation.py \
   --output /tmp/rahp-human-power-reconciliation.json \
   --check
 ```
+
+The repository-wide `validate` workflow executes the full test suite, runs the bounded reconciliation, and uploads `rahp-human-power-reconciliation`. Reconciliation is intentionally consolidated into that workflow so this capability does not expand RAHP's governed GitHub Actions surface.
 
 ## Runtime escalation rule
 
