@@ -113,11 +113,17 @@ class HumanPowerReconciliationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             mod.validate_dpip_result(dpip)
 
-    def test_bundle_preserves_source_revisions(self):
+    def test_bundle_preserves_source_revisions_and_artifact_digests(self):
         results = mod.reconcile_bundle(self.bundle)["results"]
         for result in results:
-            self.assertEqual(result["provenance"]["interop_revision"], self.bundle["provenance"]["interop_revision"])
-            self.assertEqual(result["provenance"]["dpip_revision"], self.bundle["provenance"]["dpip_revision"])
+            provenance = result["provenance"]
+            expected = self.bundle["provenance"]
+            self.assertEqual(provenance["interop_revision"], expected["interop_revision"])
+            self.assertEqual(provenance["interop_artifact_digest"], expected["interop_artifact_digest"])
+            self.assertEqual(provenance["dpip_revision"], expected["dpip_revision"])
+            self.assertEqual(provenance["dpip_workflow_run"], expected["dpip_workflow_run"])
+            self.assertEqual(provenance["dpip_artifact"], expected["dpip_artifact"])
+            self.assertEqual(provenance["dpip_artifact_digest"], expected["dpip_artifact_digest"])
 
     def test_portfolio_outcome_is_bounded_fail_not_whole_portfolio_claim(self):
         result = mod.reconcile_bundle(self.bundle)
