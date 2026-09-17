@@ -42,7 +42,7 @@ class MaterialityJournalGateTests(unittest.TestCase):
         self.assertEqual("preserved", enriched["evidence_impact"])
         self.assertNotIn("retest_reason", enriched)
         self.assertNotIn("reopen_closed_owner", enriched)
-        self.assertIn("f-1 @ example/repo", enriched["theme"])
+        self.assertIn("finding=f-1 @ example/repo", enriched["theme"])
 
     def test_new_material_finding_on_closed_owner_fails_closed(self) -> None:
         enriched = gate.enrich_event(
@@ -56,8 +56,27 @@ class MaterialityJournalGateTests(unittest.TestCase):
         )
         self.assertEqual("uncertain", enriched["evidence_impact"])
         self.assertTrue(enriched["reopen_closed_owner"])
-        self.assertIn("f-2 @ example/repo", enriched["retest_reason"])
+        self.assertIn("finding=f-2 @ example/repo", enriched["retest_reason"])
         self.assertEqual(["f-1", "f-2"], [row["finding_id"] for row in enriched["journal_findings"]])
+
+    def test_journaled_finding_is_not_reopened_again_after_reassessment_and_reclosure(self) -> None:
+        journaled_owner = dict(self.owner)
+        journaled_owner["body"] = self.owner["body"] + (
+            "\n- Theme: `materiality-journal impact=uncertain; "
+            "findings=finding=f-2 @ example/repo: new material change`\n"
+        )
+        enriched = gate.enrich_event(
+            self.event(
+                [
+                    ("f-1", "example/repo", "original material change"),
+                    ("f-2", "example/repo", "new material change"),
+                ]
+            ),
+            journaled_owner,
+        )
+        self.assertEqual("preserved", enriched["evidence_impact"])
+        self.assertNotIn("retest_reason", enriched)
+        self.assertNotIn("reopen_closed_owner", enriched)
 
     def test_new_proposition_is_not_treated_as_reassessment(self) -> None:
         enriched = gate.enrich_event(self.event([("f-2", "example/repo", "first observation")]), None)
@@ -71,7 +90,8 @@ class MaterialityJournalGateTests(unittest.TestCase):
             "uncertain",
         )
         self.assertIn("impact=uncertain", summary)
-        self.assertIn("f-2 @ example/repo: new material change", summary)
+        self.assertIn("finding=f-2 @ example/repo: new material change", summary)
+        self.assertEqual({"f-2"}, gate.journaled_finding_ids(summary))
 
 
 if __name__ == "__main__":
