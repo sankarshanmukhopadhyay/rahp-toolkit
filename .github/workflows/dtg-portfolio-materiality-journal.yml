@@ -1,0 +1,75 @@
+name: Reconcile DTG materiality journals
+
+on:
+  schedule:
+    # Run after the Portfolio Monitor handoff (01:07/13:07 UTC) has published/coalesced owners.
+    - cron: '37 1,13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: dtg-portfolio-materiality-journal
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+
+      - name: Validate materiality journal control
+        run: python3 tools/portfolio_materiality_journal.py --self-test
+
+      - name: Fetch newest recent Portfolio Monitor snapshot
+        id: snapshot
+        run: >-
+          python3 tools/fetch_dtg_portfolio_snapshot.py
+          --lookback-days 2
+          --output build/dtg-journal/findings.json
+
+      - name: Rebuild semantic routing for journal reconciliation
+        run: |
+          python3 tools/dtg_portfolio_routing.py \
+            --findings build/dtg-journal/findings.json \
+            --policy instances/dtg/assurance-routing.yaml \
+            --normalization-policy instances/dtg/finding-normalization.yaml \
+            --snapshot-date '${{ steps.snapshot.outputs.date }}' \
+            --out-dir build/dtg-journal \
+            --self-test
+          python3 tools/dtg_portfolio_routing.py \
+            --findings build/dtg-journal/findings.json \
+            --policy instances/dtg/assurance-routing.yaml \
+            --normalization-policy instances/dtg/finding-normalization.yaml \
+            --snapshot-date '${{ steps.snapshot.outputs.date }}' \
+            --out-dir build/dtg-journal
+
+      - name: Journal routed materiality into durable proposition owners
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/portfolio_materiality_journal.py
+          --events
+          build/dtg-journal/combined-events.json
+          build/dtg-journal/dpip-events.json
+          --repository sankarshanmukhopadhyay/rahp-toolkit
+
+      - name: Retain reconciliation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dtg-materiality-journal-${{ steps.snapshot.outputs.date }}
+          path: |
+            build/dtg-journal/findings.json
+            build/dtg-journal/routing.json
+            build/dtg-journal/combined-events.json
+            build/dtg-journal/dpip-events.json
+          if-no-files-found: error
