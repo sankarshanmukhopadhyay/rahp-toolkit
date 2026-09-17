@@ -8,7 +8,9 @@ is fail-closed to `uncertain` and receives an explicit retest reason, causing th
 publisher to reopen it.
 
 The gate is deliberately conservative: it does not claim semantic preservation for a new
-finding merely because it maps to the same proposition.
+finding merely because it maps to the same proposition. Journal entries also retain a
+machine-readable finding identity so that, after reassessment and re-closure, an already
+journaled finding is not incorrectly treated as new again.
 """
 from __future__ import annotations
 
@@ -22,6 +24,7 @@ from typing import Any
 
 KEY_RE = re.compile(r"<!--\s*rahp-assessment-key:([^>]+?)\s*-->")
 TABLE_RE = re.compile(r"^\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*(.*?)\s*\|\s*$", re.M)
+JOURNAL_FINDING_RE = re.compile(r"\bfinding=([^\s;]+)\s+@")
 
 
 def request_json(url: str, token: str) -> Any:
@@ -49,6 +52,11 @@ def finding_rows(body: str) -> list[dict[str, str]]:
             "title": title.replace("\\|", "|").strip(),
         })
     return rows
+
+
+def journaled_finding_ids(body: str) -> set[str]:
+    """Recover finding identities retained in prior materiality journal summaries."""
+    return {match.group(1).strip() for match in JOURNAL_FINDING_RE.finditer(body or "")}
 
 
 def issue_key(body: str) -> str | None:
@@ -82,7 +90,7 @@ def journal_summary(rows: list[dict[str, str]], impact: str) -> str:
         title = " ".join(row["title"].split())
         if len(title) > 120:
             title = title[:117] + "..."
-        compact.append(f"{row['finding_id']} @ {row['repository']}: {title}")
+        compact.append(f"finding={row['finding_id']} @ {row['repository']}: {title}")
     findings = "; ".join(compact) if compact else "no routed finding rows"
     return f"materiality-journal impact={impact}; findings={findings}"
 
@@ -93,9 +101,9 @@ def enrich_event(event: dict[str, Any], owner: dict[str, Any] | None) -> dict[st
     if not rows:
         return event
 
-    current_ids = {row["finding_id"] for row in rows}
-    known_rows = finding_rows((owner or {}).get("body") or "")
-    known_ids = {row["finding_id"] for row in known_rows}
+    owner_body = (owner or {}).get("body") or ""
+    known_rows = finding_rows(owner_body)
+    known_ids = {row["finding_id"] for row in known_rows} | journaled_finding_ids(owner_body)
     new_rows = [row for row in rows if row["finding_id"] not in known_ids]
 
     if owner is None:
@@ -146,7 +154,18 @@ def self_test() -> None:
     enriched = enrich_event(dict(changed), owner)
     assert enriched["evidence_impact"] == "uncertain"
     assert enriched["reopen_closed_owner"] is True
-    assert "b @ example/repo" in enriched["retest_reason"]
+    assert "finding=b @ example/repo" in enriched["retest_reason"]
+
+    # After the publisher records the journal summary and the issue is reassessed/closed,
+    # the same material finding must not be treated as new again.
+    journaled_owner = {
+        "state": "closed",
+        "number": 1,
+        "body": old + "\n- Theme: `materiality-journal impact=uncertain; findings=finding=b @ example/repo: materially new change`\n",
+    }
+    enriched_again = enrich_event(dict(changed), journaled_owner)
+    assert enriched_again["evidence_impact"] == "preserved"
+    assert "retest_reason" not in enriched_again
 
     fresh = enrich_event(dict(changed), None)
     assert fresh["evidence_impact"] == "new-proposition"
