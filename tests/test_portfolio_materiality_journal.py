@@ -5,64 +5,73 @@ import pathlib
 import unittest
 
 
-MODULE_PATH = pathlib.Path(__file__).resolve().parents[1] / "tools" / "portfolio_materiality_journal.py"
-SPEC = importlib.util.spec_from_file_location("portfolio_materiality_journal", MODULE_PATH)
+MODULE_PATH = pathlib.Path(__file__).resolve().parents[1] / "tools" / "materiality_journal_gate.py"
+SPEC = importlib.util.spec_from_file_location("materiality_journal_gate", MODULE_PATH)
 assert SPEC and SPEC.loader
-journal = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(journal)
+gate = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(gate)
 
 
-class PortfolioMaterialityJournalTests(unittest.TestCase):
+class MaterialityJournalGateTests(unittest.TestCase):
     def setUp(self) -> None:
         self.key = "dtg:portfolio:combined:credential-status-lifecycle"
-        self.owner = (
-            "<!-- rahp-assessment-key:dtg:portfolio:combined:credential-status-lifecycle -->\n"
-            "<!-- dtg-routing-cluster:aaa111 -->\n"
-        )
-
-    def event(self, digest: str, finding: str = "f-1", day: str = "2026-09-17") -> dict:
-        return {
-            "assessment_key": self.key,
-            "observed_at": day,
-            "affected_reviews": ["rahp", "security", "combined"],
+        self.owner = {
+            "state": "closed",
+            "number": 636,
             "body": (
-                f"<!-- dtg-routing-cluster:{digest} -->\n"
-                "## Routed findings\n\n"
+                f"<!-- rahp-assessment-key:{self.key} -->\n"
                 "| Finding | Repository | Change |\n"
                 "|---|---|---|\n"
-                f"| `{finding}` | `example/repo` | material change |\n"
+                "| `f-1` | `example/repo` | original material change |\n"
             ),
         }
 
-    def test_identical_material_set_is_preserved(self) -> None:
-        impact, basis = journal.evidence_impact(self.owner, self.event("aaa111")["body"])
-        self.assertEqual("preserved", impact)
-        self.assertIn("identical", basis)
+    def event(self, rows: list[tuple[str, str, str]]) -> dict:
+        table = ["| Finding | Repository | Change |", "|---|---|---|"]
+        for finding_id, repository, title in rows:
+            table.append(f"| `{finding_id}` | `{repository}` | {title} |")
+        return {
+            "assessment_key": self.key,
+            "observed_at": "2026-09-17",
+            "affected_reviews": ["rahp", "security", "combined"],
+            "body": "\n".join(table) + "\n",
+        }
 
-    def test_changed_material_set_fails_closed(self) -> None:
-        impact, basis = journal.evidence_impact(self.owner, self.event("bbb222", "f-2")["body"])
-        self.assertEqual("uncertain", impact)
-        self.assertIn("differs", basis)
+    def test_repeated_material_finding_is_preserved_and_does_not_reopen(self) -> None:
+        enriched = gate.enrich_event(self.event([("f-1", "example/repo", "original material change")]), self.owner)
+        self.assertEqual("preserved", enriched["evidence_impact"])
+        self.assertNotIn("retest_reason", enriched)
+        self.assertNotIn("reopen_closed_owner", enriched)
+        self.assertIn("f-1 @ example/repo", enriched["theme"])
 
-    def test_journal_contains_actual_finding(self) -> None:
-        event = self.event("bbb222", "f-2")
-        appendix = journal.journal_appendix(event, "closed", "uncertain", "changed material set")
-        self.assertIn("`f-2`", appendix)
-        self.assertIn("`example/repo`", appendix)
-        self.assertIn("Evidence impact: **uncertain**", appendix)
-        self.assertIn("Reassessment consequence", appendix)
-
-    def test_marker_is_snapshot_and_digest_scoped(self) -> None:
-        marker = journal.observation_marker(self.key, "2026-09-17", "bbb222")
-        self.assertEqual(
-            "<!-- rahp-materiality-journal:dtg:portfolio:combined:credential-status-lifecycle@2026-09-17:bbb222 -->",
-            marker,
+    def test_new_material_finding_on_closed_owner_fails_closed(self) -> None:
+        enriched = gate.enrich_event(
+            self.event(
+                [
+                    ("f-1", "example/repo", "original material change"),
+                    ("f-2", "example/repo", "new material change"),
+                ]
+            ),
+            self.owner,
         )
+        self.assertEqual("uncertain", enriched["evidence_impact"])
+        self.assertTrue(enriched["reopen_closed_owner"])
+        self.assertIn("f-2 @ example/repo", enriched["retest_reason"])
+        self.assertEqual(["f-1", "f-2"], [row["finding_id"] for row in enriched["journal_findings"]])
 
-    def test_prior_journal_digest_counts_as_preservation_evidence(self) -> None:
-        owner = self.owner + "<!-- rahp-materiality-digest:bbb222 -->\n"
-        impact, _ = journal.evidence_impact(owner, self.event("bbb222", "f-2")["body"])
-        self.assertEqual("preserved", impact)
+    def test_new_proposition_is_not_treated_as_reassessment(self) -> None:
+        enriched = gate.enrich_event(self.event([("f-2", "example/repo", "first observation")]), None)
+        self.assertEqual("new-proposition", enriched["evidence_impact"])
+        self.assertNotIn("retest_reason", enriched)
+        self.assertNotIn("reopen_closed_owner", enriched)
+
+    def test_journal_summary_retains_finding_identity_repository_and_change(self) -> None:
+        summary = gate.journal_summary(
+            [{"finding_id": "f-2", "repository": "example/repo", "title": "new material change"}],
+            "uncertain",
+        )
+        self.assertIn("impact=uncertain", summary)
+        self.assertIn("f-2 @ example/repo: new material change", summary)
 
 
 if __name__ == "__main__":
