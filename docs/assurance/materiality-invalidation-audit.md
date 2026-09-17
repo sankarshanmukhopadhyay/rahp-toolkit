@@ -86,3 +86,7 @@ The tranche tests that:
 A quiet RAHP issue queue should now mean that routed material observations are either new propositions already being handled, already represented by the durable owner's evidence journal, or have triggered reassessment where preservation could not be established.
 
 It must not mean only that the system found an existing issue key.
+
+## Tranche status
+
+Implementation is complete on the feature branch. Merge is gated only by repository CI and workflow-governance checks.
