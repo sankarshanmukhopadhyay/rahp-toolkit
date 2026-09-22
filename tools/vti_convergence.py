@@ -129,6 +129,14 @@ def validate() -> tuple[dict[str, Any], list[str]]:
         errors.append("unrelated VTI families must not be marked stale")
 
     contracts = event.get("contract_impacts") or []
+    for contract in contracts:
+        state = contract.get("state")
+        evidence = contract.get("evidence")
+        if state == "verified-compatible":
+            if not evidence:
+                errors.append(f"{contract.get('id')}: verified-compatible contract impact requires evidence")
+            elif not (ROOT / str(evidence)).is_file():
+                errors.append(f"{contract.get('id')}: compatibility evidence does not exist: {evidence}")
     unresolved_family = [
         item for item in family_impacts
         if item.get("state") in {"evidence-required", "specialist-evidence-required"}
