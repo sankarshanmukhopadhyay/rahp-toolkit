@@ -177,6 +177,9 @@ jobs:
       - name: Validate CAWG deployment integrity
         run: python3 tools/validate_cawg_instance.py
 
+      - name: Validate VTI lifecycle freshness evidence
+        run: python3 tools/validate_vti_lifecycle_freshness.py
+
       - name: Validate VTI assessment profile
         run: python3 tools/validate_vti_assessment_profile.py
 
