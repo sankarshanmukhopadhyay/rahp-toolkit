@@ -70,6 +70,8 @@ Legitimate plurality, pairwise/contextual identifiers, privacy-preserving pseudo
 
 The generated [VTI assessment index](vti-assessment-index.html) is the human-readable inventory of complete submissions and remaining evidence-family states.
 
+[`RAHP-VTI-AUTH-001`](../examples/cross-spec/vti-assessment/authority-continuity.yaml) is the third complete submission. It reconciles the existing constrained-authority evidence against `VTI-CMP-030` through `VTI-CMP-032`, preserving the separation between proof/credential validity and transaction-time authority and authorisation.
+
 ## Reassessment and invalidation
 
 An assessment must be reconsidered when any materially relevant input changes. The current profile enumerates VTI revision change, assessed component/version change, relying policy or profile change, material configuration change, evidence supersession, and evidence contradiction.
@@ -96,6 +98,6 @@ Run `python3 tools/render_vti_assessment_index.py --check` to verify that the hu
 
 ## Next evidence families
 
-With false independence and semantic completion now flowing through the same assessment contract, subsequent work should progress family-by-family: authority continuity; lifecycle/freshness; delegation lineage; human control; failure/indeterminacy; configuration materiality; privacy composition with DPIP where specialist depth is required; and component substitution once concrete implementation evidence exists.
+With false independence, semantic completion, and authority continuity now flowing through the same assessment contract, subsequent work should progress family-by-family: lifecycle/freshness; delegation lineage; human control; failure/indeterminacy; configuration materiality; privacy composition with DPIP where specialist depth is required; and component substitution once concrete implementation evidence exists.
 
 Each family should reuse the same assessment contract rather than inventing a new output shape.
