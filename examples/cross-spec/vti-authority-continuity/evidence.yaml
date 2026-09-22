@@ -1,0 +1,70 @@
+evidence:
+  id: VTI-COMP-AUTH-001
+  title: Authority continuity is distinct from identity, authentication and proof validity
+  tracking_issue: 718
+  evidence_class: composition-fixture
+  proposition: >-
+    Cryptographic verification establishes provenance and integrity but does not
+    establish current authority. A relying decision that depends on authority
+    must obtain decision-time authority evidence from a source entitled to answer
+    for it, and must keep authority distinct from authorization and the final
+    trust decision.
+  source_lineage:
+    - issue: 64
+      proposition: constrained-authority-composition
+    - path: examples/cross-spec/guardianship-fiduciary/transactions/routine-act.yaml
+    - path: examples/cross-spec/vti-composition-wave/evidence.yaml
+  vectors:
+    - id: authority-current-entitled-source
+      identity_established: true
+      authenticated: true
+      credential_verified: true
+      authority_source_entitled: true
+      authority_state: current
+      authorization: granted
+      expected: AUTHORIZED
+    - id: valid-proof-revoked-authority
+      identity_established: true
+      authenticated: true
+      credential_verified: true
+      authority_source_entitled: true
+      authority_state: revoked
+      authorization: granted
+      expected: DENIED
+    - id: valid-proof-authority-unknown
+      identity_established: true
+      authenticated: true
+      credential_verified: true
+      authority_source_entitled: true
+      authority_state: unknown
+      authorization: granted
+      expected: INDETERMINATE
+    - id: valid-proof-unentitled-authority-source
+      identity_established: true
+      authenticated: true
+      credential_verified: true
+      authority_source_entitled: false
+      authority_state: current
+      authorization: granted
+      expected: INDETERMINATE
+    - id: current-authority-no-authorization
+      identity_established: true
+      authenticated: true
+      credential_verified: true
+      authority_source_entitled: true
+      authority_state: current
+      authorization: denied
+      expected: DENIED
+    - id: current-authority-authorization-unknown
+      identity_established: true
+      authenticated: true
+      credential_verified: true
+      authority_source_entitled: true
+      authority_state: current
+      authorization: unknown
+      expected: INDETERMINATE
+  counter_boundary: >-
+    A current authority determination from an entitled source plus action-specific
+    authorization may legitimately support the decision. The assessment does not
+    require every valid credential to be rejected; it requires the authority and
+    authorization propositions to be established separately.
