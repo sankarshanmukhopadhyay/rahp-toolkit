@@ -68,8 +68,8 @@ requirement_map:
     evidence_state: verified
   - family: configuration-materiality
     requirements: [VTI-CMP-090, VTI-CMP-091, VTI-CMP-092]
-    rahp_sources: [materiality-controller]
-    evidence_state: partially_verified
+    rahp_sources: [materiality-controller, examples/cross-spec/vti-configuration-materiality/evidence.yaml, tools/validate_vti_configuration_materiality.py, tests/test_dtg_semantic_materiality.py, tests/test_portfolio_materiality_journal.py]
+    evidence_state: verified
   - family: component-substitution
     requirements: [VTI-CMP-100, VTI-CMP-101]
     rahp_sources: ["#188"]
