@@ -1,0 +1,70 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-CFG-001
+profile: rahp-vti-composition-assessment/v1
+family: configuration-materiality
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  Configuration changes affecting trust, privacy, authority or security semantics,
+  including materiality classification, historical reconstruction, and explicit
+  distinction from non-material configuration.
+disposition: supported
+method: >
+  Reconcile RAHP semantic-materiality classification with a bounded executable
+  VTI-specific fixture that tests material and non-material configuration,
+  historical reconstructability, and misdeclared semantic changes.
+requirements:
+  - VTI-CMP-090
+  - VTI-CMP-091
+  - VTI-CMP-092
+proposition: >
+  A configuration change that alters trust, privacy, authority or security
+  semantics is assurance-material and must attract implementation-equivalent
+  review and audit. The effective configuration for a past decision must be
+  reconstructable, and material configuration must be distinguishable from
+  configuration that does not alter those semantics.
+evidence:
+  - id: VTI-COMP-CFG-001
+    kind: fixture
+    ref: examples/cross-spec/vti-configuration-materiality/evidence.yaml
+  - id: VTI-COMP-CFG-VALIDATOR
+    kind: test
+    ref: tools/validate_vti_configuration_materiality.py
+  - id: RAHP-SEMANTIC-MATERIALITY-TESTS
+    kind: test
+    ref: tests/test_dtg_semantic_materiality.py
+  - id: RAHP-MATERIALITY-JOURNAL-TESTS
+    kind: test
+    ref: tests/test_portfolio_materiality_journal.py
+counter_cases:
+  - >
+    Operational or cosmetic configuration that does not alter trust, privacy,
+    authority or security semantics may legitimately remain non-material.
+  - >
+    A material change that is correctly identified, reviewed, audited, versioned
+    and historically reconstructable is not prohibited by this assessment.
+residual_uncertainty:
+  - >
+    The four semantic classes do not eliminate deployment-specific judgment about
+    whether a particular field materially changes system behaviour.
+  - >
+    Historical reconstruction requires retention of effective configuration; the
+    assessment does not prescribe a universal storage format.
+  - >
+    This family does not independently establish the substantive correctness of
+    the changed trust, privacy, authority or security policy.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted
