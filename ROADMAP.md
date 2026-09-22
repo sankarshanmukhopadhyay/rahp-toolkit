@@ -21,6 +21,17 @@ The release qualifies eight supported VTI composition families while preserving 
 4. **Truthful residuals:** privacy remains indeterminate; substitution remains evidence-required.
 5. **Programme reconciliation:** deterministic family-level reconciliation and release/upstream packaging judgment.
 
+## Capability continuity retained in v2.4
+
+The release preserves the capabilities established in earlier qualified tranches while extending their VTI composition-assessment surfaces:
+
+- **Durable assessment and finding lineage** keeps terminal findings and their provenance inspectable across reassessment and source changes.
+- **Governed remediation and retest** preserves explicit remediation authority, closure evidence and retest lineage.
+- **Assurance graph and impact analysis** keeps dependency-aware change impact deterministic rather than inferred from repository activity alone.
+- **Evidence provenance, freshness and delta** preserves source identity, freshness semantics and explicit assurance-state transition evidence.
+- **Executable authority and policy gates** keep scope, revocation posture and PASS/FAIL/INDETERMINATE semantics machine-checkable.
+- **Portfolio and deployment presentation** remains a presentation layer over bounded assurance state rather than an alternative source of truth.
+- **Release qualification** remains an executable gate binding declared version, compatibility contracts, release notes and qualification evidence.
 ## Post-v2.4 priorities
 
 1. **Realization conformance:** selectively retest when adopted normative semantics become implemented.
