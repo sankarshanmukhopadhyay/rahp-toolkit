@@ -1,1 +1,16 @@
-{"name":"@rahp/cli","version":"2.3.0","type":"module","main":"dist/cli.js","bin":{"rahp-ts":"dist/cli.js"},"scripts":{"build":"tsc -p tsconfig.json"},"dependencies":{"@rahp/core":"2.3.0","@rahp/graph":"2.3.0"}}
+{
+  "name": "@rahp/cli",
+  "version": "2.4.0",
+  "type": "module",
+  "main": "dist/cli.js",
+  "bin": {
+    "rahp-ts": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@rahp/core": "2.4.0",
+    "@rahp/graph": "2.4.0"
+  }
+}
