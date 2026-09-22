@@ -56,7 +56,7 @@ requirement_map:
     evidence_state: verified
   - family: privacy-composition
     requirements: [VTI-CMP-060, VTI-CMP-061, VTI-CMP-062, VTI-CMP-063]
-    rahp_sources: ["#184", DPIP]
+    rahp_sources: ["#184", "#339", "#690", sankarshanmukhopadhyay/dtg-privacy-implementation-profile#163, examples/cross-spec/vti-privacy-composition/evidence.yaml, tools/validate_vti_privacy_composition.py]
     evidence_state: specialist_evidence_required
   - family: false-independence
     requirements: [VTI-CMP-070, VTI-CMP-071, VTI-CMP-072, VTI-CMP-073, VTI-CMP-074]
