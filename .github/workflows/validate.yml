@@ -177,7 +177,10 @@ jobs:
       - name: Validate CAWG deployment integrity
         run: python3 tools/validate_cawg_instance.py
 
-      - name: Validate VTI assessment profile\n        run: python3 tools/validate_vti_assessment_profile.py\n\n      - name: Validate selected issue-watch registries
+      - name: Validate VTI assessment profile
+        run: python3 tools/validate_vti_assessment_profile.py
+
+      - name: Validate selected issue-watch registries
         run: python3 tools/validate_issue_watch_registries.py
 
       - name: Validate RAHP-only issue publication policy
