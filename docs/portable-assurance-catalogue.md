@@ -244,53 +244,6 @@ Purpose, audience, resource, action, value or time bounds are insufficiently def
 | Why | This risk can create an unacceptable state at a clear decision or execution boundary, so a portable guardrail should block or stop that state. |
 | Harm Patterns | `HRM-AUT-04`, `HRM-ECO-02`, `HRM-SEC-02` |
 
-### RKP-AUTH-04 — Commitment authority mismatch
-
-An authenticated or generally authorized actor attempts a material commitment that is not covered by the exact active mandate, scope, constraints or policy at the commitment boundary.
-
-| Field | Value |
-|---|---|
-| Family | Authority and delegation |
-| Guardrail requirement | required |
-| Why | Commitment admission must positively establish current action-specific authority rather than infer it from identity or general authorization. |
-| Condition | exact action authority is not positively established |
-| Harm Patterns | `HRM-AUT-04`, `HRM-SEC-02` |
-
-### RKP-AUTH-05 — Approval not bound to exact commitment
-
-A human or organizational approval is accepted for a materially different, superseded or stale action than the commitment being admitted.
-
-| Field | Value |
-|---|---|
-| Family | Authority and delegation |
-| Guardrail requirement | required |
-| Why | Approval must be bound to the exact commitment digest and current policy context. |
-| Condition | approval binding is absent, mismatched or stale |
-| Harm Patterns | `HRM-AUT-04`, `HRM-SEC-02` |
-
-### RKP-AUTH-06 — Reputation or capability substituted for authority
-
-Reputation, capability advertisement, assurance posture or technical ability is treated as permission to create a material commitment.
-
-| Field | Value |
-|---|---|
-| Family | Authority and delegation |
-| Guardrail requirement | required |
-| Why | Advisory or technical signals must not enlarge principal-derived authority. |
-| Condition | non-authority evidence is used as an authorization grant |
-| Harm Patterns | `HRM-AUT-04`, `HRM-INF-01` |
-
-### RKP-AUTH-07 — Commitment authority cannot be reconstructed
-
-A later verifier cannot establish which mandate, policy, status, approval and exact action were evaluated when a material commitment was admitted or rejected.
-
-| Field | Value |
-|---|---|
-| Family | Authority and delegation |
-| Guardrail requirement | required |
-| Why | Material authority decisions need replayable evidence sufficient to distinguish historical authority from present state. |
-| Condition | decision provenance or time-specific authority evidence is unavailable |
-| Harm Patterns | `HRM-GOV-02`, `HRM-ECO-02` |
 
 ### RKP-DEL-01 — Transitive delegation expansion
 
@@ -732,6 +685,54 @@ Multi-hop actor lineage unnecessarily discloses durable principal or agent ident
 | Guardrail requirement | required |
 | Why | Auditability should not require unnecessary durable cross-context correlation when a less disclosing proof can satisfy the assurance objective. |
 | Harm Patterns | `HRM-PRV-01`, `HRM-AUT-03` |
+
+### RKP-AUTH-04 — Commitment authority mismatch
+
+An authenticated or generally authorized actor attempts a material commitment that is not covered by the exact active mandate, scope, constraints or policy at the commitment boundary.
+
+| Field | Value |
+|---|---|
+| Family | Authority and delegation |
+| Guardrail requirement | required |
+| Why | Commitment admission must positively establish current action-specific authority rather than infer it from identity or general authorization. |
+| Condition | exact action authority is not positively established |
+| Harm Patterns | `HRM-AUT-04`, `HRM-SEC-02` |
+
+### RKP-AUTH-05 — Approval not bound to exact commitment
+
+A human or organizational approval is accepted for a materially different, superseded or stale action than the commitment being admitted.
+
+| Field | Value |
+|---|---|
+| Family | Authority and delegation |
+| Guardrail requirement | required |
+| Why | Approval must be bound to the exact commitment digest and current policy context. |
+| Condition | approval binding is absent, mismatched or stale |
+| Harm Patterns | `HRM-AUT-04`, `HRM-SEC-02` |
+
+### RKP-AUTH-06 — Reputation or capability substituted for authority
+
+Reputation, capability advertisement, assurance posture or technical ability is treated as permission to create a material commitment.
+
+| Field | Value |
+|---|---|
+| Family | Authority and delegation |
+| Guardrail requirement | required |
+| Why | Advisory or technical signals must not enlarge principal-derived authority. |
+| Condition | non-authority evidence is used as an authorization grant |
+| Harm Patterns | `HRM-AUT-04`, `HRM-INF-01` |
+
+### RKP-AUTH-07 — Commitment authority cannot be reconstructed
+
+A later verifier cannot establish which mandate, policy, status, approval and exact action were evaluated when a material commitment was admitted or rejected.
+
+| Field | Value |
+|---|---|
+| Family | Authority and delegation |
+| Guardrail requirement | required |
+| Why | Material authority decisions need replayable evidence sufficient to distinguish historical authority from present state. |
+| Condition | decision provenance or time-specific authority evidence is unavailable |
+| Harm Patterns | `HRM-GOV-02`, `HRM-ECO-02` |
 
 ## Control patterns
 
