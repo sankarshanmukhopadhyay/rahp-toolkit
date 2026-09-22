@@ -12,8 +12,8 @@ remain indeterminate when required evidence is missing. These fixtures are not
 examples of "bad inputs" only; they are executable falsification cases for
 assurance propositions.
 
-The cross-mode matrix at
-`tests/fixtures/negative-assurance-matrix.yaml` currently covers four lenses:
+The original cross-mode matrix at
+`tests/fixtures/negative-assurance-matrix.yaml` covers four lenses and remains authoritative evidence for those cases:
 
 - **RAHP:** valid participant evidence does not establish collective authority.
 - **Security:** an insufficient threshold subset cannot exercise collective authority.
@@ -37,3 +37,14 @@ rewritten into PASS merely because all visible components validate.
 The existing false-independence and quorum-capture pressure tests remain the
 deeper authoritative worked examples. The compact matrix exists to keep these
 non-inference rules executable across assessment modes.
+
+
+## Reusable contract
+
+The repository now layers a reusable `rahp-negative-fixture/v1` contract over
+existing authoritative evidence. The contract adds a fifth **specialist**
+surface and makes positive-control linkage, evidence state, ownership boundaries,
+retest triggers, and the missing-evidence invariant mechanically validatable.
+
+See [Reusable negative-fixture contract](negative-fixture-contract.html) for the
+schema, starter wrappers, inventory, validator, and contributor workflow.
