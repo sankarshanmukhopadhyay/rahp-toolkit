@@ -22,6 +22,7 @@ This page is generated from the authoritative RAHP VTI assessment submissions an
 | [`RAHP-VTI-AUTH-001`](../examples/cross-spec/vti-assessment/authority-continuity.yaml) | authority-continuity | `VTI-CMP-030`, `VTI-CMP-031`, `VTI-CMP-032` | `supported` | 4 | `current` |
 | [`RAHP-VTI-DEL-001`](../examples/cross-spec/vti-assessment/delegation-lineage.yaml) | delegation-lineage | `VTI-CMP-050`, `VTI-CMP-051`, `VTI-CMP-052`, `VTI-CMP-053` | `supported` | 4 | `current` |
 | [`RAHP-VTI-FI-001`](../examples/cross-spec/vti-assessment/false-independence.yaml) | false-independence | `VTI-CMP-070`, `VTI-CMP-071`, `VTI-CMP-072`, `VTI-CMP-073`, `VTI-CMP-074` | `supported` | 7 | `current` |
+| [`RAHP-VTI-HUMAN-001`](../examples/cross-spec/vti-assessment/human-control.yaml) | human-control | `VTI-CMP-110`, `VTI-CMP-111`, `VTI-CMP-112`, `VTI-CMP-113` | `supported` | 4 | `current` |
 | [`RAHP-VTI-LIFE-001`](../examples/cross-spec/vti-assessment/lifecycle-freshness.yaml) | lifecycle-freshness | `VTI-CMP-040`, `VTI-CMP-041`, `VTI-CMP-042` | `supported` | 5 | `current` |
 | [`RAHP-VTI-SC-001`](../examples/cross-spec/vti-assessment/semantic-completion.yaml) | semantic-completion | `VTI-CMP-020`, `VTI-CMP-021` | `supported` | 2 | `current` |
 
@@ -38,7 +39,7 @@ This page is generated from the authoritative RAHP VTI assessment submissions an
 | failure-indeterminacy | `VTI-CMP-080`, `VTI-CMP-081`, `VTI-CMP-082` | `partially_verified` | not yet published |
 | configuration-materiality | `VTI-CMP-090`, `VTI-CMP-091`, `VTI-CMP-092` | `partially_verified` | not yet published |
 | component-substitution | `VTI-CMP-100`, `VTI-CMP-101` | `evidence_required` | not yet published |
-| human-control | `VTI-CMP-110`, `VTI-CMP-111`, `VTI-CMP-112`, `VTI-CMP-113` | `partially_verified` | not yet published |
+| human-control | `VTI-CMP-110`, `VTI-CMP-111`, `VTI-CMP-112`, `VTI-CMP-113` | `verified` | `RAHP-VTI-HUMAN-001` |
 
 ## Interpretation boundary
 
