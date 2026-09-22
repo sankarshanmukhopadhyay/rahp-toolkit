@@ -73,13 +73,22 @@ family_impacts:
   - family: semantic-completion
     triggering_requirements: [VTI-CMP-022, VTI-CMP-023]
     negative_fixture_ids: [NF-VTI-VALIDITY-NOT-COMPLETION]
-    state: evidence-required
-    reason: new normative requirements are not covered by the active profile's 020/021 set
+    state: verified
+    evidence_refs:
+      - examples/cross-spec/vti-semantic-completion/evidence.yaml#convergence_extension
+      - tools/validate_vti_semantic_completion.py
+      - sankarshanmukhopadhyay/trust-protocol-interop-lab#233
+    reason: VTI-CMP-022/023 completion non-inference is covered by source-pinned executable evidence
   - family: privacy-composition
     triggering_requirements: [VTI-CMP-064]
     negative_fixture_ids: [NF-VTI-OUTCOME-EVIDENCE-CORRELATOR]
-    state: specialist-evidence-required
-    reason: new outcome-evidence correlator semantics extend the specialist privacy proposition
+    state: indeterminate
+    evidence_refs:
+      - examples/cross-spec/vti-privacy-composition/evidence.yaml#convergence_extension
+      - tools/validate_vti_privacy_composition.py
+      - sankarshanmukhopadhyay/dtg-privacy-implementation-profile#271
+      - sankarshanmukhopadhyay/trust-protocol-interop-lab#233
+    reason: VTI-CMP-064 is reconciled for the current epoch as terminal INDETERMINATE; target runtime support remains absent
 contract_impacts:
   - id: vti-assessment-record-form
     trigger: trustoverip/dtgwg-vti-spec#36
@@ -100,9 +109,11 @@ reassessment:
   coalesced_work_item: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/740
   whole_programme_stale: false
 rebaseline:
-  state: blocked
+  state: ready
   target_commit: 3cbd7300a4f46bb2518e2b4b485609e7b5432b58
-  blockers:
-    - semantic-completion evidence for VTI-CMP-022 and VTI-CMP-023 is unresolved
-    - privacy specialist evidence for VTI-CMP-064 is unresolved
+  blockers: []
+  residual_reassessment_triggers:
+    - credential-spec issue 58 settles or materially changes committed-citation representation
+    - ZKP opening or blinding construction materially changes
+    - a target runtime implements the initiating-document plus digest and outcome-evidence path
   baseline_mutated: false
