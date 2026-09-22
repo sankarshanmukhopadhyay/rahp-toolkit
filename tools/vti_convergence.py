@@ -179,6 +179,8 @@ def validate() -> tuple[dict[str, Any], list[str]]:
     should_block = bool(unresolved_family or unresolved_contracts)
     if should_block and rebaseline.get("state") != "blocked":
         errors.append("rebaseline must remain blocked while impacted evidence or contract review is unresolved")
+    if not should_block and rebaseline.get("state") != "ready":
+        errors.append("rebaseline must be ready once every impacted family and contract review is reconciled")
     if rebaseline.get("baseline_mutated") is not False:
         errors.append("event must not claim the baseline changed before controlled rebaseline")
 
