@@ -742,7 +742,7 @@ Require an explicit authorization decision independent of identity, authenticati
 | Field | Value |
 |---|---|
 | Control function | constrain |
-| Risk Patterns | `RKP-AUTH-01`, `RKP-CRD-01`, `RKP-DISC-01`, `RKP-AUTH-04`, `RKP-AUTH-06` |
+| Risk Patterns | `RKP-AUTH-01`, `RKP-CRD-01`, `RKP-DISC-01` |
 
 ### CTP-AUTH-02 — Action-time authority evaluation
 
