@@ -6,6 +6,8 @@ generated_from:
   - examples/cross-spec/quorum-capture/pressure-test.yaml
   - examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
   - tests/test_dpip_handoff.py
+  - examples/cross-spec/vti-semantic-completion/evidence.yaml
+  - examples/cross-spec/vti-privacy-composition/evidence.yaml
 entries:
   - id: INV-CA-RAHP-001
     path: tests/fixtures/negative-assurance-matrix.yaml#CA-RAHP-001
@@ -134,3 +136,27 @@ entries:
     reused: true
     positive_counter_case: tests/test_dpip_handoff.py#test_gatherer_native_provenance_is_supported
     contract_fixture: NF-SPECIALIST-DPIP-BOUNDARY
+  - id: INV-VTI-VALIDITY-NOT-COMPLETION
+    path: examples/cross-spec/vti-semantic-completion/evidence.yaml#VTI-COMP-SEM-001
+    owning_lens: composition
+    proposition: credential validity does not establish completion of the cited Trust Task exchange
+    polarity: negative
+    expected_state: indeterminate
+    provenance: source-pinned-vti-convergence
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/vti-semantic-completion/evidence.yaml#technical-success-current-authority
+    contract_fixture: NF-VTI-VALIDITY-NOT-COMPLETION
+  - id: INV-VTI-OUTCOME-EVIDENCE-CORRELATOR
+    path: examples/cross-spec/vti-privacy-composition/evidence.yaml#VTI-COMP-PRV-001
+    owning_lens: specialist
+    proposition: outcome evidence must not be assumed privacy-preserving without attributable correlator assessment
+    polarity: negative
+    expected_state: indeterminate
+    provenance: source-pinned-vti-convergence
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/vti-assessment/privacy-composition.yaml#A composed interaction may legitimately preserve unlinkability
+    contract_fixture: NF-VTI-OUTCOME-EVIDENCE-CORRELATOR

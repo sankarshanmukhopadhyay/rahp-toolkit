@@ -64,3 +64,43 @@ Controlled rebaseline requires:
 
 Historical assessments remain immutable. A rebaseline creates a new assessment
 epoch; it does not retroactively reinterpret v2.4.0 evidence.
+
+## Negative-fixture rerun integration
+
+Impacted families carry explicit `negative_fixture_ids` in the convergence
+event. These identifiers reference the canonical reusable negative-fixture
+registry under `fixtures/negative/`; VTI does not define a second fixture
+schema.
+
+For the current event:
+
+| Impacted family | Changed requirements | Required falsification guard |
+|---|---|---|
+| semantic completion | `VTI-CMP-022`, `VTI-CMP-023` | `NF-VTI-VALIDITY-NOT-COMPLETION` |
+| privacy composition | `VTI-CMP-064` | `NF-VTI-OUTCOME-EVIDENCE-CORRELATOR` |
+
+The first guard wraps the existing semantic-completion evidence owner and proves
+that a valid credential cannot establish completion of its cited Trust Task
+exchange without the required outcome evidence.
+
+The second wraps the existing privacy-composition specialist evidence owner and
+keeps DPIP's boundary explicit: outcome evidence may introduce durable
+correlators, but the privacy specialist does not decide semantic completion,
+authorization, or authority.
+
+`tools/vti_convergence.py` validates fixture references against the canonical
+fixture IDs and fails closed on missing or unknown references. Only fixtures
+declared by impacted families are selected for rerun. Unaffected VTI families
+and unrelated RAHP/security/DRARM fixtures do not become stale merely because
+the source pin moved.
+
+When a future VTI change affects a proposition:
+
+1. classify the changed requirement and impacted family;
+2. identify an existing authoritative negative-fixture contract where one
+   exists;
+3. add its stable ID to that family impact;
+4. create a new wrapper fixture only when no current contract represents the
+   unsafe inference, and point it at the existing authoritative evidence owner;
+5. keep the active VTI baseline unchanged until both positive evidence and the
+   required falsification guards have been reconciled.

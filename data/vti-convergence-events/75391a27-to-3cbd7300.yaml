@@ -72,10 +72,12 @@ changes:
 family_impacts:
   - family: semantic-completion
     triggering_requirements: [VTI-CMP-022, VTI-CMP-023]
+    negative_fixture_ids: [NF-VTI-VALIDITY-NOT-COMPLETION]
     state: evidence-required
     reason: new normative requirements are not covered by the active profile's 020/021 set
   - family: privacy-composition
     triggering_requirements: [VTI-CMP-064]
+    negative_fixture_ids: [NF-VTI-OUTCOME-EVIDENCE-CORRELATOR]
     state: specialist-evidence-required
     reason: new outcome-evidence correlator semantics extend the specialist privacy proposition
 contract_impacts:
