@@ -32,3 +32,5 @@ jobs:
           fi
           git commit -m "chore(assurance): regenerate authority catalogue evidence"
           git push origin HEAD:feat/authority-at-commitment-refresh
+
+# trigger regeneration
