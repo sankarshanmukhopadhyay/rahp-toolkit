@@ -41,14 +41,20 @@ def validate() -> None:
 
     release = data.get("release_judgment") or {}
     current = str(release.get("current_stable_release") or "")
-    if current != str(package.get("version")) or current != str(status.get("stable_release")):
-        raise AssertionError("T12 current stable release differs from repository release surfaces")
     if release.get("disposition") != "minor_release_warranted":
         raise AssertionError("T12 release disposition must be explicit")
     parts = current.split(".")
     expected = f"{parts[0]}.{int(parts[1]) + 1}.0"
     if str(release.get("candidate_next_version") or "") != expected:
         raise AssertionError(f"candidate next minor must be {expected}")
+    repository_version = str(package.get("version") or "")
+    status_version = str(status.get("stable_release") or "")
+    if repository_version != status_version:
+        raise AssertionError("repository package and PROJECT-STATUS release surfaces disagree")
+    if repository_version not in {current, expected}:
+        raise AssertionError(
+            f"T12 historical judgment permits repository release {current} or approved next minor {expected}, got {repository_version}"
+        )
     if release.get("version_commitment_authorized") is not False:
         raise AssertionError("T12 must not silently authorize a version commitment")
     if release.get("release_cut_authorized") is not False:
