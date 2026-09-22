@@ -1,0 +1,100 @@
+evidence:
+  id: VTI-COMP-DEL-001
+  title: Delegation scope, lineage, action-time authority and actor-identity vectors
+  source_issue: 705
+  vti_source:
+    repository: trustoverip/dtgwg-vti-spec
+    document_status: Working Draft 0.1.0
+    commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+  proposition: >
+    Protocol capability must not widen delegated authority. A decision about a
+    delegated action must retain determinable scope, lineage, expiry, revocation
+    and re-delegation state, evaluate the chain against current delegator authority,
+    and preserve the acting delegate's identity at the decision point.
+  vectors:
+    - id: legitimate-two-hop-delegation
+      action: read-record
+      action_time: "2026-09-22T12:00:00Z"
+      acting_delegate: service-c
+      decision_actor: service-c
+      lineage_complete: true
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: true}
+        - {from: agent-b, to: service-c, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+      expected: AUTHORIZED
+
+    - id: protocol-capability-scope-widening
+      action: write-record
+      action_time: "2026-09-22T12:00:00Z"
+      acting_delegate: service-c
+      decision_actor: service-c
+      lineage_complete: true
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: true}
+        - {from: agent-b, to: service-c, scope: write-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+      expected: DENIED
+
+    - id: expired-upstream-delegation
+      action: read-record
+      action_time: "2026-09-22T12:00:00Z"
+      acting_delegate: service-c
+      decision_actor: service-c
+      lineage_complete: true
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, expires_at: "2026-09-22T11:00:00Z", revoked: false, delegator_current: true, redelegation: true}
+        - {from: agent-b, to: service-c, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+      expected: DENIED
+
+    - id: revoked-upstream-delegation
+      action: read-record
+      action_time: "2026-09-22T12:00:00Z"
+      acting_delegate: service-c
+      decision_actor: service-c
+      lineage_complete: true
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: true, delegator_current: true, redelegation: true}
+        - {from: agent-b, to: service-c, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+      expected: DENIED
+
+    - id: delegator-authority-no-longer-current
+      action: read-record
+      action_time: "2026-09-22T12:00:00Z"
+      acting_delegate: service-c
+      decision_actor: service-c
+      lineage_complete: true
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: false, redelegation: true}
+        - {from: agent-b, to: service-c, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+      expected: DENIED
+
+    - id: unauthorized-redelegation
+      action: read-record
+      action_time: "2026-09-22T12:00:00Z"
+      acting_delegate: service-c
+      decision_actor: service-c
+      lineage_complete: true
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+        - {from: agent-b, to: service-c, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+      expected: DENIED
+
+    - id: missing-lineage-hop
+      action: read-record
+      action_time: "2026-09-22T12:00:00Z"
+      acting_delegate: service-c
+      decision_actor: service-c
+      lineage_complete: false
+      lineage:
+        - {from: agent-b, to: service-c, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+      expected: INDETERMINATE
+
+    - id: delegate-identity-substituted-by-principal
+      action: read-record
+      action_time: "2026-09-22T12:00:00Z"
+      acting_delegate: service-c
+      decision_actor: principal-a
+      lineage_complete: true
+      lineage:
+        - {from: principal-a, to: agent-b, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: true}
+        - {from: agent-b, to: service-c, scope: read-record, expires_at: "2026-09-23T00:00:00Z", revoked: false, delegator_current: true, redelegation: false}
+      expected: DENIED
