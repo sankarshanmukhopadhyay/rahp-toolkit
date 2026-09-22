@@ -26,6 +26,7 @@ This page is generated from the authoritative RAHP VTI assessment submissions an
 | [`RAHP-VTI-HUMAN-001`](../examples/cross-spec/vti-assessment/human-control.yaml) | human-control | `VTI-CMP-110`, `VTI-CMP-111`, `VTI-CMP-112`, `VTI-CMP-113` | `supported` | 4 | `current` |
 | [`RAHP-VTI-IND-001`](../examples/cross-spec/vti-assessment/failure-indeterminacy.yaml) | failure-indeterminacy | `VTI-CMP-080`, `VTI-CMP-081`, `VTI-CMP-082` | `supported` | 4 | `current` |
 | [`RAHP-VTI-LIFE-001`](../examples/cross-spec/vti-assessment/lifecycle-freshness.yaml) | lifecycle-freshness | `VTI-CMP-040`, `VTI-CMP-041`, `VTI-CMP-042` | `supported` | 5 | `current` |
+| [`RAHP-VTI-PRV-001`](../examples/cross-spec/vti-assessment/privacy-composition.yaml) | privacy-composition | `VTI-CMP-060`, `VTI-CMP-061`, `VTI-CMP-062`, `VTI-CMP-063` | `indeterminate` | 6 | `current` |
 | [`RAHP-VTI-SC-001`](../examples/cross-spec/vti-assessment/semantic-completion.yaml) | semantic-completion | `VTI-CMP-020`, `VTI-CMP-021` | `supported` | 2 | `current` |
 
 ## Remaining requirement families
@@ -36,7 +37,7 @@ This page is generated from the authoritative RAHP VTI assessment submissions an
 | authority-continuity | `VTI-CMP-030`, `VTI-CMP-031`, `VTI-CMP-032` | `verified` | `RAHP-VTI-AUTH-001` |
 | lifecycle-freshness | `VTI-CMP-040`, `VTI-CMP-041`, `VTI-CMP-042` | `verified` | `RAHP-VTI-LIFE-001` |
 | delegation-lineage | `VTI-CMP-050`, `VTI-CMP-051`, `VTI-CMP-052`, `VTI-CMP-053` | `verified` | `RAHP-VTI-DEL-001` |
-| privacy-composition | `VTI-CMP-060`, `VTI-CMP-061`, `VTI-CMP-062`, `VTI-CMP-063` | `specialist_evidence_required` | not yet published |
+| privacy-composition | `VTI-CMP-060`, `VTI-CMP-061`, `VTI-CMP-062`, `VTI-CMP-063` | `specialist_evidence_required` | `RAHP-VTI-PRV-001` |
 | false-independence | `VTI-CMP-070`, `VTI-CMP-071`, `VTI-CMP-072`, `VTI-CMP-073`, `VTI-CMP-074` | `verified` | `RAHP-VTI-FI-001` |
 | failure-indeterminacy | `VTI-CMP-080`, `VTI-CMP-081`, `VTI-CMP-082` | `verified` | `RAHP-VTI-IND-001` |
 | configuration-materiality | `VTI-CMP-090`, `VTI-CMP-091`, `VTI-CMP-092` | `verified` | `RAHP-VTI-CFG-001` |
