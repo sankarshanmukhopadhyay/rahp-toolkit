@@ -7,33 +7,21 @@ parent: Releases
 ---
 # RAHP roadmap
 
-## Current release boundary — v2.3.0 Common Five-ring
+## Current release boundary — v2.4.0 Redbreast Jezebel
 
-v2.3.0 packages **Portable Coverage and Source-Preserving Assurance** on top of the v2.2 evidence-production baseline. The release adds generic capability coverage, Persona/Data Rooms coverage packs, current realization-evidence reconciliation, source-preserving resilience propositions, deterministic runtime evidence obligations and explicit deferred-evidence semantics while preserving the stable v1 engine compatibility authority.
+v2.4.0 packages **VTI Composition Assessment and Evidence-Conservative Reconciliation** on top of the v2.3 portable-coverage baseline. It establishes a reusable, source-pinned assessment programme with machine-readable submissions, executable family evidence, deterministic reconciliation and explicit residual states.
 
-Stable residuals are part of the release record, not release failures. Where an upstream semantic primitive, private runtime, operator/deployment observation or independent implementation is absent, RAHP keeps the exact proposition and future evidence trigger explicit rather than manufacturing closure.
+The release qualifies eight supported VTI composition families while preserving two bounded residuals: privacy remains specialist-evidence-required with an indeterminate assessment, and component substitution remains evidence-required pending genuine implementation-pair evidence.
 
-## Completed v2.3 tranche
+## Completed v2.4 tranche
 
-1. **Portable capability coverage:** generic coverage machinery now supports project-specific packs without moving consumer semantics into RAHP core.
-2. **Persona and Data Rooms:** proposition catalogues, evidence maturity and current implementation boundaries are represented as bounded assurance subjects.
-3. **Current realization evidence:** VTI/OpenVTC action-time, replay, resolved-effect, privacy and related evidence can be reconciled without treating component success as composition success.
-4. **Upstream dependency hygiene:** open downstream propositions make ownership, evidence gaps and reassessment triggers legible; deferred evidence is distinguished from ordinary executable backlog.
-5. **Resilience/DRARM integration:** source findings remain source-preserving propositions and runtime claims become explicit evidence obligations at declared assurance depth.
+1. **Assessment profile and contract:** version-pinned VTI profile plus `rahp-vti-assessment/v1` submission contract.
+2. **Reusable evidence pipeline:** multi-submission validation, exact family mapping, source-pin consistency and reassessment semantics.
+3. **Eight supported families:** semantic completion, authority, lifecycle, delegation, false independence, indeterminacy, configuration materiality and human control.
+4. **Truthful residuals:** privacy remains indeterminate; substitution remains evidence-required.
+5. **Programme reconciliation:** deterministic family-level reconciliation and release/upstream packaging judgment.
 
-## Capability continuity retained in v2.3
-
-The release preserves the capabilities established in earlier qualified tranches while extending their evidence and coverage surfaces:
-
-- **Durable assessment and finding lineage** keeps terminal findings and their provenance inspectable across reassessment and source changes.
-- **Governed remediation and retest** preserves explicit remediation authority, closure evidence and retest lineage.
-- **Assurance graph and impact analysis** keeps dependency-aware change impact deterministic rather than inferred from repository activity alone.
-- **Evidence provenance, freshness and delta** preserves source identity, freshness semantics and explicit assurance-state transition evidence.
-- **Executable authority and policy gates** keep scope, revocation posture and PASS/FAIL/INDETERMINATE semantics machine-checkable.
-- **Portfolio and deployment presentation** remains a presentation layer over bounded assurance state rather than an alternative source of truth.
-- **Release qualification** remains an executable gate binding declared version, compatibility contracts, release notes and qualification evidence.
-
-## Post-v2.3 priorities
+## Post-v2.4 priorities
 
 1. **Realization conformance:** selectively retest when adopted normative semantics become implemented.
 2. **Deferred evidence triggers:** reactivate portability/substitution and other deferred propositions only when genuine independently meaningful implementations or deployments exist.
@@ -60,6 +48,7 @@ The release preserves the capabilities established in earlier qualified tranches
 
 The named release lineage is retained because each release validator treats those identities as part of the public compatibility history:
 
+- v2.3.0 — **Common Five-ring** — Portable Coverage and Source-Preserving Assurance
 - v2.2.0 — **Common Four-ring** — Evidence Production and Realization Assurance
 - v2.1.0 — **Common Acacia Blue** — Qualified Autonomous Assurance Plane
 - v2.0.0 — **Blue Mormon** — Portable Assurance Engine Stabilization
