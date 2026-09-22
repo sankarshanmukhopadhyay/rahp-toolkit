@@ -9,6 +9,7 @@
     "assessment_id",
     "profile",
     "vti_source",
+    "family",
     "assessor",
     "assessed_at",
     "scope",
@@ -197,6 +198,10 @@
           }
         }
       }
+    },
+    "family": {
+      "type": "string",
+      "minLength": 1
     }
   }
 }
