@@ -1,0 +1,49 @@
+schema: rahp-negative-fixture/v1
+id: NF-SPECIALIST-DPIP-BOUNDARY
+proposition:
+  claim: a privacy concern is sufficiently bounded for DPIP specialist promotion
+  owner: specialist
+lens:
+  primary: specialist
+  secondary: [rahp]
+evidence:
+  established:
+    - privacy_question_present
+    - source_change_provenance
+  missing:
+    - bounded_examination_target
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [privacy_suspicion]
+  to: [valid_specialist_referral]
+expected:
+  state: reject
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: tests/test_dpip_handoff.py#test_gatherer_native_provenance_is_supported
+  proposition: a bounded target, actionable question and source lineage satisfy the RAHP-to-DPIP promotion gate
+source:
+  kind: test
+  ref: tests/test_dpip_handoff.py#test_promotion_gate_rejects_missing_target
+  provenance: existing RAHP-to-DPIP specialist handoff contract
+specialist:
+  required: true
+  name: dpip
+  owns:
+    - privacy_applicability
+    - specialist_evidence_assessment
+    - scoped_privacy_conclusion
+  does_not_own:
+    - authorization
+    - collective_authority
+    - resilience
+composition:
+  dependencies: []
+drarm:
+  applicable: false
+retest_triggers:
+  - specialist handoff contract changes
+  - required privacy targeting semantics change
+evidence_maturity: executable
