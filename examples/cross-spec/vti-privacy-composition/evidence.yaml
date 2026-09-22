@@ -66,3 +66,35 @@ evidence:
     - no detected join in one producer experiment != universal unlinkability
     - specialist FAIL on one attributable implementation path != universal implementation failure
     - not-evidenced != preserved
+  convergence_extension:
+    vti_source:
+      repository: trustoverip/dtgwg-vti-spec
+      document_status: Working Draft 0.2.0
+      commit: 3cbd7300a4f46bb2518e2b4b485609e7b5432b58
+    requirements: [VTI-CMP-064]
+    coordination_issue: 690
+    proposition: >-
+      Outcome evidence is part of the durable-correlation surface and therefore
+      cannot inherit a privacy PASS from credential or proof validity.
+    specialist_evidence:
+      - id: DPIP-271
+        source: sankarshanmukhopadhyay/dtg-privacy-implementation-profile#271
+        state: terminal-indeterminate-evidence-required
+        applicability: applicable
+        target_path: not-implemented
+        effective_correlation: not-tested
+      - id: INTEROP-233
+        source: sankarshanmukhopadhyay/trust-protocol-interop-lab#233
+        state: target-runtime-not-implemented
+        target_revision: 1099d7b24366b9d390f24201dc6db308fda70e21
+        runtime_correlation: unresolved
+    disposition: INDETERMINATE
+    reconciliation_state: terminal-current-epoch
+    residuals:
+      - committed-citation representation remains unsettled in credential-spec issue 58
+      - proof opening/blinding construction remains a future reassessment trigger
+      - current target runtime does not implement the initiating-document plus digest path
+    non_inference_rules:
+      - terminal indeterminate != privacy PASS
+      - not-implemented != privacy preserved
+      - future committed citation semantics require a fresh source-pinned epoch
