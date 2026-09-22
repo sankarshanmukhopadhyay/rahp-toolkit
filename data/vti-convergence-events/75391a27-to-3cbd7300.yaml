@@ -81,8 +81,9 @@ family_impacts:
 contract_impacts:
   - id: vti-assessment-record-form
     trigger: trustoverip/dtgwg-vti-spec#36
-    state: review-required
-    proposition: RAHP's independent assessment submission contract must be checked against normative Appendix E.1
+    state: verified-compatible
+    evidence: data/vti-appendix-e1-compatibility.yaml
+    proposition: RAHP's independent assessment submission contract is distinct from and compatible with normative Appendix E.1
 unaffected_families:
   - authority-continuity
   - lifecycle-freshness
@@ -102,5 +103,4 @@ rebaseline:
   blockers:
     - semantic-completion evidence for VTI-CMP-022 and VTI-CMP-023 is unresolved
     - privacy specialist evidence for VTI-CMP-064 is unresolved
-    - normative Appendix E.1 assessment-record compatibility review is unresolved
   baseline_mutated: false
