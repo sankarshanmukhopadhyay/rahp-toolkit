@@ -1,0 +1,37 @@
+schema: rahp-negative-fixture/v1
+id: NF-REVIEW-WRONG-SOURCE-PIN
+proposition:
+  claim: evidence from a different immutable source revision can establish the reviewed revision
+  owner: security
+lens:
+  primary: security
+  secondary: [rahp]
+evidence:
+  established: [authentic_evidence_for_different_revision]
+  missing: [evidence_for_reviewed_revision]
+  stale: [different_revision_evidence]
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [authentic_evidence_for_different_revision]
+  to: [reviewed_revision_assured]
+expected:
+  state: reject
+  terminal_colour: red
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+  proposition: evidence applies to the requested immutable revision
+source:
+  kind: fixture
+  ref: method/review/false-assurance-challenges.yaml#FAC-006
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies: []
+drarm:
+  applicable: false
+retest_triggers: [evidence is regenerated for the reviewed source pin]
+evidence_maturity: executable
