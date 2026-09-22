@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, pathlib, yaml
+import argparse, pathlib, yaml, difflib
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 FILES=[('Harm patterns','harm-patterns.yaml','definition'),('Risk patterns','risk-patterns.yaml','description'),('Control patterns','control-patterns.yaml','control_objective'),('Guardrail patterns','guardrail-patterns.yaml','prohibited_state'),('Assurance patterns','assurance-patterns.yaml','assertion'),('Evidence patterns','evidence-patterns.yaml','claim_supported')]
 def render():
@@ -31,7 +31,9 @@ def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--check',action='store_true'); a=ap.parse_args(); p=ROOT/'docs/portable-assurance-catalogue.md'; text=render()
     if a.check:
         if not p.exists() or p.read_text()!=text:
-            print('Portable catalogue documentation is stale; run tools/render_portable_catalogue_docs.py'); return 1
+            print('Portable catalogue documentation is stale; run tools/render_portable_catalogue_docs.py')
+            print(''.join(difflib.unified_diff(p.read_text().splitlines(True) if p.exists() else [], text.splitlines(True), fromfile='current', tofile='expected')))
+            return 1
         print('Portable catalogue documentation current.'); return 0
     p.write_text(text); print('Rendered',p.relative_to(ROOT)); return 0
 if __name__=='__main__': raise SystemExit(main())
