@@ -1,0 +1,157 @@
+programme:
+  id: rahp-vti-assessment-programme
+  tranche: T12
+  generated_on: "2026-09-22"
+  parent_issue: 700
+  issue: 713
+
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+  drift_checked: true
+  drift_detected: false
+
+programme_reconciliation:
+  report: docs/vti-programme-reconciliation.md
+  family_count: 10
+  verified_supported_families: 8
+  specialist_evidence_required_families: 1
+  evidence_required_families: 1
+  current_submissions: 9
+  stale_or_superseded_submissions: 0
+  privacy:
+    assessment: RAHP-VTI-PRV-001
+    disposition: indeterminate
+    evidence_state: specialist_evidence_required
+  component_substitution:
+    assessment: null
+    tranche_outcome: evidence-required
+    evidence_state: evidence_required
+
+release_judgment:
+  current_stable_release: 2.3.0
+  disposition: minor_release_warranted
+  candidate_next_version: 2.4.0
+  version_commitment_authorized: false
+  release_cut_authorized: false
+  codename_selected: false
+  rationale:
+    - reusable VTI composition assessment profile and machine-readable submission contract added
+    - multi-submission validation and deterministic assessment index established
+    - eight VTI composition families have current supported assessments
+    - privacy remains deliberately indeterminate with specialist evidence outstanding
+    - component substitution remains evidence-required rather than synthetically closed
+    - programme-level reconciliation is deterministic and source-pinned
+  compatibility:
+    breaking_change: false
+    engine_contract: rahp-engine-contract-v1
+    engine_revision: "1.3"
+    normalized_result_schema: 1
+    evidence_retention_contract: rahp-evidence-retention-v1
+    assessment_contract_added: rahp-vti-assessment/v1
+  boundary: >-
+    The release judgment records that an additive product-minor release is warranted.
+    It does not update release metadata, select a governed release codename, create a
+    tag, publish a GitHub release, or otherwise commit the repository to v2.4.0.
+
+upstream_packaging:
+  write_authorized: false
+  authority_boundary: >-
+    RAHP supplies independent assurance evidence and clarification questions.
+    trustoverip/dtgwg-vti-spec remains authoritative for normative requirements,
+    conformance semantics, and acceptance of assessment evidence.
+  existing_upstream_work:
+    - ref: trustoverip/dtgwg-vti-spec#32
+      kind: issue
+      status: open
+      relevance: >-
+        Already covers Appendix E's informative/normative tension and the unresolved
+        conformance-test-suite location. Do not open a duplicate issue for Appendix E.
+    - ref: trustoverip/dtgwg-vti-spec#33
+      kind: pull_request
+      status: open
+      relevance: >-
+        Already advances semantic-completion and privacy-across-composition requirements,
+        including outcome-evidence correlation. Do not duplicate those requirement changes.
+    - ref: trustoverip/dtgwg-vti-spec#35
+      kind: pull_request
+      status: open
+      relevance: >-
+        Demonstrates observed implementation evidence being recorded against VTI requirements.
+        Treat it as evidence that the upstream catalogue is active, not as a substitute for
+        clarifying independent assessment submission semantics.
+  clarification_candidates:
+    - id: VTI-CLAR-001
+      title: Clarify specification evidence, conformance evidence, and independent assessment evidence
+      disposition: candidate
+      duplicate_of: null
+      related_to: [trustoverip/dtgwg-vti-spec#32]
+      question: >-
+        How should evidence that motivated a composition requirement, evidence used to establish
+        implementation conformance, and independent assessment evidence submitted under the VTI
+        assessment interface be distinguished in authority, lifecycle, and admissibility?
+    - id: VTI-CLAR-002
+      title: Define assessment disposition semantics for supported, refuted, and indeterminate
+      disposition: candidate
+      duplicate_of: null
+      related_to: []
+      question: >-
+        What exact proposition and evidence threshold does each independent assessment disposition
+        address, and how should indeterminate remain distinct from refuted or unsupported?
+    - id: VTI-CLAR-003
+      title: Define assessment context, freshness, and reassessment triggers
+      disposition: candidate
+      duplicate_of: null
+      related_to: []
+      question: >-
+        Which source revision, component versions, profiles, relying policy, material configuration,
+        freshness bounds, and invalidation triggers must travel with an assessment so that stale
+        evidence cannot remain silently current?
+    - id: VTI-CLAR-004
+      title: Clarify ownership classification versus normative requirement status
+      disposition: defer_pending_existing_issue
+      duplicate_of: null
+      related_to: [trustoverip/dtgwg-vti-spec#32]
+      question: >-
+        Can a composition requirement be normative while semantic ownership remains JOINTLY-OWNED
+        or UNRESOLVED, and if so should Appendix E record only ownership of semantics/evidence rather
+        than authority over the requirement itself?
+    - id: VTI-CLAR-005
+      title: Clarify evidence semantics for independence under VTI-CMP-071
+      disposition: candidate
+      duplicate_of: null
+      related_to: []
+      question: >-
+        What may establish effective independence, at what scope and freshness, and how can a relying
+        party avoid turning independence evidence into a persistent cross-context correlator?
+    - id: VTI-CLAR-006
+      title: Define a machine-readable independent assessment submission format and admission process
+      disposition: candidate
+      duplicate_of: null
+      related_to: [trustoverip/dtgwg-vti-spec#35]
+      question: >-
+        Should VTI define a canonical JSON/YAML schema and repository/admission workflow for independent
+        assessment submissions, including requirement identifiers, disposition, method, artifacts,
+        assessor, assessment date, assessed component/version context, evidence URIs/digests, and
+        treatment of confidential evidence?
+  explicitly_not_raised:
+    - topic: Appendix E informative versus normative status
+      reason: already tracked by trustoverip/dtgwg-vti-spec#32
+    - topic: semantic completion and outcome-evidence correlation requirement changes
+      reason: already tracked by trustoverip/dtgwg-vti-spec#33
+    - topic: observed implementation evidence catalogue entries
+      reason: already represented by trustoverip/dtgwg-vti-spec#35
+
+next_decisions:
+  - id: release-cut
+    requires_explicit_approval: true
+    choice: >-
+      Whether to convert the minor-release judgment into an actual governed RAHP release,
+      synchronize versioned release surfaces, select the random unused West Bengal butterfly
+      codename, qualify, tag, and publish.
+  - id: upstream-write
+    requires_explicit_approval: true
+    choice: >-
+      Whether to submit any of VTI-CLAR-001, 002, 003, 005, or 006 upstream, and whether
+      VTI-CLAR-004 should be added as a comment to existing issue #32 rather than filed separately.
