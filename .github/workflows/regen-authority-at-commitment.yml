@@ -1,0 +1,34 @@
+name: Regenerate authority-at-commitment evidence
+
+on:
+  push:
+    branches:
+      - feat/authority-at-commitment-refresh
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/authority-at-commitment-refresh
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Regenerate derived evidence
+        run: python3 tools/build.py
+      - name: Commit generated evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add             build/derived/portable-catalogue-coverage.json             build/portable-assurance.json             build/rahp-toolkit.html             build/site/assurance-graph.html             build/site/portable-catalogue.html
+          if git diff --cached --quiet; then
+            echo "Generated evidence already current."
+            exit 0
+          fi
+          git commit -m "chore(assurance): regenerate authority catalogue evidence"
+          git push origin HEAD:feat/authority-at-commitment-refresh
