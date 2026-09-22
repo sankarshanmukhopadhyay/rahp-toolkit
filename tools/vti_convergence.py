@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROFILE = ROOT / "profiles" / "dtg" / "vti-assessment-profile.yaml"
 HISTORY = ROOT / "data" / "vti-baseline-history.yaml"
 EVENT = ROOT / "data" / "vti-convergence-events" / "75391a27-to-3cbd7300.yaml"
+NEGATIVE_FIXTURE_DIR = ROOT / "fixtures" / "negative"
 ALLOWED_CHANGE_CLASSES = {"normative-semantic", "evidence-only", "structural-normative-contract"}
 ALLOWED_IMPACT_STATES = {"evidence-required", "specialist-evidence-required", "verified", "indeterminate"}
 SHA40 = 40
@@ -24,6 +25,35 @@ def load_yaml(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{path}: top-level value must be a mapping")
     return value
+
+
+def negative_fixture_ids() -> set[str]:
+    ids: set[str] = set()
+    for path in sorted(NEGATIVE_FIXTURE_DIR.glob("*.yaml")):
+        fixture = load_yaml(path)
+        fixture_id = str(fixture.get("id") or "").strip()
+        if fixture_id:
+            ids.add(fixture_id)
+    return ids
+
+
+def validate_fixture_mappings(event: dict[str, Any], known_fixture_ids: set[str]) -> tuple[set[str], list[str]]:
+    selected: set[str] = set()
+    errors: list[str] = []
+    for impact in event.get("family_impacts") or []:
+        family = str(impact.get("family") or "<unknown>")
+        refs = impact.get("negative_fixture_ids")
+        if not isinstance(refs, list) or not refs:
+            errors.append(f"{family}: impacted family must declare at least one negative_fixture_id")
+            continue
+        if len(refs) != len(set(refs)):
+            errors.append(f"{family}: negative_fixture_ids must be unique")
+        for fixture_id in refs:
+            if fixture_id not in known_fixture_ids:
+                errors.append(f"{family}: unknown negative fixture {fixture_id}")
+            else:
+                selected.add(str(fixture_id))
+    return selected, errors
 
 
 def _sha(value: Any) -> bool:
@@ -82,6 +112,9 @@ def validate() -> tuple[dict[str, Any], list[str]]:
             errors.append(f"{family}: unsupported impact state {impact.get('state')!r}")
         if not impact.get("triggering_requirements"):
             errors.append(f"{family}: triggering_requirements must not be empty")
+
+    selected_fixtures, fixture_errors = validate_fixture_mappings(event, negative_fixture_ids())
+    errors.extend(fixture_errors)
 
     unaffected = set(event.get("unaffected_families") or [])
     expected_unaffected = known_families - impacted
@@ -163,6 +196,7 @@ def validate() -> tuple[dict[str, Any], list[str]]:
         "change_classes": sorted(classes),
         "impacted_families": sorted(impacted),
         "unaffected_families": sorted(unaffected),
+        "negative_fixture_ids": sorted(selected_fixtures),
         "rebaseline_state": rebaseline.get("state"),
         "unresolved_family_impacts": [item.get("family") for item in unresolved_family],
         "unresolved_contract_impacts": [item.get("id") for item in unresolved_contracts],
