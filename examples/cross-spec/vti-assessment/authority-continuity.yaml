@@ -1,0 +1,72 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-AUTH-001
+profile: rahp-vti-composition-assessment/v1
+family: authority-continuity
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  Authority-continuity composition properties exercised by the constrained-
+  authority evidence closure and the dedicated VTI-COMP-AUTH-001 pressure
+  fixture.
+disposition: supported
+method: >
+  Evidence-first composition assessment separating identity, authentication,
+  credential/proof verification, current authority, action authorization and
+  the final trust decision. Decision-time authority must be established from
+  an entitled source; proof validity alone is insufficient.
+requirements:
+  - VTI-CMP-030
+  - VTI-CMP-031
+  - VTI-CMP-032
+proposition: >
+  Credential or proof verification establishes provenance and integrity but
+  does not establish current authority. Where a relying decision depends on
+  authority, current authority must be established separately at decision time
+  from a source entitled to answer for it, while authorization and the final
+  trust decision remain distinct propositions.
+evidence:
+  - id: VTI-COMP-AUTH-001
+    kind: fixture
+    ref: examples/cross-spec/vti-authority-continuity/evidence.yaml
+  - id: VTI-COMP-AUTH-VALIDATOR
+    kind: test
+    ref: tools/validate_vti_authority_continuity.py
+  - id: GF-CASE-A
+    kind: fixture
+    ref: examples/cross-spec/guardianship-fiduciary/transactions/routine-act.yaml
+counter_cases:
+  - >
+    A current authority determination from an entitled source plus action-
+    specific authorization may legitimately support the relying decision.
+  - >
+    Verification remains useful evidence of provenance and integrity; the
+    assessment forbids upgrading it into authority, not using it as an input.
+  - >
+    Where authority cannot be established from an entitled source, the result
+    remains indeterminate rather than being treated as either authorized or
+    revoked without evidence.
+residual_uncertainty:
+  - >
+    This assessment does not define the authoritative source class for every
+    deployment; that remains profile and governance dependent.
+  - >
+    It does not establish lifecycle freshness, delegation lineage, privacy or
+    human-control requirements outside this family.
+  - >
+    Legal or fiduciary propriety is not established merely because technical
+    authority and authorization evidence are valid.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted
