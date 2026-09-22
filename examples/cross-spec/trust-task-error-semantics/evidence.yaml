@@ -1,0 +1,64 @@
+evidence:
+  id: TRUST-TASK-ERROR-SEMANTICS-001
+  title: Specification-declared Trust Task errors survive implementation
+  issue: 691
+  evidence_class: composition-fixture
+  proposition: >-
+    Where a Trust Task specification declares an extended error code whose
+    meaning or retryability affects lifecycle handling, redress, or subsequent
+    action, the implementation must preserve that declared semantic distinction
+    at the consuming boundary.
+  source_lineage:
+    - trustoverip/dtgwg-trust-tasks-tf#575
+    - OpenVTC/verifiable-trust-infrastructure#1600
+  boundary: >-
+    These vectors establish the assurance rule and regression shape. They do not
+    claim that upstream PR #575 is merged or that every language binding carries
+    the generated constants. Bindings are implementation support; observed
+    protocol outcomes are the assurance evidence.
+  vectors:
+    - id: declared-not-found-preserved
+      description: Known withdraw task emits its declared notFound error with declared retryability.
+      type_known: true
+      declared_error_codes:
+        - code: vtc/join-requests/withdraw:notFound
+          retryable: false
+        - code: vtc/join-requests/withdraw:alreadyDecided
+          retryable: false
+      observed_code: vtc/join-requests/withdraw:notFound
+      observed_retryable: false
+      expected: SEMANTIC_MATCH
+
+    - id: declared-already-decided-collapsed-to-generic
+      description: A generic taskFailed response loses the lifecycle distinction carried by alreadyDecided.
+      type_known: true
+      declared_error_codes:
+        - code: vtc/join-requests/withdraw:notFound
+          retryable: false
+        - code: vtc/join-requests/withdraw:alreadyDecided
+          retryable: false
+      observed_code: taskFailed
+      observed_retryable: false
+      expected: SEMANTIC_LOSS
+
+    - id: declared-code-with-wrong-retryability
+      description: Correct wire code with contradictory retryability remains semantic loss.
+      type_known: true
+      declared_error_codes:
+        - code: vtc/join-requests/withdraw:notFound
+          retryable: false
+      observed_code: vtc/join-requests/withdraw:notFound
+      observed_retryable: true
+      expected: SEMANTIC_LOSS
+
+    - id: unknown-type-is-not-known-empty-declaration
+      description: Unknown task Type URI must not be interpreted as a known task declaring no extended errors.
+      type_known: false
+      declared_error_codes: []
+      expected: UNKNOWN_SPEC
+
+    - id: known-task-with-no-extended-errors
+      description: A known task that declares no extended errors is distinct from an unknown Type URI.
+      type_known: true
+      declared_error_codes: []
+      expected: NOT_APPLICABLE
