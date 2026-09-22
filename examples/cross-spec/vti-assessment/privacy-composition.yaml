@@ -1,0 +1,86 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-PRV-001
+profile: rahp-vti-composition-assessment/v1
+family: privacy-composition
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  Privacy across composition for correlation resistance, durable correlator
+  identification and minimisation, using current RAHP and DPIP specialist
+  evidence while preserving unresolved upstream/runtime dependencies.
+disposition: indeterminate
+method: >
+  Reconcile the composition-level proposition with specialist DPIP runtime
+  evidence, RAHP remediation/coordination state, and explicit evidence gaps.
+  Scoped observed failures are retained as counterevidence; absent or
+  non-attributable evidence is not promoted to privacy support.
+requirements:
+  - VTI-CMP-060
+  - VTI-CMP-061
+  - VTI-CMP-062
+  - VTI-CMP-063
+proposition: >
+  Privacy properties must survive the complete interaction boundary. A
+  proof-layer unlinkability property cannot justify an unlinkability claim when
+  another composed layer exposes a durable correlator, and the interaction
+  should not require disclosure beyond the relying decision's needs.
+evidence:
+  - id: VTI-COMP-PRV-001
+    kind: fixture
+    ref: examples/cross-spec/vti-privacy-composition/evidence.yaml
+  - id: VTI-COMP-PRV-VALIDATOR
+    kind: test
+    ref: tools/validate_vti_privacy_composition.py
+  - id: DPIP-163
+    kind: issue
+    ref: sankarshanmukhopadhyay/dtg-privacy-implementation-profile#163
+  - id: RAHP-339
+    kind: issue
+    ref: sankarshanmukhopadhyay/rahp-toolkit#339
+  - id: RAHP-690
+    kind: issue
+    ref: sankarshanmukhopadhyay/rahp-toolkit#690
+  - id: RAHP-184
+    kind: issue
+    ref: sankarshanmukhopadhyay/rahp-toolkit#184
+counter_cases:
+  - >
+    A composed interaction may legitimately preserve unlinkability where no
+    stable identifier or observable metadata permits cross-context relinking
+    and the disclosure set is bounded to the relying decision.
+  - >
+    A scoped DPIP failure on one attributable implementation path does not prove
+    that every conformant implementation or deployment fails the requirement.
+  - >
+    An experiment in which no join is detected is useful evidence only for the
+    observer, implementation and context actually exercised; it is not a
+    universal unlinkability proof.
+residual_uncertainty:
+  - >
+    Task-citation and committed-citation correlation semantics remain dependent
+    on upstream Credential, VTI and ZKP convergence tracked by RAHP #690.
+  - >
+    Current specialist evidence does not establish minimisation across the full
+    VTI interaction surface for VTI-CMP-063.
+  - >
+    Some producer/composition evidence is not attributable to the original
+    target implementation and therefore cannot be relabelled as target privacy
+    evidence.
+  - >
+    The heartbeat-transport proposition in the device-metadata case remains
+    explicitly not-evidenced.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted

@@ -192,6 +192,9 @@ jobs:
       - name: Validate VTI configuration materiality
         run: python3 tools/validate_vti_configuration_materiality.py
 
+      - name: Validate VTI privacy composition evidence
+        run: python3 tools/validate_vti_privacy_composition.py
+
       - name: Validate VTI assessment profile
         run: python3 tools/validate_vti_assessment_profile.py
 
