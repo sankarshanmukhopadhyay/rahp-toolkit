@@ -72,6 +72,8 @@ The generated [VTI assessment index](vti-assessment-index.html) is the human-rea
 
 [`RAHP-VTI-AUTH-001`](../examples/cross-spec/vti-assessment/authority-continuity.yaml) is the third complete submission. It reconciles the existing constrained-authority evidence against `VTI-CMP-030` through `VTI-CMP-032`, preserving the separation between proof/credential validity and transaction-time authority and authorisation.
 
+[`RAHP-VTI-LIFE-001`](../examples/cross-spec/vti-assessment/lifecycle-freshness.yaml) is the fourth complete submission. It adds executable freshness-bound evidence for `VTI-CMP-040` through `VTI-CMP-042`: historical evidence is not current state, currency is time-bounded, and stale or unavailable currency remains `INDETERMINATE` rather than inheriting the last-known state.
+
 ## Reassessment and invalidation
 
 An assessment must be reconsidered when any materially relevant input changes. The current profile enumerates VTI revision change, assessed component/version change, relying policy or profile change, material configuration change, evidence supersession, and evidence contradiction.
@@ -82,7 +84,7 @@ A stale or superseded assessment must not be silently reused as current evidence
 
 The profile provides the initial map for semantic completion, authority continuity, lifecycle/freshness, delegation lineage, privacy across composition, false independence, failure/indeterminacy, configuration materiality, component substitution, and human control.
 
-Only false independence is promoted as the first complete submission in this tranche. Other families remain `partially_verified`, `specialist_evidence_required`, or `evidence_required` until their existing evidence is reconciled against the exact upstream requirements.
+Families are promoted to `verified` only when a complete assessment submission and its cited evidence satisfy the source-pinned requirement mapping. Unassessed families remain `partially_verified`, `specialist_evidence_required`, or `evidence_required` until their evidence is reconciled against the exact upstream requirements.
 
 This preserves the evidence-first rule: **do not manufacture a PASS because a requirement exists.**
 
@@ -98,6 +100,6 @@ Run `python3 tools/render_vti_assessment_index.py --check` to verify that the hu
 
 ## Next evidence families
 
-With false independence, semantic completion, and authority continuity now flowing through the same assessment contract, subsequent work should progress family-by-family: lifecycle/freshness; delegation lineage; human control; failure/indeterminacy; configuration materiality; privacy composition with DPIP where specialist depth is required; and component substitution once concrete implementation evidence exists.
+With false independence, semantic completion, authority continuity, and lifecycle/freshness now flowing through the same assessment contract, subsequent work should progress family-by-family: delegation lineage; human control; failure/indeterminacy; configuration materiality; privacy composition with DPIP where specialist depth is required; and component substitution once concrete implementation evidence exists.
 
 Each family should reuse the same assessment contract rather than inventing a new output shape.
