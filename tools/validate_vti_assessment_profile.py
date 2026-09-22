@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import json
+import re
 import sys
 from typing import Any
 
@@ -14,9 +15,6 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = ROOT / "schemas" / "vti-assessment.schema.json"
 PROFILE_PATH = ROOT / "profiles" / "dtg" / "vti-assessment-profile.yaml"
 SUBMISSION_DIR = ROOT / "examples" / "cross-spec" / "vti-assessment"
-
-EXPECTED_VTI_COMMIT = "75391a27a5d9a1794266b2e3bdeb8be68fa4db40"
-EXPECTED_DOCUMENT_STATUS = "Working Draft 0.1.0"
 
 def load_yaml(path: Path) -> dict[str, Any]:
     value = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -38,10 +36,12 @@ def requirement_map(profile: dict[str, Any]) -> dict[str, dict[str, Any]]:
 
 def validate_profile(profile: dict[str, Any]) -> dict[str, dict[str, Any]]:
     source = profile.get("vti_source") or {}
-    if source.get("document_status") != EXPECTED_DOCUMENT_STATUS:
-        raise AssertionError(f"profile must pin VTI {EXPECTED_DOCUMENT_STATUS}")
-    if source.get("commit") != EXPECTED_VTI_COMMIT:
-        raise AssertionError("profile VTI commit pin drifted")
+    if source.get("repository") != "trustoverip/dtgwg-vti-spec":
+        raise AssertionError("profile must identify the authoritative VTI repository")
+    if not str(source.get("document_status") or "").startswith("Working Draft "):
+        raise AssertionError("profile must pin an explicit VTI Working Draft status")
+    if not re.fullmatch(r"[0-9a-f]{40}", str(source.get("commit") or "")):
+        raise AssertionError("profile VTI commit must be an immutable lowercase 40-hex SHA")
 
     dispositions = profile.get("dispositions") or {}
     if set(dispositions) != {"supported", "refuted", "indeterminate"}:
@@ -91,14 +91,15 @@ def validate_submission(
     submission: dict[str, Any],
     schema: dict[str, Any],
     families: dict[str, dict[str, Any]],
+    expected_source: dict[str, Any],
     path: Path,
 ) -> None:
     validate_schema(submission, schema, path)
 
     source = submission["vti_source"]
-    if source["commit"] != EXPECTED_VTI_COMMIT:
+    if source["commit"] != expected_source.get("commit"):
         raise AssertionError(f"{path.name}: source pin does not match active profile")
-    if source["document_status"] != EXPECTED_DOCUMENT_STATUS:
+    if source["document_status"] != expected_source.get("document_status"):
         raise AssertionError(f"{path.name}: document status does not match active profile")
 
     family = submission["family"]
@@ -152,7 +153,7 @@ def validate_collection(
 
     for path in discover_submissions():
         submission = load_yaml(path)
-        validate_submission(submission, schema, families, path)
+        validate_submission(submission, schema, families, profile["vti_source"], path)
 
         assessment_id = submission["assessment_id"]
         if assessment_id in assessment_ids:
@@ -196,6 +197,7 @@ def self_test(schema: dict[str, Any], submissions: list[dict[str, Any]]) -> None
             bad_family,
             schema,
             requirement_map(load_yaml(PROFILE_PATH)),
+            load_yaml(PROFILE_PATH)["vti_source"],
             Path("negative-unknown-family.yaml"),
         )
     except AssertionError:
@@ -215,7 +217,8 @@ def main() -> int:
         return 1
 
     print("PASS VTI assessment profile")
-    print(f"- source: {EXPECTED_DOCUMENT_STATUS} @ {EXPECTED_VTI_COMMIT}")
+    source = profile["vti_source"]
+    print(f"- source: {source['document_status']} @ {source['commit']}")
     print(f"- submissions: {len(submissions)}")
     for submission in sorted(submissions, key=lambda item: item["assessment_id"]):
         print(
