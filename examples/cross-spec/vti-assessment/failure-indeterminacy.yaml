@@ -1,0 +1,70 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-IND-001
+profile: rahp-vti-composition-assessment/v1
+family: failure-indeterminacy
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  First-class indeterminate evaluation state, preservation of that state across
+  relying-policy handling, and refusal when relying policy is silent.
+disposition: supported
+method: >
+  Cross-family assurance reconciliation plus a bounded executable policy fixture
+  that keeps trust-evaluation outcome distinct from the consequential action
+  selected by relying policy.
+requirements:
+  - VTI-CMP-080
+  - VTI-CMP-081
+  - VTI-CMP-082
+proposition: >
+  Indeterminate is a first-class trust-evaluation result distinct from support
+  and refutation. It must not be silently converted into corroboration or
+  failure. Relying policy must state the action to take; if policy is silent,
+  the decision is refused while the underlying evaluation remains indeterminate.
+evidence:
+  - id: VTI-COMP-IND-001
+    kind: fixture
+    ref: examples/cross-spec/vti-failure-indeterminacy/evidence.yaml
+  - id: VTI-COMP-IND-VALIDATOR
+    kind: test
+    ref: tools/validate_vti_failure_indeterminacy.py
+  - id: VTI-COMP-SEM-001
+    kind: fixture
+    ref: examples/cross-spec/vti-semantic-completion/evidence.yaml
+  - id: VTI-COMP-WAVE-001
+    kind: fixture
+    ref: examples/cross-spec/vti-composition-wave/evidence.yaml
+counter_cases:
+  - >
+    An explicit relying policy may deliberately escalate, refuse, or accept risk
+    on an indeterminate evaluation; the policy action is not itself evidence that
+    the evaluation became supported or refuted.
+  - >
+    A supported or refuted evaluation remains distinguishable from indeterminate
+    and may legitimately lead to different policy actions.
+residual_uncertainty:
+  - >
+    VTI does not require every relying policy to choose the same action for an
+    indeterminate result, so this assessment does not prescribe universal risk
+    appetite.
+  - >
+    Specialist DPIP or implementation evidence may explain why a proposition is
+    indeterminate without changing the first-class state semantics assessed here.
+  - >
+    This family does not establish that every upstream component emits an
+    indeterminate state natively; it assesses the composition invariant.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted
