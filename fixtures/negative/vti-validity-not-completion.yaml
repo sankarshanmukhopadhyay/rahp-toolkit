@@ -1,0 +1,44 @@
+schema: rahp-negative-fixture/v1
+id: NF-VTI-VALIDITY-NOT-COMPLETION
+proposition:
+  claim: a valid credential that cites a Trust Task exchange establishes that the exchange completed
+  owner: composition
+lens:
+  primary: composition
+  secondary: [rahp, security]
+evidence:
+  established:
+    - credential_validity
+    - cited_exchange_binding
+  missing:
+    - exchange_outcome_evidence
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [valid_credential, cited_exchange]
+  to: [exchange_completed]
+expected:
+  state: indeterminate
+  terminal_colour: amber
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: examples/cross-spec/vti-semantic-completion/evidence.yaml#technical-success-current-authority
+  proposition: protocol completion and every material semantic precondition are positively established
+source:
+  kind: fixture
+  ref: examples/cross-spec/vti-semantic-completion/evidence.yaml#VTI-COMP-SEM-001
+  provenance: existing VTI semantic-completion evidence owner, extended by upstream VTI-CMP-022 and VTI-CMP-023
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies: [exchange_outcome_evidence]
+drarm:
+  applicable: false
+retest_triggers:
+  - outcome-evidence semantics change
+  - cited-exchange binding semantics change
+  - VTI semantic-completion requirements change
+evidence_maturity: executable
