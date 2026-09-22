@@ -17,7 +17,11 @@ SUBMISSION_DIR = ROOT / "examples" / "cross-spec" / "vti-assessment"
 
 EXPECTED_VTI_COMMIT = "75391a27a5d9a1794266b2e3bdeb8be68fa4db40"
 EXPECTED_DOCUMENT_STATUS = "Working Draft 0.1.0"
-EXPECTED_COMPLETE_FAMILIES = {"false-independence", "semantic-completion"}
+EXPECTED_COMPLETE_FAMILIES = {
+    "false-independence",
+    "semantic-completion",
+    "authority-continuity",
+}
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -54,6 +58,7 @@ def validate_profile(profile: dict[str, Any]) -> dict[str, dict[str, Any]]:
         "missing evidence != supported",
         "component conformance != composition assurance",
         "protocol completion != trust-outcome completion",
+        "cryptographic verification != current authority",
     }:
         if required not in rules:
             raise AssertionError(f"profile missing non-inference rule: {required}")

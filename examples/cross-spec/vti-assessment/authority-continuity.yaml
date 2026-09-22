@@ -1,0 +1,75 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-AUTH-001
+profile: rahp-vti-composition-assessment/v1
+family: authority-continuity
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  Authority-continuity composition properties exercised by the constrained-authority
+  guardianship/fiduciary construction, especially the distinction between credential
+  or proof validity and transaction-time authority.
+disposition: supported
+method: >
+  Source-pinned cross-spec composition assessment using the existing F-001
+  constrained-authority pressure test and routine bounded-authority construction,
+  preserving separate propositions for integrity/provenance, identity/authentication,
+  authority, authorisation, action scope and the final relying decision.
+requirements:
+  - VTI-CMP-030
+  - VTI-CMP-031
+  - VTI-CMP-032
+proposition: >
+  Verification of a credential or proof establishes provenance and integrity but
+  does not establish current authority; authority and authorisation must remain
+  distinguishable from identity, authentication, verification and the final trust
+  decision, and any authority relied on must be established at decision time from
+  an entitled authoritative source.
+evidence:
+  - id: XSP-GF-001-F001
+    kind: fixture
+    ref: examples/cross-spec/guardianship-fiduciary/pressure-test.yaml
+  - id: GF-CASE-A
+    kind: fixture
+    ref: examples/cross-spec/guardianship-fiduciary/transactions/routine-act.yaml
+  - id: GF-CLOSURE
+    kind: review
+    ref: examples/cross-spec/guardianship-fiduciary/transaction-evidence-closure.md
+  - id: RAHP-ISSUE-64
+    kind: issue
+    ref: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/64
+counter_cases:
+  - >
+    A credential or proof may be cryptographically valid while the actor's authority
+    is expired, revoked, out of scope, or otherwise not current.
+  - >
+    A current authoritative source may positively establish that an actor holds
+    decision-relevant authority for the requested action; the assessment does not
+    reject valid authority merely because it is separately established.
+  - >
+    Successful representative authorization does not by itself imply loss of the
+    principal's retained authority, incapacity, or satisfaction of fiduciary duties.
+residual_uncertainty:
+  - >
+    This assessment does not define universal authoritative source classes; those
+    remain profile/governance dependent.
+  - >
+    It does not establish lifecycle precedence across all possible authority artifacts;
+    that is assessed separately under lifecycle/freshness.
+  - >
+    It does not establish threshold/co-approval, privacy, or human-control properties
+    outside this authority-continuity family.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted
