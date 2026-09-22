@@ -17,7 +17,6 @@ SUBMISSION_DIR = ROOT / "examples" / "cross-spec" / "vti-assessment"
 
 EXPECTED_VTI_COMMIT = "75391a27a5d9a1794266b2e3bdeb8be68fa4db40"
 EXPECTED_DOCUMENT_STATUS = "Working Draft 0.1.0"
-EXPECTED_COMPLETE_FAMILIES = {"false-independence", "semantic-completion"}
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -59,12 +58,8 @@ def validate_profile(profile: dict[str, Any]) -> dict[str, dict[str, Any]]:
             raise AssertionError(f"profile missing non-inference rule: {required}")
 
     families = requirement_map(profile)
-    for family in EXPECTED_COMPLETE_FAMILIES:
-        entry = families.get(family)
-        if not entry:
-            raise AssertionError(f"required assessment family missing from profile: {family}")
-        if entry.get("evidence_state") != "verified":
-            raise AssertionError(f"{family}: complete family must remain verified")
+    if not any(entry.get("evidence_state") == "verified" for entry in families.values()):
+        raise AssertionError("profile must contain at least one verified assessment family")
     return families
 
 
@@ -105,6 +100,11 @@ def validate_submission(
 
     expected_requirements = set(mapping.get("requirements") or [])
     actual_requirements = set(submission["requirements"])
+    evidence_state = mapping.get("evidence_state")
+    if evidence_state != "verified" and submission["disposition"] != "indeterminate":
+        raise AssertionError(
+            f"{path.name}: non-verified family {family!r} may only publish an indeterminate assessment"
+        )
     if actual_requirements != expected_requirements:
         raise AssertionError(
             f"{path.name}: requirements {sorted(actual_requirements)} do not exactly "
@@ -162,9 +162,14 @@ def validate_collection(
         submitted_families.add(family)
         submissions.append(submission)
 
-    missing = EXPECTED_COMPLETE_FAMILIES - submitted_families
+    verified_families = {
+        family for family, entry in families.items() if entry.get("evidence_state") == "verified"
+    }
+    missing = verified_families - submitted_families
     if missing:
-        raise AssertionError(f"expected complete assessment families missing: {sorted(missing)}")
+        raise AssertionError(
+            f"verified assessment families missing submissions: {sorted(missing)}"
+        )
 
     return submissions
 
