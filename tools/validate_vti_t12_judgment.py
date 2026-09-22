@@ -15,6 +15,7 @@ PROFILE = ROOT / "profiles" / "dtg" / "vti-assessment-profile.yaml"
 SUBMISSIONS = ROOT / "examples" / "cross-spec" / "vti-assessment"
 PROJECT_STATUS = ROOT / "PROJECT-STATUS.yaml"
 PACKAGE = ROOT / "package.json"
+DOC = ROOT / "docs" / "vti-release-upstream-judgment.md"
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -99,6 +100,26 @@ def validate() -> None:
         raise AssertionError("T12 must preserve both explicit approval gates")
     if not all(item.get("requires_explicit_approval") is True for item in decisions):
         raise AssertionError("T12 critical decisions must require explicit approval")
+
+    doc = DOC.read_text(encoding="utf-8")
+    required_doc_terms = [
+        f"v{current}",
+        f"v{expected}",
+        vti["commit"],
+        "RAHP-VTI-PRV-001",
+        "component substitution remains `evidence_required`",
+        "VTI-CLAR-001",
+        "VTI-CLAR-002",
+        "VTI-CLAR-003",
+        "VTI-CLAR-004",
+        "VTI-CLAR-005",
+        "VTI-CLAR-006",
+        "release cut",
+        "upstream write",
+    ]
+    for term in required_doc_terms:
+        if term not in doc:
+            raise AssertionError(f"T12 documentation missing required term: {term}")
 
 
 def main() -> int:
