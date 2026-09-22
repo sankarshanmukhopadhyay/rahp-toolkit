@@ -52,8 +52,8 @@ requirement_map:
     evidence_state: verified
   - family: delegation-lineage
     requirements: [VTI-CMP-050, VTI-CMP-051, VTI-CMP-052, VTI-CMP-053]
-    rahp_sources: ["#186", tools/validate_vti_composition_wave.py]
-    evidence_state: partially_verified
+    rahp_sources: ["#186", examples/cross-spec/vti-delegation-lineage/evidence.yaml, tools/validate_vti_delegation_lineage.py, tools/validate_vti_composition_wave.py]
+    evidence_state: verified
   - family: privacy-composition
     requirements: [VTI-CMP-060, VTI-CMP-061, VTI-CMP-062, VTI-CMP-063]
     rahp_sources: ["#184", DPIP]
