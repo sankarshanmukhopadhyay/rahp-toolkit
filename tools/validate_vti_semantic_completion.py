@@ -10,6 +10,8 @@ import yaml
 
 FIXTURE = Path("examples/cross-spec/vti-semantic-completion/evidence.yaml")
 VALID_SEMANTIC = {"satisfied", "failed", "indeterminate"}
+EXPECTED_CONVERGENCE_REQUIREMENTS = {"VTI-CMP-022", "VTI-CMP-023"}
+EXPECTED_VTI_HEAD = "3cbd7300a4f46bb2518e2b4b485609e7b5432b58"
 
 
 def evaluate(vector: dict[str, Any]) -> dict[str, str]:
@@ -36,6 +38,50 @@ def evaluate(vector: dict[str, Any]) -> dict[str, str]:
         "technical_outcome": technical_outcome,
         "semantic_outcome": semantic_outcome,
     }
+
+
+def evaluate_completion_evidence(vector: dict[str, Any]) -> str:
+    if vector.get("credential_valid") is not True:
+        return "INDETERMINATE"
+    binding = str(vector.get("citation_binding") or "unknown").lower()
+    outcome = str(vector.get("outcome_evidence") or "missing").lower()
+    if binding == "failed" or outcome == "mismatched":
+        return "CONTRADICTED"
+    if binding == "exact" and outcome == "matching":
+        return "ESTABLISHED"
+    return "INDETERMINATE"
+
+
+def validate_convergence_extension(evidence: dict[str, Any]) -> list[str]:
+    extension = evidence.get("convergence_extension") or {}
+    source = extension.get("vti_source") or {}
+    if source.get("commit") != EXPECTED_VTI_HEAD:
+        raise AssertionError("WD02 semantic convergence evidence must be source-pinned")
+    requirements = set(extension.get("requirements") or [])
+    if requirements != EXPECTED_CONVERGENCE_REQUIREMENTS:
+        raise AssertionError(f"WD02 semantic requirements mismatch: {sorted(requirements)}")
+    vectors = extension.get("completion_evidence_vectors") or []
+    if not vectors:
+        raise AssertionError("WD02 completion-evidence vectors are missing")
+    seen: set[str] = set()
+    observed: dict[str, str] = {}
+    for vector in vectors:
+        vid = str(vector.get("id") or "").strip()
+        if not vid or vid in seen:
+            raise AssertionError(f"invalid or duplicate WD02 vector id: {vid!r}")
+        seen.add(vid)
+        actual = evaluate_completion_evidence(vector)
+        expected = str(vector.get("expected") or "")
+        if actual != expected:
+            raise AssertionError(f"{vid}: expected {expected}, got {actual}")
+        observed[vid] = actual
+    if observed.get("valid-credential-missing-outcome-evidence") != "INDETERMINATE":
+        raise AssertionError("valid credential without outcome evidence must not establish completion")
+    if observed.get("valid-credential-mismatched-outcome-evidence") != "CONTRADICTED":
+        raise AssertionError("mismatched outcome evidence must contradict completion evidence")
+    if observed.get("valid-credential-matching-outcome-evidence") != "ESTABLISHED":
+        raise AssertionError("matching outcome evidence positive control is missing")
+    return [f"{vid}: {state}" for vid, state in observed.items()]
 
 
 def validate(path: Path = FIXTURE) -> list[str]:
@@ -75,6 +121,7 @@ def validate(path: Path = FIXTURE) -> list[str]:
         raise AssertionError("no vector preserves technical COMPLETE with semantic INDETERMINATE")
     if not witnessed_counter_case:
         raise AssertionError("no legitimate COMPLETE / SATISFIED counter-case is preserved")
+    results.extend(validate_convergence_extension(evidence))
     return results
 
 
@@ -87,7 +134,7 @@ def main() -> int:
     print("PASS VTI semantic completion evidence")
     for result in results:
         print(f"- {result}")
-    print("Boundary: technical completion is recorded independently from semantic trust outcome.")
+    print("Boundary: credential validity and citation binding do not establish Trust Task completion without matching outcome evidence.")
     return 0
 
 
