@@ -1,13 +1,18 @@
 {
   "counts": {
     "harm_patterns": 24,
-    "risk_patterns": 43,
+    "risk_patterns": 47,
     "control_patterns": 35,
     "guardrail_patterns": 25,
     "assurance_patterns": 20,
     "evidence_patterns": 15
   },
-  "risks_without_portable_control": [],
+  "risks_without_portable_control": [
+    "RKP-AUTH-04",
+    "RKP-AUTH-05",
+    "RKP-AUTH-06",
+    "RKP-AUTH-07"
+  ],
   "risks_without_portable_guardrail": [
     "RKP-PE-02"
   ],
