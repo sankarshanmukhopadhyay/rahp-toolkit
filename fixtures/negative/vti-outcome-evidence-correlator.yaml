@@ -1,0 +1,51 @@
+schema: rahp-negative-fixture/v1
+id: NF-VTI-OUTCOME-EVIDENCE-CORRELATOR
+proposition:
+  claim: carrying Trust Task outcome evidence introduces no material privacy correlation risk
+  owner: specialist
+lens:
+  primary: specialist
+  secondary: [composition, rahp]
+evidence:
+  established:
+    - outcome_evidence_present
+    - presentation_context_known
+  missing:
+    - attributable_outcome_evidence_correlation_assessment
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [outcome_evidence_present]
+  to: [privacy_preserved]
+expected:
+  state: indeterminate
+  terminal_colour: amber
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: examples/cross-spec/vti-assessment/privacy-composition.yaml#A composed interaction may legitimately preserve unlinkability
+  proposition: no durable correlator permits cross-context relinking and disclosure remains bounded to the relying decision
+source:
+  kind: fixture
+  ref: examples/cross-spec/vti-privacy-composition/evidence.yaml#VTI-COMP-PRV-001
+  provenance: existing VTI privacy-composition specialist evidence owner, extended by upstream VTI-CMP-064
+specialist:
+  required: true
+  name: dpip
+  owns:
+    - privacy_applicability
+    - correlator_analysis
+    - minimisation_assessment
+  does_not_own:
+    - semantic_completion
+    - authorization
+    - authority
+composition:
+  dependencies: [outcome_evidence, presentation_context]
+drarm:
+  applicable: false
+retest_triggers:
+  - outcome-evidence representation changes
+  - observer or presentation context changes
+  - VTI privacy-composition requirements change
+evidence_maturity: specialist-evidence-required
