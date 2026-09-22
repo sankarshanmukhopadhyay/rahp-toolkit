@@ -10,9 +10,10 @@ nav_order: 11
 RAHP treats movement in the upstream VTI specification as an explicit
 reconciliation event, not as permission to rewrite historical assessment pins.
 
-The active v2.4.0 VTI assessment remains pinned to
-`75391a27a5d9a1794266b2e3bdeb8be68fa4db40` until the affected propositions
-have been reconciled.
+The active v2.4.0 VTI assessment remains historically pinned to
+`75391a27a5d9a1794266b2e3bdeb8be68fa4db40`. The affected Working Draft 0.2.0
+propositions are now reconciled, so the convergence event is `rebaseline: ready`;
+moving the active source pin remains a separate controlled change.
 
 ## Current live event
 
@@ -38,6 +39,23 @@ PR #36 states that requirement identifiers and requirement text are preserved
 while making Appendix E.1's record form and ownership vocabulary normative.
 That change therefore triggers an assessment-contract compatibility review rather
 than whole-programme reassessment.
+
+## Reconciled Working Draft 0.2.0 impacts
+
+The two selectively affected families are terminal for this convergence epoch:
+
+- `VTI-CMP-022/023` are **verified** by source-pinned completion
+  non-inference vectors. Credential validity and exact citation binding cannot
+  establish Trust Task completion without matching outcome evidence.
+- `VTI-CMP-064` is **indeterminate**, not failed or supported. DPIP #271
+  terminates the current specialist epoch as evidence-required and Interop Lab
+  #233 records the target initiating-document + digest path as not implemented.
+  This reconciles the requirement truthfully without promoting missing runtime
+  evidence to privacy support.
+
+Credential Spec #58, future ZKP opening/blinding construction, and a future
+target implementation remain reassessment triggers rather than blockers to this
+convergence epoch.
 
 ## Durable machinery
 
@@ -104,3 +122,7 @@ When a future VTI change affects a proposition:
    unsafe inference, and point it at the existing authoritative evidence owner;
 5. keep the active VTI baseline unchanged until both positive evidence and the
    required falsification guards have been reconciled.
+
+For the current event those conditions are satisfied. The event therefore
+records the controlled rebaseline as **ready** while retaining
+`baseline_mutated: false`.

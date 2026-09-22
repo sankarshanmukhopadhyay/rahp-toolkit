@@ -94,3 +94,37 @@ evidence:
       expected:
         technical_outcome: COMPLETE
         semantic_outcome: INDETERMINATE
+  convergence_extension:
+    vti_source:
+      repository: trustoverip/dtgwg-vti-spec
+      document_status: Working Draft 0.2.0
+      commit: 3cbd7300a4f46bb2518e2b4b485609e7b5432b58
+    requirements: [VTI-CMP-022, VTI-CMP-023]
+    coordination_issue: 690
+    evidence_boundary: >-
+      These vectors establish the completion non-inference rule for the newly
+      adopted VTI requirements. They are semantic assurance evidence, not proof
+      that a target runtime implements the newer citation/digest path.
+    source_evidence:
+      - sankarshanmukhopadhyay/trust-protocol-interop-lab#233
+    completion_evidence_vectors:
+      - id: valid-credential-missing-outcome-evidence
+        credential_valid: true
+        citation_binding: exact
+        outcome_evidence: missing
+        expected: INDETERMINATE
+      - id: valid-credential-mismatched-outcome-evidence
+        credential_valid: true
+        citation_binding: exact
+        outcome_evidence: mismatched
+        expected: CONTRADICTED
+      - id: valid-credential-matching-outcome-evidence
+        credential_valid: true
+        citation_binding: exact
+        outcome_evidence: matching
+        expected: ESTABLISHED
+      - id: valid-credential-unknown-binding
+        credential_valid: true
+        citation_binding: unknown
+        outcome_evidence: matching
+        expected: INDETERMINATE
