@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 2.3.0
-development_target: 2.3.0
+stable_release: 2.4.0
+development_target: 2.4.0
 release_status: released
 qualification_status: qualified
-qualification_contract: method/v2.3-release-qualification.yaml
+qualification_contract: method/v2.4-release-qualification.yaml
 release_name:
-  common_name: Common Five-ring
-  scientific_name: Ypthima baldus
+  common_name: Redbreast Jezebel
+  scientific_name: Delias acalis
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-09-13'
+  selected_on: '2026-09-22'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -27,11 +27,12 @@ release_naming:
   selection: random-at-release-time
   candidate_rule: governed-random-unused-candidate
 release_intent: >-
-  v2.3.0 Portable Coverage and Source-Preserving Assurance packages generic capability
-  coverage, Persona/Data Rooms coverage packs, current VTI/OpenVTC evidence reconciliation,
-  source-preserving DRARM propositions and deterministic runtime evidence obligations.
-  Evidence gaps and upstream dependencies remain explicit residuals rather than implied PASS.
+  v2.4.0 VTI Composition Assessment and Evidence-Conservative Reconciliation packages
+  the version-pinned VTI assessment profile, machine-readable assessment submissions,
+  multi-family validation, deterministic programme reconciliation, explicit privacy
+  indeterminacy, and the component-substitution evidence gate as a stable additive
+  toolkit capability without broadening claims beyond evidence.
 development_posture: >-
-  Post-v2.3 work should deepen realization conformance, non-DTG portability, specialist
+  Post-v2.4 work should deepen realization conformance, non-DTG portability, specialist
   interoperability and longitudinal observability while preserving the v1 engine contract,
   result schema 1 and evidence-retention contract.
