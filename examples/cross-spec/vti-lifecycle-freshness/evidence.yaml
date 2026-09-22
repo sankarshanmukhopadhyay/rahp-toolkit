@@ -1,0 +1,85 @@
+evidence:
+  id: VTI-COMP-LIFE-001
+  title: Lifecycle currency and freshness pressure vectors
+  source_issue: 703
+  vti_source:
+    repository: trustoverip/dtgwg-vti-spec
+    document_status: Working Draft 0.1.0
+    commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+  proposition: >
+    Historical relationship, authority, or status evidence is not current-state
+    evidence. Currency evidence must record when currency was determined and be
+    evaluated against a stated freshness bound. If currency cannot be established
+    within that bound, the result is INDETERMINATE rather than the last-known state.
+  vectors:
+    - id: current-within-bound
+      observation_time: "2026-09-22T12:00:00Z"
+      currency:
+        state: active
+        determined_at: "2026-09-22T11:58:00Z"
+        source_entitled: true
+      freshness_bound_seconds: 300
+      historical_artifact:
+        state: active
+        issued_at: "2026-09-01T00:00:00Z"
+      expected:
+        outcome: CURRENT
+        effective_state: active
+
+    - id: stale-current-state-evidence
+      observation_time: "2026-09-22T12:00:00Z"
+      currency:
+        state: active
+        determined_at: "2026-09-22T11:45:00Z"
+        source_entitled: true
+      freshness_bound_seconds: 300
+      historical_artifact:
+        state: active
+        issued_at: "2026-09-01T00:00:00Z"
+      expected:
+        outcome: INDETERMINATE
+        effective_state: null
+
+    - id: historical-valid-artifact-after-suspension
+      observation_time: "2026-09-22T12:00:00Z"
+      currency:
+        state: suspended
+        determined_at: "2026-09-22T11:59:00Z"
+        source_entitled: true
+      freshness_bound_seconds: 300
+      historical_artifact:
+        state: active
+        issued_at: "2026-09-01T00:00:00Z"
+        cryptographically_valid: true
+      expected:
+        outcome: CURRENT
+        effective_state: suspended
+
+    - id: currency-unavailable
+      observation_time: "2026-09-22T12:00:00Z"
+      currency:
+        state: unknown
+        determined_at: null
+        source_entitled: false
+      freshness_bound_seconds: 300
+      historical_artifact:
+        state: active
+        issued_at: "2026-09-01T00:00:00Z"
+        cryptographically_valid: true
+      expected:
+        outcome: INDETERMINATE
+        effective_state: null
+
+    - id: restored-current-state
+      observation_time: "2026-09-22T12:00:00Z"
+      currency:
+        state: restored
+        determined_at: "2026-09-22T11:59:30Z"
+        source_entitled: true
+      freshness_bound_seconds: 300
+      historical_artifact:
+        state: suspended
+        issued_at: "2026-09-15T00:00:00Z"
+      expected:
+        outcome: CURRENT
+        effective_state: restored

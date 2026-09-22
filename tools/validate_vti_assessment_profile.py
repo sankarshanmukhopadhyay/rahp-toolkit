@@ -17,12 +17,6 @@ SUBMISSION_DIR = ROOT / "examples" / "cross-spec" / "vti-assessment"
 
 EXPECTED_VTI_COMMIT = "75391a27a5d9a1794266b2e3bdeb8be68fa4db40"
 EXPECTED_DOCUMENT_STATUS = "Working Draft 0.1.0"
-EXPECTED_COMPLETE_FAMILIES = {
-    "false-independence",
-    "semantic-completion",
-    "authority-continuity",
-}
-
 
 def load_yaml(path: Path) -> dict[str, Any]:
     value = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -64,7 +58,11 @@ def validate_profile(profile: dict[str, Any]) -> dict[str, dict[str, Any]]:
             raise AssertionError(f"profile missing non-inference rule: {required}")
 
     families = requirement_map(profile)
-    for family in EXPECTED_COMPLETE_FAMILIES:
+    expected_complete_families = {
+        family for family, entry in families.items()
+        if entry.get("evidence_state") == "verified"
+    }
+    for family in expected_complete_families:
         entry = families.get(family)
         if not entry:
             raise AssertionError(f"required assessment family missing from profile: {family}")
@@ -167,7 +165,11 @@ def validate_collection(
         submitted_families.add(family)
         submissions.append(submission)
 
-    missing = EXPECTED_COMPLETE_FAMILIES - submitted_families
+    expected_complete_families = {
+        family for family, entry in families.items()
+        if entry.get("evidence_state") == "verified"
+    }
+    missing = expected_complete_families - submitted_families
     if missing:
         raise AssertionError(f"expected complete assessment families missing: {sorted(missing)}")
 

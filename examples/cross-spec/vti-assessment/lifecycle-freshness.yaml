@@ -1,0 +1,76 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-LIFE-001
+profile: rahp-vti-composition-assessment/v1
+family: lifecycle-freshness
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  Lifecycle and freshness composition properties across relationship, authority
+  and status evidence, including historical-validity, suspension, stale currency,
+  unknown currency and restoration cases.
+disposition: supported
+method: >
+  Source-pinned reconciliation of the existing guardianship/fiduciary lifecycle
+  evidence with an executable freshness-bound fixture that distinguishes historical
+  evidence from current authoritative state and preserves INDETERMINATE when currency
+  cannot be established within the stated bound.
+requirements:
+  - VTI-CMP-040
+  - VTI-CMP-041
+  - VTI-CMP-042
+proposition: >
+  Historical evidence must not be interpreted as current state; currency evidence
+  must carry its determination time and be tested against a stated freshness bound;
+  when current state cannot be determined within that bound, the outcome remains
+  indeterminate rather than defaulting to the last-known state.
+evidence:
+  - id: VTI-COMP-LIFE-001
+    kind: fixture
+    ref: examples/cross-spec/vti-lifecycle-freshness/evidence.yaml
+  - id: VTI-COMP-LIFE-VALIDATOR
+    kind: test
+    ref: tools/validate_vti_lifecycle_freshness.py
+  - id: GF-CASE-C
+    kind: fixture
+    ref: examples/cross-spec/guardianship-fiduciary/transactions/suspension-restoration.yaml
+  - id: RAHP-ISSUE-66
+    kind: issue
+    ref: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/66
+  - id: RAHP-ISSUE-187
+    kind: issue
+    ref: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/187
+counter_cases:
+  - >
+    Fresh evidence from an entitled source that establishes an active state within
+    the relying party's stated freshness bound may be treated as current.
+  - >
+    Fresh authoritative restoration evidence may supersede older suspension evidence
+    where the governing lifecycle semantics say restoration is effective.
+  - >
+    A cryptographically valid historical artifact remains legitimate historical
+    evidence even when it is no longer sufficient to establish current state.
+residual_uncertainty:
+  - >
+    The assessment does not define universal lifecycle vocabulary or legal precedence
+    for every relationship or authority regime.
+  - >
+    It does not establish how every implementation discovers an entitled current-state
+    source or chooses a context-appropriate freshness bound.
+  - >
+    Privacy-preserving current-state proof mechanisms remain outside this family and
+    may require specialist privacy assessment.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted
