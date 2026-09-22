@@ -72,7 +72,7 @@ requirement_map:
     evidence_state: verified
   - family: component-substitution
     requirements: [VTI-CMP-100, VTI-CMP-101]
-    rahp_sources: ["#188"]
+    rahp_sources: ["#188", examples/cross-spec/vti-component-substitution/evidence-gate.yaml, tools/validate_vti_component_substitution_gate.py]
     evidence_state: evidence_required
   - family: human-control
     requirements: [VTI-CMP-110, VTI-CMP-111, VTI-CMP-112, VTI-CMP-113]
