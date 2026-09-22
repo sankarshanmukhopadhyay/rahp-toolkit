@@ -10,6 +10,8 @@ records:
   - RKP-AUTH-01
   - RKP-CRD-01
   - RKP-DISC-01
+  - RKP-AUTH-04
+  - RKP-AUTH-06
   control_patterns:
   - CTP-AUTH-01
   - CTP-DISC-01
@@ -29,6 +31,9 @@ records:
   - RKP-AUTH-02
   - RKP-DEL-03
   - RKP-CRD-02
+  - RKP-AUTH-04
+  - RKP-AUTH-05
+  - RKP-AUTH-07
   control_patterns:
   - CTP-AUTH-02
   - CTP-DEL-02
