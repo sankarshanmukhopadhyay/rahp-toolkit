@@ -186,6 +186,9 @@ jobs:
       - name: Validate VTI human control evidence
         run: python3 tools/validate_vti_human_control.py
 
+      - name: Validate VTI failure and indeterminacy
+        run: python3 tools/validate_vti_failure_indeterminacy.py
+
       - name: Validate VTI assessment profile
         run: python3 tools/validate_vti_assessment_profile.py
 
