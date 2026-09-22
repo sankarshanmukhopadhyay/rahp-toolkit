@@ -1,0 +1,44 @@
+schema: rahp-negative-fixture/v1
+id: NF-COMPOSITION-RULE
+proposition:
+  claim: individually successful components establish the composed authorization
+  owner: composition
+lens:
+  primary: composition
+  secondary: [rahp, security]
+evidence:
+  established:
+    - component_passes
+    - decision_binding_evidence
+    - current_membership_evidence
+  missing:
+    - current_composition_rule
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [component_passes]
+  to: [composition_pass]
+expected:
+  state: indeterminate
+  terminal_colour: amber
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+  proposition: the composition rule and all decision-critical approval predicates are positively established
+source:
+  kind: fixture
+  ref: tests/fixtures/negative-assurance-matrix.yaml#CA-CMP-001
+  provenance: 2026-09-22 collective-authority negative assurance matrix
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies: [current_composition_rule, decision_binding, current_membership]
+drarm:
+  applicable: false
+retest_triggers:
+  - composition rule becomes available
+  - composition rule lifecycle changes
+evidence_maturity: executable

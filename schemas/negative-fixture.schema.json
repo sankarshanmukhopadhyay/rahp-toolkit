@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sankarshanmukhopadhyay.github.io/rahp-toolkit/schemas/negative-fixture.schema.json",
+  "title": "RAHP reusable negative fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "proposition",
+    "lens",
+    "evidence",
+    "unsafe_inference",
+    "expected",
+    "positive_control",
+    "source",
+    "specialist",
+    "composition",
+    "drarm",
+    "retest_triggers",
+    "evidence_maturity"
+  ],
+  "properties": {
+    "schema": {"const": "rahp-negative-fixture/v1"},
+    "id": {"type": "string", "pattern": "^NF-[A-Z0-9-]+$"},
+    "proposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim", "owner"],
+      "properties": {
+        "claim": {"type": "string", "minLength": 1},
+        "owner": {"enum": ["rahp", "security", "composition", "drarm", "specialist"]}
+      }
+    },
+    "lens": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "secondary"],
+      "properties": {
+        "primary": {"enum": ["rahp", "security", "composition", "drarm", "specialist"]},
+        "secondary": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["rahp", "security", "composition", "drarm", "specialist"]}
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["established", "missing", "stale", "contradicted", "unsupported"],
+      "properties": {
+        "established": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "missing": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "stale": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "contradicted": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "unsupported": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "unsafe_inference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "to": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "prohibited"],
+      "properties": {
+        "state": {"enum": ["indeterminate", "reject", "review-required", "verified", "pass", "permit"]},
+        "terminal_colour": {"enum": ["amber", "red", "green"]},
+        "prohibited": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["pass", "green", "verified", "permit", "reject", "red"]}
+        }
+      }
+    },
+    "positive_control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "proposition"],
+      "properties": {
+        "ref": {"type": "string", "minLength": 1},
+        "proposition": {"type": "string", "minLength": 1}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "ref"],
+      "properties": {
+        "kind": {"enum": ["fixture", "test", "pressure-test", "transaction", "tool"]},
+        "ref": {"type": "string", "minLength": 1},
+        "provenance": {"type": "string", "minLength": 1}
+      }
+    },
+    "specialist": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "owns", "does_not_own"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "name": {"type": "string", "minLength": 1},
+        "owns": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "does_not_own": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dependencies"],
+      "properties": {
+        "dependencies": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "drarm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applicable"],
+      "properties": {
+        "applicable": {"type": "boolean"},
+        "owns": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "does_not_own": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "retest_triggers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "evidence_maturity": {
+      "enum": ["modeled", "executable", "implementation", "runtime", "specialist-evidence-required"]
+    }
+  }
+}

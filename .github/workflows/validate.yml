@@ -145,6 +145,9 @@ jobs:
       - name: Validate documentation information architecture
         run: python3 tools/validate_documentation_ia.py
 
+      - name: Validate reusable negative-fixture contract
+        run: python3 tools/validate_negative_fixtures.py
+
       - name: Test source-monitor resilience
         run: python3 -m unittest discover -s tests -p 'test_*.py'
       - name: Execute bounded human-power DPIP reconciliation
