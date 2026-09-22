@@ -23,6 +23,7 @@ This page is generated from the authoritative RAHP VTI assessment submissions an
 | [`RAHP-VTI-DEL-001`](../examples/cross-spec/vti-assessment/delegation-lineage.yaml) | delegation-lineage | `VTI-CMP-050`, `VTI-CMP-051`, `VTI-CMP-052`, `VTI-CMP-053` | `supported` | 4 | `current` |
 | [`RAHP-VTI-FI-001`](../examples/cross-spec/vti-assessment/false-independence.yaml) | false-independence | `VTI-CMP-070`, `VTI-CMP-071`, `VTI-CMP-072`, `VTI-CMP-073`, `VTI-CMP-074` | `supported` | 7 | `current` |
 | [`RAHP-VTI-HUMAN-001`](../examples/cross-spec/vti-assessment/human-control.yaml) | human-control | `VTI-CMP-110`, `VTI-CMP-111`, `VTI-CMP-112`, `VTI-CMP-113` | `supported` | 4 | `current` |
+| [`RAHP-VTI-IND-001`](../examples/cross-spec/vti-assessment/failure-indeterminacy.yaml) | failure-indeterminacy | `VTI-CMP-080`, `VTI-CMP-081`, `VTI-CMP-082` | `supported` | 4 | `current` |
 | [`RAHP-VTI-LIFE-001`](../examples/cross-spec/vti-assessment/lifecycle-freshness.yaml) | lifecycle-freshness | `VTI-CMP-040`, `VTI-CMP-041`, `VTI-CMP-042` | `supported` | 5 | `current` |
 | [`RAHP-VTI-SC-001`](../examples/cross-spec/vti-assessment/semantic-completion.yaml) | semantic-completion | `VTI-CMP-020`, `VTI-CMP-021` | `supported` | 2 | `current` |
 
@@ -36,7 +37,7 @@ This page is generated from the authoritative RAHP VTI assessment submissions an
 | delegation-lineage | `VTI-CMP-050`, `VTI-CMP-051`, `VTI-CMP-052`, `VTI-CMP-053` | `verified` | `RAHP-VTI-DEL-001` |
 | privacy-composition | `VTI-CMP-060`, `VTI-CMP-061`, `VTI-CMP-062`, `VTI-CMP-063` | `specialist_evidence_required` | not yet published |
 | false-independence | `VTI-CMP-070`, `VTI-CMP-071`, `VTI-CMP-072`, `VTI-CMP-073`, `VTI-CMP-074` | `verified` | `RAHP-VTI-FI-001` |
-| failure-indeterminacy | `VTI-CMP-080`, `VTI-CMP-081`, `VTI-CMP-082` | `partially_verified` | not yet published |
+| failure-indeterminacy | `VTI-CMP-080`, `VTI-CMP-081`, `VTI-CMP-082` | `verified` | `RAHP-VTI-IND-001` |
 | configuration-materiality | `VTI-CMP-090`, `VTI-CMP-091`, `VTI-CMP-092` | `partially_verified` | not yet published |
 | component-substitution | `VTI-CMP-100`, `VTI-CMP-101` | `evidence_required` | not yet published |
 | human-control | `VTI-CMP-110`, `VTI-CMP-111`, `VTI-CMP-112`, `VTI-CMP-113` | `verified` | `RAHP-VTI-HUMAN-001` |

@@ -64,8 +64,8 @@ requirement_map:
     evidence_state: verified
   - family: failure-indeterminacy
     requirements: [VTI-CMP-080, VTI-CMP-081, VTI-CMP-082]
-    rahp_sources: [RAHP-controller, DPIP]
-    evidence_state: partially_verified
+    rahp_sources: [RAHP-controller, DPIP, examples/cross-spec/vti-failure-indeterminacy/evidence.yaml, tools/validate_vti_failure_indeterminacy.py]
+    evidence_state: verified
   - family: configuration-materiality
     requirements: [VTI-CMP-090, VTI-CMP-091, VTI-CMP-092]
     rahp_sources: [materiality-controller]
