@@ -1087,7 +1087,7 @@ A consequential action is authorized solely from authentication, possession, cre
 | Field | Value |
 |---|---|
 | Protected interest | principal agency |
-| Risk Patterns | `RKP-AUTH-01`, `RKP-CRD-01`, `RKP-DISC-01` |
+| Risk Patterns | `RKP-AUTH-01`, `RKP-CRD-01`, `RKP-DISC-01`, `RKP-AUTH-04`, `RKP-AUTH-06` |
 | Control Patterns | `CTP-AUTH-01`, `CTP-DISC-01` |
 
 ### GRP-AUTH-02 — Current authority required
