@@ -44,8 +44,8 @@ requirement_map:
     evidence_state: verified
   - family: authority-continuity
     requirements: [VTI-CMP-030, VTI-CMP-031, VTI-CMP-032]
-    rahp_sources: ["#64"]
-    evidence_state: partially_verified
+    rahp_sources: ["#64", examples/cross-spec/vti-authority-continuity/evidence.yaml, tools/validate_vti_authority_continuity.py]
+    evidence_state: verified
   - family: lifecycle-freshness
     requirements: [VTI-CMP-040, VTI-CMP-041, VTI-CMP-042]
     rahp_sources: ["#66", "#187"]
