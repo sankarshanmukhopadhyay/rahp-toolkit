@@ -1,0 +1,29 @@
+schema: rahp-vti-baseline-history/v1
+repository: trustoverip/dtgwg-vti-spec
+policy:
+  automatic_repin: false
+  historical_assessments_immutable: true
+  rebaseline_requires_reconciliation: true
+active_baseline:
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+  document_status: Working Draft 0.1.0
+  qualified_with_release: v2.4.0
+  assessed_on: "2026-09-22"
+  state: active-pending-reconciliation
+observations:
+  - commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+    document_status: Working Draft 0.1.0
+    observed_on: "2026-09-22"
+    role: assessment-baseline
+  - commit: c1c39b971dd535bd30bcd5c864998ebd8bf92123
+    document_status: Working Draft 0.1.0
+    observed_on: "2026-09-22"
+    role: intermediate-upstream-head
+    drift_from_previous: true
+  - commit: 3cbd7300a4f46bb2518e2b4b485609e7b5432b58
+    document_status: Working Draft 0.2.0
+    observed_on: "2026-09-23"
+    role: current-observed-head
+    drift_from_previous: true
+events:
+  - data/vti-convergence-events/75391a27-to-3cbd7300.yaml
