@@ -1,6 +1,7 @@
 schema: rahp-vti-assessment/v1
 assessment_id: RAHP-VTI-FI-001
 profile: rahp-vti-composition-assessment/v1
+family: false-independence
 vti_source:
   repository: trustoverip/dtgwg-vti-spec
   document_status: Working Draft 0.1.0
