@@ -201,6 +201,9 @@ jobs:
       - name: Validate VTI component-substitution evidence gate
         run: python3 tools/validate_vti_component_substitution_gate.py
 
+      - name: Validate VTI continuous convergence
+        run: python3 tools/vti_convergence.py
+
       - name: Validate VTI assessment profile
         run: python3 tools/validate_vti_assessment_profile.py
 
