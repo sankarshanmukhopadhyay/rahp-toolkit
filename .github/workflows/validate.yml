@@ -180,6 +180,9 @@ jobs:
       - name: Validate VTI assessment profile
         run: python3 tools/validate_vti_assessment_profile.py
 
+      - name: Validate VTI assessment index
+        run: python3 tools/render_vti_assessment_index.py --check
+
       - name: Validate selected issue-watch registries
         run: python3 tools/validate_issue_watch_registries.py
 
