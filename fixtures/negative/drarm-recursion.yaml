@@ -1,0 +1,44 @@
+schema: rahp-negative-fixture/v1
+id: NF-DRARM-RECURSION
+proposition:
+  claim: recursive resolution is bounded against amplification
+  owner: drarm
+lens:
+  primary: drarm
+  secondary: [rahp]
+evidence:
+  established:
+    - recursive_resolution_path
+  missing:
+    - explicit_depth_or_work_budget
+    - cycle_tracking
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [successful_single_resolution]
+  to: [bounded_recursive_resolution]
+expected:
+  state: review-required
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: tests/fixtures/resolution-assurance-matrix.yaml#RES-DRARM-002
+  proposition: explicit resolution budget and visited-set cycle tracking bound dependent work
+source:
+  kind: fixture
+  ref: tests/fixtures/resolution-assurance-matrix.yaml#RES-DRARM-001
+  provenance: 2026-09-22 resolution assurance matrix
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies: []
+drarm:
+  applicable: true
+  owns: [fan_out, recursion_depth, work_budget, retry_amplification]
+  does_not_own: [authority, authorization, ecosystem_recognition]
+retest_triggers:
+  - resolver recursion controls change
+  - work-budget semantics change
+evidence_maturity: executable
