@@ -244,7 +244,6 @@ Purpose, audience, resource, action, value or time bounds are insufficiently def
 | Why | This risk can create an unacceptable state at a clear decision or execution boundary, so a portable guardrail should block or stop that state. |
 | Harm Patterns | `HRM-AUT-04`, `HRM-ECO-02`, `HRM-SEC-02` |
 
-
 ### RKP-DEL-01 — Transitive delegation expansion
 
 A downstream delegate receives or infers broader authority than the upstream principal granted.
