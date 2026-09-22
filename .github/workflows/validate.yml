@@ -207,6 +207,9 @@ jobs:
       - name: Validate VTI programme reconciliation
         run: python3 tools/render_vti_programme_reconciliation.py --check
 
+      - name: Validate VTI T12 release/upstream judgment
+        run: python3 tools/validate_vti_t12_judgment.py
+
       - name: Validate selected issue-watch registries
         run: python3 tools/validate_issue_watch_registries.py
 
