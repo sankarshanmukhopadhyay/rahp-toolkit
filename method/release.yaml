@@ -15,7 +15,7 @@ release:
   qualification:
     manifest: method/v2.4-release-qualification.yaml
     validator: tools/validate_v24_release.py
-    checks: [tools/validate_scenario_corpora.py, tools/validate_pressure_tests.py, tools/validate_engine_contract.py, tools/validate_security_reviews.py, tools/validate_combined_reviews.py, tools/validate_assessment_queue.py, tools/validate_workflow_governance.py]
+    checks: [tools/validate_scenario_corpora.py, tools/validate_pressure_tests.py, tools/validate_engine_contract.py, tools/validate_security_reviews.py, tools/validate_combined_reviews.py, tools/validate_assessment_queue.py, tools/validate_workflow_governance.py, tools/validate_vti_assessment_profile.py, tools/validate_vti_privacy_composition.py, tools/validate_vti_component_substitution_gate.py, tools/validate_vti_t12_judgment.py]
   notes: {path: docs/releases/v2.4.0.md}
   compatibility: {engine_contract: rahp-engine-contract-v1, normalized_result_schema: 1, evidence_retention_contract: rahp-evidence-retention-v1}
 publication:
