@@ -183,6 +183,9 @@ jobs:
       - name: Validate VTI delegation lineage evidence
         run: python3 tools/validate_vti_delegation_lineage.py
 
+      - name: Validate VTI human control evidence
+        run: python3 tools/validate_vti_human_control.py
+
       - name: Validate VTI assessment profile
         run: python3 tools/validate_vti_assessment_profile.py
 

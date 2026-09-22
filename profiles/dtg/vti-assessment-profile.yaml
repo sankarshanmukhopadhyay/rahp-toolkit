@@ -76,5 +76,5 @@ requirement_map:
     evidence_state: evidence_required
   - family: human-control
     requirements: [VTI-CMP-110, VTI-CMP-111, VTI-CMP-112, VTI-CMP-113]
-    rahp_sources: ["#189", tools/validate_vti_composition_wave.py]
-    evidence_state: partially_verified
+    rahp_sources: ["#189", examples/cross-spec/vti-human-control/evidence.yaml, tools/validate_vti_human_control.py, tools/validate_vti_composition_wave.py]
+    evidence_state: verified
