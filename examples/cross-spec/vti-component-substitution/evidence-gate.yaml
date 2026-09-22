@@ -1,0 +1,35 @@
+evidence_gate:
+  id: VTI-COMP-SUB-GATE-001
+  title: Component substitution requires genuine implementation-pair evidence
+  tracking_issue: 711
+  vti_requirements:
+    - VTI-CMP-100
+    - VTI-CMP-101
+  state: EVIDENCE_REQUIRED
+  normative_owner: trustoverip/dtgwg-vti-spec
+  historical_owner: rahp-toolkit#188
+  evidence_requirement: >-
+    Execute at least one genuine A/B substitution where two independently
+    meaningful implementations of the same replaceable component each satisfy
+    the applicable local/component expectations, while at least one declared
+    composition-visible property is held observable before and after the swap.
+  admissible_properties:
+    - authority
+    - lifecycle
+    - failure-indeterminate-semantics
+    - privacy-correlation
+    - human-control
+  current_inventory:
+    genuine_ab_pair_available: false
+    dogwood_ab_satisfies_gate: false
+    reason: >-
+      Existing Dogwood A/B work compares relying contexts against one pinned
+      implementation; it does not substitute two conformant implementations.
+  prohibited_shortcuts:
+    - synthetic implementations created solely to satisfy the evidence gate
+    - component-local conformance used as a proxy for composition preservation
+    - one-implementation multi-context A/B evidence relabelled as substitution evidence
+  reentry_conditions:
+    - two genuine conformant implementations of one replaceable component are available
+    - at least one composition-visible invariant can be observed across the substitution
+  terminal_tranche_outcome: evidence-required
