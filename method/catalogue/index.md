@@ -23,3 +23,7 @@ RAHP v1.1's method-level assurance catalogue is available in two forms at the sa
 The reader views are generated from the YAML at build time; they are not separately maintained catalogues. The YAML remains authoritative.
 
 For the conceptual model and complete cross-layer explanation, see the [portable assurance catalogue documentation](../../docs/portable-assurance-catalogue.md) and [assurance knowledge model](../../docs/assurance-knowledge-model.md).
+
+## Authority at commitment
+
+The authority/delegation catalogue includes `RKP-AUTH-04` through `RKP-AUTH-07` for action-specific commitment authority. See [Authority-at-Commitment Assurance Pattern](../authority-at-commitment.md).
