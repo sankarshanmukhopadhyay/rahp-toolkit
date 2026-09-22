@@ -1,0 +1,48 @@
+schema: rahp-vti-contract-compatibility/v1
+id: VTI-CONTRACT-APPENDIX-E1-2026-09-23
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  commit: 3cbd7300a4f46bb2518e2b4b485609e7b5432b58
+  document_status: Working Draft 0.2.0
+trigger:
+  upstream_ref: trustoverip/dtgwg-vti-spec#36
+  change: Appendix E.1 record form and ownership vocabulary became normative
+review:
+  appendix_e1:
+    applies_to: VTI internal composition proposition catalogue records
+    required_fields:
+      - requirement identifiers
+      - ownership classification
+      - supporting evidence
+      - legitimate counter-cases
+      - executable pressure-test pointers or explicit absence
+      - current disposition
+  appendix_e3:
+    status: informative
+    applies_to: independent assessment submissions
+    fields:
+      - requirement identifier
+      - supported/refuted/indeterminate disposition
+      - method and artefacts
+      - assessor
+      - assessment date
+  rahp_v1_submission:
+    schema: schemas/vti-assessment.schema.json
+    satisfies_e3_fields: true
+    is_appendix_e1_record: false
+    rationale: >-
+      rahp-vti-assessment/v1 is an independent assessment submission, not the
+      normative VTI Appendix E.1 proposition-catalogue record. It already carries
+      requirement IDs, disposition, method, evidence artefacts, assessor and date.
+judgment:
+  state: verified-compatible
+  schema_change_required: false
+  breaking_change: false
+  non_inference: >-
+    Compatibility with the independent-submission shape does not make RAHP an
+    upstream conformance authority and does not authorize RAHP to edit VTI's
+    normative Appendix E.1 catalogue.
+retest_triggers:
+  - Appendix E.3 becomes normative or changes its submission fields
+  - VTI conformance chapter defines a new machine-readable submission contract
+  - RAHP changes rahp-vti-assessment/v1 semantics
