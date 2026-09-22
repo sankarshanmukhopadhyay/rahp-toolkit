@@ -7,6 +7,32 @@ parent: Reference
 ---
 # Changelog
 
+## v2.4.0 — 2026-09-22 — Redbreast Jezebel
+
+### Added / advanced
+
+- Version-pinned VTI composition assessment profile and machine-readable `rahp-vti-assessment/v1` submissions.
+- Multi-submission validation, deterministic assessment indexing, and programme reconciliation.
+- Supported assessment families for semantic completion, authority continuity, lifecycle/freshness, delegation lineage, false independence, failure/indeterminacy, configuration materiality, and human control.
+- Deliberately indeterminate privacy-composition assessment preserving specialist DPIP evidence boundaries.
+- Explicit component-substitution evidence gate requiring genuine implementation-pair evidence.
+- T12 release/upstream packaging judgment with deduplicated clarification candidates.
+
+### Assurance posture
+
+v2.4.0 keeps incomplete evidence visible. Privacy remains `indeterminate` where specialist/runtime evidence is incomplete, and component substitution remains `evidence_required` without a synthetic PASS.
+
+### Compatibility
+
+`rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1` remain unchanged.
+
+### Release name
+
+**Redbreast Jezebel — *Delias acalis***.
+
+See [v2.4.0 release notes](docs/releases/v2.4.0.md).
+
+
 ## v2.3.0 — 2026-09-13 — Common Five-ring
 
 ### Added / advanced
