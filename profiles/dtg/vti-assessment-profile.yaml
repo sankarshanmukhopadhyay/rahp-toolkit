@@ -1,0 +1,80 @@
+schema: rahp-vti-composition-assessment-profile/v1
+profile_id: rahp-vti-composition-assessment/v1
+status: active
+authority_boundary:
+  normative_authority: trustoverip/dtgwg-vti-spec
+  conformance_authority: VTI specification and its adopted conformance process
+  assessment_programme: RAHP
+  statement: >
+    RAHP produces independent assurance evidence and assessment dispositions.
+    It does not make VTI requirements normative and does not decide VTI conformance.
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+dispositions:
+  supported: >
+    The cited evidence supports the assessed property within the pinned scope
+    and conditions; this is not a universal proof or a conformance grant.
+  refuted: >
+    The cited evidence contains a counterexample showing that the assessed
+    property does not hold within the pinned scope and conditions.
+  indeterminate: >
+    Available evidence is insufficient, stale, contradictory, unavailable, or
+    otherwise unable to establish either supported or refuted.
+non_inference_rules:
+  - missing evidence != supported
+  - component conformance != composition assurance
+  - valid evidence != complete evidence
+  - multiplicity != independence
+  - protocol completion != trust-outcome completion
+  - cryptographic verification != current authority
+  - discovery != recognition or authorization
+reassessment_triggers:
+  - vti_revision_changed
+  - component_version_changed
+  - policy_or_profile_changed
+  - material_configuration_changed
+  - evidence_superseded
+  - evidence_contradicted
+requirement_map:
+  - family: semantic-completion
+    requirements: [VTI-CMP-020, VTI-CMP-021]
+    rahp_sources: ["#185", tools/validate_vti_semantic_completion.py]
+    evidence_state: verified
+  - family: authority-continuity
+    requirements: [VTI-CMP-030, VTI-CMP-031, VTI-CMP-032]
+    rahp_sources: ["#64"]
+    evidence_state: partially_verified
+  - family: lifecycle-freshness
+    requirements: [VTI-CMP-040, VTI-CMP-041, VTI-CMP-042]
+    rahp_sources: ["#66", "#187"]
+    evidence_state: partially_verified
+  - family: delegation-lineage
+    requirements: [VTI-CMP-050, VTI-CMP-051, VTI-CMP-052, VTI-CMP-053]
+    rahp_sources: ["#186", tools/validate_vti_composition_wave.py]
+    evidence_state: partially_verified
+  - family: privacy-composition
+    requirements: [VTI-CMP-060, VTI-CMP-061, VTI-CMP-062, VTI-CMP-063]
+    rahp_sources: ["#184", DPIP]
+    evidence_state: specialist_evidence_required
+  - family: false-independence
+    requirements: [VTI-CMP-070, VTI-CMP-071, VTI-CMP-072, VTI-CMP-073, VTI-CMP-074]
+    rahp_sources: ["#193", SR-XSP-FI-001..007]
+    evidence_state: verified
+  - family: failure-indeterminacy
+    requirements: [VTI-CMP-080, VTI-CMP-081, VTI-CMP-082]
+    rahp_sources: [RAHP-controller, DPIP]
+    evidence_state: partially_verified
+  - family: configuration-materiality
+    requirements: [VTI-CMP-090, VTI-CMP-091, VTI-CMP-092]
+    rahp_sources: [materiality-controller]
+    evidence_state: partially_verified
+  - family: component-substitution
+    requirements: [VTI-CMP-100, VTI-CMP-101]
+    rahp_sources: ["#188"]
+    evidence_state: evidence_required
+  - family: human-control
+    requirements: [VTI-CMP-110, VTI-CMP-111, VTI-CMP-112, VTI-CMP-113]
+    rahp_sources: ["#189", tools/validate_vti_composition_wave.py]
+    evidence_state: partially_verified

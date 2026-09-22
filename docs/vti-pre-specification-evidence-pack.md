@@ -7,6 +7,8 @@ has_toc: true
 ---
 # DTG VTI pre-specification evidence pack
 
+> **Historical phase preserved.** This page records RAHP's pre-specification evidence work. The VTI specification now exists as Working Draft 0.1.0, so new requirement-addressed assessment work is governed by the [VTI composition assessment profile](vti-assessment-profile.html). This page remains provenance for how the composition propositions were derived and must not be read as a current substitute for the upstream specification.
+
 This page packages mature RAHP composition evidence so a future DTG Verifiable Trust Infrastructure (VTI) specification effort can review evidence-backed propositions without having to rediscover the underlying failure modes.
 
 This is **not a VTI specification, draft architecture, or source of upstream normative requirements**. RAHP contributes tested evidence. A future upstream VTI process remains responsible for accepting, rejecting, reformulating, relocating, or declining each proposition.
