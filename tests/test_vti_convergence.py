@@ -15,6 +15,10 @@ class VTIConvergenceTests(unittest.TestCase):
         )
         self.assertNotIn("authority-continuity", set(summary["impacted_families"]))
         self.assertEqual("blocked", summary["rebaseline_state"])
+        self.assertEqual(
+            {"NF-VTI-VALIDITY-NOT-COMPLETION", "NF-VTI-OUTCOME-EVIDENCE-CORRELATOR"},
+            set(summary["negative_fixture_ids"]),
+        )
 
     def test_evidence_only_drift_does_not_stale_composition_families(self) -> None:
         event = vti_convergence.load_yaml(vti_convergence.EVENT)
@@ -42,6 +46,25 @@ class VTIConvergenceTests(unittest.TestCase):
         self.assertEqual(event["baseline"]["commit"], history["active_baseline"]["commit"])
         self.assertFalse(event["automatic_repin"])
         self.assertFalse(event["rebaseline"]["baseline_mutated"])
+
+    def test_unknown_negative_fixture_reference_fails_closed(self) -> None:
+        event = vti_convergence.load_yaml(vti_convergence.EVENT)
+        event["family_impacts"][0]["negative_fixture_ids"] = ["NF-DOES-NOT-EXIST"]
+        selected, errors = vti_convergence.validate_fixture_mappings(
+            event, vti_convergence.negative_fixture_ids()
+        )
+        self.assertTrue(errors)
+        self.assertNotIn("NF-DOES-NOT-EXIST", selected)
+
+    def test_unrelated_fixtures_are_not_selected_for_rerun(self) -> None:
+        event = vti_convergence.load_yaml(vti_convergence.EVENT)
+        selected, errors = vti_convergence.validate_fixture_mappings(
+            event, vti_convergence.negative_fixture_ids()
+        )
+        self.assertEqual([], errors)
+        self.assertNotIn("NF-RAHP-COLLECTIVE-AUTHORITY", selected)
+        self.assertNotIn("NF-DRARM-RECURSION", selected)
+        self.assertNotIn("NF-SPECIALIST-DPIP-BOUNDARY", selected)
 
 
 if __name__ == "__main__":
