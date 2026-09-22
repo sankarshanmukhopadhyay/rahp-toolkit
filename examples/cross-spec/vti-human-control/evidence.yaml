@@ -1,0 +1,73 @@
+evidence:
+  id: VTI-COMP-HUMAN-001
+  title: Human principal authorization composition vectors
+  source_issue: 707
+  vti_source:
+    repository: trustoverip/dtgwg-vti-spec
+    document_status: Working Draft 0.1.0
+    commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+  proposition: >
+    Where an action requires a human principal's authorization, the action cannot
+    complete unless the principal authorizes that exact action after being shown
+    sufficient information to understand it. A delegate acting for the principal
+    cannot satisfy the principal's own authorization requirement.
+  vectors:
+    - id: principal-authorizes-exact-action
+      principal_authorization_required: true
+      authorizer: principal-a
+      required_principal: principal-a
+      authorization_evidence: present
+      authorized_action: disclose-age-over-18
+      requested_action: disclose-age-over-18
+      information_sufficient: true
+      expected: AUTHORIZED
+
+    - id: required-authorization-missing
+      principal_authorization_required: true
+      authorizer: null
+      required_principal: principal-a
+      authorization_evidence: missing
+      authorized_action: null
+      requested_action: disclose-age-over-18
+      information_sufficient: true
+      expected: INDETERMINATE
+
+    - id: authorization-overbroad-action
+      principal_authorization_required: true
+      authorizer: principal-a
+      required_principal: principal-a
+      authorization_evidence: present
+      authorized_action: disclose-age-over-18
+      requested_action: disclose-full-birthdate
+      information_sufficient: true
+      expected: DENIED
+
+    - id: insufficient-information-presented
+      principal_authorization_required: true
+      authorizer: principal-a
+      required_principal: principal-a
+      authorization_evidence: present
+      authorized_action: establish-persistent-relationship
+      requested_action: establish-persistent-relationship
+      information_sufficient: false
+      expected: DENIED
+
+    - id: delegate-cannot-authorize-for-principal
+      principal_authorization_required: true
+      authorizer: agent-b
+      required_principal: principal-a
+      authorization_evidence: present
+      authorized_action: transfer-record
+      requested_action: transfer-record
+      information_sufficient: true
+      expected: DENIED
+
+    - id: human-authorization-not-required
+      principal_authorization_required: false
+      authorizer: null
+      required_principal: null
+      authorization_evidence: missing
+      authorized_action: null
+      requested_action: routine-nonmaterial-operation
+      information_sufficient: true
+      expected: NOT_REQUIRED
