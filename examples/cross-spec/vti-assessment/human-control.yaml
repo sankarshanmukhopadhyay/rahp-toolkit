@@ -1,0 +1,75 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-HUMAN-001
+profile: rahp-vti-composition-assessment/v1
+family: human-control
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  Human-control composition properties for actions requiring a human principal's
+  authorization, including exact-action binding, sufficient information, missing
+  evidence and attempts by a delegate to satisfy the principal's requirement.
+disposition: supported
+method: >
+  Source-pinned reconciliation of #189 and existing composition-wave evidence
+  with a dedicated executable human-control fixture covering the full VTI
+  requirement surface.
+requirements:
+  - VTI-CMP-110
+  - VTI-CMP-111
+  - VTI-CMP-112
+  - VTI-CMP-113
+proposition: >
+  A composed action that requires a human principal's authorization must not
+  complete without that principal's authorization; the authorization must be
+  bound to the exact action; the principal must receive sufficient information
+  to understand it; and a delegate cannot satisfy the principal's authorization
+  requirement.
+evidence:
+  - id: VTI-COMP-HUMAN-001
+    kind: fixture
+    ref: examples/cross-spec/vti-human-control/evidence.yaml
+  - id: VTI-COMP-HUMAN-VALIDATOR
+    kind: test
+    ref: tools/validate_vti_human_control.py
+  - id: VTI-COMP-WAVE-001
+    kind: fixture
+    ref: examples/cross-spec/vti-composition-wave/evidence.yaml
+  - id: RAHP-ISSUE-189
+    kind: issue
+    ref: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/189
+counter_cases:
+  - >
+    A human principal who is shown sufficient decision-relevant information and
+    explicitly authorizes the exact requested action can legitimately satisfy the
+    authorization requirement.
+  - >
+    Some routine or non-material operations may legitimately have no human
+    principal authorization requirement; the assessment does not manufacture one.
+  - >
+    Missing authorization evidence remains indeterminate rather than being silently
+    inferred from protocol completion or delegated technical capability.
+residual_uncertainty:
+  - >
+    This assessment does not prescribe a particular user interface or accessibility
+    mechanism for presenting sufficient information to a human.
+  - >
+    It does not define which classes of action require human authorization; that is
+    determined by applicable governance and relying policy.
+  - >
+    Specialist privacy assessment may still be required where the authorization
+    ceremony itself exposes sensitive information or correlation surfaces.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted
