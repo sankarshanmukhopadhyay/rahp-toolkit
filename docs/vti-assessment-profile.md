@@ -70,6 +70,8 @@ Legitimate plurality, pairwise/contextual identifiers, privacy-preserving pseudo
 
 The generated [VTI assessment index](vti-assessment-index.html) is the human-readable inventory of complete submissions and remaining evidence-family states.
 
+The [VTI programme reconciliation](vti-programme-reconciliation.html) records the cross-family T11 consistency check, bounded residuals, and release-readiness inputs.
+
 [`RAHP-VTI-AUTH-001`](../examples/cross-spec/vti-assessment/authority-continuity.yaml) is the third complete submission. It reconciles the existing constrained-authority evidence against `VTI-CMP-030` through `VTI-CMP-032`, preserving the separation between proof/credential validity and transaction-time authority and authorisation.
 
 [`RAHP-VTI-LIFE-001`](../examples/cross-spec/vti-assessment/lifecycle-freshness.yaml) is the fourth complete submission. It adds executable freshness-bound evidence for `VTI-CMP-040` through `VTI-CMP-042`: historical evidence is not current state, currency is time-bounded, and stale or unavailable currency remains `INDETERMINATE` rather than inheriting the last-known state.
