@@ -1,0 +1,90 @@
+schema: rahp-review-claim-ledger/v1
+review_target:
+  toolkit_release: v2.4.0
+  engine_contract: rahp-engine-contract-v1
+  engine_revision: '1.3'
+  normalized_result_schema: 1
+claims:
+  - id: RCL-001
+    claim: Missing material evidence does not become PASS.
+    scope: portable assurance evaluation and negative-fixture semantics
+    normative_evidence:
+      - method/engine-contract.yaml
+      - docs/assurance-evaluation.md
+    executable_evidence:
+      - tools/validate_negative_fixtures.py
+      - tools/validate_authority_policy_gates.py
+    falsification: Remove or stale required evidence and obtain PASS or GREEN.
+    expected_if_falsified: assurance defect
+    limitations: Coverage is bounded to represented propositions and exercised paths.
+  - id: RCL-002
+    claim: Workflow success is not an assurance outcome.
+    scope: controller and release semantics
+    normative_evidence:
+      - method/engine-contract.yaml
+      - docs/how-rahp-works.md
+    executable_evidence:
+      - tools/validate_engine_contract.py
+    falsification: Demonstrate a path where workflow success alone sets a positive assurance terminal.
+    expected_if_falsified: assurance defect
+    limitations: Review must inspect orchestration paths not represented by the engine fixtures.
+  - id: RCL-003
+    claim: Component PASS does not imply composition PASS.
+    scope: composition assessments
+    normative_evidence:
+      - docs/how-rahp-works.md
+      - method/v2.4-release-qualification.yaml
+    executable_evidence:
+      - tools/validate_vti_component_substitution_gate.py
+      - tools/validate_vti_privacy_composition.py
+    falsification: Provide only component evidence and obtain positive composition assurance.
+    expected_if_falsified: assurance defect
+    limitations: Executable coverage is strongest for maintained VTI composition families.
+  - id: RCL-004
+    claim: New immutable source pins do not silently inherit prior assurance.
+    scope: freshness, lineage and reassessment
+    normative_evidence:
+      - docs/evidence-freshness-delta.md
+      - docs/continuous-assurance.md
+    executable_evidence:
+      - tools/validate_evidence_freshness_delta.py
+      - tools/validate_assurance_lineage.py
+    falsification: Change a material source pin and retain current positive assurance without freshness/reassessment semantics.
+    expected_if_falsified: assurance defect
+    limitations: Impact selection remains bounded by represented dependency data.
+  - id: RCL-005
+    claim: Specialist uncertainty is preserved rather than synthesized into PASS.
+    scope: specialist routing and reconciliation
+    normative_evidence:
+      - method/engine-contract.yaml
+      - docs/how-rahp-works.md
+    executable_evidence:
+      - tools/validate_vti_privacy_composition.py
+      - tools/human_power_reconciliation.py
+    falsification: Supply missing, malformed or indeterminate required specialist evidence and obtain PASS.
+    expected_if_falsified: assurance defect
+    limitations: Specialist interoperability is bounded to versioned contracts and maintained fixtures.
+  - id: RCL-006
+    claim: Governance authority is distinct from policy evaluation and repository permission.
+    scope: governed actions
+    normative_evidence:
+      - docs/authority-policy-gates.md
+      - method/schema/authority.schema.json
+    executable_evidence:
+      - tools/validate_authority_policy_gates.py
+    falsification: Obtain a governed action solely from policy PASS or repository permission without applicable authority.
+    expected_if_falsified: governance/assurance defect
+    limitations: Deployment governance may impose stronger authority requirements.
+  - id: RCL-007
+    claim: Stable compatibility metadata identifies engine revision 1.3 and result schema 1 for v2.4.0.
+    scope: stable compatibility declaration
+    normative_evidence:
+      - method/versioning.yaml
+      - method/engine-contract.yaml
+      - method/v2.4-release-qualification.yaml
+    executable_evidence:
+      - tools/validate_engine_contract.py
+      - tools/validate_review_readiness.py
+    falsification: Produce contradictory current compatibility declarations that pass review-readiness validation.
+    expected_if_falsified: release/documentation integrity defect
+    limitations: Historical documents can intentionally describe older boundaries when clearly identified as historical.
