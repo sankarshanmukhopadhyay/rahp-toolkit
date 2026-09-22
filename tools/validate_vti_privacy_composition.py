@@ -6,6 +6,8 @@ import yaml
 
 FIXTURE = Path("examples/cross-spec/vti-privacy-composition/evidence.yaml")
 EXPECTED_REQUIREMENTS = {"VTI-CMP-060", "VTI-CMP-061", "VTI-CMP-062", "VTI-CMP-063"}
+EXPECTED_CONVERGENCE_REQUIREMENTS = {"VTI-CMP-064"}
+EXPECTED_VTI_HEAD = "3cbd7300a4f46bb2518e2b4b485609e7b5432b58"
 
 
 def validate() -> list[str]:
@@ -48,12 +50,34 @@ def validate() -> list[str]:
     if "not-evidenced != preserved" not in rules:
         raise AssertionError("not-evidenced boundary missing")
 
+    extension = evidence.get("convergence_extension") or {}
+    source = extension.get("vti_source") or {}
+    if source.get("commit") != EXPECTED_VTI_HEAD:
+        raise AssertionError("CMP-064 convergence evidence must be source-pinned to WD02")
+    if set(extension.get("requirements") or []) != EXPECTED_CONVERGENCE_REQUIREMENTS:
+        raise AssertionError("CMP-064 convergence requirement is missing")
+    specialist = {item.get("id"): item for item in extension.get("specialist_evidence") or []}
+    if set(specialist) != {"DPIP-271", "INTEROP-233"}:
+        raise AssertionError("CMP-064 specialist evidence must include DPIP-271 and Interop-233")
+    if specialist["DPIP-271"].get("state") != "terminal-indeterminate-evidence-required":
+        raise AssertionError("DPIP-271 terminal INDETERMINATE must remain explicit")
+    if specialist["INTEROP-233"].get("state") != "target-runtime-not-implemented":
+        raise AssertionError("Interop-233 target-runtime boundary must remain not-implemented")
+    if extension.get("disposition") != "INDETERMINATE":
+        raise AssertionError("CMP-064 must remain INDETERMINATE for the current epoch")
+    if extension.get("reconciliation_state") != "terminal-current-epoch":
+        raise AssertionError("CMP-064 current epoch must have a terminal reconciliation state")
+    extension_rules = set(extension.get("non_inference_rules") or [])
+    if "not-implemented != privacy preserved" not in extension_rules:
+        raise AssertionError("CMP-064 missing not-implemented/privacy non-inference rule")
+
     return [
         "DPIP-163 attributable correlation failure preserved",
         "heartbeat transport remains not-evidenced",
         "RAHP-690 remains waiting-external",
         "VTI-CMP-063 specialist evidence gap preserved",
         "family disposition remains INDETERMINATE",
+        "VTI-CMP-064 current epoch reconciled as terminal INDETERMINATE",
     ]
 
 
