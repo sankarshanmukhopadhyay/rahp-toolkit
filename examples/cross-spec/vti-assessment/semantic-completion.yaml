@@ -1,0 +1,66 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-SC-001
+profile: rahp-vti-composition-assessment/v1
+family: semantic-completion
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  Semantic-completion composition properties exercised by the existing
+  VTI-COMP-SEM-001 fixture and validator from RAHP issue #185.
+disposition: supported
+method: >
+  Evidence-first composition assessment separating technical protocol
+  completion from establishment of the intended trust outcome, with explicit
+  satisfied, failed, and indeterminate semantic-precondition vectors.
+requirements:
+  - VTI-CMP-020
+  - VTI-CMP-021
+proposition: >
+  Successful technical execution must not be promoted to successful completion
+  of a composed trust outcome unless the required semantic preconditions are
+  affirmatively established at the consequential-action boundary, and reporting
+  must preserve the distinction between exchange completion and intended-outcome
+  establishment.
+evidence:
+  - id: VTI-COMP-SEM-001
+    kind: fixture
+    ref: examples/cross-spec/vti-semantic-completion/evidence.yaml
+  - id: VTI-COMP-SEM-VALIDATOR
+    kind: test
+    ref: tools/validate_vti_semantic_completion.py
+counter_cases:
+  - >
+    A technically complete exchange with current authority, valid relationship
+    state, and required human authorization may legitimately produce a semantic
+    outcome of SATISFIED.
+  - >
+    The assessment does not require protocol completion to fail when semantic
+    preconditions fail; technical completion and semantic outcome remain separate
+    reported facts.
+residual_uncertainty:
+  - >
+    This assessment establishes the separation invariant; it does not define a
+    universal set of semantic preconditions for every VTI deployment.
+  - >
+    Which authority, relationship, policy, human-control, or other preconditions
+    apply remains dependent on the composed use case and relevant component
+    semantics.
+  - >
+    A satisfied semantic-completion assessment does not independently establish
+    freshness, delegation, privacy, independence, or human-control requirements
+    outside this family.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted
