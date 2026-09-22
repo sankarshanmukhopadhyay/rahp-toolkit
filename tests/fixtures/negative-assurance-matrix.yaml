@@ -1,0 +1,109 @@
+schema: rahp-negative-fixture-matrix/v1
+fixture_set: collective-authority-and-resolution
+origin:
+  kind: external-implementer-feedback
+  subject: Trust Tasks WD 0.6.0
+  observed_on: "2026-09-22"
+proposition: >
+  Valid participants, components, identifiers, or transport observations must not
+  be silently upgraded into evidence for a collective authority, composed
+  authorization, bounded audience, or trusted resolution property that has not
+  itself been established.
+authoritative_existing_fixtures:
+  - examples/cross-spec/false-independence-sybil/pressure-test.yaml
+  - examples/cross-spec/quorum-capture/pressure-test.yaml
+cases:
+  - id: CA-RAHP-001
+    lens: rahp
+    title: Missing collective-authority evidence remains indeterminate
+    given:
+      threshold_required: 2
+      member_count: 3
+      individually_valid_member_evidence: 3
+      collective_authority_evidence: missing
+      current_membership_evidence: verified
+    expected:
+      assurance_state: indeterminate
+      terminal_colour: amber
+      prohibited_states: [green]
+      reason: >
+        Participant validity does not establish that the collective principal
+        currently holds or exercised the authority.
+
+  - id: CA-SEC-001
+    lens: security
+    title: Insufficient subset cannot exercise threshold-held authority
+    given:
+      threshold_required: 2
+      valid_member_signatures_present: 1
+      collective_principal_recognized: true
+    expected:
+      authorization_result: reject
+      security_property: threshold-authority-integrity
+      reason: >
+        A valid member credential or signature is not a valid collective act
+        when the governing threshold is not satisfied.
+
+  - id: CA-CMP-001
+    lens: composition
+    title: Component PASS does not imply composition PASS
+    given:
+      component_results: [pass, pass, pass]
+      threshold_rule_evidence: missing
+      decision_binding_evidence: verified
+      current_membership_evidence: verified
+    expected:
+      composition_state: indeterminate
+      component_to_composition_upgrade: false
+      prohibited_states: [pass, green]
+      reason: >
+        The composition rule is a separately assessable proposition; successful
+        components cannot synthesize it by inference.
+
+  - id: CA-DRARM-001
+    lens: drarm
+    title: Unbounded group fan-out is surfaced as amplification risk
+    given:
+      source_file: src/group_delivery.md
+      source_text: |
+        When a group task arrives, publish to all subscriber endpoints.
+      no_declared_subscriber_bound: true
+    expected:
+      risk_id: RLA-020
+      status: review-required
+      reason: >
+        DRARM assesses fan-out and resource amplification only; it does not decide
+        whether the subscribers collectively hold authority.
+
+  - id: AUD-RAHP-001
+    lens: rahp
+    title: Bounded-but-unenumerated audience must not become unrestricted bearer
+    given:
+      audience_kind: predicate-bounded
+      enumerable_at_emit_time: false
+      bearer_declared: true
+      membership_predicate_required: true
+    expected:
+      authorization_result: reject-widening
+      assurance_state: indeterminate
+      reason: >
+        Unknown recipient identity is not equivalent to an unrestricted audience;
+        the audience predicate remains part of the authorization proposition.
+
+  - id: RES-RAHP-001
+    lens: rahp
+    title: Identifier authenticity does not establish fresh recognized resolution
+    given:
+      self_certifying_identifier: true
+      content_authenticity: verified
+      freshness_evidence: missing
+      recognition_evidence: missing
+      authorization_evidence: missing
+    expected:
+      assurance_state: indeterminate
+      prohibited_inferences:
+        - authentic-identifier-means-current
+        - resolvable-means-recognized
+        - recognized-means-authorized
+      reason: >
+        Resolution, freshness, recognition, and authorization are separate claims.
