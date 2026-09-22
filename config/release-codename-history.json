@@ -1,14 +1,55 @@
 {
   "schemaVersion": 1,
   "releases": [
-    {"version":"v1.5.0","codename":"Purple Leaf Blue","status":"published"},
-    {"version":"v1.6.0","codename":"Common Earl","status":"published"},
-    {"version":"v1.7.0","codename":"Common Palmfly","status":"published"},
-    {"version":"v1.8.0","codename":"Common Map","status":"published"},
-    {"version":"v1.9.0","codename":"Lesser Mime","status":"published"},
-    {"version":"v2.0.0","codename":"Blue Mormon","status":"published"},
-    {"version":"v2.1.0","codename":"Common Acacia Blue","status":"published"},
-    {"version":"v2.2.0","codename":"Common Four-ring","status":"published"},
-    {"version":"v2.3.0","codename":"Common Five-ring","status":"candidate"}
+    {
+      "version": "v1.5.0",
+      "codename": "Purple Leaf Blue",
+      "status": "published"
+    },
+    {
+      "version": "v1.6.0",
+      "codename": "Common Earl",
+      "status": "published"
+    },
+    {
+      "version": "v1.7.0",
+      "codename": "Common Palmfly",
+      "status": "published"
+    },
+    {
+      "version": "v1.8.0",
+      "codename": "Common Map",
+      "status": "published"
+    },
+    {
+      "version": "v1.9.0",
+      "codename": "Lesser Mime",
+      "status": "published"
+    },
+    {
+      "version": "v2.0.0",
+      "codename": "Blue Mormon",
+      "status": "published"
+    },
+    {
+      "version": "v2.1.0",
+      "codename": "Common Acacia Blue",
+      "status": "published"
+    },
+    {
+      "version": "v2.2.0",
+      "codename": "Common Four-ring",
+      "status": "published"
+    },
+    {
+      "version": "v2.3.0",
+      "codename": "Common Five-ring",
+      "status": "published"
+    },
+    {
+      "version": "v2.4.0",
+      "codename": "Redbreast Jezebel",
+      "status": "candidate"
+    }
   ]
 }
