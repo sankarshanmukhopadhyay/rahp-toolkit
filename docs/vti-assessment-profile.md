@@ -56,7 +56,7 @@ The profile deliberately preserves these boundaries:
 - cryptographic verification is not necessarily current authority;
 - discovery is not recognition or authorization.
 
-## First assessment submission
+## Assessment submissions
 
 [`RAHP-VTI-FI-001`](../examples/cross-spec/vti-assessment/false-independence.yaml) is the first complete VTI composition assessment submission.
 
@@ -65,6 +65,10 @@ It maps the completed false-independence corpus `SR-XSP-FI-001` through `SR-XSP-
 The assessment disposition is `supported`: the existing executable corpus supports the non-inference property within its pinned scope. This does not assert a universal proof of independence and does not convert RAHP into a conformance authority.
 
 Legitimate plurality, pairwise/contextual identifiers, privacy-preserving pseudonymity, genuinely independent issuers, and selective disclosure remain preserved counter-boundaries.
+
+[`RAHP-VTI-SC-001`](../examples/cross-spec/vti-assessment/semantic-completion.yaml) is the second complete submission. It maps the existing semantic-completion evidence from issue #185 to `VTI-CMP-020` and `VTI-CMP-021`, preserving the distinction between technical exchange completion and establishment of the intended trust outcome. Its vectors deliberately include `COMPLETE / SATISFIED`, `COMPLETE / FAILED`, and `COMPLETE / INDETERMINATE` outcomes.
+
+The generated [VTI assessment index](vti-assessment-index.html) is the human-readable inventory of complete submissions and remaining evidence-family states.
 
 ## Reassessment and invalidation
 
@@ -86,12 +90,12 @@ Run:
 
     python3 tools/validate_vti_assessment_profile.py
 
-The validator checks the upstream source pin, disposition vocabulary, false-independence requirement mapping, schema validity, evidence uniqueness and existence, legitimate counter-cases, residual uncertainty, and negative fixtures showing that missing evidence or an unsafe `pass` disposition cannot validate.
+The validator discovers every assessment submission and checks the upstream source pin, disposition vocabulary, known assessment family, exact family-to-requirement mapping, schema validity, assessment-ID uniqueness, evidence-ID uniqueness and existence, legitimate counter-cases, residual uncertainty, and negative fixtures showing that missing evidence or an unsafe `pass` disposition cannot validate.
 
-The dedicated GitHub Actions workflow runs this validator on changes to the assessment profile, schema, first submission, validator, or documentation.
+Run `python3 tools/render_vti_assessment_index.py --check` to verify that the human-readable index is mechanically synchronized with the authoritative submissions and profile. Both checks are integrated into the repository's central validation workflow.
 
 ## Next evidence families
 
-After this first end-to-end path is stable, subsequent work should progress family-by-family: semantic completion; authority continuity; lifecycle/freshness; delegation lineage; privacy composition with DPIP where specialist depth is required; failure/indeterminacy; configuration materiality; human control; and component substitution once concrete implementation evidence exists.
+With false independence and semantic completion now flowing through the same assessment contract, subsequent work should progress family-by-family: authority continuity; lifecycle/freshness; delegation lineage; human control; failure/indeterminacy; configuration materiality; privacy composition with DPIP where specialist depth is required; and component substitution once concrete implementation evidence exists.
 
 Each family should reuse the same assessment contract rather than inventing a new output shape.
