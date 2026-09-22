@@ -14,11 +14,13 @@ class VTIConvergenceTests(unittest.TestCase):
             set(summary["impacted_families"]),
         )
         self.assertNotIn("authority-continuity", set(summary["impacted_families"]))
-        self.assertEqual("blocked", summary["rebaseline_state"])
+        self.assertEqual("ready", summary["rebaseline_state"])
         self.assertEqual(
             {"NF-VTI-VALIDITY-NOT-COMPLETION", "NF-VTI-OUTCOME-EVIDENCE-CORRELATOR"},
             set(summary["negative_fixture_ids"]),
         )
+        self.assertEqual([], summary["unresolved_family_impacts"])
+        self.assertEqual([], summary["unresolved_contract_impacts"])
 
     def test_evidence_only_drift_does_not_stale_composition_families(self) -> None:
         event = vti_convergence.load_yaml(vti_convergence.EVENT)
@@ -45,6 +47,12 @@ class VTIConvergenceTests(unittest.TestCase):
         self.assertNotEqual(event["baseline"]["commit"], event["observed_head"]["commit"])
         self.assertEqual(event["baseline"]["commit"], history["active_baseline"]["commit"])
         self.assertFalse(event["automatic_repin"])
+        self.assertFalse(event["rebaseline"]["baseline_mutated"])
+
+    def test_reconciled_event_preserves_controlled_rebaseline_boundary(self) -> None:
+        event = vti_convergence.load_yaml(vti_convergence.EVENT)
+        self.assertEqual("ready", event["rebaseline"]["state"])
+        self.assertEqual([], event["rebaseline"]["blockers"])
         self.assertFalse(event["rebaseline"]["baseline_mutated"])
 
     def test_unknown_negative_fixture_reference_fails_closed(self) -> None:
