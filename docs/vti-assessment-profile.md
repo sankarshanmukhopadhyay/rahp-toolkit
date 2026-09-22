@@ -76,6 +76,8 @@ The generated [VTI assessment index](vti-assessment-index.html) is the human-rea
 
 [`RAHP-VTI-DEL-001`](../examples/cross-spec/vti-assessment/delegation-lineage.yaml) is the fifth complete submission. It reconciles scope, lineage, expiry, revocation, re-delegation and action-time delegator authority with explicit acting-delegate identity propagation for `VTI-CMP-050` through `VTI-CMP-053`.
 
+[`RAHP-VTI-HUMAN-001`](../examples/cross-spec/vti-assessment/human-control.yaml) is the sixth complete submission. It exercises `VTI-CMP-110` through `VTI-CMP-113`, including exact-action binding, sufficient information, missing authorization, and the prohibition on a delegate satisfying the principal's own authorization requirement.
+
 ## Reassessment and invalidation
 
 An assessment must be reconsidered when any materially relevant input changes. The current profile enumerates VTI revision change, assessed component/version change, relying policy or profile change, material configuration change, evidence supersession, and evidence contradiction.
@@ -102,6 +104,6 @@ Run `python3 tools/render_vti_assessment_index.py --check` to verify that the hu
 
 ## Next evidence families
 
-With false independence, semantic completion, authority continuity, lifecycle/freshness, and delegation lineage now flowing through the same assessment contract, subsequent work should progress family-by-family: human control; failure/indeterminacy; configuration materiality; privacy composition with DPIP where specialist depth is required; and component substitution once concrete implementation evidence exists.
+With false independence, semantic completion, authority continuity, lifecycle/freshness, delegation lineage, and human control now flowing through the same assessment contract, subsequent work should progress family-by-family: failure/indeterminacy; configuration materiality; privacy composition with DPIP where specialist depth is required; and component substitution once concrete implementation evidence exists.
 
 Each family should reuse the same assessment contract rather than inventing a new output shape.
