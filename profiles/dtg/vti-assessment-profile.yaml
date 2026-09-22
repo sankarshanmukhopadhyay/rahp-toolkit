@@ -48,8 +48,8 @@ requirement_map:
     evidence_state: verified
   - family: lifecycle-freshness
     requirements: [VTI-CMP-040, VTI-CMP-041, VTI-CMP-042]
-    rahp_sources: ["#66", "#187"]
-    evidence_state: partially_verified
+    rahp_sources: ["#66", "#187", examples/cross-spec/vti-lifecycle-freshness/evidence.yaml, tools/validate_vti_lifecycle_freshness.py]
+    evidence_state: verified
   - family: delegation-lineage
     requirements: [VTI-CMP-050, VTI-CMP-051, VTI-CMP-052, VTI-CMP-053]
     rahp_sources: ["#186", tools/validate_vti_composition_wave.py]
