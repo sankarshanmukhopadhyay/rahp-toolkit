@@ -21,6 +21,7 @@ This page is generated from the authoritative RAHP VTI assessment submissions an
 |---|---|---|---|---:|---|
 | [`RAHP-VTI-AUTH-001`](../examples/cross-spec/vti-assessment/authority-continuity.yaml) | authority-continuity | `VTI-CMP-030`, `VTI-CMP-031`, `VTI-CMP-032` | `supported` | 4 | `current` |
 | [`RAHP-VTI-FI-001`](../examples/cross-spec/vti-assessment/false-independence.yaml) | false-independence | `VTI-CMP-070`, `VTI-CMP-071`, `VTI-CMP-072`, `VTI-CMP-073`, `VTI-CMP-074` | `supported` | 7 | `current` |
+| [`RAHP-VTI-LIFE-001`](../examples/cross-spec/vti-assessment/lifecycle-freshness.yaml) | lifecycle-freshness | `VTI-CMP-040`, `VTI-CMP-041`, `VTI-CMP-042` | `supported` | 5 | `current` |
 | [`RAHP-VTI-SC-001`](../examples/cross-spec/vti-assessment/semantic-completion.yaml) | semantic-completion | `VTI-CMP-020`, `VTI-CMP-021` | `supported` | 2 | `current` |
 
 ## Remaining requirement families
@@ -29,7 +30,7 @@ This page is generated from the authoritative RAHP VTI assessment submissions an
 |---|---|---|---|
 | semantic-completion | `VTI-CMP-020`, `VTI-CMP-021` | `verified` | `RAHP-VTI-SC-001` |
 | authority-continuity | `VTI-CMP-030`, `VTI-CMP-031`, `VTI-CMP-032` | `verified` | `RAHP-VTI-AUTH-001` |
-| lifecycle-freshness | `VTI-CMP-040`, `VTI-CMP-041`, `VTI-CMP-042` | `partially_verified` | not yet published |
+| lifecycle-freshness | `VTI-CMP-040`, `VTI-CMP-041`, `VTI-CMP-042` | `verified` | `RAHP-VTI-LIFE-001` |
 | delegation-lineage | `VTI-CMP-050`, `VTI-CMP-051`, `VTI-CMP-052`, `VTI-CMP-053` | `partially_verified` | not yet published |
 | privacy-composition | `VTI-CMP-060`, `VTI-CMP-061`, `VTI-CMP-062`, `VTI-CMP-063` | `specialist_evidence_required` | not yet published |
 | false-independence | `VTI-CMP-070`, `VTI-CMP-071`, `VTI-CMP-072`, `VTI-CMP-073`, `VTI-CMP-074` | `verified` | `RAHP-VTI-FI-001` |
