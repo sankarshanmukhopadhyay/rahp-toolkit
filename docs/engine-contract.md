@@ -13,18 +13,18 @@ The current stable engine state is:
 
 | Surface | Current value | Meaning |
 |---|---|---|
-| Toolkit release | `v1.6.0` | Packaged RAHP release |
+| Toolkit release | `v2.4.0` | Packaged RAHP release |
 | Engine contract family | `rahp-engine-contract-v1` | Stable interoperability/semantic boundary |
-| Engine contract revision | `1.2` | Current additive capability level inside the v1 family |
+| Engine contract revision | `1.3` | Current additive capability level inside the v1 family |
 | Normalized result schema | `1` | Portable result-document compatibility boundary |
 
-An implementation can therefore state, for example: **engine contract `rahp-engine-contract-v1`, revision `1.2`, normalized result schema `1`**.
+An implementation can therefore state, for example: **engine contract `rahp-engine-contract-v1`, revision `1.3`, normalized result schema `1`**.
 
 ## Current stable revision
 
-Revision `1.2` is stable. It extends the v1 contract family additively so a conforming implementation can represent evidence classification, residual assurance evaluation, governed remediation, and evidence-based retesting without making Python or TypeScript behaviour normative.
+Revision `1.3` is stable. It extends the v1 contract family additively with normalized findings, finite specialist-assessor results, explicit assessment lifecycle transitions and engine-owned clean-room isolation, while preserving the evidence classification, residual assurance evaluation, governed remediation and evidence-based retesting capabilities established by earlier v1 revisions.
 
-The revision 1.2 lifecycle is:
+The revision 1.3 lifecycle remains:
 
 ```text
 source → observation → trigger → assessment → evidence → evaluation
@@ -33,7 +33,7 @@ source → observation → trigger → assessment → evidence → evaluation
 
 A detector signal is not automatically a finding. Evidence must be classified, relevant controls and assurance tests credited, and the residual state recorded. A result with zero findings is not equivalent to assured when unresolved assurance gaps, review-required propositions, or unassessed propositions remain.
 
-The normalized result remains schema version `1`. Revision 1.2 adds optional `assurance_summary`, `evaluations`, `remediations`, and `retests` fields while preserving the v1 result compatibility boundary.
+The normalized result remains schema version `1`. The normalized result remains schema version `1`; compatible additive engine evolution through revision 1.3 preserves that result compatibility boundary.
 
 ## How the engine contract increments
 
