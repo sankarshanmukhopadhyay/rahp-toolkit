@@ -144,6 +144,7 @@ def cmd_run(a):
     cmd_validate(x)
 
 def cmd_promote(a):
+    if not slug_ok(a.slug): raise SystemExit("--slug must use lowercase letters, digits and single hyphens")
     src=ROOT/".rahp"/"reviews"/a.slug
     if not src.exists(): raise SystemExit(f"working review not found: {src.relative_to(ROOT)}")
     pairs=[]
