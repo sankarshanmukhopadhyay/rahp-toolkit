@@ -149,6 +149,28 @@ jobs:
         run: python3 tools/validate_negative_fixtures.py
       - name: Validate independent-review readiness contracts
         run: python3 tools/validate_review_readiness.py
+      - name: Record independent-review clean-runner baseline
+        run: |
+          {
+            echo "schema: rahp-review-reproduction/v1"
+            echo "commit: $GITHUB_SHA"
+            echo "runner_os: $RUNNER_OS"
+            echo "python: $(python3 --version 2>&1)"
+            echo "pip: $(python3 -m pip --version)"
+            python3 -m pip freeze
+          } > "$RUNNER_TEMP/rahp-review-reproduction.txt"
+      - name: Execute independent-review reproduction path
+        run: |
+          set -o pipefail
+          python3 tools/validate_review_readiness.py 2>&1 | tee -a "$RUNNER_TEMP/rahp-review-reproduction.txt"
+          python3 tools/validate_negative_fixtures.py 2>&1 | tee -a "$RUNNER_TEMP/rahp-review-reproduction.txt"
+          python3 tools/validate_engine_contract.py 2>&1 | tee -a "$RUNNER_TEMP/rahp-review-reproduction.txt"
+      - name: Upload independent-review reproduction evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: rahp-independent-review-reproduction
+          path: ${{ runner.temp }}/rahp-review-reproduction.txt
+          if-no-files-found: error
 
       - name: Test source-monitor resilience
         run: python3 -m unittest discover -s tests -p 'test_*.py'
