@@ -45,10 +45,14 @@ def evidence_work_queue(
                 "proposition_id": proposition["id"],
                 "source_proposition_ids": [proposition["id"]],
                 "analysis_text": proposition["normalized_proposition"],
+                "obligation_id": "legacy-human-judgment-" + proposition["id"],
                 "evidence_class": "human-judgment",
                 "question": "Resolve the ambiguity signal before relying on this proposition for stronger assurance conclusions.",
+                "why_required": "The source proposition carries unresolved ambiguity and must not silently enter stronger assurance reasoning.",
+                "materiality": "context-dependent",
                 "route": "policy-reviewer",
                 "state": "judgment-required",
+                "terminal_effect": "none-until-judgment-resolved",
             }
         )
     return queue
