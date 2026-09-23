@@ -42,21 +42,36 @@ def evidence_work_queue(
     queue: list[dict[str, Any]] = []
     seen: set[tuple[str, str]] = set()
 
-    def add(proposition_id: str, evidence_class: str, question: str, route: str) -> None:
+    def add(
+        proposition_id: str,
+        evidence_class: str,
+        question: str,
+        route: str,
+        *,
+        why_required: str,
+        materiality: str = "context-dependent",
+    ) -> None:
         key = (proposition_id, question)
         if key in seen:
             return
         seen.add(key)
         record = by_id.get(proposition_id)
+        source_ids = list((record or {}).get("source_proposition_ids") or [proposition_id])
+        obligation_seed = "|".join([proposition_id, evidence_class, route, question])
+        obligation_id = "peo-" + hashlib.sha256(obligation_seed.encode("utf-8")).hexdigest()[:16]
         queue.append(
             {
+                "obligation_id": obligation_id,
                 "proposition_id": proposition_id,
-                "source_proposition_ids": list((record or {}).get("source_proposition_ids") or [proposition_id]),
+                "source_proposition_ids": source_ids,
                 "analysis_text": (record or {}).get("analysis_text"),
                 "evidence_class": evidence_class,
                 "question": question,
+                "why_required": why_required,
+                "materiality": materiality,
                 "route": route,
                 "state": "evidence-required",
+                "terminal_effect": "none-until-evidence-evaluated",
             }
         )
 
@@ -64,18 +79,18 @@ def evidence_work_queue(
         pid = record["id"]
         ptype = record["type"]
         if ptype == "termination":
-            add(pid, "runtime-observation", "Can the adverse action occur with the notice and review conditions represented by the reviewed proposition?", "interop-or-runtime-test")
-            add(pid, "user-experience", "Can an affected person understand, challenge and recover from the adverse action in practice?", "ux-evidence")
+            add(pid, "runtime-observation", "Can the adverse action occur with the notice and review conditions represented by the reviewed proposition?", "interop-or-runtime-test", why_required="Policy text can declare an adverse-action boundary but cannot establish runtime enforcement behavior.", materiality="high")
+            add(pid, "user-experience", "Can an affected person understand, challenge and recover from the adverse action in practice?", "ux-evidence", why_required="A declared remedy or notice path does not establish that an affected person can use it effectively.", materiality="high")
         elif ptype == "retention":
-            add(pid, "runtime-observation", "Do observed storage and deletion behaviours match the reviewed retention boundary?", "runtime-data-flow-evidence")
-            add(pid, "specialist", "Does the retention proposition raise privacy-specific minimisation or proportionality questions?", "DPIP-or-privacy-specialist")
+            add(pid, "runtime-observation", "Do observed storage and deletion behaviours match the reviewed retention boundary?", "runtime-data-flow-evidence", why_required="A retention declaration is governance-source evidence, not proof of storage or deletion behavior.", materiality="high")
+            add(pid, "specialist", "Does the retention proposition raise privacy-specific minimisation or proportionality questions?", "DPIP-or-privacy-specialist", why_required="Retention can create privacy-specific harms that require specialist analysis outside the policy adapter's authority.", materiality="context-dependent")
         elif ptype == "disclosure":
-            add(pid, "runtime-observation", "Do observed data flows and recipients match the reviewed disclosure proposition?", "runtime-data-flow-evidence")
-            add(pid, "specialist", "Does the disclosure proposition require privacy-specific purpose or recipient analysis?", "DPIP-or-privacy-specialist")
+            add(pid, "runtime-observation", "Do observed data flows and recipients match the reviewed disclosure proposition?", "runtime-data-flow-evidence", why_required="A disclosure declaration cannot establish the actual recipients, purposes, or data flows at runtime.", materiality="high")
+            add(pid, "specialist", "Does the disclosure proposition require privacy-specific purpose or recipient analysis?", "DPIP-or-privacy-specialist", why_required="Disclosure scope can require privacy-specific purpose and recipient analysis outside the adapter's authority.", materiality="context-dependent")
         elif ptype == "delegation":
-            add(pid, "runtime-observation", "Is downstream authority constrained to the scope represented by the reviewed proposition?", "authority-runtime-evidence")
+            add(pid, "runtime-observation", "Is downstream authority constrained to the scope represented by the reviewed proposition?", "authority-runtime-evidence", why_required="A delegation statement does not prove that delegated runtime authority is technically constrained to the represented scope.", materiality="high")
         if "legal_dependency" in record.get("ambiguity_signals", []):
-            add(pid, "specialist", "What jurisdiction-dependent meaning, if any, changes the interpretation of this proposition?", "qualified-legal-or-domain-specialist")
+            add(pid, "specialist", "What jurisdiction-dependent meaning, if any, changes the interpretation of this proposition?", "qualified-legal-or-domain-specialist", why_required="The proposition contains a legal dependency that the policy adapter must not resolve automatically.", materiality="high")
 
     for hypothesis in mapping["hypotheses"]:
         add(
@@ -83,6 +98,8 @@ def evidence_work_queue(
             "assurance-evidence",
             f"What evidence would confirm or falsify the {hypothesis['risk_pattern']} hypothesis?",
             "RAHP-assessment",
+            why_required="The reviewed proposition triggered a portable RAHP risk pattern; evidence is required to confirm, bound, or falsify that hypothesis.",
+            materiality="context-dependent",
         )
 
     for gap in mapping["evidence_gaps"]:
@@ -94,6 +111,8 @@ def evidence_work_queue(
                     "governance-or-ux-evidence",
                     "Is a correction, appeal or redress path defined elsewhere and usable in practice?",
                     "policy-review-plus-ux-evidence",
+                    why_required="The assessed source does not establish whether a usable redress path exists elsewhere; absence of text is not evidence of absence.",
+                    materiality="high",
                 )
     return queue
 
@@ -131,9 +150,13 @@ def synthesize_assessment(
                 "source_proposition_ids": [pid],
                 "analysis_text": source_by_id[pid]["normalized_proposition"],
                 "evidence_class": "human-judgment",
+                "obligation_id": "pjo-" + hashlib.sha256(("review|" + pid).encode("utf-8")).hexdigest()[:16],
                 "question": "Resolve the extraction ambiguity before this proposition can enter reviewed RAHP analysis.",
+                "why_required": "The source proposition carries unresolved ambiguity and is barred from reviewed RAHP analysis until explicit human judgment.",
+                "materiality": "context-dependent",
                 "route": "policy-reviewer",
                 "state": "judgment-required",
+                "terminal_effect": "none-until-judgment-resolved",
             }
         )
 
@@ -229,7 +252,8 @@ def render_markdown(assessment: dict[str, Any]) -> str:
 
     lines.extend(["", "## What remains uncertain / what to investigate next", ""])
     for item in assessment["evidence_work_queue"]:
-        lines.append(f"- `{item['evidence_class']}` via **{item['route']}** for `{item['proposition_id']}`: {item['question']}")
+        lines.append(f"- `{item['obligation_id']}` · `{item['evidence_class']}` via **{item['route']}** for `{item['proposition_id']}`: {item['question']}")
+        lines.append(f"  Why required: {item['why_required']} Materiality: `{item['materiality']}`.")
 
     disposition = assessment["current_disposition"]
     lines.extend(
