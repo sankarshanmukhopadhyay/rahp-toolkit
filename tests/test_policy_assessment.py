@@ -79,6 +79,10 @@ class PolicyAssessmentResearchTests(unittest.TestCase):
         self.assertIn("human-judgment", evidence_classes)
         self.assertIn("DPIP-or-privacy-specialist", routes)
         self.assertIn("RAHP-assessment", routes)
+        self.assertTrue(all(item.get("obligation_id") for item in queue))
+        self.assertTrue(all(item.get("why_required") for item in queue))
+        self.assertTrue(all(item.get("materiality") for item in queue))
+        self.assertEqual(len(queue), len({item["obligation_id"] for item in queue}))
 
     def test_synthesis_is_explicitly_non_terminal_and_cold_reader_friendly(self):
         assessment = synthesize_assessment(self.subject)
@@ -89,6 +93,7 @@ class PolicyAssessmentResearchTests(unittest.TestCase):
         self.assertIn("What the policy text establishes", markdown)
         self.assertIn("What RAHP infers", markdown)
         self.assertIn("what to investigate next", markdown)
+        self.assertIn("Why required:", markdown)
         self.assertIn("Research output only", markdown)
         self.assertNotIn("policy score", markdown.lower())
 
