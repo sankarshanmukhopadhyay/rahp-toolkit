@@ -160,6 +160,25 @@ research_outputs:
     contract: rahp-policy-runtime-comparison/v1
     required_runtime_evidence_class: runtime-observation
     terminal_assurance: false
+  evidence_work_queue:
+    contract: rahp-policy-evidence-obligation/v1
+    required_fields:
+      - obligation_id
+      - proposition_id
+      - source_proposition_ids
+      - evidence_class
+      - question
+      - why_required
+      - materiality
+      - route
+      - state
+      - terminal_effect
+    invariants:
+      - obligation identifiers are deterministic for the same proposition, evidence class, route and question
+      - every obligation explains why the requested evidence or judgment is required
+      - materiality is explicit and may remain context-dependent
+      - an unevaluated obligation has no terminal assurance effect
+      - source proposition lineage is retained across amended, split and merged reviewed propositions
 
 graduation_gates:
   - demonstrate lossless clause/source traceability on at least two materially different policies
