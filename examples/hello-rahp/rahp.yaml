@@ -1,0 +1,20 @@
+version: 1
+profile:
+  id: hello-rahp
+  title: Hello RAHP onboarding assessment
+assessment:
+  default_mode: rahp
+repositories:
+  - id: hello-spec
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    branch: main
+    local_path: .
+    context:
+      title: Hello RAHP sample specification
+      type: specification
+      description: A deliberately small bundled subject for learning the RAHP adoption path.
+    scope:
+      include:
+        - examples/hello-rahp/subject/**
+    reviews:
+      - rahp

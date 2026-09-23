@@ -11,6 +11,8 @@ Configure RAHP for a new project or portfolio without inheriting another deploym
 
 ## In this section
 
+- [Adoption gateway](adoption-guide.md)
+- [Hello RAHP](../examples/hello-rahp/README.md)
 - [Adopting RAHP](../ADOPTION.md)
 - [Configuration-driven adoption](configuration.md)
 - [Standards alignment](standards-alignment.md)
