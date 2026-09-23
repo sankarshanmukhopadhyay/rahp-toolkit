@@ -133,6 +133,14 @@ The evidence work queue now emits explicit `rahp-policy-evidence-obligation/v1` 
 
 An unevaluated obligation has `terminal_effect: none-until-evidence-evaluated`; unresolved human judgment similarly has no terminal effect until the judgment boundary is crossed. This keeps work-queue generation separate from assurance disposition and provides a cleaner hand-off surface for runtime tests, UX evidence, DPIP/privacy specialists, legal/domain specialists, and ordinary RAHP assessment.
 
+## Evidence-obligation lifecycle and reassessment
+
+Citable obligations now have an explicit research lifecycle: `OPEN`, `EVIDENCE_SUPPLIED`, `SATISFIED`, `CONTRADICTED`, `INDETERMINATE`, or `SUPERSEDED`. Evidence is linked by reference and evaluated with an explicit rationale; even a satisfied or contradicted obligation remains non-terminal in this adapter.
+
+When a supplied previous policy version produces a delta, obligations whose immutable source lineage points to a changed or removed proposition become `SUPERSEDED`. Their prior evidence is not silently inherited by the new policy version. The output records that reassessment is required, preserving the distinction between historical evidence and evidence applicable to the current policy source.
+
+This lifecycle is deliberately local to the experimental policy adapter. It does not modify the stable RAHP controller state machine.
+
 ## Evidence discipline
 
 The research artifact separates five layers:
@@ -161,7 +169,7 @@ The repository-wide unittest suite now covers:
 - amended/split/merged reviewed text being the actual analytical input;
 - evidence-class separation and runtime comparison;
 - deterministic, citable evidence-obligation identifiers and explicit justification;
-- policy-change reassessment;
+- policy-change reassessment and evidence-obligation invalidation;
 - cold-reader synthesis;
 - stable-controller non-regression.
 
