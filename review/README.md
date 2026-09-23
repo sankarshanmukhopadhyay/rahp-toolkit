@@ -13,10 +13,13 @@ No document in this directory is itself assurance evidence. The normative portab
 1. [External review charter](../docs/review/external-review-charter.md)
 2. [Architecture and trust boundaries](../docs/review/architecture-and-trust-boundaries.md)
 3. [Threat model](../docs/review/threat-model.md)
-4. [Known limitations and residual risk](../docs/review/known-limitations.md)
-5. [Reproduction guide](../docs/review/reproduction.md)
-6. [Claim/evidence/falsification ledger](../method/review/claim-evidence-ledger.yaml)
-7. [False-assurance challenge matrix](../method/review/false-assurance-challenges.yaml)
+4. [Hostile-input security pre-review](../docs/review/security-pre-review.md)
+5. [Bounded completeness and semantic coverage](../docs/review/semantic-coverage.md)
+6. [Software-quality sweep](../docs/review/software-quality-sweep.md)
+7. [Known limitations and residual risk](../docs/review/known-limitations.md)
+8. [Reproduction guide](../docs/review/reproduction.md)
+9. [Claim/evidence/falsification ledger](../method/review/claim-evidence-ledger.yaml)
+10. [False-assurance challenge matrix](../method/review/false-assurance-challenges.yaml)
 
 ## Stable boundary under review
 
