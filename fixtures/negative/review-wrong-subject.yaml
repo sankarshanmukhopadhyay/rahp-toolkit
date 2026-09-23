@@ -1,0 +1,37 @@
+schema: rahp-negative-fixture/v1
+id: NF-REVIEW-WRONG-SUBJECT
+proposition:
+  claim: evidence for a different assurance subject can establish the current subject
+  owner: rahp
+lens:
+  primary: rahp
+  secondary: [security]
+evidence:
+  established: [valid_evidence_for_other_subject]
+  missing: [evidence_bound_to_current_subject]
+  stale: []
+  contradicted: []
+  unsupported: [cross_subject_substitution]
+unsafe_inference:
+  from: [valid_evidence_for_other_subject]
+  to: [current_subject_assured]
+expected:
+  state: indeterminate
+  terminal_colour: amber
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+  proposition: evidence is bound to the evaluated subject
+source:
+  kind: fixture
+  ref: method/review/false-assurance-challenges.yaml#FAC-005
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies: []
+drarm:
+  applicable: false
+retest_triggers: [subject-bound evidence becomes available]
+evidence_maturity: executable

@@ -13,6 +13,9 @@ REQUIRED = [
     "docs/review/threat-model.md",
     "docs/review/known-limitations.md",
     "docs/review/reproduction.md",
+    "docs/review/security-pre-review.md",
+    "docs/review/semantic-coverage.md",
+    "docs/review/software-quality-sweep.md",
     "method/review/claim-evidence-ledger.yaml",
     "method/review/false-assurance-challenges.yaml",
 ]
@@ -89,6 +92,16 @@ def main() -> int:
                 errors.append(f"{cid}: deficient-evidence challenge has positive expected state {expected_state!r}")
             if not case.get("attack"):
                 errors.append(f"{cid}: attack required")
+            evidence_ref = str(case.get("evidence_ref") or "")
+            if not evidence_ref:
+                errors.append(f"{cid}: evidence_ref required")
+            else:
+                rel, _, marker = evidence_ref.partition("#")
+                evidence_path = ROOT / rel
+                if not evidence_path.is_file():
+                    errors.append(f"{cid}: evidence_ref path does not exist: {rel}")
+                elif marker and marker not in evidence_path.read_text(encoding="utf-8"):
+                    errors.append(f"{cid}: evidence_ref fragment not found: {evidence_ref}")
 
     engine_doc = (ROOT / "docs/engine-contract.md").read_text(encoding="utf-8")
     for token in ("v2.4.0", "revision `1.3`", "schema version `1`"):
