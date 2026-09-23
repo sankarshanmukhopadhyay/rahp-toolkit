@@ -12,6 +12,7 @@ from policy_assessment_v2 import (  # noqa: F401
     ASSESSMENT_SCHEMA,
     evidence_work_queue as _v2_evidence_work_queue,
     main,
+    reconcile_evidence_obligations,
     render_markdown,
     review_subject,
     synthesize_assessment,
