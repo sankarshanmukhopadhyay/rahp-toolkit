@@ -1,6 +1,6 @@
 # Policy-as-assurance-subject research capability
 
-> **Experimental branch capability for issue #662.** Nothing in this document changes the stable RAHP controller contract or the v2.3.0 production capability boundary.
+> **Experimental branch capability for issue #662.** Nothing in this document changes the stable RAHP controller contract or the v2.4.0 stable production capability boundary.
 
 This research path asks whether policy documents can participate in RAHP as source-pinned assurance subjects without converting legal interpretation, policy declarations, AI output or missing evidence into false assurance conclusions.
 
@@ -127,6 +127,12 @@ Optional inputs now include:
 
 The CLI uses structure-preserving ingestion. A default run intentionally leaves ambiguous propositions, incorporated-document relationships and precedence candidates at explicit judgment boundaries.
 
+## Citable evidence obligations
+
+The evidence work queue now emits explicit `rahp-policy-evidence-obligation/v1` records rather than bare questions. Each obligation has a deterministic identifier, preserved source-proposition lineage, evidence class, route, materiality, and a human-readable `why_required` justification. This makes downstream evidence requests citable and reviewable without implying that the requested evidence already exists.
+
+An unevaluated obligation has `terminal_effect: none-until-evidence-evaluated`; unresolved human judgment similarly has no terminal effect until the judgment boundary is crossed. This keeps work-queue generation separate from assurance disposition and provides a cleaner hand-off surface for runtime tests, UX evidence, DPIP/privacy specialists, legal/domain specialists, and ordinary RAHP assessment.
+
 ## Evidence discipline
 
 The research artifact separates five layers:
@@ -154,6 +160,7 @@ The repository-wide unittest suite now covers:
 - rejected propositions being excluded from RAHP inference;
 - amended/split/merged reviewed text being the actual analytical input;
 - evidence-class separation and runtime comparison;
+- deterministic, citable evidence-obligation identifiers and explicit justification;
 - policy-change reassessment;
 - cold-reader synthesis;
 - stable-controller non-regression.
