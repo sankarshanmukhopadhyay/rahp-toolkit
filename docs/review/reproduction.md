@@ -48,4 +48,4 @@ The project does not currently claim bit-for-bit dependency reproduction because
 
 ## CI clean-runner evidence
 
-The `Independent review reproduction` workflow (`.github/workflows/review-reproduction.yml`) repeats the reviewer minimum path on a fresh GitHub-hosted Ubuntu runner with Python 3.11. It records the commit, runner OS, Python/pip versions, resolved `pip freeze`, command output and exit status context in the `rahp-independent-review-reproduction` workflow artifact. This is environment/reproduction evidence, not an assurance result and not a claim of bit-for-bit dependency reproducibility.
+The governed `validate` workflow repeats the reviewer minimum path on a fresh GitHub-hosted Ubuntu runner with Python 3.11 and emits the `rahp-independent-review-reproduction` artifact. It records the commit, runner OS, Python/pip versions, resolved `pip freeze`, and review-validation command output. This is environment/reproduction evidence, not an assurance result and not a claim of bit-for-bit dependency reproducibility.
