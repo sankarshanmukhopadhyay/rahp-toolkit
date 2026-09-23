@@ -160,3 +160,64 @@ entries:
     reused: true
     positive_counter_case: examples/cross-spec/vti-assessment/privacy-composition.yaml#A composed interaction may legitimately preserve unlinkability
     contract_fixture: NF-VTI-OUTCOME-EVIDENCE-CORRELATOR
+
+  - id: INV-REVIEW-CONTRADICTORY-EVIDENCE
+    path: fixtures/negative/review-contradictory-evidence.yaml
+    owning_lens: rahp
+    proposition: material contradictory evidence cannot be normalized to positive assurance before reconciliation
+    polarity: negative
+    expected_state: indeterminate
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+    contract_fixture: NF-REVIEW-CONTRADICTORY-EVIDENCE
+  - id: INV-REVIEW-WRONG-SUBJECT
+    path: fixtures/negative/review-wrong-subject.yaml
+    owning_lens: rahp
+    proposition: evidence for another subject cannot establish the reviewed subject
+    polarity: negative
+    expected_state: indeterminate
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+    contract_fixture: NF-REVIEW-WRONG-SUBJECT
+  - id: INV-REVIEW-WRONG-SOURCE-PIN
+    path: fixtures/negative/review-wrong-source-pin.yaml
+    owning_lens: security
+    proposition: evidence from another immutable revision cannot establish the reviewed revision
+    polarity: negative
+    expected_state: reject
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+    contract_fixture: NF-REVIEW-WRONG-SOURCE-PIN
+  - id: INV-REVIEW-MALFORMED-SPECIALIST
+    path: fixtures/negative/review-malformed-specialist.yaml
+    owning_lens: specialist
+    proposition: malformed required specialist output cannot become positive assurance
+    polarity: negative
+    expected_state: indeterminate
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/test_dpip_handoff.py#test_gatherer_native_provenance_is_supported
+    contract_fixture: NF-REVIEW-MALFORMED-SPECIALIST
+  - id: INV-REVIEW-PARTIAL-EXECUTION
+    path: fixtures/negative/review-partial-execution.yaml
+    owning_lens: rahp
+    proposition: workflow completion without a required assessment stage cannot establish GREEN
+    polarity: negative
+    expected_state: indeterminate
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+    contract_fixture: NF-REVIEW-PARTIAL-EXECUTION
