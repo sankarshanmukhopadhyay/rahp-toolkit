@@ -15,6 +15,73 @@ from policy_structure import ingest_structured_policy
 from policy_subject import compare_runtime, diff_subjects, map_risk_hypotheses
 
 ASSESSMENT_SCHEMA = "rahp-policy-assessment-research/v2"
+OBLIGATION_LIFECYCLE_SCHEMA = "rahp-policy-evidence-obligation-lifecycle/v1"
+_OBLIGATION_STATES = {"OPEN", "EVIDENCE_SUPPLIED", "SATISFIED", "CONTRADICTED", "INDETERMINATE", "SUPERSEDED"}
+_EVALUATED_OBLIGATION_STATES = {"SATISFIED", "CONTRADICTED", "INDETERMINATE"}
+
+
+def reconcile_evidence_obligations(
+    obligations: list[dict[str, Any]],
+    evidence_records: list[dict[str, Any]] | None = None,
+    *,
+    policy_delta: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Apply bounded lifecycle state to generated evidence obligations.
+
+    The adapter records evidence linkage and evaluation state without converting
+    an obligation outcome into terminal RAHP assurance.
+    """
+    evidence_records = evidence_records or []
+    by_id = {item["obligation_id"]: dict(item) for item in obligations}
+    seen_records: set[str] = set()
+
+    for obligation in by_id.values():
+        obligation["lifecycle_state"] = "OPEN"
+        obligation["evidence_refs"] = []
+        obligation["evaluation_rationale"] = None
+
+    for record in evidence_records:
+        obligation_id = record.get("obligation_id")
+        if obligation_id not in by_id:
+            raise ValueError(f"evidence record references unknown obligation: {obligation_id}")
+        if obligation_id in seen_records:
+            raise ValueError(f"multiple lifecycle records supplied for obligation: {obligation_id}")
+        seen_records.add(obligation_id)
+        state = record.get("state")
+        if state not in _OBLIGATION_STATES - {"OPEN", "SUPERSEDED"}:
+            raise ValueError("evidence lifecycle state must be EVIDENCE_SUPPLIED, SATISFIED, CONTRADICTED, or INDETERMINATE")
+        refs = record.get("evidence_refs") or []
+        if not isinstance(refs, list) or not refs or not all(isinstance(ref, str) and ref for ref in refs):
+            raise ValueError("evidence lifecycle record requires non-empty evidence_refs")
+        rationale = record.get("rationale")
+        if state in _EVALUATED_OBLIGATION_STATES and not rationale:
+            raise ValueError(f"{state} evidence lifecycle record requires rationale")
+        obligation = by_id[obligation_id]
+        obligation["lifecycle_state"] = state
+        obligation["evidence_refs"] = refs
+        obligation["evaluation_rationale"] = rationale
+        obligation["terminal_effect"] = "none-research-nonterminal"
+
+    if policy_delta and policy_delta.get("reassessment_required"):
+        affected = set(policy_delta.get("removed") or [])
+        for change in policy_delta.get("changed") or []:
+            affected.add(change["before_id"])
+        for obligation in by_id.values():
+            if affected.intersection(obligation.get("source_proposition_ids") or []):
+                obligation["lifecycle_state"] = "SUPERSEDED"
+                obligation["superseded_reason"] = "The source proposition changed or was removed in a newer policy version; prior evidence must not silently carry forward."
+                obligation["terminal_effect"] = "none-reassessment-required"
+
+    counts = {state: 0 for state in sorted(_OBLIGATION_STATES)}
+    for obligation in by_id.values():
+        counts[obligation["lifecycle_state"]] += 1
+    return {
+        "schema": OBLIGATION_LIFECYCLE_SCHEMA,
+        "terminal_assurance": False,
+        "policy_reassessment_required": bool(policy_delta and policy_delta.get("reassessment_required")),
+        "state_counts": counts,
+        "obligations": list(by_id.values()),
+    }
 
 
 def _baseline_analysis_records(subject: dict[str, Any]) -> list[dict[str, Any]]:
@@ -127,6 +194,7 @@ def synthesize_assessment(
     related_subjects: list[dict[str, Any]] | None = None,
     reference_decisions: list[dict[str, Any]] | None = None,
     precedence_decisions: list[dict[str, Any]] | None = None,
+    obligation_evidence: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     review = review or review_subject(subject)
     analytical = analysis_records(subject, review)
@@ -161,6 +229,9 @@ def synthesize_assessment(
             }
         )
 
+    obligation_lifecycle = reconcile_evidence_obligations(queue, obligation_evidence, policy_delta=delta)
+    queue = obligation_lifecycle["obligations"]
+
     relationship_unresolved = (relationships or {}).get("unresolved_judgment_count", 0)
     unresolved_total = len(unresolved_review) + relationship_unresolved
     return {
@@ -176,6 +247,7 @@ def synthesize_assessment(
         "evidence_shows": runtime,
         "change_impact": delta,
         "evidence_work_queue": queue,
+        "evidence_obligation_lifecycle": obligation_lifecycle,
         "current_disposition": {
             "state": "JUDGMENT_REQUIRED" if unresolved_total else "EVIDENCE_REQUIRED",
             "unresolved_review_count": len(unresolved_review),
@@ -254,7 +326,11 @@ def render_markdown(assessment: dict[str, Any]) -> str:
     lines.extend(["", "## What remains uncertain / what to investigate next", ""])
     for item in assessment["evidence_work_queue"]:
         lines.append(f"- `{item['obligation_id']}` · `{item['evidence_class']}` via **{item['route']}** for `{item['proposition_id']}`: {item['question']}")
-        lines.append(f"  Why required: {item['why_required']} Materiality: `{item['materiality']}`.")
+        lines.append(f"  Why required: {item['why_required']} Materiality: `{item['materiality']}`. Lifecycle: **{item.get('lifecycle_state', 'OPEN')}**.")
+        if item.get("evidence_refs"):
+            lines.append(f"  Evidence: {', '.join(f'`{ref}`' for ref in item['evidence_refs'])}.")
+        if item.get("evaluation_rationale"):
+            lines.append(f"  Evaluation: {item['evaluation_rationale']}")
 
     disposition = assessment["current_disposition"]
     lines.extend(
@@ -308,6 +384,7 @@ def main() -> int:
     parser.add_argument("--related-subject", action="append", default=[], help="related structured policy subject JSON; may be repeated")
     parser.add_argument("--reference-decisions", help="JSON array of incorporated/reference review decisions")
     parser.add_argument("--precedence-decisions", help="JSON array of explicit precedence decisions")
+    parser.add_argument("--obligation-evidence", help="JSON array of evidence-obligation lifecycle records")
     parser.add_argument("--format", choices=("json", "markdown"), default="markdown")
     args = parser.parse_args()
 
@@ -327,6 +404,7 @@ def main() -> int:
         related_subjects=related,
         reference_decisions=_read_json(args.reference_decisions),
         precedence_decisions=_read_json(args.precedence_decisions),
+        obligation_evidence=_read_json(args.obligation_evidence),
     )
     if args.format == "json":
         print(json.dumps(assessment, indent=2, sort_keys=True))
