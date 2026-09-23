@@ -125,7 +125,10 @@ def evidence_work_queue(
         seen.add(key)
         record = by_id.get(proposition_id)
         source_ids = list((record or {}).get("source_proposition_ids") or [proposition_id])
-        obligation_seed = "|".join([proposition_id, evidence_class, route, question])
+        # Bind obligation identity to immutable source lineage rather than the
+        # reviewed child identifier. This lets policy-version deltas invalidate
+        # obligations created from amended/split/merged review records.
+        obligation_seed = "|".join(["+".join(sorted(source_ids)), evidence_class, route, question])
         obligation_id = "peo-" + hashlib.sha256(obligation_seed.encode("utf-8")).hexdigest()[:16]
         queue.append(
             {
