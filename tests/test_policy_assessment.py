@@ -7,6 +7,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from policy_assessment import (  # noqa: E402
     evidence_work_queue,
+    reconcile_evidence_obligations,
     render_markdown,
     review_subject,
     synthesize_assessment,
@@ -83,6 +84,48 @@ class PolicyAssessmentResearchTests(unittest.TestCase):
         self.assertTrue(all(item.get("why_required") for item in queue))
         self.assertTrue(all(item.get("materiality") for item in queue))
         self.assertEqual(len(queue), len({item["obligation_id"] for item in queue}))
+
+    def test_evidence_obligation_lifecycle_is_non_terminal_and_citable(self):
+        mapping = map_risk_hypotheses(self.subject)
+        queue = evidence_work_queue(self.subject, mapping)
+        obligation = queue[0]
+        lifecycle = reconcile_evidence_obligations(
+            queue,
+            [{
+                "obligation_id": obligation["obligation_id"],
+                "state": "CONTRADICTED",
+                "evidence_refs": ["run://policy-obligation-001"],
+                "rationale": "Observed behavior contradicts the reviewed policy proposition.",
+            }],
+        )
+        reconciled = {item["obligation_id"]: item for item in lifecycle["obligations"]}[obligation["obligation_id"]]
+        self.assertEqual("CONTRADICTED", reconciled["lifecycle_state"])
+        self.assertEqual(["run://policy-obligation-001"], reconciled["evidence_refs"])
+        self.assertFalse(lifecycle["terminal_assurance"])
+        self.assertEqual("none-research-nonterminal", reconciled["terminal_effect"])
+
+    def test_policy_change_supersedes_obligations_for_changed_source_proposition(self):
+        old = ingest_policy("We retain records for seven years.", source_uri="fixture://retention", source_version="v1")
+        new = ingest_policy("We retain records for ten years.", source_uri="fixture://retention", source_version="v2")
+        mapping = map_risk_hypotheses(old)
+        queue = evidence_work_queue(old, mapping)
+        from policy_subject import diff_subjects
+        lifecycle = reconcile_evidence_obligations(queue, policy_delta=diff_subjects(old, new))
+        self.assertTrue(lifecycle["policy_reassessment_required"])
+        self.assertTrue(any(item["lifecycle_state"] == "SUPERSEDED" for item in lifecycle["obligations"]))
+
+    def test_evaluated_obligation_requires_rationale(self):
+        mapping = map_risk_hypotheses(self.subject)
+        queue = evidence_work_queue(self.subject, mapping)
+        with self.assertRaisesRegex(ValueError, "requires rationale"):
+            reconcile_evidence_obligations(
+                queue,
+                [{
+                    "obligation_id": queue[0]["obligation_id"],
+                    "state": "SATISFIED",
+                    "evidence_refs": ["run://evidence"],
+                }],
+            )
 
     def test_synthesis_is_explicitly_non_terminal_and_cold_reader_friendly(self):
         assessment = synthesize_assessment(self.subject)
