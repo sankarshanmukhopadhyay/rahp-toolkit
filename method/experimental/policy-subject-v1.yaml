@@ -179,6 +179,21 @@ research_outputs:
       - materiality is explicit and may remain context-dependent
       - an unevaluated obligation has no terminal assurance effect
       - source proposition lineage is retained across amended, split and merged reviewed propositions
+  evidence_obligation_lifecycle:
+    contract: rahp-policy-evidence-obligation-lifecycle/v1
+    states:
+      - OPEN
+      - EVIDENCE_SUPPLIED
+      - SATISFIED
+      - CONTRADICTED
+      - INDETERMINATE
+      - SUPERSEDED
+    invariants:
+      - lifecycle evaluation never creates terminal assurance in the research adapter
+      - SATISFIED, CONTRADICTED and INDETERMINATE require explicit rationale
+      - supplied evidence is referenced rather than silently converted into policy-source evidence
+      - a changed or removed source proposition supersedes prior obligations tied to that source lineage
+      - superseded obligations require reassessment and MUST NOT silently carry prior evidence forward
 
 graduation_gates:
   - demonstrate lossless clause/source traceability on at least two materially different policies
