@@ -1,22 +1,22 @@
 version: 1
 contract: rahp-release-declaration-v1
 release:
-  version: 2.3.0
-  tag: v2.3.0
+  version: 2.4.0
+  tag: v2.4.0
   status: released
   qualification_status: qualified
-  title: RAHP Toolkit v2.3.0 — Common Five-ring
-  theme: Portable Coverage and Source-Preserving Assurance
+  title: RAHP Toolkit v2.4.0 — Redbreast Jezebel
+  theme: VTI Composition Assessment and Evidence-Conservative Reconciliation
   name:
-    common: Common Five-ring
-    scientific: Ypthima baldus
+    common: Redbreast Jezebel
+    scientific: Delias acalis
     source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-    selected_on: '2026-09-13'
+    selected_on: '2026-09-22'
   qualification:
-    manifest: method/v2.3-release-qualification.yaml
-    validator: tools/validate_v23_release.py
-    checks: [tools/validate_scenario_corpora.py, tools/validate_pressure_tests.py, tools/validate_engine_contract.py, tools/validate_security_reviews.py, tools/validate_combined_reviews.py, tools/validate_assessment_queue.py, tools/validate_workflow_governance.py]
-  notes: {path: docs/releases/v2.3.0.md}
+    manifest: method/v2.4-release-qualification.yaml
+    validator: tools/validate_v24_release.py
+    checks: [tools/validate_scenario_corpora.py, tools/validate_pressure_tests.py, tools/validate_engine_contract.py, tools/validate_security_reviews.py, tools/validate_combined_reviews.py, tools/validate_assessment_queue.py, tools/validate_workflow_governance.py, tools/validate_vti_assessment_profile.py, tools/validate_vti_privacy_composition.py, tools/validate_vti_component_substitution_gate.py, tools/validate_vti_t12_judgment.py]
+  notes: {path: docs/releases/v2.4.0.md}
   compatibility: {engine_contract: rahp-engine-contract-v1, normalized_result_schema: 1, evidence_retention_contract: rahp-evidence-retention-v1}
 publication:
   workflow: .github/workflows/release.yml

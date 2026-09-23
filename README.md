@@ -1,41 +1,27 @@
 # RAHP Toolkit
 
-> **Research branch notice — policy documents as assurance subjects**
->
-> You are viewing the experimental branch [`research/policy-assurance-subjects-662`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/research/policy-assurance-subjects-662). It explores whether source-pinned policy and governance documents can be treated as bounded RAHP assurance subjects without weakening source traceability, visible judgment, evidence-class separation, or specialist/legal authority boundaries.
->
-> This branch is intentionally **not merged into `main`**. It is being retained for socialisation, independent review, and feedback even if the graduation exercise eventually supports a `graduate-candidate` disposition.
->
-> **Start here if you are reviewing this branch:**
-> - Branch review guide: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/README.md
-> - Research issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/662
-> - Graduation evidence tracker: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/668
-> - Draft research PR: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/667
-> - Graduation protocol: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/protocol.md
-> - Corpus register: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/corpus.yaml
-> - Current decision record: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/research/policy-assurance-subjects-662/research/policy-assurance/graduation/graduation-decision.md
-
 **Risk Assessment & Harms Prevention**  
-Release v2.3.0 (stable) · Common Five-ring · CC-BY 4.0
+Release v2.4.0 (stable) · Redbreast Jezebel · CC-BY 4.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
 RAHP is deliberately evidence-conservative: **missing evidence never becomes PASS**. Workflow success is not assurance success. A component PASS does not imply a composition PASS, and normative convergence does not silently become implementation conformance.
 
-## What v2.3.0 adds
+## What v2.4.0 adds
 
-v2.3.0 **Portable Coverage and Source-Preserving Assurance** extends the v2.2 evidence-production baseline with:
+v2.4.0 **VTI Composition Assessment and Evidence-Conservative Reconciliation** extends the v2.3 baseline with:
 
-- a generic capability-coverage model and reusable coverage packs;
-- Persona and Data Rooms assurance coverage without consumer-specific logic entering the generic core;
-- current VTI/OpenVTC realization evidence reconciliation with bounded action-time and privacy conclusions;
-- explicit upstream/deployment residual ownership, including evidence-deferred states where a legitimate experiment is not yet available;
-- DRARM resilience findings normalized as source-preserving RAHP propositions rather than silently remapped findings;
-- deterministic runtime evidence obligations tied to exact source rule, target revision, evidence class and required assurance depth;
-- continued separation of static/source evidence, synthetic fixtures, runtime observations and governance evidence.
+- a version-pinned VTI composition assessment profile;
+- a machine-readable `rahp-vti-assessment/v1` submission contract;
+- reusable validation across multiple VTI assessment families;
+- deterministic assessment-index and programme-reconciliation surfaces;
+- eight current supported VTI composition families with bounded executable evidence;
+- a deliberately `indeterminate` privacy-composition assessment that preserves the specialist DPIP boundary;
+- an explicit component-substitution evidence gate that refuses synthetic closure;
+- first-class indeterminacy and material-configuration reassessment semantics;
+- a deduplicated upstream clarification package that preserves VTI normative authority.
 
-The release does **not** claim that every consumer portfolio is GREEN or that all outstanding upstream/runtime questions are resolved. Stable external dependencies remain visible residuals and reassessment triggers.
-
+The release does **not** claim universal VTI conformance, complete privacy assurance, or successful component substitution without genuine implementation-pair evidence.
 ## How RAHP works
 
 ```text
@@ -87,7 +73,7 @@ DPIP is an independently governed privacy specialist that can return portable ex
 
 ## Coordinated release context
 
-v2.3.0 is cut as the RAHP member of the September 2026 coordinated RAHP / DPIP / Trust Protocol Interop Lab release tranche. The repositories remain independently versioned and governed. RAHP owns assurance state and proposition/evidence reconciliation; DPIP owns composed privacy evaluation; the Interop Lab owns bounded executable interoperability evidence. Cross-repository evidence is linked by contracts and provenance, not by collapsing ownership.
+v2.4.0 packages the completed VTI assessment programme as an additive RAHP product capability. VTI remains the normative and conformance authority; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for the composed privacy questions routed to it.
 
 ## Quick start
 
@@ -101,10 +87,12 @@ Start with [How RAHP works](docs/how-rahp-works.md), [Getting started](docs/gett
 
 ## Current release
 
-v2.3.0 **Common Five-ring** (*Ypthima baldus*) is the stable **Portable Coverage and Source-Preserving Assurance** release.
+v2.4.0 **Redbreast Jezebel** (*Delias acalis*) is the stable **VTI Composition Assessment and Evidence-Conservative Reconciliation** release.
 
-- [v2.3.0 release notes](docs/releases/v2.3.0.md)
-- [v2.3 qualification contract](method/v2.3-release-qualification.yaml)
+- [v2.4.0 release notes](docs/releases/v2.4.0.md)
+- [v2.4 qualification contract](method/v2.4-release-qualification.yaml)
+- [VTI assessment index](docs/vti-assessment-index.md)
+- [VTI programme reconciliation](docs/vti-programme-reconciliation.md)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
 - [Release history](CHANGELOG.md)
@@ -115,6 +103,7 @@ Historical release records remain immutable. Release presentation metadata follo
 
 | Version | Codename | Historical boundary |
 |---|---|---|
+| v2.4.0 | **Redbreast Jezebel** | VTI Composition Assessment and Evidence-Conservative Reconciliation |
 | v2.3.0 | **Common Five-ring** | Portable Coverage and Source-Preserving Assurance |
 | v2.2.0 | **Common Four-ring** | Evidence Production and Realization Assurance |
 | v2.1.0 | **Common Acacia Blue** | Qualified Autonomous Assurance Plane |

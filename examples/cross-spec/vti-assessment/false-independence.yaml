@@ -1,0 +1,72 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-FI-001
+profile: rahp-vti-composition-assessment/v1
+family: false-independence
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  False-independence composition properties exercised by the completed
+  SR-XSP-FI-001 through SR-XSP-FI-007 evidence family.
+disposition: supported
+method: >
+  Evidence-first composition assessment using falsifiable propositions,
+  adversarial pressure tests, legitimate counter-cases, executable tests,
+  and preservation of indeterminate states.
+requirements:
+  - VTI-CMP-070
+  - VTI-CMP-071
+  - VTI-CMP-072
+  - VTI-CMP-073
+  - VTI-CMP-074
+proposition: >
+  Apparent multiplicity, depth, threshold satisfaction, actor distinctness,
+  or artifact validity must not automatically be upgraded into evidence
+  independence or evidence completeness.
+evidence:
+  - id: SR-XSP-FI-001
+    kind: test
+    ref: tests/test_false_independence_pressure_test.py
+  - id: SR-XSP-FI-002
+    kind: test
+    ref: tests/test_false_governance_diversity_pressure_test.py
+  - id: SR-XSP-FI-003
+    kind: test
+    ref: tests/test_trust_laundering_pressure_test.py
+  - id: SR-XSP-FI-004
+    kind: test
+    ref: tests/test_false_social_independence_sock_puppetry_pressure_test.py
+  - id: SR-XSP-FI-005
+    kind: test
+    ref: tests/test_quorum_capture_pressure_test.py
+  - id: SR-XSP-FI-006
+    kind: test
+    ref: tests/test_collusion_pressure_test.py
+  - id: SR-XSP-FI-007
+    kind: test
+    ref: tests/test_selective_evidence_pressure_test.py
+counter_cases:
+  - Pairwise or contextual identifiers must not be treated as Sybil evidence merely because one actor uses several identifiers.
+  - Privacy-preserving pseudonymity must remain legitimate where independence is not falsely claimed.
+  - Shared infrastructure does not by itself prove common decisive governance control.
+  - Genuinely independent issuers may reach the same conclusion without that agreement being discounted.
+  - Selective disclosure and privacy-preserving minimisation are not evidence incompleteness unless omitted material changes the relying decision.
+residual_uncertainty:
+  - The corpus does not define a universal mechanism for proving effective independence.
+  - Effective-control evidence may itself create correlation or privacy risk.
+  - Independence and governance relationships can become stale and require reassessment.
+  - Some semantic ownership remains jointly-owned or unresolved across component and composition layers.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted

@@ -1,0 +1,75 @@
+schema: rahp-vti-assessment/v1
+assessment_id: RAHP-VTI-DEL-001
+profile: rahp-vti-composition-assessment/v1
+family: delegation-lineage
+vti_source:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+assessor:
+  programme: RAHP
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+assessed_at: "2026-09-22"
+scope: >
+  Delegation composition across multi-hop execution, covering scope, lineage,
+  expiry, revocation, re-delegation, action-time delegator authority and
+  preservation of the acting delegate's identity at the relying decision.
+disposition: supported
+method: >
+  Source-pinned reconciliation of #186 and the existing VTI composition-wave
+  delegation evidence with a bounded executable fixture that adds explicit
+  expiry/revocation/action-time fields and delegate-identity propagation.
+requirements:
+  - VTI-CMP-050
+  - VTI-CMP-051
+  - VTI-CMP-052
+  - VTI-CMP-053
+proposition: >
+  A composed flow must not widen authority beyond the applicable delegation;
+  the complete delegation lineage and its constraints must remain determinable;
+  current delegator authority must be evaluated at action time; and the acting
+  delegate must remain identifiable at the decision point rather than being
+  substituted by the principal.
+evidence:
+  - id: VTI-COMP-DEL-001
+    kind: fixture
+    ref: examples/cross-spec/vti-delegation-lineage/evidence.yaml
+  - id: VTI-COMP-DEL-VALIDATOR
+    kind: test
+    ref: tools/validate_vti_delegation_lineage.py
+  - id: VTI-COMP-WAVE-001
+    kind: fixture
+    ref: examples/cross-spec/vti-composition-wave/evidence.yaml
+  - id: RAHP-ISSUE-186
+    kind: issue
+    ref: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/186
+counter_cases:
+  - >
+    A complete, unrevoked, unexpired delegation chain whose scope matches the
+    requested action, whose delegators retain the necessary authority, and whose
+    acting delegate reaches the decision point may legitimately authorize the action.
+  - >
+    Re-delegation is not prohibited categorically; it is valid when the upstream
+    delegation permits it and the downstream chain preserves all constraints.
+  - >
+    Missing lineage remains indeterminate rather than being treated as either a
+    successful delegation or evidence that no delegation exists.
+residual_uncertainty:
+  - >
+    This assessment does not define the credential or protocol representation used
+    to carry delegation lineage between components.
+  - >
+    It does not define universal delegation scopes or governance rules for whether a
+    particular authority is delegable.
+  - >
+    Privacy implications of carrying complete lineage or delegate identity are
+    assessed separately under privacy composition.
+reassessment:
+  state: current
+  triggers:
+    - vti_revision_changed
+    - component_version_changed
+    - policy_or_profile_changed
+    - material_configuration_changed
+    - evidence_superseded
+    - evidence_contradicted

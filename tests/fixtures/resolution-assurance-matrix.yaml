@@ -1,0 +1,92 @@
+schema: rahp-resolution-assurance-fixture/v1
+fixture_set: trusted-specification-resolution
+proposition: >
+  Identifier or transport authenticity is one input to trusted resolution. It
+  must not be promoted into freshness, recognition, version applicability, or
+  authorization without separate evidence.
+cases:
+  - id: RES-AUTH-001
+    lens: rahp
+    title: Authentic self-certifying content with missing freshness remains indeterminate
+    input:
+      identifier_kind: self-certifying
+      identifier_authenticity: verified
+      content_integrity: verified
+      freshness: missing
+      recognition: verified
+      version_applicability: verified
+    expected:
+      assurance_state: indeterminate
+      prohibited_states: [green]
+      reason_code: FRESHNESS_EVIDENCE_MISSING
+
+  - id: RES-REC-001
+    lens: rahp
+    title: Authentic but unrecognized specification remains indeterminate
+    input:
+      identifier_kind: https
+      transport_authenticity: verified
+      content_integrity: verified
+      freshness: verified
+      recognition: missing
+      version_applicability: verified
+    expected:
+      assurance_state: indeterminate
+      prohibited_states: [green]
+      reason_code: RECOGNITION_EVIDENCE_MISSING
+
+  - id: RES-VER-001
+    lens: security
+    title: Authenticated retrieval does not establish requested version applicability
+    input:
+      identifier_kind: https
+      transport_authenticity: verified
+      content_integrity: verified
+      freshness: verified
+      recognition: verified
+      requested_version: "1.2"
+      resolved_version: "1.3"
+    expected:
+      verification_result: reject
+      reason_code: VERSION_BINDING_MISMATCH
+
+  - id: RES-POS-001
+    lens: rahp
+    title: Positively established resolution chain may be relied upon within scope
+    input:
+      identifier_kind: self-certifying
+      identifier_authenticity: verified
+      content_integrity: verified
+      freshness: verified
+      recognition: verified
+      version_applicability: verified
+      authorization_applicability: verified
+    expected:
+      assurance_state: verified
+      scope: resolution-chain-only
+
+  - id: RES-DRARM-001
+    lens: drarm
+    title: Recursive resolution without depth or work budget requires review
+    input:
+      source_text: |
+        def resolve(identifier):
+            record = resolver.resolve(identifier)
+            return resolve(record.next_reference)
+    expected:
+      risk_ids: [RLA-017, RLA-018]
+      status: review-required
+
+  - id: RES-DRARM-002
+    lens: drarm
+    title: Explicit resolution budget and cycle tracking satisfy static control evidence
+    input:
+      source_text: |
+        def resolve(identifier, resolution_budget, visited):
+            if resolution_budget <= 0 or identifier in visited:
+                raise ResolutionBoundExceeded()
+            visited.add(identifier)
+            record = resolver.resolve(identifier)
+            return resolve(record.next_reference, resolution_budget - 1, visited)
+    expected:
+      absent_review_for: [RLA-017, RLA-018]

@@ -1,0 +1,57 @@
+schema: rahp-false-assurance-challenges/v1
+rule: A deficient material-evidence challenge must never be normalized to PASS or GREEN.
+challenges:
+  - id: FAC-001
+    condition: missing-required-evidence
+    attack: Remove evidence required by an applicable proposition.
+    prohibited: [PASS, GREEN]
+    expected: INDETERMINATE/evidence-required
+    evidence_ref: fixtures/negative/rahp-collective-authority.yaml
+  - id: FAC-002
+    condition: stale-evidence
+    attack: Reuse evidence invalidated or weakened by a material source change.
+    prohibited: [PASS, GREEN]
+    expected: stale-or-retest-required-or-indeterminate
+    evidence_ref: tests/fixtures/resolution-assurance-matrix.yaml#RES-AUTH-001
+  - id: FAC-003
+    condition: contradictory-evidence
+    attack: Add material evidence contradicting the positive evidence set.
+    prohibited: [PASS, GREEN]
+    expected: non-positive-pending-reconciliation
+    evidence_ref: fixtures/negative/review-contradictory-evidence.yaml
+  - id: FAC-004
+    condition: duplicate-non-independent-evidence
+    attack: Present correlated or duplicated observations as independent corroboration.
+    prohibited: [PASS, GREEN]
+    expected: no-independence-credit
+    evidence_ref: examples/cross-spec/false-independence-sybil/pressure-test.yaml
+  - id: FAC-005
+    condition: wrong-subject
+    attack: Substitute evidence produced for a different assurance subject.
+    prohibited: [PASS, GREEN]
+    expected: reject-or-indeterminate
+    evidence_ref: fixtures/negative/review-wrong-subject.yaml
+  - id: FAC-006
+    condition: wrong-source-pin
+    attack: Substitute evidence from a different immutable source revision.
+    prohibited: [PASS, GREEN]
+    expected: reject-or-retest-required
+    evidence_ref: fixtures/negative/review-wrong-source-pin.yaml
+  - id: FAC-007
+    condition: malformed-specialist-return
+    attack: Corrupt a required specialist result or its contract/version.
+    prohibited: [PASS, GREEN]
+    expected: contract-error-or-indeterminate
+    evidence_ref: fixtures/negative/review-malformed-specialist.yaml
+  - id: FAC-008
+    condition: partial-execution
+    attack: Complete workflow transport while omitting a required assessment stage.
+    prohibited: [PASS, GREEN]
+    expected: non-terminal-or-error
+    evidence_ref: fixtures/negative/review-partial-execution.yaml
+  - id: FAC-009
+    condition: component-only-evidence
+    attack: Supply valid component evidence without composition evidence.
+    prohibited: [PASS, GREEN]
+    expected: evidence-required-or-indeterminate
+    evidence_ref: fixtures/negative/composition-rule.yaml

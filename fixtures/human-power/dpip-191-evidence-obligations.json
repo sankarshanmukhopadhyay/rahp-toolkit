@@ -1,0 +1,7 @@
+{
+  "obligations": [
+    {"schema":"dpip-evidence-obligation/v1","id":"DPIP-EG-0191-001","materiality":"material","target":null,"observer":{"role":"target decision observer","vantage_point":"decision-input feature mapping"},"supplier":{"role":"TARGET_OPERATOR","evidence_source_class":"WHITE_BOX_RUNTIME"},"required_observations":["observer-bound metadata-to-characteristic mapping"],"evidence_maturity":{"minimum_required":"E3"},"access":{"status":"BLOCKED","blocker":"NO_TARGET"},"state":"BLOCKED"},
+    {"schema":"dpip-evidence-obligation/v1","id":"DPIP-EG-0191-002","materiality":"material","target":null,"observer":{"role":"cross-context verifier or operator","vantage_point":"repeated-context linkage surface"},"supplier":{"role":"TARGET_OPERATOR","evidence_source_class":"WHITE_BOX_RUNTIME"},"required_observations":["context-A observation","context-B observation","cross-context linkage or absence thereof"],"evidence_maturity":{"minimum_required":"E3"},"access":{"status":"BLOCKED","blocker":"NO_TARGET"},"state":"BLOCKED"},
+    {"schema":"dpip-evidence-obligation/v1","id":"DPIP-EG-0191-003","materiality":"material","target":null,"observer":{"role":"target decision observer","vantage_point":"controlled decision trace"},"supplier":{"role":"TARGET_OPERATOR","evidence_source_class":"WHITE_BOX_RUNTIME"},"required_observations":["baseline decision trace","treatment decision trace","decision outcome"],"evidence_maturity":{"minimum_required":"E3"},"access":{"status":"BLOCKED","blocker":"NO_TARGET"},"state":"BLOCKED"}
+  ]
+}

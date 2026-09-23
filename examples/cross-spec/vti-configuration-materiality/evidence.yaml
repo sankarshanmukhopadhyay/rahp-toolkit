@@ -1,0 +1,57 @@
+evidence:
+  id: VTI-COMP-CFG-001
+  title: Material configuration changes are assurance-significant and reconstructable
+  tracking_issue: 709
+  evidence_class: composition-fixture
+  proposition: >-
+    Configuration that changes trust, privacy, authority or security semantics is
+    materially equivalent to an implementation change for review and audit.
+    Deployments must distinguish such material configuration from non-material
+    configuration and retain enough versioned state to reconstruct the effective
+    configuration governing a past decision.
+  vectors:
+    - id: trust-root-change
+      semantic_changes: [trust]
+      declared_material: true
+      decision_config_version: cfg-2
+      config_history: [cfg-1, cfg-2]
+      expected_classification: MATERIAL
+      expected_reconstruction: RECONSTRUCTABLE
+      expected_declaration: MATCH
+    - id: privacy-retention-change
+      semantic_changes: [privacy]
+      declared_material: true
+      decision_config_version: cfg-4
+      config_history: [cfg-3, cfg-4]
+      expected_classification: MATERIAL
+      expected_reconstruction: RECONSTRUCTABLE
+      expected_declaration: MATCH
+    - id: authority-source-change-history-missing
+      semantic_changes: [authority]
+      declared_material: true
+      decision_config_version: cfg-6
+      config_history: [cfg-5]
+      expected_classification: MATERIAL
+      expected_reconstruction: NOT_RECONSTRUCTABLE
+      expected_declaration: MATCH
+    - id: security-policy-change-misdeclared
+      semantic_changes: [security]
+      declared_material: false
+      decision_config_version: cfg-8
+      config_history: [cfg-7, cfg-8]
+      expected_classification: MATERIAL
+      expected_reconstruction: RECONSTRUCTABLE
+      expected_declaration: MISMATCH
+    - id: log-verbosity-change
+      semantic_changes: []
+      declared_material: false
+      decision_config_version: cfg-10
+      config_history: [cfg-9, cfg-10]
+      expected_classification: NON_MATERIAL
+      expected_reconstruction: RECONSTRUCTABLE
+      expected_declaration: MATCH
+  counter_boundary: >-
+    Not every configuration change is assurance-material. Operational or cosmetic
+    changes that do not alter trust, privacy, authority or security semantics may
+    remain non-material, provided the system can distinguish them from changes
+    that do alter those semantics.

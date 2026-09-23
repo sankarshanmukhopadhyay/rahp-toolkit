@@ -1,0 +1,38 @@
+schema: rahp-negative-fixture/v1
+id: NF-REVIEW-MALFORMED-SPECIALIST
+proposition:
+  claim: a malformed required specialist return can be normalized into positive assurance
+  owner: specialist
+lens:
+  primary: specialist
+  secondary: [rahp, security]
+evidence:
+  established: [specialist_invocation]
+  missing: [contract_valid_specialist_result]
+  stale: []
+  contradicted: []
+  unsupported: [malformed_specialist_result]
+unsafe_inference:
+  from: [specialist_invocation]
+  to: [specialist_pass]
+expected:
+  state: indeterminate
+  terminal_colour: amber
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: tests/test_dpip_handoff.py#test_gatherer_native_provenance_is_supported
+  proposition: a specialist handoff satisfying its contract remains attributable and bounded
+source:
+  kind: fixture
+  ref: method/review/false-assurance-challenges.yaml#FAC-007
+specialist:
+  required: true
+  name: dpip
+  owns: [privacy_assessment]
+  does_not_own: [overall_rahp_terminal_state]
+composition:
+  dependencies: []
+drarm:
+  applicable: false
+retest_triggers: [contract-valid specialist result is supplied]
+evidence_maturity: executable

@@ -1,0 +1,100 @@
+evidence:
+  id: VTI-COMP-PRV-001
+  title: Privacy across composition specialist evidence reconciliation
+  tracking_issue: 710
+  evidence_class: composition-specialist-reconciliation
+  proposition: >-
+    Privacy properties must be evaluated across the complete interaction. A
+    proof-layer privacy property is insufficient when another layer exposes a
+    durable correlator, and composed interactions should disclose no more than
+    the relying decision requires.
+  vti_requirements:
+    - VTI-CMP-060
+    - VTI-CMP-061
+    - VTI-CMP-062
+    - VTI-CMP-063
+  evidence_inventory:
+    - id: DPIP-163
+      source: sankarshanmukhopadhyay/dtg-privacy-implementation-profile#163
+      evidence_state: attributable-runtime-fail
+      scope: persisted-device-binding-and-device-list
+      observed_join: detected
+      join_surface: retained_presence_record
+      supports:
+        - complete-interaction-privacy-evaluation
+        - stable-metadata-can-defeat-unlinkability
+        - durable-correlator-identification
+      does_not_establish:
+        - heartbeat-transport-correlation
+        - universal-failure-of-all-deployments
+        - minimisation-conformance-across-all-compositions
+    - id: RAHP-339
+      source: sankarshanmukhopadhyay/rahp-toolkit#339
+      evidence_state: remediation-required
+      scope: device-metadata-privacy
+      terminal_specialist_result: FAIL/prohibited-correlation-observed
+      active_boundary: external-implementation-remediation
+    - id: RAHP-690
+      source: sankarshanmukhopadhyay/rahp-toolkit#690
+      evidence_state: waiting-external
+      scope: task-citation-outcome-evidence-correlation
+      unresolved:
+        - committed-citation-representation
+        - proof-opening-construction
+        - source-pinned-current-runtime-path
+    - id: RAHP-184
+      source: sankarshanmukhopadhyay/rahp-toolkit#184
+      evidence_state: composition-proposition-preserved
+      scope: correlation-resistance-across-composed-interactions
+  requirement_evidence:
+    VTI-CMP-060:
+      state: supported-by-counterexample-and-specialist-evidence
+    VTI-CMP-061:
+      state: supported-by-observed-durable-correlator
+    VTI-CMP-062:
+      state: partially-verified
+    VTI-CMP-063:
+      state: specialist-evidence-required
+  family_disposition: INDETERMINATE
+  blockers:
+    - current task-citation correlation semantics remain upstream-dependent
+    - privacy-minimisation coverage is not complete across the VTI interaction surface
+    - some producer/composition observations are not attributable to the original target implementation
+  non_inference_rules:
+    - valid proof != privacy PASS
+    - hidden credential attributes != hidden task citation
+    - no detected join in one producer experiment != universal unlinkability
+    - specialist FAIL on one attributable implementation path != universal implementation failure
+    - not-evidenced != preserved
+  convergence_extension:
+    vti_source:
+      repository: trustoverip/dtgwg-vti-spec
+      document_status: Working Draft 0.2.0
+      commit: 3cbd7300a4f46bb2518e2b4b485609e7b5432b58
+    requirements: [VTI-CMP-064]
+    coordination_issue: 690
+    proposition: >-
+      Outcome evidence is part of the durable-correlation surface and therefore
+      cannot inherit a privacy PASS from credential or proof validity.
+    specialist_evidence:
+      - id: DPIP-271
+        source: sankarshanmukhopadhyay/dtg-privacy-implementation-profile#271
+        state: terminal-indeterminate-evidence-required
+        applicability: applicable
+        target_path: not-implemented
+        effective_correlation: not-tested
+      - id: INTEROP-233
+        source: sankarshanmukhopadhyay/trust-protocol-interop-lab#233
+        state: target-runtime-not-implemented
+        target_revision: 1099d7b24366b9d390f24201dc6db308fda70e21
+        runtime_correlation: unresolved
+    disposition: INDETERMINATE
+    reconciliation_state: terminal-current-epoch
+    residuals:
+      - committed-citation representation remains unsettled in credential-spec issue 58
+      - proof opening/blinding construction remains a future reassessment trigger
+      - current target runtime does not implement the initiating-document plus digest path
+    non_inference_rules:
+      - terminal indeterminate != privacy PASS
+      - not-implemented != privacy preserved
+      - future committed citation semantics require a fresh source-pinned epoch

@@ -1,0 +1,42 @@
+schema: rahp-negative-fixture/v1
+id: NF-SECURITY-THRESHOLD
+proposition:
+  claim: threshold-held collective authority was validly exercised
+  owner: security
+lens:
+  primary: security
+  secondary: [composition, rahp]
+evidence:
+  established:
+    - collective_principal_recognized
+    - one_valid_member_signature
+  missing:
+    - sufficient_distinct_approvals
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [valid_member_signature]
+  to: [threshold_authority_satisfied]
+expected:
+  state: reject
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+  proposition: enough current authorized approvals are bound to the exact decision context
+source:
+  kind: fixture
+  ref: tests/fixtures/negative-assurance-matrix.yaml#CA-SEC-001
+  provenance: 2026-09-22 collective-authority negative assurance matrix
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies: [threshold_policy, distinct_participant_count]
+drarm:
+  applicable: false
+retest_triggers:
+  - approval set changes
+  - threshold policy changes
+evidence_maturity: executable

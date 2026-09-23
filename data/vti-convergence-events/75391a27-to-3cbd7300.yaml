@@ -1,0 +1,119 @@
+schema: rahp-vti-convergence-event/v1
+event_id: VTI-CONVERGENCE-2026-09-23-001
+repository: trustoverip/dtgwg-vti-spec
+observed_on: "2026-09-23"
+baseline:
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+  document_status: Working Draft 0.1.0
+observed_head:
+  commit: 3cbd7300a4f46bb2518e2b4b485609e7b5432b58
+  document_status: Working Draft 0.2.0
+intermediate_heads:
+  - commit: c1c39b971dd535bd30bcd5c864998ebd8bf92123
+    observed_on: "2026-09-22"
+drift_detected: true
+automatic_repin: false
+changes:
+  - id: VTI-DRIFT-PR33
+    upstream_ref: trustoverip/dtgwg-vti-spec#33
+    title: Keep credential validity and exchange completion apart
+    class: normative-semantic
+    requirements_added:
+      - VTI-CMP-022
+      - VTI-CMP-023
+      - VTI-CMP-064
+      - VTI-CRD-032
+    requirements_observed: []
+    requirement_text_changed: true
+    affected_families:
+      - semantic-completion
+      - privacy-composition
+    evidence_impact: selective-reassessment-required
+    invalidates_existing_assessment: true
+    rationale: >-
+      New composition requirements extend semantic-completion and privacy
+      propositions beyond the requirement sets in the active RAHP VTI profile.
+  - id: VTI-DRIFT-PR35
+    upstream_ref: trustoverip/dtgwg-vti-spec#35
+    title: Record tasks that require a proof and are served on a bearer token
+    class: evidence-only
+    requirements_added: []
+    requirements_observed:
+      - VTI-OPS-020
+      - VTI-OPS-021
+      - VTI-OPS-024
+      - VTI-OPS-093
+      - VTI-OPS-110
+      - VTI-OPS-051
+    requirement_text_changed: false
+    affected_families: []
+    evidence_impact: implementation-evidence-review
+    invalidates_existing_assessment: false
+    rationale: >-
+      PR #35 adds observed implementation evidence and explicitly does not
+      qualify or modify the requirements against which the observations are listed.
+  - id: VTI-DRIFT-PR36
+    upstream_ref: trustoverip/dtgwg-vti-spec#36
+    title: Give each requirement area its own chapter, and make Appendix E's record form normative
+    class: structural-normative-contract
+    requirements_added: []
+    requirements_observed:
+      - VTI-CMP-002
+      - VTI-CMP-120
+      - VTI-CNF-006
+    requirement_text_changed: false
+    affected_families: []
+    evidence_impact: assessment-contract-review-required
+    invalidates_existing_assessment: false
+    rationale: >-
+      Requirement identifiers and text are preserved, but Appendix E.1's
+      assessment record form and ownership vocabulary become normative and the
+      document status advances to Working Draft 0.2.0.
+family_impacts:
+  - family: semantic-completion
+    triggering_requirements: [VTI-CMP-022, VTI-CMP-023]
+    negative_fixture_ids: [NF-VTI-VALIDITY-NOT-COMPLETION]
+    state: verified
+    evidence_refs:
+      - examples/cross-spec/vti-semantic-completion/evidence.yaml#convergence_extension
+      - tools/validate_vti_semantic_completion.py
+      - sankarshanmukhopadhyay/trust-protocol-interop-lab#233
+    reason: VTI-CMP-022/023 completion non-inference is covered by source-pinned executable evidence
+  - family: privacy-composition
+    triggering_requirements: [VTI-CMP-064]
+    negative_fixture_ids: [NF-VTI-OUTCOME-EVIDENCE-CORRELATOR]
+    state: indeterminate
+    evidence_refs:
+      - examples/cross-spec/vti-privacy-composition/evidence.yaml#convergence_extension
+      - tools/validate_vti_privacy_composition.py
+      - sankarshanmukhopadhyay/dtg-privacy-implementation-profile#271
+      - sankarshanmukhopadhyay/trust-protocol-interop-lab#233
+    reason: VTI-CMP-064 is reconciled for the current epoch as terminal INDETERMINATE; target runtime support remains absent
+contract_impacts:
+  - id: vti-assessment-record-form
+    trigger: trustoverip/dtgwg-vti-spec#36
+    state: verified-compatible
+    evidence: data/vti-appendix-e1-compatibility.yaml
+    proposition: RAHP's independent assessment submission contract is distinct from and compatible with normative Appendix E.1
+unaffected_families:
+  - authority-continuity
+  - lifecycle-freshness
+  - delegation-lineage
+  - false-independence
+  - failure-indeterminacy
+  - configuration-materiality
+  - component-substitution
+  - human-control
+reassessment:
+  mode: selective
+  coalesced_work_item: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/740
+  whole_programme_stale: false
+rebaseline:
+  state: ready
+  target_commit: 3cbd7300a4f46bb2518e2b4b485609e7b5432b58
+  blockers: []
+  residual_reassessment_triggers:
+    - credential-spec issue 58 settles or materially changes committed-citation representation
+    - ZKP opening or blinding construction materially changes
+    - a target runtime implements the initiating-document plus digest and outcome-evidence path
+  baseline_mutated: false

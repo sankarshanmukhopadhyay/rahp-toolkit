@@ -1,0 +1,223 @@
+schema: rahp-negative-fixture-inventory/v1
+generated_from:
+  - tests/fixtures/negative-assurance-matrix.yaml
+  - tests/fixtures/resolution-assurance-matrix.yaml
+  - examples/cross-spec/false-independence-sybil/pressure-test.yaml
+  - examples/cross-spec/quorum-capture/pressure-test.yaml
+  - examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+  - tests/test_dpip_handoff.py
+  - examples/cross-spec/vti-semantic-completion/evidence.yaml
+  - examples/cross-spec/vti-privacy-composition/evidence.yaml
+entries:
+  - id: INV-CA-RAHP-001
+    path: tests/fixtures/negative-assurance-matrix.yaml#CA-RAHP-001
+    owning_lens: rahp
+    proposition: missing collective-authority evidence remains indeterminate
+    polarity: negative
+    expected_state: indeterminate
+    provenance: external-implementer-feedback
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+    contract_fixture: NF-RAHP-COLLECTIVE-AUTHORITY
+  - id: INV-CA-SEC-001
+    path: tests/fixtures/negative-assurance-matrix.yaml#CA-SEC-001
+    owning_lens: security
+    proposition: insufficient subset cannot exercise threshold-held authority
+    polarity: negative
+    expected_state: reject
+    provenance: external-implementer-feedback
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+    contract_fixture: NF-SECURITY-THRESHOLD
+  - id: INV-CA-CMP-001
+    path: tests/fixtures/negative-assurance-matrix.yaml#CA-CMP-001
+    owning_lens: composition
+    proposition: component PASS does not imply composition PASS
+    polarity: negative
+    expected_state: indeterminate
+    provenance: external-implementer-feedback
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+    contract_fixture: NF-COMPOSITION-RULE
+  - id: INV-CA-DRARM-001
+    path: tests/fixtures/negative-assurance-matrix.yaml#CA-DRARM-001
+    owning_lens: drarm
+    proposition: unbounded fan-out is surfaced without assigning authority semantics to DRARM
+    polarity: negative
+    expected_state: review-required
+    provenance: external-implementer-feedback
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-DRARM-002
+    contract_fixture: NF-DRARM-RECURSION
+  - id: INV-RES-AUTH-001
+    path: tests/fixtures/resolution-assurance-matrix.yaml#RES-AUTH-001
+    owning_lens: rahp
+    proposition: authenticity without freshness remains indeterminate
+    polarity: negative
+    expected_state: indeterminate
+    provenance: resolution-assurance
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+  - id: INV-RES-REC-001
+    path: tests/fixtures/resolution-assurance-matrix.yaml#RES-REC-001
+    owning_lens: rahp
+    proposition: authentic but unrecognized specification remains indeterminate
+    polarity: negative
+    expected_state: indeterminate
+    provenance: resolution-assurance
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+  - id: INV-RES-VER-001
+    path: tests/fixtures/resolution-assurance-matrix.yaml#RES-VER-001
+    owning_lens: security
+    proposition: authenticated retrieval does not establish requested version applicability
+    polarity: negative
+    expected_state: reject
+    provenance: resolution-assurance
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+  - id: INV-RES-DRARM-001
+    path: tests/fixtures/resolution-assurance-matrix.yaml#RES-DRARM-001
+    owning_lens: drarm
+    proposition: recursive resolution without work bounds requires review
+    polarity: negative
+    expected_state: review-required
+    provenance: resolution-assurance
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-DRARM-002
+    contract_fixture: NF-DRARM-RECURSION
+  - id: INV-FALSE-INDEPENDENCE
+    path: examples/cross-spec/false-independence-sybil/pressure-test.yaml
+    owning_lens: composition
+    proposition: multiplicity must not be promoted into independence
+    polarity: mixed
+    expected_state: modeled
+    provenance: source-pinned-pressure-test
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/false-independence-sybil/pressure-test.yaml
+  - id: INV-QUORUM-CAPTURE
+    path: examples/cross-spec/quorum-capture/pressure-test.yaml
+    owning_lens: composition
+    proposition: satisfying a threshold does not by itself establish legitimate independent approval
+    polarity: mixed
+    expected_state: modeled
+    provenance: source-pinned-pressure-test
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/quorum-capture/pressure-test.yaml
+  - id: INV-DPIP-PROMOTION-GATE
+    path: tests/test_dpip_handoff.py#test_promotion_gate_rejects_missing_target
+    owning_lens: specialist
+    proposition: a privacy referral without a bounded examination target is not promotable
+    polarity: negative
+    expected_state: reject
+    provenance: specialist-handoff-contract
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: tests/test_dpip_handoff.py#test_gatherer_native_provenance_is_supported
+    contract_fixture: NF-SPECIALIST-DPIP-BOUNDARY
+  - id: INV-VTI-VALIDITY-NOT-COMPLETION
+    path: examples/cross-spec/vti-semantic-completion/evidence.yaml#VTI-COMP-SEM-001
+    owning_lens: composition
+    proposition: credential validity does not establish completion of the cited Trust Task exchange
+    polarity: negative
+    expected_state: indeterminate
+    provenance: source-pinned-vti-convergence
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/vti-semantic-completion/evidence.yaml#technical-success-current-authority
+    contract_fixture: NF-VTI-VALIDITY-NOT-COMPLETION
+  - id: INV-VTI-OUTCOME-EVIDENCE-CORRELATOR
+    path: examples/cross-spec/vti-privacy-composition/evidence.yaml#VTI-COMP-PRV-001
+    owning_lens: specialist
+    proposition: outcome evidence must not be assumed privacy-preserving without attributable correlator assessment
+    polarity: negative
+    expected_state: indeterminate
+    provenance: source-pinned-vti-convergence
+    executable: true
+    ci_gated: true
+    reused: true
+    positive_counter_case: examples/cross-spec/vti-assessment/privacy-composition.yaml#A composed interaction may legitimately preserve unlinkability
+    contract_fixture: NF-VTI-OUTCOME-EVIDENCE-CORRELATOR
+
+  - id: INV-REVIEW-CONTRADICTORY-EVIDENCE
+    path: fixtures/negative/review-contradictory-evidence.yaml
+    owning_lens: rahp
+    proposition: material contradictory evidence cannot be normalized to positive assurance before reconciliation
+    polarity: negative
+    expected_state: indeterminate
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+    contract_fixture: NF-REVIEW-CONTRADICTORY-EVIDENCE
+  - id: INV-REVIEW-WRONG-SUBJECT
+    path: fixtures/negative/review-wrong-subject.yaml
+    owning_lens: rahp
+    proposition: evidence for another subject cannot establish the reviewed subject
+    polarity: negative
+    expected_state: indeterminate
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+    contract_fixture: NF-REVIEW-WRONG-SUBJECT
+  - id: INV-REVIEW-WRONG-SOURCE-PIN
+    path: fixtures/negative/review-wrong-source-pin.yaml
+    owning_lens: security
+    proposition: evidence from another immutable revision cannot establish the reviewed revision
+    polarity: negative
+    expected_state: reject
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/fixtures/resolution-assurance-matrix.yaml#RES-POS-001
+    contract_fixture: NF-REVIEW-WRONG-SOURCE-PIN
+  - id: INV-REVIEW-MALFORMED-SPECIALIST
+    path: fixtures/negative/review-malformed-specialist.yaml
+    owning_lens: specialist
+    proposition: malformed required specialist output cannot become positive assurance
+    polarity: negative
+    expected_state: indeterminate
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/test_dpip_handoff.py#test_gatherer_native_provenance_is_supported
+    contract_fixture: NF-REVIEW-MALFORMED-SPECIALIST
+  - id: INV-REVIEW-PARTIAL-EXECUTION
+    path: fixtures/negative/review-partial-execution.yaml
+    owning_lens: rahp
+    proposition: workflow completion without a required assessment stage cannot establish GREEN
+    polarity: negative
+    expected_state: indeterminate
+    provenance: independent-review-false-assurance-challenge
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+    contract_fixture: NF-REVIEW-PARTIAL-EXECUTION

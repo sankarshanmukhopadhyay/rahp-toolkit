@@ -145,8 +145,47 @@ jobs:
       - name: Validate documentation information architecture
         run: python3 tools/validate_documentation_ia.py
 
+      - name: Validate reusable negative-fixture contract
+        run: python3 tools/validate_negative_fixtures.py
+      - name: Validate independent-review readiness contracts
+        run: python3 tools/validate_review_readiness.py
+      - name: Record independent-review clean-runner baseline
+        run: |
+          {
+            echo "schema: rahp-review-reproduction/v1"
+            echo "commit: $GITHUB_SHA"
+            echo "runner_os: $RUNNER_OS"
+            echo "python: $(python3 --version 2>&1)"
+            echo "pip: $(python3 -m pip --version)"
+            python3 -m pip freeze
+          } > "$RUNNER_TEMP/rahp-review-reproduction.txt"
+      - name: Execute independent-review reproduction path
+        run: |
+          set -o pipefail
+          python3 tools/validate_review_readiness.py 2>&1 | tee -a "$RUNNER_TEMP/rahp-review-reproduction.txt"
+          python3 tools/validate_negative_fixtures.py 2>&1 | tee -a "$RUNNER_TEMP/rahp-review-reproduction.txt"
+          python3 tools/validate_engine_contract.py 2>&1 | tee -a "$RUNNER_TEMP/rahp-review-reproduction.txt"
+      - name: Upload independent-review reproduction evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: rahp-independent-review-reproduction
+          path: ${{ runner.temp }}/rahp-review-reproduction.txt
+          if-no-files-found: error
+
       - name: Test source-monitor resilience
         run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Execute bounded human-power DPIP reconciliation
+        run: >-
+          python3 tools/human_power_reconciliation.py
+          --input fixtures/human-power/dpip-reconciliation-input.json
+          --output "${{ runner.temp }}/rahp-human-power-reconciliation.json"
+          --check
+      - name: Upload human-power reconciliation evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: rahp-human-power-reconciliation
+          path: ${{ runner.temp }}/rahp-human-power-reconciliation.json
+          if-no-files-found: error
       - name: Validate DTG repository review worker
         run: python3 tools/dtg_repository_review_worker.py --self-test
       - name: Validate DTG controller incident publisher
@@ -164,6 +203,42 @@ jobs:
 
       - name: Validate CAWG deployment integrity
         run: python3 tools/validate_cawg_instance.py
+
+      - name: Validate VTI lifecycle freshness evidence
+        run: python3 tools/validate_vti_lifecycle_freshness.py
+
+      - name: Validate VTI delegation lineage evidence
+        run: python3 tools/validate_vti_delegation_lineage.py
+
+      - name: Validate VTI human control evidence
+        run: python3 tools/validate_vti_human_control.py
+
+      - name: Validate VTI failure and indeterminacy
+        run: python3 tools/validate_vti_failure_indeterminacy.py
+
+      - name: Validate VTI configuration materiality
+        run: python3 tools/validate_vti_configuration_materiality.py
+
+      - name: Validate VTI privacy composition evidence
+        run: python3 tools/validate_vti_privacy_composition.py
+
+      - name: Validate VTI component-substitution evidence gate
+        run: python3 tools/validate_vti_component_substitution_gate.py
+
+      - name: Validate VTI continuous convergence
+        run: python3 tools/vti_convergence.py
+
+      - name: Validate VTI assessment profile
+        run: python3 tools/validate_vti_assessment_profile.py
+
+      - name: Validate VTI assessment index
+        run: python3 tools/render_vti_assessment_index.py --check
+
+      - name: Validate VTI programme reconciliation
+        run: python3 tools/render_vti_programme_reconciliation.py --check
+
+      - name: Validate VTI T12 release/upstream judgment
+        run: python3 tools/validate_vti_t12_judgment.py
 
       - name: Validate selected issue-watch registries
         run: python3 tools/validate_issue_watch_registries.py

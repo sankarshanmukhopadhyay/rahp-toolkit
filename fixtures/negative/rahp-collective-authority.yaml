@@ -1,0 +1,44 @@
+schema: rahp-negative-fixture/v1
+id: NF-RAHP-COLLECTIVE-AUTHORITY
+proposition:
+  claim: collective authority is currently established
+  owner: rahp
+lens:
+  primary: rahp
+  secondary: [composition, security]
+evidence:
+  established:
+    - participant_identity
+    - participant_signature_validity
+    - current_membership_evidence
+  missing:
+    - collective_authority_evidence
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [valid_participants]
+  to: [collective_authority]
+expected:
+  state: indeterminate
+  terminal_colour: amber
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
+  proposition: current authority, threshold applicability, authorized co-approver, exact-decision binding and freshness are positively established
+source:
+  kind: fixture
+  ref: tests/fixtures/negative-assurance-matrix.yaml#CA-RAHP-001
+  provenance: 2026-09-22 collective-authority negative assurance matrix
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies: [current_composition_rule]
+drarm:
+  applicable: false
+retest_triggers:
+  - collective-authority evidence becomes available
+  - governing threshold or membership state changes
+evidence_maturity: executable

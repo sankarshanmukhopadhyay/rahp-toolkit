@@ -888,3 +888,91 @@ records:
     rationale: Auditability should not require unnecessary durable cross-context correlation when a less disclosing
       proof can satisfy the assurance objective.
     condition: null
+
+- id: RKP-AUTH-04
+  name: Commitment authority mismatch
+  family: Authority and delegation
+  description: An authenticated or generally authorized actor attempts a material commitment that is not covered by the exact active mandate, scope, constraints or policy at the commitment boundary.
+  harm_patterns:
+  - HRM-AUT-04
+  - HRM-SEC-02
+  origin: design
+  scope: cross-party
+  temporal_mode: immediate
+  reversibility: costly
+  observability: detectable
+  applicability:
+    requires:
+    - delegated or principal-derived authority
+    - consequential action or commitment
+  related_patterns:
+  - RKP-AUTH-01
+  - RKP-AUTH-02
+  - RKP-AUTH-03
+  guardrail_requirement:
+    status: required
+    rationale: Commitment admission must positively establish current action-specific authority rather than infer it from identity or general authorization.
+    condition: exact action authority is not positively established
+- id: RKP-AUTH-05
+  name: Approval not bound to exact commitment
+  family: Authority and delegation
+  description: A human or organizational approval is accepted for a materially different, superseded or stale action than the commitment being admitted.
+  harm_patterns:
+  - HRM-AUT-04
+  - HRM-SEC-02
+  origin: design
+  scope: cross-party
+  temporal_mode: immediate
+  reversibility: costly
+  observability: detectable
+  applicability:
+    requires:
+    - approval-gated authority
+  related_patterns:
+  - RKP-AUTH-04
+  guardrail_requirement:
+    status: required
+    rationale: Approval must be bound to the exact commitment digest and current policy context.
+    condition: approval binding is absent, mismatched or stale
+- id: RKP-AUTH-06
+  name: Reputation or capability substituted for authority
+  family: Authority and delegation
+  description: Reputation, capability advertisement, assurance posture or technical ability is treated as permission to create a material commitment.
+  harm_patterns:
+  - HRM-AUT-04
+  - HRM-INF-01
+  origin: design
+  scope: cross-party
+  temporal_mode: immediate
+  reversibility: costly
+  observability: detectable
+  applicability: {}
+  related_patterns:
+  - RKP-AUTH-01
+  - RKP-AUTH-04
+  guardrail_requirement:
+    status: required
+    rationale: Advisory or technical signals must not enlarge principal-derived authority.
+    condition: non-authority evidence is used as an authorization grant
+- id: RKP-AUTH-07
+  name: Commitment authority cannot be reconstructed
+  family: Authority and delegation
+  description: A later verifier cannot establish which mandate, policy, status, approval and exact action were evaluated when a material commitment was admitted or rejected.
+  harm_patterns:
+  - HRM-GOV-02
+  - HRM-ECO-02
+  origin: design
+  scope: cross-party
+  temporal_mode: delayed
+  reversibility: costly
+  observability: detectable
+  applicability:
+    requires:
+    - consequential action or commitment
+  related_patterns:
+  - RKP-DEL-02
+  - RKP-AUTH-04
+  guardrail_requirement:
+    status: required
+    rationale: Material authority decisions need replayable evidence sufficient to distinguish historical authority from present state.
+    condition: decision provenance or time-specific authority evidence is unavailable

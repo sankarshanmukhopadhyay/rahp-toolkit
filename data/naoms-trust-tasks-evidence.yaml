@@ -1,0 +1,74 @@
+schema: rahp-implementation-evidence/v1
+id: NAOMS-TRUST-TASKS-WD-0.6.0-2026-09-22
+subject:
+  specification: Trust Tasks
+  version: "WD 0.6.0"
+  repository: trustoverip/dtgwg-trust-tasks-tf
+observation:
+  observed_on: "2026-09-22"
+  source_kind: external-implementer-feedback
+  implementer: NAOMS
+  public_source_pin:
+    state: unavailable
+    reason: >-
+      The supplied restart evidence records the implementation feedback and
+      specification version but does not provide a public NAOMS repository
+      revision. RAHP must not invent one.
+evidence_classification:
+  implementation_independence: plausible
+  conformance: not_established
+  interoperability: not_established
+  second_implementation_relevance: potential_evidence
+  endorsement_or_certification: false
+independence_basis:
+  - implementation stack differs materially from the reference ecosystem
+  - transport model differs materially from the reference ecosystem
+  - implementation choices were reported as independently developed
+observations:
+  threshold_composition:
+    proposition: >-
+      Threshold-held authority is one collective act; bilateral decomposition
+      can leave individually valid interactions while failing to state the true
+      authority holder or exercise rule.
+    disposition: assurance-relevant-residual
+    durable_owner: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/65
+  cryptosuite_interoperability:
+    proposition: >-
+      Two otherwise acceptable implementations may fail the interoperability
+      proposition when their supported cryptosuite sets do not intersect.
+    disposition: confirmed-capability-level-evidence
+    evidence_owner: https://github.com/sankarshanmukhopadhyay/trust-protocol-interop-lab/issues/238
+    boundary: >-
+      Capability-set interoperability only; not independent cryptographic
+      correctness and not an upstream conformance decision.
+  registry_maturity:
+    observation_date: "2026-09-22"
+    durable_registry_epoch:
+      issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/583
+      source_pin: bbe1ddc77ac31d6e09c5dd655a86976d80afd8fd
+      observed_on: "2026-09-11"
+    reported_count_difference:
+      disposition: counting-method-difference-unresolved
+      note: >-
+        The NAOMS report and the completed RAHP registry epoch may count
+        different units (for example slugs, slug-version rows, or another
+        denominator). No current fact is inferred from the historical count.
+    zero_candidate_or_standard_entries:
+      disposition: historical-informational-only
+      note: >-
+        Preserve as an observation at the reported time. It is not promoted to
+        a current registry-state claim.
+    stabilization_horizon:
+      disposition: assurance-relevant-residual
+      note: >-
+        Registry maturity can affect evidence freshness and reassessment timing,
+        but the observation does not alter normative authority.
+retest_triggers:
+  - public NAOMS source revision becomes available
+  - Trust Tasks semantics materially change
+  - cryptosuite requirements or mandatory-to-implement floor changes
+  - registry maturity/status semantics materially change
+non_inference:
+  - implementation_independence_does_not_imply_conformance
+  - local_conformance_does_not_imply_interoperability
+  - historical_registry_observation_does_not_imply_current_registry_state

@@ -1,0 +1,55 @@
+version: 1
+release: v2.4.0
+qualification: vti-composition-assessment-and-evidence-conservative-reconciliation
+stable_compatibility:
+  engine_contract: rahp-engine-contract-v1
+  engine_revision: '1.3'
+  normalized_result_schema: 1
+  evidence_retention_contract: rahp-evidence-retention-v1
+release_thesis: >-
+  v2.4.0 packages the VTI composition-assessment programme as a stable,
+  reusable RAHP product capability without weakening evidence-conservative
+  semantics or changing the stable engine/result/evidence contract families.
+qualified_capabilities:
+  vti_version_pinned_assessment_profile: true
+  vti_machine_readable_assessment_contract: true
+  multi_submission_validation: true
+  deterministic_assessment_index: true
+  deterministic_programme_reconciliation: true
+  eight_supported_composition_families: true
+  specialist_privacy_indeterminacy_preserved: true
+  component_substitution_evidence_gate_preserved: true
+  release_upstream_packaging_judgment: true
+vti_baseline:
+  repository: trustoverip/dtgwg-vti-spec
+  document_status: Working Draft 0.1.0
+  commit: 75391a27a5d9a1794266b2e3bdeb8be68fa4db40
+  family_count: 10
+  verified_supported_families: 8
+  specialist_evidence_required_families: 1
+  evidence_required_families: 1
+  current_submissions: 9
+  stale_or_superseded_submissions: 0
+  privacy_assessment:
+    id: RAHP-VTI-PRV-001
+    disposition: indeterminate
+  component_substitution:
+    disposition: evidence-required
+    synthetic_submission_forbidden: true
+invariants:
+  missing_evidence_never_pass: true
+  component_pass_not_composition_pass: true
+  workflow_success_not_assurance_success: true
+  normative_convergence_not_implementation_conformance: true
+  indeterminate_not_silently_promoted: true
+  specialist_boundary_preserved: true
+  synthetic_substitution_not_promoted: true
+  upstream_vti_remains_normative_authority: true
+release_cut:
+  butterfly_name_selection: governed-pinned-pool
+  selected_common_name: Redbreast Jezebel
+  selected_scientific_name: Delias acalis
+  selected_on: '2026-09-22'
+  tag: v2.4.0
+  publish_only_after_qualification: true
+  publication_workflow: .github/workflows/release.yml

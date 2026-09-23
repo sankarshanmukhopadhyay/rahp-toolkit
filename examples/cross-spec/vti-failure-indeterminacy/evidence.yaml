@@ -1,0 +1,48 @@
+evidence:
+  id: VTI-COMP-IND-001
+  title: Indeterminate is a first-class evaluation outcome with explicit policy handling
+  tracking_issue: 708
+  evidence_class: composition-fixture
+  proposition: >-
+    A trust evaluation may remain indeterminate when evidence is missing, stale,
+    unavailable, contradictory, or otherwise insufficient. That evaluation state
+    must remain distinguishable from support and refutation. Relying policy may
+    decide how to act on an indeterminate evaluation, but the policy action must
+    not rewrite the underlying evaluation outcome.
+  vectors:
+    - id: supported-explicit-allow
+      evaluation_outcome: supported
+      policy_action: allow
+      expected_evaluation: supported
+      expected_decision: ALLOW
+    - id: refuted-explicit-refuse
+      evaluation_outcome: refuted
+      policy_action: refuse
+      expected_evaluation: refuted
+      expected_decision: REFUSE
+    - id: indeterminate-explicit-escalate
+      evaluation_outcome: indeterminate
+      policy_action: escalate
+      expected_evaluation: indeterminate
+      expected_decision: ESCALATE
+    - id: indeterminate-explicit-refuse
+      evaluation_outcome: indeterminate
+      policy_action: refuse
+      expected_evaluation: indeterminate
+      expected_decision: REFUSE
+    - id: indeterminate-explicit-allow
+      evaluation_outcome: indeterminate
+      policy_action: allow
+      expected_evaluation: indeterminate
+      expected_decision: ALLOW_BY_POLICY
+    - id: indeterminate-policy-silent
+      evaluation_outcome: indeterminate
+      policy_action: silent
+      expected_evaluation: indeterminate
+      expected_decision: REFUSE
+  counter_boundary: >-
+    An explicit relying policy may choose a consequential action when an
+    evaluation is indeterminate, including escalation, refusal, or a deliberately
+    risk-accepted allow. The assessment requires the indeterminate evaluation to
+    remain visible and attributable; it does not require every policy to choose
+    the same action.
