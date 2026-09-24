@@ -45,6 +45,27 @@ profile / instance / corpus / example
 
 The reverse dependency is a CI failure. A bundled ecosystem may demonstrate or extend RAHP; it may not become a prerequisite for the portable core.
 
+
+### Consumer-independence guardrail
+
+Portability and consumer independence are related but distinct claims. A stripped core can remain executable while consumer-specific concepts gradually leak into otherwise shared method, schema or controller surfaces. `INV-CONSUMER-INDEPENDENCE-001` closes that gap.
+
+The validator recursively scans the declared authoritative portable surfaces under `method/`, `packages/core/` and `packages/schema/`, plus explicitly enumerated generic controller and assurance tools. Declared DTG/VTI, CAWG/C2PA and other consumer namespaces are prohibited there. Consumer-owned profiles, instances, examples, schemas, tools and workflows remain free to depend on portable RAHP contracts.
+
+The durable dependency rule is:
+
+```text
+consumer profile / instance / programme
+                  ↓
+             portable RAHP
+                  ↓
+             stable contracts
+```
+
+A consumer may reveal a reusable assurance need. That need enters the core only after being expressed in consumer-neutral RAHP semantics. If the semantics genuinely belong to the consumer, they remain consumer-scoped.
+
+The same validator also runs negative evidence: a synthetic consumer dependency is injected into a temporary portable-core surface and qualification must reject it. This prevents the guardrail from becoming a declaration that is never exercised.
+
 ## v0.5 portability contract
 
 An adopter must be able to:
