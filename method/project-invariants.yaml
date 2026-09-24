@@ -16,6 +16,15 @@ invariants:
         - portable-core-to-deployment-profile
         - portable-contract-to-ecosystem-governance-state
     portable_core_files:
+      - method/engine-contract.yaml
+      - method/lifecycle.yaml
+      - method/evidence-retention.yaml
+      - method/catalogue/assurance-patterns.yaml
+      - method/catalogue/control-patterns.yaml
+      - method/catalogue/evidence-patterns.yaml
+      - method/catalogue/guardrail-patterns.yaml
+      - method/catalogue/harm-patterns.yaml
+      - method/catalogue/risk-patterns.yaml
       - tools/rahp.py
       - tools/review.py
       - tools/validate_engine_contract.py
@@ -84,7 +93,9 @@ invariants:
         - portable-core-to-consumer-schema
         - portable-core-to-consumer-governance-state
     portable_core_roots:
-      - method
+      - method/schema
+      - method/glossary
+      - method/resilience
       - packages/core
       - packages/schema
     portable_core_files:
@@ -108,8 +119,7 @@ invariants:
       - .yaml
       - .yml
       - .md
-    excluded_paths:
-      - method/project-invariants.yaml
+    excluded_paths: []
     prohibited_consumer_tokens:
       - profiles/dtg/
       - instances/dtg/
