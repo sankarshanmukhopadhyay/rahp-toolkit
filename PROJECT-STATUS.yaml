@@ -33,6 +33,10 @@ release_intent: >-
   indeterminacy, and the component-substitution evidence gate as a stable additive
   toolkit capability without broadening claims beyond evidence.
 development_posture: >-
-  Post-v2.4 work should deepen realization conformance, non-DTG portability, specialist
+  Post-v2.4 work uses materiality-bounded reassessment as the default operating model:
+  select the smallest assurance/evidence scope that completely covers materially affected
+  propositions, preserve explicit uncertainty and evidence freshness outside that scope,
+  and retain full campaign/rebaseline execution for cases where bounded assurance cannot
+  be defended. Continue deepening realization conformance, non-DTG portability, specialist
   interoperability and longitudinal observability while preserving the v1 engine contract,
   result schema 1 and evidence-retention contract.
