@@ -6,6 +6,7 @@ selection is declarative through registry_path + composition_id; portfolio-
 specific dispatch wrappers are intentionally forbidden.
 """
 from pathlib import Path
+import subprocess
 import sys
 import yaml
 
@@ -61,6 +62,18 @@ def main() -> int:
         else:
             validate_trigger_inputs(trigger_name, trigger, errors)
 
+    selector = subprocess.run(
+        [sys.executable, str(ROOT / "tools/cross_spec_selection.py"), "--self-test"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if selector.returncode != 0:
+        errors.append(
+            "cross-spec materiality selector self-test failed: "
+            + (selector.stderr.strip() or selector.stdout.strip())
+        )
+
     for path in REMOVED_WRAPPERS:
         if path.exists():
             errors.append(
@@ -104,6 +117,7 @@ def main() -> int:
         runnable = sum(1 for item in registry.get("compositions", []) if item.get("runnable") is True)
         print(f"- {profile_id}: {runnable} runnable composition(s) via generic executor")
     print("- generic workflow: workflow_dispatch + workflow_call")
+    print("- materiality selector: core-by-default, conditional-on-affected-repository, full-on-explicit-plan")
     print("- profile-specific workflow wrappers: absent")
     return 0
 
