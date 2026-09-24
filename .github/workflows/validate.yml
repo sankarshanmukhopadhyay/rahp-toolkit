@@ -103,6 +103,8 @@ jobs:
         run: python3 tools/render_portable_catalogue_docs.py --check
       - name: Validate portable method invariants
         run: python3 tools/validate_v04_method.py
+      - name: Validate project architecture invariants
+        run: python3 tools/validate_project_invariants.py
       - name: Validate portable assurance lineage
         run: python3 tools/validate_assurance_lineage.py
       - name: Validate governed remediation and retest lineage
