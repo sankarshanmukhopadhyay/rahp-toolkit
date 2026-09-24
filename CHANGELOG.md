@@ -7,6 +7,21 @@ parent: Reference
 ---
 # Changelog
 
+## Unreleased — post-v2.4
+
+### Assurance execution model
+
+- Made DTG cross-specification execution materiality-driven while retaining all maintained runnable compositions.
+- Added profile-owned `core`, `conditional` and `reference` execution classes for the DTG exemplar; these are not portable RAHP normative vocabulary.
+- Preserved explicit full campaign/rebaseline execution for cases where bounded reassessment cannot defend the current conclusion.
+- Reduced redundant scheduled/recovery and benchmark execution without weakening evidence requirements.
+- Completed the 2026-09-24 DTG/VTC current-pin cross-specification rebaseline and preserved prior assessments as immutable historical lineage.
+- Clarified that assurance quality is determined by complete coverage of materially affected propositions and admissible evidence, not by maximizing execution breadth.
+
+### Compatibility
+
+No change to `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 or `rahp-evidence-retention-v1`.
+
 ## v2.4.0 — 2026-09-22 — Redbreast Jezebel
 
 ### Added / advanced
