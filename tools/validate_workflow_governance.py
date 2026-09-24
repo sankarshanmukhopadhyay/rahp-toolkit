@@ -102,6 +102,24 @@ def main() -> int:
                     "dispatch/call the reusable workflow directly with declarative inputs"
                 )
 
+    if policy.get("forbid_hourly_recovery_polling") is True:
+        for name, metadata in inventory.items():
+            if not isinstance(metadata, dict) or metadata.get("class") != "lifecycle-controller":
+                continue
+            path = WORKFLOW_ROOT / name
+            if not path.exists():
+                continue
+            data = load_base(path) or {}
+            schedules = (data.get("on") or {}).get("schedule") or []
+            for entry in schedules:
+                cron = str((entry or {}).get("cron") or "").strip()
+                fields = cron.split()
+                if len(fields) == 5 and fields[1] == "*":
+                    errors.append(
+                        f"{name}: hourly recovery polling is forbidden; "
+                        "preserve the event-driven primary path and use a bounded recovery cadence"
+                    )
+
     removed_wrappers = {
         "cawg-cross-spec-pressure-test.yml",
         "dtg-cross-spec-pressure-test.yml",
@@ -122,6 +140,7 @@ def main() -> int:
     print("- responsibilities unique")
     print("- dispatch-only wrappers absent")
     print("- canonical clean-room boundary preserved")
+    print("- hourly lifecycle recovery polling absent")
     return 0
 
 
