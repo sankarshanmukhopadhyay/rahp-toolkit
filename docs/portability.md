@@ -50,7 +50,7 @@ The reverse dependency is a CI failure. A bundled ecosystem may demonstrate or e
 
 Portability and consumer independence are related but distinct claims. A stripped core can remain executable while consumer-specific concepts gradually leak into otherwise shared method, schema or controller surfaces. `INV-CONSUMER-INDEPENDENCE-001` closes that gap.
 
-The validator recursively scans the declared authoritative portable surfaces under `method/`, `packages/core/` and `packages/schema/`, plus explicitly enumerated generic controller and assurance tools. Declared DTG/VTI, CAWG/C2PA and other consumer namespaces are prohibited there. Consumer-owned profiles, instances, examples, schemas, tools and workflows remain free to depend on portable RAHP contracts.
+The validator recursively scans the declared semantic core surfaces under `method/schema/`, `method/glossary/`, `method/resilience/`, `packages/core/` and `packages/schema/`, together with the portable catalogue pattern files and explicitly enumerated generic controller and assurance tools. Release qualification, benchmark, provenance and consumer-programme records are deliberately outside this semantic-core scan because they may cite consumer evidence without creating a core dependency. Declared DTG/VTI, CAWG/C2PA and other consumer namespaces are prohibited from the scanned core surfaces. Consumer-owned profiles, instances, examples, schemas, tools and workflows remain free to depend on portable RAHP contracts.
 
 The durable dependency rule is:
 
