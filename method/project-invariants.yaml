@@ -65,3 +65,70 @@ invariants:
       resilience-risks:
         evidence: tools/validate_resilience.py
         marker: DRARM
+
+  - id: INV-CONSUMER-INDEPENDENCE-001
+    title: Portable core consumer independence
+    proposition: >-
+      Consumer-specific profiles, deployments and reference programmes may consume and
+      exercise portable RAHP contracts, but consumer-specific vocabulary, paths, schemas,
+      governance state and runtime assumptions must not become dependencies of the
+      authoritative portable core.
+    dependency_direction:
+      allowed:
+        - consumer-to-portable-core
+        - consumer-profile-to-portable-contract
+        - consumer-evidence-to-portable-evidence-contract
+      forbidden:
+        - portable-core-to-consumer-profile
+        - portable-core-to-consumer-instance
+        - portable-core-to-consumer-schema
+        - portable-core-to-consumer-governance-state
+    portable_core_roots:
+      - method
+      - packages/core
+      - packages/schema
+    portable_core_files:
+      - tools/rahp.py
+      - tools/review.py
+      - tools/assessment_controller.py
+      - tools/autonomous_assurance_controller.py
+      - tools/assessor_contract.py
+      - tools/assurance.py
+      - tools/assurance_fsm.py
+      - tools/assurance_invariants.py
+      - tools/assurance_obligation.py
+      - tools/assurance_posture.py
+      - tools/assurance_record.py
+      - tools/assurance_state.py
+      - tools/evidence_router.py
+      - tools/validate_engine_contract.py
+    scan_extensions:
+      - .py
+      - .ts
+      - .json
+      - .yaml
+      - .yml
+      - .md
+    excluded_paths:
+      - method/project-invariants.yaml
+    prohibited_consumer_tokens:
+      - profiles/dtg/
+      - instances/dtg/
+      - dtg_
+      - dtg-
+      - trustoverip/dtgwg-
+      - profiles/cawg/
+      - instances/cawg/
+      - cawg_
+      - cawg-
+      - c2pa
+      - vti_
+      - vti-
+      - profiles/a2a/
+      - instances/a2a/
+      - profiles/arpa/
+      - instances/arpa/
+    negative_fixture:
+      source: tests/fixtures/project-invariants/consumer-dependency-leak.yaml
+      inject_as: method/synthetic-consumer-dependency.yaml
+      expected_token: profiles/dtg/
