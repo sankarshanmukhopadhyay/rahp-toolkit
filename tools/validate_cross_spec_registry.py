@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import argparse, sys, yaml
 ROOT=Path(__file__).resolve().parent.parent
+EXECUTION_CLASSES={'core','conditional','reference'}
 
 def load(path: Path):
     d=yaml.safe_load(path.read_text(encoding='utf-8')) or {}
@@ -17,8 +18,13 @@ def validate_composition(c: dict, p: str, errors: list[str]) -> None:
         if '/' not in str(part.get('repository','')): errors.append(f'{p} has invalid repository')
         if not part.get('corpus_id'): errors.append(f'{p} component corpus_id is required')
     if c.get('runnable'):
-        for key in ('corpus_id','assessment','evidence_grade'):
+        for key in ('corpus_id','assessment','evidence_grade','execution_class','materiality_rationale'):
             if not c.get(key): errors.append(f'{p}.{key} required when runnable')
+        execution_class=c.get('execution_class')
+        if execution_class not in EXECUTION_CLASSES:
+            errors.append(f'{p}.execution_class must be one of {sorted(EXECUTION_CLASSES)}')
+        if execution_class == 'reference':
+            errors.append(f'{p}.execution_class reference cannot be runnable')
         if c.get('assessment') and not (ROOT/c['assessment']).exists(): errors.append(f"{p}.assessment does not exist: {c['assessment']}")
 
 def main()->int:
@@ -54,6 +60,7 @@ def main()->int:
     if args.composition:
         print(f"cross-spec registry selected composition valid: profile={profile.get('id')} composition={args.composition}")
     else:
-        print(f"cross-spec registry valid: profile={profile.get('id')} {len(comps)} declared, {sum(bool(c.get('runnable')) for c in comps)} runnable")
+        classes={name: sum(1 for c in comps if c.get('execution_class') == name) for name in sorted(EXECUTION_CLASSES)}
+        print(f"cross-spec registry valid: profile={profile.get('id')} {len(comps)} declared, {sum(bool(c.get('runnable')) for c in comps)} runnable, classes={classes}")
     return 0
 if __name__=='__main__': raise SystemExit(main())
