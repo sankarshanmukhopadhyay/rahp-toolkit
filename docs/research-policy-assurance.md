@@ -26,6 +26,35 @@ policy source
 
 The capability is implemented as additive research adapters and workflow tooling. It does **not** modify `tools/assessment_controller.py`, the stable engine contract, terminal assurance semantics, or release metadata.
 
+
+## ODRL 2.2 semantic alignment
+
+Issue #662 now requires the experimental proposition vocabulary to be pressure-tested against the W3C ODRL 2.2 Information Model and Vocabulary before the local vocabulary is treated as durable.
+
+ODRL is used here as a **policy-expression interoperability reference**, not as the RAHP assurance model:
+
+```text
+policy source
+  -> reviewed policy proposition
+      -> ODRL-aligned semantic projection where genuinely equivalent
+      -> explicit partial/profile-candidate/outside-ODRL state otherwise
+  -> RAHP risk / harm / control hypotheses
+  -> evidence obligations / specialist routing
+  -> non-terminal research assessment
+```
+
+The alignment contract is `method/experimental/policy-odrl-alignment-v1.yaml`. It distinguishes `direct`, `profile-candidate`, `partial`, and `outside-odrl` mappings. A coarse local proposition type is **not** sufficient to emit a usable ODRL rule: permissions, prohibitions and duties still need explicit action and target semantics, and applicable party/constraint semantics must be established rather than inferred.
+
+The research branch therefore follows two complementary paths:
+
+1. **Natural-language policy path.** Reviewed propositions receive loss-aware ODRL projection-readiness metadata. If required structure is missing, the result is `insufficient-structure` or `semantic-review-required`; the adapter does not fabricate an ODRL policy.
+2. **ODRL-native control path.** A bounded ODRL 2.2 JSON-LD fixture is ingested deterministically so that already-machine-readable policy semantics can be compared with the natural-language extraction/review path.
+
+Generated ODRL alignment/projection artifacts are derived semantics, not replacement source evidence. A supplied ODRL policy may itself be the pinned governance source being assessed. ODRL conformance or evaluation does not imply legal validity, fairness, runtime conformance, or terminal RAHP assurance.
+
+No RAHP ODRL Profile is defined or authorized by this research. Concepts such as discretion, generic representation, risk/harm hypotheses, evidence obligations, assurance state, specialist routing, residuals and reassessment triggers remain outside ODRL unless future evidence supports a separate profile/design decision.
+
+
 ## What is implemented
 
 | Workstream from #662 | Research implementation | Current boundary |
@@ -171,7 +200,9 @@ The repository-wide unittest suite now covers:
 - deterministic, citable evidence-obligation identifiers and explicit justification;
 - policy-change reassessment and evidence-obligation invalidation;
 - cold-reader synthesis;
-- stable-controller non-regression.
+- stable-controller non-regression;
+- ODRL alignment-state boundaries and refusal to invent missing action/target semantics;
+- deterministic ODRL-native control-fixture ingestion and non-terminal authority boundaries.
 
 The standard command remains:
 
@@ -195,6 +226,7 @@ A future merge to stable `main` should require explicit evidence that:
 - policy delta behaviour is reliable enough for continuous assurance;
 - the end-user artifact is understandable without internal RAHP knowledge;
 - the complete RAHP validation suite remains green;
+- an explicit RAHP-to-ODRL alignment matrix and ODRL-native control case have been independently reviewed;
 - a human explicitly decides the capability should graduate.
 
 Until those gates are met, the branch and PR #667 remain experimental and unmerged.

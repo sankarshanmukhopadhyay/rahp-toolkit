@@ -129,6 +129,31 @@ relationships:
     - precedence decisions require a reviewer rationale and selected subject digest
     - precedence decisions are non-terminal and do not claim legal validity
 
+
+odrl_alignment:
+  contract: rahp-policy-odrl-alignment-v1
+  reference: W3C ODRL 2.2
+  status: experimental
+  role: semantic-interoperability-pressure-test
+  alignment_states:
+    - direct
+    - profile-candidate
+    - partial
+    - outside-odrl
+  invariants:
+    - ODRL is not authoritative for RAHP assurance semantics
+    - generated ODRL projections are derived semantic artifacts rather than source evidence
+    - a supplied ODRL policy may itself be a pinned governance source
+    - missing action, target, party, constraint or other structured semantics MUST NOT be invented
+    - semantic loss or insufficient structure MUST remain explicit
+    - RAHP-only analytical concepts MUST NOT be forced into ODRL
+    - ODRL conformance does not imply legal validity, runtime conformance or RAHP assurance
+    - no RAHP ODRL Profile is authorized by issue 662
+  control_fixture:
+    required: true
+    format: ODRL 2.2 JSON-LD
+    purpose: distinguish natural-language extraction uncertainty from downstream assurance interpretation
+
 boundary:
   policy_evidence_class: governance-source
   policy_is_runtime_evidence: false
@@ -209,3 +234,7 @@ graduation_gates:
   - demonstrate cross-document definition conflicts and precedence decisions without automatic legal resolution
   - demonstrate that richer proposition facets improve review without becoming unreviewed assurance facts
   - record specialist routing for jurisdiction-dependent legal interpretation before any stable merge
+  - demonstrate an explicit RAHP-to-ODRL alignment matrix without coercive mappings
+  - demonstrate deterministic ODRL-native control-fixture ingestion
+  - demonstrate that missing ODRL action/target/party/constraint semantics are not fabricated
+  - preserve ODRL policy-expression versus RAHP assurance boundaries before any stable merge
