@@ -10,6 +10,10 @@ RAHP currently permits **at most 20 workflow files**. The governed inventory is 
 
 A new workflow is therefore not a free additive change. It must demonstrate a distinct execution/state responsibility and either remain within the budget by replacing/consolidating an existing surface or be accompanied by an explicit governance decision to change the budget. `tools/validate_workflow_governance.py` enforces this invariant.
 
+The budget applies to **execution frequency as well as workflow count**. Lifecycle controllers use event-driven advancement as the primary path. Scheduled execution is a recovery backstop and MUST NOT poll hourly. The current controller budget uses six-hour recovery for DPIP handoff, DTG assurance reconciliation, combined-review advancement and DTG repository-review advancement, and a three-hour DPIP lifecycle recovery cadence so the six-hour watchdog boundary still has margin.
+
+Across those five controllers this reduces the scheduled baseline from roughly **120 runs/day to 24 runs/day**, while preserving event-triggered and manual execution.
+
 ## Governing rule
 
 A workflow should exist only when it owns at least one of the following:
@@ -57,6 +61,8 @@ These workflows share bootstrap mechanics but own different event contracts and 
 
 These remain independently useful because they are path-scoped, scheduled, manually selectable, or produce evidence with different runtime/cost characteristics.
 
+`execution-benchmark.yml` is measurement evidence, not a routine assurance gate. Ordinary PRs do not run the full validation + cross-spec benchmark matrix. PR execution is limited to a single core benchmark when the benchmark runner, benchmark contract, or benchmark workflow itself changes; full and cross-spec benchmark profiles remain explicitly dispatchable.
+
 ## Removed workflows
 
 Historical target-specific clean-room workflows were removed after `clean-room-assessment.yml` became the canonical declarative executor:
@@ -96,7 +102,8 @@ When auditing workflows, use this order:
 5. retain distinct lifecycle controllers where state ownership differs;
 6. retain bounded evidence workflows where independent triggers/cost/evidence products are meaningful;
 7. consolidate repeated bootstrap mechanics only when it does not hide state-machine boundaries;
-8. reduce scheduled recovery polling only after event-driven reliability has been demonstrated.
+8. use event-driven controller execution as the primary path and scheduled execution only as a bounded recovery backstop;
+9. do not run expensive benchmark matrices on ordinary PRs unless the benchmark machinery itself is under test.
 
 ## Follow-on candidates
 
@@ -104,5 +111,5 @@ The following remain candidates for evidence-led review rather than automatic co
 
 - extract common issue-worker bootstrap/setup if a reusable worker wrapper remains transparent about the invoked state machine;
 - introduce a generic path-scoped evidence-validator only if multiple existing evidence workflows demonstrate the same execution contract;
-- review hourly recovery schedules after sufficient operational evidence shows event-driven handoffs/reconciliation are reliable;
+- review whether six-hour/three-hour recovery backstops can be reduced further only after event-driven handoffs/reconciliation and watchdog evidence support the change;
 - converge action major versions opportunistically, without mixing version churn with semantic workflow changes.
