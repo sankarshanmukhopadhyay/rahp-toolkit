@@ -32,6 +32,30 @@ The controller owns supported lifecycle transitions and terminalization. Governa
 
 The purpose is to avoid two opposite failures: rerunning everything after every change, or allowing old assurance claims to survive after their evidence has become stale.
 
+## Selection principle
+
+Continuous assurance is **materiality-bounded by default**. The preferred scope is the smallest reassessment set that completely covers the propositions materially affected by the change. Broader execution is not inherently stronger assurance; quality comes from complete proposition coverage, admissible evidence, explicit uncertainty and correct provenance.
+
+A reassessment may therefore:
+
+- reuse still-valid evidence without rerunning it;
+- select only the affected proposition/composition surfaces;
+- route specialist or executable evidence only where the proposition requires it;
+- leave non-selected stale or unavailable evidence explicitly weakened, invalidated or indeterminate; and
+- escalate to a full campaign/rebaseline only when bounded impact cannot be defended.
+
+## Profile execution policies
+
+A deployment profile MAY define execution classes to operationalize its own materiality model. For example, the bundled DTG profile currently uses `core`, `conditional` and `reference` classes:
+
+- `core` — routinely material seams selected by the profile's normal execution plan;
+- `conditional` — runnable seams selected when an implicated component or proposition changes, or during an explicit rebaseline;
+- `reference` — retained evidence that is validated but not routinely executed.
+
+These names are **DTG profile policy**, not portable RAHP normative vocabulary. Other adopters may use different policy terms provided they preserve RAHP's evidence, freshness, uncertainty and lineage semantics.
+
+An explicit full plan remains available for campaign/rebaseline work. Full execution should be selected when several seams are simultaneously invalidated, source/authority topology changes materially, evidence freshness invalidates a substantial part of the assurance graph, specialist evidence contradicts a prior conclusion, or the controller/terminal semantics themselves change. Elapsed time alone is not a reason to rerun everything.
+
 For the meanings of controller outcomes, evaluation residuals and posture projections—and why workflow success or zero findings is not assurance—use [Interpreting results](interpreting-results.md). [Assurance evaluation](assurance-evaluation.md) defines the portable evidence-rich evaluation object.
 
 ## 1. Determine what changed
