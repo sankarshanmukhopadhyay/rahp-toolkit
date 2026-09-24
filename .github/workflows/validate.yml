@@ -5,6 +5,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * 0'
 
 jobs:
   impact:
@@ -31,7 +33,7 @@ jobs:
           full=false
           rm -f /tmp/changed-paths.txt
           case "$EVENT_NAME" in
-            workflow_dispatch)
+            schedule|workflow_dispatch)
               full=true
               ;;
             pull_request)
@@ -73,6 +75,7 @@ jobs:
           fi
 
   validate:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
