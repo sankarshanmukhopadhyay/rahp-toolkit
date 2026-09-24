@@ -1,0 +1,173 @@
+schema: rahp-dtg-cross-spec-rebaseline/v1
+epoch: '2026-09-24'
+source_issue: 782
+parent_campaign: 772
+portfolio_materiality_issue: 771
+execution_evidence_issue: 783
+judgment_rule: >-
+  Historical findings remain lineage evidence only. A current terminal disposition
+  is established from current authority pins, material-delta inspection, current
+  execution/specialist evidence where available, and explicit blockers where not.
+  Missing execution evidence never becomes PASS.
+authority_pins:
+  trustoverip/dtgwg-cred-spec: 1152a523c85febfb6b9b0b597a0783b6cdab884a
+  trustoverip/dtgwg-trust-tasks-tf: fe099568c278edceb93bcca8249c349be4184148
+  trustoverip/dtgwg-zkp-tf: a42bf8c06875cde7c2c9b578279c1be2c682f8ba
+  trustoverip/dtgwg-zkp-spec: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
+  trustoverip/dtgwg-vds-tf: 99eacacedd1729d20528a2ec65ff5288d103ec5e
+  trustoverip/dtgwg-agent-names-tf: 962591709e260616aba066bf08865962f6851bf3
+zkp_authority:
+  requirements_and_discussion: trustoverip/dtgwg-zkp-tf
+  specification_and_conformance: trustoverip/dtgwg-zkp-spec
+  rule: >-
+    Preserve dtgwg-zkp-tf as requirements/discussion lineage. Current specification
+    conclusions use dtgwg-zkp-spec because that repository explicitly owns the
+    specification and conformance apparatus. No historical finding is silently
+    re-attributed across that boundary.
+compositions:
+  - id: trust-tasks--credential-spec
+    execution_class: core
+    priority: P0
+    current_judgment: INDETERMINATE
+    evidence_state: partially_verified
+    current_pins:
+      trustoverip/dtgwg-trust-tasks-tf: fe099568c278edceb93bcca8249c349be4184148
+      trustoverip/dtgwg-cred-spec: 1152a523c85febfb6b9b0b597a0783b6cdab884a
+    evidence:
+      - issue: 783
+        establishes: Current bounded Trust Task to credential execution, replay convergence, VAC use-time authority and presenter/subject/action/scope checks.
+      - issue: 609
+        blocks: Live VAC credentialStatus/revocation, separate live policy/status lookup and bounded freshness/propagation remain unresolved.
+      - issue: 310
+        blocks: Credential/proof identifier correlation evidence is not yet attributable to the original dtg-credentials target.
+    historical_findings:
+      F-001: {disposition: narrowed, current_state: INDETERMINATE}
+      F-002: {disposition: narrowed, current_state: INDETERMINATE}
+      F-003: {disposition: retained-narrowed, current_state: INDETERMINATE}
+    terminal_rationale: >-
+      Current sources and execution evidence materially narrow all three historical
+      findings, but issues 609 and 310 prevent a complete composition PASS.
+  - id: credential-spec--zkp
+    execution_class: core
+    priority: P0
+    current_judgment: INDETERMINATE
+    evidence_state: partially_verified
+    current_pins:
+      trustoverip/dtgwg-cred-spec: 1152a523c85febfb6b9b0b597a0783b6cdab884a
+      trustoverip/dtgwg-zkp-tf: a42bf8c06875cde7c2c9b578279c1be2c682f8ba
+      trustoverip/dtgwg-zkp-spec: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
+    historical_findings:
+      F-001: {disposition: narrowed, current_state: INDETERMINATE}
+      F-002: {disposition: narrowed, current_state: INDETERMINATE}
+      F-003: {disposition: retained-narrowed, current_state: INDETERMINATE}
+    terminal_rationale: >-
+      Current ZKP and Credential primitives are substantially stronger, but the
+      current ZKP specification records credential/Trust Task integration as an
+      integration target rather than demonstrated interoperability.
+  - id: credential-spec--vds
+    execution_class: conditional
+    priority: P0
+    current_judgment: INDETERMINATE
+    evidence_state: partially_verified
+    current_pins:
+      trustoverip/dtgwg-cred-spec: 1152a523c85febfb6b9b0b597a0783b6cdab884a
+      trustoverip/dtgwg-vds-tf: 99eacacedd1729d20528a2ec65ff5288d103ec5e
+    historical_findings:
+      F-001: {disposition: retained, current_state: INDETERMINATE}
+      F-002: {disposition: retained, current_state: INDETERMINATE}
+      F-003: {disposition: retained, current_state: INDETERMINATE}
+    terminal_rationale: >-
+      Credential authority/lifecycle semantics moved materially while VDS did not.
+      No current integrated persistent-state execution evidence establishes closure.
+  - id: trust-tasks--zkp
+    execution_class: conditional
+    priority: P0
+    current_judgment: INDETERMINATE
+    evidence_state: partially_verified
+    current_pins:
+      trustoverip/dtgwg-trust-tasks-tf: fe099568c278edceb93bcca8249c349be4184148
+      trustoverip/dtgwg-zkp-tf: a42bf8c06875cde7c2c9b578279c1be2c682f8ba
+      trustoverip/dtgwg-zkp-spec: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
+    historical_findings:
+      F-001: {disposition: narrowed, current_state: INDETERMINATE}
+      F-002: {disposition: narrowed, current_state: INDETERMINATE}
+    terminal_rationale: >-
+      Both specifications now state proof/authority separation and stronger
+      freshness/replay semantics, but demonstrated Trust Tasks/ZKP interoperability
+      does not yet exist.
+  - id: trust-tasks--vds
+    execution_class: conditional
+    priority: P1
+    current_judgment: INDETERMINATE
+    evidence_state: partially_verified
+    current_pins:
+      trustoverip/dtgwg-trust-tasks-tf: fe099568c278edceb93bcca8249c349be4184148
+      trustoverip/dtgwg-vds-tf: 99eacacedd1729d20528a2ec65ff5288d103ec5e
+    historical_findings:
+      F-001: {disposition: retained, current_state: INDETERMINATE}
+      F-002: {disposition: retained, current_state: INDETERMINATE}
+      F-003: {disposition: retained, current_state: INDETERMINATE}
+    terminal_rationale: >-
+      Trust Tasks changed materially while VDS did not; persistent-state versus
+      current-authority and auditability closure remains unevidenced.
+  - id: zkp--vds
+    execution_class: conditional
+    priority: P1
+    current_judgment: INDETERMINATE
+    evidence_state: partially_verified
+    current_pins:
+      trustoverip/dtgwg-zkp-tf: a42bf8c06875cde7c2c9b578279c1be2c682f8ba
+      trustoverip/dtgwg-zkp-spec: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
+      trustoverip/dtgwg-vds-tf: 99eacacedd1729d20528a2ec65ff5288d103ec5e
+    historical_findings:
+      F-001: {disposition: retained-narrowed, current_state: INDETERMINATE}
+      F-002: {disposition: retained-narrowed, current_state: INDETERMINATE}
+      F-003: {disposition: retained-narrowed, current_state: INDETERMINATE}
+    terminal_rationale: >-
+      Current ZKP lifecycle, freshness and privacy semantics are stronger, but VDS
+      is unchanged and no integrated state/proof provenance evidence exists.
+  - id: agent-names--trust-tasks
+    execution_class: core
+    priority: P1
+    current_judgment: INDETERMINATE
+    evidence_state: partially_verified
+    current_pins:
+      trustoverip/dtgwg-agent-names-tf: 962591709e260616aba066bf08865962f6851bf3
+      trustoverip/dtgwg-trust-tasks-tf: fe099568c278edceb93bcca8249c349be4184148
+    historical_findings:
+      F-001: {disposition: retained-narrowed, current_state: INDETERMINATE}
+      F-002: {disposition: retained, current_state: INDETERMINATE}
+      F-003: {disposition: retained, current_state: INDETERMINATE}
+    terminal_rationale: >-
+      Trust Tasks now more explicitly separates identity, ceremony membership and
+      authority, but Agent Names is unchanged and controller/delegation composition
+      remains without current executable evidence.
+  - id: agent-names--credential-spec
+    execution_class: conditional
+    priority: P1
+    current_judgment: INDETERMINATE
+    evidence_state: partially_verified
+    current_pins:
+      trustoverip/dtgwg-agent-names-tf: 962591709e260616aba066bf08865962f6851bf3
+      trustoverip/dtgwg-cred-spec: 1152a523c85febfb6b9b0b597a0783b6cdab884a
+    historical_findings:
+      F-001: {disposition: retained-narrowed, current_state: INDETERMINATE}
+      F-002: {disposition: retained, current_state: INDETERMINATE}
+      F-003: {disposition: retained-narrowed, current_state: INDETERMINATE}
+    terminal_rationale: >-
+      Credential subject/authority/delegation semantics are substantially stronger,
+      but Agent Names is unchanged and identity/control composition lacks current
+      executable closure.
+summary:
+  composition_count: 8
+  PASS: 0
+  FAIL: 0
+  INDETERMINATE: 8
+  NOT_APPLICABLE: 0
+  historical_findings:
+    total: 23
+    resolved: 0
+    narrowed_or_retained_narrowed: 13
+    retained: 10
+  upstream_defects_proven_by_rebaseline: 0
+  posture: AMBER
