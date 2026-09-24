@@ -100,7 +100,6 @@ invariants:
       - tools/assurance_posture.py
       - tools/assurance_record.py
       - tools/assurance_state.py
-      - tools/evidence_router.py
       - tools/validate_engine_contract.py
     scan_extensions:
       - .py
