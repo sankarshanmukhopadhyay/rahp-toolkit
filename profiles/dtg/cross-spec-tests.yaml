@@ -8,6 +8,10 @@ profile:
   - dtg-instance
   - cross-specification
   description: Optional RAHP example profile for DTG. RAHP core does not require or auto-load this profile.
+  current_rebaseline:
+    epoch: '2026-09-24'
+    source_issue: 782
+    record: instances/dtg/reviews/2026-09-24-cross-spec-rebaseline.yaml
 issue_repository: sankarshanmukhopadhyay/rahp-toolkit
 purpose: Declared DTG cross-specification assurance seams. This registry is profile-owned example data; RAHP core remains
   ecosystem-neutral.
