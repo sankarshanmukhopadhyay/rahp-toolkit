@@ -51,6 +51,8 @@ subject/change observation
 
 The controller, not GitHub workflow choreography, owns assurance state.
 
+RAHP is **materiality-governed**: the preferred assurance scope is the smallest scope that completely covers the materially affected proposition set. Broader execution is not inherently stronger assurance. Evidence that remains valid is retained with provenance; stale, invalidated or unavailable evidence stays explicit; and a full campaign/rebaseline is used when bounded reassessment cannot defend the current conclusion.
+
 ## Start adopting RAHP
 
 **You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
@@ -67,7 +69,7 @@ For a maintained executable first exercise, use [Hello RAHP](examples/hello-rahp
 
 ## Current capability boundary
 
-Current capabilities include multi-granularity assurance subjects; deterministic assessment identity and replay; clean-room execution; semantic `rahp-assurance-obligation/v1` records; evidence-producer routing; portable specialist contracts including `rahp-assessor-result/v1`; durable specialist returns; explicit PASS/FAIL/NOT_APPLICABLE/INDETERMINATE outcomes; materially equivalent machine/human terminal records; evidence provenance and freshness; normative-versus-realization separation; action-target precision; human-harm traceability; source-pinned corpora; generic capability coverage; resilience proposition/evidence routing; and governed continuous reassessment.
+Current capabilities include multi-granularity assurance subjects; deterministic assessment identity and replay; clean-room execution; semantic `rahp-assurance-obligation/v1` records; evidence-producer routing; portable specialist contracts including `rahp-assessor-result/v1`; durable specialist returns; explicit PASS/FAIL/NOT_APPLICABLE/INDETERMINATE outcomes; materially equivalent machine/human terminal records; evidence provenance and freshness; normative-versus-realization separation; action-target precision; human-harm traceability; source-pinned corpora; generic capability coverage; resilience proposition/evidence routing; materiality-bounded reassessment; and governed continuous reassessment with explicit full-campaign escalation when warranted.
 
 The stable compatibility authority remains:
 
