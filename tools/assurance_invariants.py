@@ -3,7 +3,7 @@
 
 These helpers evaluate generic assurance propositions. They deliberately do not
 infer entitlement, authority, or trustworthiness from missing evidence and do
-not encode DTG-specific protocol semantics.
+not encode consumer-specific protocol semantics.
 """
 from __future__ import annotations
 

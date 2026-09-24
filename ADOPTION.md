@@ -1,11 +1,13 @@
 ---
 layout: default
 title: "Adopting RAHP"
-nav_order: 1
+nav_order: 2
 has_toc: true
 parent: Adopt RAHP
 ---
 # Adopting RAHP
+
+> New to the toolkit? Start with the [Adoption gateway](docs/adoption-guide.md) and the maintained [Hello RAHP](examples/hello-rahp/README.md) exercise before using this detailed configuration guide.
 
 RAHP is adopted through configuration. A Working Group, developer, standards project, assurance team, or independent reviewer can use the toolkit without inheriting a bundled deployment. DTG and CAWG/C2PA are examples of the same portable RAHP contracts, not parent environments that a new adopter must copy.
 

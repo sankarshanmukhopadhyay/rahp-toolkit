@@ -51,6 +51,20 @@ subject/change observation
 
 The controller, not GitHub workflow choreography, owns assurance state.
 
+## Start adopting RAHP
+
+**You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
+
+Use the [Adoption gateway](docs/adoption-guide.md) to decide which path fits your assurance question:
+
+- **RAHP-only:** configure one bounded subject and run a first review;
+- **specialist assessment:** add a compatible specialist such as DPIP only when the proposition requires specialist semantics;
+- **executable evidence:** add a compatible evidence producer such as the Trust Protocol Interop Lab only when the proposition requires that evidence class;
+- **continuous assurance:** add freshness, reassessment, remediation and governed disposition after the first assessment.
+
+For a maintained executable first exercise, use [Hello RAHP](examples/hello-rahp/README.md).
+
+
 ## Current capability boundary
 
 Current capabilities include multi-granularity assurance subjects; deterministic assessment identity and replay; clean-room execution; semantic `rahp-assurance-obligation/v1` records; evidence-producer routing; portable specialist contracts including `rahp-assessor-result/v1`; durable specialist returns; explicit PASS/FAIL/NOT_APPLICABLE/INDETERMINATE outcomes; materially equivalent machine/human terminal records; evidence provenance and freshness; normative-versus-realization separation; action-target precision; human-harm traceability; source-pinned corpora; generic capability coverage; resilience proposition/evidence routing; and governed continuous reassessment.
