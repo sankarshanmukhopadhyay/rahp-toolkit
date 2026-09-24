@@ -29,6 +29,8 @@ class CrossSpecRegistrySelectionTests(unittest.TestCase):
                     "corpus_id": "CORPUS-SELECTED",
                     "assessment": ASSESSMENT,
                     "evidence_grade": "scenario-baseline",
+                    "execution_class": "core",
+                    "materiality_rationale": "fixture exercises a materially selected seam",
                     "components": [
                         {"repository": "trustoverip/a", "corpus_id": "A"},
                         {"repository": "trustoverip/b", "corpus_id": "B"},
@@ -40,6 +42,8 @@ class CrossSpecRegistrySelectionTests(unittest.TestCase):
                     "corpus_id": "CORPUS-UNRELATED",
                     "assessment": "does/not/exist.yaml",
                     "evidence_grade": "scenario-baseline",
+                    "execution_class": "core",
+                    "materiality_rationale": "fixture exercises a materially selected seam",
                     "components": [
                         {"repository": "invalid", "corpus_id": "C"},
                         {"repository": "trustoverip/d", "corpus_id": "D"},
@@ -68,6 +72,8 @@ class CrossSpecRegistrySelectionTests(unittest.TestCase):
                     "corpus_id": "A",
                     "assessment": ASSESSMENT,
                     "evidence_grade": "scenario-baseline",
+                    "execution_class": "core",
+                    "materiality_rationale": "fixture exercises a materially selected seam",
                     "components": [
                         {"repository": "trustoverip/a", "corpus_id": "A"},
                         {"repository": "trustoverip/b", "corpus_id": "B"},
