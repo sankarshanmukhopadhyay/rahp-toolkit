@@ -188,7 +188,7 @@ def main() -> int:
     assessor = {
         "schema": "rahp-assessor-result/v1",
         "assessor": "dtg-current-portfolio-clean-room-v1",
-        "assessment_id": "DTG-VTC-CURRENT-PORTFOLIO-2026-09-07",
+        "assessment_id": spec["subject"]["id"],
         "outcome": "INDETERMINATE",
         "reason_code": "portfolio-evidence-required",
         "evidence_used": ["ER-VDC-VAC-NON-SUBSTITUTION"],

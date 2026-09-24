@@ -1,0 +1,191 @@
+{
+  "schema": "rahp-clean-room-run/v2",
+  "run": {
+    "issue": 772,
+    "lineage_prefix": "dtg-vtc-full-clean-room-2026-09-24",
+    "instance": "dtg",
+    "snapshot": "2026-09-24"
+  },
+  "target": {
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "revision": "3551ceda3431707b2364eae6d30d50d94cec29dc",
+    "release": "current-main-2026-09-24",
+    "path": "target"
+  },
+  "resources": {
+    "credential_spec": {
+      "repository": "trustoverip/dtgwg-cred-spec",
+      "revision": "1152a523c85febfb6b9b0b597a0783b6cdab884a",
+      "path": "credential-spec"
+    },
+    "trust_tasks": {
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "revision": "563075ec3f03adc249a80380e66e642482d84d40",
+      "path": "trust-tasks"
+    },
+    "zkp_profile_source": {
+      "repository": "trustoverip/dtgwg-zkp-tf",
+      "revision": "a42bf8c06875cde7c2c9b578279c1be2c682f8ba",
+      "path": "zkp-tf"
+    },
+    "zkp_current_spec": {
+      "repository": "trustoverip/dtgwg-zkp-spec",
+      "revision": "cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a",
+      "path": "zkp-spec"
+    },
+    "vds": {
+      "repository": "trustoverip/dtgwg-vds-tf",
+      "revision": "99eacacedd1729d20528a2ec65ff5288d103ec5e",
+      "path": "vds"
+    },
+    "agent_names": {
+      "repository": "trustoverip/dtgwg-agent-names-tf",
+      "revision": "962591709e260616aba066bf08865962f6851bf3",
+      "path": "agent-names"
+    },
+    "vti_spec": {
+      "repository": "trustoverip/dtgwg-vti-spec",
+      "revision": "85200bad33b414e62513f8986d41113d5fb51359",
+      "path": "vti-spec"
+    },
+    "dtg_credentials": {
+      "repository": "OpenVTC/dtg-credentials",
+      "revision": "1d49eaf17a5002817370426554d312db2ed19b09",
+      "path": "dtg-credentials"
+    },
+    "openvtc": {
+      "repository": "OpenVTC/openvtc",
+      "revision": "a9bca4609f6c1d2e8961b48773bd300a5018042c",
+      "path": "openvtc"
+    },
+    "vgi": {
+      "repository": "OpenVTC/verifiable-git-infrastructure",
+      "revision": "bd486a21d4035fbb0b4bc2b5fdc8d07f626bb600",
+      "path": "vgi"
+    },
+    "dpip": {
+      "repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile",
+      "revision": "ad2ca48e9e1c69b16329e24ef27a917158435abf",
+      "path": "dpip"
+    },
+    "interop": {
+      "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+      "revision": "dda279804d19de051396403e79cfc8de058f79dc",
+      "path": "interop"
+    }
+  },
+  "subject": {
+    "type": "portfolio-composition",
+    "id": "DTG-VTC-FULL-CLEAN-ROOM-2026-09-24",
+    "components": [
+      "DTG Credential Specification",
+      "DTG Trust Tasks",
+      "DTG ZKP maintained profile source",
+      "DTG ZKP current specification source",
+      "DTG VDS",
+      "DTG Agent Names",
+      "DTG VTI Specification",
+      "OpenVTC VTI",
+      "OpenVTC dtg-credentials",
+      "OpenVTC openvtc",
+      "OpenVTC VGI",
+      "DPIP",
+      "Interop Lab"
+    ]
+  },
+  "assurance_contract": {
+    "material": true,
+    "specialist_required": true,
+    "scope": "Fresh 2026-09-24 full DTG/VTC clean-room portfolio assessment using immutable normative, realization, privacy-specialist and executable-evidence sources.",
+    "non_scope": "Production deployment certification, future unpinned upstream work, or conclusions unsupported by the immutable source set.",
+    "personas": ["principal", "delegate or agent", "holder or presenter", "verifier", "service operator", "registry or VTC operator"],
+    "scenarios": [
+      "A consequential action crosses credential, Trust Task, proof, authority and VTC realization boundaries.",
+      "Authority or lifecycle state changes between evidence creation and consequential execution.",
+      "A holder, delegate or agent crosses relying contexts and correlation/disclosure surfaces are examined.",
+      "A verifier relies on historical or current state while source, status, policy and retained evidence may diverge."
+    ],
+    "risks": [
+      "proof, possession, identity, delegation or capability being mistaken for current authority",
+      "stale or over-broad authority surviving lifecycle or revocation change",
+      "replay, retry or task/credential binding mismatch producing unintended actuation",
+      "cross-context correlation through identifiers, status, policy, proof or retained evidence",
+      "historical and current truth being conflated",
+      "normative and implementation versions diverging while appearing aligned",
+      "discovery or recognition being misread as authorization"
+    ],
+    "harms": [
+      "unauthorized consequential action",
+      "incorrect attribution of delegated action",
+      "loss of confidentiality or unlinkability",
+      "reliance on stale or semantically incomplete evidence",
+      "false assurance caused by composition or source-authority drift"
+    ],
+    "assurance_propositions": [
+      "delegation, identity, capability, key possession, proof validity and current authority remain non-substitutable",
+      "current implementation materially conforms to adopted credential and task semantics where it claims support",
+      "Trust Task authorization and invocation boundaries do not enlarge credential or proof authority",
+      "replay/idempotency behavior does not create a second authorization path",
+      "presenter, subject, controller and relationship bindings are preserved across composed paths",
+      "correlation scope and disclosure behavior do not create unnecessary durable cross-context joins",
+      "status, policy, discovery and retained evidence do not silently become authority or correlation surfaces",
+      "historical-state answers are distinguishable from current-state answers and preserve evidentiary basis",
+      "all maintained DTG cross-spec compositions have a terminal evidence-backed disposition",
+      "the current OpenVTC realization remains distinguishable from normative baselines wherever divergent or incomplete"
+    ],
+    "requirements_examined": [
+      "ER-VDC-VAC-NON-SUBSTITUTION",
+      "current credential realization support",
+      "credential-to-Trust-Task actuation and replay evidence",
+      "effective-correlation runtime evidence",
+      "maintained DTG cross-specification composition dispositions"
+    ],
+    "required_evidence": ["ER-VDC-VAC-NON-SUBSTITUTION"],
+    "tests": ["DTG VDC × VAC semantic non-substitution negative vectors"],
+    "actions": [
+      {
+        "surface": "assurance-model",
+        "action": "Resolve only evidence-backed residuals emitted by the fresh portfolio and cross-specification campaign.",
+        "acceptance_criterion": "Each residual has immutable evidence, an attributable owner, severity, priority and a falsifiable retest or closure condition."
+      }
+    ]
+  },
+  "assessment": {
+    "profile_id": "dtg-vtc-full-clean-room-2026-09-24",
+    "title": "Full DTG/VTC clean-room assurance campaign — 2026-09-24",
+    "target_id": "current-openvtc-vti",
+    "target_title": "Current DTG/VTC normative stack and OpenVTC realization",
+    "mode": "combined"
+  },
+  "evidence_plan": {
+    "producers": {
+      "vdc-vac-non-substitution": {
+        "cwd": "interop",
+        "revision": "dda279804d19de051396403e79cfc8de058f79dc",
+        "attribution": "composition-runtime:Interop-Lab",
+        "command": [
+          "python",
+          "../rahp/tools/vdc_vac_evidence_adapter.py",
+          "--interop-root",
+          ".",
+          "--output",
+          "../output/vdc-vac-non-substitution.json"
+        ]
+      }
+    },
+    "requirements": [
+      {
+        "id": "ER-VDC-VAC-NON-SUBSTITUTION",
+        "producer": "vdc-vac-non-substitution",
+        "evidence_file": "output/vdc-vac-non-substitution.json",
+        "attribution": "composition-runtime:Interop-Lab"
+      }
+    ]
+  },
+  "assessor": {
+    "commands": [
+      "python rahp/tools/current_portfolio_assessor.py --spec rahp/clean-room/dtg-vtc-2026-09-24-run-spec.json --workspace . --output output/current-portfolio-assessor.json --matrix output/current-portfolio-matrix.json"
+    ],
+    "result_file": "output/current-portfolio-assessor.json"
+  }
+}
