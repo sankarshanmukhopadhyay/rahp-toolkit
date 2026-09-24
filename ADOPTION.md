@@ -80,6 +80,8 @@ This separation remains a core invariant: **shared engine contract, independent 
 
 Once a project needs recurring scenarios, governed risk/control catalogues, evidence contracts, specialist routing, source-drift monitoring or continuous reassessment, it can adopt those RAHP capabilities deliberately. They are not prerequisites for the first configured review.
 
+For continuous use, assurance breadth should follow materiality. Reuse still-valid evidence, reassess the propositions affected by the change, and add specialist or executable evidence only where the proposition requires it. A full campaign/rebaseline is an explicit escalation when the affected assurance boundary cannot be bounded confidently; it is not the default response to every change.
+
 See `docs/configuration.md` for the configuration model, `docs/portability.md` for the portability contract, and `docs/continuous-assurance.md` for the machine-owned lifecycle used after material change.
 
 ## Portable assurance catalogue
