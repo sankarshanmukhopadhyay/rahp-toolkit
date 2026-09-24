@@ -35,6 +35,8 @@ These are architectural roles, not mandatory products. A compatible future speci
 
 The governing rule is **capability-driven composition, not repository-driven installation**. Do not add a specialist or evidence producer merely because it exists.
 
+The same rule applies to execution breadth: **select the minimum assurance/evidence surface required by the proposition and material change**. Do not run every available assessment, specialist or composition simply because RAHP can. Retain valid evidence, preserve explicit uncertainty, and widen to a full campaign only when the materiality boundary cannot be defended.
+
 ## Choose an adoption track
 
 ### Track A — first RAHP assessment
@@ -158,5 +160,6 @@ A newcomer has successfully crossed the adoption gateway when they can answer:
 4. If not, what specialist or evidence capability is required and why?
 5. What evidence supports the conclusion?
 6. What remains residual, indeterminate or out of scope?
+7. Why is this the minimum sufficient assessment scope for the material proposition set, and what would trigger a broader rebaseline?
 
 Then move from [Hello RAHP](../examples/hello-rahp/README.md) to the full [Adopting RAHP](../ADOPTION.md) guide.
