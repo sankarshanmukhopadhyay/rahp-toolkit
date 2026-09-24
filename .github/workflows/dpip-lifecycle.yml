@@ -37,7 +37,7 @@ on:
       - tools/dpip_handoff.py
       - .github/workflows/dpip-lifecycle.yml
   schedule:
-    - cron: '47 * * * *'
+    - cron: '47 */3 * * *'
   workflow_dispatch:
     inputs:
       issue_number:
