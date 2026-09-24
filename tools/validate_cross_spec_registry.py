@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import argparse, sys, yaml
 ROOT=Path(__file__).resolve().parent.parent
+EXECUTION_CLASSES={'core','conditional','reference'}
 
 def load(path: Path):
     d=yaml.safe_load(path.read_text(encoding='utf-8')) or {}
@@ -10,7 +11,7 @@ def load(path: Path):
         return load(ROOT/d['canonical_registry'])
     return d
 
-def validate_composition(c: dict, p: str, errors: list[str]) -> None:
+def validate_composition(c: dict, p: str, errors: list[str], require_execution_class: bool = False) -> None:
     parts=c.get('components',[])
     if not isinstance(parts,list) or len(parts)!=2: errors.append(f'{p}.components must contain exactly two repositories')
     for part in parts:
@@ -19,6 +20,14 @@ def validate_composition(c: dict, p: str, errors: list[str]) -> None:
     if c.get('runnable'):
         for key in ('corpus_id','assessment','evidence_grade'):
             if not c.get(key): errors.append(f'{p}.{key} required when runnable')
+        if require_execution_class:
+            for key in ('execution_class','materiality_rationale'):
+                if not c.get(key): errors.append(f'{p}.{key} required when runnable')
+            execution_class=c.get('execution_class')
+            if execution_class not in EXECUTION_CLASSES:
+                errors.append(f'{p}.execution_class must be one of {sorted(EXECUTION_CLASSES)}')
+            if execution_class == 'reference':
+                errors.append(f'{p}.execution_class reference cannot be runnable')
         if c.get('assessment') and not (ROOT/c['assessment']).exists(): errors.append(f"{p}.assessment does not exist: {c['assessment']}")
 
 def main()->int:
@@ -27,6 +36,7 @@ def main()->int:
     ap.add_argument('--composition', help='Validate only the selected composition details while retaining registry-level identity/uniqueness checks')
     args=ap.parse_args(); path=args.registry if args.registry.is_absolute() else ROOT/args.registry
     d=load(path); errors=[]; seen=set(); profile=d.get('profile') or {}
+    require_execution_class = profile.get('id') == 'dtg'
     if not profile.get('id'): errors.append('profile.id is required')
     comps=d.get('compositions',[])
     if not isinstance(comps,list) or not comps: errors.append('compositions must be a non-empty list'); comps=[]
@@ -39,7 +49,7 @@ def main()->int:
         if args.composition and cid == args.composition:
             selected=(i,c)
         if not args.composition:
-            validate_composition(c,p,errors)
+            validate_composition(c,p,errors,require_execution_class)
 
     if args.composition:
         if selected is None:
@@ -47,13 +57,14 @@ def main()->int:
         else:
             i,c=selected
             if not c.get('runnable'): errors.append(f'compositions[{i}] is not runnable: {args.composition}')
-            validate_composition(c,f'compositions[{i}]',errors)
+            validate_composition(c,f'compositions[{i}]',errors,require_execution_class)
 
     if errors:
         print('\n'.join(f'ERROR: {e}' for e in errors),file=sys.stderr); return 1
     if args.composition:
         print(f"cross-spec registry selected composition valid: profile={profile.get('id')} composition={args.composition}")
     else:
-        print(f"cross-spec registry valid: profile={profile.get('id')} {len(comps)} declared, {sum(bool(c.get('runnable')) for c in comps)} runnable")
+        classes={name: sum(1 for c in comps if c.get('execution_class') == name) for name in sorted(EXECUTION_CLASSES)}
+        print(f"cross-spec registry valid: profile={profile.get('id')} {len(comps)} declared, {sum(bool(c.get('runnable')) for c in comps)} runnable, classes={classes}")
     return 0
 if __name__=='__main__': raise SystemExit(main())

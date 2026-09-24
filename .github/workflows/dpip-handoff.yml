@@ -5,7 +5,7 @@ on:
     types: [labeled]
   schedule:
     # Recovery reconciliation. The primary path is the label event.
-    - cron: '17 * * * *'
+    - cron: '17 */6 * * *'
   workflow_dispatch:
 
 permissions:

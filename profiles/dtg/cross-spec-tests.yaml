@@ -16,6 +16,9 @@ compositions:
   title: "Trust Tasks \xD7 DTG Credential Specification"
   status: maintained
   runnable: true
+  execution_class: core
+  materiality_rationale: >-
+    Direct authority/delegation, lifecycle, replay and actuation semantics compose across the two specifications.
   priority: P0
   evidence_grade: source-pinned
   corpus_id: CORPUS-TT-CREDSPEC-COMPOSED
@@ -37,6 +40,9 @@ compositions:
   title: "DTG Credential Specification \xD7 ZKP"
   status: maintained
   runnable: true
+  execution_class: core
+  materiality_rationale: >-
+    Proof semantics can change what credential claims are disclosed or established without independently establishing authority or lifecycle state.
   priority: P0
   evidence_grade: source-informed
   corpus_id: CORPUS-CREDSPEC-ZKP-COMPOSED
@@ -57,6 +63,9 @@ compositions:
   title: "DTG Credential Specification \xD7 VDS"
   status: maintained
   runnable: true
+  execution_class: conditional
+  materiality_rationale: >-
+    Persistent-state semantics matter when credential lifecycle/provenance changes implicate VDS-backed state; otherwise this seam need not run routinely.
   priority: P0
   evidence_grade: scenario-baseline
   corpus_id: CORPUS-CREDSPEC-VDS-COMPOSED
@@ -77,6 +86,9 @@ compositions:
   title: "Trust Tasks \xD7 ZKP"
   status: maintained
   runnable: true
+  execution_class: conditional
+  materiality_rationale: >-
+    The seam is material when Trust Task execution consumes or transports proof semantics; proof support alone does not make every task change cross-spec relevant.
   priority: P0
   evidence_grade: source-informed
   corpus_id: CORPUS-TT-ZKP-COMPOSED
@@ -97,6 +109,9 @@ compositions:
   title: "Trust Tasks \xD7 VDS"
   status: maintained
   runnable: true
+  execution_class: conditional
+  materiality_rationale: >-
+    Persistent-state versus current-authority behavior is material only when task lifecycle or retained-state semantics are implicated.
   priority: P1
   evidence_grade: scenario-baseline
   corpus_id: CORPUS-TT-VDS-COMPOSED
@@ -116,6 +131,9 @@ compositions:
   title: "ZKP \xD7 VDS"
   status: maintained
   runnable: true
+  execution_class: conditional
+  materiality_rationale: >-
+    Linkability, selective disclosure and persistent provenance compose when either proof context or stored-state semantics materially changes.
   priority: P1
   evidence_grade: scenario-baseline
   corpus_id: CORPUS-ZKP-VDS-COMPOSED
@@ -136,6 +154,9 @@ compositions:
   title: "Agent Names \xD7 Trust Tasks"
   status: maintained
   runnable: true
+  execution_class: core
+  materiality_rationale: >-
+    Identity naming and task controller/delegation semantics meet directly at the execution boundary and must remain independently pressure-tested.
   priority: P1
   evidence_grade: scenario-baseline
   corpus_id: CORPUS-AGENTNAMES-TT-COMPOSED
@@ -155,6 +176,9 @@ compositions:
   title: "Agent Names \xD7 DTG Credential Specification"
   status: maintained
   runnable: true
+  execution_class: conditional
+  materiality_rationale: >-
+    Identifier/subject-control semantics compose when credential subject or controller interpretation changes; ordinary changes do not require routine execution.
   priority: P1
   evidence_grade: scenario-baseline
   corpus_id: CORPUS-AGENTNAMES-CREDSPEC-COMPOSED

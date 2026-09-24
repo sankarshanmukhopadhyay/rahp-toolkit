@@ -1,6 +1,7 @@
 schema: rahp-workflow-governance/v1
 max_workflows: 20
 forbid_dispatch_only_wrappers: true
+forbid_hourly_recovery_polling: true
 workflows:
   clean-room-assessment.yml:
     class: core-execution

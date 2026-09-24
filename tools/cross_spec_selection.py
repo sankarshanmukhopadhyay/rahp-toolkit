@@ -8,7 +8,7 @@ d=yaml.safe_load(rp.read_text()) or {}
 if d.get('deprecated') and d.get('canonical_registry'): d=yaml.safe_load((ROOT/d['canonical_registry']).read_text()) or {}
 item=next((x for x in d.get('compositions',[]) if x.get('id')==a.composition),None)
 if not item or not item.get('runnable'): raise SystemExit(f'Composition is unknown or not runnable: {a.composition}')
-vals={'assessment':item['assessment'],'corpus_id':item['corpus_id'],'profile_id':(d.get('profile') or {}).get('id','external')}
+vals={'assessment':item['assessment'],'corpus_id':item['corpus_id'],'profile_id':(d.get('profile') or {}).get('id','external'),'execution_class':item['execution_class']}
 for k,v in vals.items(): print(f'{k}={v}')
 if a.github_output:
     with a.github_output.open('a',encoding='utf-8') as f:
