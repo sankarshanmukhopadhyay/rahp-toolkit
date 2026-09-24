@@ -37,6 +37,24 @@ It owns assessment identity and lifecycle state, keeps evidence classes distinct
 
 The method explains **what must be reasoned about**. The execution plane explains **how that reasoning is governed and reproduced over time**.
 
+## Assurance breadth follows materiality
+
+RAHP does not equate more execution with stronger assurance. The preferred reassessment is the smallest evidence-producing scope that completely covers the materially affected proposition set.
+
+```text
+change
+→ identify materially affected propositions
+→ determine which prior evidence remains valid
+→ select the minimum sufficient reassessment set
+→ route specialist/runtime evidence only where required
+→ reconcile current evidence and residual uncertainty
+→ widen scope only when the bounded conclusion cannot be defended
+```
+
+Evidence outside the selected scope is not silently promoted or refreshed. It retains its existing provenance/freshness state, or becomes explicitly stale, weakened, invalidated or indeterminate according to the applicable contracts.
+
+A full clean-room campaign or portfolio rebaseline therefore represents **broader assurance scope**, not a superior evidence grade by definition. It is appropriate when impact cannot be bounded confidently, multiple composition seams are simultaneously material, authority/source topology changes materially, or the assurance engine/terminal semantics themselves require requalification.
+
 ## The assurance subject is not the repository
 
 A repository is an evidence/source container. RAHP can assure a repository, but the actual subject can instead be an artefact, standard, specification, requirement, protocol surface, cross-specification interaction, composition, flow, implementation, deployment, portfolio or changeset. Subject identity, source pins and scope are therefore explicit controller inputs.
@@ -98,7 +116,7 @@ For a guided first run, see [Getting started](getting-started.md). For result in
 
 ## Clean-room and continuous assurance
 
-Clean-room execution is engine-owned: historical evidence/state cannot silently coalesce into a fresh qualification run. Continuous assurance uses the same lifecycle with explicit freshness, materiality, evidence and reassessment rules.
+Clean-room execution is engine-owned: historical evidence/state cannot silently coalesce into a fresh qualification run. Continuous assurance uses the same lifecycle with explicit freshness, materiality, evidence and reassessment rules. Routine reassessment should remain proposition-bounded; full clean-room execution remains available as an explicit campaign/rebaseline capability when the materiality boundary cannot be defended.
 
 The post-#311 architecture was qualified across A2A, CAWG/C2PA and DTG in run `33350790322` with zero operator actions after the initial trigger and zero stranded runs. See [the qualification report](zero-touch-qualification-2026-08-31.md).
 
