@@ -32,9 +32,21 @@ The release preserves the capabilities established in earlier qualified tranches
 - **Executable authority and policy gates** keep scope, revocation posture and PASS/FAIL/INDETERMINATE semantics machine-checkable.
 - **Portfolio and deployment presentation** remains a presentation layer over bounded assurance state rather than an alternative source of truth.
 - **Release qualification** remains an executable gate binding declared version, compatibility contracts, release notes and qualification evidence.
+## Completed post-v2.4 operating-model work
+
+After the v2.4.0 release boundary, RAHP completed a materiality-governed execution tranche without changing the stable engine/result/evidence compatibility contracts.
+
+- Cross-specification execution can now be selected by materiality rather than treating every runnable composition as routine.
+- The bundled DTG profile distinguishes routinely material, conditionally material and reference evidence surfaces while preserving every runnable composition for explicit rebaseline/campaign use.
+- Full campaign capability remains available, but it is an escalation/rebaseline mechanism rather than the default path after every change.
+- The 2026-09-24 DTG/VTC current-pin rebaseline preserves the August assessments as historical lineage and establishes a new comparison point for future selective execution.
+- Scheduled/recovery and benchmark execution was rationalised without weakening evidence requirements or converting non-execution into PASS.
+
+The governing principle is that **assurance quality depends on complete coverage of the materially affected proposition set, not on maximizing execution breadth**.
+
 ## Post-v2.4 priorities
 
-1. **Realization conformance:** selectively retest when adopted normative semantics become implemented.
+1. **Realization conformance:** selectively retest when adopted normative semantics become implemented, using materiality-bounded selection and explicit full rebaseline only when warranted.
 2. **Deferred evidence triggers:** reactivate portability/substitution and other deferred propositions only when genuine independently meaningful implementations or deployments exist.
 3. **Adoption and portability:** qualify additional non-DTG consumers against unchanged generic contracts.
 4. **Specialist ecosystem:** add specialists through versioned contracts/shared fixtures rather than target-specific core logic.
@@ -54,6 +66,8 @@ The release preserves the capabilities established in earlier qualified tranches
 - Component PASS never implies composition PASS.
 - Source findings are not silently reinterpreted to fit a local catalogue.
 - Generic RAHP core remains independent of DTG, OpenVTC, CAWG, A2A or any other consumer vocabulary.
+- Broader execution is not treated as stronger assurance by definition; reassessment scope follows material proposition coverage.
+- Non-selected evidence is never silently refreshed or promoted to PASS.
 
 ## Historical roadmap
 
