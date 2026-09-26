@@ -44,15 +44,50 @@ After the v2.4.0 release boundary, RAHP completed a materiality-governed executi
 
 The governing principle is that **assurance quality depends on complete coverage of the materially affected proposition set, not on maximizing execution breadth**.
 
-## Post-v2.4 priorities
+## Post-v2.4 execution programme
 
-1. **Realization conformance:** selectively retest when adopted normative semantics become implemented, using materiality-bounded selection and explicit full rebaseline only when warranted.
-2. **Deferred evidence triggers:** reactivate portability/substitution and other deferred propositions only when genuine independently meaningful implementations or deployments exist.
-3. **Adoption and portability:** qualify additional non-DTG consumers against unchanged generic contracts.
-4. **Specialist ecosystem:** add specialists through versioned contracts/shared fixtures rather than target-specific core logic.
-5. **Operational observability:** improve controller telemetry, longitudinal posture and evidence freshness without conflating workflow success with assurance success.
-6. **Composition pressure testing:** expand end-to-end flow coverage and redress/continuity surfaces while preserving component/composition boundaries.
-7. **Resilience evidence depth:** exercise higher DRARM assurance levels with attributable runtime and operational evidence producers.
+The current programme is tracked by [#800](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/800): **Continuous Realization Assurance and Portable Adoption**. It converts the strategic post-v2.4 direction into evidence-gated engineering work without pre-committing to a v2.5.0 release.
+
+### G1 — realization conformance
+
+Selectively close the gap between adopted/current semantics and runtime realization evidence. Durable residual owners remain authoritative rather than being duplicated. The first programme set is #799, #609, #691, #797 and #690.
+
+A proposition closes only when current source-pinned evidence supports a bounded disposition. A missing implementation surface or unresolved external dependency remains `EVIDENCE_REQUIRED`, `INDETERMINATE` or waiting-external with an explicit reassessment trigger.
+
+### G2 — longitudinal observability and telemetry
+
+Add assurance-safe operational telemetry for controller and reassessment execution: run identity, elapsed time, selected scope, retained/weakened/invalidated evidence counts where available, phase timings, terminal outcome distribution and explicit blocker/indeterminate reasons.
+
+Telemetry describes how assurance work executed. It is **not** target assurance evidence, cannot create PASS, and must not become an independent assurance state machine.
+
+### G3 — performance engineering
+
+Use the versioned execution benchmark contract to measure and reduce avoidable work while preserving semantic outputs, evidence lineage and complete coverage of the materially affected proposition set.
+
+Optimization priorities include repeated parsing/validation, duplicate setup, unaffected execution, unnecessary regeneration and evidence recomputation. Performance policy should detect meaningful regression without making wall-clock noise an assurance result.
+
+### G4 — portable adoption proof
+
+Exercise the stable generic RAHP contracts against a non-DTG consumer without importing target-specific vocabulary into the portable core. The proof must include a bounded assessment, explicit evidence obligation, material-change reassessment, terminal posture and residual ownership.
+
+### G5 — documentation and compatibility audit
+
+Keep README, adoption, operational, performance and specialist/evidence-producer guidance aligned with the actual implementation. The current coordinated portfolio boundary is RAHP v2.4.0, DPIP v0.3.0 and Trust Protocol Interop Lab v0.7.0; versions remain independently governed.
+
+Policy-as-subject research (#662/#668) continues as a separate experimental lane until its own evidence supports a stable-integration decision.
+
+### G6 — release judgment
+
+After G1–G5, make an evidence-backed release judgment. Cut v2.5.0 only if the completed work establishes a coherent new stable capability boundary. Issue count, elapsed time and cleanup volume are not release criteria.
+
+### Engineering requirements across all gates
+
+- documentation changes accompany user/operator-visible behavior;
+- code changes include regression tests;
+- telemetry and performance metrics remain operational evidence rather than target assurance evidence;
+- performance optimizations preserve normalized semantics and lineage;
+- issue → branch → PR → required checks → merge remains the default change path;
+- full campaign/rebaseline remains available when materiality-bounded reassessment cannot defend the current conclusion.
 
 ## Non-regression rules
 

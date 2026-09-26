@@ -40,3 +40,24 @@ development_posture: >-
   be defended. Continue deepening realization conformance, non-DTG portability, specialist
   interoperability and longitudinal observability while preserving the v1 engine contract,
   result schema 1 and evidence-retention contract.
+
+post_v2_4_programme:
+  issue: 800
+  name: continuous-realization-assurance-and-portable-adoption
+  release_commitment: none
+  gates:
+    - realization-conformance
+    - longitudinal-observability
+    - performance-engineering
+    - non-dtg-portability
+    - documentation-compatibility-audit
+    - evidence-backed-release-judgment
+  current_portfolio_context:
+    rahp: 2.4.0
+    dpip: 0.3.0
+    interop_lab: 0.7.0
+  invariants:
+    - telemetry-is-not-assurance-evidence
+    - performance-does-not-reduce-material-proposition-coverage
+    - missing-evidence-never-becomes-pass
+    - stable-generic-core-remains-consumer-independent
