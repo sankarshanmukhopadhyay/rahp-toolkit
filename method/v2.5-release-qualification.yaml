@@ -1,0 +1,69 @@
+version: 1
+release: v2.5.0
+qualification: continuous-realization-assurance-and-portable-adoption
+stable_compatibility:
+  engine_contract: rahp-engine-contract-v1
+  engine_revision: '1.3'
+  normalized_result_schema: 1
+  evidence_retention_contract: rahp-evidence-retention-v1
+release_thesis: >-
+  v2.5.0 packages the post-v2.4 operating model as a stable additive RAHP
+  capability: materiality-bounded continuous realization assurance, assurance-safe
+  operational telemetry, semantic-preserving performance regression controls,
+  and demonstrated non-DTG portability, without broadening missing evidence into PASS
+  or changing the stable engine/result/evidence contract families.
+programme:
+  parent_issue: 800
+  release_judgment_issue: 811
+  gates:
+    realization_conformance: {issue: 804, implementation_pr: 808, qualified: true}
+    longitudinal_observability: {issue: 802, implementation_pr: 807, qualified: true}
+    performance_engineering: {issue: 803, implementation_pr: 812, qualified: true}
+    non_dtg_portability: {issue: 805, implementation_pr: 809, qualified: true}
+    documentation_compatibility_audit: {issue: 801, implementation_pr: 806, qualified: true}
+qualified_capabilities:
+  materiality_bounded_continuous_realization_assurance: true
+  assurance_safe_execution_telemetry_v1: true
+  longitudinal_lifecycle_diagnostics: true
+  semantic_reference_guarded_performance_policy: true
+  pull_request_baseline_benchmark_comparison: true
+  immutable_yaml_validation_cache: true
+  non_dtg_portability_proof: true
+  current_portfolio_compatibility_guidance: true
+  realization_residual_trigger_discipline: true
+evidence:
+  realization_reconciliation: docs/post-v2.4-realization-conformance.md
+  telemetry_contract: tools/execution_telemetry.py
+  telemetry_documentation: docs/operational-telemetry.md
+  benchmark_contract: method/execution-benchmarks.yaml
+  benchmark_comparator: tools/compare_execution_benchmarks.py
+  performance_documentation: docs/performance.md
+  non_dtg_proof: examples/cawg-c2pa/post-v2.4-portability-proof.yaml
+  non_dtg_walkthrough: docs/post-v2.4-portability-proof.md
+  adoption_gateway: docs/adoption-guide.md
+research_boundary:
+  policy_as_subject_issue: 662
+  graduation_evidence_issue: 668
+  stable_release_includes_policy_as_subject: false
+  rationale: >-
+    Policy-as-subject remains an experimental research lane pending its own
+    independent-review and graduation evidence. It is not part of v2.5.0.
+invariants:
+  missing_evidence_never_pass: true
+  workflow_success_not_assurance_success: true
+  component_pass_not_composition_pass: true
+  normative_convergence_not_implementation_conformance: true
+  non_selected_evidence_not_silently_refreshed: true
+  telemetry_not_assurance_evidence: true
+  performance_not_assurance_evidence: true
+  performance_does_not_reduce_material_proposition_coverage: true
+  generic_core_remains_consumer_independent: true
+  experimental_research_not_silently_graduated: true
+release_cut:
+  butterfly_name_selection: governed-pinned-pool
+  selected_common_name: Psyche
+  selected_scientific_name: Leptosia nina
+  selected_on: '2026-09-26'
+  tag: v2.5.0
+  publish_only_after_qualification: true
+  publication_workflow: .github/workflows/release.yml
