@@ -15,6 +15,11 @@ from pathlib import Path
 
 import yaml
 
+try:
+    from .execution_telemetry import build_event
+except ImportError:  # script execution
+    from execution_telemetry import build_event
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONTRACT = ROOT / "method" / "execution-benchmarks.yaml"
 
@@ -92,6 +97,17 @@ def main() -> int:
         "profile_exit_code": exit_code,
         "peak_rss_kb": peak_rss,
         "commands": results,
+        "telemetry": build_event(
+            operation="execution-benchmark",
+            run_id=args.profile,
+            duration_seconds=wall,
+            context={"profile_id": args.profile, "mode": "benchmark"},
+            metrics={
+                "command_count": len(results),
+                "failed_command_count": sum(1 for item in results if item["exit_code"] != 0),
+                "peak_rss_kb": int(peak_rss),
+            },
+        ),
         "semantic_reference_digests": {
             "current_baselines": digest_file(ROOT / "examples/current-baselines.yaml"),
             "tt_credspec_pressure_test": digest_file(ROOT / "examples/cross-spec/trust-tasks-credspec/pressure-test.yaml"),
