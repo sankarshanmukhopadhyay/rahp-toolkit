@@ -33,13 +33,13 @@ release_intent: >-
   portability proof as stable additive toolkit capabilities without changing
   the v1 engine/result/evidence compatibility families.
 development_posture: >-
-  Post-v2.4 work uses materiality-bounded reassessment as the default operating model:
-  select the smallest assurance/evidence scope that completely covers materially affected
-  propositions, preserve explicit uncertainty and evidence freshness outside that scope,
-  and retain full campaign/rebaseline execution for cases where bounded assurance cannot
-  be defended. Continue deepening realization conformance, non-DTG portability, specialist
-  interoperability and longitudinal observability while preserving the v1 engine contract,
-  result schema 1 and evidence-retention contract.
+  v2.5 uses materiality-bounded reassessment as the default operating model: select the
+  smallest assurance/evidence scope that completely covers materially affected propositions,
+  preserve explicit uncertainty and evidence freshness outside that scope, and retain full
+  campaign/rebaseline execution where bounded assurance cannot be defended. Post-v2.5 work
+  should deepen triggered realization evidence, low-sensitivity longitudinal observability,
+  measured performance, non-DTG portability and resilience evidence while preserving the
+  v1 engine contract, result schema 1 and evidence-retention contract.
 
 post_v2_4_programme:
   issue: 800
