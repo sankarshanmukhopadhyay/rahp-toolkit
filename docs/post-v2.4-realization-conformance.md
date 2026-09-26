@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Post-v2.4 realization conformance
-parent: Operate RAHP
+parent: Operate assurance
 nav_order: 9
 ---
 # Post-v2.4 realization conformance
