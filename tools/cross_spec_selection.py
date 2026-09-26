@@ -5,7 +5,13 @@ from pathlib import Path
 import argparse
 import json
 import sys
+import time
 import yaml
+
+try:
+    from .execution_telemetry import build_event, selection_metrics, write_event
+except ImportError:  # script execution
+    from execution_telemetry import build_event, selection_metrics, write_event
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -106,6 +112,7 @@ def main() -> int:
         help="Materially changed component repository; repeat as needed for routine planning",
     )
     parser.add_argument("--github-output", type=Path)
+    parser.add_argument("--telemetry-output", type=Path)
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
 
@@ -116,10 +123,12 @@ def main() -> int:
     if not args.composition and not args.plan:
         parser.error("one of --composition or --plan is required")
 
+    started = time.perf_counter()
     registry_path = Path(args.registry)
     registry_path = registry_path if registry_path.is_absolute() else ROOT / registry_path
     data = load_registry(registry_path)
     profile_id = (data.get("profile") or {}).get("id", "external")
+    available = runnable_compositions(data)
 
     if args.composition:
         item = next(
@@ -135,6 +144,20 @@ def main() -> int:
             "execution_class": str(item.get("execution_class", "")),
         }
         emit(values, args.github_output)
+        if args.telemetry_output:
+            write_event(
+                args.telemetry_output,
+                build_event(
+                    operation="cross-spec-composition-resolution",
+                    run_id=str(args.composition),
+                    duration_seconds=time.perf_counter() - started,
+                    context={"profile_id": str(profile_id), "plan": "single"},
+                    metrics=selection_metrics(
+                        available_count=len(available),
+                        selected_count=1,
+                    ),
+                ),
+            )
         return 0
 
     selected = plan_compositions(data, args.plan, set(args.repository))
@@ -146,6 +169,20 @@ def main() -> int:
         "composition_count": str(len(ids)),
     }
     emit(values, args.github_output)
+    if args.telemetry_output:
+        write_event(
+            args.telemetry_output,
+            build_event(
+                operation="cross-spec-materiality-selection",
+                run_id=f"{profile_id}:{args.plan}",
+                duration_seconds=time.perf_counter() - started,
+                context={"profile_id": str(profile_id), "plan": str(args.plan)},
+                metrics=selection_metrics(
+                    available_count=len(available),
+                    selected_count=len(selected),
+                ),
+            ),
+        )
     return 0
 
 

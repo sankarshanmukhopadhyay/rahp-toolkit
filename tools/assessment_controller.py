@@ -2,7 +2,16 @@
 """Finite RAHP assessment lifecycle controller."""
 from __future__ import annotations
 import argparse, json, uuid
+from pathlib import Path
 from typing import Any
+
+try:
+    from .execution_telemetry import build_event, lifecycle_metrics, write_event
+except ImportError:
+    try:
+        from tools.execution_telemetry import build_event, lifecycle_metrics, write_event
+    except ImportError:  # direct script execution from tools/
+        from execution_telemetry import build_event, lifecycle_metrics, write_event
 
 STATES = (
     "DISCOVERED", "QUALIFIED", "ROUTED", "ASSESSMENT_REQUIRED",
@@ -227,6 +236,20 @@ def may_coalesce(existing: dict[str, Any], incoming: dict[str, Any]) -> bool:
     return existing.get("assessment_id") == incoming.get("assessment_id") and existing.get("state") != "TERMINAL"
 
 
+def lifecycle_telemetry(record: dict[str, Any], duration_seconds: float = 0.0) -> dict[str, Any]:
+    """Build an operational sidecar without mutating lifecycle state."""
+    assessment_id = str(record.get("assessment_id") or "")
+    if not assessment_id:
+        raise ValueError("lifecycle telemetry requires assessment_id")
+    return build_event(
+        operation="assessment-lifecycle",
+        run_id=assessment_id,
+        duration_seconds=duration_seconds,
+        context={"mode": str(record.get("mode") or "")},
+        metrics=lifecycle_metrics(record),
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -237,9 +260,20 @@ def main() -> int:
     p = sub.add_parser("new")
     p.add_argument("--assessment-id", required=True)
     p.add_argument("--mode", choices=["steady-state", "clean-room"], default="steady-state")
+    p = sub.add_parser("telemetry")
+    p.add_argument("--input", type=Path, required=True)
+    p.add_argument("--output", type=Path)
+    p.add_argument("--duration-seconds", type=float, default=0.0)
     args = ap.parse_args()
     if args.cmd == "clean-room-lineage":
         print(json.dumps(clean_room_lineage(args.instance, args.snapshot, args.nonce), indent=2))
+    elif args.cmd == "telemetry":
+        record = json.loads(args.input.read_text(encoding="utf-8"))
+        event = lifecycle_telemetry(record, args.duration_seconds)
+        if args.output:
+            write_event(args.output, event)
+        else:
+            print(json.dumps(event, indent=2, sort_keys=True))
     else:
         print(json.dumps(new_lifecycle(args.assessment_id, args.mode), indent=2))
     return 0
