@@ -35,8 +35,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - name: Checkout pull-request baseline
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
         with:
-          fetch-depth: 0
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
@@ -51,15 +55,12 @@ jobs:
       - name: Run pull-request baseline benchmark
         if: github.event_name == 'pull_request'
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PROFILE: ${{ matrix.profile }}
         run: |
           set -euo pipefail
-          baseline_dir="${RUNNER_TEMP}/rahp-benchmark-base"
-          git worktree add --detach "$baseline_dir" "$BASE_SHA"
           (
-            cd "$baseline_dir"
-            python3 tools/benchmark_execution.py "$PROFILE" --output "${RUNNER_TEMP}/rahp-baseline.json"
+            cd baseline
+            python3 tools/benchmark_execution.py "$PROFILE"               --output "../build/execution-benchmark-baseline-$PROFILE.json"
           )
 
       - name: Compare candidate with pull-request baseline
@@ -68,7 +69,7 @@ jobs:
           PROFILE: ${{ matrix.profile }}
         run: >-
           python3 tools/compare_execution_benchmarks.py
-          "${RUNNER_TEMP}/rahp-baseline.json"
+          "build/execution-benchmark-baseline-${PROFILE}.json"
           "build/execution-benchmark-${PROFILE}.json"
           --policy method/execution-benchmarks.yaml
           --output "build/execution-benchmark-comparison-${PROFILE}.json"
@@ -108,6 +109,7 @@ jobs:
         with:
           name: rahp-execution-benchmark-${{ matrix.profile }}
           path: |
+            build/execution-benchmark-baseline-${{ matrix.profile }}.json
             build/execution-benchmark-${{ matrix.profile }}.json
             build/execution-benchmark-comparison-${{ matrix.profile }}.json
           if-no-files-found: error
