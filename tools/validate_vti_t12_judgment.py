@@ -51,9 +51,20 @@ def validate() -> None:
     status_version = str(status.get("stable_release") or "")
     if repository_version != status_version:
         raise AssertionError("repository package and PROJECT-STATUS release surfaces disagree")
-    if repository_version not in {current, expected}:
+
+    def semver_tuple(value: str) -> tuple[int, int, int]:
+        parts = value.split(".")
+        if len(parts) != 3:
+            raise AssertionError(f"invalid semantic version: {value}")
+        return tuple(int(part) for part in parts)
+
+    # T12 is immutable historical evidence for the v2.4 release decision. Later
+    # qualified toolkit releases must not invalidate that historical judgment.
+    # The current repository may therefore advance beyond the approved next minor,
+    # provided it has not regressed below the release T12 justified.
+    if semver_tuple(repository_version) < semver_tuple(expected):
         raise AssertionError(
-            f"T12 historical judgment permits repository release {current} or approved next minor {expected}, got {repository_version}"
+            f"repository release {repository_version} predates T12-approved minimum {expected}"
         )
     if release.get("version_commitment_authorized") is not False:
         raise AssertionError("T12 must not silently authorize a version commitment")
