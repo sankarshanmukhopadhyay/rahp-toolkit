@@ -17,6 +17,9 @@ on:
   pull_request:
     paths:
       - 'tools/benchmark_execution.py'
+      - 'tools/compare_execution_benchmarks.py'
+      - 'tools/validate.py'
+      - 'tests/test_performance_policy.py'
       - 'method/execution-benchmarks.yaml'
       - '.github/workflows/execution-benchmark.yml'
 
@@ -32,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
@@ -43,14 +48,40 @@ jobs:
           python3 tools/benchmark_execution.py
           "${{ matrix.profile }}"
           --output "build/execution-benchmark-${{ matrix.profile }}.json"
+      - name: Run pull-request baseline benchmark
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          set -euo pipefail
+          baseline_dir="${RUNNER_TEMP}/rahp-benchmark-base"
+          git worktree add --detach "$baseline_dir" "$BASE_SHA"
+          (
+            cd "$baseline_dir"
+            python3 tools/benchmark_execution.py "$PROFILE" --output "${RUNNER_TEMP}/rahp-baseline.json"
+          )
+
+      - name: Compare candidate with pull-request baseline
+        if: github.event_name == 'pull_request'
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: >-
+          python3 tools/compare_execution_benchmarks.py
+          "${RUNNER_TEMP}/rahp-baseline.json"
+          "build/execution-benchmark-${PROFILE}.json"
+          --policy method/execution-benchmarks.yaml
+          --output "build/execution-benchmark-comparison-${PROFILE}.json"
+
       - name: Benchmark summary
         if: always()
         env:
           PROFILE: ${{ matrix.profile }}
         run: |
           path="build/execution-benchmark-${PROFILE}.json"
+          comparison="build/execution-benchmark-comparison-${PROFILE}.json"
           if [ -f "$path" ]; then
-            BENCHMARK_PATH="$path" python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+            BENCHMARK_PATH="$path" COMPARISON_PATH="$comparison" python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json, os
           from pathlib import Path
           d=json.loads(Path(os.environ['BENCHMARK_PATH']).read_text())
@@ -59,6 +90,12 @@ jobs:
           print(f"- Wall time: **{d['wall_seconds']:.3f}s**")
           print(f"- Peak child RSS: **{d['peak_rss_kb']} KB**")
           print(f"- Exit code: `{d['profile_exit_code']}`")
+          comparison = Path(os.environ['COMPARISON_PATH'])
+          if comparison.is_file():
+              c = json.loads(comparison.read_text())
+              print(f"- Baseline comparison: **{c['status']}** ({c['reason']})")
+              if c.get('delta_seconds') is not None:
+                  print(f"- Delta: **{c['delta_seconds']:.3f}s**")
           print('')
           print('| Seconds | Exit | Command |')
           print('|---:|---:|---|')
@@ -70,5 +107,7 @@ jobs:
         if: always()
         with:
           name: rahp-execution-benchmark-${{ matrix.profile }}
-          path: build/execution-benchmark-${{ matrix.profile }}.json
+          path: |
+            build/execution-benchmark-${{ matrix.profile }}.json
+            build/execution-benchmark-comparison-${{ matrix.profile }}.json
           if-no-files-found: error
