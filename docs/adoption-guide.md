@@ -124,10 +124,10 @@ A specialist PASS is not automatically a RAHP PASS. A successful evidence-produc
 As of the current stable coordinated portfolio boundary:
 
 - **RAHP v2.4.0** owns the assurance lifecycle and orchestration.
-- **DPIP v0.2.0** owns composed privacy examination and returns compatible **rahp-assessor-result/v1** results.
-- **Trust Protocol Interop Lab v0.6.0** owns bounded executable interoperability/implementation evidence.
+- **DPIP v0.3.0** owns composed privacy examination and returns compatible **rahp-assessor-result/v1** results.
+- **Trust Protocol Interop Lab v0.7.0** owns bounded executable interoperability/implementation evidence.
 
-The repositories are independently versioned and governed. Compatibility is established through contracts and evidence provenance, not by assuming that matching release dates imply compatibility.
+The repositories are independently versioned and governed. Compatibility is established through contracts and evidence provenance, not by assuming that matching release dates imply compatibility. The version list above records the current maintained portfolio context; it does not mean that every proposition requires all three repositories.
 
 Authoritative RAHP integration surfaces:
 
