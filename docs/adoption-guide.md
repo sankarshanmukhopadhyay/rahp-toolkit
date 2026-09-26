@@ -123,7 +123,7 @@ A specialist PASS is not automatically a RAHP PASS. A successful evidence-produc
 
 As of the current stable coordinated portfolio boundary:
 
-- **RAHP v2.4.0** owns the assurance lifecycle and orchestration.
+- **RAHP v2.5.0** owns the assurance lifecycle and orchestration.
 - **DPIP v0.3.0** owns composed privacy examination and returns compatible **rahp-assessor-result/v1** results.
 - **Trust Protocol Interop Lab v0.7.0** owns bounded executable interoperability/implementation evidence.
 

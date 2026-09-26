@@ -7,20 +7,37 @@ parent: Reference
 ---
 # Changelog
 
-## Unreleased — post-v2.4
+## Unreleased
 
-### Assurance execution model
+No stable capability changes recorded after v2.5.0 yet.
 
-- Made DTG cross-specification execution materiality-driven while retaining all maintained runnable compositions.
-- Added profile-owned `core`, `conditional` and `reference` execution classes for the DTG exemplar; these are not portable RAHP normative vocabulary.
-- Preserved explicit full campaign/rebaseline execution for cases where bounded reassessment cannot defend the current conclusion.
-- Reduced redundant scheduled/recovery and benchmark execution without weakening evidence requirements.
-- Completed the 2026-09-24 DTG/VTC current-pin cross-specification rebaseline and preserved prior assessments as immutable historical lineage.
-- Clarified that assurance quality is determined by complete coverage of materially affected propositions and admissible evidence, not by maximizing execution breadth.
+## v2.5.0 — 2026-09-26 — Psyche
+
+### Added / advanced
+
+- Qualified materiality-bounded continuous realization assurance as the default post-change operating model.
+- Added assurance-safe rahp-execution-telemetry/v1 operational events and lifecycle/selection diagnostics.
+- Added semantic-reference-guarded performance regression policy with pull-request base-vs-candidate benchmark comparison.
+- Removed duplicate immutable YAML parsing in the canonical validator through process-local caching.
+- Added maintained CAWG/C2PA post-v2.4 non-DTG portability proof using unchanged generic RAHP contracts.
+- Reconciled current realization-conformance residuals without promoting waiting-external/evidence-required states.
+- Refreshed adoption, continuous-assurance, telemetry, performance and coordinated portfolio guidance.
+
+### Assurance posture
+
+v2.5.0 does not close residuals merely because the operating machinery improved. Missing/stale/unavailable evidence remains explicit. Telemetry and performance metrics remain operational engineering evidence, not target assurance evidence.
+
+Policy-as-assurance-subject research under #662/#668 remains experimental and is excluded from the stable release.
 
 ### Compatibility
 
-No change to `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 or `rahp-evidence-retention-v1`.
+No change to rahp-engine-contract-v1 revision 1.3, normalized result schema 1 or rahp-evidence-retention-v1.
+
+### Release name
+
+**Psyche — *Leptosia nina***.
+
+See [v2.5.0 release notes](docs/releases/v2.5.0.md).
 
 ## v2.4.0 — 2026-09-22 — Redbreast Jezebel
 

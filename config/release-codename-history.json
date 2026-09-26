@@ -49,6 +49,11 @@
     {
       "version": "v2.4.0",
       "codename": "Redbreast Jezebel",
+      "status": "published"
+    },
+    {
+      "version": "v2.5.0",
+      "codename": "Psyche",
       "status": "candidate"
     }
   ]

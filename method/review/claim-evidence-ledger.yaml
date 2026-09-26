@@ -1,6 +1,6 @@
 schema: rahp-review-claim-ledger/v1
 review_target:
-  toolkit_release: v2.4.0
+  toolkit_release: v2.5.0
   engine_contract: rahp-engine-contract-v1
   engine_revision: '1.3'
   normalized_result_schema: 1
@@ -33,7 +33,7 @@ claims:
     scope: composition assessments
     normative_evidence:
       - docs/how-rahp-works.md
-      - method/v2.4-release-qualification.yaml
+      - method/v2.5-release-qualification.yaml
     executable_evidence:
       - tools/validate_vti_component_substitution_gate.py
       - tools/validate_vti_privacy_composition.py
@@ -76,7 +76,7 @@ claims:
     expected_if_falsified: governance/assurance defect
     limitations: Deployment governance may impose stronger authority requirements.
   - id: RCL-007
-    claim: Stable compatibility metadata identifies engine revision 1.3 and result schema 1 for v2.4.0.
+    claim: Stable compatibility metadata identifies engine revision 1.3 and result schema 1 for v2.5.0.
     scope: stable compatibility declaration
     normative_evidence:
       - method/versioning.yaml

@@ -1,27 +1,27 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.4.0 (stable) · Redbreast Jezebel · CC-BY 4.0
+Release v2.5.0 (stable) · Psyche · CC-BY 4.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
 RAHP is deliberately evidence-conservative: **missing evidence never becomes PASS**. Workflow success is not assurance success. A component PASS does not imply a composition PASS, and normative convergence does not silently become implementation conformance.
 
-## What v2.4.0 adds
+## What v2.5.0 adds
 
-v2.4.0 **VTI Composition Assessment and Evidence-Conservative Reconciliation** extends the v2.3 baseline with:
+v2.5.0 **Continuous Realization Assurance and Portable Adoption** turns the post-v2.4 operating model into a qualified stable capability boundary:
 
-- a version-pinned VTI composition assessment profile;
-- a machine-readable `rahp-vti-assessment/v1` submission contract;
-- reusable validation across multiple VTI assessment families;
-- deterministic assessment-index and programme-reconciliation surfaces;
-- eight current supported VTI composition families with bounded executable evidence;
-- a deliberately `indeterminate` privacy-composition assessment that preserves the specialist DPIP boundary;
-- an explicit component-substitution evidence gate that refuses synthetic closure;
-- first-class indeterminacy and material-configuration reassessment semantics;
-- a deduplicated upstream clarification package that preserves VTI normative authority.
+- materiality-bounded continuous reassessment with explicit full-campaign escalation;
+- source-pinned realization-conformance reconciliation that keeps runtime evidence distinct from normative convergence;
+- assurance-safe rahp-execution-telemetry/v1 operational sidecars;
+- lifecycle/selection diagnostics that cannot set or infer assurance outcomes;
+- semantic-reference-guarded performance regression policy with PR base-vs-candidate benchmarking;
+- process-local immutable YAML caching that removes duplicate parsing without changing normalized semantics;
+- an explicit maintained non-DTG portability proof using CAWG/C2PA and the unchanged generic RAHP contracts;
+- refreshed adoption and portfolio compatibility guidance for DPIP v0.3.0 and Interop Lab v0.7.0.
 
-The release does **not** claim universal VTI conformance, complete privacy assurance, or successful component substitution without genuine implementation-pair evidence.
+Policy-as-assurance-subject work under #662/#668 remains experimental and is not part of the v2.5.0 stable boundary.
+
 ## How RAHP works
 
 ```text
@@ -89,11 +89,11 @@ DPIP is an independently governed privacy specialist that can return portable ex
 
 ## Coordinated portfolio context
 
-v2.4.0 packages the completed VTI assessment programme as an additive RAHP product capability. VTI remains the normative and conformance authority; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for the composed privacy questions routed to it.
+v2.5.0 packages the completed Continuous Realization Assurance and Portable Adoption programme as an additive RAHP product capability. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
 
-The current maintained cross-repository context is **RAHP v2.4.0**, **DPIP v0.3.0**, and **Trust Protocol Interop Lab v0.7.0**. These are independently versioned capabilities joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
+The current maintained cross-repository context is **RAHP v2.5.0**, **DPIP v0.3.0**, and **Trust Protocol Interop Lab v0.7.0**. These are independently versioned capabilities joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
 
-Post-v2.4 engineering is tracked as **Continuous Realization Assurance and Portable Adoption**. The programme focuses on realization-conformance closure, assurance-safe telemetry, execution performance, non-DTG portability and documentation fidelity while preserving the stable v1 engine/result/evidence contracts.
+The v2.5 programme established realization-conformance discipline, assurance-safe telemetry, performance regression controls, non-DTG portability evidence and documentation fidelity while preserving the stable v1 engine/result/evidence contracts.
 
 ## Quick start
 
@@ -107,10 +107,10 @@ Start with [How RAHP works](docs/how-rahp-works.md), [Getting started](docs/gett
 
 ## Current release
 
-v2.4.0 **Redbreast Jezebel** (*Delias acalis*) is the stable **VTI Composition Assessment and Evidence-Conservative Reconciliation** release.
+v2.5.0 **Psyche** (*Leptosia nina*) is the stable **Continuous Realization Assurance and Portable Adoption** release.
 
-- [v2.4.0 release notes](docs/releases/v2.4.0.md)
-- [v2.4 qualification contract](method/v2.4-release-qualification.yaml)
+- [v2.5.0 release notes](docs/releases/v2.5.0.md)
+- [v2.5 qualification contract](method/v2.5-release-qualification.yaml)
 - [VTI assessment index](docs/vti-assessment-index.md)
 - [VTI programme reconciliation](docs/vti-programme-reconciliation.md)
 - [Project status](PROJECT-STATUS.yaml)
@@ -123,6 +123,7 @@ Historical release records remain immutable. Release presentation metadata follo
 
 | Version | Codename | Historical boundary |
 |---|---|---|
+| v2.5.0 | **Psyche** | Continuous Realization Assurance and Portable Adoption |
 | v2.4.0 | **Redbreast Jezebel** | VTI Composition Assessment and Evidence-Conservative Reconciliation |
 | v2.3.0 | **Common Five-ring** | Portable Coverage and Source-Preserving Assurance |
 | v2.2.0 | **Common Four-ring** | Evidence Production and Realization Assurance |

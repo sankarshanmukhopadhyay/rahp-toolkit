@@ -96,6 +96,12 @@ Assurance posture presents the current state without hiding uncertainty behind a
 
 See [Assurance posture](assurance-posture.md).
 
+## Operational observability
+
+Continuous assurance now has a separate operational-observability surface through [Operational telemetry and observability](operational-telemetry.md). Telemetry can describe what ran, how much scope was selected, how long execution took and which explicit blocker state was encountered. It cannot establish PASS, change lifecycle state or substitute for missing assurance evidence.
+
+Performance is governed separately through [Performance and execution efficiency](performance.md). Faster execution is acceptable only when like-for-like semantic inputs and normalized assurance behavior remain unchanged. Materiality-bounded selection and performance optimization must never reduce the proposition/evidence coverage required to defend the assurance conclusion.
+
 ## Operational example
 
 The deployment-neutral posture fixture can be rendered with:

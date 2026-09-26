@@ -103,15 +103,34 @@ def main() -> int:
                 elif marker and marker not in evidence_path.read_text(encoding="utf-8"):
                     errors.append(f"{cid}: evidence_ref fragment not found: {evidence_ref}")
 
+    stable_release = str(expected["toolkit_release"] or "")
+    engine_revision = str(expected["engine_revision"] or "")
+    result_schema = str(expected["normalized_result_schema"] or "")
+
     engine_doc = (ROOT / "docs/engine-contract.md").read_text(encoding="utf-8")
-    for token in ("v2.4.0", "revision `1.3`", "schema version `1`"):
+    engine_tokens = (
+        stable_release,
+        f"revision `{engine_revision}`",
+        f"schema version `{result_schema}`",
+    )
+    for token in engine_tokens:
         if token not in engine_doc:
-            errors.append(f"docs/engine-contract.md missing current compatibility token: {token}")
+            errors.append(
+                f"docs/engine-contract.md missing current compatibility token: {token}"
+            )
 
     review_readme = (ROOT / "review/README.md").read_text(encoding="utf-8")
-    for phrase in ("workflow success", "not an assurance conclusion", "v2.4.0", "revision `1.3`"):
+    review_phrases = (
+        "workflow success",
+        "not an assurance conclusion",
+        stable_release,
+        f"revision `{engine_revision}`",
+    )
+    for phrase in review_phrases:
         if phrase not in review_readme:
-            errors.append(f"review/README.md missing required review boundary phrase: {phrase}")
+            errors.append(
+                f"review/README.md missing required review boundary phrase: {phrase}"
+            )
 
     if errors:
         for e in errors: print("ERROR", e)

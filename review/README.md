@@ -23,7 +23,7 @@ No document in this directory is itself assurance evidence. The normative portab
 
 ## Stable boundary under review
 
-- Toolkit release: `v2.4.0`
+- Toolkit release: `v2.5.0`
 - Engine contract: `rahp-engine-contract-v1`, revision `1.3`
 - Normalized result schema: `1`
 - Evidence retention contract: `rahp-evidence-retention-v1`

@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 2.4.0
-development_target: 2.4.0
+stable_release: 2.5.0
+development_target: 2.5.0
 release_status: released
 qualification_status: qualified
-qualification_contract: method/v2.4-release-qualification.yaml
+qualification_contract: method/v2.5-release-qualification.yaml
 release_name:
-  common_name: Redbreast Jezebel
-  scientific_name: Delias acalis
+  common_name: Psyche
+  scientific_name: Leptosia nina
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-09-22'
+  selected_on: '2026-09-26'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -27,24 +27,24 @@ release_naming:
   selection: random-at-release-time
   candidate_rule: governed-random-unused-candidate
 release_intent: >-
-  v2.4.0 VTI Composition Assessment and Evidence-Conservative Reconciliation packages
-  the version-pinned VTI assessment profile, machine-readable assessment submissions,
-  multi-family validation, deterministic programme reconciliation, explicit privacy
-  indeterminacy, and the component-substitution evidence gate as a stable additive
-  toolkit capability without broadening claims beyond evidence.
+  v2.5.0 Continuous Realization Assurance and Portable Adoption packages
+  materiality-bounded reassessment, assurance-safe execution telemetry,
+  semantic-reference-guarded performance engineering and a maintained non-DTG
+  portability proof as stable additive toolkit capabilities without changing
+  the v1 engine/result/evidence compatibility families.
 development_posture: >-
-  Post-v2.4 work uses materiality-bounded reassessment as the default operating model:
-  select the smallest assurance/evidence scope that completely covers materially affected
-  propositions, preserve explicit uncertainty and evidence freshness outside that scope,
-  and retain full campaign/rebaseline execution for cases where bounded assurance cannot
-  be defended. Continue deepening realization conformance, non-DTG portability, specialist
-  interoperability and longitudinal observability while preserving the v1 engine contract,
-  result schema 1 and evidence-retention contract.
+  v2.5 uses materiality-bounded reassessment as the default operating model: select the
+  smallest assurance/evidence scope that completely covers materially affected propositions,
+  preserve explicit uncertainty and evidence freshness outside that scope, and retain full
+  campaign/rebaseline execution where bounded assurance cannot be defended. Post-v2.5 work
+  should deepen triggered realization evidence, low-sensitivity longitudinal observability,
+  measured performance, non-DTG portability and resilience evidence while preserving the
+  v1 engine contract, result schema 1 and evidence-retention contract.
 
 post_v2_4_programme:
   issue: 800
   name: continuous-realization-assurance-and-portable-adoption
-  release_commitment: none
+  release_commitment: v2.5.0-qualified
   gates:
     - realization-conformance
     - longitudinal-observability
@@ -53,7 +53,7 @@ post_v2_4_programme:
     - documentation-compatibility-audit
     - evidence-backed-release-judgment
   current_portfolio_context:
-    rahp: 2.4.0
+    rahp: 2.5.0
     dpip: 0.3.0
     interop_lab: 0.7.0
   invariants:
