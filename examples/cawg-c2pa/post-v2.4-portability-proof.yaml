@@ -1,0 +1,65 @@
+schema: rahp-post-v2.4-portability-proof/v1
+consumer:
+  id: cawg-c2pa
+  kind: non-dtg
+  profile: profiles/cawg/rahp.yaml
+  instance: instances/cawg/instance.yaml
+  authority_boundary: >-
+    RAHP owns only its external assurance records. CAWG, DIF and C2PA retain
+    authority over their specifications, releases and governance decisions.
+stable_contracts:
+  engine: rahp-engine-contract-v1@1.3
+  normalized_result_schema: 1
+  evidence_retention: rahp-evidence-retention-v1
+first_assessment:
+  assessment_id: CAWG-SR-001
+  source:
+    repository: decentralized-identity/cawg-identity-assertion
+    revision: 8a9c4925df7e8ccbcabce9d754fc27739e11dc12
+    document: https://cawg.io/identity/1.3-draft/
+  artefact: examples/cawg-c2pa/identity/pressure-test.yaml
+  propositions:
+    - identity-validity-is-not-role-authority
+    - historical-validity-needs-as-of-evidence
+  residuals:
+    - id: F-001
+      state: open
+      owner: governance
+    - id: F-002
+      state: open
+      owner: companion-specification
+  claim_boundary: bounded pressure test; not upstream conformance certification
+material_change_reassessment:
+  durable_record: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/765
+  target: c2pa-specifications
+  repository: c2pa-org/specifications
+  previous_revision: 9c58c8c27044e44e8601f6ab13f1bcac1376eb1f
+  current_revision: 4eb2c67f49bd21f188e7842afa16dfa642bb578c
+  changed_paths:
+    - supplemental-ui/softbinding-alg-list/softbinding-algorithm-list.json
+  observed_delta: adds WebP media-type metadata to an existing soft-binding algorithm
+  disposition: no-material-assurance-impact
+  baseline_advanced: true
+  preserved_boundaries:
+    - registry metadata is descriptive evidence, not algorithm security or conformance credit
+    - C2PA manifest/signature/trust-list/revocation semantics are unchanged by this delta
+    - existing CAWG/C2PA findings are neither silently closed nor promoted
+  retest_scope:
+    selected:
+      - c2pa-softbinding-registry
+    not_selected:
+      - cawg-identity-authority
+      - cawg-historical-validity
+      - c2pa-manifest-signature
+      - c2pa-trust-list-revocation
+current_posture:
+  terminal_trigger_state: completed
+  residual_owner_count: 2
+  evidence_gap_policy: missing or stale evidence remains explicit
+  release_inference: none
+portability_assertions:
+  - consumer-specific vocabulary remains outside the portable core
+  - the same stable engine/result/evidence contracts support the non-DTG instance
+  - a material change can be dispositioned without rerunning unrelated propositions
+  - no-material-impact is not represented as a universal PASS
+  - upstream governance authority is not transferred to RAHP
