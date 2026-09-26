@@ -59,3 +59,14 @@ The benchmark is intended to make the following opportunities measurable rather 
 - preserving already-current evidence rather than recomputing it solely because another surface changed.
 
 The benchmark contract is versioned independently from semantic RAHP result contracts so the measurement method can evolve without changing the assurance model.
+
+
+## Post-v2.4 regression policy
+
+RAHP compares like-for-like benchmark artefacts using both a relative threshold and an absolute threshold. The default policy flags a meaningful regression only when wall time increases by more than 20% **and** more than 1 second. This avoids making hosted-runner jitter a release or assurance signal.
+
+Semantic reference digests are stricter: a changed digest makes the comparison fail regardless of speed. A faster run that exercised different reference inputs is not accepted as an optimization result.
+
+The canonical validator also caches immutable YAML inputs for the lifetime of one process. Identifier checking and record indexing previously reparsed the same namespace files; the cache removes that duplicate parse without changing records, ordering, errors, warnings, normalized outputs or evidence semantics.
+
+Performance comparison remains engineering telemetry. It does not establish assurance about the subject under review.
