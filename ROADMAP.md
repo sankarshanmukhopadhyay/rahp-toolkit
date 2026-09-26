@@ -47,6 +47,20 @@ The maintained cross-repository context is:
 
 The repositories remain independently versioned and governed. Compatibility is contract- and evidence-based, not date-based.
 
+## Capability continuity retained in v2.5
+
+The v2.5 operating model is additive. It retains the earlier qualified capability families that remain part of the stable RAHP compatibility and documentation estate:
+
+- **Durable assessment and finding lineage** preserves assessment identity, finding lineage and canonical identity across source changes and reassessment.
+- **Governed remediation and retest** preserves remediation authority, acceptance criteria, closure evidence and retest lineage.
+- **Assurance graph and impact analysis** keeps dependency-aware reachability and retest selection explicit.
+- **Evidence provenance, freshness and delta** preserves source identity, freshness state and assurance delta rather than silently reusing stale evidence.
+- **Executable authority and policy gates** keep authority scope, revocation and policy evaluation separately inspectable with INDETERMINATE preserved as a real outcome.
+- **Portfolio and deployment presentation** projects bounded operational posture without becoming an alternative assurance source of truth.
+- **Release qualification** continues to bind declared version, qualification contract, release decision, release-cut evidence and governed publication.
+
+These capability names are retained deliberately because they are referenced by the stable capability-documentation registry and remain part of the toolkit's qualified historical continuity.
+
 ## Post-v2.5 priorities
 
 1. **Realization evidence triggers:** reassess waiting-external/evidence-required owners only when their recorded upstream/runtime trigger fires.
