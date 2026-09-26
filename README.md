@@ -87,9 +87,13 @@ The **Bundled DTG exemplar** remains the deepest maintained portfolio demonstrat
 
 DPIP is an independently governed privacy specialist that can return portable examination results to a compatible RAHP controller. The Trust Protocol Interop Lab is an independently governed evidence producer and composition-test environment. Neither repository is folded into RAHP authority: evidence and specialist results cross repository boundaries through explicit versioned contracts and provenance.
 
-## Coordinated release context
+## Coordinated portfolio context
 
 v2.4.0 packages the completed VTI assessment programme as an additive RAHP product capability. VTI remains the normative and conformance authority; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for the composed privacy questions routed to it.
+
+The current maintained cross-repository context is **RAHP v2.4.0**, **DPIP v0.3.0**, and **Trust Protocol Interop Lab v0.7.0**. These are independently versioned capabilities joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
+
+Post-v2.4 engineering is tracked as **Continuous Realization Assurance and Portable Adoption**. The programme focuses on realization-conformance closure, assurance-safe telemetry, execution performance, non-DTG portability and documentation fidelity while preserving the stable v1 engine/result/evidence contracts.
 
 ## Quick start
 
