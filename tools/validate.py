@@ -31,6 +31,7 @@ import pathlib
 import re
 import sys
 from collections import defaultdict
+from functools import lru_cache
 
 try:
     import yaml
@@ -63,7 +64,15 @@ class Report:
         self.checks.append((name, ok, detail))
 
 
+@lru_cache(maxsize=None)
 def load_yaml(path: pathlib.Path):
+    """Load immutable validation input once per process.
+
+    A repository validation run reads the same namespace YAML files in both
+    record-index construction and identifier checks. Inputs are immutable for
+    the lifetime of one validation process, so reparsing them is duplicate work.
+    """
+    path = pathlib.Path(path)
     with open(path, encoding="utf-8") as fh:
         return yaml.safe_load(fh)
 

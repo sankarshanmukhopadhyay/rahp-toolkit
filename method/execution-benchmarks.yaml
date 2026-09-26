@@ -126,3 +126,15 @@ comparison:
     full-validation: 50
     cross-spec-dtg-tt-credspec: 50
     cross-spec-dtg-full: 50
+
+regression_policy:
+  mode: relative-baseline
+  max_regression_percent: 20
+  min_absolute_regression_seconds: 1.0
+  require_same_contract: true
+  require_same_profile: true
+  require_semantic_reference_digest_match: true
+  rationale: >-
+    Hosted runners are noisy. Treat a slowdown as meaningful only when it exceeds
+    both the relative and absolute thresholds; semantic reference drift is a hard
+    failure regardless of runtime.
