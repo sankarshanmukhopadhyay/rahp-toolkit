@@ -135,8 +135,11 @@ jobs:
               counts[item['outcome']] = counts.get(item['outcome'], 0) + 1
           day = '${{ steps.snapshot.outputs.date }}'
           source_url = '${{ steps.snapshot.outputs.url }}'
+          snapshot_digest = '${{ steps.snapshot.outputs.snapshot_digest }}'.strip()
+          if not snapshot_digest:
+              raise SystemExit('Portfolio snapshot digest is required for controller identity')
           lineage = '${{ steps.baseline.outputs.lineage }}'.strip()
-          controller_key = f'dtg:portfolio:material-change-set:{day}'
+          controller_key = f'dtg:portfolio:material-change-set:{day}:snapshot:{snapshot_digest}'
           if lineage:
               controller_key += f':lineage:{lineage}'
           lines = [
@@ -145,6 +148,7 @@ jobs:
               f'<!-- rahp-assessment-key:{controller_key} -->',
               *([f'<!-- rahp-clean-room-lineage:{lineage} -->'] if lineage else []),
               f'<!-- rahp-portfolio-snapshot:{day} -->',
+              f'<!-- rahp-portfolio-snapshot-digest:sha256:{snapshot_digest} -->',
               '<!-- dtg-routing-policy:v3-semantic -->',
               '',
               'RAHP consumed the newest recent Portfolio Monitor snapshot, normalized source findings through the DTG instance adapter, and applied semantic assurance routing.',
@@ -157,6 +161,7 @@ jobs:
               '',
               f'- Portfolio snapshot: {source_url}',
               f'- Snapshot date: `{day}`',
+              f'- Snapshot digest: `sha256:{snapshot_digest}`',
               f'- Qualifying findings: **{len(route)}**',
               f'- Dispositions: `{counts}`',
               f'- UNMAPPED findings: **{len(unresolved)}**',
@@ -183,7 +188,7 @@ jobs:
               '',
               'Portfolio Monitor detects/classifies. RAHP owns assurance routing and RAHP assessments. Privacy-relevant findings are promoted through the canonical RAHP → DPIP transport. DPIP owns applicability/evidence/privacy conclusion and returns the disposition to RAHP.',
               '',
-              'Controller records are snapshot/epoch scoped. Re-publication of the same snapshot is idempotent; a later snapshot receives a new controller key. Bounded child reviews resolve to durable proposition owners across observations and issue lifecycle state.',
+              'Controller records are exact-snapshot scoped using a deterministic SHA-256 digest of the consumed findings content. Re-publication of identical evidence is idempotent; materially different same-day snapshots receive distinct controller keys. Bounded child reviews resolve to durable proposition owners across observations and issue lifecycle state.',
               '',
               'For proposition-scoped child reviews, every material observation is journaled on the durable owner. A closed owner remains closed only when the routed finding set is already represented; a previously unseen material finding is fail-closed to reassessment unless evidence-backed preservation is established.',
               '',
@@ -196,7 +201,7 @@ jobs:
               'assessment_key': controller_key,
               'observed_at': day,
               'source': 'dtg-portfolio-monitor',
-              'title': f'DTG portfolio materiality assessment required — {day}',
+              'title': f'DTG portfolio materiality assessment required — {day} — {snapshot_digest[:12]}',
               'labels': ['assessment-required', 'dtg-instance', 'cross-specification'],
               'affected_reviews': ['rahp', 'security', 'combined'],
               'body': body,
@@ -301,6 +306,7 @@ jobs:
           echo '## DTG Portfolio Monitor → RAHP → DPIP pipeline' >> "$GITHUB_STEP_SUMMARY"
           echo '- Snapshot: `${{ steps.snapshot.outputs.date }}`' >> "$GITHUB_STEP_SUMMARY"
           echo '- Snapshot age: `${{ steps.snapshot.outputs.age_days || 'unknown' }}` day(s)' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Snapshot digest: `sha256:${{ steps.snapshot.outputs.snapshot_digest }}`' >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${{ steps.baseline.outputs.lineage }}" ]; then
             echo '- Clean-room lineage: `${{ steps.baseline.outputs.lineage }}`' >> "$GITHUB_STEP_SUMMARY"
           fi
