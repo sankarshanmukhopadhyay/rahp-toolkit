@@ -249,6 +249,63 @@ semantic_rules:
       create a separate review only when a registered composition depends on the
       removed local-resolution behavior.
 
+  # Judgment-derived semantic dispositions from controller #818.
+  - id: acl-non-escalation-elevated-rights
+    when:
+      dimensions: [authorization, security, governance]
+      concerns: [authority-non-escalation, grantor-coverage, separation-of-duties]
+    outcome: covered
+    covered_by: rahp-toolkit#819
+
+  - id: key-custody-export-rotation
+    when:
+      dimensions: [security, authorization, lifecycle]
+      concerns: [key-custody, key-export, key-rotation]
+    outcome: covered
+    covered_by: rahp-toolkit#633
+
+  - id: proof-purpose-binding
+    when:
+      dimensions: [security, authorization, composition]
+      concerns: [proof-purpose, verification-relationship]
+    outcome: covered
+    covered_by: rahp-toolkit#820
+
+  - id: step-up-passkey-administration
+    when:
+      dimensions: [security, authorization, privacy]
+      concerns: [step-up, credential-enrolment, administrative-visibility]
+    outcome: covered
+    covered_by: rahp-toolkit#821
+
+  - id: trust-tasks-service-backup-transport
+    when:
+      dimensions: [security, authorization, lifecycle, composition]
+      concerns: [transport-equivalence, confidentiality, service-authority]
+    outcome: covered
+    covered_by: rahp-toolkit#822
+
+  - id: forge-projection-provenance
+    when:
+      dimensions: [composition, authorization, lifecycle]
+      concerns: [projection-provenance, freshness, role-mapping]
+    outcome: covered
+    covered_by: rahp-toolkit#797
+
+  - id: task-outcome-executor-binding
+    when:
+      dimensions: [security, composition]
+      concerns: [outcome-binding, executor-binding]
+    outcome: covered
+    covered_by: rahp-toolkit#690
+
+  - id: credential-registry-context-convergence
+    when:
+      dimensions: [composition, lifecycle]
+      concerns: [context-authority, registry-versioning]
+    outcome: covered
+    covered_by: rahp-toolkit#474
+
   - id: openvtc-security-combined
     when:
       dimensions: [security, lifecycle]
