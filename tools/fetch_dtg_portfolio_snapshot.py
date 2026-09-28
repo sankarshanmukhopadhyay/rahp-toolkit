@@ -9,6 +9,7 @@ or absent evidence.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import pathlib
@@ -19,6 +20,16 @@ from typing import Callable
 
 BASE_URL = "https://raw.githubusercontent.com/sankarshanmukhopadhyay/dtg-portfolio-monitor/main/data/findings"
 DEFAULT_LOOKBACK_DAYS = 2
+
+
+def snapshot_digest(findings: list[object]) -> str:
+    canonical = json.dumps(
+        findings,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
 
 
 def snapshot_url(day: date) -> str:
@@ -124,12 +135,14 @@ def main() -> int:
     output = pathlib.Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(findings, indent=2) + "\n", encoding="utf-8")
+    digest = snapshot_digest(findings)
 
     if args.github_output:
         with open(args.github_output, "a", encoding="utf-8") as out:
             out.write(f"date={day.isoformat()}\n")
             out.write(f"url={url}\n")
             out.write(f"age_days={age}\n")
+            out.write(f"snapshot_digest={digest}\n")
 
     if age:
         print(
@@ -139,6 +152,7 @@ def main() -> int:
     else:
         print(f"Fetched current Portfolio Monitor snapshot {day.isoformat()}: {url}")
     print(f"Fetched {len(findings)} findings")
+    print(f"Snapshot digest: sha256:{digest}")
     return 0
 
 
