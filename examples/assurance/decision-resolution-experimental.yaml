@@ -3,6 +3,12 @@ profile: rahp-decision-resolution-assurance-experimental
 status: experimental
 branch_constraint: research/decision-resolution-assurance
 stable_release_boundary: false
+risk_overlay: method/catalogue/experimental/decision-resolution-patterns.yaml
+assurance_failures:
+  - EXP-DR-AUTH-LAUNDERING
+  - EXP-DR-DECISION-BASIS-CONFLATION
+  - EXP-DR-SILENT-RESOLUTION
+  - EXP-DR-FALSE-PERSISTENCE
 propositions:
   - id: RAHP-DR-01
     title: Authority non-amplification
@@ -16,8 +22,13 @@ propositions:
       - repetition
       - consensus
       - reputation
+      - capability
       - discovery
+      - endorsement
+      - projection
+      - aggregation
       - unrelated-authority
+    failure_pattern: EXP-DR-AUTH-LAUNDERING
   - id: RAHP-DR-02
     title: Decision-basis separation
     basis_categories:
@@ -29,6 +40,7 @@ propositions:
       - evaluation_context_change
     missing_basis_outcome: INDETERMINATE
     non_authority_categories_must_not_imply_authority_change: true
+    failure_pattern: EXP-DR-DECISION-BASIS-CONFLATION
   - id: RAHP-DR-03
     title: Explicit resolution
     admissible_resolution_categories:
@@ -44,6 +56,9 @@ propositions:
       - reputation
       - workflow_progression
     missing_resolution_evidence_outcome: INDETERMINATE
+    failure_patterns:
+      - EXP-DR-SILENT-RESOLUTION
+      - EXP-DR-FALSE-PERSISTENCE
 research_provenance:
   normative_dependency: false
   sources:
