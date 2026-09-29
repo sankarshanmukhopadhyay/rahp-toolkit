@@ -330,8 +330,71 @@ mapping_rules:
       affected_surfaces: [trust-task-outcome, consent]
       change_kind: [behavior-change]
 
+  - id: vsc-registry-routine-publication
+    repository_regex: '^trustoverip/dtgwg-vsc-registry
+  - id: openvtc-security-combined
+    repository_regex: '^OpenVTC/'
+    title_regex: '(auth|keyId|internal key|signed|proof|personhood|conformance|invitation|lifecycle|cache)'
+    semantics:
+      dimensions: [security, lifecycle]
+      concerns: [authorization]
+      affected_surfaces: [protocol-envelope]
+      change_kind: [behavior-change]
+
+  - id: openvtc-routine-alignment
+    repository_regex: '^OpenVTC/'
+    title_regex: '(release|SDK|sdk|design note|removal notice|tell a member|drift reaches zero|(^|[- ])v[0-9]+\.[0-9]+\.[0-9]+$)'
+    semantics:
+      dimensions: [release]
+      concerns: [aggregation]
+      affected_surfaces: [release-artifact]
+      change_kind: [release-change]
+
+  - id: trust-tasks-framework-covered
+    repository_regex: '^trustoverip/dtgwg-trust-tasks-(tf|spec)$'
+    title_regex: '(framework|registry|generated types|typed signing|dispatch|application-state|refusal|removal|publish|registered acl/change-role task)'
+    semantics:
+      dimensions: [composition, lifecycle]
+      concerns: [framework-alignment]
+      affected_surfaces: [trust-task]
+      change_kind: [behavior-change]
+
+    title_regex: '^(chore|docs)(\\([^)]*\\))?:.*(publish|publication|register|registry|editorial|README|readme|release)'
+    semantics:
+      dimensions: [release]
+      concerns: [registry-publication]
+      affected_surfaces: [credential-context-registry]
+      change_kind: [release-change]
+
   - id: credential-registry-context-convergence
-    repository_regex: '^trustoverip/dtgwg-vsc-registry$'
+    repository_regex: '^trustoverip/dtgwg-vsc-registry
+  - id: openvtc-security-combined
+    repository_regex: '^OpenVTC/'
+    title_regex: '(auth|keyId|internal key|signed|proof|personhood|conformance|invitation|lifecycle|cache)'
+    semantics:
+      dimensions: [security, lifecycle]
+      concerns: [authorization]
+      affected_surfaces: [protocol-envelope]
+      change_kind: [behavior-change]
+
+  - id: openvtc-routine-alignment
+    repository_regex: '^OpenVTC/'
+    title_regex: '(release|SDK|sdk|design note|removal notice|tell a member|drift reaches zero|(^|[- ])v[0-9]+\.[0-9]+\.[0-9]+$)'
+    semantics:
+      dimensions: [release]
+      concerns: [aggregation]
+      affected_surfaces: [release-artifact]
+      change_kind: [release-change]
+
+  - id: trust-tasks-framework-covered
+    repository_regex: '^trustoverip/dtgwg-trust-tasks-(tf|spec)$'
+    title_regex: '(framework|registry|generated types|typed signing|dispatch|application-state|refusal|removal|publish|registered acl/change-role task)'
+    semantics:
+      dimensions: [composition, lifecycle]
+      concerns: [framework-alignment]
+      affected_surfaces: [trust-task]
+      change_kind: [behavior-change]
+
     title_regex: '(credential context|rules for contexts|DTG credential context)'
     semantics:
       dimensions: [composition, lifecycle]
