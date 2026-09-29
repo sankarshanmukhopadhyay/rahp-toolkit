@@ -464,6 +464,61 @@ Errors, diagnostics or status responses reveal sensitive attributes, classificat
 | Why | This risk can create an unacceptable state at a clear decision or execution boundary, so a portable guardrail should block or stop that state. |
 | Harm Patterns | `HRM-PRV-01`, `HRM-PRV-03` |
 
+### RKP-PRV-05 — Proof mechanism correlation
+
+Cryptographic proof material, verification-method references, timestamps or other securing metadata remain sufficiently stable across contexts to enable linking even when the disclosed payload has no stable correlator.
+
+| Field | Value |
+|---|---|
+| Family | Privacy and inference |
+| Guardrail requirement | required |
+| Why | A privacy-preserving payload can still become linkable through its proof machinery, so correlation assurance must include the securing mechanism rather than inspect disclosed claims alone. |
+| Harm Patterns | `HRM-PRV-02`, `HRM-PRV-04` |
+
+### RKP-PRV-06 — Status query observability
+
+Resolving credential, authorization or lifecycle status exposes presentation activity, timing, relationship information or relying-party context to a status provider, issuer or other observer.
+
+| Field | Value |
+|---|---|
+| Family | Privacy and inference |
+| Guardrail requirement | required |
+| Why | Privacy leakage can arise from the act and pattern of status resolution even when the returned status value contains no sensitive information. |
+| Harm Patterns | `HRM-PRV-02`, `HRM-PRV-03`, `HRM-PRV-04` |
+
+### RKP-PRV-07 — Post-disclosure purpose violation
+
+Information legitimately disclosed for one relying purpose is retained, transferred, profiled or otherwise processed beyond the purpose, audience or lifecycle basis under which disclosure occurred.
+
+| Field | Value |
+|---|---|
+| Family | Privacy and inference |
+| Guardrail requirement | required |
+| Why | Initial disclosure validity does not establish continuing authority or legitimacy for downstream use, so post-disclosure processing needs an independently enforceable purpose and lifecycle boundary. |
+| Harm Patterns | `HRM-PRV-05`, `HRM-AUT-03` |
+
+### RKP-PRV-08 — Authoritative privacy-control subversion
+
+An issuer, registry, operator or other authoritative participant uses identifiers, proof configuration, issuance cadence, renewal behavior or metadata under its control to defeat an intended unlinkability or minimization property.
+
+| Field | Value |
+|---|---|
+| Family | Privacy and inference |
+| Guardrail requirement | required |
+| Why | Privacy properties must survive choices made by parties that legitimately control issuance or operational metadata; authority over a component is not authority to silently defeat the declared privacy claim. |
+| Harm Patterns | `HRM-PRV-02`, `HRM-PRV-04` |
+
+### RKP-PRV-09 — Verification artefact retention concentration
+
+Presentations, status observations, verification transcripts or related evidence are retained or aggregated beyond the minimum operational need, creating a durable surface for later correlation, inference or large-scale disclosure.
+
+| Field | Value |
+|---|---|
+| Family | Privacy and inference |
+| Guardrail requirement | required |
+| Why | Assurance and audit evidence should remain purpose-bounded; unnecessary durable retention can turn otherwise local verification events into a reconstructable surveillance dataset. |
+| Harm Patterns | `HRM-PRV-01`, `HRM-PRV-03`, `HRM-PRV-04` |
+
 ### RKP-EXC-01 — Single-path participation exclusion
 
 A system requires one identity, device, interaction or proofing path without a viable alternative for legitimate participants.
@@ -888,7 +943,7 @@ Use context-scoped identifiers and minimize stable metadata where correlation is
 | Field | Value |
 |---|---|
 | Control function | prevent |
-| Risk Patterns | `RKP-PRV-01`, `RKP-COMP-03` |
+| Risk Patterns | `RKP-PRV-01`, `RKP-COMP-03`, `RKP-PRV-05`, `RKP-PRV-08` |
 
 ### CTP-PRV-02 — Composition privacy analysis
 
@@ -897,7 +952,7 @@ Evaluate privacy and inference risks for the combined disclosure set, not only e
 | Field | Value |
 |---|---|
 | Control function | detect |
-| Risk Patterns | `RKP-PRV-02`, `RKP-COMP-03` |
+| Risk Patterns | `RKP-PRV-02`, `RKP-COMP-03`, `RKP-PRV-05`, `RKP-PRV-09` |
 | Evidence Patterns | `EVP-PRV-01` |
 
 ### CTP-PRV-03 — Privacy-safe failure responses
@@ -908,6 +963,46 @@ Limit errors and diagnostics to information necessary for remediation, with sens
 |---|---|
 | Control function | prevent |
 | Risk Patterns | `RKP-PRV-03` |
+
+### CTP-PRV-05 — Privacy-preserving status resolution
+
+Resolve required lifecycle status without exposing more presentation timing, credential identity, verifier context or relationship information than the relying decision requires.
+
+| Field | Value |
+|---|---|
+| Control function | minimize |
+| Risk Patterns | `RKP-PRV-06` |
+| Evidence Patterns | `EVP-PRV-01` |
+
+### CTP-PRV-06 — Purpose-bound post-disclosure processing
+
+Bind downstream processing of disclosed information to an explicit purpose, audience, retention period and applicable governance basis rather than treating successful presentation as perpetual permission.
+
+| Field | Value |
+|---|---|
+| Control function | constrain |
+| Risk Patterns | `RKP-PRV-07` |
+| Evidence Patterns | `EVP-PRV-01` |
+
+### CTP-PRV-07 — Verification artefact retention minimization
+
+Retain only the verification evidence required for the declared operational, assurance or audit purpose and prevent unnecessary cross-context aggregation.
+
+| Field | Value |
+|---|---|
+| Control function | minimize |
+| Risk Patterns | `RKP-PRV-09`, `RKP-PRV-07` |
+| Evidence Patterns | `EVP-PRV-01` |
+
+### CTP-PRV-08 — Issuer-side unlinkability pressure test
+
+Pressure-test whether issuer-controlled identifiers, proof metadata, issuance cadence, renewal behavior or verification material can link interactions that the declared privacy property says should remain separate.
+
+| Field | Value |
+|---|---|
+| Control function | detect |
+| Risk Patterns | `RKP-PRV-08`, `RKP-PRV-05` |
+| Evidence Patterns | `EVP-PRV-01` |
 
 ### CTP-EXC-01 — Alternative participation path
 
@@ -1137,7 +1232,7 @@ A required flow discloses information not necessary for the stated decision or f
 | Field | Value |
 |---|---|
 | Protected interest | privacy |
-| Risk Patterns | `RKP-PRV-02`, `RKP-PRV-03` |
+| Risk Patterns | `RKP-PRV-02`, `RKP-PRV-03`, `RKP-PRV-07`, `RKP-PRV-09` |
 | Control Patterns | `CTP-PRV-02`, `CTP-PRV-03` |
 
 ### GRP-EXC-01 — No essential-service single path
@@ -1272,13 +1367,13 @@ A consequential composed action proceeds when participating specifications disag
 
 ### GRP-PRV-02 — No unnecessary cross-context correlation
 
-Stable identifiers or combined protocol data enable cross-context correlation that is not needed for the declared purpose.
+Stable identifiers, proof or status mechanics, retained artefacts or combined protocol data enable cross-context correlation that is not needed for the declared purpose.
 
 | Field | Value |
 |---|---|
 | Protected interest | privacy |
-| Risk Patterns | `RKP-PRV-01`, `RKP-COMP-03`, `RKP-PRV-04` |
-| Control Patterns | `CTP-PRV-01`, `CTP-PRV-02`, `CTP-PRV-04` |
+| Risk Patterns | `RKP-PRV-01`, `RKP-COMP-03`, `RKP-PRV-04`, `RKP-PRV-05`, `RKP-PRV-06`, `RKP-PRV-08`, `RKP-PRV-09` |
+| Control Patterns | `CTP-PRV-01`, `CTP-PRV-02`, `CTP-PRV-04`, `CTP-PRV-05`, `CTP-PRV-07`, `CTP-PRV-08` |
 
 ### GRP-ID-02 — No load-bearing uniqueness claim without evidence
 
