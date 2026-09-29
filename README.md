@@ -103,7 +103,7 @@ python3 tools/review.py --help
 python3 tools/validate.py
 ```
 
-Start with [How RAHP works](docs/how-rahp-works.md), [Getting started](docs/getting-started.md), [Continuous assurance](docs/continuous-assurance.md), and [Adopting RAHP](ADOPTION.md).
+Start with [How RAHP works](docs/how-rahp-works.md), [RAHP data model](docs/data-model.md), [Getting started](docs/getting-started.md), [Continuous assurance](docs/continuous-assurance.md), and [Adopting RAHP](ADOPTION.md).
 
 ## Current release
 
