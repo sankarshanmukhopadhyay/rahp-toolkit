@@ -1,8 +1,8 @@
 {
   "counts": {
     "harm_patterns": 24,
-    "risk_patterns": 47,
-    "control_patterns": 35,
+    "risk_patterns": 52,
+    "control_patterns": 39,
     "guardrail_patterns": 25,
     "assurance_patterns": 20,
     "evidence_patterns": 15
@@ -21,5 +21,10 @@
     "RKP-PE-02"
   ],
   "control_sufficient_guardrail_risks": [],
-  "controls_without_assurance_pattern": []
+  "controls_without_assurance_pattern": [
+    "CTP-PRV-05",
+    "CTP-PRV-06",
+    "CTP-PRV-07",
+    "CTP-PRV-08"
+  ]
 }

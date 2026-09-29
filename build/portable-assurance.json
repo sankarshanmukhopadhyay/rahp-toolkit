@@ -860,6 +860,130 @@
         }
       },
       {
+        "id": "RKP-PRV-05",
+        "name": "Proof mechanism correlation",
+        "family": "Privacy and inference",
+        "description": "Cryptographic proof material, verification-method references, timestamps or other securing metadata remain sufficiently stable across contexts to enable linking even when the disclosed payload has no stable correlator.",
+        "harm_patterns": [
+          "HRM-PRV-02",
+          "HRM-PRV-04"
+        ],
+        "origin": "design",
+        "scope": "cross-party",
+        "temporal_mode": "immediate",
+        "reversibility": "costly",
+        "observability": "detectable",
+        "applicability": {},
+        "related_patterns": [
+          "RKP-PRV-01"
+        ],
+        "guardrail_requirement": {
+          "status": "required",
+          "rationale": "A privacy-preserving payload can still become linkable through its proof machinery, so correlation assurance must include the securing mechanism rather than inspect disclosed claims alone.",
+          "condition": null
+        }
+      },
+      {
+        "id": "RKP-PRV-06",
+        "name": "Status query observability",
+        "family": "Privacy and inference",
+        "description": "Resolving credential, authorization or lifecycle status exposes presentation activity, timing, relationship information or relying-party context to a status provider, issuer or other observer.",
+        "harm_patterns": [
+          "HRM-PRV-02",
+          "HRM-PRV-03",
+          "HRM-PRV-04"
+        ],
+        "origin": "design",
+        "scope": "cross-party",
+        "temporal_mode": "immediate",
+        "reversibility": "costly",
+        "observability": "detectable",
+        "applicability": {},
+        "related_patterns": [
+          "RKP-PRV-03"
+        ],
+        "guardrail_requirement": {
+          "status": "required",
+          "rationale": "Privacy leakage can arise from the act and pattern of status resolution even when the returned status value contains no sensitive information.",
+          "condition": null
+        }
+      },
+      {
+        "id": "RKP-PRV-07",
+        "name": "Post-disclosure purpose violation",
+        "family": "Privacy and inference",
+        "description": "Information legitimately disclosed for one relying purpose is retained, transferred, profiled or otherwise processed beyond the purpose, audience or lifecycle basis under which disclosure occurred.",
+        "harm_patterns": [
+          "HRM-PRV-05",
+          "HRM-AUT-03"
+        ],
+        "origin": "operations",
+        "scope": "cross-party",
+        "temporal_mode": "delayed",
+        "reversibility": "costly",
+        "observability": "detectable",
+        "applicability": {},
+        "related_patterns": [
+          "RKP-CRD-04"
+        ],
+        "guardrail_requirement": {
+          "status": "required",
+          "rationale": "Initial disclosure validity does not establish continuing authority or legitimacy for downstream use, so post-disclosure processing needs an independently enforceable purpose and lifecycle boundary.",
+          "condition": null
+        }
+      },
+      {
+        "id": "RKP-PRV-08",
+        "name": "Authoritative privacy-control subversion",
+        "family": "Privacy and inference",
+        "description": "An issuer, registry, operator or other authoritative participant uses identifiers, proof configuration, issuance cadence, renewal behavior or metadata under its control to defeat an intended unlinkability or minimization property.",
+        "harm_patterns": [
+          "HRM-PRV-02",
+          "HRM-PRV-04"
+        ],
+        "origin": "governance",
+        "scope": "systemic",
+        "temporal_mode": "delayed",
+        "reversibility": "costly",
+        "observability": "detectable",
+        "applicability": {},
+        "related_patterns": [
+          "RKP-PRV-01",
+          "RKP-PRV-05"
+        ],
+        "guardrail_requirement": {
+          "status": "required",
+          "rationale": "Privacy properties must survive choices made by parties that legitimately control issuance or operational metadata; authority over a component is not authority to silently defeat the declared privacy claim.",
+          "condition": null
+        }
+      },
+      {
+        "id": "RKP-PRV-09",
+        "name": "Verification artefact retention concentration",
+        "family": "Privacy and inference",
+        "description": "Presentations, status observations, verification transcripts or related evidence are retained or aggregated beyond the minimum operational need, creating a durable surface for later correlation, inference or large-scale disclosure.",
+        "harm_patterns": [
+          "HRM-PRV-01",
+          "HRM-PRV-03",
+          "HRM-PRV-04"
+        ],
+        "origin": "operations",
+        "scope": "systemic",
+        "temporal_mode": "delayed",
+        "reversibility": "costly",
+        "observability": "detectable",
+        "applicability": {},
+        "related_patterns": [
+          "RKP-PRV-02",
+          "RKP-PRV-07"
+        ],
+        "guardrail_requirement": {
+          "status": "required",
+          "rationale": "Assurance and audit evidence should remain purpose-bounded; unnecessary durable retention can turn otherwise local verification events into a reconstructable surveillance dataset.",
+          "condition": null
+        }
+      },
+      {
         "id": "RKP-EXC-01",
         "name": "Single-path participation exclusion",
         "family": "Inclusion and accessibility",
@@ -1789,7 +1913,9 @@
         "control_objective": "Use context-scoped identifiers and minimize stable metadata where correlation is not required.",
         "risk_patterns": [
           "RKP-PRV-01",
-          "RKP-COMP-03"
+          "RKP-COMP-03",
+          "RKP-PRV-05",
+          "RKP-PRV-08"
         ],
         "authority": "system operator",
         "enforcement_point": "identifier creation",
@@ -1809,7 +1935,9 @@
         "control_objective": "Evaluate privacy and inference risks for the combined disclosure set, not only each credential or artefact independently.",
         "risk_patterns": [
           "RKP-PRV-02",
-          "RKP-COMP-03"
+          "RKP-COMP-03",
+          "RKP-PRV-05",
+          "RKP-PRV-09"
         ],
         "authority": "system operator",
         "enforcement_point": "presentation construction",
@@ -1841,6 +1969,92 @@
           "control-failed-or-overridden"
         ],
         "evidence_patterns": [],
+        "introduces_or_amplifies_risks": []
+      },
+      {
+        "id": "CTP-PRV-05",
+        "name": "Privacy-preserving status resolution",
+        "risk_patterns": [
+          "RKP-PRV-06"
+        ],
+        "authority": "system operator or status-service governance authority",
+        "enforcement_point": "status-resolution boundary",
+        "activation": "before status resolution reveals a credential-specific or relying-context-specific observation",
+        "failure_behavior": "minimize observer-visible linkage, use a less revealing resolution path, or preserve explicit privacy residual risk",
+        "audit_events": [
+          "status-privacy-boundary-evaluated",
+          "status-correlation-risk-recorded"
+        ],
+        "evidence_patterns": [
+          "EVP-PRV-01"
+        ],
+        "control_function": "minimize",
+        "control_objective": "Resolve required lifecycle status without exposing more presentation timing, credential identity, verifier context or relationship information than the relying decision requires.",
+        "introduces_or_amplifies_risks": []
+      },
+      {
+        "id": "CTP-PRV-06",
+        "name": "Purpose-bound post-disclosure processing",
+        "risk_patterns": [
+          "RKP-PRV-07"
+        ],
+        "authority": "data controller or governance authority",
+        "enforcement_point": "post-disclosure data lifecycle boundary",
+        "activation": "before disclosed information is retained, transferred, profiled or reused beyond the immediate decision",
+        "failure_behavior": "reject the secondary use, obtain a valid new basis, or preserve an explicit unresolved governance state",
+        "audit_events": [
+          "disclosure-purpose-evaluated",
+          "secondary-use-authorized-or-blocked"
+        ],
+        "evidence_patterns": [
+          "EVP-PRV-01"
+        ],
+        "control_function": "constrain",
+        "control_objective": "Bind downstream processing of disclosed information to an explicit purpose, audience, retention period and applicable governance basis rather than treating successful presentation as perpetual permission.",
+        "introduces_or_amplifies_risks": []
+      },
+      {
+        "id": "CTP-PRV-07",
+        "name": "Verification artefact retention minimization",
+        "risk_patterns": [
+          "RKP-PRV-09",
+          "RKP-PRV-07"
+        ],
+        "authority": "data controller or system operator",
+        "enforcement_point": "verification evidence and audit-retention boundary",
+        "activation": "when verification artefacts or transcripts are persisted or aggregated",
+        "failure_behavior": "minimize, expire, pseudonymize or segregate retained artefacts unless a documented purpose requires them",
+        "audit_events": [
+          "verification-retention-evaluated",
+          "retention-expiry-or-exception-recorded"
+        ],
+        "evidence_patterns": [
+          "EVP-PRV-01"
+        ],
+        "control_function": "minimize",
+        "control_objective": "Retain only the verification evidence required for the declared operational, assurance or audit purpose and prevent unnecessary cross-context aggregation.",
+        "introduces_or_amplifies_risks": []
+      },
+      {
+        "id": "CTP-PRV-08",
+        "name": "Issuer-side unlinkability pressure test",
+        "risk_patterns": [
+          "RKP-PRV-08",
+          "RKP-PRV-05"
+        ],
+        "authority": "privacy assurance or governance authority",
+        "enforcement_point": "issuance and proof-configuration boundary",
+        "activation": "before claiming unlinkability or cross-context privacy",
+        "failure_behavior": "do not assert the privacy property when issuer-controlled metadata or proof choices create a material correlator",
+        "audit_events": [
+          "issuer-controlled-correlation-tested",
+          "unlinkability-claim-evaluated"
+        ],
+        "evidence_patterns": [
+          "EVP-PRV-01"
+        ],
+        "control_function": "detect",
+        "control_objective": "Pressure-test whether issuer-controlled identifiers, proof metadata, issuance cadence, renewal behavior or verification material can link interactions that the declared privacy property says should remain separate.",
         "introduces_or_amplifies_risks": []
       },
       {
@@ -2335,7 +2549,9 @@
         "prohibited_state": "A required flow discloses information not necessary for the stated decision or function.",
         "risk_patterns": [
           "RKP-PRV-02",
-          "RKP-PRV-03"
+          "RKP-PRV-03",
+          "RKP-PRV-07",
+          "RKP-PRV-09"
         ],
         "control_patterns": [
           "CTP-PRV-02",
@@ -2615,20 +2831,27 @@
         "id": "GRP-PRV-02",
         "name": "No unnecessary cross-context correlation",
         "protected_interest": "privacy",
-        "prohibited_state": "Stable identifiers or combined protocol data enable cross-context correlation that is not needed for the declared purpose.",
+        "prohibited_state": "Stable identifiers, proof or status mechanics, retained artefacts or combined protocol data enable cross-context correlation that is not needed for the declared purpose.",
         "risk_patterns": [
           "RKP-PRV-01",
           "RKP-COMP-03",
-          "RKP-PRV-04"
+          "RKP-PRV-04",
+          "RKP-PRV-05",
+          "RKP-PRV-06",
+          "RKP-PRV-08",
+          "RKP-PRV-09"
         ],
         "control_patterns": [
           "CTP-PRV-01",
           "CTP-PRV-02",
-          "CTP-PRV-04"
+          "CTP-PRV-04",
+          "CTP-PRV-05",
+          "CTP-PRV-07",
+          "CTP-PRV-08"
         ],
-        "trigger_condition": "before stable identifiers or combined data are disclosed across contexts",
-        "enforcement_point": "identifier creation and presentation composition boundary",
-        "failure_mode": "use scoped identifiers, reduce disclosure, or document why correlation is necessary",
+        "trigger_condition": "before privacy-relevant identifiers, proof/status mechanics or retained evidence cross contexts",
+        "enforcement_point": "issuance, verification, status-resolution and evidence-retention boundaries",
+        "failure_mode": "use scoped or non-correlating mechanisms, reduce disclosure/retention, or document why correlation is necessary",
         "fail_behavior": "closed",
         "override_permitted": true,
         "override_authority": "explicit privacy or governance authority",

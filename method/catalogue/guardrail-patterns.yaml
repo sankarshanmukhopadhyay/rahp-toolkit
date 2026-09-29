@@ -101,6 +101,8 @@ records:
   risk_patterns:
   - RKP-PRV-02
   - RKP-PRV-03
+  - RKP-PRV-07
+  - RKP-PRV-09
   control_patterns:
   - CTP-PRV-02
   - CTP-PRV-03
@@ -336,19 +338,26 @@ records:
 - id: GRP-PRV-02
   name: No unnecessary cross-context correlation
   protected_interest: privacy
-  prohibited_state: Stable identifiers or combined protocol data enable cross-context correlation that is not needed
-    for the declared purpose.
+  prohibited_state: Stable identifiers, proof or status mechanics, retained artefacts or combined protocol data
+    enable cross-context correlation that is not needed for the declared purpose.
   risk_patterns:
   - RKP-PRV-01
   - RKP-COMP-03
   - RKP-PRV-04
+  - RKP-PRV-05
+  - RKP-PRV-06
+  - RKP-PRV-08
+  - RKP-PRV-09
   control_patterns:
   - CTP-PRV-01
   - CTP-PRV-02
   - CTP-PRV-04
-  trigger_condition: before stable identifiers or combined data are disclosed across contexts
-  enforcement_point: identifier creation and presentation composition boundary
-  failure_mode: use scoped identifiers, reduce disclosure, or document why correlation is necessary
+  - CTP-PRV-05
+  - CTP-PRV-07
+  - CTP-PRV-08
+  trigger_condition: before privacy-relevant identifiers, proof/status mechanics or retained evidence cross contexts
+  enforcement_point: issuance, verification, status-resolution and evidence-retention boundaries
+  failure_mode: use scoped or non-correlating mechanisms, reduce disclosure/retention, or document why correlation is necessary
   fail_behavior: closed
   override_permitted: true
   override_authority: explicit privacy or governance authority
