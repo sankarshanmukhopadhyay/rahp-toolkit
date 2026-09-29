@@ -249,6 +249,60 @@ semantic_rules:
       create a separate review only when a registered composition depends on the
       removed local-resolution behavior.
 
+
+  # Exact-snapshot disposition families from controller #832.
+  - id: task-citation-convergence
+    when:
+      dimensions: [security, privacy, composition]
+      concerns: [task-citation, outcome-binding, correlation]
+    outcome: covered
+    covered_by: rahp-toolkit#690
+
+  - id: privileged-operation-step-up
+    when:
+      dimensions: [authorization, security, lifecycle]
+      concerns: [operation-bound-step-up, admin-promotion]
+    outcome: covered
+    covered_by: rahp-toolkit#795
+
+  - id: persona-reach-timeline
+    when:
+      dimensions: [privacy, lifecycle, composition]
+      concerns: [persona-reach, timeline-disclosure, correlation]
+    outcome: covered
+    covered_by: rahp-toolkit#768
+
+  - id: vetter-status-lifecycle
+    when:
+      dimensions: [authorization, governance, privacy, lifecycle]
+      concerns: [vetter-status, admission-authority, disclosure]
+    outcome: covered
+    covered_by: rahp-toolkit#798
+
+  - id: proof-required-bearer-divergence
+    when:
+      dimensions: [security, authorization, composition]
+      concerns: [proof-required, bearer-path, freshness]
+    outcome: covered
+    covered_by: rahp-toolkit#767
+
+  - id: trust-task-acceptance-window
+    when:
+      dimensions: [security, lifecycle, composition]
+      concerns: [acceptance-window, delivery-freshness, transport-equivalence]
+    outcome: covered
+    covered_by: rahp-toolkit#833
+
+  - id: trust-task-document-size-bound
+    when:
+      dimensions: [security]
+      concerns: [resource-bound, fail-closed]
+    outcome: no-action
+    rationale: >-
+      A specification-declared maximum document size is assurance-strengthening
+      resource-bounding metadata. Preserve it as evidence; open a new review only
+      if an implementation ignores, weakens, or inconsistently interprets the bound.
+
   # Judgment-derived semantic dispositions from controller #818.
   - id: acl-non-escalation-elevated-rights
     when:

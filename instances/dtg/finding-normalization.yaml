@@ -6,7 +6,7 @@ schema: rahp-finding-normalization-profile/v1
 mapping_rules:
   - id: relationship-correlation-privacy
     repository_regex: '^(OpenVTC/|trustoverip/dtgwg-cred-spec$)'
-    title_regex: '(relationship DID|relationship edge|correlation scope|deliberate-correlation|policy discovery)'
+    title_regex: '(relationship DID|relationship edge|correlation scope|correlation-scope|issuerScope|deliberate-correlation|policy discovery)'
     semantics:
       dimensions: [privacy]
       concerns: [correlation, persistent-identifier]
@@ -201,6 +201,71 @@ mapping_rules:
       affected_surfaces: [did-resolution, network-boundary]
       change_kind: [security-hardening]
 
+
+  # Exact-snapshot routing coverage from controller #832 (2026-09-28).
+  - id: task-citation-convergence
+    repository_regex: '^(OpenVTC/dtg-credentials|trustoverip/dtgwg-cred-spec)$'
+    title_regex: '(taskDigestMultibase|Bind taskContext)'
+    semantics:
+      dimensions: [security, privacy, composition]
+      concerns: [task-citation, outcome-binding, correlation]
+      affected_surfaces: [credential-binder, trust-task-citation, retained-evidence]
+      change_kind: [behavior-change]
+
+  - id: privileged-operation-step-up
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-(trust-tasks-tf|vti-spec))$'
+    title_regex: '(admin promotion goes through acl/change-role|step-up bound to one operation|Close the admin-promotion entry)'
+    semantics:
+      dimensions: [authorization, security, lifecycle]
+      concerns: [operation-bound-step-up, admin-promotion]
+      affected_surfaces: [privileged-operation, acl-change-role, step-up]
+      change_kind: [behavior-change]
+
+  - id: persona-reach-timeline
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: '(where a face may be worn, where it is, and what it has done)'
+    semantics:
+      dimensions: [privacy, lifecycle, composition]
+      concerns: [persona-reach, timeline-disclosure, correlation]
+      affected_surfaces: [persona, context-usage, timeline]
+      change_kind: [behavior-change]
+
+  - id: vetter-status-lifecycle
+    repository_regex: '^trustoverip/dtgwg-trust-tasks-tf$'
+    title_regex: '(by-DID vetter status lookup)'
+    semantics:
+      dimensions: [authorization, governance, privacy, lifecycle]
+      concerns: [vetter-status, admission-authority, disclosure]
+      affected_surfaces: [vetter-registry, admission-flow]
+      change_kind: [behavior-change]
+
+  - id: proof-required-bearer-divergence
+    repository_regex: '^trustoverip/dtgwg-vti-spec$'
+    title_regex: '(proof.*bearer token|proof.*bearer-token|bearer-token entry|bearer token.*proof)'
+    semantics:
+      dimensions: [security, authorization, composition]
+      concerns: [proof-required, bearer-path, freshness]
+      affected_surfaces: [privileged-operation, transport-authentication, task-proof]
+      change_kind: [specification-change]
+
+  - id: trust-task-acceptance-window
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-vti-spec)$'
+    title_regex: '(acceptance window|acceptance-window)'
+    semantics:
+      dimensions: [security, lifecycle, composition]
+      concerns: [acceptance-window, delivery-freshness, transport-equivalence]
+      affected_surfaces: [trust-task-discovery, transport-delivery, retained-evidence]
+      change_kind: [behavior-change]
+
+  - id: trust-task-document-size-bound
+    repository_regex: '^trustoverip/dtgwg-trust-tasks-(tf|spec)$'
+    title_regex: '(document size bound|maximum document size)'
+    semantics:
+      dimensions: [security]
+      concerns: [resource-bound, fail-closed]
+      affected_surfaces: [trust-task-document, specification-metadata]
+      change_kind: [security-hardening]
+
   # Judgment-derived semantic coverage from controller #818 (2026-09-28).
   - id: acl-non-escalation-elevated-rights
     repository_regex: '^(OpenVTC/(openvtc|verifiable-trust-infrastructure)|trustoverip/dtgwg-(trust-tasks-tf|vti-spec))$'
@@ -249,7 +314,7 @@ mapping_rules:
 
   - id: forge-projection-provenance
     repository_regex: '^(OpenVTC/(verifiable-git-infrastructure|verifiable-trust-infrastructure)|trustoverip/dtgwg-trust-tasks-tf)$'
-    title_regex: '(forge status|re-project git roles|bridge.*role map|namespace/reseat|namespace admin gets no forge role)'
+    title_regex: '(forge status|re-project git roles|bridge.*role map|namespace/reseat|namespace admin gets no forge role|git namespaces.*forge governance|did-log/install|community its own did:webvh log)'
     semantics:
       dimensions: [composition, authorization, lifecycle]
       concerns: [projection-provenance, freshness, role-mapping]
