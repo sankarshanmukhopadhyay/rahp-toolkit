@@ -353,6 +353,18 @@ semantic_rules:
     outcome: covered
     covered_by: rahp-toolkit#690
 
+  - id: vsc-registry-routine-publication
+    when:
+      dimensions: [release]
+      concerns: [registry-publication]
+    outcome: no-action
+    rationale: >-
+      Routine VSC Registry publication, registration, editorial, or packaging changes
+      remain visible as portfolio evidence but do not create an independent RAHP
+      proposition. Escalate only when normalization identifies semantic changes to
+      context authority, versioning, interpretation, compatibility, verification, or
+      another assurance-relevant dimension.
+
   - id: credential-registry-context-convergence
     when:
       dimensions: [composition, lifecycle]
