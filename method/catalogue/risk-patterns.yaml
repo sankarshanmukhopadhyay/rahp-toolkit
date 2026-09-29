@@ -462,6 +462,117 @@ records:
     rationale: This risk can create an unacceptable state at a clear decision or execution boundary, so a portable
       guardrail should block or stop that state.
     condition: null
+- id: RKP-PRV-05
+  name: Proof mechanism correlation
+  family: Privacy and inference
+  description: Cryptographic proof material, verification-method references, timestamps or other securing metadata
+    remain sufficiently stable across contexts to enable linking even when the disclosed payload has no stable correlator.
+  harm_patterns:
+  - HRM-PRV-02
+  - HRM-PRV-04
+  origin: design
+  scope: cross-party
+  temporal_mode: immediate
+  reversibility: costly
+  observability: detectable
+  applicability: {}
+  related_patterns:
+  - RKP-PRV-01
+  guardrail_requirement:
+    status: required
+    rationale: A privacy-preserving payload can still become linkable through its proof machinery, so correlation
+      assurance must include the securing mechanism rather than inspect disclosed claims alone.
+    condition: null
+- id: RKP-PRV-06
+  name: Status query observability
+  family: Privacy and inference
+  description: Resolving credential, authorization or lifecycle status exposes presentation activity, timing,
+    relationship information or relying-party context to a status provider, issuer or other observer.
+  harm_patterns:
+  - HRM-PRV-02
+  - HRM-PRV-03
+  - HRM-PRV-04
+  origin: design
+  scope: cross-party
+  temporal_mode: immediate
+  reversibility: costly
+  observability: detectable
+  applicability: {}
+  related_patterns:
+  - RKP-PRV-03
+  guardrail_requirement:
+    status: required
+    rationale: Privacy leakage can arise from the act and pattern of status resolution even when the returned status
+      value contains no sensitive information.
+    condition: null
+- id: RKP-PRV-07
+  name: Post-disclosure purpose violation
+  family: Privacy and inference
+  description: Information legitimately disclosed for one relying purpose is retained, transferred, profiled or
+    otherwise processed beyond the purpose, audience or lifecycle basis under which disclosure occurred.
+  harm_patterns:
+  - HRM-PRV-05
+  - HRM-AUT-03
+  origin: operations
+  scope: cross-party
+  temporal_mode: delayed
+  reversibility: costly
+  observability: detectable
+  applicability: {}
+  related_patterns:
+  - RKP-CRD-04
+  guardrail_requirement:
+    status: required
+    rationale: Initial disclosure validity does not establish continuing authority or legitimacy for downstream use,
+      so post-disclosure processing needs an independently enforceable purpose and lifecycle boundary.
+    condition: null
+- id: RKP-PRV-08
+  name: Authoritative privacy-control subversion
+  family: Privacy and inference
+  description: An issuer, registry, operator or other authoritative participant uses identifiers, proof configuration,
+    issuance cadence, renewal behavior or metadata under its control to defeat an intended unlinkability or
+    minimization property.
+  harm_patterns:
+  - HRM-PRV-02
+  - HRM-PRV-04
+  origin: governance
+  scope: systemic
+  temporal_mode: delayed
+  reversibility: costly
+  observability: detectable
+  applicability: {}
+  related_patterns:
+  - RKP-PRV-01
+  - RKP-PRV-05
+  guardrail_requirement:
+    status: required
+    rationale: Privacy properties must survive choices made by parties that legitimately control issuance or
+      operational metadata; authority over a component is not authority to silently defeat the declared privacy claim.
+    condition: null
+- id: RKP-PRV-09
+  name: Verification artefact retention concentration
+  family: Privacy and inference
+  description: Presentations, status observations, verification transcripts or related evidence are retained or
+    aggregated beyond the minimum operational need, creating a durable surface for later correlation, inference or
+    large-scale disclosure.
+  harm_patterns:
+  - HRM-PRV-01
+  - HRM-PRV-03
+  - HRM-PRV-04
+  origin: operations
+  scope: systemic
+  temporal_mode: delayed
+  reversibility: costly
+  observability: detectable
+  applicability: {}
+  related_patterns:
+  - RKP-PRV-02
+  - RKP-PRV-07
+  guardrail_requirement:
+    status: required
+    rationale: Assurance and audit evidence should remain purpose-bounded; unnecessary durable retention can turn
+      otherwise local verification events into a reconstructable surveillance dataset.
+    condition: null
 - id: RKP-EXC-01
   name: Single-path participation exclusion
   family: Inclusion and accessibility
