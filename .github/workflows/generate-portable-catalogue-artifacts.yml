@@ -1,0 +1,37 @@
+name: Generate portable catalogue artifacts
+
+on:
+  push:
+    branches:
+      - feat/privacy-vc-threat-model-tranche
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Generate catalogue documentation and build evidence
+        run: |
+          python3 tools/render_portable_catalogue_docs.py
+          python3 tools/build.py
+      - name: Upload generated files
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-portable-catalogue
+          path: |
+            docs/portable-assurance-catalogue.md
+            build/derived/portable-catalogue-coverage.json
+            build/portable-assurance.json
+            build/rahp-toolkit.html
+            build/site/assurance-graph.html
+            build/site/portable-catalogue.html
+          if-no-files-found: error
