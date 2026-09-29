@@ -112,7 +112,7 @@ A completed run produces materially equivalent machine-readable and human-readab
 
 Material findings should identify where remediation belongs: normative specification, composition/profile contract, implementation/code, evidence/test gap, deployment/operator control, governance/redress or consumer/user experience.
 
-For a guided first run, see [Getting started](getting-started.md). For result interpretation, see [Interpreting results](interpreting-results.md). For adoption into another project, see [Adopting RAHP](../ADOPTION.md).
+For the reader-facing object and schema map, see [RAHP data model](data-model.md). For a guided first run, see [Getting started](getting-started.md). For result interpretation, see [Interpreting results](interpreting-results.md). For adoption into another project, see [Adopting RAHP](../ADOPTION.md).
 
 ## Clean-room and continuous assurance
 
