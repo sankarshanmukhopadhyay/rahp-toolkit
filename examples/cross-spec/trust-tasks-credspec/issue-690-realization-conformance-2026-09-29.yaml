@@ -1,0 +1,123 @@
+reconciliation:
+  schema: rahp-realization-conformance/v1
+  id: RAHP-690-OPENVTC-TASK-CITATION-2026-09-29
+  parent_issue: 690
+  status: bounded-source-pinned-reconciliation
+  observed_on: "2026-09-29"
+  repository_boundary: upstream-openvtc-read-only
+
+  normative_sources:
+    credential_spec:
+      repository: trustoverip/dtgwg-cred-spec
+      revision: 94af2d89ed04e6f27011ef8ee6ca5acf70755a78
+      requirements:
+        task_context: initiating-document-id
+        task_digest_multibase: digest-of-initiating-document
+        completion_non_inference: matching-outcome-evidence-required
+    credential_library:
+      repository: OpenVTC/dtg-credentials
+      revision: 1d49eaf17a5002817370426554d312db2ed19b09
+      observations:
+        - new_vwc_for_session-derives-taskContext-from-opening-document-id
+        - new_vwc_for_session-derives-taskDigestMultibase-from-opening-document-task-digest
+        - cites_task-verifies-both-citation-halves-against-the-document
+
+  target_implementation:
+    repository: OpenVTC/verifiable-trust-infrastructure
+    revision: 863dba154a2a907380e4f2447ee9eedba481d64f
+    source_observations:
+      producer_vwc:
+        disposition: realized-for-witness-session
+        reason: >-
+          The VWC path uses dtg-credentials new_vwc_for_session against the opening
+          witness/session document. For that task family the root document id and
+          thread root coincide, so the produced taskContext and taskDigestMultibase
+          are derived from one authoritative initiating document.
+      generic_presentation_verifier:
+        disposition: partial-semantic-divergence
+        observations:
+          - VerifiedPresentation carries taskContext but no taskDigestMultibase
+          - task_context.rs documents taskContext as threadId
+          - task_context.rs compares taskContext directly with the presentation exchange thread
+          - the generic receipt path therefore cannot verify the normative citation pair as a pair
+        risk: >-
+          Equality between initiating-document id and exchange thread can make a bounded
+          task family appear conformant while masking divergence for flows where those
+          identifiers are not definitionally identical.
+      completion_non_inference:
+        disposition: preserved-by-policy-boundary
+        reason: >-
+          Current source explicitly preserves that a taskContext-bearing credential is
+          not by itself proof that the associated task completed. A matching outcome is
+          still required for a completion claim.
+      outcome_evidence_pairing:
+        disposition: not-fully-realized
+        reason: >-
+          No generic target path was found that carries taskDigestMultibase into
+          VerifiedPresentation and pairs matching outcome evidence against both citation
+          halves before making a completion determination.
+      privacy_correlation:
+        disposition: indeterminate-waiting-external
+        reason: >-
+          Visible taskContext plus taskDigestMultibase remain durable correlators.
+          Credential Spec issue 58 and ZKP PR 11 remain open, so committed-citation
+          hiding/opening semantics are not adopted and no unlinkability claim is made.
+
+  proposition_results:
+    citation_identity:
+      state: partially-established
+      evidence:
+        - producer VWC path derives taskContext from initiating document id
+        - generic verifier still models taskContext as exchange threadId
+      prohibited_inference:
+        - generic-thread-equality-implies-normative-citation-identity
+    citation_digest_binding:
+      state: partially-established
+      evidence:
+        - dtg-credentials producer and cites_task support digest binding
+        - generic OpenVTC presentation projection omits taskDigestMultibase
+      prohibited_inference:
+        - library-support-implies-end-to-end-verifier-enforcement
+    completion_non_inference:
+      state: established
+      evidence:
+        - source comments and policy projection preserve no-completion-from-credential-alone
+      prohibited_inference:
+        - valid-credential-implies-completed-task
+    outcome_evidence_binding:
+      state: not-implemented
+      evidence:
+        - no generic source-pinned verifier path found that pairs outcome evidence with both citation halves
+      prohibited_inference:
+        - matching-thread-implies-matching-outcome
+    privacy_unlinkability:
+      state: indeterminate
+      evidence:
+        - visible citation remains stable
+        - committed-citation representation unresolved upstream
+        - ZKP construction remains unadopted
+      prohibited_inference:
+        - proof-validity-implies-unlinkability
+
+  external_state:
+    credential_spec_issue_58: open
+    zkp_pr_11: open
+    committed_citation: unsettled
+    zkp_opening_construction: unadopted
+
+  terminal_disposition:
+    result: PARTIAL_REALIZATION
+    assurance_posture: AMBER
+    reason: >-
+      The producer/library side now implements the newer initiating-document plus digest
+      citation for bounded VWC flows, but the generic target verifier still projects only
+      taskContext and compares it to threadId. End-to-end citation-pair verification and
+      outcome-evidence pairing are therefore not fully realized. Completion non-inference
+      remains preserved. Privacy remains INDETERMINATE pending committed-citation/ZKP
+      convergence and fresh runtime evidence.
+
+  next_trigger:
+    - target verifier projects and verifies taskDigestMultibase with taskContext
+    - target runtime pairs outcome evidence against the exact initiating-document citation
+    - credential-spec issue 58 materially settles committed-citation representation
+    - ZKP construction for opening/blinding the committed citation is adopted or materially changes
