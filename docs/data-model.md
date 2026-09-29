@@ -15,7 +15,7 @@ This page is a reader-facing map. It introduces no new RAHP semantics. Where thi
 
 For portable execution semantics, start with [`method/engine-contract.yaml`](../method/engine-contract.yaml). The current stable boundary is `rahp-engine-contract-v1`, revision `1.3`, with normalized result schema version `1`.
 
-The authoritative machine-readable structures are the JSON Schemas under [`method/schema/`](../method/schema/). The engine contract identifies the schemas required at its portable execution boundary. [Engine contract](engine-contract.md) explains how contract-family, revision and result-schema versioning relate.
+The authoritative machine-readable structures are the JSON Schemas under `method/schema/`. The engine contract identifies the schemas required at its portable execution boundary. [Engine contract](engine-contract.md) explains how contract-family, revision and result-schema versioning relate.
 
 The method-level standards-development lifecycle is separately represented by [`method/lifecycle.yaml`](../method/lifecycle.yaml). It describes how assurance knowledge is developed across context/scoping, drafting, review/harmonisation, publication and maintenance. It is not the finite state machine for one assessment.
 
@@ -200,7 +200,7 @@ For implementation work, read in this order:
 2. [Assurance knowledge model](assurance-knowledge-model.md)
 3. [This data-model map](data-model.md)
 4. [Engine contract](engine-contract.md) and [`method/engine-contract.yaml`](../method/engine-contract.yaml)
-5. the relevant [JSON Schemas](../method/schema/)
+5. the relevant JSON Schemas under `method/schema/`
 6. [Review evidence and retention](evidence-retention.md)
 7. worked records under `examples/` and deployment-owned records under `instances/`
 8. controller/reference implementation code only after the portable contracts are understood.
