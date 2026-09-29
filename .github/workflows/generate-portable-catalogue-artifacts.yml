@@ -6,13 +6,15 @@ on:
       - feat/privacy-vc-threat-model-tranche
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: feat/privacy-vc-threat-model-tranche
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
@@ -23,15 +25,14 @@ jobs:
         run: |
           python3 tools/render_portable_catalogue_docs.py
           python3 tools/build.py
-      - name: Upload generated files
-        uses: actions/upload-artifact@v4
-        with:
-          name: generated-portable-catalogue
-          path: |
-            docs/portable-assurance-catalogue.md
-            build/derived/portable-catalogue-coverage.json
-            build/portable-assurance.json
-            build/rahp-toolkit.html
-            build/site/assurance-graph.html
-            build/site/portable-catalogue.html
-          if-no-files-found: error
+      - name: Commit generated files when changed
+        run: |
+          git add docs/portable-assurance-catalogue.md build/
+          if git diff --cached --quiet; then
+            echo "Generated files are already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build(catalogue): refresh generated privacy artifacts"
+          git push origin HEAD:feat/privacy-vc-threat-model-tranche
