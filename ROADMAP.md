@@ -61,6 +61,12 @@ The v2.5 operating model is additive. It retains the earlier qualified capabilit
 
 These capability names are retained deliberately because they are referenced by the stable capability-documentation registry and remain part of the toolkit's qualified historical continuity.
 
+## Post-v2.5 development now on main
+
+The portable catalogue now also includes explicit privacy mechanisms for proof-level correlation, status-query observability, post-disclosure purpose control, authoritative-participant privacy subversion, and verification-artefact retention concentration, with corresponding guardrail/control coverage and regression evidence.
+
+This is post-v2.5 development, not a new qualified release boundary. The next release must still be established through the normal release-qualification and release-judgment process.
+
 ## Post-v2.5 priorities
 
 1. **Realization evidence triggers:** reassess waiting-external/evidence-required owners only when their recorded upstream/runtime trigger fires.
