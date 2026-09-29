@@ -9,7 +9,15 @@ parent: Reference
 
 ## Unreleased
 
-No stable capability changes recorded after v2.5.0 yet.
+### Added / advanced
+
+- Added reusable privacy/correlation risk mechanisms for proof-mechanism correlation, status-query observability, post-disclosure purpose violation, authoritative privacy-control subversion, and verification-artefact retention concentration.
+- Extended portable privacy guardrails and controls to cover status-resolution privacy, purpose-bounded downstream processing, verification-evidence retention minimization, and issuer-side unlinkability pressure testing.
+- Added focused regression evidence and a source/judgment note derived from pressure-testing against the W3C VC Data Model Threat Model v2.1 while preserving the W3C draft as research provenance rather than RAHP authority.
+
+### Release posture
+
+These changes are merged post-v2.5 development. They do **not** declare, qualify, tag, or publish a new RAHP release. v2.5.0 Psyche remains the current qualified stable release until a separate evidence-backed release judgment establishes the next boundary.
 
 ## v2.5.0 — 2026-09-26 — Psyche
 
