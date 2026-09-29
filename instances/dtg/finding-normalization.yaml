@@ -330,6 +330,15 @@ mapping_rules:
       affected_surfaces: [trust-task-outcome, consent]
       change_kind: [behavior-change]
 
+  - id: vsc-registry-routine-publication
+    repository_regex: '^trustoverip/dtgwg-vsc-registry$'
+    title_regex: '^(chore|docs)(\\([^)]*\\))?:.*(publish|publication|register|registry|editorial|README|readme|release)'
+    semantics:
+      dimensions: [release]
+      concerns: [registry-publication]
+      affected_surfaces: [credential-context-registry]
+      change_kind: [release-change]
+
   - id: credential-registry-context-convergence
     repository_regex: '^trustoverip/dtgwg-vsc-registry$'
     title_regex: '(credential context|rules for contexts|DTG credential context)'
