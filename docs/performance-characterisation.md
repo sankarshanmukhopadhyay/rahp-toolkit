@@ -129,6 +129,12 @@ Raw measurements should be retained as workflow artifacts where practical. Archi
 
 Performance evidence should be treated as environment-sensitive. Hosted-runner measurements are useful for regression detection and directional comparison, not as universal hardware-independent throughput guarantees.
 
+## Architecture decision
+
+The current evidence disposition is recorded in [Performance Architecture Decision: Native Evaluation Kernel](performance-architecture-decision.md).
+
+The accepted decision is to optimize the current Python execution architecture before considering native extraction.
+
 ## Follow-on work
 
 Issue #855 tracks the wider characterisation tranche:
