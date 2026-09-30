@@ -221,3 +221,40 @@ entries:
     reused: false
     positive_counter_case: examples/cross-spec/guardianship-fiduciary/transactions/threshold-coapproval.yaml
     contract_fixture: NF-REVIEW-PARTIAL-EXECUTION
+  - id: INV-POST851-LENS-OMISSION
+    path: fixtures/negative/review-full-stack-lens-omission.yaml
+    owning_lens: rahp
+    proposition: process completion cannot substitute for explicit full-stack lens dispositions
+    polarity: negative
+    expected_state: indeterminate
+    provenance: post-851-lpc-self-assurance
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/test_post_851_full_stack_assurance.py#test_851_shape_can_terminate_indeterminate_with_explicit_unexecuted_lens
+    contract_fixture: NF-POST851-LENS-OMISSION
+  - id: INV-POST851-SECURITY-TYPE-CONFUSION
+    path: fixtures/negative/security-migration-type-confusion.yaml
+    owning_lens: security
+    proposition: syntactic validity cannot upgrade mixed-version artifacts into current authorization semantics
+    polarity: negative
+    expected_state: reject
+    provenance: post-851-lpc-self-assurance
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/test_post_851_full_stack_assurance.py#test_genericized_870_version_skew_generates_review_propositions
+    contract_fixture: NF-POST851-SECURITY-TYPE-CONFUSION
+  - id: INV-POST851-DRARM-OMISSION
+    path: fixtures/negative/drarm-migration-resilience-omission.yaml
+    owning_lens: drarm
+    proposition: functional migration planning cannot silently imply resilience assurance
+    polarity: negative
+    expected_state: review-required
+    provenance: post-851-lpc-self-assurance
+    executable: true
+    ci_gated: true
+    reused: false
+    positive_counter_case: tests/test_post_851_full_stack_assurance.py#test_drarm_depth_is_visible_and_silence_is_invalid
+    contract_fixture: NF-POST851-DRARM-OMISSION
+

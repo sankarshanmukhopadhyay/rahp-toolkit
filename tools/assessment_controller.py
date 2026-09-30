@@ -23,6 +23,16 @@ RESILIENCE_DISPOSITIONS = {
     "not-applicable",
     "required-but-not-executed",
 }
+FULL_STACK_LENSES = ("rahp", "security", "composition", "drarm", "specialist")
+LENS_MATERIALITY = {"applicable", "not-applicable", "not-material", "uncertain"}
+LENS_EXECUTION = {"executed", "required-but-not-executed", "referred", "no-applicable-producer"}
+LENS_RESULTS = {"PASS", "FAIL", "INDETERMINATE", "KNOWN_RESIDUAL", "N/A", "PENDING"}
+EVIDENCE_MATURITY = {
+    "none", "modeled", "source-only", "implementation", "automated-conformance",
+    "runtime", "induced-failure", "fleet-adversarial",
+}
+PROCESS_STATES = {"in-progress", "complete", "error"}
+ASSURANCE_STATES = {"pending", "pass", "fail", "indeterminate", "not-applicable", "upstream-action", "error"}
 ALLOWED = {
     "DISCOVERED": {"QUALIFIED", "TERMINAL"},
     "QUALIFIED": {"ROUTED", "TERMINAL"},
@@ -93,6 +103,42 @@ def set_resilience_disposition(
     if not isinstance(capabilities, dict):
         raise ValueError("assessment capabilities must be an object")
     capabilities["resilience"] = value
+    if isinstance(record.get("lenses"), dict):
+        if disposition == "not-applicable":
+            set_lens_disposition(
+                record,
+                "drarm",
+                materiality="not-applicable",
+                execution="no-applicable-producer",
+                result="N/A",
+                evidence_maturity="none",
+                reason=value["reason"],
+                provenance=value.get("provenance"),
+            )
+        elif disposition == "executed":
+            set_lens_disposition(
+                record,
+                "drarm",
+                materiality="applicable",
+                execution="executed",
+                result="INDETERMINATE",
+                evidence_maturity="source-only",
+                reason=value["reason"],
+                provenance=value.get("provenance") or {"source": "drarm-execution"},
+            )
+        else:
+            decision = (value.get("provenance") or {}).get("decision")
+            materiality = "applicable" if decision == "required" else "uncertain"
+            set_lens_disposition(
+                record,
+                "drarm",
+                materiality=materiality,
+                execution="required-but-not-executed",
+                result="INDETERMINATE",
+                evidence_maturity="modeled",
+                reason=value["reason"],
+                provenance=value.get("provenance"),
+            )
     return record
 
 
@@ -156,6 +202,195 @@ def apply_resilience_applicability(
     )
 
 
+def _default_lens_record(lens: str) -> dict[str, Any]:
+    return {
+        "materiality": "uncertain",
+        "execution": "required-but-not-executed",
+        "result": "PENDING",
+        "evidence_maturity": "none",
+        "reason": f"{lens} applicability has not yet been resolved",
+        "provenance": {"source": "controller-default", "decision": "fail-closed"},
+    }
+
+
+def set_run_dimensions(
+    record: dict[str, Any],
+    *,
+    process_state: str | None = None,
+    assurance_state: str | None = None,
+    evidence_maturity: str | None = None,
+) -> dict[str, Any]:
+    if process_state is not None:
+        if process_state not in PROCESS_STATES:
+            raise ValueError(f"invalid process_state: {process_state}")
+        record["process_state"] = process_state
+    if assurance_state is not None:
+        if assurance_state not in ASSURANCE_STATES:
+            raise ValueError(f"invalid assurance_state: {assurance_state}")
+        record["assurance_state"] = assurance_state
+    if evidence_maturity is not None:
+        if evidence_maturity not in EVIDENCE_MATURITY:
+            raise ValueError(f"invalid evidence_maturity: {evidence_maturity}")
+        record["evidence_maturity"] = evidence_maturity
+    return record
+
+
+def set_lens_disposition(
+    record: dict[str, Any],
+    lens: str,
+    *,
+    materiality: str,
+    execution: str,
+    result: str,
+    evidence_maturity: str,
+    reason: str,
+    provenance: dict[str, Any] | None = None,
+    owner: str | None = None,
+    assurance_depth: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    if lens not in FULL_STACK_LENSES:
+        raise ValueError(f"unknown full-stack lens: {lens}")
+    if materiality not in LENS_MATERIALITY:
+        raise ValueError(f"invalid lens materiality: {materiality}")
+    if execution not in LENS_EXECUTION:
+        raise ValueError(f"invalid lens execution: {execution}")
+    if result not in LENS_RESULTS:
+        raise ValueError(f"invalid lens result: {result}")
+    if evidence_maturity not in EVIDENCE_MATURITY:
+        raise ValueError(f"invalid lens evidence maturity: {evidence_maturity}")
+    if not isinstance(reason, str) or not reason.strip():
+        raise ValueError("lens disposition requires a non-empty reason")
+    if materiality in {"not-applicable", "not-material"} and not provenance:
+        raise ValueError("not-applicable/not-material lens disposition requires provenance")
+    if execution == "executed" and not provenance:
+        raise ValueError("executed lens disposition requires provenance")
+    if result in {"PASS", "FAIL", "KNOWN_RESIDUAL"} and execution != "executed":
+        raise ValueError(f"{result} requires an executed lens")
+    if result == "N/A" and materiality not in {"not-applicable", "not-material"}:
+        raise ValueError("N/A requires not-applicable or not-material lens")
+    if assurance_depth is not None:
+        if not isinstance(assurance_depth, dict) or not assurance_depth.get("achieved") or not assurance_depth.get("required"):
+            raise ValueError("assurance_depth requires achieved and required")
+    value = {
+        "materiality": materiality,
+        "execution": execution,
+        "result": result,
+        "evidence_maturity": evidence_maturity,
+        "reason": reason.strip(),
+        **({"provenance": provenance} if provenance else {}),
+        **({"owner": owner} if owner else {}),
+        **({"assurance_depth": assurance_depth} if assurance_depth else {}),
+    }
+    record.setdefault("lenses", {})[lens] = value
+    return record
+
+
+def attach_evidence_probe_ledger(record: dict[str, Any], ledger: dict[str, Any]) -> dict[str, Any]:
+    if ledger.get("schema") != "rahp-evidence-probe-ledger/v1":
+        raise ValueError("unsupported evidence probe ledger schema")
+    if not isinstance(ledger.get("requirements"), list):
+        raise ValueError("evidence probe ledger requires requirements")
+    if ledger.get("orchestration_defects"):
+        raise ValueError("evidence probe ledger contains orchestration defects")
+    valid_attempts = {"EXECUTED", "ATTEMPTED_UNAVAILABLE", "NO_APPLICABLE_PRODUCER"}
+    seen: set[str] = set()
+    for entry in ledger["requirements"]:
+        rid = str(entry.get("requirement_id") or "").strip()
+        if not rid:
+            raise ValueError("evidence probe ledger entry missing requirement_id")
+        seen.add(rid)
+        attempt = entry.get("attempt_state")
+        if attempt not in valid_attempts:
+            raise ValueError(f"{rid}: invalid evidence attempt_state {attempt!r}")
+        if entry.get("result") == "NOT_EVIDENCED" and attempt not in {"ATTEMPTED_UNAVAILABLE", "NO_APPLICABLE_PRODUCER", "EXECUTED"}:
+            raise ValueError(f"{rid}: NOT_EVIDENCED lacks attributable attempt classification")
+    required = set(record.get("required_evidence") or [])
+    missing = required - seen
+    if missing:
+        raise ValueError("evidence probe ledger missing required evidence attempts: " + ", ".join(sorted(missing)))
+    record["evidence_probe_ledger"] = ledger
+    return record
+
+
+def render_full_stack_summary(record: dict[str, Any]) -> str:
+    lines = [
+        f"Process: {record.get('process_state', 'unknown')}",
+        f"Assurance: {record.get('assurance_state', 'unknown')}",
+        f"Evidence maturity: {record.get('evidence_maturity', 'unknown')}",
+        "",
+        "| Lens | Materiality | Execution | Result | Evidence |",
+        "|---|---|---|---|---|",
+    ]
+    lenses = record.get("lenses") or {}
+    for lens in FULL_STACK_LENSES:
+        value = lenses.get(lens) or {}
+        lines.append(
+            f"| {lens} | {value.get('materiality', 'missing')} | "
+            f"{value.get('execution', 'missing')} | {value.get('result', 'missing')} | "
+            f"{value.get('evidence_maturity', 'missing')} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def full_stack_terminalization_errors(record: dict[str, Any]) -> list[str]:
+    """Return fail-closed errors for a full-stack/composite terminal claim."""
+    errors: list[str] = []
+    if record.get("process_state") != "complete":
+        errors.append("process_state must be complete")
+    if record.get("assurance_state") not in ASSURANCE_STATES - {"pending"}:
+        errors.append("assurance_state must be terminal and separate from process completion")
+    if record.get("evidence_maturity") not in EVIDENCE_MATURITY - {"none"}:
+        errors.append("evidence_maturity must state the achieved evidence depth")
+    required_evidence = set(record.get("required_evidence") or [])
+    if required_evidence:
+        ledger = record.get("evidence_probe_ledger")
+        if not isinstance(ledger, dict):
+            errors.append("required evidence has no attributable probe ledger")
+        else:
+            if ledger.get("orchestration_defects"):
+                errors.append("evidence probe ledger contains orchestration defects")
+            attempted = {
+                str(entry.get("requirement_id"))
+                for entry in (ledger.get("requirements") or [])
+                if isinstance(entry, dict)
+                and entry.get("attempt_state") in {"EXECUTED", "ATTEMPTED_UNAVAILABLE", "NO_APPLICABLE_PRODUCER"}
+            }
+            for rid in sorted(required_evidence - attempted):
+                errors.append(f"{rid}: required evidence has no attributable probe attempt")
+    lenses = record.get("lenses")
+    if not isinstance(lenses, dict):
+        return errors + ["full-stack lens ledger missing"]
+    for lens in FULL_STACK_LENSES:
+        value = lenses.get(lens)
+        if not isinstance(value, dict):
+            errors.append(f"{lens}: lens disposition missing")
+            continue
+        materiality = value.get("materiality")
+        execution = value.get("execution")
+        result = value.get("result")
+        if materiality == "uncertain":
+            errors.append(f"{lens}: materiality remains uncertain")
+        if materiality in {"not-applicable", "not-material"} and not value.get("provenance"):
+            errors.append(f"{lens}: explicit non-applicability requires provenance")
+        if result == "PENDING":
+            errors.append(f"{lens}: result remains pending")
+        if materiality == "applicable" and execution == "required-but-not-executed" and result != "INDETERMINATE":
+            errors.append(f"{lens}: unexecuted applicable lens must remain INDETERMINATE")
+        if result == "PASS" and execution != "executed":
+            errors.append(f"{lens}: PASS requires attributable execution")
+    if record.get("assurance_state") == "pass":
+        for lens, value in lenses.items():
+            if value.get("materiality") == "applicable" and value.get("result") != "PASS":
+                errors.append(f"{lens}: full-stack PASS prohibited without lens PASS")
+    return errors
+
+
+def assert_full_stack_terminalizable(record: dict[str, Any]) -> None:
+    errors = full_stack_terminalization_errors(record)
+    if errors:
+        raise ValueError("full-stack terminalization blocked: " + "; ".join(errors))
+
+
 def new_lifecycle(assessment_id: str, mode: str = "steady-state", lineage: dict[str, Any] | None = None) -> dict[str, Any]:
     if mode not in {"steady-state", "clean-room"}:
         raise ValueError("mode must be steady-state or clean-room")
@@ -174,6 +409,10 @@ def new_lifecycle(assessment_id: str, mode: str = "steady-state", lineage: dict[
         },
         "history": [{"from": None, "to": "DISCOVERED", "reason": "assessment discovered"}],
         "blocking_reason": None,
+        "process_state": "in-progress",
+        "assurance_state": "pending",
+        "evidence_maturity": "none",
+        "lenses": {lens: _default_lens_record(lens) for lens in FULL_STACK_LENSES},
     }
 
 

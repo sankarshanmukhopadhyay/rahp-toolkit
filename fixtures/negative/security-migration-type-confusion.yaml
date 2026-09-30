@@ -1,0 +1,47 @@
+schema: rahp-negative-fixture/v1
+id: NF-POST851-SECURITY-TYPE-CONFUSION
+proposition:
+  claim: a mixed-version migration may accept a semantically different artifact because its outer transport or type slot remains valid
+  owner: security
+lens:
+  primary: security
+  secondary: [composition, rahp]
+evidence:
+  established:
+    - cryptographic_validity
+    - transport_authentication
+  missing:
+    - semantic_version_binding
+    - old_new_type_refusal_evidence
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [valid_signature, recognized_transport, syntactically_valid_type_slot]
+  to: [semantically_current_authorization]
+expected:
+  state: reject
+  terminal_colour: red
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: tests/test_post_851_full_stack_assurance.py#test_genericized_870_version_skew_generates_review_propositions
+  proposition: same-generation semantics are explicit and mixed generations have an explicit compatibility or refusal rule
+source:
+  kind: test
+  ref: tests/test_post_851_full_stack_assurance.py#test_semantic_substitution_is_not_hidden_by_same_version
+  provenance: post-851 genericized migration downgrade and type-confusion regression
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies:
+    - producer_semantics
+    - contract_semantics
+    - consumer_semantics
+drarm:
+  applicable: false
+retest_triggers:
+  - credential or protocol semantic version changes
+  - compatibility policy changes
+evidence_maturity: executable

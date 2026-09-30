@@ -13,12 +13,23 @@
     "history"
   ],
   "properties": {
-    "schema": {"const": "rahp-assurance-run-state/v1"},
-    "assessment_id": {"type": "string", "minLength": 1},
-    "correlation_key": {"type": "string", "minLength": 1},
+    "schema": {
+      "const": "rahp-assurance-run-state/v1"
+    },
+    "assessment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "correlation_key": {
+      "type": "string",
+      "minLength": 1
+    },
     "subject": {
       "type": "object",
-      "required": ["type", "id"],
+      "required": [
+        "type",
+        "id"
+      ],
       "properties": {
         "type": {
           "enum": [
@@ -37,8 +48,16 @@
             "changeset"
           ]
         },
-        "id": {"type": "string", "minLength": 1},
-        "components": {"type": "array", "items": {"type": "string"}}
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "additionalProperties": true
     },
@@ -47,11 +66,22 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["repository", "revision"],
+        "required": [
+          "repository",
+          "revision"
+        ],
         "properties": {
-          "repository": {"type": "string", "minLength": 1},
-          "revision": {"type": "string", "minLength": 1},
-          "artifact": {"type": "string"}
+          "repository": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact": {
+            "type": "string"
+          }
         },
         "additionalProperties": true
       }
@@ -78,33 +108,507 @@
         "ERROR_CONTROLLER"
       ]
     },
-    "terminal": {"type": "boolean"},
-    "outcome": {
-      "enum": ["PASS", "FAIL", "NOT_APPLICABLE", "INDETERMINATE", "UPSTREAM_ACTION", "ERROR"]
+    "terminal": {
+      "type": "boolean"
     },
-    "reason_code": {"type": "string"},
-    "evidence": {"type": "array", "items": {"type": "object"}},
-    "residuals": {"type": "array", "items": {"type": "object"}},
-    "actions": {"type": "array", "items": {"type": "object"}},
+    "outcome": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "NOT_APPLICABLE",
+        "INDETERMINATE",
+        "UPSTREAM_ACTION",
+        "ERROR"
+      ]
+    },
+    "reason_code": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "residuals": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
     "history": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["from", "to", "reason"],
+        "required": [
+          "from",
+          "to",
+          "reason"
+        ],
         "properties": {
-          "from": {"type": ["string", "null"]},
-          "to": {"type": "string"},
-          "reason": {"type": "string"},
-          "event_id": {"type": "string"}
+          "from": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "to": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "event_id": {
+            "type": "string"
+          }
         },
         "additionalProperties": true
       }
+    },
+    "process_state": {
+      "enum": [
+        "in-progress",
+        "complete",
+        "error"
+      ]
+    },
+    "assurance_state": {
+      "enum": [
+        "pending",
+        "pass",
+        "fail",
+        "indeterminate",
+        "not-applicable",
+        "upstream-action",
+        "error"
+      ]
+    },
+    "evidence_maturity": {
+      "enum": [
+        "none",
+        "modeled",
+        "source-only",
+        "implementation",
+        "automated-conformance",
+        "runtime",
+        "induced-failure",
+        "fleet-adversarial"
+      ]
+    },
+    "lenses": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rahp": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "materiality",
+            "execution",
+            "result",
+            "evidence_maturity",
+            "reason"
+          ],
+          "properties": {
+            "materiality": {
+              "enum": [
+                "applicable",
+                "not-applicable",
+                "not-material",
+                "uncertain"
+              ]
+            },
+            "execution": {
+              "enum": [
+                "executed",
+                "required-but-not-executed",
+                "referred",
+                "no-applicable-producer"
+              ]
+            },
+            "result": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "INDETERMINATE",
+                "KNOWN_RESIDUAL",
+                "N/A",
+                "PENDING"
+              ]
+            },
+            "evidence_maturity": {
+              "enum": [
+                "none",
+                "modeled",
+                "source-only",
+                "implementation",
+                "automated-conformance",
+                "runtime",
+                "induced-failure",
+                "fleet-adversarial"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "provenance": {
+              "type": "object"
+            },
+            "owner": {
+              "type": "string",
+              "minLength": 1
+            },
+            "assurance_depth": {
+              "type": "object",
+              "properties": {
+                "achieved": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "security": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "materiality",
+            "execution",
+            "result",
+            "evidence_maturity",
+            "reason"
+          ],
+          "properties": {
+            "materiality": {
+              "enum": [
+                "applicable",
+                "not-applicable",
+                "not-material",
+                "uncertain"
+              ]
+            },
+            "execution": {
+              "enum": [
+                "executed",
+                "required-but-not-executed",
+                "referred",
+                "no-applicable-producer"
+              ]
+            },
+            "result": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "INDETERMINATE",
+                "KNOWN_RESIDUAL",
+                "N/A",
+                "PENDING"
+              ]
+            },
+            "evidence_maturity": {
+              "enum": [
+                "none",
+                "modeled",
+                "source-only",
+                "implementation",
+                "automated-conformance",
+                "runtime",
+                "induced-failure",
+                "fleet-adversarial"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "provenance": {
+              "type": "object"
+            },
+            "owner": {
+              "type": "string",
+              "minLength": 1
+            },
+            "assurance_depth": {
+              "type": "object",
+              "properties": {
+                "achieved": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "composition": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "materiality",
+            "execution",
+            "result",
+            "evidence_maturity",
+            "reason"
+          ],
+          "properties": {
+            "materiality": {
+              "enum": [
+                "applicable",
+                "not-applicable",
+                "not-material",
+                "uncertain"
+              ]
+            },
+            "execution": {
+              "enum": [
+                "executed",
+                "required-but-not-executed",
+                "referred",
+                "no-applicable-producer"
+              ]
+            },
+            "result": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "INDETERMINATE",
+                "KNOWN_RESIDUAL",
+                "N/A",
+                "PENDING"
+              ]
+            },
+            "evidence_maturity": {
+              "enum": [
+                "none",
+                "modeled",
+                "source-only",
+                "implementation",
+                "automated-conformance",
+                "runtime",
+                "induced-failure",
+                "fleet-adversarial"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "provenance": {
+              "type": "object"
+            },
+            "owner": {
+              "type": "string",
+              "minLength": 1
+            },
+            "assurance_depth": {
+              "type": "object",
+              "properties": {
+                "achieved": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "drarm": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "materiality",
+            "execution",
+            "result",
+            "evidence_maturity",
+            "reason"
+          ],
+          "properties": {
+            "materiality": {
+              "enum": [
+                "applicable",
+                "not-applicable",
+                "not-material",
+                "uncertain"
+              ]
+            },
+            "execution": {
+              "enum": [
+                "executed",
+                "required-but-not-executed",
+                "referred",
+                "no-applicable-producer"
+              ]
+            },
+            "result": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "INDETERMINATE",
+                "KNOWN_RESIDUAL",
+                "N/A",
+                "PENDING"
+              ]
+            },
+            "evidence_maturity": {
+              "enum": [
+                "none",
+                "modeled",
+                "source-only",
+                "implementation",
+                "automated-conformance",
+                "runtime",
+                "induced-failure",
+                "fleet-adversarial"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "provenance": {
+              "type": "object"
+            },
+            "owner": {
+              "type": "string",
+              "minLength": 1
+            },
+            "assurance_depth": {
+              "type": "object",
+              "properties": {
+                "achieved": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "specialist": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "materiality",
+            "execution",
+            "result",
+            "evidence_maturity",
+            "reason"
+          ],
+          "properties": {
+            "materiality": {
+              "enum": [
+                "applicable",
+                "not-applicable",
+                "not-material",
+                "uncertain"
+              ]
+            },
+            "execution": {
+              "enum": [
+                "executed",
+                "required-but-not-executed",
+                "referred",
+                "no-applicable-producer"
+              ]
+            },
+            "result": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "INDETERMINATE",
+                "KNOWN_RESIDUAL",
+                "N/A",
+                "PENDING"
+              ]
+            },
+            "evidence_maturity": {
+              "enum": [
+                "none",
+                "modeled",
+                "source-only",
+                "implementation",
+                "automated-conformance",
+                "runtime",
+                "induced-failure",
+                "fleet-adversarial"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "provenance": {
+              "type": "object"
+            },
+            "owner": {
+              "type": "string",
+              "minLength": 1
+            },
+            "assurance_depth": {
+              "type": "object",
+              "properties": {
+                "achieved": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "required_evidence": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_probe_ledger": {
+      "type": "object"
     }
   },
   "allOf": [
     {
-      "if": {"properties": {"terminal": {"const": true}}},
-      "then": {"required": ["outcome", "reason_code"]}
+      "if": {
+        "properties": {
+          "terminal": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "outcome",
+          "reason_code"
+        ]
+      }
     }
   ],
   "additionalProperties": true
