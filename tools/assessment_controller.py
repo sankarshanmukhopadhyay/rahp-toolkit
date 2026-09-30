@@ -285,6 +285,53 @@ def set_lens_disposition(
     return record
 
 
+def attach_evidence_probe_ledger(record: dict[str, Any], ledger: dict[str, Any]) -> dict[str, Any]:
+    if ledger.get("schema") != "rahp-evidence-probe-ledger/v1":
+        raise ValueError("unsupported evidence probe ledger schema")
+    if not isinstance(ledger.get("requirements"), list):
+        raise ValueError("evidence probe ledger requires requirements")
+    if ledger.get("orchestration_defects"):
+        raise ValueError("evidence probe ledger contains orchestration defects")
+    valid_attempts = {"EXECUTED", "ATTEMPTED_UNAVAILABLE", "NO_APPLICABLE_PRODUCER"}
+    seen: set[str] = set()
+    for entry in ledger["requirements"]:
+        rid = str(entry.get("requirement_id") or "").strip()
+        if not rid:
+            raise ValueError("evidence probe ledger entry missing requirement_id")
+        seen.add(rid)
+        attempt = entry.get("attempt_state")
+        if attempt not in valid_attempts:
+            raise ValueError(f"{rid}: invalid evidence attempt_state {attempt!r}")
+        if entry.get("result") == "NOT_EVIDENCED" and attempt not in {"ATTEMPTED_UNAVAILABLE", "NO_APPLICABLE_PRODUCER", "EXECUTED"}:
+            raise ValueError(f"{rid}: NOT_EVIDENCED lacks attributable attempt classification")
+    required = set(record.get("required_evidence") or [])
+    missing = required - seen
+    if missing:
+        raise ValueError("evidence probe ledger missing required evidence attempts: " + ", ".join(sorted(missing)))
+    record["evidence_probe_ledger"] = ledger
+    return record
+
+
+def render_full_stack_summary(record: dict[str, Any]) -> str:
+    lines = [
+        f"Process: {record.get('process_state', 'unknown')}",
+        f"Assurance: {record.get('assurance_state', 'unknown')}",
+        f"Evidence maturity: {record.get('evidence_maturity', 'unknown')}",
+        "",
+        "| Lens | Materiality | Execution | Result | Evidence |",
+        "|---|---|---|---|---|",
+    ]
+    lenses = record.get("lenses") or {}
+    for lens in FULL_STACK_LENSES:
+        value = lenses.get(lens) or {}
+        lines.append(
+            f"| {lens} | {value.get('materiality', 'missing')} | "
+            f"{value.get('execution', 'missing')} | {value.get('result', 'missing')} | "
+            f"{value.get('evidence_maturity', 'missing')} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def full_stack_terminalization_errors(record: dict[str, Any]) -> list[str]:
     """Return fail-closed errors for a full-stack/composite terminal claim."""
     errors: list[str] = []
@@ -294,6 +341,22 @@ def full_stack_terminalization_errors(record: dict[str, Any]) -> list[str]:
         errors.append("assurance_state must be terminal and separate from process completion")
     if record.get("evidence_maturity") not in EVIDENCE_MATURITY - {"none"}:
         errors.append("evidence_maturity must state the achieved evidence depth")
+    required_evidence = set(record.get("required_evidence") or [])
+    if required_evidence:
+        ledger = record.get("evidence_probe_ledger")
+        if not isinstance(ledger, dict):
+            errors.append("required evidence has no attributable probe ledger")
+        else:
+            if ledger.get("orchestration_defects"):
+                errors.append("evidence probe ledger contains orchestration defects")
+            attempted = {
+                str(entry.get("requirement_id"))
+                for entry in (ledger.get("requirements") or [])
+                if isinstance(entry, dict)
+                and entry.get("attempt_state") in {"EXECUTED", "ATTEMPTED_UNAVAILABLE", "NO_APPLICABLE_PRODUCER"}
+            }
+            for rid in sorted(required_evidence - attempted):
+                errors.append(f"{rid}: required evidence has no attributable probe attempt")
     lenses = record.get("lenses")
     if not isinstance(lenses, dict):
         return errors + ["full-stack lens ledger missing"]
