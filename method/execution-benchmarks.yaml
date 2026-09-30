@@ -113,6 +113,35 @@ profiles:
       - examples/cross-spec/agent-names--credential-spec/pressure-test.yaml
     commands:
       - python3 tools/cross_spec_scale_workload.py --limit 8 --output build/cross-spec-scale-full.json
+  cross-spec-dtg-pressure-batch:
+    description: >-
+      Batched validation of all eight current DTG cross-specification pressure-test
+      records using one shared immutable validation context.
+    workload_dimensions:
+      dimension: dtg_pressure_test_files
+      selected_file_count: 8
+      scale: full
+    semantic_references:
+      - profiles/dtg/cross-spec-tests.yaml
+      - examples/cross-spec/trust-tasks-credspec/v1.9-current-pressure-test.yaml
+      - examples/cross-spec/credential-spec--zkp/pressure-test.yaml
+      - examples/cross-spec/credential-spec--vds/pressure-test.yaml
+      - examples/cross-spec/trust-tasks--zkp/pressure-test.yaml
+      - examples/cross-spec/trust-tasks--vds/pressure-test.yaml
+      - examples/cross-spec/zkp--vds/pressure-test.yaml
+      - examples/cross-spec/agent-names--trust-tasks/pressure-test.yaml
+      - examples/cross-spec/agent-names--credential-spec/pressure-test.yaml
+    commands:
+      - >-
+        python3 tools/validate_pressure_tests.py
+        --file examples/cross-spec/trust-tasks-credspec/v1.9-current-pressure-test.yaml
+        --file examples/cross-spec/credential-spec--zkp/pressure-test.yaml
+        --file examples/cross-spec/credential-spec--vds/pressure-test.yaml
+        --file examples/cross-spec/trust-tasks--zkp/pressure-test.yaml
+        --file examples/cross-spec/trust-tasks--vds/pressure-test.yaml
+        --file examples/cross-spec/zkp--vds/pressure-test.yaml
+        --file examples/cross-spec/agent-names--trust-tasks/pressure-test.yaml
+        --file examples/cross-spec/agent-names--credential-spec/pressure-test.yaml
   full-validation:
     description: Repository-wide non-Pages validation representative of the main CI assurance gate.
     commands:
