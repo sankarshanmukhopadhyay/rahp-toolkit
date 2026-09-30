@@ -58,8 +58,6 @@ def execute(registry_path: Path, limit: int, output: Path) -> dict[str, Any]:
 
     for item in selected:
         composition_id = str(item["id"])
-        assessment = str(item["assessment"])
-        safe_id = composition_id.replace("/", "-")
         run([
             sys.executable,
             "tools/validate_scenario_corpora.py",
@@ -68,12 +66,15 @@ def execute(registry_path: Path, limit: int, output: Path) -> dict[str, Any]:
             "--composition",
             composition_id,
         ])
-        run([
-            sys.executable,
-            "tools/validate_pressure_tests.py",
-            "--file",
-            assessment,
-        ])
+
+    pressure_command = [sys.executable, "tools/validate_pressure_tests.py"]
+    for item in selected:
+        pressure_command.extend(["--file", str(item["assessment"])])
+    run(pressure_command)
+
+    for item in selected:
+        composition_id = str(item["id"])
+        safe_id = composition_id.replace("/", "-")
         run([
             sys.executable,
             "tools/cross_spec_review.py",
