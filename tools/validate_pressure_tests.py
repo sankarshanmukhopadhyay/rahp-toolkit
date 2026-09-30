@@ -14,6 +14,8 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass
+from types import MappingProxyType
+from typing import Mapping
 from portable_catalogue import validate_block
 
 try:
@@ -56,7 +58,7 @@ def dispositions() -> set[str]:
 class ValidationContext:
     known_patterns: frozenset[str]
     corpus_scenarios: frozenset[str]
-    known: dict[str, frozenset[str]]
+    known: Mapping[str, frozenset[str]]
     allowed_dispositions: frozenset[str]
     allowed_status: frozenset[str]
     allowed_severity: frozenset[str]
@@ -85,7 +87,7 @@ def build_context() -> ValidationContext:
     return ValidationContext(
         known_patterns=known_patterns,
         corpus_scenarios=frozenset(corpus_scenarios),
-        known=known,
+        known=MappingProxyType(known),
         allowed_dispositions=frozenset(dispositions()),
         allowed_status=frozenset(
             {"in-progress", "complete", "open", "monitoring", "resolved", "superseded"}
