@@ -1,13 +1,5 @@
 {
-  "name": "@rahp/core",
-  "version": "2.5.0",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc -p tsconfig.json"
-  },
-  "dependencies": {
-    "@rahp/schema": "2.5.0"
-  }
+  "name": "@rahp/core", "version": "2.6.0", "type": "module", "main": "dist/index.js", "types": "dist/index.d.ts",
+  "scripts": {"build": "tsc -p tsconfig.json"},
+  "dependencies": {"@rahp/schema": "2.6.0"}
 }
