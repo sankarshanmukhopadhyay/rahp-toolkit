@@ -1,26 +1,27 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.5.0 (stable) · Psyche · CC-BY 4.0
+Release v2.6.0 (stable) · Commander · CC-BY 4.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
 RAHP is deliberately evidence-conservative: **missing evidence never becomes PASS**. Workflow success is not assurance success. A component PASS does not imply a composition PASS, and normative convergence does not silently become implementation conformance.
 
-## What v2.5.0 adds
+## What v2.6.0 adds
 
-v2.5.0 **Continuous Realization Assurance and Portable Adoption** turns the post-v2.4 operating model into a qualified stable capability boundary:
+v2.6.0 **Full-Stack Assurance Orchestration and Explicit Evidence State** makes three claims independently inspectable: whether orchestration completed, what assurance outcome the evidence supports, and how mature that evidence is.
 
-- materiality-bounded continuous reassessment with explicit full-campaign escalation;
-- source-pinned realization-conformance reconciliation that keeps runtime evidence distinct from normative convergence;
-- assurance-safe rahp-execution-telemetry/v1 operational sidecars;
-- lifecycle/selection diagnostics that cannot set or infer assurance outcomes;
-- semantic-reference-guarded performance regression policy with PR base-vs-candidate benchmarking;
-- process-local immutable YAML caching that removes duplicate parsing without changing normalized semantics;
-- an explicit maintained non-DTG portability proof using CAWG/C2PA and the unchanged generic RAHP contracts;
-- refreshed adoption and portfolio compatibility guidance for DPIP v0.3.0 and Interop Lab v0.7.0.
+- explicit `process_state`, `assurance_state`, and `evidence_maturity` dimensions;
+- explicit dispositions for RAHP, security, composition, DRARM, and specialist-assessment lenses;
+- attributable required-evidence attempts using executed, attempted-unavailable, or no-applicable-producer states;
+- evidence-required terminal indeterminacy rather than silent PASS;
+- portable old/new producer-consumer version-skew propositions;
+- reusable privacy/correlation risk, guardrail, and control mechanisms;
+- exact-snapshot portfolio assurance binding and tighter DTG/VSC routing;
+- measured performance characterization and semantic-preserving execution optimization;
+- LPC pre-demo scope/evidence/assurance artifacts that informed the generic full-stack contract without becoming a core dependency.
 
-Policy-as-assurance-subject work under #662/#668 remains experimental and is not part of the v2.5.0 stable boundary.
+Policy-as-assurance-subject work under #662/#667 and decision-resolution research under PR #817 remain experimental and are not part of the v2.6.0 stable boundary.
 
 ## How RAHP works
 
@@ -89,11 +90,11 @@ DPIP is an independently governed privacy specialist that can return portable ex
 
 ## Coordinated portfolio context
 
-v2.5.0 packages the completed Continuous Realization Assurance and Portable Adoption programme as an additive RAHP product capability. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
+v2.6.0 packages Full-Stack Assurance Orchestration and Explicit Evidence State as an additive RAHP product capability. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
 
-The current maintained cross-repository context is **RAHP v2.5.0**, **DPIP v0.3.0**, and **Trust Protocol Interop Lab v0.7.0**. These are independently versioned capabilities joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
+The current maintained cross-repository context is **RAHP v2.6.0**, **DPIP v0.3.0**, and **Trust Protocol Interop Lab v0.7.0**. These are independently versioned capabilities joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
 
-The v2.5 programme established realization-conformance discipline, assurance-safe telemetry, performance regression controls, non-DTG portability evidence and documentation fidelity while preserving the stable v1 engine/result/evidence contracts.
+The v2.6 release preserves those capabilities and adds explicit full-stack lens/evidence disposition while retaining the stable v1 engine/result/evidence contracts.
 
 ## Quick start
 
@@ -107,7 +108,7 @@ Start with [How RAHP works](docs/how-rahp-works.md), [RAHP data model](docs/data
 
 ## Current release
 
-v2.5.0 **Psyche** (*Leptosia nina*) is the stable **Continuous Realization Assurance and Portable Adoption** release.
+v2.6.0 **Commander** (*Moduza procris*) is the stable **Full-Stack Assurance Orchestration and Explicit Evidence State** release.
 
 - [v2.5.0 release notes](docs/releases/v2.5.0.md)
 - [v2.5 qualification contract](method/v2.5-release-qualification.yaml)
