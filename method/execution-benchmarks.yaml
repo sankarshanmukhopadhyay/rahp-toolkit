@@ -67,6 +67,52 @@ profiles:
       - python3 tools/validate_scenario_corpora.py --registry profiles/dtg/cross-spec-tests.yaml --composition agent-names--credential-spec
       - python3 tools/validate_pressure_tests.py --file examples/cross-spec/agent-names--credential-spec/pressure-test.yaml
       - python3 tools/cross_spec_review.py agent-names--credential-spec --registry profiles/dtg/cross-spec-tests.yaml --output build/benchmark-agent-names--credential-spec-review.md --events build/benchmark-agent-names--credential-spec-events.json
+  cross-spec-dtg-scale-small:
+    description: One real runnable DTG cross-specification composition.
+    workload_dimensions:
+      dimension: dtg_runnable_compositions
+      selected_composition_count: 1
+      registry_runnable_composition_count: 8
+      scale: small
+    semantic_references:
+      - profiles/dtg/cross-spec-tests.yaml
+      - examples/cross-spec/trust-tasks-credspec/v1.9-current-pressure-test.yaml
+    commands:
+      - python3 tools/cross_spec_scale_workload.py --limit 1 --output build/cross-spec-scale-small.json
+  cross-spec-dtg-scale-medium:
+    description: Four real runnable DTG cross-specification compositions.
+    workload_dimensions:
+      dimension: dtg_runnable_compositions
+      selected_composition_count: 4
+      registry_runnable_composition_count: 8
+      scale: medium
+    semantic_references:
+      - profiles/dtg/cross-spec-tests.yaml
+      - examples/cross-spec/trust-tasks-credspec/v1.9-current-pressure-test.yaml
+      - examples/cross-spec/credential-spec--zkp/pressure-test.yaml
+      - examples/cross-spec/credential-spec--vds/pressure-test.yaml
+      - examples/cross-spec/trust-tasks--zkp/pressure-test.yaml
+    commands:
+      - python3 tools/cross_spec_scale_workload.py --limit 4 --output build/cross-spec-scale-medium.json
+  cross-spec-dtg-scale-full:
+    description: All eight currently runnable DTG cross-specification compositions.
+    workload_dimensions:
+      dimension: dtg_runnable_compositions
+      selected_composition_count: 8
+      registry_runnable_composition_count: 8
+      scale: full
+    semantic_references:
+      - profiles/dtg/cross-spec-tests.yaml
+      - examples/cross-spec/trust-tasks-credspec/v1.9-current-pressure-test.yaml
+      - examples/cross-spec/credential-spec--zkp/pressure-test.yaml
+      - examples/cross-spec/credential-spec--vds/pressure-test.yaml
+      - examples/cross-spec/trust-tasks--zkp/pressure-test.yaml
+      - examples/cross-spec/trust-tasks--vds/pressure-test.yaml
+      - examples/cross-spec/zkp--vds/pressure-test.yaml
+      - examples/cross-spec/agent-names--trust-tasks/pressure-test.yaml
+      - examples/cross-spec/agent-names--credential-spec/pressure-test.yaml
+    commands:
+      - python3 tools/cross_spec_scale_workload.py --limit 8 --output build/cross-spec-scale-full.json
   full-validation:
     description: Repository-wide non-Pages validation representative of the main CI assurance gate.
     commands:

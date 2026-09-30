@@ -13,6 +13,9 @@ on:
           - corpus-validation
           - cross-spec-dtg-tt-credspec
           - cross-spec-dtg-full
+          - cross-spec-dtg-scale-small
+          - cross-spec-dtg-scale-medium
+          - cross-spec-dtg-scale-full
           - full-validation
       samples:
         description: Repeated samples for manual characterisation runs
@@ -26,6 +29,7 @@ on:
   pull_request:
     paths:
       - 'tools/benchmark_execution.py'
+      - 'tools/cross_spec_scale_workload.py'
       - 'tools/compare_execution_benchmarks.py'
       - 'tools/validate.py'
       - 'tests/test_performance_policy.py'
@@ -103,6 +107,9 @@ jobs:
           print(f"- Median wall time: **{d['wall_seconds']:.3f}s**")
           print(f"- Median child CPU: **{d.get('cpu_seconds', 0.0):.3f}s**")
           print(f"- Samples: **{d.get('sample_count', 1)}**")
+          dimensions = d.get('workload_dimensions') or {}
+          if dimensions:
+              print(f"- Workload: **{dimensions.get('scale', 'declared')}** ({dimensions.get('selected_composition_count', 'n/a')} compositions)")
           print(f"- Peak child RSS: **{d['peak_rss_kb']} KB**")
           print(f"- Exit code: `{d['profile_exit_code']}`")
           comparison = Path(os.environ['COMPARISON_PATH'])

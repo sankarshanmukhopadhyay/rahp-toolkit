@@ -6,6 +6,7 @@ import yaml
 
 from tools import benchmark_execution
 from tools import compare_execution_benchmarks as benchmark_compare
+from tools import cross_spec_scale_workload
 from tools import validate as rahp_validate
 
 
@@ -142,6 +143,28 @@ class PerformancePolicyTests(unittest.TestCase):
         self.assertEqual(result["profile_exit_code"], 7)
         self.assertEqual(calls, ["ok", "fail"])
         self.assertEqual(len(result["commands"]), 2)
+
+    def test_cross_spec_scaling_selection_is_bounded_and_ordered(self):
+        registry = {
+            "compositions": [
+                {"id": "a", "runnable": True, "assessment": "a.yaml"},
+                {"id": "b", "runnable": False, "assessment": "b.yaml"},
+                {"id": "c", "runnable": True, "assessment": "c.yaml"},
+            ]
+        }
+        selected = cross_spec_scale_workload.select_compositions(registry, 2)
+        self.assertEqual([item["id"] for item in selected], ["a", "c"])
+
+    def test_cross_spec_scaling_rejects_invalid_limits(self):
+        registry = {
+            "compositions": [
+                {"id": "a", "runnable": True, "assessment": "a.yaml"},
+            ]
+        }
+        with self.assertRaisesRegex(ValueError, "at least 1"):
+            cross_spec_scale_workload.select_compositions(registry, 0)
+        with self.assertRaisesRegex(ValueError, "exceeds 1"):
+            cross_spec_scale_workload.select_compositions(registry, 2)
 
 
 if __name__ == "__main__":

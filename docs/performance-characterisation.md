@@ -69,6 +69,24 @@ Performance work MUST preserve these invariants:
 
 A faster result with different semantic reference inputs is not comparable.
 
+## Realistic scaling workloads
+
+RAHP's first controlled scaling dimension is the number of runnable DTG cross-specification compositions executed from the profile-owned registry.
+
+The benchmark contract defines three bounded profiles:
+
+- `cross-spec-dtg-scale-small` — 1 runnable composition;
+- `cross-spec-dtg-scale-medium` — 4 runnable compositions;
+- `cross-spec-dtg-scale-full` — all 8 currently runnable compositions.
+
+These profiles execute real registry entries and their real assessment files through the existing corpus validation, pressure-test validation, and review rendering paths. They do not create artificial CPU work or duplicate synthetic evidence merely to increase runtime.
+
+The selected composition count is emitted as `workload_dimensions` in benchmark JSON. The DTG registry and selected assessment files are included in the semantic-reference digest set so results remain tied to the exact workload inputs.
+
+The dimension measures **composition breadth**. It does not claim to model repository network latency, concurrent assessment execution, or arbitrarily large evidence corpora.
+
+When the registry's runnable composition count changes, the declared benchmark dimension must be deliberately reconciled rather than silently interpreted as the same workload.
+
 ## Architecture decision gate
 
 A C, C++, Rust, or other native evaluator is not justified merely because native code can execute faster.
