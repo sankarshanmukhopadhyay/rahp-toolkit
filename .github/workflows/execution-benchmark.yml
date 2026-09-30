@@ -14,6 +14,15 @@ on:
           - cross-spec-dtg-tt-credspec
           - cross-spec-dtg-full
           - full-validation
+      samples:
+        description: Repeated samples for manual characterisation runs
+        required: true
+        default: '3'
+        type: choice
+        options:
+          - '1'
+          - '3'
+          - '5'
   pull_request:
     paths:
       - 'tools/benchmark_execution.py'
@@ -48,9 +57,12 @@ jobs:
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
       - name: Run selected benchmark
+        env:
+          BENCHMARK_SAMPLES: ${{ github.event_name == 'pull_request' && '1' || inputs.samples }}
         run: >-
           python3 tools/benchmark_execution.py
           "${{ matrix.profile }}"
+          --samples "$BENCHMARK_SAMPLES"
           --output "build/execution-benchmark-${{ matrix.profile }}.json"
       - name: Run pull-request baseline benchmark
         if: github.event_name == 'pull_request'
@@ -88,7 +100,9 @@ jobs:
           d=json.loads(Path(os.environ['BENCHMARK_PATH']).read_text())
           print('## RAHP execution benchmark')
           print(f"- Profile: `{d['profile']}`")
-          print(f"- Wall time: **{d['wall_seconds']:.3f}s**")
+          print(f"- Median wall time: **{d['wall_seconds']:.3f}s**")
+          print(f"- Median child CPU: **{d.get('cpu_seconds', 0.0):.3f}s**")
+          print(f"- Samples: **{d.get('sample_count', 1)}**")
           print(f"- Peak child RSS: **{d['peak_rss_kb']} KB**")
           print(f"- Exit code: `{d['profile_exit_code']}`")
           comparison = Path(os.environ['COMPARISON_PATH'])
@@ -98,10 +112,10 @@ jobs:
               if c.get('delta_seconds') is not None:
                   print(f"- Delta: **{c['delta_seconds']:.3f}s**")
           print('')
-          print('| Seconds | Exit | Command |')
-          print('|---:|---:|---|')
+          print('| Wall s | CPU s | Exit | Command |')
+          print('|---:|---:|---:|---|')
           for c in d['commands']:
-              print(f"| {c['seconds']:.3f} | {c['exit_code']} | `{c['command']}` |")
+              print(f"| {c['seconds']:.3f} | {c.get('cpu_seconds', 0.0):.3f} | {c['exit_code']} | `{c['command']}` |")
           PY
           fi
       - uses: actions/upload-artifact@v7
