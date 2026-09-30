@@ -70,6 +70,22 @@ class Post851FullStackAssuranceTests(unittest.TestCase):
             assurance_state="indeterminate",
             evidence_maturity="source-only",
         )
+        self.record["required_evidence"] = ["ER-TARGET-RUNTIME"]
+        CTRL.attach_evidence_probe_ledger(
+            self.record,
+            {
+                "schema": "rahp-evidence-probe-ledger/v1",
+                "requirements": [{
+                    "requirement_id": "ER-TARGET-RUNTIME",
+                    "attempt_state": "NO_APPLICABLE_PRODUCER",
+                    "result": "NOT_EVIDENCED",
+                    "reason": "migrated target revision does not yet exist",
+                    "producer": None,
+                }],
+                "orchestration_defects": [],
+                "complete": True,
+            },
+        )
         self.disposition("rahp", result="INDETERMINATE")
         self.disposition(
             "security",
@@ -183,6 +199,42 @@ class Post851FullStackAssuranceTests(unittest.TestCase):
 
         self.record["lenses"].pop("drarm")
         self.assertTrue(any("drarm: lens disposition missing" in e for e in CTRL.full_stack_terminalization_errors(self.record)))
+
+    def test_required_evidence_without_probe_attempt_blocks_terminalization(self) -> None:
+        CTRL.set_run_dimensions(
+            self.record,
+            process_state="complete",
+            assurance_state="indeterminate",
+            evidence_maturity="source-only",
+        )
+        self.record["required_evidence"] = ["ER-MISSING"]
+        for lens in ("rahp", "security", "composition", "drarm"):
+            self.disposition(
+                lens,
+                execution="required-but-not-executed",
+                result="INDETERMINATE",
+                maturity="modeled",
+                reason="evidence pending",
+                provenance=None,
+            )
+        self.disposition(
+            "specialist",
+            materiality="not-applicable",
+            execution="no-applicable-producer",
+            result="N/A",
+            maturity="none",
+            reason="not applicable",
+        )
+        errors = CTRL.full_stack_terminalization_errors(self.record)
+        self.assertTrue(any("no attributable probe ledger" in e for e in errors), errors)
+
+    def test_full_stack_renderer_exposes_all_state_dimensions_and_lenses(self) -> None:
+        text = CTRL.render_full_stack_summary(self.record)
+        self.assertIn("Process: in-progress", text)
+        self.assertIn("Assurance: pending", text)
+        self.assertIn("Evidence maturity: none", text)
+        for lens in CTRL.FULL_STACK_LENSES:
+            self.assertIn(f"| {lens} |", text)
 
     def test_genericized_870_version_skew_generates_review_propositions(self) -> None:
         descriptor = {
