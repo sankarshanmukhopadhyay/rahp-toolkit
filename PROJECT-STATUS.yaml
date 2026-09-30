@@ -24,7 +24,7 @@ release_naming:
   applies_from: 1.5.0
   convention: west-bengal-butterfly
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selection: governed-random-unused-candidate
+  selection: random-at-release-time
 release_intent: >-
   v2.6.0 Full-Stack Assurance Orchestration and Explicit Evidence State packages
   independent process/assurance/evidence dimensions, explicit material-lens disposition,
