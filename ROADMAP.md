@@ -35,6 +35,20 @@ RAHP remains materiality-bounded and evidence-conservative. Broader execution is
 
 These repositories remain independently versioned and governed. Compatibility is contract- and evidence-based, not date-based.
 
+## Capability continuity retained in v2.6
+
+The v2.6 operating model is additive and retains the previously qualified capability families:
+
+- **Durable assessment and finding lineage** preserves assessment identity, finding lineage, and canonical identity across source changes and reassessment.
+- **Governed remediation and retest** preserves remediation authority, acceptance criteria, closure evidence, and retest lineage.
+- **Assurance graph and impact analysis** keeps dependency-aware reachability and retest selection explicit.
+- **Evidence provenance, freshness and delta** preserves source identity, freshness state, and assurance delta rather than silently reusing stale evidence.
+- **Executable authority and policy gates** keep authority scope, revocation, and policy evaluation separately inspectable with INDETERMINATE preserved as a real outcome.
+- **Portfolio and deployment presentation** projects bounded operational posture without becoming an alternative assurance source of truth.
+- **Release qualification** continues to bind declared version, qualification contract, release decision, release-cut evidence, and governed publication.
+
+These capability names are retained because they remain registered stable capabilities; v2.6 extends rather than replaces them.
+
 ## Post-v2.6 priorities
 
 Future work should be trigger-driven rather than release-driven: reassess waiting-external/evidence-required owners when their evidence trigger fires; deepen non-DTG adoption and higher-level resilience evidence; continue measured performance work only where semantic equivalence is preserved; and keep experimental research behind explicit graduation gates.
