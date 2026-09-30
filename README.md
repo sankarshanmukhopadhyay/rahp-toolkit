@@ -110,8 +110,8 @@ Start with [How RAHP works](docs/how-rahp-works.md), [RAHP data model](docs/data
 
 v2.6.0 **Commander** (*Moduza procris*) is the stable **Full-Stack Assurance Orchestration and Explicit Evidence State** release.
 
-- [v2.5.0 release notes](docs/releases/v2.5.0.md)
-- [v2.5 qualification contract](method/v2.5-release-qualification.yaml)
+- [v2.6.0 release notes](docs/releases/v2.6.0.md)
+- [v2.6 qualification contract](method/v2.6-release-qualification.yaml)
 - [VTI assessment index](docs/vti-assessment-index.md)
 - [VTI programme reconciliation](docs/vti-programme-reconciliation.md)
 - [Project status](PROJECT-STATUS.yaml)
