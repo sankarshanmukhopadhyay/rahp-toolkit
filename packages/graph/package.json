@@ -1,11 +1,4 @@
 {
-  "name": "@rahp/graph",
-  "version": "2.5.0",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc -p tsconfig.json"
-  },
-  "dependencies": {}
+  "name": "@rahp/graph", "version": "2.6.0", "type": "module", "main": "dist/index.js", "types": "dist/index.d.ts",
+  "scripts": {"build": "tsc -p tsconfig.json"}, "dependencies": {}
 }
