@@ -167,6 +167,21 @@ class Post851FullStackAssuranceTests(unittest.TestCase):
         self.assertEqual("required-but-not-executed", security["execution"])
         self.assertEqual("PENDING", security["result"])
 
+    def test_resilience_applicability_updates_drarm_lens(self) -> None:
+        CTRL.apply_resilience_applicability(
+            self.record,
+            "distributed-runtime",
+            {"required_for": ["distributed-runtime"]},
+            policy_source="post-851-test-policy",
+        )
+        capability = CTRL.resilience_disposition(self.record)
+        lens = self.record["lenses"]["drarm"]
+        self.assertEqual("required-but-not-executed", capability["disposition"])
+        self.assertEqual("applicable", lens["materiality"])
+        self.assertEqual("required-but-not-executed", lens["execution"])
+        self.assertEqual("INDETERMINATE", lens["result"])
+        self.assertEqual("post-851-test-policy", lens["provenance"]["source"])
+
     def test_drarm_depth_is_visible_and_silence_is_invalid(self) -> None:
         CTRL.set_run_dimensions(
             self.record,
