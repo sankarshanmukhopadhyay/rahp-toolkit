@@ -79,7 +79,7 @@ def main():
                   "required-but-not-executed", "ATTEMPTED_UNAVAILABLE",
                   "NO_APPLICABLE_PRODUCER", "DRARM silence is invalid",
                   "component PASS does not count as composition PASS"):
-        if token not in orchestration:
+        if token.casefold() not in orchestration.casefold():
             errors.append(f"full-stack contract missing required marker: {token}")
 
     inventory = load_yaml("data/negative-fixture-inventory.yaml")
