@@ -1,0 +1,63 @@
+name: RAHP runtime profiling
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Benchmark profile to profile
+        required: true
+        default: core-validation
+        type: choice
+        options:
+          - core-validation
+          - corpus-validation
+          - cross-spec-dtg-tt-credspec
+          - cross-spec-dtg-full
+          - full-validation
+  pull_request:
+    paths:
+      - 'tools/profile_execution.py'
+      - 'tests/test_performance_policy.py'
+      - 'method/execution-benchmarks.yaml'
+      - '.github/workflows/performance-profile.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  profile:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ${{ fromJSON(github.event_name == 'pull_request' && '["core-validation","cross-spec-dtg-full"]' || format('["{0}"]', inputs.profile)) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Profile representative execution path
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: >-
+          python3 tools/profile_execution.py
+          "$PROFILE"
+          --output-dir "build/performance-profile-$PROFILE"
+      - name: Publish runtime budget
+        if: always()
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          report="build/performance-profile-$PROFILE/report.md"
+          if [ -f "$report" ]; then
+            cat "$report" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: rahp-runtime-profile-${{ matrix.profile }}
+          path: build/performance-profile-${{ matrix.profile }}/
+          if-no-files-found: error
