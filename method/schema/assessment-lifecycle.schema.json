@@ -545,6 +545,18 @@
           }
         }
       }
+    },
+    "required_evidence": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_probe_ledger": {
+      "type": "object",
+      "additionalProperties": true
     }
   },
   "allOf": [
