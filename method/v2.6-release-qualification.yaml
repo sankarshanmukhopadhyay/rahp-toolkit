@@ -1,0 +1,64 @@
+version: 1
+release: v2.6.0
+qualification: full-stack-assurance-orchestration-and-explicit-evidence-state
+stable_compatibility:
+  engine_contract: rahp-engine-contract-v1
+  engine_revision: '1.3'
+  normalized_result_schema: 1
+  evidence_retention_contract: rahp-evidence-retention-v1
+release_thesis: >-
+  v2.6.0 packages the post-v2.5 stable work as an additive RAHP capability:
+  process completion, assurance outcome, and evidence maturity are independently
+  observable; every material assurance lens receives an explicit disposition;
+  and every required evidence obligation receives an attributable attempt state,
+  without broadening missing evidence into PASS or changing the stable
+  engine/result/evidence compatibility families.
+programme:
+  release_judgment_issue: 882
+qualified_capabilities:
+  full_stack_assurance_orchestration: true
+  independent_process_assurance_evidence_dimensions: true
+  explicit_material_lens_disposition: true
+  attributable_required_evidence_attempts: true
+  evidence_required_terminal_indeterminacy: true
+  drarm_lens_disposition: true
+  portable_composition_version_skew_propositions: true
+  privacy_correlation_risk_mechanisms: true
+  exact_snapshot_portfolio_assurance_binding: true
+  semantic_preserving_execution_characterisation: true
+evidence:
+  orchestration_contract: docs/full-stack-assurance-orchestration.md
+  orchestration_regression: tests/test_post_851_full_stack_assurance.py
+  negative_fixture_inventory: data/negative-fixture-inventory.yaml
+  privacy_source_judgment: docs/review/vc-data-model-threat-model-2.1-gap-analysis.md
+  performance_architecture: docs/performance-architecture-decision.md
+  performance_characterisation: docs/performance-characterisation.md
+  lpc_scope_manifest: docs/lpc-pre-demo-scope-manifest.md
+  lpc_evidence_templates: docs/lpc-pre-demo-evidence-templates.md
+  lpc_assurance_record: docs/lpc-pre-demo-assurance-record.md
+research_boundary:
+  policy_as_subject_issue: 662
+  policy_as_subject_pr: 667
+  decision_resolution_pr: 817
+  stable_release_includes_policy_as_subject: false
+  stable_release_includes_decision_resolution_research: false
+invariants:
+  missing_evidence_never_pass: true
+  workflow_success_not_assurance_success: true
+  component_pass_not_composition_pass: true
+  normative_convergence_not_implementation_conformance: true
+  non_selected_evidence_not_silently_refreshed: true
+  material_lens_not_silently_omitted: true
+  required_evidence_attempt_is_attributable: true
+  applicable_unexecuted_lens_remains_indeterminate: true
+  drarm_silence_is_invalid: true
+  generic_core_remains_consumer_independent: true
+  experimental_research_not_silently_graduated: true
+release_cut:
+  butterfly_name_selection: governed-pinned-pool
+  selected_common_name: Commander
+  selected_scientific_name: Moduza procris
+  selected_on: '2026-10-01'
+  tag: v2.6.0
+  publish_only_after_qualification: true
+  publication_workflow: .github/workflows/release.yml

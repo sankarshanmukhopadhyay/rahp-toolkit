@@ -9,15 +9,36 @@ parent: Reference
 
 ## Unreleased
 
+No stable capability changes have been accepted after the v2.6.0 qualification boundary.
+
+## v2.6.0 — 2026-10-01 — Commander
+
 ### Added / advanced
 
-- Added reusable privacy/correlation risk mechanisms for proof-mechanism correlation, status-query observability, post-disclosure purpose violation, authoritative privacy-control subversion, and verification-artefact retention concentration.
-- Extended portable privacy guardrails and controls to cover status-resolution privacy, purpose-bounded downstream processing, verification-evidence retention minimization, and issuer-side unlinkability pressure testing.
-- Added focused regression evidence and a source/judgment note derived from pressure-testing against the W3C VC Data Model Threat Model v2.1 while preserving the W3C draft as research provenance rather than RAHP authority.
+- Qualified full-stack assurance orchestration with independent process, assurance, and evidence-maturity dimensions.
+- Required explicit disposition of RAHP, security, composition, DRARM, and specialist-assessment lenses where configured.
+- Bound required evidence obligations to attributable probe-attempt states; omission is an orchestration defect rather than an implicit result.
+- Added portable composition/version-skew propositions for old/new producer-consumer combinations.
+- Added reusable privacy/correlation risk mechanisms with corresponding controls, guardrails, regression evidence, and source/judgment separation.
+- Hardened exact-snapshot portfolio assurance binding and DTG/VSC routing.
+- Added measured performance characterization, scale workloads, profiling, and semantic-preserving execution optimization.
+- Added LPC pre-demo scope, evidence-template, and assurance-record artifacts used to pressure-test the portable orchestration contract.
 
-### Release posture
+### Assurance posture
 
-These changes are merged post-v2.5 development. They do **not** declare, qualify, tag, or publish a new RAHP release. v2.5.0 Psyche remains the current qualified stable release until a separate evidence-backed release judgment establishes the next boundary.
+Process completion does not imply assurance success. Material lenses cannot silently disappear, required evidence attempts must be attributable, applicable unexecuted work remains INDETERMINATE, and DRARM silence is invalid where resilience is material.
+
+Policy-as-assurance-subject (#662/#667) and decision-resolution research (#817) remain experimental and outside the stable boundary.
+
+### Compatibility
+
+No change to rahp-engine-contract-v1 revision 1.3, normalized result schema 1, or rahp-evidence-retention-v1.
+
+### Release name
+
+**Commander — *Moduza procris***.
+
+See [v2.6.0 release notes](docs/releases/v2.6.0.md).
 
 ## v2.5.0 — 2026-09-26 — Psyche
 

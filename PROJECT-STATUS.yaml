@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 2.5.0
-development_target: 2.5.0
+stable_release: 2.6.0
+development_target: 2.6.0
 release_status: released
 qualification_status: qualified
-qualification_contract: method/v2.5-release-qualification.yaml
+qualification_contract: method/v2.6-release-qualification.yaml
 release_name:
-  common_name: Psyche
-  scientific_name: Leptosia nina
+  common_name: Commander
+  scientific_name: Moduza procris
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-09-26'
+  selected_on: '2026-10-01'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -25,39 +25,29 @@ release_naming:
   convention: west-bengal-butterfly
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
   selection: random-at-release-time
-  candidate_rule: governed-random-unused-candidate
 release_intent: >-
-  v2.5.0 Continuous Realization Assurance and Portable Adoption packages
-  materiality-bounded reassessment, assurance-safe execution telemetry,
-  semantic-reference-guarded performance engineering and a maintained non-DTG
-  portability proof as stable additive toolkit capabilities without changing
-  the v1 engine/result/evidence compatibility families.
+  v2.6.0 Full-Stack Assurance Orchestration and Explicit Evidence State packages
+  independent process/assurance/evidence dimensions, explicit material-lens disposition,
+  attributable required-evidence attempts, composition/version-skew reasoning, privacy
+  catalogue advances and measured execution engineering as stable additive capabilities
+  without changing the v1 engine/result/evidence compatibility families.
 development_posture: >-
-  v2.5 uses materiality-bounded reassessment as the default operating model: select the
-  smallest assurance/evidence scope that completely covers materially affected propositions,
-  preserve explicit uncertainty and evidence freshness outside that scope, and retain full
-  campaign/rebaseline execution where bounded assurance cannot be defended. Post-v2.5 work
-  should deepen triggered realization evidence, low-sensitivity longitudinal observability,
-  measured performance, non-DTG portability and resilience evidence while preserving the
-  v1 engine contract, result schema 1 and evidence-retention contract.
-
-post_v2_4_programme:
-  issue: 800
-  name: continuous-realization-assurance-and-portable-adoption
-  release_commitment: v2.5.0-qualified
-  gates:
-    - realization-conformance
-    - longitudinal-observability
-    - performance-engineering
-    - non-dtg-portability
-    - documentation-compatibility-audit
-    - evidence-backed-release-judgment
+  v2.6 preserves evidence-conservative materiality-bounded assurance while making full-stack
+  orchestration explicit. Process completion is not assurance success; every material lens
+  must be dispositioned; required evidence attempts must be attributable; and applicable
+  unexecuted work remains INDETERMINATE. Experimental policy-as-subject and decision-resolution
+  research remain outside the stable boundary.
+post_v2_5_programme:
+  issue: 882
+  name: full-stack-assurance-orchestration-and-explicit-evidence-state
+  release_commitment: v2.6.0-qualified
   current_portfolio_context:
-    rahp: 2.5.0
+    rahp: 2.6.0
     dpip: 0.3.0
     interop_lab: 0.7.0
   invariants:
-    - telemetry-is-not-assurance-evidence
-    - performance-does-not-reduce-material-proposition-coverage
+    - workflow-success-not-assurance-success
+    - material-lens-not-silently-omitted
+    - required-evidence-attempt-is-attributable
     - missing-evidence-never-becomes-pass
     - stable-generic-core-remains-consumer-independent

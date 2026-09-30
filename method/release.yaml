@@ -1,20 +1,20 @@
 version: 1
 contract: rahp-release-declaration-v1
 release:
-  version: 2.5.0
-  tag: v2.5.0
+  version: 2.6.0
+  tag: v2.6.0
   status: released
   qualification_status: qualified
-  title: RAHP Toolkit v2.5.0 — Psyche
-  theme: Continuous Realization Assurance and Portable Adoption
+  title: RAHP Toolkit v2.6.0 — Commander
+  theme: Full-Stack Assurance Orchestration and Explicit Evidence State
   name:
-    common: Psyche
-    scientific: Leptosia nina
+    common: Commander
+    scientific: Moduza procris
     source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-    selected_on: '2026-09-26'
+    selected_on: '2026-10-01'
   qualification:
-    manifest: method/v2.5-release-qualification.yaml
-    validator: tools/validate_v25_release.py
+    manifest: method/v2.6-release-qualification.yaml
+    validator: tools/validate_v26_release.py
     checks:
       - tools/validate_engine_contract.py
       - tools/validate_project_invariants.py
@@ -23,7 +23,7 @@ release:
       - tools/validate_assessment_queue.py
       - tools/validate_workflow_governance.py
   notes:
-    path: docs/releases/v2.5.0.md
+    path: docs/releases/v2.6.0.md
   compatibility:
     engine_contract: rahp-engine-contract-v1
     normalized_result_schema: 1
