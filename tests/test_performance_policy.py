@@ -7,6 +7,7 @@ import yaml
 from tools import benchmark_execution
 from tools import compare_execution_benchmarks as benchmark_compare
 from tools import cross_spec_scale_workload
+from tools import profile_execution
 from tools import validate as rahp_validate
 
 
@@ -165,6 +166,23 @@ class PerformancePolicyTests(unittest.TestCase):
             cross_spec_scale_workload.select_compositions(registry, 0)
         with self.assertRaisesRegex(ValueError, "exceeds 1"):
             cross_spec_scale_workload.select_compositions(registry, 2)
+
+    def test_runtime_classification_is_explicit(self):
+        self.assertEqual(profile_execution.classify_runtime(10.0, 9.0), "cpu-dominant")
+        self.assertEqual(profile_execution.classify_runtime(10.0, 2.0), "wait-or-process-dominant")
+        self.assertEqual(profile_execution.classify_runtime(10.0, 6.0), "mixed")
+        self.assertEqual(profile_execution.classify_runtime(0.0, 0.0), "indeterminate")
+
+    def test_runtime_budget_attributes_wall_share(self):
+        results = [
+            {"command": "a", "wall_seconds": 3.0, "cpu_seconds": 2.5, "classification": "cpu-dominant"},
+            {"command": "b", "wall_seconds": 1.0, "cpu_seconds": 0.2, "classification": "wait-or-process-dominant"},
+        ]
+        budget = profile_execution.build_budget(results)
+        self.assertEqual(budget["wall_seconds"], 4.0)
+        self.assertEqual(budget["cpu_seconds"], 2.7)
+        self.assertEqual(results[0]["wall_share_percent"], 75.0)
+        self.assertEqual(budget["largest_wall_time_commands"][0]["command"], "a")
 
 
 if __name__ == "__main__":
