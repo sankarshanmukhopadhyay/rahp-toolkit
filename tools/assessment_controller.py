@@ -103,6 +103,42 @@ def set_resilience_disposition(
     if not isinstance(capabilities, dict):
         raise ValueError("assessment capabilities must be an object")
     capabilities["resilience"] = value
+    if isinstance(record.get("lenses"), dict):
+        if disposition == "not-applicable":
+            set_lens_disposition(
+                record,
+                "drarm",
+                materiality="not-applicable",
+                execution="no-applicable-producer",
+                result="N/A",
+                evidence_maturity="none",
+                reason=value["reason"],
+                provenance=value.get("provenance"),
+            )
+        elif disposition == "executed":
+            set_lens_disposition(
+                record,
+                "drarm",
+                materiality="applicable",
+                execution="executed",
+                result="INDETERMINATE",
+                evidence_maturity="source-only",
+                reason=value["reason"],
+                provenance=value.get("provenance") or {"source": "drarm-execution"},
+            )
+        else:
+            decision = (value.get("provenance") or {}).get("decision")
+            materiality = "applicable" if decision == "required" else "uncertain"
+            set_lens_disposition(
+                record,
+                "drarm",
+                materiality=materiality,
+                execution="required-but-not-executed",
+                result="INDETERMINATE",
+                evidence_maturity="modeled",
+                reason=value["reason"],
+                provenance=value.get("provenance"),
+            )
     return record
 
 
