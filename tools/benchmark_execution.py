@@ -150,6 +150,8 @@ def main() -> int:
 
     profile = profiles[args.profile]
     commands = profile.get("commands") or []
+    workload_dimensions = profile.get("workload_dimensions") or {}
+    semantic_references = profile.get("semantic_references") or []
     samples = []
     exit_code = 0
 
@@ -181,6 +183,7 @@ def main() -> int:
         "peak_rss_kb": peak_rss,
         "commands": representative["commands"],
         "sample_count": len(samples),
+        "workload_dimensions": workload_dimensions,
         "samples": samples,
         "summary": summary,
         "telemetry": build_event(
@@ -205,6 +208,10 @@ def main() -> int:
             "current_baselines": digest_file(ROOT / "examples/current-baselines.yaml"),
             "tt_credspec_pressure_test": digest_file(ROOT / "examples/cross-spec/trust-tasks-credspec/pressure-test.yaml"),
             "scenario_corpus_registry": digest_file(ROOT / "corpora/sources.yaml"),
+            **{
+                str(path): digest_file(ROOT / str(path))
+                for path in semantic_references
+            },
         },
     }
     output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
