@@ -145,6 +145,7 @@ jobs:
         profile:
           - core-validation
           - cross-spec-dtg-full
+          - cross-spec-dtg-pressure-batch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

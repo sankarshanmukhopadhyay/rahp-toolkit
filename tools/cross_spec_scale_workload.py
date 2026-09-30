@@ -45,6 +45,13 @@ def run(command: list[str]) -> None:
         raise SystemExit(proc.returncode)
 
 
+def pressure_validation_command(selected: list[dict[str, Any]]) -> list[str]:
+    command = [sys.executable, "tools/validate_pressure_tests.py"]
+    for item in selected:
+        command.extend(["--file", str(item["assessment"])])
+    return command
+
+
 def execute(registry_path: Path, limit: int, output: Path) -> dict[str, Any]:
     registry = load_registry(ROOT / registry_path)
     selected = select_compositions(registry, limit)
@@ -58,8 +65,6 @@ def execute(registry_path: Path, limit: int, output: Path) -> dict[str, Any]:
 
     for item in selected:
         composition_id = str(item["id"])
-        assessment = str(item["assessment"])
-        safe_id = composition_id.replace("/", "-")
         run([
             sys.executable,
             "tools/validate_scenario_corpora.py",
@@ -68,12 +73,12 @@ def execute(registry_path: Path, limit: int, output: Path) -> dict[str, Any]:
             "--composition",
             composition_id,
         ])
-        run([
-            sys.executable,
-            "tools/validate_pressure_tests.py",
-            "--file",
-            assessment,
-        ])
+
+    run(pressure_validation_command(selected))
+
+    for item in selected:
+        composition_id = str(item["id"])
+        safe_id = composition_id.replace("/", "-")
         run([
             sys.executable,
             "tools/cross_spec_review.py",

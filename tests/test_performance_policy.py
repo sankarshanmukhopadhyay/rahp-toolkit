@@ -9,6 +9,7 @@ from tools import compare_execution_benchmarks as benchmark_compare
 from tools import cross_spec_scale_workload
 from tools import profile_execution
 from tools import validate as rahp_validate
+from tools import validate_pressure_tests
 
 
 class PerformancePolicyTests(unittest.TestCase):
@@ -183,6 +184,31 @@ class PerformancePolicyTests(unittest.TestCase):
         self.assertEqual(budget["cpu_seconds"], 2.7)
         self.assertEqual(results[0]["wall_share_percent"], 75.0)
         self.assertEqual(budget["largest_wall_time_commands"][0]["command"], "a")
+
+    def test_pressure_validation_command_batches_selected_assessments(self):
+        selected = [
+            {"assessment": "a.yaml"},
+            {"assessment": "b.yaml"},
+        ]
+        command = cross_spec_scale_workload.pressure_validation_command(selected)
+        self.assertEqual(command[1], "tools/validate_pressure_tests.py")
+        self.assertEqual(command[2:], ["--file", "a.yaml", "--file", "b.yaml"])
+
+    def test_pressure_validation_context_is_immutable(self):
+        from types import MappingProxyType
+
+        context = validate_pressure_tests.ValidationContext(
+            known_patterns=frozenset({"PATTERN-A"}),
+            corpus_scenarios=frozenset({"SCENARIO-A"}),
+            known=MappingProxyType({"risks": frozenset({"RISK-A"})}),
+            allowed_dispositions=frozenset({"accept"}),
+            allowed_status=frozenset({"open"}),
+            allowed_severity=frozenset({"High"}),
+        )
+        with self.assertRaises(TypeError):
+            context.known["controls"] = frozenset({"CONTROL-A"})
+        with self.assertRaises(AttributeError):
+            context.known["risks"].add("RISK-B")
 
 
 if __name__ == "__main__":

@@ -13,6 +13,9 @@ import pathlib
 import re
 import subprocess
 import sys
+from dataclasses import dataclass
+from types import MappingProxyType
+from typing import Mapping
 from portable_catalogue import validate_block
 
 try:
@@ -51,32 +54,64 @@ def dispositions() -> set[str]:
     return set(doc.get("finding_disposition", {}).get("values", []))
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--file", type=pathlib.Path, help="Validate one pressure-test YAML instead of the entire repository")
-    args = ap.parse_args()
+@dataclass(frozen=True)
+class ValidationContext:
+    known_patterns: frozenset[str]
+    corpus_scenarios: frozenset[str]
+    known: Mapping[str, frozenset[str]]
+    allowed_dispositions: frozenset[str]
+    allowed_status: frozenset[str]
+    allowed_severity: frozenset[str]
+
+
+def build_context() -> ValidationContext:
     pattern_doc = load_yaml(ROOT / "method" / "scenario-patterns.yaml")
-    known_patterns = {str(p.get("id")) for p in pattern_doc.get("patterns", []) if p.get("id")}
-    corpus_scenarios = set()
+    known_patterns = frozenset(
+        str(p.get("id")) for p in pattern_doc.get("patterns", []) if p.get("id")
+    )
+
+    corpus_scenarios: set[str] = set()
     for corpus_path in sorted((ROOT / "corpora").glob("*.yaml")):
         cdoc = load_yaml(corpus_path).get("corpus") or {}
-        corpus_scenarios.update(str(s.get("id")) for s in cdoc.get("scenarios", []) if s.get("id"))
+        corpus_scenarios.update(
+            str(s.get("id")) for s in cdoc.get("scenarios", []) if s.get("id")
+        )
+
     known = {
-        "risks": ids("risks.yaml"),
-        "controls": ids("controls.yaml"),
-        "guardrails": ids("guardrails.yaml"),
-        "assurance_tests": ids("assurance-tests.yaml"),
-        "personas": ids("personas.yaml"),
+        "risks": frozenset(ids("risks.yaml")),
+        "controls": frozenset(ids("controls.yaml")),
+        "guardrails": frozenset(ids("guardrails.yaml")),
+        "assurance_tests": frozenset(ids("assurance-tests.yaml")),
+        "personas": frozenset(ids("personas.yaml")),
     }
-    allowed_dispositions = dispositions()
-    allowed_status = {"in-progress", "complete", "open", "monitoring", "resolved", "superseded"}
-    allowed_severity = {"Low", "Medium", "High", "Critical"}
+    return ValidationContext(
+        known_patterns=known_patterns,
+        corpus_scenarios=frozenset(corpus_scenarios),
+        known=MappingProxyType(known),
+        allowed_dispositions=frozenset(dispositions()),
+        allowed_status=frozenset(
+            {"in-progress", "complete", "open", "monitoring", "resolved", "superseded"}
+        ),
+        allowed_severity=frozenset({"Low", "Medium", "High", "Critical"}),
+    )
 
-    files = [args.file if args.file.is_absolute() else ROOT / args.file] if args.file else sorted(ROOT.glob("examples/**/pressure-test.yaml"))
+
+def resolve_files(values: list[pathlib.Path] | None) -> list[pathlib.Path]:
+    if not values:
+        return sorted(ROOT.glob("examples/**/pressure-test.yaml"))
+    return [value if value.is_absolute() else ROOT / value for value in values]
+
+
+def validate_files(
+    files: list[pathlib.Path],
+    *,
+    context: ValidationContext | None = None,
+    render_repository: bool = False,
+) -> tuple[list[str], int]:
     if not files:
-        print("ERROR no examples/**/pressure-test.yaml files found")
-        return 1
+        return ["no examples/**/pressure-test.yaml files found"], 0
 
+    context = context or build_context()
     errors: list[str] = []
     findings_seen = 0
 
@@ -92,7 +127,7 @@ def main() -> int:
             if not review.get(field):
                 errors.append(f"{rel}: review.{field} is required")
 
-        if review.get("status") not in allowed_status:
+        if review.get("status") not in context.allowed_status:
             errors.append(f"{rel}: review.status={review.get('status')!r} is not permitted")
 
         target = review.get("target") or {}
@@ -136,23 +171,35 @@ def main() -> int:
                 errors.append(f"{prefix}: duplicate finding id")
             local_ids.add(fid)
 
-            for field in ("title", "status", "severity", "primary_disposition", "risks", "evidence", "harm", "recommendation", "retest_when"):
+            for field in (
+                "title",
+                "status",
+                "severity",
+                "primary_disposition",
+                "risks",
+                "evidence",
+                "harm",
+                "recommendation",
+                "retest_when",
+            ):
                 if not finding.get(field):
                     errors.append(f"{prefix}: {field} is required")
 
-            if finding.get("status") not in allowed_status:
+            if finding.get("status") not in context.allowed_status:
                 errors.append(f"{prefix}: status={finding.get('status')!r} is not permitted")
-            if finding.get("severity") not in allowed_severity:
+            if finding.get("severity") not in context.allowed_severity:
                 errors.append(f"{prefix}: severity={finding.get('severity')!r} is not permitted")
 
             primary = finding.get("primary_disposition")
-            if primary not in allowed_dispositions:
-                errors.append(f"{prefix}: primary_disposition={primary!r} is not in method/vocabularies.yaml")
+            if primary not in context.allowed_dispositions:
+                errors.append(
+                    f"{prefix}: primary_disposition={primary!r} is not in method/vocabularies.yaml"
+                )
             for d in finding.get("secondary_dispositions") or []:
-                if d not in allowed_dispositions:
+                if d not in context.allowed_dispositions:
                     errors.append(f"{prefix}: secondary disposition {d!r} is not permitted")
 
-            for field, valid in known.items():
+            for field, valid in context.known.items():
                 refs = finding.get(field) or []
                 if not isinstance(refs, list):
                     errors.append(f"{prefix}: {field} must be a list")
@@ -162,11 +209,15 @@ def main() -> int:
                         errors.append(f"{prefix}: {field} reference {ref!r} does not resolve")
 
             for ref in finding.get("scenario_patterns") or []:
-                if ref not in known_patterns:
-                    errors.append(f"{prefix}: scenario_patterns reference {ref!r} does not resolve")
+                if ref not in context.known_patterns:
+                    errors.append(
+                        f"{prefix}: scenario_patterns reference {ref!r} does not resolve"
+                    )
             for ref in finding.get("scenarios") or []:
-                if ref not in corpus_scenarios:
-                    errors.append(f"{prefix}: scenarios reference {ref!r} does not resolve in corpora/")
+                if ref not in context.corpus_scenarios:
+                    errors.append(
+                        f"{prefix}: scenarios reference {ref!r} does not resolve in corpora/"
+                    )
 
             validate_block(finding.get("portable_assurance"), prefix, errors, required=True)
 
@@ -176,31 +227,74 @@ def main() -> int:
             else:
                 for n, ev in enumerate(evidence, 1):
                     if not isinstance(ev, dict) or not ev.get("source") or not ev.get("observation"):
-                        errors.append(f"{prefix}: evidence[{n}] requires source and observation")
+                        errors.append(
+                            f"{prefix}: evidence[{n}] requires source and observation"
+                        )
 
         summary = review.get("summary") or {}
         if "finding_count" in summary and summary.get("finding_count") != len(findings):
-            errors.append(f"{rel}: summary.finding_count={summary.get('finding_count')} but {len(findings)} findings are recorded")
+            errors.append(
+                f"{rel}: summary.finding_count={summary.get('finding_count')} "
+                f"but {len(findings)} findings are recorded"
+            )
         if "open_count" in summary:
             actual_open = sum(1 for f in findings if f.get("status") == "open")
             if summary.get("open_count") != actual_open:
-                errors.append(f"{rel}: summary.open_count={summary.get('open_count')} but {actual_open} findings are open")
+                errors.append(
+                    f"{rel}: summary.open_count={summary.get('open_count')} "
+                    f"but {actual_open} findings are open"
+                )
+
+    if not errors and render_repository:
+        renderer = ROOT / "tools" / "render_pressure_tests.py"
+        rendered = subprocess.run(
+            [sys.executable, str(renderer), "--check"],
+            cwd=ROOT,
+            text=True,
+        )
+        if rendered.returncode != 0:
+            errors.append("generated Markdown is missing or stale")
+
+    return errors, findings_seen
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "--file",
+        type=pathlib.Path,
+        action="append",
+        help=(
+            "Validate one pressure-test YAML. Repeat --file to validate multiple "
+            "files while loading shared catalogues only once."
+        ),
+    )
+    args = ap.parse_args()
+    files = resolve_files(args.file)
+
+    errors, findings_seen = validate_files(
+        files,
+        render_repository=not bool(args.file),
+    )
 
     if errors:
         for error in errors:
             print(f"ERROR {error}")
-        print(f"\nPressure-test validation failed: {len(errors)} error(s) across {len(files)} review file(s).")
+        print(
+            f"\nPressure-test validation failed: {len(errors)} error(s) "
+            f"across {len(files)} review file(s)."
+        )
         return 1
 
-    if not args.file:
-        renderer = ROOT / "tools" / "render_pressure_tests.py"
-        rendered = subprocess.run([sys.executable, str(renderer), "--check"], cwd=ROOT, text=True)
-        if rendered.returncode != 0:
-            print("\nPressure-test validation failed: generated Markdown is missing or stale.")
-            return 1
-
-    risk_catalogues = [str(p.relative_to(ROOT)) for p in catalogue_paths("risks.yaml") if p.exists()]
-    print(f"Pressure-test validation clean: {len(files)} review file(s), {findings_seen} finding(s), all references resolved, Markdown current.")
+    risk_catalogues = [
+        str(p.relative_to(ROOT))
+        for p in catalogue_paths("risks.yaml")
+        if p.exists()
+    ]
+    print(
+        f"Pressure-test validation clean: {len(files)} review file(s), "
+        f"{findings_seen} finding(s), all references resolved, Markdown current."
+    )
     print(f"  risk catalogues: {', '.join(risk_catalogues)}")
     return 0
 
