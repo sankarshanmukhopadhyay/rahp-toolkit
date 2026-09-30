@@ -1,0 +1,56 @@
+schema: rahp-negative-fixture/v1
+id: NF-POST851-DRARM-OMISSION
+proposition:
+  claim: a coordinated multi-component cut-over may omit resilience assessment while still claiming full-stack completion
+  owner: drarm
+lens:
+  primary: drarm
+  secondary: [rahp, composition]
+evidence:
+  established:
+    - multi_component_cutover
+    - retry_or_reissue_surface
+    - partial_deployment_surface
+  missing:
+    - explicit_resilience_disposition
+    - achieved_resilience_depth
+    - required_resilience_depth
+  stale: []
+  contradicted: []
+  unsupported: []
+unsafe_inference:
+  from: [functional_migration_plan, component_readiness]
+  to: [resilience_assured]
+expected:
+  state: review-required
+  terminal_colour: amber
+  prohibited: [pass, green, verified, permit]
+positive_control:
+  ref: tests/test_post_851_full_stack_assurance.py#test_drarm_depth_is_visible_and_silence_is_invalid
+  proposition: resilience applicability and achieved versus required DR-A depth are explicit
+source:
+  kind: test
+  ref: tests/test_post_851_full_stack_assurance.py#test_drarm_depth_is_visible_and_silence_is_invalid
+  provenance: post-851 DRARM campaign-path regression
+specialist:
+  required: false
+  owns: []
+  does_not_own: []
+composition:
+  dependencies:
+    - retry_ownership
+    - queue_and_event_delivery
+    - partial_deployment_behavior
+drarm:
+  applicable: true
+  owns:
+    - retry_amplification
+    - queue_growth
+    - partial_outage_amplification
+  does_not_own:
+    - authorization
+    - credential_semantics
+retest_triggers:
+  - campaign orchestration changes
+  - resilience applicability policy changes
+evidence_maturity: executable
