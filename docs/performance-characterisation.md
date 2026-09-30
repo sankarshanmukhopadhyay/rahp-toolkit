@@ -87,6 +87,25 @@ The dimension measures **composition breadth**. It does not claim to model repos
 
 When the registry's runnable composition count changes, the declared benchmark dimension must be deliberately reconciled rather than silently interpreted as the same workload.
 
+## Runtime attribution
+
+`tools/profile_execution.py` profiles the Python commands declared by an existing benchmark profile.
+
+For each command it retains wall time, child CPU time, CPU/wall ratio, an explicit runtime classification, raw `cProfile` statistics, captured output and digest, and the top cumulative Python call paths. The aggregate report attributes each command's share of profile wall time and identifies the largest contributors.
+
+Runtime classifications are deliberately coarse:
+
+- `cpu-dominant`: child CPU / wall ratio is at least 0.80;
+- `wait-or-process-dominant`: ratio is at most 0.40;
+- `mixed`: values between those thresholds;
+- `indeterminate`: invalid or zero-duration measurement.
+
+These labels are diagnostic observations, not architectural conclusions. A process-heavy command may spend time in child processes that require separate profiling, and hosted-runner scheduling can affect wall time.
+
+The profiling workflow automatically exercises `core-validation` and `cross-spec-dtg-full` when the profiler changes. Raw statistics, JSON runtime budgets, and Markdown reports are retained as workflow artifacts.
+
+A bottleneck claim should identify the exact profile, revision, command, measured wall share, CPU/wall ratio, and raw profile artifact supporting it.
+
 ## Architecture decision gate
 
 A C, C++, Rust, or other native evaluator is not justified merely because native code can execute faster.
