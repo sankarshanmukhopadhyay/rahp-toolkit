@@ -271,12 +271,12 @@ def full_stack_terminalization_errors(record: dict[str, Any]) -> list[str]:
         result = value.get("result")
         if materiality == "uncertain":
             errors.append(f"{lens}: materiality remains uncertain")
-        if materiality == "applicable" and execution == "required-but-not-executed":
-            errors.append(f"{lens}: applicable lens required but not executed/referred")
         if materiality in {"not-applicable", "not-material"} and not value.get("provenance"):
             errors.append(f"{lens}: explicit non-applicability requires provenance")
         if result == "PENDING":
             errors.append(f"{lens}: result remains pending")
+        if materiality == "applicable" and execution == "required-but-not-executed" and result != "INDETERMINATE":
+            errors.append(f"{lens}: unexecuted applicable lens must remain INDETERMINATE")
         if result == "PASS" and execution != "executed":
             errors.append(f"{lens}: PASS requires attributable execution")
     if record.get("assurance_state") == "pass":
