@@ -29,6 +29,7 @@ on:
   pull_request:
     paths:
       - 'tools/benchmark_execution.py'
+      - 'tools/profile_execution.py'
       - 'tools/cross_spec_scale_workload.py'
       - 'tools/compare_execution_benchmarks.py'
       - 'tools/validate.py'
@@ -133,4 +134,45 @@ jobs:
             build/execution-benchmark-baseline-${{ matrix.profile }}.json
             build/execution-benchmark-${{ matrix.profile }}.json
             build/execution-benchmark-comparison-${{ matrix.profile }}.json
+          if-no-files-found: error
+
+
+  profile:
+    if: github.event_name == 'pull_request'
+    strategy:
+      fail-fast: false
+      matrix:
+        profile:
+          - core-validation
+          - cross-spec-dtg-full
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Profile representative execution path
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: >-
+          python3 tools/profile_execution.py
+          "$PROFILE"
+          --output-dir "build/performance-profile-$PROFILE"
+      - name: Publish runtime budget
+        if: always()
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          report="build/performance-profile-$PROFILE/report.md"
+          if [ -f "$report" ]; then
+            cat "$report" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: rahp-runtime-profile-${{ matrix.profile }}
+          path: build/performance-profile-${{ matrix.profile }}/
           if-no-files-found: error
