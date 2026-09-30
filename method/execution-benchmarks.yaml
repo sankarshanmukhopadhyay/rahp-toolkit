@@ -119,8 +119,12 @@ metrics:
   optional:
     - output_digest
     - peak_rss_kb
+    - cpu_seconds
+    - sample_count
+    - timing_distribution
 comparison:
   primary_metric: wall_seconds
+  aggregation: median_when_repeated
   semantic_invariant: normalized outputs for identical inputs must remain unchanged
   target_reduction_percent:
     full-validation: 50

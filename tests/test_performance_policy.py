@@ -4,6 +4,7 @@ from pathlib import Path
 
 import yaml
 
+from tools import benchmark_execution
 from tools import compare_execution_benchmarks as benchmark_compare
 from tools import validate as rahp_validate
 
@@ -91,6 +92,56 @@ class PerformancePolicyTests(unittest.TestCase):
             info = rahp_validate.load_yaml.cache_info()
         self.assertEqual(info.misses, 1)
         self.assertEqual(info.hits, 1)
+
+    def test_sample_count_must_be_positive(self):
+        self.assertEqual(benchmark_execution.validate_sample_count(1), 1)
+        self.assertEqual(benchmark_execution.validate_sample_count(5), 5)
+        with self.assertRaisesRegex(ValueError, "at least 1"):
+            benchmark_execution.validate_sample_count(0)
+
+    def test_sample_summary_exposes_distribution_and_cpu(self):
+        summary = benchmark_execution.summarize_samples(
+            [
+                {"wall_seconds": 3.0, "cpu_seconds": 2.0},
+                {"wall_seconds": 1.0, "cpu_seconds": 0.5},
+                {"wall_seconds": 2.0, "cpu_seconds": 1.0},
+            ]
+        )
+        self.assertEqual(summary["sample_count"], 3)
+        self.assertEqual(summary["wall_seconds"]["min"], 1.0)
+        self.assertEqual(summary["wall_seconds"]["median"], 2.0)
+        self.assertEqual(summary["wall_seconds"]["mean"], 2.0)
+        self.assertEqual(summary["wall_seconds"]["max"], 3.0)
+        self.assertEqual(summary["cpu_seconds"]["median"], 1.0)
+
+    def test_sample_summary_rejects_missing_samples(self):
+        with self.assertRaisesRegex(ValueError, "at least one"):
+            benchmark_execution.summarize_samples([])
+
+    def test_run_sample_fails_closed_after_first_command_failure(self):
+        original = benchmark_execution.run_command
+        calls = []
+
+        def fake_run(command):
+            calls.append(command)
+            return {
+                "command": command,
+                "seconds": 0.01,
+                "cpu_seconds": 0.005,
+                "exit_code": 7 if command == "fail" else 0,
+                "output_sha256": "x",
+                "output_tail": "",
+            }
+
+        benchmark_execution.run_command = fake_run
+        try:
+            result = benchmark_execution.run_sample(["ok", "fail", "must-not-run"])
+        finally:
+            benchmark_execution.run_command = original
+
+        self.assertEqual(result["profile_exit_code"], 7)
+        self.assertEqual(calls, ["ok", "fail"])
+        self.assertEqual(len(result["commands"]), 2)
 
 
 if __name__ == "__main__":
