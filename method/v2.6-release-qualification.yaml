@@ -30,8 +30,8 @@ evidence:
   orchestration_contract: docs/full-stack-assurance-orchestration.md
   orchestration_regression: tests/test_post_851_full_stack_assurance.py
   negative_fixture_inventory: data/negative-fixture-inventory.yaml
-  privacy_source_judgment: docs/vc-data-model-threat-model-gap-analysis.md
-  performance_architecture: docs/performance-architecture.md
+  privacy_source_judgment: docs/review/vc-data-model-threat-model-2.1-gap-analysis.md
+  performance_architecture: docs/performance-architecture-decision.md
   performance_characterisation: docs/performance-characterisation.md
   lpc_scope_manifest: docs/lpc-pre-demo-scope-manifest.md
   lpc_evidence_templates: docs/lpc-pre-demo-evidence-templates.md
