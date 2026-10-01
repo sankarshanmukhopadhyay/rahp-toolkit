@@ -1,0 +1,112 @@
+contract_id: rahp-policy-odrl-alignment-v1
+status: experimental
+issue: 662
+reference:
+  specification: W3C ODRL Information Model 2.2
+  vocabulary: W3C ODRL Vocabulary and Expression 2.2
+  context: http://www.w3.org/ns/odrl.jsonld
+purpose: >-
+  Pressure-test the experimental RAHP policy proposition vocabulary against ODRL
+  2.2 without making ODRL authoritative for RAHP assurance semantics and without
+  defining an RAHP ODRL Profile.
+
+boundary:
+  odrl_is_policy_expression_layer: true
+  rahp_is_assurance_layer: true
+  generated_projection_is_source_evidence: false
+  supplied_odrl_policy_may_be_source: true
+  odrl_conformance_implies_legal_validity: false
+  odrl_conformance_implies_runtime_conformance: false
+  odrl_conformance_implies_rahp_assurance: false
+  odrl_evaluation_is_terminal_rahp_assurance: false
+  rahp_odrl_profile_authorized: false
+
+alignment_states:
+  - direct
+  - profile-candidate
+  - partial
+  - outside-odrl
+
+projection_states:
+  - ready
+  - insufficient-structure
+  - semantic-review-required
+  - not-applicable
+
+mappings:
+  permission:
+    state: direct
+    odrl: Permission
+    rule: >-
+      Rule polarity aligns, but projection requires explicit action and target
+      plus any applicable party/constraint semantics.
+  prohibition:
+    state: direct
+    odrl: Prohibition
+    rule: >-
+      Rule polarity aligns, but projection requires explicit action and target
+      plus any applicable party/constraint semantics.
+  obligation:
+    state: partial
+    odrl: Duty
+    rule: >-
+      ODRL Duty expresses an action that must be performed; a generic natural-
+      language obligation is not assumed to be losslessly equivalent.
+  condition:
+    state: partial
+    odrl: Constraint
+    rule: >-
+      Generic textual conditions MUST NOT be projected unless structured operand,
+      operator and right-operand semantics are established.
+  remedy:
+    state: partial
+    odrl: remedy/consequence
+    rule: >-
+      ODRL remedy/consequence relations overlap with part of the RAHP remedy
+      surface but do not cover all redress semantics.
+  discretion:
+    state: outside-odrl
+  exception:
+    state: partial
+    odrl: Constraint/LogicalConstraint
+  representation:
+    state: outside-odrl
+  retention:
+    state: profile-candidate
+  disclosure:
+    state: profile-candidate
+  termination:
+    state: profile-candidate
+  delegation:
+    state: profile-candidate
+
+invariants:
+  - source wording and source lineage remain authoritative for natural-language policy subjects
+  - generated ODRL alignment/projection artifacts are derived semantics
+  - missing action, target, party, constraint or other required semantics MUST NOT be invented
+  - semantic loss MUST remain explicit
+  - RAHP-only analytical concepts MUST NOT be encoded as ODRL claims merely for vocabulary reuse
+  - no ODRL Profile is created or implied by this research contract
+  - conflict, inheritance, consequence and remedy semantics require explicit comparison before reuse
+  - ODRL-native sources preserve their own policy uid, type, profile and conflict metadata
+  - ODRL-native ingestion is not a complete ODRL validator or evaluator
+
+control_fixture:
+  required: true
+  format: ODRL 2.2 JSON-LD
+  purpose: >-
+    Separate natural-language extraction uncertainty from downstream assurance
+    interpretation by providing an already machine-readable policy-expression
+    control.
+  required_rule_types:
+    - permission
+    - prohibition
+    - obligation
+
+graduation_evidence:
+  - explicit RAHP-to-ODRL alignment matrix
+  - deterministic ODRL-native control fixture ingestion
+  - negative evidence that missing structured semantics are not fabricated
+  - explicit outside-odrl treatment for RAHP analytical semantics
+  - documented separation between ODRL policy expression and RAHP assurance
+  - no retroactive change to the frozen measurement baseline in issue 668

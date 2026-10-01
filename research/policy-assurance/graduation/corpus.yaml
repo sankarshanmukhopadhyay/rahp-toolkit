@@ -1,0 +1,78 @@
+study: rahp-policy-graduation-668
+status: active
+candidate:
+  implementation_sha: 0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce
+  branch: research/policy-assurance-subjects-662
+  note: >-
+    This SHA freezes the measured implementation. Later commits that add study
+    scaffolding, corpus records, review evidence or reports do not change the
+    measured policy-assessment implementation unless explicitly declared.
+
+corpus:
+  - id: github-terms
+    class: terms
+    publisher: GitHub
+    real_policy: true
+    source_uri: https://github.com/github/site-policy/Policies/github-terms/github-terms-of-service.md
+    source_ref: b9578b546d2506febda1da2cd7431644d58e512c
+    local_assessment_source: examples/policy-assurance/real/github-terms-structural-snapshot.md
+    license: CC0-1.0
+    role: structure-definitions-incorporation-precedence
+
+  - id: github-acceptable-use
+    class: acceptable-use
+    publisher: GitHub
+    real_policy: true
+    source_uri: https://github.com/github/site-policy/Policies/acceptable-use-policies/github-acceptable-use-policies.md
+    source_ref: b9578b546d2506febda1da2cd7431644d58e512c
+    upstream_blob_sha: 5100dcce69b9b86beb8ecbe2d5b634700633d4df
+    local_assessment_source: examples/policy-assurance/real/github-acceptable-use-policies.md
+    license: CC0-1.0
+    role: prohibitions-discretion-enforcement
+
+  - id: github-appeal
+    class: appeal-enforcement
+    publisher: GitHub
+    real_policy: true
+    source_uri: https://github.com/github/site-policy/Policies/acceptable-use-policies/github-appeal-and-reinstatement.md
+    source_ref: b9578b546d2506febda1da2cd7431644d58e512c
+    upstream_blob_sha: 2600be9eaafe0d8178c4a74d53e1785aea9186ba
+    local_assessment_source: examples/policy-assurance/real/github-appeal-and-reinstatement.md
+    license: CC0-1.0
+    role: redress-human-review-discretion
+
+  - id: kubernetes-governance
+    class: governance-operating-policy
+    publisher: Kubernetes Community
+    real_policy: true
+    source_uri: https://github.com/kubernetes/community/blob/b236e436d8bdee7231a2a9ff70cbf385d3ec3187/governance.md
+    source_ref: b236e436d8bdee7231a2a9ff70cbf385d3ec3187
+    local_assessment_source: examples/policy-assurance/real/kubernetes-governance-bounded.md
+    license: Apache-2.0
+    license_source: https://github.com/kubernetes/community/blob/main/LICENSE
+    role: distributed-authority-charters-escalation-transparency
+
+  - id: apache-superset-conduct
+    class: community-policy
+    publisher: Apache Software Foundation / Apache Superset
+    real_policy: true
+    source_uri: https://github.com/apache/superset/blob/bc8e9513bfadb6c07f34bdab4b522896a61a0ed8/CODE_OF_CONDUCT.md
+    source_ref: bc8e9513bfadb6c07f34bdab4b522896a61a0ed8
+    local_assessment_source: examples/policy-assurance/real/apache-superset-conduct-bounded.md
+    license: Apache-2.0
+    license_source: https://github.com/apache/superset/blob/master/LICENSE.txt
+    role: conduct-prohibitions-reporting-remedy-community-governance
+
+coverage:
+  target_items: 5
+  real_policy_items: 5
+  unrelated_publishers_present: true
+  publisher_groups:
+    - GitHub
+    - Kubernetes Community
+    - Apache Software Foundation
+  note: >-
+    The two external-publisher items are deliberately bounded research snapshots,
+    retaining source/ref/license provenance. Their local source digest must be
+    calculated over the retained snapshot bytes and MUST NOT be confused with an
+    upstream Git blob or commit SHA.
