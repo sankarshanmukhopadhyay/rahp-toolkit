@@ -57,6 +57,44 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
         )
         self.assertTrue(publisher.should_reopen_closed_owner({**base, "reopen_closed_owner": True}))
 
+
+    def test_existing_issue_scan_does_not_drop_owner_beyond_five_pages(self) -> None:
+        calls: list[int] = []
+        canonical = {
+            "state": "closed",
+            "number": 410,
+            "body": "<!-- rahp-assessment-key:cawg:issue:decentralized-identity/cawg-identity-assertion#275 -->",
+        }
+
+        def fake_request(method, url, token, payload=None):
+            page = int(url.rsplit("page=", 1)[1])
+            calls.append(page)
+            if page <= 5:
+                return [{"number": page * 100 + i, "state": "closed", "body": ""} for i in range(100)]
+            if page == 6:
+                filler = [{"number": 600 + i, "state": "closed", "body": ""} for i in range(99)]
+                return filler + [canonical]
+            return []
+
+        original = publisher.request
+        publisher.request = fake_request
+        try:
+            issues = publisher.existing_issues("sankarshanmukhopadhyay/rahp-toolkit", "token")
+        finally:
+            publisher.request = original
+
+        self.assertIn(canonical, issues)
+        self.assertEqual(calls, [1, 2, 3, 4, 5, 6, 7])
+
+        index = publisher.issues_by_key(issues)
+        owner, state = publisher.resolve_owner(
+            index,
+            "cawg:issue:decentralized-identity/cawg-identity-assertion#275",
+        )
+        self.assertIsNotNone(owner)
+        self.assertEqual(owner["number"], 410)
+        self.assertEqual(state, "closed")
+
     def test_open_owner_is_preferred_when_both_states_exist(self) -> None:
         issues = self.issues + [
             {
