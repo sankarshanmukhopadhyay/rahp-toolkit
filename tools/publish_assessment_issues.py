@@ -109,9 +109,20 @@ def infer_issue_keys(issue: dict[str, Any]) -> set[str]:
 
 
 def existing_issues(repo: str, token: str) -> list[dict[str, Any]]:
+    """Load the complete issue history needed to resolve durable proposition owners.
+
+    Durable assessment owners can legitimately be much older than the newest 500
+    repository issues. Truncating discovery at an arbitrary page count makes an old
+    canonical owner disappear from the publisher's view and causes an unchanged
+    observation to materialise as a duplicate assessment issue.
+
+    Continue until GitHub returns an empty or short page. Pull requests are excluded
+    from the returned issue set but still count toward GitHub's page size, so pagination
+    must be driven by the raw response length rather than the filtered issue count.
+    """
     issues: list[dict[str, Any]] = []
     page = 1
-    while page <= 5:
+    while True:
         items = request(
             "GET",
             f"https://api.github.com/repos/{repo}/issues?state=all&per_page=100&page={page}",
