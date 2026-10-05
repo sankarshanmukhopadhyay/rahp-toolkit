@@ -72,7 +72,7 @@ relationship:
 validation:
   local_candidate_tests:
     framework: python-unittest
-    count: 8
+    count: 11
     result: pass
     claims:
       - valid minimal review is accepted
