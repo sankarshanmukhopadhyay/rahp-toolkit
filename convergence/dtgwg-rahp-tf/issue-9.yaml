@@ -1,0 +1,85 @@
+schema: rahp-upstream-convergence-ledger/v1
+capability: specification-pressure-test-v1
+status: prepared_upstream_write_blocked
+
+origin:
+  repository: sankarshanmukhopadhyay/rahp-toolkit
+  baseline:
+    branch: main
+    revision: b60067d42a0f115b1640670f4fdd8943d69f1612
+  pull_requests:
+    - number: 36
+      role: portable assessment and finding lineage foundation
+    - number: 49
+      role: source-pinned evidence findings and reassessment practice
+    - number: 227
+      role: immutable source-pin transport semantics
+    - number: 757
+      role: falsification-oriented independent review readiness
+    - number: 761
+      role: adopter-facing review workflow and executable onboarding
+  source_surfaces:
+    - ADOPTION.md
+    - docs/assurance-lineage.md
+    - review/README.md
+    - schemas/rahp-assurance-run-state-v1.schema.json
+
+upstream:
+  repository: trustoverip/dtgwg-rahp-tf
+  issue: 9
+  baseline:
+    branch: main
+    revision: ce954decb4394c6de98282dee6c7c8c18392de63
+  intended_branch: convergence/issue-9-pressure-test
+  pull_request: null
+  write_state:
+    state: blocked
+    reason: GitHub integration cannot create refs in the upstream organization repository
+    github_error: Resource not accessible by integration
+
+proposed_scope:
+  include:
+    - reproducible specification pressure-test record
+    - immutable source revision pinning
+    - stable assessment identity
+    - finding identity
+    - RAHP risk references
+    - separate control-plane and finding-status semantics
+    - structured resolution evidence
+    - schema validation
+    - positive and negative tests
+    - concise pressure-testing documentation
+    - minimal worked example
+  exclude:
+    - downstream assurance controller
+    - specialist routing
+    - DPIP integration
+    - Interop Lab machinery
+    - terminal assurance state machine
+    - evidence maturity hierarchy
+    - automated reassessment controller
+    - full downstream lineage model
+    - repository-wide restructuring
+    - generated-site overhaul
+
+relationship:
+  type: adapted-capability
+  authority:
+    downstream: incubation-and-evidence
+    upstream: task-force-authoritative-if-accepted
+  rule: downstream main and research branches remain untouched by convergence work
+
+validation:
+  local_candidate_tests:
+    framework: python-unittest
+    count: 8
+    result: pass
+    claims:
+      - valid minimal review is accepted
+      - missing immutable revision is rejected
+      - mutable branch name used as revision is rejected
+      - duplicate finding identifiers are rejected
+      - unknown RAHP risk references are rejected
+      - invalid control plane is rejected
+      - resolved finding without resolution evidence is rejected
+      - risk acceptance without authority reference is rejected
