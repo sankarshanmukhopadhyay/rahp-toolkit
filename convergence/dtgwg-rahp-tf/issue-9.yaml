@@ -1,6 +1,6 @@
 schema: rahp-upstream-convergence-ledger/v1
 capability: specification-pressure-test-v1
-status: prepared_upstream_write_blocked
+status: accepted_upstream
 
 origin:
   repository: sankarshanmukhopadhyay/rahp-toolkit
@@ -30,12 +30,17 @@ upstream:
   baseline:
     branch: main
     revision: ce954decb4394c6de98282dee6c7c8c18392de63
-  intended_branch: convergence/issue-9-pressure-test
-  pull_request: null
-  write_state:
-    state: blocked
-    reason: GitHub integration cannot create refs in the upstream organization repository
-    github_error: Resource not accessible by integration
+  contribution_branch: convergence/issue-9-pressure-test
+  pull_request: 10
+  merge_commit: 8145351005fd6286f6c34536edc6ebfa2e2ad3fb
+  acceptance_state: merged
+  contribution_path:
+    branch_creation: manual
+    implementation_push: manual
+    integration_constraint:
+      state: blocked
+      reason: GitHub integration could not create refs or write repository contents in the upstream organization repository
+      github_error: Resource not accessible by integration
 
 proposed_scope:
   include:
@@ -66,7 +71,10 @@ relationship:
   type: adapted-capability
   authority:
     downstream: incubation-and-evidence
-    upstream: task-force-authoritative-if-accepted
+    upstream: task-force-authoritative
+  acceptance:
+    pull_request: 10
+    merge_commit: 8145351005fd6286f6c34536edc6ebfa2e2ad3fb
   rule: downstream main and research branches remain untouched by convergence work
 
 validation:
