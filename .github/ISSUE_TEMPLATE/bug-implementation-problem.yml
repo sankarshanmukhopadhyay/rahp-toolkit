@@ -1,0 +1,52 @@
+name: Bug or implementation problem
+description: Report incorrect behaviour in RAHP tooling, automation, validation, scripts, workflows, or generated artifacts
+title: "[Bug] "
+body:
+  - type: input
+    id: component
+    attributes:
+      label: Affected component
+      description: Name the script, command, workflow, validator, generated artifact, or other implementation surface.
+      placeholder: "Example: assurance controller, validation workflow"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or revision
+      description: Provide the release, tag, branch, or commit if known.
+      placeholder: "Example: v1.9 or commit SHA"
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Give the smallest reliable sequence that reproduces the problem.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Include error messages or unexpected output where useful.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Optional. Include operating system, runtime/tool versions, or execution environment when relevant.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, screenshots, or other evidence
+      description: Optional. Attach or paste diagnostic evidence that helps reproduce or understand the problem.

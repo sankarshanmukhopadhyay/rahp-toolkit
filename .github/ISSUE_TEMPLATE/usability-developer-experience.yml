@@ -1,0 +1,43 @@
+name: Usability or developer experience
+description: Report something in RAHP that is difficult to understand, navigate, configure, execute, interpret, or integrate
+title: "[UX/DX] "
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: What were you trying to accomplish?
+      description: Describe the task or outcome you were working toward.
+    validations:
+      required: true
+  - type: textarea
+    id: friction
+    attributes:
+      label: Where did you encounter difficulty?
+      description: Tell us where you became blocked, confused, uncertain, or had to work around the toolkit.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      description: Describe what you expected the toolkit, workflow, output, or documentation to make possible or clear.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: Describe the actual experience, including any confusing output or unexpected steps.
+    validations:
+      required: true
+  - type: input
+    id: surface
+    attributes:
+      label: Affected surface
+      description: Optional. Name the command, workflow, file, generated artifact, interface, or integration involved.
+      placeholder: "Example: assessment output, validation workflow, CLI"
+  - type: textarea
+    id: improvement
+    attributes:
+      label: What would make this easier?
+      description: Optional. Suggest an improvement if you have one.
