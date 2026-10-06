@@ -1,0 +1,1140 @@
+{
+  "schema": "rahp-controller-disposition-ledger/v1",
+  "assessed_at": "2026-10-06",
+  "scope": "Exact consumed #903/#904/#906 snapshots; classification/ownership only, not blanket assurance",
+  "source_pins": {
+    "vti": "4b5618f30372d7479a18f379e67fc00411de38da",
+    "trust_tasks": "7b6bb488ffd838bef058310c909207d4a7b77125",
+    "vti_spec": "6a3041e88650126e0ca47869ac03dc069d026636"
+  },
+  "epochs": [
+    {
+      "controller": 903,
+      "snapshot_digest": "sha256:424871d7c9b3dc0e591d7d24d8903aa3d52757905f2c189462b1dce68117ed60",
+      "portfolio_revision": "5d194c462bb3f5a6fe8ef86721b517e367cc51e5",
+      "qualifying_findings": 38,
+      "finding_ids": [
+        "09ccb1d242fb33d91c00",
+        "18828d1335ff069040c5",
+        "1c24693b39b565b29637",
+        "36667a59ec26933c6b5d",
+        "38d80bde7473098fb6de",
+        "3c47db47eb8c0243756f",
+        "443903313fccfb3b9ce1",
+        "4a6d55ea324014afb48f",
+        "4a78b036a20513c8730a",
+        "517aa2861e9a9c70ffe5",
+        "529eb5d4991393ffe474",
+        "5f600796a207a69d9b4a",
+        "60e42e78469747988dd0",
+        "6746383deb0d6dae2e0b",
+        "6ec931acd09d29e7f7e0",
+        "7dd4cece89d11aac5a8a",
+        "81050504f25c51f89236",
+        "8489f5ccddf1ae91ca45",
+        "85c10c447fe2bf69052a",
+        "8d5718ce13e794725aab",
+        "8d8326aa785c31620f36",
+        "909c057943ad2bfd5c0b",
+        "94d39806fe806db2aa38",
+        "9b878baa95c8420e8f4f",
+        "a775c9693b223f68a751",
+        "adde5ccf990f1abb1fdd",
+        "b3bbc613f0e4c0d0f231",
+        "bb5f4996fef97c4ed846",
+        "c5ae0ee9c8cc64e6b2b8",
+        "d0b4877d8f5fc4d042e7",
+        "d11cec7798af5427c356",
+        "d3caae6859705301f7c9",
+        "da705532743623e49813",
+        "e5af88bcba73c7130754",
+        "ec101912064707597281",
+        "edd1c65317ee2a23387e",
+        "f4cdc35d8f2c782f247c",
+        "f5ad8aa1399207519fb6"
+      ]
+    },
+    {
+      "controller": 904,
+      "snapshot_digest": "sha256:3cd6ab51728fe8b0f4bd4be64650673acc65cc8aa1f759322f5e2263c652dae8",
+      "portfolio_revision": "a99277a717aab9795b7a0d545dade82fc8c9a268",
+      "qualifying_findings": 34,
+      "finding_ids": [
+        "09ccb1d242fb33d91c00",
+        "18828d1335ff069040c5",
+        "1c24693b39b565b29637",
+        "38d80bde7473098fb6de",
+        "3c47db47eb8c0243756f",
+        "443903313fccfb3b9ce1",
+        "4a6d55ea324014afb48f",
+        "50a540262a1b6fc308ca",
+        "517aa2861e9a9c70ffe5",
+        "529eb5d4991393ffe474",
+        "5f600796a207a69d9b4a",
+        "60e42e78469747988dd0",
+        "6746383deb0d6dae2e0b",
+        "6ec931acd09d29e7f7e0",
+        "7dd4cece89d11aac5a8a",
+        "81050504f25c51f89236",
+        "8489f5ccddf1ae91ca45",
+        "8d5718ce13e794725aab",
+        "8d8326aa785c31620f36",
+        "909c057943ad2bfd5c0b",
+        "94d39806fe806db2aa38",
+        "a775c9693b223f68a751",
+        "adde5ccf990f1abb1fdd",
+        "b3bbc613f0e4c0d0f231",
+        "bb5f4996fef97c4ed846",
+        "c12c84f66c7ded18e420",
+        "c5ae0ee9c8cc64e6b2b8",
+        "da705532743623e49813",
+        "e121b18291ff4d8f4d55",
+        "ec101912064707597281",
+        "edd1c65317ee2a23387e",
+        "f4cdc35d8f2c782f247c",
+        "f5ad8aa1399207519fb6",
+        "f840d57f6834702fbc41"
+      ]
+    },
+    {
+      "controller": 906,
+      "snapshot_digest": "sha256:d0a3ba5d06239fb73e2bc71def7b299e936350b95330cc289ed93e8eadfc5d8c",
+      "portfolio_revision": null,
+      "qualifying_findings": 33,
+      "finding_ids": [
+        "09ccb1d242fb33d91c00",
+        "18828d1335ff069040c5",
+        "1c24693b39b565b29637",
+        "38d80bde7473098fb6de",
+        "3c47db47eb8c0243756f",
+        "4a6d55ea324014afb48f",
+        "50a540262a1b6fc308ca",
+        "517aa2861e9a9c70ffe5",
+        "529eb5d4991393ffe474",
+        "5f600796a207a69d9b4a",
+        "60e42e78469747988dd0",
+        "6746383deb0d6dae2e0b",
+        "6ec931acd09d29e7f7e0",
+        "7dd4cece89d11aac5a8a",
+        "81050504f25c51f89236",
+        "8489f5ccddf1ae91ca45",
+        "8d5718ce13e794725aab",
+        "8d8326aa785c31620f36",
+        "909c057943ad2bfd5c0b",
+        "94d39806fe806db2aa38",
+        "a775c9693b223f68a751",
+        "adde5ccf990f1abb1fdd",
+        "b3bbc613f0e4c0d0f231",
+        "bb5f4996fef97c4ed846",
+        "c12c84f66c7ded18e420",
+        "c5ae0ee9c8cc64e6b2b8",
+        "da705532743623e49813",
+        "e121b18291ff4d8f4d55",
+        "ec101912064707597281",
+        "edd1c65317ee2a23387e",
+        "f4cdc35d8f2c782f247c",
+        "f5ad8aa1399207519fb6",
+        "f840d57f6834702fbc41"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "09ccb1d242fb33d91c00",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "feat(vtc): cooling-off actions, a reduction-pending notice and an offline-write record type",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/719",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/82b8cfd0d41992ad50b132ec5771c26c7da09421"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "18828d1335ff069040c5",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "feat(vtc)!: git-namespace rights are capabilities on the ACL entry \u2014 one authority model (VTI-VTC-020, VTI-ACL-035 \u2013 037)",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1930",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/b15d29c0d10e5a1b91ad5f83e00a85fc7a35a75a"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "combined",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609,
+        797
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "1c24693b39b565b29637",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "trust-tasks-rs-v0.27.1",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/releases/tag/trust-tasks-rs-v0.27.1"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "combined",
+      "disposition": "combined",
+      "routing_rule": "spec-dependency-alignment",
+      "owners": [
+        272
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Exact release identities already assessed on #272."
+    },
+    {
+      "finding_id": "36667a59ec26933c6b5d",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "vta-service-v0.45.0",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/releases/tag/vta-service-v0.45.0"
+      ],
+      "observed_in": [
+        903
+      ],
+      "original_route": "no-action",
+      "disposition": "no-action",
+      "routing_rule": "routine-release-or-plan",
+      "owners": [],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Release aggregation inherits constituent dispositions."
+    },
+    {
+      "finding_id": "38d80bde7473098fb6de",
+      "repository": "OpenVTC/openvtc",
+      "title": "feat!: DTG Credentials v1 \u2014 role VACs, vetted/1 and witnessed/1 statements, issuerScope",
+      "source_evidence": [
+        "https://github.com/OpenVTC/openvtc/pull/397",
+        "https://github.com/OpenVTC/openvtc/commit/e165bd5532d73b2852d2ddf7c2728e598aaa2ac7"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "dpip",
+      "disposition": "dpip",
+      "routing_rule": "relationship-correlation-privacy",
+      "owners": [
+        338
+      ],
+      "planner_state": "evidence_required",
+      "evidence_state": "partially_verified",
+      "judgment": "Specialist INDETERMINATE return; residual ownership retained. No privacy PASS."
+    },
+    {
+      "finding_id": "3c47db47eb8c0243756f",
+      "repository": "trustoverip/dtgwg-cred-spec",
+      "title": "Relationship policy discovery: both communities must admit an edge, neither can find out",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-cred-spec/issues/25"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "dpip",
+      "disposition": "dpip",
+      "routing_rule": "relationship-correlation-privacy",
+      "owners": [
+        338
+      ],
+      "planner_state": "evidence_required",
+      "evidence_state": "partially_verified",
+      "judgment": "Specialist INDETERMINATE return; residual ownership retained. No privacy PASS."
+    },
+    {
+      "finding_id": "443903313fccfb3b9ce1",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "feat(spec-meta): a specification declares its own maximum document size",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/679",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/0feda5130f4d9866e3c45e24416d52ba5c92067f"
+      ],
+      "observed_in": [
+        903,
+        904
+      ],
+      "original_route": "no-action",
+      "disposition": "no-action",
+      "routing_rule": "trust-task-document-size-bound",
+      "owners": [],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Declared document-size bounds are fail-closed specification metadata, not evidence of complete resource protection."
+    },
+    {
+      "finding_id": "4a6d55ea324014afb48f",
+      "repository": "trustoverip/dtgwg-cred-spec",
+      "title": "Digest-valued binders are unsalted and enumerable; blinding is deferred from WD02",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-cred-spec/issues/38"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "dpip",
+      "disposition": "dpip",
+      "routing_rule": "binder-enumerability-privacy",
+      "owners": [
+        531
+      ],
+      "planner_state": "waiting_external",
+      "evidence_state": "partially_verified",
+      "judgment": "Specialist INDETERMINATE return; residual ownership retained. No privacy PASS."
+    },
+    {
+      "finding_id": "4a78b036a20513c8730a",
+      "repository": "trustoverip/dtgwg-cred-spec",
+      "title": "Name the correlation-scope declaration issuerScope and pin the v1 context",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-cred-spec/pull/68"
+      ],
+      "observed_in": [
+        903
+      ],
+      "original_route": "dpip",
+      "disposition": "dpip",
+      "routing_rule": "relationship-correlation-privacy",
+      "owners": [
+        338
+      ],
+      "planner_state": "evidence_required",
+      "evidence_state": "partially_verified",
+      "judgment": "Specialist INDETERMINATE return; residual ownership retained. No privacy PASS."
+    },
+    {
+      "finding_id": "50a540262a1b6fc308ca",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "vtc/members/update/0.1: publishConsent may be withdrawn by an administrator, never granted \u2014 add consentGrantForbidden",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/issues/737"
+      ],
+      "observed_in": [
+        904,
+        906
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "trust-tasks-framework-covered",
+      "owners": [
+        901,
+        870
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "517aa2861e9a9c70ffe5",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "feat!: DTG Credentials v1 \u2014 role VACs, vetted/1 and witnessed/1 statements, IDVCs, issuerScope",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1859",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/f9d924f99b39b77e5996e33fede861d4d32cdec3"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "dpip",
+      "disposition": "dpip",
+      "routing_rule": "relationship-correlation-privacy",
+      "owners": [
+        338
+      ],
+      "planner_state": "evidence_required",
+      "evidence_state": "partially_verified",
+      "judgment": "Specialist INDETERMINATE return; residual ownership retained. No privacy PASS."
+    },
+    {
+      "finding_id": "529eb5d4991393ffe474",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "vti-common-v0.37.1",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/releases/tag/vti-common-v0.37.1"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "no-action",
+      "disposition": "no-action",
+      "routing_rule": "routine-release-or-plan",
+      "owners": [],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Release aggregation inherits constituent dispositions."
+    },
+    {
+      "finding_id": "5f600796a207a69d9b4a",
+      "repository": "trustoverip/dtgwg-vsc-registry",
+      "title": "Add the vetted and presented predicates as draft",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-vsc-registry/pull/19",
+        "https://github.com/trustoverip/dtgwg-vsc-registry/commit/0d3094108a00261949ec383358dca6b4a7b2a9d1"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "covered",
+      "routing_rule": "community-vetted-statement-migration",
+      "owners": [
+        870,
+        901
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "60e42e78469747988dd0",
+      "repository": "OpenVTC/dtg-credentials",
+      "title": "feat!: conform to the v1 context \u2014 issuerScope, StatementCredential, predicate acceptance",
+      "source_evidence": [
+        "https://github.com/OpenVTC/dtg-credentials/pull/33",
+        "https://github.com/OpenVTC/dtg-credentials/commit/3d84d3630cec29f7ed76fd47fd11d1407d9592cb"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "dpip",
+      "disposition": "dpip",
+      "routing_rule": "relationship-correlation-privacy",
+      "owners": [
+        338
+      ],
+      "planner_state": "evidence_required",
+      "evidence_state": "partially_verified",
+      "judgment": "Specialist INDETERMINATE return; residual ownership retained. No privacy PASS."
+    },
+    {
+      "finding_id": "6746383deb0d6dae2e0b",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "feat(vtc-service)!: git-ns admin reads are signed Trust Tasks",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1841",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/c784e558f90b8a922926867033358295f1425e4a"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "combined",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "6ec931acd09d29e7f7e0",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "docs(git-ns): single-administrator mode may waive the self-grant rule",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/725",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/e0f73b2e43dcf1c8ae28d1d92c27c334777a4274"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "acl-non-escalation-elevated-rights",
+      "owners": [
+        819
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "7dd4cece89d11aac5a8a",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "spec(vtc/join-requests/status): an approved applicant can ask for its credentials again",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/709",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/5d114b588d59790d552a2b6adfb3dc69943daa0a"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "covered",
+      "routing_rule": "approved-join-redelivery",
+      "owners": [
+        898
+      ],
+      "planner_state": "waiting_external",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "81050504f25c51f89236",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "spec(vtc/endorsements): community identity checks are vetted/1 statements (#697)",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/cb1887863229767e8ef8785b6de68c8d15182afb"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "covered",
+      "routing_rule": "community-vetted-statement-migration",
+      "owners": [
+        870,
+        901
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "8489f5ccddf1ae91ca45",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "feat!: record the community's own identity check as a vetted/1 statement",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1874",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/ddea15b5165ca67bd54b64ee7ae351a7055abb8e"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "covered",
+      "routing_rule": "community-vetted-statement-migration",
+      "owners": [
+        870,
+        901
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "85c10c447fe2bf69052a",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "feat(trust-tasks): advertise the acceptance window over trust-task-discovery 0.3 (VTI-TRN-047)",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1817",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/310fe2b71a75a3ac6478e4f820b48fa807b70b9f"
+      ],
+      "observed_in": [
+        903
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "trust-task-acceptance-window",
+      "owners": [
+        833
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "8d5718ce13e794725aab",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "feat(vtc): a subject may relabel its own entry; single-administrator mode is one person under many identifiers (VTI-ACL-052, VTI-APV-022)",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1941",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/86fa85d9312c6a59ee878295292c99c86b4e0260"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "8d8326aa785c31620f36",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "feat(vtc): administrator action list, approver-device step-up, and role-based authority",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/714",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/ce07a0397f116ed1b3e762d7f80813fbb6f0cc97"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "909c057943ad2bfd5c0b",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "spec!: conform vetting, member and endorsement credentials to DTG VSC/VAC and the predicate registry",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/691",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/add16dbf39a1726a3677a1cd949b29bb821f102e"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "trust-tasks-framework-covered",
+      "owners": [
+        901,
+        870
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "94d39806fe806db2aa38",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "cnm-cli-v0.27.0",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/releases/tag/cnm-cli-v0.27.0"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "no-action",
+      "disposition": "no-action",
+      "routing_rule": "routine-release-or-plan",
+      "owners": [],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Release aggregation inherits constituent dispositions."
+    },
+    {
+      "finding_id": "9b878baa95c8420e8f4f",
+      "repository": "trustoverip/dtgwg-trust-tasks-spec",
+      "title": "feat(spec): a specification may declare its own document size bound",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-spec/pull/26",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-spec/commit/f0b5b8e7db4c6b498436cb2ccd88fd124cb90ac5"
+      ],
+      "observed_in": [
+        903
+      ],
+      "original_route": "no-action",
+      "disposition": "no-action",
+      "routing_rule": "trust-task-document-size-bound",
+      "owners": [],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Declared document-size bounds are fail-closed specification metadata, not evidence of complete resource protection."
+    },
+    {
+      "finding_id": "a775c9693b223f68a751",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "vta-sdk: keep a trust-task rejection's code and details instead of flattening to Protocol(String)",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/issues/1952"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "no-action",
+      "disposition": "covered",
+      "routing_rule": "declared-error-propagation",
+      "owners": [
+        691
+      ],
+      "planner_state": "evidence_required",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "adde5ccf990f1abb1fdd",
+      "repository": "trustoverip/dtgwg-vti-spec",
+      "title": "Make second-party consent recommended practice, with a declared single-administrator mode (VTI-APV-014, -018 \u2013 020, -022)",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-vti-spec/pull/52",
+        "https://github.com/trustoverip/dtgwg-vti-spec/commit/955e4f0ab67a3d94612f15642f8c7d7bd4dbf88b"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "b3bbc613f0e4c0d0f231",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "spec(vtc/endorsements): a community records its own identity checks as vetted/1",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/697"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "covered",
+      "routing_rule": "community-vetted-statement-migration",
+      "owners": [
+        870,
+        901
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "bb5f4996fef97c4ed846",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "cnm-cli-v0.27.1",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/releases/tag/cnm-cli-v0.27.1"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "no-action",
+      "disposition": "no-action",
+      "routing_rule": "routine-release-or-plan",
+      "owners": [],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Release aggregation inherits constituent dispositions."
+    },
+    {
+      "finding_id": "c12c84f66c7ded18e420",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "feat(git-ns): separation of duties for elevated rights, with an audited break-glass",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/641"
+      ],
+      "observed_in": [
+        904,
+        906
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "acl-non-escalation-elevated-rights",
+      "owners": [
+        819
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "c5ae0ee9c8cc64e6b2b8",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "feat(vtc): last member-facing REST routes retire to signed Trust Tasks",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1846",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/b8bc1ba784e6aa96e808f43c69c14a3329846af6"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "combined",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "d0b4877d8f5fc4d042e7",
+      "repository": "trustoverip/dtgwg-vsc-registry",
+      "title": "Add the DTG credential context as v1, and the rules for contexts",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-vsc-registry/pull/7"
+      ],
+      "observed_in": [
+        903
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "credential-registry-context-convergence",
+      "owners": [
+        474,
+        901
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "d11cec7798af5427c356",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "feat(trust-task-discovery): publish 0.3, a responder advertises its acceptance window",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/677",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/04cc77dd4d26a48a9cbb84924cc7d967e0f67e60"
+      ],
+      "observed_in": [
+        903
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "trust-tasks-framework-covered",
+      "owners": [
+        833,
+        836
+      ],
+      "planner_state": "waiting_external",
+      "evidence_state": "partially_verified",
+      "judgment": "Consumer discovery evidence established under #833; producer advertised-window residual remains #836."
+    },
+    {
+      "finding_id": "d3caae6859705301f7c9",
+      "repository": "trustoverip/dtgwg-vti-spec",
+      "title": "Do not count a copy collected after its acceptance window as delivered (VTI-TRN-044 \u2013 047)",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-vti-spec/pull/48",
+        "https://github.com/trustoverip/dtgwg-vti-spec/commit/98b8c4e082241278f59be13b246ba0035fb7a2c2"
+      ],
+      "observed_in": [
+        903
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "trust-task-acceptance-window",
+      "owners": [
+        833
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "da705532743623e49813",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "fix(vtc)!: removing an administrator, lowering the consent threshold and changing authority policy take a second party (VTI-APV-019, VTI-APV-020, VTI-VTC-022)",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1917",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/1e3de1b25b717f9e68e9922265d9ef3e9bde6db5"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "combined",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "e121b18291ff4d8f4d55",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "chore: release",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1950",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1947",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1942",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1913",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1910",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1890",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1902",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1897",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1895",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1893",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1888",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1867",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1866",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1861",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1856",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1821",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/8808f1006caa882790e7aa14a55fdd9c45df9a86",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/ffd1a24d5d17202126b621696cbf41123c6d21e6",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/c244f74eaa6eb8514ecfbc6cc2ff6016f5405086",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/ba1c9515e2c6ae560e7a92855da6354002b5db2a",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/fbf233c0933dcb914ac64246d3e729378c91798a",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/293658a774da4a58543c69abe7afb0018cdbfc2e",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/323d144860fc75c8a0dbf0fa0abf94a78d6b0beb",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/04b868e88e8e473c08479630fefa5ad4d91a47f9",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/8b902ecc28b38506a816af86096aed12b099fac9",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/1a5d7f65bd48ea0e841b1c50882f23611212c179",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/fda3bb4f8fd8183518738672787157d9e069b3b9",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/255375e7ee1bb06646b5f2df5a2f0c47ef6a1c34",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/946efedca511cb32eda3b5763e35960215e9a513",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/44ea74832b1260cb9bc6bc63c624f768b4d1c8e6"
+      ],
+      "observed_in": [
+        904,
+        906
+      ],
+      "original_route": "no-action",
+      "disposition": "no-action",
+      "routing_rule": "routine-release-or-plan",
+      "owners": [],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Release aggregation inherits constituent dispositions."
+    },
+    {
+      "finding_id": "e5af88bcba73c7130754",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "trust-tasks-rs-v0.24.4",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/releases/tag/trust-tasks-rs-v0.24.4"
+      ],
+      "observed_in": [
+        903
+      ],
+      "original_route": "combined",
+      "disposition": "combined",
+      "routing_rule": "spec-dependency-alignment",
+      "owners": [
+        272
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Exact release identities already assessed on #272."
+    },
+    {
+      "finding_id": "ec101912064707597281",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "feat(auth/signing-key): enroll 0.2 \u2014 the identity's own authorization, and key replacement",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/712",
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/87bf0c071221b7366ea33108eec6b243c9280e56"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "covered",
+      "routing_rule": "signing-key-enrolment-replacement",
+      "owners": [
+        899
+      ],
+      "planner_state": "waiting_external",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "edd1c65317ee2a23387e",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "trust-tasks-rs-v0.26.3",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/releases/tag/trust-tasks-rs-v0.26.3"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "combined",
+      "disposition": "combined",
+      "routing_rule": "spec-dependency-alignment",
+      "owners": [
+        272
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Exact release identities already assessed on #272."
+    },
+    {
+      "finding_id": "f4cdc35d8f2c782f247c",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "feat(vtc): single-administrator mode, set at install, for communities with one administrator (VTI-APV-022)",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1925",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/e701579259c149df344cd2a0aeba24838f41668d"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "combined",
+      "routing_rule": "openvtc-security-combined",
+      "owners": [
+        121,
+        897,
+        908,
+        837,
+        610,
+        609
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Bounded source review; #897 topology evidence retained, mandatory audit absence FAIL transferred to #908."
+    },
+    {
+      "finding_id": "f5ad8aa1399207519fb6",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "title": "chore(vetting-pcs): depend on published predicate-credential-system",
+      "source_evidence": [
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/1838",
+        "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/e907a34c170e9a3f01d38fd85b3f1998945503b8"
+      ],
+      "observed_in": [
+        903,
+        904,
+        906
+      ],
+      "original_route": "UNMAPPED",
+      "disposition": "covered",
+      "routing_rule": "published-pcs-admission",
+      "owners": [
+        849,
+        889
+      ],
+      "planner_state": "waiting_external",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    },
+    {
+      "finding_id": "f840d57f6834702fbc41",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "title": "spec(backup): require an end-to-end confidential channel for backup export and import",
+      "source_evidence": [
+        "https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/646"
+      ],
+      "observed_in": [
+        904,
+        906
+      ],
+      "original_route": "covered",
+      "disposition": "covered",
+      "routing_rule": "trust-tasks-service-backup-transport",
+      "owners": [
+        822
+      ],
+      "planner_state": "completed",
+      "evidence_state": "partially_verified",
+      "judgment": "Durable ownership is coverage, not assurance success; retain owner-specific residuals."
+    }
+  ]
+}

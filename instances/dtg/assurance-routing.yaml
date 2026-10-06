@@ -16,6 +16,43 @@ composition_rules:
     requires_repository_tokens: [trust-tasks, vds]
 
 semantic_rules:
+  # Covered means durable ownership, not PASS or evidence completion.
+  # Administrator changes remain combined reviews under the existing #121 key.
+  - id: community-vetted-statement-migration
+    when:
+      dimensions: [composition, governance]
+      concerns: [community-vetted-statement]
+    outcome: covered
+    covered_by: rahp-toolkit#870
+
+  - id: approved-join-redelivery
+    when:
+      dimensions: [authorization, lifecycle]
+      concerns: [approved-join-redelivery]
+    outcome: covered
+    covered_by: rahp-toolkit#898
+
+  - id: signing-key-enrolment-replacement
+    when:
+      dimensions: [security, authorization, lifecycle]
+      concerns: [signing-key-replacement]
+    outcome: covered
+    covered_by: rahp-toolkit#899
+
+  - id: published-pcs-admission
+    when:
+      dimensions: [privacy, security, composition]
+      concerns: [hidden-vetter-dependency]
+    outcome: covered
+    covered_by: rahp-toolkit#889
+
+  - id: declared-error-propagation
+    when:
+      dimensions: [security, composition]
+      concerns: [declared-error-propagation]
+    outcome: covered
+    covered_by: rahp-toolkit#691
+
   - id: relationship-correlation-privacy
     when:
       dimensions: [privacy]

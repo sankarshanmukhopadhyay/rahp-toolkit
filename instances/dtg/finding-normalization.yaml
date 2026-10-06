@@ -4,6 +4,61 @@ schema: rahp-finding-normalization-profile/v1
 # These extraction rules are DTG instance data. They translate raw repository/title
 # language into the portable semantics consumed by RAHP core routing.
 mapping_rules:
+  # Judgment-derived families from #903/#904/#906; see the exact disposition ledger.
+  - id: community-vetted-statement-migration
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-(trust-tasks-tf|vsc-registry))$'
+    title_regex: '(community.{0,12}(own identity check|identity checks).{0,35}vetted/1|community records its own identity checks as vetted/1|Add the vetted and presented predicates as draft)'
+    semantics:
+      dimensions: [composition, governance]
+      concerns: [community-vetted-statement]
+      affected_surfaces: [statement-predicate, admission-flow]
+      change_kind: [specification-change]
+
+  - id: administrator-authority-lifecycle
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-(trust-tasks-tf|vti-spec))$'
+    title_regex: '(single.administrator mode|cooling.off actions|administrator action list|second.party consent recommended practice)'
+    semantics:
+      dimensions: [authorization, security, lifecycle, governance]
+      concerns: [authorization, administrative-lifecycle, independence-boundary]
+      affected_surfaces: [acl, administrative-authority, action-list]
+      change_kind: [behavior-change]
+
+  - id: approved-join-redelivery
+    repository_regex: '^(OpenVTC/(openvtc|verifiable-trust-infrastructure)|trustoverip/dtgwg-trust-tasks-tf)$'
+    title_regex: '(approved applicant can ask for (its|their) credentials again|approved join asks its community to re.send a credential)'
+    semantics:
+      dimensions: [authorization, lifecycle]
+      concerns: [approved-join-redelivery]
+      affected_surfaces: [membership-state, credential-delivery]
+      change_kind: [behavior-change]
+
+  - id: signing-key-enrolment-replacement
+    repository_regex: '^(OpenVTC/verifiable-trust-infrastructure|trustoverip/dtgwg-trust-tasks-tf)$'
+    title_regex: '(auth/signing.key).*(enroll 0[.]2|identity.s own authorization|key replacement)'
+    semantics:
+      dimensions: [security, authorization, lifecycle]
+      concerns: [signing-key-replacement]
+      affected_surfaces: [signing-authority, key-store]
+      change_kind: [behavior-change]
+
+  - id: published-pcs-admission
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: '(vetting.pcs).*(depend on published predicate.credential.system)'
+    semantics:
+      dimensions: [privacy, security, composition]
+      concerns: [hidden-vetter-dependency]
+      affected_surfaces: [admission-flow, retained-evidence, proof-dependency]
+      change_kind: [dependency-change]
+
+  - id: declared-error-propagation
+    repository_regex: '^OpenVTC/verifiable-trust-infrastructure$'
+    title_regex: '(trust.task rejection.s code and details|flattening to Protocol)'
+    semantics:
+      dimensions: [security, composition]
+      concerns: [declared-error-propagation]
+      affected_surfaces: [trust-task-error, client-result]
+      change_kind: [behavior-change]
+
   - id: relationship-correlation-privacy
     repository_regex: '^(OpenVTC/|trustoverip/dtgwg-cred-spec$)'
     title_regex: '(relationship DID|relationship edge|correlation scope|correlation-scope|issuerScope|deliberate-correlation|policy discovery)'
