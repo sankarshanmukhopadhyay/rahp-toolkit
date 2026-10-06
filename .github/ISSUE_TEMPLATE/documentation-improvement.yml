@@ -1,0 +1,45 @@
+name: Documentation improvement
+description: Report documentation that is missing, unclear, incorrect, outdated, or difficult to find
+title: "[Docs] "
+body:
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What kind of documentation problem did you encounter?
+      options:
+        - Missing documentation
+        - Unclear or ambiguous documentation
+        - Incorrect documentation
+        - Outdated documentation
+        - Difficult to find or navigate
+        - Missing example or tutorial
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Where is the problem?
+      description: Give the file, page, section, command, or URL if known.
+      placeholder: "Example: README.md, Getting Started section"
+    validations:
+      required: true
+  - type: textarea
+    id: problem_detail
+    attributes:
+      label: What needs improvement?
+      description: Describe what is missing, incorrect, unclear, or difficult to use.
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: What were you trying to do?
+      description: The task or question that brought you to this documentation helps us understand the reader's path.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: Optional. If you know what would have made the documentation more useful, describe it here.
