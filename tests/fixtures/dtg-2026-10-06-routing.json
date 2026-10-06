@@ -1,0 +1,119 @@
+[
+  {
+    "finding_id": "8489f5ccddf1ae91ca45",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "title": "feat!: record the community's own identity check as a vetted/1 statement",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "8d5718ce13e794725aab",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "title": "feat(vtc): a subject may relabel its own entry; single-administrator mode is one person under many identifiers (VTI-ACL-052, VTI-APV-022)",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "a775c9693b223f68a751",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "title": "vta-sdk: keep a trust-task rejection's code and details instead of flattening to Protocol(String)",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "f4cdc35d8f2c782f247c",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "title": "feat(vtc): single-administrator mode, set at install, for communities with one administrator (VTI-APV-022)",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "f5ad8aa1399207519fb6",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "title": "chore(vetting-pcs): depend on published predicate-credential-system",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "09ccb1d242fb33d91c00",
+    "repository": "trustoverip/dtgwg-trust-tasks-tf",
+    "title": "feat(vtc): cooling-off actions, a reduction-pending notice and an offline-write record type",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "7dd4cece89d11aac5a8a",
+    "repository": "trustoverip/dtgwg-trust-tasks-tf",
+    "title": "spec(vtc/join-requests/status): an approved applicant can ask for its credentials again",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "81050504f25c51f89236",
+    "repository": "trustoverip/dtgwg-trust-tasks-tf",
+    "title": "spec(vtc/endorsements): community identity checks are vetted/1 statements (#697)",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "8d8326aa785c31620f36",
+    "repository": "trustoverip/dtgwg-trust-tasks-tf",
+    "title": "feat(vtc): administrator action list, approver-device step-up, and role-based authority",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "b3bbc613f0e4c0d0f231",
+    "repository": "trustoverip/dtgwg-trust-tasks-tf",
+    "title": "spec(vtc/endorsements): a community records its own identity checks as vetted/1",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "ec101912064707597281",
+    "repository": "trustoverip/dtgwg-trust-tasks-tf",
+    "title": "feat(auth/signing-key): enroll 0.2 \u2014 the identity's own authorization, and key replacement",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "5f600796a207a69d9b4a",
+    "repository": "trustoverip/dtgwg-vsc-registry",
+    "title": "Add the vetted and presented predicates as draft",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  },
+  {
+    "finding_id": "adde5ccf990f1abb1fdd",
+    "repository": "trustoverip/dtgwg-vti-spec",
+    "title": "Make second-party consent recommended practice, with a declared single-administrator mode (VTI-APV-014, -018 \u2013 020, -022)",
+    "materiality": "high",
+    "assurance_impact": "potentially-breaking",
+    "state": "open",
+    "review_status": "unreviewed"
+  }
+]
