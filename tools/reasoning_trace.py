@@ -42,7 +42,7 @@ def validate_trace(trace: dict[str, Any], assessor_result: dict[str, Any] | None
         if obs.get("result") not in RESULTS:
             errors.append(f"observations[{i}].result invalid")
         refs = obs.get("evidence_refs")
-        if not isinstance(refs, list) or not refs or any(ref not in evidence for ref in refs):
+        if not isinstance(refs, list) or not refs or any(not isinstance(ref, str) or ref not in evidence for ref in refs):
             errors.append(f"observations[{i}] must reference declared evidence")
     judgment = trace.get("judgment")
     if not isinstance(judgment, dict):
@@ -61,6 +61,6 @@ def validate_trace(trace: dict[str, Any], assessor_result: dict[str, Any] | None
         if outcome != assessor_result.get("outcome"):
             errors.append("trace judgment and assessor outcome disagree")
         used = assessor_result.get("evidence_used", [])
-        if not isinstance(used, list) or set(evidence) != set(used):
+        if not isinstance(used, list) or not all(isinstance(x, str) for x in used) or set(evidence) != set(used):
             errors.append("trace evidence and assessor evidence_used disagree")
     return errors
