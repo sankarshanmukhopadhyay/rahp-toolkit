@@ -91,3 +91,34 @@ validation:
       - invalid control plane is rejected
       - resolved finding without resolution evidence is rejected
       - risk acceptance without authority reference is rejected
+
+
+# Current contribution cycle; acceptance is recorded only after maintainer merge.
+contributions:
+  - capability: guided-adoption
+    pull_request: 11
+    state: accepted_upstream
+    merge_commit: e3ad6648ebc8c1a9a625dbdbefc8ba68b5bbd1e0
+  - capability: reader-facing-data-model
+    pull_request: 12
+    state: submitted
+    head: ffa2815241917957eda8cd8fabfa8bdc6dc772e8
+    acceptance: pending-maintainer-decision
+  - capability: current-layout-reproduction
+    pull_request: 13
+    state: submitted
+    head: 0b60baef0c46a353938747493d4571fcacf538ff
+    acceptance: pending-maintainer-decision
+
+reconciliation:
+  inspected_upstream_main: e3ad6648ebc8c1a9a625dbdbefc8ba68b5bbd1e0
+  date: '2026-10-07'
+  inventory: convergence/dtgwg-rahp-tf/repository-inventory-2026-10-07.csv
+  judgment: convergence/dtgwg-rahp-tf/repository-truth-check-2026-10-07.md
+  migration_authorized: false
+  next_candidate: active-validation-and-reproduction-evidence
+  constraints:
+    - ledger-remains-on-isolated-branch
+    - no-downstream-main-merge
+    - upstream-maintainer-acceptance-required
+    - no-auto-merge-or-self-merge
