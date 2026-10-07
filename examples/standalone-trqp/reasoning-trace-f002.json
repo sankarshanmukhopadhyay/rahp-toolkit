@@ -1,0 +1,25 @@
+{
+  "schema": "rahp-reasoning-trace/v1",
+  "proposition_id": "TRQP-F-002",
+  "method": "source-example-time-comparison",
+  "method_version": "1",
+  "scope": "retained TRQP API authorization example; not live deployment",
+  "evidence_refs": [
+    "ER-API-EXAMPLE"
+  ],
+  "observations": [
+    {
+      "id": "OBS-TIME",
+      "result": "NOT_SATISFIED",
+      "evidence_refs": [
+        "ER-API-EXAMPLE"
+      ]
+    }
+  ],
+  "judgment": {
+    "outcome": "INDETERMINATE",
+    "reason_codes": [
+      "example-time-mismatch-requires-editor-clarification"
+    ]
+  }
+}
