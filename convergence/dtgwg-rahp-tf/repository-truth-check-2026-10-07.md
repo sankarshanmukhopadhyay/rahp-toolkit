@@ -47,3 +47,11 @@ Local candidate validation: zero errors, 32 retained warnings. Build: six site p
 Independent-review readiness remains a later candidate contingent on maintainer appetite. Controller orchestration, specialist routing, portfolio composition, major lineage machinery and releases remain outside this contribution cycle.
 
 The isolated convergence ledger branch remains the durable provenance surface and is not merged into downstream main. Upstream PRs remain open for maintainer acceptance; auto-merge and contributor self-merge are excluded.
+
+## Active validation contribution execution — 7 October 2026
+
+Upstream #14 is a draft based on #13's reproduction branch. Head `c7022ab41e4dbf4c17cdafb47e1d5884a76760ff` passed [run 37563226549](https://github.com/trustoverip/dtgwg-rahp-tf/actions/runs/37563226549): all 14 tests, corpus/review checks, temporary-output build, generated-file digest manifest and upload. DCO and EasyCLA pass. Artifact `11457635529` has digest `sha256:ab0b43e3f1b47e7866131721a4579d42996bf9cab5c56d9ceffd49a20d13cf8d` with 14-day retention; this record preserves identity, not a permanent artifact copy.
+
+The first workflow definition failed before scheduling a job because a runner context was referenced at job environment scope. The corrected head initializes temporary paths inside a runner step. The failure remains in execution history and does not count as validation evidence.
+
+Acceptance remains pending. After #13 is accepted, retarget #14 to then-current main, reconcile its diff/checks and remove the temporary dependency wording before marking ready. Do not merge into the dependency branch. Canonical records and published root outputs remain unchanged; warnings are retained. The worked-adoption and site contributions remain subsequent work after these decisions.

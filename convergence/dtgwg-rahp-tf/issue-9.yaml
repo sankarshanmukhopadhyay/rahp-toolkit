@@ -110,13 +110,28 @@ contributions:
     head: 0b60baef0c46a353938747493d4571fcacf538ff
     acceptance: pending-maintainer-decision
 
+  - capability: active-validation-and-reproduction-evidence
+    pull_request: 14
+    state: submitted-draft
+    head: c7022ab41e4dbf4c17cdafb47e1d5884a76760ff
+    base_pull_request: 13
+    acceptance: pending-maintainer-decision
+    execution:
+      run: 37563226549
+      result: passed
+      regression_tests: 14
+      artifact: 11457635529
+      artifact_digest: sha256:ab0b43e3f1b47e7866131721a4579d42996bf9cab5c56d9ceffd49a20d13cf8d
+      retention_days: 14
+      permanent_preservation: run-and-artifact-identity-only
+
 reconciliation:
   inspected_upstream_main: e3ad6648ebc8c1a9a625dbdbefc8ba68b5bbd1e0
   date: '2026-10-07'
   inventory: convergence/dtgwg-rahp-tf/repository-inventory-2026-10-07.csv
   judgment: convergence/dtgwg-rahp-tf/repository-truth-check-2026-10-07.md
   migration_authorized: false
-  next_candidate: active-validation-and-reproduction-evidence
+  next_candidate: worked-adoption-after-current-pr-decisions
   constraints:
     - ledger-remains-on-isolated-branch
     - no-downstream-main-merge
