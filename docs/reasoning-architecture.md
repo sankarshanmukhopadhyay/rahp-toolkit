@@ -23,10 +23,10 @@ This is **bounded evaluative reasoning**, not a general-purpose autonomous reaso
 | Concern | Maintained implementation or contract | Authority boundary |
 | --- | --- | --- |
 | Source-pinned observation and reproducible checks | [Standalone TRQP replay](../examples/standalone-trqp/replay.py), [TRQP tests](../tests/test_standalone_trqp.py) | A replay supports only the propositions it actually checks |
-| Bounded evidence-to-result evaluation | [Evidence assertion assessor](../tools/evidence_assertion_assessor.py) | Configured evidence predicates, not arbitrary inference |
+| Bounded evidence-to-result evaluation | [Evidence assertion assessor](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/evidence_assertion_assessor.py) | Configured evidence predicates, not arbitrary inference |
 | Portable specialist return | [Assessor-result contract](assessor-result-contract.md), [schema](../schemas/rahp-assessor-result-v1.schema.json) | Contract validity is not substantive assurance |
-| Optional structured explanation | [Reasoning trace](reasoning-trace.md), [validator](../tools/reasoning_trace.py) | Structural consistency is not proof that an inference is correct |
-| Assessment lifecycle and terminal reconciliation | [Assurance state machine](../tools/assurance_fsm.py), [autonomous assurance controller](../tools/autonomous_assurance_controller.py), [assessment controller](../tools/assessment_controller.py) | Controller owns terminal assurance, not the invoking workflow |
+| Optional structured explanation | [Reasoning trace](reasoning-trace.md), [validator](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/reasoning_trace.py) | Structural consistency is not proof that an inference is correct |
+| Assessment lifecycle and terminal reconciliation | [Assurance state machine](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/assurance_fsm.py), [autonomous assurance controller](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/autonomous_assurance_controller.py), [assessment controller](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/assessment_controller.py) | Controller owns terminal assurance, not the invoking workflow |
 
 There is **no single central reasoning function** that replaces all of these components. The responsibility is distributed intentionally. An assessor may produce a bounded result; a controller may reconcile that result; a reviewer may challenge or supersede it.
 
