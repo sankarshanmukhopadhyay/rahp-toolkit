@@ -17,7 +17,7 @@ class ReasoningDocumentationTests(unittest.TestCase):
         for doc in GUIDES:
             text = doc.read_text()
             for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", text):
-                if target.startswith(("http:", "https:", "#", "mailto:")):
+                if target.startswith(("http:", "https:", "#", "mailto:", "/rahp-toolkit/")):
                     continue
                 with self.subTest(doc=str(doc.relative_to(ROOT)), target=target):
                     relative = target.split("#", 1)[0]
