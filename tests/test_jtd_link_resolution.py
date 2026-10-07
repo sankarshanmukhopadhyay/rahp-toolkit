@@ -53,6 +53,23 @@ def materialize_common_site(site: pathlib.Path):
 
 
 class TestJtdBaseUrlRegression(unittest.TestCase):
+    def test_standalone_onboarding_routes_require_rendered_shell(self):
+        routes = (
+            "examples/index.html",
+            "examples/hello-rahp/index.html",
+            "examples/standalone-trqp/index.html",
+        )
+        required = literal_assignment("REQUIRED_JTD_SHELL")
+        for route in routes:
+            self.assertIn(route, required)
+            with self.subTest(route=route), tempfile.TemporaryDirectory() as td:
+                site = pathlib.Path(td)
+                materialize_common_site(site)
+                (site / route).write_text("# Raw Markdown is not a rendered page\n")
+                run = subprocess.run([sys.executable, str(VALIDATOR), str(site)], cwd=ROOT, capture_output=True, text=True)
+                self.assertNotEqual(run.returncode, 0)
+                self.assertIn("missing Just-the-Docs shell", run.stdout)
+
     def test_rahp_toolkit_baseurl_links_resolve_from_site_root(self):
         with tempfile.TemporaryDirectory() as td:
             site = pathlib.Path(td)
