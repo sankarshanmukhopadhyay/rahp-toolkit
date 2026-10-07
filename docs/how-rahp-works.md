@@ -108,6 +108,8 @@ This is especially important for composition. **Component PASS does not imply co
 
 ## Citable terminal assurance records
 
+For explicitly reviewed propositions about access, choice, transferred burdens and remedy, the opt-in [sociotechnical assessment profile](sociotechnical-assurance.md) adds context-bound evidence admission, dependence grouping and contestable disposition records. Its synthetic qualification does not establish deployment approval or independent human validation.
+
 A completed run produces materially equivalent machine-readable and human-readable facts, including subject/type, immutable pins, scope/non-scope, affected actors/personas, propositions, evidence and provenance, inference/boundedness, terminal outcome, residuals, required actions, remediation surface/owner and reassessment lineage.
 
 Material findings should identify where remediation belongs: normative specification, composition/profile contract, implementation/code, evidence/test gap, deployment/operator control, governance/redress or consumer/user experience.

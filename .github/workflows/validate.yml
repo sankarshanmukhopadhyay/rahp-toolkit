@@ -181,6 +181,17 @@ jobs:
 
       - name: Test source-monitor resilience
         run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Replay adversarial sociotechnical assurance corpus
+        run: >-
+          python3 tools/sociotechnical_assurance.py
+          --corpus examples/sociotechnical-assurance/corpus.json
+          --output-dir "${{ runner.temp }}/rahp-sociotechnical-evidence"
+      - name: Upload bounded sociotechnical replay evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: rahp-sociotechnical-evidence
+          path: ${{ runner.temp }}/rahp-sociotechnical-evidence
+          if-no-files-found: error
       - name: Execute bounded human-power DPIP reconciliation
         run: >-
           python3 tools/human_power_reconciliation.py

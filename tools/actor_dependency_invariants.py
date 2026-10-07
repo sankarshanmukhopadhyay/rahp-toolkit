@@ -72,8 +72,10 @@ def evaluate_external_trust_sources(
     """Evaluate integrity/freshness/provenance of accepted external trust inputs.
 
     Correct downstream parsing is outside this proposition. The evaluator asks
-    whether the accepted source material itself has sufficient independent
-    integrity evidence and whether multiple authoritative sources disagree.
+    whether accepted source material has checked integrity and whether multiple
+    authoritative sources disagree. Corroboration here is checked-source
+    multiplicity, not proof of organizational or evidentiary independence; use
+    the opt-in sociotechnical profile when that stronger proposition is required.
     """
     accepted = [source for source in sources if source.get("accepted", True)]
     if not accepted:
