@@ -54,6 +54,8 @@ The controller, not GitHub workflow choreography, owns assurance state.
 
 RAHP is **materiality-governed**: the preferred assurance scope is the smallest scope that completely covers the materially affected proposition set. Broader execution is not inherently stronger assurance. Evidence that remains valid is retained with provenance; stale, invalidated or unavailable evidence stays explicit; and a full campaign/rebaseline is used when bounded reassessment cannot defend the current conclusion.
 
+For a code-level explanation of where assessment reasoning occurs, see [RAHP reasoning architecture](docs/reasoning-architecture.md). For external agents and tool callers, see [agent integration guidance](docs/reasoning-integration.md). RAHP can be used without an agent or LLM.
+
 ## Start adopting RAHP
 
 **You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
