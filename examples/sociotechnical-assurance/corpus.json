@@ -1,0 +1,54 @@
+{
+  "baseline": {
+    "development_sha": "b5d1381b8ef747ce78c5a5d9cf66b57bb79b41ff",
+    "engine_contract": "rahp-engine-contract-v1 revision 1.3",
+    "result_schema": 1,
+    "stable_sha": "b18dc9b0acfc8dad36ef9f5b4a5030de38e683f1",
+    "stable_tag": "v2.6.0"
+  },
+  "cases": [
+    {
+      "expected_outcome": "FAIL",
+      "path": "A-harmful-intended-operation.json",
+      "sha256": "0eb1f841864df3995fdfa3f964b8fe1d7d7d3be14c69ecebf11d9067d7d6ced7"
+    },
+    {
+      "expected_outcome": "INDETERMINATE",
+      "path": "B-transferred-recovery-burden.json",
+      "sha256": "4c0d036190a5b2b5962ef4502995b56f502d704b74d7be712d63189f69ea8547"
+    },
+    {
+      "expected_outcome": "FAIL",
+      "path": "C-correlated-assessment.json",
+      "sha256": "39bf52f716279e17d455dbcb086b435f23bd1835004f644ca38e2d221248af76"
+    },
+    {
+      "expected_outcome": "INDETERMINATE",
+      "path": "D-context-only-change.json",
+      "sha256": "ceca86533d7f1802c8f1dc2c388786e4599a5ed94478af5c6ff01b94794b1153"
+    },
+    {
+      "expected_outcome": "FAIL",
+      "path": "E-repair-without-remedy.json",
+      "sha256": "c117d944c7e8419df0a709fd2a6f59db3ed5e27ff31ba9f89fdd5dc813deb667"
+    },
+    {
+      "expected_outcome": "INDETERMINATE",
+      "path": "F-summary-loses-scope.json",
+      "sha256": "4c4d168829dd05c132f8811ff0df2542198ed31963f2c15ae779f14f46ace1eb"
+    },
+    {
+      "expected_outcome": "PASS",
+      "path": "P-supported-bounded-control.json",
+      "sha256": "b144d730e27de427fa3ffaa2dfd3a8ced111f5e83ca553256eac40f2b4b7714f"
+    },
+    {
+      "expected_outcome": "NOT_APPLICABLE",
+      "path": "N-justified-non-applicability.json",
+      "sha256": "4fd38d41d2daa7c718074529c9c88fa23d0de179cf3883f10f44062b14ae7c3c"
+    }
+  ],
+  "expected_before_implementation": true,
+  "issue": 913,
+  "schema": "rahp-sociotechnical-corpus/v1"
+}

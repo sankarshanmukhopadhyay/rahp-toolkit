@@ -1,0 +1,177 @@
+{
+  "assessors": [
+    {
+      "dependence": {
+        "control": [
+          "team-a"
+        ],
+        "corpus": [
+          "corpus-a"
+        ],
+        "fixtures": [
+          "fixtures-a"
+        ],
+        "maintainers": [
+          "author-a"
+        ],
+        "model_prompt": [
+          "prompt-a"
+        ]
+      },
+      "id": "review-a",
+      "independence_review": {
+        "basis": "internal synthetic author",
+        "state": "unknown"
+      }
+    }
+  ],
+  "case_id": "D-context-only-change",
+  "challenge_route": {
+    "account_independent": null,
+    "description": "No deployment challenge route established by this fixture.",
+    "evidence": [],
+    "owner": "operator",
+    "state": "unverified"
+  },
+  "context": {
+    "access": "assisted-access-v1",
+    "ownership": "public-service-v1",
+    "policy": "expanded-disclosure-v2",
+    "population": "device-limited-users-v1",
+    "remedy": "account-independent-appeal-v1"
+  },
+  "disagreements": [],
+  "disposition": {
+    "affected_parties": [
+      "person"
+    ],
+    "affected_party_agreement": "unknown",
+    "organizational_risk_acceptor": "operator",
+    "rationale": "No deployment approval inferred.",
+    "work_item_state": "open"
+  },
+  "evidence": [
+    {
+      "assessor": "review-a",
+      "class": "synthetic-test",
+      "context_digest": "43e969ca71de8059d04a3f25c0985f23b8362a3bb2b0467fe8c623267631e478",
+      "freshness": "current",
+      "id": "D-old",
+      "proposition": "access-policy-current",
+      "provenance": {
+        "description": "Model assertion; not target runtime evidence.",
+        "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "synthetic authored assertion"
+      },
+      "source_pin": {
+        "artifact": "service-model",
+        "repository": "synthetic/service",
+        "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "status": "supported",
+      "sufficient": true
+    }
+  ],
+  "expected_outcome": "INDETERMINATE",
+  "frame": {
+    "actors": [
+      {
+        "basis": "authored fixture",
+        "id": "operator",
+        "participation": "synthetic",
+        "role": "service-provider"
+      },
+      {
+        "basis": "no affected-party research performed",
+        "id": "person",
+        "participation": "unrepresented",
+        "role": "excluded-service-user"
+      }
+    ],
+    "alternatives": [
+      "Assisted minimal-proof access",
+      "Account-independent challenge",
+      "Do not deploy until access and remedy propositions are supported"
+    ],
+    "assumptions": [
+      "Essential-service dependency",
+      "Device loss is possible",
+      "Consent language is not observed choice"
+    ],
+    "context_observation": {
+      "freshness_limit": "Only the supplied snapshot is examined.",
+      "monitored": [
+        "declared context snapshot"
+      ],
+      "unobserved": [
+        "unreported institutional change"
+      ]
+    },
+    "controls": [
+      {
+        "beneficiary": "operator",
+        "burden": "Disclosure and recovery duties",
+        "burden_bearer": "person",
+        "id": "C-access",
+        "justification": "Must establish necessity and usable alternatives separately."
+      }
+    ],
+    "coverage_limits": [
+      "No affected-party participation or independent human validation."
+    ],
+    "non_scope": [
+      "Real deployments",
+      "Legal compliance",
+      "Population prevalence"
+    ],
+    "purpose": "Assess access without unnecessary disclosure or transferred recovery burden.",
+    "scenario_sources": [
+      "maintainer-authored synthetic fixture"
+    ],
+    "scope": "Synthetic essential-service admission and remedy; explicitly authored propositions."
+  },
+  "lineage": {
+    "previous_assessment": "rahp:synthetic-baseline",
+    "previous_context": {
+      "access": "assisted-access-v1",
+      "ownership": "public-service-v1",
+      "policy": "minimal-proof-v1",
+      "population": "device-limited-users-v1",
+      "remedy": "account-independent-appeal-v1"
+    }
+  },
+  "obligations": [],
+  "propositions": [
+    {
+      "applicable": true,
+      "claim": "access policy current",
+      "evaluator": "adjudicated",
+      "evidence_ids": [
+        "D-old"
+      ],
+      "facts": {},
+      "id": "access-policy-current",
+      "independent_corroboration_required": false,
+      "not_applicable_reason": "",
+      "required_classes": [
+        "synthetic-test"
+      ]
+    }
+  ],
+  "review": {
+    "basis": "No independent reviewer has participated.",
+    "independent_human": "pending"
+  },
+  "schema": "rahp-sociotechnical-input/v1",
+  "source_pins": [
+    {
+      "artifact": "service-model",
+      "repository": "synthetic/service",
+      "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "subject": {
+    "id": "synthetic-essential-service",
+    "type": "deployment"
+  }
+}
