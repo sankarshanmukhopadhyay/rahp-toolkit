@@ -1,0 +1,119 @@
+review:
+  id: SR-HELLO-TRQP-001
+  status: complete
+  title: Standalone TRQP authorization response examination
+  reviewed_on: '2026-10-07'
+  evidence_grade: source-pinned
+  target:
+    repository: trustoverip/tswg-trust-registry-protocol
+    version: v2-approved source snapshot
+    commit: 6863733878f3657e05f70764bb474a9fb918de9a
+    source_paths:
+    - specification/v2-approved/core/spec.md
+    - specification/v2-approved/core/api.md
+    - specification/v2-approved/core/https_binding.md
+    - specification/v2-approved/core/schema/trqp_authorization_response.schema.json
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v2.6.0
+    commit: d1d07129b0f4048cbf8f4e33ddaf1b2de0d8b639
+  scope:
+    included:
+    - Authorization response field requirements and their evidentiary limits
+    - Requested time versus evaluation time in the retained authorization examples
+    excluded:
+    - Live endpoints, transport security, recognition chains and system-of-record behavior
+    - Full TRQP conformance, ecosystem governance approval and deployment risk acceptance
+  method:
+    workflow: docs/pressure-testing-a-spec.md
+    rule: Separate source requirements, schema checks, reviewer inference and deployment evidence.
+  assurance:
+    residual_state: review-required
+    runtime_authorization: not-assessed
+    authority_history: not-assessed
+    independent_review: pending
+  summary:
+    finding_count: 2
+    open_count: 2
+    overall_assessment: >-
+      Required response fields support an explicit authorization tuple and evaluation-time label.
+      They do not demonstrate truth, current authority or historical provenance. One deployment
+      evidence obligation and one source example clarification remain open. The bounded examination
+      is complete; TRQP as a whole and any implementation remain unassessed.
+  findings:
+  - id: F-001
+    title: Schema-valid authorization does not establish authority history or current permission
+    status: open
+    severity: Medium
+    primary_disposition: implementation-guidance
+    secondary_dispositions: [governance, runtime-control]
+    risks: [CRK-01, CRK-21]
+    portable_assurance:
+      harm_patterns: [HRM-INF-01, HRM-AUT-05]
+      risk_patterns: [RKP-AUTH-01, RKP-AUTH-02]
+      control_patterns: [CTP-AUTH-01, CTP-AUTH-02]
+      guardrail_patterns: [GRP-AUTH-01, GRP-AUTH-02]
+      assurance_patterns: []
+      evidence_patterns: [EVP-AUTH-01]
+    evidence:
+    - source: source/spec.md.txt — Definitions and Scope
+      observation: >-
+        An authority makes governance statements; the registry operator may be delegated.
+        Systems of record and implementation code are explicitly outside protocol scope.
+    - source: source/trqp_authorization_response.schema.json — required and timestamp properties
+      observation: >-
+        The schema requires the authorization tuple, Boolean decision and evaluation time,
+        but no authority-statement provenance or historical state identifier. Requested time is optional.
+    - source: cases.json — historical-response-without-provenance; expected-replay.json
+      observation: >-
+        A constructed historical response without provenance satisfies the retained schema.
+        This is a schema counterexample to an overbroad assurance claim, not an observed endpoint failure.
+    harm: >-
+      In the illustrative license-issuance scenario, a relying party could act on a stale permission
+      or an unsubstantiated historical authority assertion. Medium describes this bounded hypothetical
+      scenario, not a deployment-wide impact rating.
+    recommendation: >-
+      Have the deployment policy owner define authority provenance and action-time freshness requirements.
+      An assessor should request a decision trace binding the query tuple, applicable time, governed
+      authority statement, policy and system-of-record state, plus a post-revocation negative case.
+      Retain that evidence separately if it is unsuitable for the protocol response. No mandatory
+      response extension or internal storage design is inferred from this source review.
+    retest_when:
+    - A named deployment supplies its governance policy and reproducible authorization/revocation traces.
+    - The target schema or system-of-record scope changes.
+  - id: F-002
+    title: API authorization example does not preserve the queried historical time
+    status: open
+    severity: Low
+    primary_disposition: specification
+    risks: [CRK-21]
+    portable_assurance:
+      harm_patterns: [HRM-INF-01]
+      risk_patterns: [RKP-AUTH-02]
+      control_patterns: [CTP-AUTH-02]
+      guardrail_patterns: [GRP-AUTH-02]
+      assurance_patterns: []
+      evidence_patterns: [EVP-AUTH-01]
+    evidence:
+    - source: source/api.md.txt — authorization query and response examples
+      observation: >-
+        The query context.time is 2025-06-19T11:30:00Z, but its response time_requested is
+        2025-06-25T00:42:00Z. The response still satisfies the authorization response schema.
+    - source: source/trqp_authorization_response.schema.json — time_requested and time_evaluated descriptions
+      observation: >-
+        Requested time identifies the moment the response applies to; evaluation time identifies
+        endpoint execution time. These are distinct meanings, not inherently equal timestamps.
+    - source: source/https_binding.md.txt — authorization examples; expected-replay.json
+      observation: >-
+        The HTTPS example preserves the query time in time_requested. Offline replay confirms the
+        API mismatch and the HTTPS match. No live response was observed.
+    harm: >-
+      A reader copying the API example could confuse historical applicability with endpoint execution
+      time and evaluate permission at the wrong moment. Low rates this documentation ambiguity only.
+    recommendation: >-
+      Ask the specification editors to align the API example's time_requested with the query and explain
+      time_evaluated separately. Add an example showing different requested and evaluation times.
+      Relying-party tests should check response/query semantics in addition to schema validity.
+    retest_when:
+    - Specification editors clarify the examples at a new immutable revision.
+    - A relying-party implementation provides query/response time-binding tests.

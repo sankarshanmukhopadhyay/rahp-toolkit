@@ -59,6 +59,10 @@ bounded subject
 
 No specialist assessor or external evidence producer was needed.
 
+For a completed RAHP-only examination of a real specification, continue with
+[Hello RAHP: examine a real specification](../standalone-trqp/README.md). It shows
+source evidence, a supported proposition, open findings and an offline replay.
+
 If your next assurance question concerns composed privacy, continue through the [adoption gateway](../../docs/adoption-guide.md) to DPIP. If the proposition requires executable interoperability or implementation evidence, use the same gateway to determine whether a compatible evidence producer such as the Trust Protocol Interop Lab is appropriate.
 
 For the normal project adoption flow, continue with [Adopting RAHP](../../ADOPTION.md).

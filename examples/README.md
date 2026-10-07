@@ -2,6 +2,13 @@
 
 Worked examples demonstrate the portable RAHP method against independently governed targets. They are evidence and regression assets; they do not define portable RAHP semantics.
 
+## Standalone onboarding
+
+Start with [Hello RAHP](hello-rahp/README.md), then complete the
+[real TRQP specification examination](standalone-trqp/README.md). The latter is a
+bounded, source-pinned teaching assessment with an offline replay and open findings.
+It is not part of the canonical maintained portfolio baseline registry below.
+
 ## Canonical maintained-example policy
 
 From RAHP v1.5.0 onward, a **canonical maintained example** is expected to run on the current stable RAHP release.
