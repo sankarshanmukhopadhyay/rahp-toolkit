@@ -52,6 +52,11 @@ assurance subject
 
 Start with [Hello RAHP](../examples/hello-rahp/README.md), then use [Configuration-driven adoption](configuration.md).
 
+To see the method applied to a real source, follow
+[Hello RAHP: examine a real specification](../examples/standalone-trqp/README.md).
+This standalone TRQP examination retains a pinned source, separates schema checks
+from authority judgments, and includes supported observations and open findings.
+
 ### Track B — evidence-backed assurance
 
 Use this when propositions have explicit evidence requirements and you need stronger provenance, evidence classification and reconciliation.
