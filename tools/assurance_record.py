@@ -57,6 +57,12 @@ def validate_terminal_record(run: dict[str, Any]) -> list[str]:
     trace=run.get("harm_traceability")
     if run.get("outcome") not in {"PASS","NOT_APPLICABLE"}:
         if not isinstance(trace,list) or not trace: errors.append("non-PASS material result requires harm_traceability")
+    if "sociotechnical" in run or (isinstance(subject, dict) and subject.get("assurance_profile") == "rahp-sociotechnical/v1"):
+        try:
+            from .sociotechnical_assurance import validate_record
+        except ImportError:
+            from sociotechnical_assurance import validate_record
+        errors.extend(validate_record(run))
     return errors
 
 
@@ -68,11 +74,15 @@ def canonical_record(run: dict[str, Any]) -> dict[str, Any]:
         "personas","scenarios","risks","harms","assurance_propositions","requirements_examined",
         "cross_spec_assumptions","evidence","tests","inference","confidence","boundedness","state",
         "terminal","outcome","reason_code","residuals","actions","harm_traceability","lineage",
+        "process_state","assurance_state","evidence_maturity","lenses","required_evidence",
+        "evidence_probe_ledger","sociotechnical",
     )
     return {key:deepcopy(run[key]) for key in keys if key in run}
 
 
 def markdown(record: dict[str, Any]) -> str:
+    errors = validate_terminal_record(record)
+    if errors: raise ValueError("; ".join(errors))
     subject=record["subject"]
     lines=[
         f"# RAHP assurance conclusion — {subject['id']}","",
@@ -82,6 +92,8 @@ def markdown(record: dict[str, Any]) -> str:
         f"- Reason: `{record['reason_code']}`",
         f"- Controller state: `{record['state']}`",
     ]
+    for key in ("process_state", "assurance_state", "evidence_maturity"):
+        if key in record: lines.append(f"- {key}: `{record[key]}`")
     if record.get("boundedness"): lines.append(f"- Boundedness: {record['boundedness']}")
     if record.get("confidence"): lines.append(f"- Confidence: {record['confidence']}")
     lines += ["","## Source pins",""]
@@ -104,6 +116,37 @@ def markdown(record: dict[str, Any]) -> str:
         lines += ["","## Actionable remediation",""]
         for item in actions:
             lines += [f"### {item['surface']}","",str(item["action"]),"",f"**Acceptance criterion:** {item['acceptance_criterion']}",""]
+    profile = record.get("sociotechnical")
+    if profile:
+        source = profile["input"]
+        frame = source["frame"]
+        lines += ["", "## Sociotechnical scope and evidence limits", "", profile["boundary"], "",
+                  f"**Scope:** {frame['scope']}", f"**Context digest:** `{profile['context_digest']}`",
+                  f"**Independent human review:** {source['review']['independent_human']}", ""]
+        for item in [*frame["non_scope"], *frame["coverage_limits"]]:
+            lines.append(f"- {item}")
+        lines += ["", "### Actors and control burdens", ""]
+        for actor in frame["actors"]:
+            lines.append(f"- {actor['id']} / {actor['role']}: {actor['participation']} ({actor['basis']})")
+        for control in frame["controls"]:
+            lines.append(f"- {control['id']}: benefits {control['beneficiary']}; burden on {control['burden_bearer']}: {control['burden']}. {control['justification']}")
+        lines += ["", "### Proposition dispositions", ""]
+        for result in profile["results"]:
+            lines.append(f"- **{result['proposition']}: {result['outcome']}** — {'; '.join(result['reasons'])}")
+            lines.append(f"  Dependence groups: {result['dependence_groups']}; independence unknown: {result['independence_unknown']}.")
+            for evidence in result["rejected_evidence"]:
+                lines.append(f"  Evidence `{evidence['id']}` not admitted: {', '.join(evidence['reasons'])}.")
+        disposition = source["disposition"]
+        lines += ["", "### Authority, disagreement and remedy", "",
+                  f"Organizational risk acceptor: {disposition['organizational_risk_acceptor']}. Affected parties: {', '.join(disposition['affected_parties'])}. Agreement: {disposition['affected_party_agreement']}.",
+                  f"Work item: {disposition['work_item_state']}. {disposition['rationale']}", ""]
+        for item in source["disagreements"]:
+            lines.append(f"- Disagreement {item['id']} / {item['proposition']}: {item['state']}; decision role {item['decision_role']}; {item['rationale']}")
+        for item in source["obligations"]:
+            lines.append(f"- {item['kind']} {item['id']}: {item['state']}; owner {item['owner']}; acceptance: {item['acceptance_criterion']}")
+        route = source["challenge_route"]
+        lines += ["", f"Challenge route: {route['state']}; owner {route['owner']}; account independent: {route['account_independent']}. {route['description']}",
+                  f"Changed context: {', '.join(profile['changed_context']) or 'none observed'}; previous assessment: {source['lineage']['previous_assessment']}."]
     lines += ["","## Machine-readable record","","```yaml",yaml.safe_dump(record,sort_keys=False).rstrip(),"```",""]
     return "\n".join(lines)
 
