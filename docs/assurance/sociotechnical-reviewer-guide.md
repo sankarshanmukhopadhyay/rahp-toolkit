@@ -1,6 +1,6 @@
 # Sociotechnical cold-reader exercise
 
-Owner: #913. Independent human review: **pending**. This packet is prepared for review; no reviewer participation or affected-party research is claimed.
+Engineering provenance: #913 / #914. Independent-review owner: #915. Independent human review: **pending**. This packet is prepared for review; no reviewer participation or affected-party research is claimed.
 
 1. Record the candidate commit SHA, runtime and dependency versions. Read the frozen corpus register and baseline coverage before running the implementation.
 2. Choose cases A, C, D and E first. Without consulting generated results, record the proposition, affected actor, admissible evidence class, adverse/contradictory evidence, expected inference and outstanding obligation.

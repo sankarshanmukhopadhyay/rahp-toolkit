@@ -1,6 +1,6 @@
 # Bounded sociotechnical qualification record
 
-Owner: #913. Disposition: **engineering candidate; independent human review pending**.
+Engineering provenance: #913 / #914. Independent-review owner: #915. Disposition: **engineering candidate; independent human review pending**.
 
 ## What was established
 
@@ -51,7 +51,7 @@ The relevant validators include engine/result compatibility, release verificatio
 | Disagreement and remedy retained in summaries | Canonical projection, direct rendering and tampering regressions |
 | Machine/human equivalence | Embedded YAML equals canonical machine record; material facts visible in human sections |
 | Relevant regressions and repository checks | Local checks above; GitHub workflow will publish clean-runner replay evidence |
-| Cold-reader reproduction and independent review | Guide provided; actual independent human participation pending under #913 |
+| Cold-reader reproduction and independent review | Guide provided; actual independent human participation pending under #915 |
 | Compatibility and historical records | Additive opt-in profile; no normalized result/engine revision change; stable/history untouched |
 
 ## Maintainer-facing compatibility and placement judgment
@@ -62,11 +62,11 @@ The profile is candidate development work until maintainer acceptance and any se
 
 ## Residuals and durable ownership
 
-- **#913:** independent human review is pending; no reviewer or affected-party participation is manufactured. Completed review needs a separate attributable packet preserving original judgments.
-- **#913:** evidence sufficiency and declared dependence are reviewed assertions. Hidden relationships and unreported external events remain beyond automatic detection. The model preserves these boundaries; metadata is not proof of them.
+- **#915:** independent human review is pending; no reviewer or affected-party participation is manufactured. Completed review needs a separate attributable packet preserving original judgments.
+- **Qualification boundary:** evidence sufficiency and declared dependence are reviewed assertions. Hidden relationships and unreported external events remain beyond automatic detection. The model preserves these boundaries; metadata is not proof of them.
 - **#610:** real DTG cross-boundary remedy remains its own deployment/governance obligation. These synthetic cases do not close it.
 - **#662/#667/#668:** policy-subject extraction/graduation remains experimental and separately gated.
 - **#884:** domain-independent core research remains separately owned.
 - **Maintained reporting only:** RAHP cannot prevent third parties from altering copied summaries or marketing claims outside its validated output path.
 
-Keep #913 open through PR review and acceptance reconciliation. A linked follow-up is not evidence that an unmet core acceptance criterion was satisfied. External review may remain pending only with the qualification claim explicitly bounded as above.
+The bounded engineering tranche was accepted through #914 at `ba4ed32acb0540c4b67c6b159d8518a58545fb02`; #913 is engineering-complete. Independent human review remains pending under #915, currently `needs_judgment` until a reviewer accepts the task. This ownership transfer does not establish independent validation or satisfy an unmet implementation requirement. The qualification claim remains explicitly bounded as above.
