@@ -66,3 +66,8 @@ Human output exposes scope, actors, control burdens, dependence, rejected eviden
 ## Review packet
 
 Use the [cold-reader guide](assurance/sociotechnical-reviewer-guide.md), [initial coverage matrix](assurance/sociotechnical-coverage.md) and [qualification record](assurance/sociotechnical-qualification.md). Actual independent reviewers should supply separate attributable decisions and disagreements. The execution input cannot self-award independent human validation with a flag.
+
+
+## Related boundary assessment
+
+The follow-on review of identity proof, action authority and recourse found substantial coverage in this profile and the existing cross-specification assessment. See the [identity-to-action boundary coverage disposition](assurance/identity-action-boundary-disposition.md) for the source-pinned mapping, residual live-deployment evidence limits and no-new-code recommendation.
