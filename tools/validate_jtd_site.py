@@ -28,6 +28,10 @@ REQUIRED_STRUCTURED_SOURCES = [
     'method/catalogue/assurance-patterns.yaml',
     'method/catalogue/evidence-patterns.yaml',
     'examples/a2a/pressure-test.yaml',
+    'examples/standalone-trqp/pressure-test.yaml',
+    'examples/standalone-trqp/source-manifest.json',
+    'examples/standalone-trqp/cases.json',
+    'examples/standalone-trqp/expected-replay.json',
     'archive/historical-builds/persona.jsonld',
     'archive/historical-builds/risk.jsonld',
     'archive/historical-builds/control.jsonld',
@@ -38,6 +42,10 @@ REQUIRED_STRUCTURED_SOURCES = [
 ]
 
 REQUIRED_HUMAN_PROJECTIONS = [
+    'examples/standalone-trqp/pressure-test/index.html',
+    'examples/standalone-trqp/source-manifest/index.html',
+    'examples/standalone-trqp/cases/index.html',
+    'examples/standalone-trqp/expected-replay/index.html',
     'corpora/dtg-zkp/index.html',
     'corpora/trust-tasks/index.html',
     'corpora/credential-spec/index.html',
@@ -94,6 +102,9 @@ REQUIRED_DOCS = [
 # be wrapped in the Just-the-Docs layout rather than emitted as a bare HTML
 # fragment when a Markdown source accidentally omits `layout: default`.
 REQUIRED_JTD_SHELL = [
+    'examples/index.html',
+    'examples/hello-rahp/index.html',
+    'examples/standalone-trqp/index.html',
     'docs/a2a-example.html',
     'docs/dtg-instance.html',
     'docs/cawg-risk-register.html',

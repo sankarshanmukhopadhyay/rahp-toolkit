@@ -11,6 +11,8 @@ Inspect independent deployments and worked examples that demonstrate portability
 
 ## In this section
 
+- [Worked example index](../examples/README.md)
+- [Standalone TRQP examination](../examples/standalone-trqp/README.md)
 - [A2A worked example](a2a-example.md)
 - [Trust Tasks × Credential Specification cross-spec example](../examples/cross-spec/trust-tasks-credspec/README.md)
 - [CAWG/C2PA deployment](cawg-instance.md)

@@ -1,10 +1,20 @@
 import pathlib
 import unittest
+import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class TestPagesProjectionContract(unittest.TestCase):
+    def test_onboarding_sources_are_jekyll_pages_for_link_rewriting(self):
+        for directory in ("examples", "examples/hello-rahp", "examples/standalone-trqp"):
+            with self.subTest(directory=directory):
+                source = (ROOT / directory / "README.md").read_text()
+                self.assertTrue(source.startswith("---\n"), "Source links must resolve to a Jekyll page, not raw Markdown")
+                front_matter = yaml.safe_load(source.split("---", 2)[1])
+                self.assertEqual(front_matter["layout"], "default")
+                self.assertEqual(front_matter["permalink"], f"/{directory}/")
+
     def test_cawg_mandate_readiness_is_projected_from_instances(self):
         plugin = (ROOT / "_plugins" / "structured_data_pages.rb").read_text()
         validator = (ROOT / "tools" / "validate_jtd_site.py").read_text()

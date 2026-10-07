@@ -1,3 +1,11 @@
+---
+layout: default
+title: "Worked example index"
+parent: Deployments & examples
+nav_order: 1
+has_toc: true
+permalink: /examples/
+---
 # RAHP worked examples
 
 Worked examples demonstrate the portable RAHP method against independently governed targets. They are evidence and regression assets; they do not define portable RAHP semantics.
