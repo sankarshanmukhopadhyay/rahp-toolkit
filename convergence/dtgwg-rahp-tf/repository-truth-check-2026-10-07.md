@@ -55,3 +55,11 @@ Upstream #14 is a draft based on #13's reproduction branch. Head `c7022ab41e4dbf
 The first workflow definition failed before scheduling a job because a runner context was referenced at job environment scope. The corrected head initializes temporary paths inside a runner step. The failure remains in execution history and does not count as validation evidence.
 
 Acceptance remains pending. After #13 is accepted, retarget #14 to then-current main, reconcile its diff/checks and remove the temporary dependency wording before marking ready. Do not merge into the dependency branch. Canonical records and published root outputs remain unchanged; warnings are retained. The worked-adoption and site contributions remain subsequent work after these decisions.
+
+## Worked adoption contribution — 7 October 2026
+
+Upstream #15 is independently based on accepted main `e3ad6648ebc8c1a9a625dbdbefc8ba68b5bbd1e0`, using #10's existing review contract and #11's adoption guide. It does not require the pending implementation in #12/#13/#14. Head `9c775abc431be6a51326de2b049dd264bbe54381` is review-ready and conflict-free; DCO and EasyCLA pass. Two real source commits freeze fictional target versions before the authored review records.
+
+Both new records pass the existing review CLI and all 12 tests on this branch pass locally. Governance documentary coverage moves from open to resolved, while the separate renewal finding remains open; the original review is preserved. No actual governance enactment, independent participation, deployment effectiveness, harm remedy or whole-target assurance is inferred. The guide separately pins the corpus because the existing schema records only a method label. Schema validity does not prove source existence or correct judgment.
+
+Acceptance remains with upstream maintainers. The source-pinned packet can be inspected at [review/examples/worked-adoption/README.md](https://github.com/trustoverip/dtgwg-rahp-tf/blob/9c775abc431be6a51326de2b049dd264bbe54381/review/examples/worked-adoption/README.md). The next candidate is generated-site navigation after publication source/destination agreement; no directory moves, deployment or archive relocation are authorized.
