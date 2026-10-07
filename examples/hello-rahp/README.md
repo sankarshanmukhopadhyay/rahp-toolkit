@@ -1,3 +1,11 @@
+---
+layout: default
+title: "Hello RAHP: first exercise"
+parent: Adopt RAHP
+nav_order: 4
+has_toc: true
+permalink: /examples/hello-rahp/
+---
 # Hello RAHP
 
 This is the smallest maintained adoption exercise. It uses **RAHP only**. DPIP and the Trust Protocol Interop Lab are not required.

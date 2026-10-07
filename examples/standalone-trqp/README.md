@@ -1,3 +1,11 @@
+---
+layout: default
+title: "Hello RAHP: real specification examination"
+parent: Adopt RAHP
+nav_order: 5
+has_toc: true
+permalink: /examples/standalone-trqp/
+---
 # Hello RAHP: examine a real specification
 
 This is the next exercise after the [smallest Hello RAHP scaffold](../hello-rahp/README.md). It completes a bounded examination of the **Trust Registry Query Protocol (TRQP), v2-approved source snapshot**, using RAHP alone. DPIP, the Trust Protocol Interop Lab and a running registry are not required.
@@ -67,6 +75,13 @@ For F-002, request editor clarification at a new immutable revision, then repeat
 Try challenging one inference yourself: write down a plausible alternative explanation, the evidence that would distinguish it, and whether it changes the disposition. For example, a deployment may already retain strong historical provenance outside the response. That could satisfy F-001 for that deployment without changing TRQP's core schema.
 
 ## Examination record
+
+Readable evidence views on the published site:
+[review record](https://sankarshanmukhopadhyay.github.io/rahp-toolkit/examples/standalone-trqp/pressure-test/),
+[source manifest](https://sankarshanmukhopadhyay.github.io/rahp-toolkit/examples/standalone-trqp/source-manifest/),
+[response fixtures](https://sankarshanmukhopadhyay.github.io/rahp-toolkit/examples/standalone-trqp/cases/),
+and [replay result](https://sankarshanmukhopadhyay.github.io/rahp-toolkit/examples/standalone-trqp/expected-replay/).
+The original YAML and JSON remain available through the source links.
 
 The following block is generated from [pressure-test.yaml](pressure-test.yaml); edit that record and run `python3 tools/render_pressure_tests.py` to update it.
 
