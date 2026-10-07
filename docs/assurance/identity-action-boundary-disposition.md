@@ -62,3 +62,27 @@ python3 tools/validate_reference_links.py
 ## Closure recommendation for #922
 
 Close #922 as **completed by evidence-backed no-change disposition** after review of this mapping. Reopen or file a successor only when a concrete case demonstrates a generic RAHP representation/enforcement gap; otherwise place the fallback, consent and redress evidence in the responsible deployment or upstream assessment.
+
+## Acceptance-criteria reconciliation
+
+Status is assessed against the #922 wording. “Done” means the evidence exists in the cited maintained work; it does not mean a new #922-specific experiment occurred.
+
+| Criterion | Status | Evidence and boundary |
+|---|---|---|
+| Stable and development baselines are distinguished and source-pinned. | **Done** | The repository snapshot and archive digest are pinned above. #913 records the stable v2.6.0 and development baselines and their comparison. This disposition adds no runtime changes. |
+| Coverage matrix maps each in-scope proposition to contract, implementation, tests/evidence and limits. | **Partial** | The six-case reconciliation maps existing evidence and limits. The source-pinned #913/#252 artifacts provide the underlying implementation and tests, but this report is not a complete per-proposition contract-to-implementation-to-test matrix. |
+| Existing issue ownership is reconciled; duplicate work is linked or removed from scope. | **Done** | #913, #252, #897 and #915 are linked and their ownership boundaries are stated above. No parallel schema, corpus or upstream finding is created. |
+| No more than six synthetic cases have predetermined expected outcomes before candidate replay. | **Not done for #922** | No #922-specific case set was frozen and replayed. Existing #913/#252 cases were inspected and reused as evidence; they were not relabeled as a newly frozen #922 corpus. |
+| Valid proof does not silently establish broader authority, consent, service outcome or remedy. | **Done in existing evidence; no new #922 replay** | The cited cross-spec and sociotechnical cases/tests preserve these distinctions. The claim is limited to the maintained modeled contracts and outputs. |
+| Stale, revoked, out-of-scope or insufficient evidence cannot silently establish current action authority. | **Done in existing evidence; no new #922 replay** | The cross-spec lifecycle cases and #913 freshness/context tests exercise these boundaries. External state is bounded by declared monitoring and evidence limits. |
+| Disclosure/correlation, access fallback and challenge/recovery limits remain visible where exercised. | **Partial** | Privacy composition and challenge/remedy limits are represented in existing evidence. Fallback risks and limitations are modeled, but a live service path was not exercised; its usability remains deployment evidence. |
+| Positive/NOT_APPLICABLE outcomes are used only where justified by explicit evidence and scope. | **Done in #913 evidence; no new #922 replay** | The #913 frozen corpus includes bounded PASS and justified NOT_APPLICABLE controls alongside FAIL/INDETERMINATE cases. This disposition creates no new expected outcomes. |
+| Any model gap remains explicit; no unsupported schema coercion or universal pass/fail claim is introduced. | **Done** | The report retains the deployment-level fallback and independent-review limits and introduces no schema/runtime behavior or universal rule. |
+| Every code or contract change is tied to a failing case, has regression evidence, and includes compatibility analysis. | **N/A — no code/contract change** | PR #923 changed documentation only. No implementation or contract change was proposed. |
+| Machine and human qualification outputs retain material scope, adverse findings and evidence limitations. | **Done in existing #913 evidence; no new #922 replay** | Existing #913 reporting tests/corpus are the evidence. PR #923 adds a human-readable disposition; no machine output changed. |
+| Reproducible evidence bundle and bounded qualification/no-change report are available. | **Partial** | This source-pinned report and the existing CI/replay records are available. There is no dedicated #922 six-case input/output bundle, environment capture or replay artifact. |
+| No claim of independent review, affected-party participation, real-world prevalence, or realized remedy is made without attributable evidence. | **Done** | The report explicitly disclaims independent review, affected-party participation, live fallback effectiveness, deployment approval and realized remedy. |
+
+### Overall completion
+
+The bounded **no-change gap analysis and documentation deliverable are complete**. The #922 acceptance criteria are **not all complete**: the new six-case freeze/replay and a dedicated reproducible #922 evidence bundle were not produced, while fallback effectiveness remains deployment-specific and the full mapping is partial. Existing #913/#252 evidence supports the documented no-change decision, but it must not be presented as a #922-specific replay. Keep the issue closed as a completed bounded analysis only if that narrower completion definition is acceptable; reopen it if strict satisfaction of every original acceptance criterion is required.
