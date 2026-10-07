@@ -1,0 +1,83 @@
+{
+  "acceptance_boundary": {
+    "affected_party_participation": "absent",
+    "engineering": "implemented and locally executed",
+    "external_deployment_remedy": "not established",
+    "independent_human_review": "pending",
+    "stable_release_promotion": "not performed"
+  },
+  "baseline": {
+    "development_sha": "b5d1381b8ef747ce78c5a5d9cf66b57bb79b41ff",
+    "engine_contract": "rahp-engine-contract-v1 revision 1.3",
+    "result_schema": 1,
+    "stable_sha": "b18dc9b0acfc8dad36ef9f5b4a5030de38e683f1",
+    "stable_tag": "v2.6.0"
+  },
+  "boundary": "Reviewed assertion reconciliation only; no deployment approval, legal certification or independent human validation is inferred.",
+  "candidate_implementation_commit": "df086113cfdb0abe570e50e8539710ba0fcdf75e",
+  "cases": [
+    {
+      "assessment_id": "rahp:a4d65d4621642bca390e",
+      "case": "A-harmful-intended-operation.json",
+      "input_digest": "0eb1f841864df3995fdfa3f964b8fe1d7d7d3be14c69ecebf11d9067d7d6ced7",
+      "outcome": "FAIL"
+    },
+    {
+      "assessment_id": "rahp:ca7909f4110bc04236b8",
+      "case": "B-transferred-recovery-burden.json",
+      "input_digest": "4c0d036190a5b2b5962ef4502995b56f502d704b74d7be712d63189f69ea8547",
+      "outcome": "INDETERMINATE"
+    },
+    {
+      "assessment_id": "rahp:7e580eb45eb546651513",
+      "case": "C-correlated-assessment.json",
+      "input_digest": "39bf52f716279e17d455dbcb086b435f23bd1835004f644ca38e2d221248af76",
+      "outcome": "FAIL"
+    },
+    {
+      "assessment_id": "rahp:93101efe81feb5f701d9",
+      "case": "D-context-only-change.json",
+      "input_digest": "ceca86533d7f1802c8f1dc2c388786e4599a5ed94478af5c6ff01b94794b1153",
+      "outcome": "INDETERMINATE"
+    },
+    {
+      "assessment_id": "rahp:3af9298daa8265b199d1",
+      "case": "E-repair-without-remedy.json",
+      "input_digest": "c117d944c7e8419df0a709fd2a6f59db3ed5e27ff31ba9f89fdd5dc813deb667",
+      "outcome": "FAIL"
+    },
+    {
+      "assessment_id": "rahp:306b80f65d1c41ce739f",
+      "case": "F-summary-loses-scope.json",
+      "input_digest": "4c4d168829dd05c132f8811ff0df2542198ed31963f2c15ae779f14f46ace1eb",
+      "outcome": "INDETERMINATE"
+    },
+    {
+      "assessment_id": "rahp:007d4072a20e22ac6391",
+      "case": "P-supported-bounded-control.json",
+      "input_digest": "b144d730e27de427fa3ffaa2dfd3a8ced111f5e83ca553256eac40f2b4b7714f",
+      "outcome": "PASS"
+    },
+    {
+      "assessment_id": "rahp:8868e959cc14f42f9b81",
+      "case": "N-justified-non-applicability.json",
+      "input_digest": "4fd38d41d2daa7c718074529c9c88fa23d0de179cf3883f10f44062b14ae7c3c",
+      "outcome": "NOT_APPLICABLE"
+    }
+  ],
+  "corpus_commit": "7f4c46ff278c10483feaa1b42a717a51211241b2",
+  "independent_human_review": "pending",
+  "profile": "rahp-sociotechnical/v1",
+  "runtime": {
+    "PyYAML": "6.0.3",
+    "jsonschema": "4.26.0",
+    "python": "3.12.14"
+  },
+  "tests": {
+    "focused": 25,
+    "full_suite": 482,
+    "local_validators": 60,
+    "result": "passed",
+    "typescript_conformance": "passed: 7 result fixtures, 3 lifecycle fixtures, 3 profiles"
+  }
+}
