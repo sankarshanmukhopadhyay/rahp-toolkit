@@ -1,0 +1,209 @@
+{
+  "assessor": {
+    "implementation_sha256": {
+      "assurance_fsm.py": "c731ec778bc56151f5342156e21328330b83d80ab619a38e342df73c57b2a6b9",
+      "assurance_record.py": "7c76c7c95ccc39fd488697591517cb4749856bf7e821e4e1eedf8bc79579ffdc",
+      "autonomous_assurance_controller.py": "acbbcf3bcb0b4bce2d1a0f89eac70c36a2c9728efec26fd8515c1915bb1a6d77",
+      "eucalyptus_campaign.py": "1a437283bd7a5736f2b786e02239751accab71d42db510e45550853d897f34a2"
+    },
+    "revision": "af58247e83d0aff4d47650d929bfc6280d9e41d3"
+  },
+  "historical_inputs_used": false,
+  "provenance": {
+    "contributor": "Codex (AI-assisted)",
+    "corpora_reused": [
+      "corpora/credential-zkp-trust-tasks-composed.yaml",
+      "corpora/trust-tasks-credspec-composed.yaml",
+      "profiles/dtg/coverage/data-rooms.yaml",
+      "profiles/dtg/coverage/persona.yaml"
+    ],
+    "prior_outcomes_used": false,
+    "release_url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/releases/tag/VTI-Eucalyptus",
+    "trigger": "Repository-owner request on 2026-10-08; issue #960"
+  },
+  "schema": "rahp-eucalyptus-sources/v1",
+  "sources": [
+    {
+      "path": "sources/openvtc",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/openvtc",
+      "revision": "2a4fa2b3c8e831dbe3184a1119c4c87b6f197220",
+      "tag_object": "9f59c7cbb1284c898eaaf7ee27e93cf8d3f276aa",
+      "tracked_files": 302,
+      "tree": "86949383beb7734198d32af012b3e8ec2b70c60e"
+    },
+    {
+      "path": "sources/verifiable-trust-infrastructure",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+      "tag_object": "e93b977cb084c1dd0f93044c518315d5a81b692f",
+      "tracked_files": 2000,
+      "tree": "37f9a9d6df6c67c4bbaa7ec0f9d51d489549f3fd"
+    },
+    {
+      "path": "sources/affinidi-tdk-rs",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-tdk-rs",
+      "revision": "a1611baa011620a6ca62649b105c2b8c898f2653",
+      "tag_object": "b174f86e4e2fb5c048c3ee2b12ec98bce2bd9659",
+      "tracked_files": 1359,
+      "tree": "92bc88ed9383feb0ca1df2c2b865ac1c3ace3797"
+    },
+    {
+      "path": "sources/affinidi-webvh-service",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-webvh-service",
+      "revision": "1686668623e0bba0e18880074d82794cb929a7fc",
+      "tag_object": "985ce18546eece07f9c25da4af4f4d5985ab3268",
+      "tracked_files": 405,
+      "tree": "bbfa3178219eff8945296696b1d35ac8fdbe29f9"
+    },
+    {
+      "path": "sources/affinidi-trust-registry-rs",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-trust-registry-rs",
+      "revision": "c77052f9bffe8bb7b4a3f357d9ef54cf632950f0",
+      "tag_object": "89f8979c42c276427b9b664289cb9e2969dacae0",
+      "tracked_files": 147,
+      "tree": "7807504b988d1aa33f6352a253c8e387d4ccd3ca"
+    },
+    {
+      "path": "sources/dtgwg-trust-tasks-tf",
+      "release": "VTI-Eucalyptus",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+      "tag_object": "a6cdf5f1f748b86e0af6543b61c1c6c360a8c068",
+      "tracked_files": 6816,
+      "tree": "c3fb6af8aa64f093b8eb017fb1b071b0f99e7147"
+    },
+    {
+      "path": "sources/verifiable-git-infrastructure",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/verifiable-git-infrastructure",
+      "revision": "92f32dd4c107545bd42b009ca55fc1ed4759309d",
+      "tag_object": "39d2f2c6e3de0b0781ac073d661183a1091004d1",
+      "tracked_files": 161,
+      "tree": "a8b5cbbaae58e39030ad9f17be14fe9f74da59f8"
+    },
+    {
+      "path": "sources/vta-browser-plugin",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/vta-browser-plugin",
+      "revision": "d6df67971688fd927cd5b095424fa4093d4264df",
+      "tag_object": "b18546168d56d23477094a98c1cbdb5bf5656652",
+      "tracked_files": 573,
+      "tree": "05ee482dbc67a5d053d877bdabaf6402d7e3427a"
+    },
+    {
+      "path": "sources/didwebvh-rs",
+      "release": "VTI-Eucalyptus",
+      "repository": "decentralized-identity/didwebvh-rs",
+      "revision": "155eb4e71c9d45db57c6f7329f286bbd753e0138",
+      "tag_object": "8718bca6feb2bbe41a6e38e9a61f5f6c8b827060",
+      "tracked_files": 109,
+      "tree": "291b20b2d188c0082bc5ed9de867ddfc1127f039"
+    },
+    {
+      "path": "sources/dtg-credentials",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/dtg-credentials",
+      "revision": "fc9954d8d529d312ebac7ec1d413179857474c96",
+      "tag_object": "ea58f1688bbef54716b7de35f37a0216c59fcdb0",
+      "tracked_files": 23,
+      "tree": "859990c28cda4c87e78326c397dbeb7c59dec5d0"
+    },
+    {
+      "path": "sources/predicate-credential-system",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/predicate-credential-system",
+      "revision": "4be4598563f422b9a3a4e37032d22487836d322c",
+      "tag_object": "cba7740c38bf8ec2242e46f2ff33fab47bf623c6",
+      "tracked_files": 70,
+      "tree": "9b68fa0a5e76a1c2718e9e8e80fe788f4ff00bfe"
+    },
+    {
+      "path": "sources/vta-agent-memory",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/vta-agent-memory",
+      "revision": "85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5",
+      "tag_object": "982e542b08bffe82f07e5166d0eb6e92424657c1",
+      "tracked_files": 33,
+      "tree": "18470f45a672cf6b89d701b96ea028d5750e50ca"
+    },
+    {
+      "path": "sources/affinidi-tsp-go",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-tsp-go",
+      "revision": "d32ca7cdde208e93509c1f140ad7ee04d52ca7cc",
+      "tag_object": "85dc84159e26111e537f4b38e6dd36e8789de34b",
+      "tracked_files": 26,
+      "tree": "b4dcf2eb589ae834b6b5440badc9c444d4e81205"
+    },
+    {
+      "path": "sources/affinidi-tsp-dart",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-tsp-dart",
+      "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78",
+      "tag_object": "8a7347c0b184528dd153cc694f6208f7f49e2d5e",
+      "tracked_files": 71,
+      "tree": "88e8d0ae1500e6c7ec8742b5be1df7048755dd62"
+    },
+    {
+      "path": "sources/vti-push-gateway",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/vti-push-gateway",
+      "revision": "44342121e161ccb12e43013f33ce80abb2486acb",
+      "tag_object": "2eeccd4465b05e19f9e0a0f6f2d9a07c733eb400",
+      "tracked_files": 27,
+      "tree": "cdd458a3480551fc5e6d16df5a912d2bc411ed16"
+    },
+    {
+      "path": "sources/rp-sdk-js",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/rp-sdk-js",
+      "revision": "8594c2acba4014232e842fe7613e8a7cdc0e2b0f",
+      "tag_object": "facdb2208dd50fb00625d6da623bc6d94a3bde8d",
+      "tracked_files": 19,
+      "tree": "457cfc69ae340449cfc1682acd26d5ab90415777"
+    },
+    {
+      "path": "sources/vti-didcomm-js",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/vti-didcomm-js",
+      "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+      "tag_object": "919feef3dee0e1e3f8453f82acdd6f27ca59d4c4",
+      "tracked_files": 73,
+      "tree": "f7ac925d948789ec4a5129429c532ca3c9587d82"
+    },
+    {
+      "path": "sources/vta-mobile-agent-ios",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/vta-mobile-agent-ios",
+      "revision": "863a1e912042b28908ec2cf3675677ad9c151e0e",
+      "tag_object": "e68e325423cfed1cb01c97a80f442af196c82c6b",
+      "tracked_files": 56,
+      "tree": "6374e3bb358fd396bac7abe1e0e48544ae5c7fc4"
+    },
+    {
+      "path": "sources/trust-protocol-interop-lab",
+      "release": "HEAD",
+      "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+      "revision": "895e1af0f441995cada90dad2a429e56885bd394",
+      "role": "evidence-producer/specialist snapshot; outside coordinated release",
+      "tag_object": "895e1af0f441995cada90dad2a429e56885bd394",
+      "tracked_files": 586,
+      "tree": "c5534f10574bcb41f4e90ed411723bebe9593f9f"
+    },
+    {
+      "path": "sources/dtg-privacy-implementation-profile",
+      "release": "HEAD",
+      "repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile",
+      "revision": "991c92bad6ccb61dbc2511162bf11a9eb59679e2",
+      "role": "evidence-producer/specialist snapshot; outside coordinated release",
+      "tag_object": "991c92bad6ccb61dbc2511162bf11a9eb59679e2",
+      "tracked_files": 184,
+      "tree": "3c46f70a56f141978a65220419e4698dc2f73e90"
+    }
+  ]
+}
