@@ -63,6 +63,31 @@ jobs:
           test "$REQUESTED_TAG" = "$DECLARED_TAG" || { echo "::error::Requested tag must match qualified declaration"; exit 1; }
           test "$RELEASE_STATUS" = released || { echo "::error::Release declaration must be released"; exit 1; }
           test "$QUALIFICATION_STATUS" = qualified || { echo "::error::Release must be qualified"; exit 1; }
+      - name: Require pinned v2.7 qualification evidence and explicit GO
+        if: steps.release.outputs.tag == 'v2.7.0'
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/validate_v27_release.py
+          python3 tools/validate_v27_release_evidence.py method/v2.7-release-evidence.json
+          python3 - <<'PY'
+          import json, os, pathlib, yaml
+          sha = os.environ["RELEASE_SHA"]
+          q = yaml.safe_load(pathlib.Path("method/v2.7-release-qualification.yaml").read_text())
+          c = yaml.safe_load(pathlib.Path("method/v2.7-release-candidate.yaml").read_text())
+          e = json.loads(pathlib.Path("method/v2.7-release-evidence.json").read_text())
+          assert q["state"] == "QUALIFIED", "qualification must be QUALIFIED"
+          assert q["release_cut"]["publication_authorized"] is True, "qualification authorization missing"
+          assert q["release_cut"]["candidate_sha"] == e["candidate_sha"], "qualification and evidence candidate SHA mismatch"
+          assert all(v == "PASS" for v in q["release_gates"].values()), "qualification gates incomplete"
+          assert c["candidate"]["base_tag"] == "v2.6.0", "candidate baseline changed"
+          assert c["candidate"]["publication_authorized"] is False, "candidate manifest must remain historical prequalification"
+          assert e["publication_authorized"] is True, "evidence authorization missing"
+          PY
+          candidate_sha="$(python3 -c 'import json; print(json.load(open("method/v2.7-release-evidence.json"))["candidate_sha"])')"
+          git merge-base --is-ancestor "$candidate_sha" "$RELEASE_SHA" || { echo "::error::Evidence candidate SHA is not an ancestor of release commit"; exit 1; }
       - name: Create or verify declared release tag
         env:
           TAG: ${{ steps.release.outputs.tag }}
