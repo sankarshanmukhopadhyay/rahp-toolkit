@@ -58,6 +58,8 @@ For a code-level explanation of where assessment reasoning occurs, see [RAHP rea
 
 The optional [evidence adequacy profile](docs/evidence-adequacy.md) experiments with deterministic sufficiency and contradiction semantics; it does not change stable assessor or controller contracts.
 
+The experimental [temporal and provenance profile](docs/temporal-provenance.md) evaluates claimed historical applicability and as-known-at cutoffs without changing controller or assessor contracts.
+
 ## Start adopting RAHP
 
 **You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
