@@ -21,7 +21,8 @@ class CandidateQualificationTests(unittest.TestCase):
         release = yaml.safe_load((ROOT / "method/release.yaml").read_text())
         self.assertFalse(manifest["candidate"]["publication_authorized"])
         self.assertEqual(manifest["candidate"]["codename"], "Common Rose")
-        self.assertEqual(release["release"]["tag"], "v2.7.0")\n        self.assertEqual(release["release"]["status"], "candidate")
+        self.assertEqual(release["release"]["tag"], "v2.7.0")
+        self.assertEqual(release["release"]["status"], "candidate")
 
 
 if __name__ == "__main__":
