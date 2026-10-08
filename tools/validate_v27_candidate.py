@@ -33,8 +33,19 @@ def validate(root: Path = ROOT) -> list[str]:
     if candidate.get("release_sha") is not None or candidate.get("codename") != "Common Rose":
         errors.append("candidate requires governed name but cannot claim qualified release SHA")
     current = (release.get("release") or {})
-    if current.get("tag") != "v2.7.0" or current.get("status") != "candidate":
-        errors.append("current declaration must be non-publishing v2.7 candidate")
+    if current.get("tag") != "v2.7.0":
+        errors.append("current declaration must identify v2.7.0")
+    if current.get("status") == "candidate":
+        if current.get("qualification_status") != "candidate":
+            errors.append("candidate release declaration must remain candidate-qualified")
+    elif current.get("status") == "released":
+        if current.get("qualification_status") != "qualified":
+            errors.append("released declaration must be qualified")
+        qualification = yaml.safe_load((root / "method/v2.7-release-qualification.yaml").read_text(encoding="utf-8")) or {}
+        if qualification.get("state") != "QUALIFIED" or qualification.get("release_cut", {}).get("publication_authorized") is not True:
+            errors.append("released declaration requires authorized qualified v2.7 manifest")
+    else:
+        errors.append("release declaration must be candidate or released")
     if versioning.get("stable_release") != "v2.7.0":
         errors.append("stable versioning declaration changed before qualification")
     expected = {
@@ -73,7 +84,7 @@ def main() -> int:
         for error in errors:
             print("ERROR:", error)
         return 1
-    print("PASS v2.7.0 candidate manifest structurally valid; NOT qualified or authorized for publication")
+    print("PASS historical v2.7.0 candidate manifest; publication authority is checked separately")
     return 0
 
 
