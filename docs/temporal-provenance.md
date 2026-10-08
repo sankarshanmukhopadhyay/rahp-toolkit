@@ -74,4 +74,6 @@ python3 tools/evidence_assertion_assessor.py --self-test
 
 A source pin is a **claim**, not verification that the source was fetched, hashed, authenticated or authoritative. This evaluator cannot determine whether historical effective state was correct, whether a retroactive assertion is legitimate, or whether evidence was superseded. It does not automatically alter any prior assessment. A separate provenance verifier and governed authority policy would be required for that.
 
+The optional [R3 reproducibility and challenge profile](reproducibility-challenge.md) can compare declared runs but does not prove the correctness of historical assertions.
+
 Related: [R1 evidence adequacy](evidence-adequacy.md), [reasoning architecture](reasoning-architecture.md), [reasoning trace](reasoning-trace.md), and [agent integration](reasoning-integration.md).
