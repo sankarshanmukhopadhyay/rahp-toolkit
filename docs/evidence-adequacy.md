@@ -60,4 +60,4 @@ python3 -m unittest tests.test_reasoning_trace -v
 python3 tools/evidence_assertion_assessor.py --self-test
 ```
 
-The optional evaluator is deliberately not integrated into `tools/reasoning_trace.py` or `tools/assurance_fsm.py`. Future R2 work must address source authenticity, freshness, historical effective state, supersession, and provenance before such integrations can be justified. See [reasoning architecture](reasoning-architecture.md), [reasoning trace](reasoning-trace.md), and [agent integration](reasoning-integration.md).
+The optional evaluator is deliberately not integrated into `tools/reasoning_trace.py` or `tools/assurance_fsm.py`. The optional [R2 temporal applicability profile](temporal-provenance.md) now examines declared observation and effective times, as-known-at cutoffs, and source-pin metadata. It does not authenticate sources, settle supersession or historical truth, or justify automatic controller integration. See [reasoning architecture](reasoning-architecture.md), [reasoning trace](reasoning-trace.md), and [agent integration](reasoning-integration.md).
