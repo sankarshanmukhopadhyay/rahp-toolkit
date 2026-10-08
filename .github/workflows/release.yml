@@ -1,23 +1,38 @@
 name: Publish qualified RAHP release
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'method/release.yaml'
+      - 'method/*release-qualification.yaml'
+      - 'method/*release-evidence.json'
+      - 'PROJECT-STATUS.yaml'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'packages/**/package.json'
+      - 'docs/releases/**'
   workflow_dispatch:
     inputs:
       release_tag:
-        description: 'Exact already-qualified release tag to publish (for example v2.7.0)'
+        description: 'Exact qualified release tag (manual retry only; e.g. v2.7.0)'
         required: true
         type: string
       confirm_publication:
-        description: 'Type PUBLISH to authorize release publication'
+        description: 'Type PUBLISH for manual publication/recovery'
         required: true
         type: string
+
+concurrency:
+  group: rahp-release-publication
+  cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
   publish:
-    if: github.repository == 'sankarshanmukhopadhyay/rahp-toolkit' && github.event_name == 'workflow_dispatch'
+    if: github.repository == 'sankarshanmukhopadhyay/rahp-toolkit' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -59,8 +74,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$CONFIRMATION" = PUBLISH || { echo "::error::Explicit PUBLISH confirmation required"; exit 1; }
-          test "$REQUESTED_TAG" = "$DECLARED_TAG" || { echo "::error::Requested tag must match qualified declaration"; exit 1; }
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            test "$CONFIRMATION" = PUBLISH || { echo "::error::Manual publication requires PUBLISH"; exit 1; }
+            test "$REQUESTED_TAG" = "$DECLARED_TAG" || { echo "::error::Requested tag must match declaration"; exit 1; }
+          else
+            test "$GITHUB_EVENT_NAME" = push || { echo "::error::Unsupported publication event"; exit 1; }
+            # A merge to protected main is the authorization to evaluate the
+            # declared, qualified release; no separate maintainer dispatch.
+          fi
           test "$RELEASE_STATUS" = released || { echo "::error::Release declaration must be released"; exit 1; }
           test "$QUALIFICATION_STATUS" = qualified || { echo "::error::Release must be qualified"; exit 1; }
       - name: Require pinned v2.7 qualification evidence and explicit GO
@@ -88,6 +109,10 @@ jobs:
           PY
           candidate_sha="$(python3 -c 'import json; print(json.load(open("method/v2.7-release-evidence.json"))["candidate_sha"])')"
           git merge-base --is-ancestor "$candidate_sha" "$RELEASE_SHA" || { echo "::error::Evidence candidate SHA is not an ancestor of release commit"; exit 1; }
+      - name: Reject stale candidate release notes before publication
+        env:
+          NOTES_PATH: ${{ steps.release.outputs.notes_path }}
+        run: python3 tools/verify_published_release.py preflight "$NOTES_PATH"
       - name: Create or verify declared release tag
         env:
           TAG: ${{ steps.release.outputs.tag }}
@@ -107,7 +132,7 @@ jobs:
             git tag -a "$TAG" "$GITHUB_SHA" -m "$TITLE"
             git push origin "$TAG"
           fi
-      - name: Publish declared GitHub Release if absent
+      - name: Publish or reconcile declared GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag }}
@@ -123,3 +148,29 @@ jobs:
             gh release create "$TAG" --verify-tag --title "$TITLE" --notes-file "$NOTES_PATH" --latest
           fi
           gh release view "$TAG" >/dev/null
+      - name: Verify published release matches declaration
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          TITLE: ${{ steps.release.outputs.title }}
+          NOTES_PATH: ${{ steps.release.outputs.notes_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --json tagName,name,body,isDraft,isPrerelease > "$RUNNER_TEMP/published-release.json"
+          gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name > "$RUNNER_TEMP/latest-release-tag"
+          python3 tools/verify_published_release.py postflight "$RUNNER_TEMP/published-release.json" "$NOTES_PATH" "$TAG" "$TITLE" "$(cat "$RUNNER_TEMP/latest-release-tag")"
+      - name: Record publication outcome
+        if: success()
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+          TITLE: ${{ steps.release.outputs.title }}
+        run: |
+          {
+            echo "## Verified release publication"
+            echo "- Release: $TITLE"
+            echo "- Tag: $TAG"
+            echo "- Commit: $GITHUB_SHA"
+            echo "- Publication: https://github.com/$GITHUB_REPOSITORY/releases/tag/$TAG"
+            echo "- Qualification: PASS; published notes and latest pointer verified"
+          } >> "$GITHUB_STEP_SUMMARY"
