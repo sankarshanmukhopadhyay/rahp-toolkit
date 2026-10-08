@@ -42,7 +42,7 @@ def main() -> int:
     release_status = (release_declaration.get("release") or {}).get("status")
     # The review pack is pinned to the last published release during staging.
     # A candidate must not silently become the reviewed/assured baseline.
-    review_release = versioning.get("stable_release") if release_status == "released" else "v2.6.0"
+    review_release = versioning.get("stable_release") if release_status == "released" else (load_yaml("method/v2.7-release-candidate.yaml").get("candidate") or {}).get("base_tag")
     ledger = load_yaml("method/review/claim-evidence-ledger.yaml")
     challenges = load_yaml("method/review/false-assurance-challenges.yaml")
 
