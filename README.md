@@ -64,6 +64,8 @@ The optional [R3 reproducibility and challenge profile](docs/reproducibility-cha
 
 A runnable [R1–R3 worked reasoning example](docs/reasoning-worked-example.md) demonstrates bounded evidence adequacy, historical applicability and challenge handling with deterministic tests.
 
+For independent evaluation, use the [R1–R3 adoption exercise](docs/reasoning-adoption-exercise.md), [evidence record](docs/reasoning-adoption-record.md), and [release-readiness decision record](docs/reasoning-release-readiness.md). These distinguish internal checks from external consumer evidence.
+
 ## Start adopting RAHP
 
 **You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
