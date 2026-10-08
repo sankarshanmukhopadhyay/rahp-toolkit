@@ -45,6 +45,8 @@ R1 PASS says only that the supplied observations satisfy a **declared structural
 
 This example is a *consumer orchestration*, not a new versioned RAHP profile or an authoritative policy composition. The example's run outcome mapping is illustrative and must not be used as a production assurance rule. It does not modify the assessor-result v1, reasoning trace, R1–R3 APIs, or assurance controller.
 
+To run an uncoached assessment with fresh fixtures, use the [independent adoption exercise](reasoning-adoption-exercise.md) and [evidence-recording template](reasoning-adoption-record.md). Release decisions are tracked in the [readiness record](reasoning-release-readiness.md).
+
 ## What an adopter still needs
 
 An independent adopter must retrieve and authenticate real source material, govern authority and source selection, declare a justified freshness/temporal policy, verify actual run independence, and retain challenge handling and terminal assurance within its authorized processes.
