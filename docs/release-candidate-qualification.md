@@ -51,6 +51,10 @@ The existing `tools/validate_v26_release.py` explicitly pins v2.6.0, Commander, 
 
 The existing publisher is declaration-driven and creates/verifies tags. It must not be triggered for a candidate until all metadata and qualification checks agree. Use the governed pinned codename pool and history; do not invent a codename.
 
+## Explicit publication authorization
+
+The publication workflow is **manual-only**. A metadata push to `main` must not create a tag, create a GitHub Release, or change which release is marked latest. Following a separately evidenced maintainer GO decision, dispatch `.github/workflows/release.yml` on the qualified `main` commit with `release_tag` equal to the declared tag and `confirm_publication` equal to `PUBLISH`. The workflow checks both inputs, `released` status, `qualified` qualification status, and reruns release qualification before any tag operation. Dispatching is an explicit publication action; merely merging qualification metadata is not.
+
 ## Decision record template
 
 | Gate | Pinned evidence URL / SHA | Result | Reviewer |
