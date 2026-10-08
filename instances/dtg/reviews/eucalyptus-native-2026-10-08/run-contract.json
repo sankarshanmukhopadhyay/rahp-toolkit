@@ -1,0 +1,542 @@
+{
+  "assessor_revision": "09e5319a451685d23734879b2c94778e91d7ce2a",
+  "assessor_sha256": "71aafff25c6e0acff88dde71fb3b71b0c334ff6a68294f9d8a11437462a4b6d4",
+  "baseline_contract_sha256": "229415fb10f315e43908550ea9349201f1c148f09fc1e5286cd81cfe45b4a60e",
+  "boundary": "Supplemental component/native-fixture evidence. No consequential proposition is automatically closed.",
+  "build_environment": {
+    "CARGO_BUILD_JOBS": "2",
+    "CARGO_INCREMENTAL": "0",
+    "CARGO_PROFILE_DEV_BUILD_OVERRIDE_CODEGEN_UNITS": "1",
+    "CARGO_PROFILE_DEV_CODEGEN_UNITS": "1",
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_TARGET_DIR": "/home/runner/work/_temp/native-target",
+    "LD_LIBRARY_PATH": "/opt/hostedtoolcache/Python/3.13.15/x64/lib",
+    "PKG_CONFIG_PATH": "/opt/hostedtoolcache/Python/3.13.15/x64/lib/pkgconfig",
+    "RUSTUP_TOOLCHAIN": "1.95.0"
+  },
+  "created_at": "2026-10-08T05:40:34.985532+00:00",
+  "executor_sha256": "1a437283bd7a5736f2b786e02239751accab71d42db510e45550853d897f34a2",
+  "schema": "rahp-eucalyptus-native-evidence/v1",
+  "selection": null,
+  "sources": [
+    {
+      "path": "sources/affinidi-tdk-rs",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-tdk-rs",
+      "revision": "a1611baa011620a6ca62649b105c2b8c898f2653",
+      "tag_object": "b174f86e4e2fb5c048c3ee2b12ec98bce2bd9659"
+    },
+    {
+      "path": "sources/affinidi-trust-registry-rs",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-trust-registry-rs",
+      "revision": "c77052f9bffe8bb7b4a3f357d9ef54cf632950f0",
+      "tag_object": "89f8979c42c276427b9b664289cb9e2969dacae0"
+    },
+    {
+      "path": "sources/affinidi-tsp-dart",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-tsp-dart",
+      "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78",
+      "tag_object": "8a7347c0b184528dd153cc694f6208f7f49e2d5e"
+    },
+    {
+      "path": "sources/affinidi-tsp-go",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-tsp-go",
+      "revision": "d32ca7cdde208e93509c1f140ad7ee04d52ca7cc",
+      "tag_object": "85dc84159e26111e537f4b38e6dd36e8789de34b"
+    },
+    {
+      "path": "sources/affinidi-webvh-service",
+      "release": "VTI-Eucalyptus",
+      "repository": "affinidi/affinidi-webvh-service",
+      "revision": "1686668623e0bba0e18880074d82794cb929a7fc",
+      "tag_object": "985ce18546eece07f9c25da4af4f4d5985ab3268"
+    },
+    {
+      "path": "sources/didwebvh-rs",
+      "release": "VTI-Eucalyptus",
+      "repository": "decentralized-identity/didwebvh-rs",
+      "revision": "155eb4e71c9d45db57c6f7329f286bbd753e0138",
+      "tag_object": "8718bca6feb2bbe41a6e38e9a61f5f6c8b827060"
+    },
+    {
+      "path": "sources/dtg-credentials",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/dtg-credentials",
+      "revision": "fc9954d8d529d312ebac7ec1d413179857474c96",
+      "tag_object": "ea58f1688bbef54716b7de35f37a0216c59fcdb0"
+    },
+    {
+      "path": "sources/dtgwg-trust-tasks-tf",
+      "release": "VTI-Eucalyptus",
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+      "tag_object": "a6cdf5f1f748b86e0af6543b61c1c6c360a8c068"
+    },
+    {
+      "path": "sources/openvtc",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/openvtc",
+      "revision": "2a4fa2b3c8e831dbe3184a1119c4c87b6f197220",
+      "tag_object": "9f59c7cbb1284c898eaaf7ee27e93cf8d3f276aa"
+    },
+    {
+      "path": "sources/predicate-credential-system",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/predicate-credential-system",
+      "revision": "4be4598563f422b9a3a4e37032d22487836d322c",
+      "tag_object": "cba7740c38bf8ec2242e46f2ff33fab47bf623c6"
+    },
+    {
+      "path": "sources/trust-protocol-interop-lab",
+      "release": "HEAD",
+      "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+      "revision": "895e1af0f441995cada90dad2a429e56885bd394",
+      "role": "evidence-producer/specialist snapshot; outside coordinated release",
+      "tag_object": "895e1af0f441995cada90dad2a429e56885bd394"
+    },
+    {
+      "path": "sources/verifiable-git-infrastructure",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/verifiable-git-infrastructure",
+      "revision": "92f32dd4c107545bd42b009ca55fc1ed4759309d",
+      "tag_object": "39d2f2c6e3de0b0781ac073d661183a1091004d1"
+    },
+    {
+      "path": "sources/verifiable-trust-infrastructure",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+      "tag_object": "e93b977cb084c1dd0f93044c518315d5a81b692f"
+    },
+    {
+      "path": "sources/vta-agent-memory",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/vta-agent-memory",
+      "revision": "85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5",
+      "tag_object": "982e542b08bffe82f07e5166d0eb6e92424657c1"
+    },
+    {
+      "path": "sources/vta-mobile-agent-ios",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/vta-mobile-agent-ios",
+      "revision": "863a1e912042b28908ec2cf3675677ad9c151e0e",
+      "tag_object": "e68e325423cfed1cb01c97a80f442af196c82c6b"
+    },
+    {
+      "path": "sources/vti-push-gateway",
+      "release": "VTI-Eucalyptus",
+      "repository": "OpenVTC/vti-push-gateway",
+      "revision": "44342121e161ccb12e43013f33ce80abb2486acb",
+      "tag_object": "2eeccd4465b05e19f9e0a0f6f2d9a07c733eb400"
+    }
+  ],
+  "suites": [
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-openvtc",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "openvtc",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-verifiable-trust-infrastructure",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-affinidi-tdk-rs",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "affinidi-tdk-rs",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-affinidi-webvh-service",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "affinidi-webvh-service",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-affinidi-trust-registry-rs",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "affinidi-trust-registry-rs",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-dtgwg-trust-tasks-tf",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "dtgwg-trust-tasks-tf",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-verifiable-git-infrastructure",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "verifiable-git-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-didwebvh-rs",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "didwebvh-rs",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-dtg-credentials",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "dtg-credentials",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-predicate-credential-system",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "predicate-credential-system",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-vta-agent-memory",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "vta-agent-memory",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "id": "rust-vti-push-gateway",
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "source": "vti-push-gateway",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "id": "go-tsp",
+      "purpose": "Independent Go TSP implementation vectors.",
+      "source": "affinidi-tsp-go",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "dart",
+        "test",
+        "packages/affinidi_tsp/test",
+        "--reporter=json"
+      ],
+      "id": "dart-tsp",
+      "purpose": "Dart vectors; package runtime setup is separately required.",
+      "source": "affinidi-tsp-dart",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "dart",
+        "test",
+        "--reporter=json"
+      ],
+      "id": "dart-tsp-package",
+      "purpose": "Same tagged Dart tests from their package-relative fixture directory; original invocation retained separately.",
+      "source": "affinidi-tsp-dart",
+      "timeout_seconds": 900,
+      "working_directory": "packages/affinidi_tsp"
+    },
+    {
+      "command": [
+        "swift",
+        "test"
+      ],
+      "id": "ios-approval",
+      "purpose": "Swift owner approval component tests; Apple platform prerequisites apply.",
+      "source": "vta-mobile-agent-ios",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "python3",
+        "experiments/dtg-data-room-runtime/run_current_openvtc.py",
+        "--target",
+        "../verifiable-trust-infrastructure",
+        "--output",
+        "../../output/lab-room.json"
+      ],
+      "id": "lab-room-handoff",
+      "purpose": "Actual producer admission against the Eucalyptus pin; older hardcoded target must fail closed.",
+      "source": "trust-protocol-interop-lab",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "python3",
+        "experiments/dtg-protected-access/current_openvtc_context.py",
+        "--checkout",
+        "../verifiable-trust-infrastructure",
+        "--context",
+        "A",
+        "--verifier",
+        "https://verifier.example.invalid",
+        "--purpose",
+        "eucalyptus-cleanroom",
+        "--challenge",
+        "eucalyptus-960",
+        "--client-seed",
+        "1"
+      ],
+      "id": "lab-privacy-handoff",
+      "purpose": "Actual source-compatible privacy probe attempt; incompatible source pins cannot become new runtime evidence.",
+      "source": "trust-protocol-interop-lab",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "vtc-service",
+        "--test",
+        "it",
+        "auth_authcrypt_sender_binding::"
+      ],
+      "id": "vtc-sender",
+      "propositions": [
+        "EUC-01"
+      ],
+      "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "vtc-service",
+        "--test",
+        "it",
+        "acl_self_edit::"
+      ],
+      "id": "vtc-self-edit",
+      "propositions": [
+        "EUC-03"
+      ],
+      "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "vtc-service",
+        "--test",
+        "it",
+        "unrestricted_admin_consent::"
+      ],
+      "id": "vtc-consent",
+      "propositions": [
+        "EUC-04"
+      ],
+      "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "vta-service",
+        "--test",
+        "it",
+        "push_new_attempt_freshness::"
+      ],
+      "id": "vta-freshness",
+      "propositions": [
+        "EUC-05"
+      ],
+      "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "vta-service",
+        "--test",
+        "it",
+        "refresh_trust_task::"
+      ],
+      "id": "vta-refresh",
+      "propositions": [
+        "EUC-05"
+      ],
+      "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "vti-rooms",
+        "-p",
+        "vti-rooms-dtg",
+        "-p",
+        "room-host"
+      ],
+      "id": "rooms-native",
+      "propositions": [
+        "EUC-07",
+        "EUC-13"
+      ],
+      "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "vti-vetting-pcs"
+      ],
+      "id": "vetting-native",
+      "propositions": [
+        "EUC-08"
+      ],
+      "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "vti-e2e-tests"
+      ],
+      "id": "e2e-native",
+      "propositions": [
+        "EUC-01",
+        "EUC-05",
+        "EUC-06"
+      ],
+      "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+      "source": "verifiable-trust-infrastructure",
+      "timeout_seconds": 900
+    }
+  ],
+  "versions": {
+    "cargo": {
+      "output": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)\n",
+      "path": "/home/runner/.cargo/bin/cargo",
+      "returncode": 0
+    },
+    "dart": {
+      "output": "Dart SDK version: 3.10.0 (stable) (Thu Nov 6 05:24:55 2025 -0800) on \"linux_x64\"\n",
+      "path": "/home/runner/work/_temp/native-toolchains/dart-sdk/bin/dart",
+      "returncode": 0
+    },
+    "go": {
+      "output": "go version go1.27.0 linux/amd64\n",
+      "path": "/opt/hostedtoolcache/go/1.27.0/x64/bin/go",
+      "returncode": 0
+    },
+    "rustc": {
+      "output": "rustc 1.95.0 (59807616e 2026-04-14)\n",
+      "path": "/home/runner/.cargo/bin/rustc",
+      "returncode": 0
+    },
+    "swift": {
+      "output": "Swift version 6.4 (swift-6.4-RELEASE)\nTarget: x86_64-unknown-linux-gnu\n",
+      "path": "/usr/local/bin/swift",
+      "returncode": 0
+    }
+  }
+}

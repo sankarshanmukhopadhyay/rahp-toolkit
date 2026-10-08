@@ -1,0 +1,317 @@
+{
+  "schema": "rahp-eucalyptus-native-disposition/v1",
+  "process_state": "complete",
+  "assurance_state": "INDETERMINATE",
+  "run_id": 37733481776,
+  "job_id": 113167691316,
+  "source_assessor_revision": "fdbbff0e4f7b34f49305452dea3f0b9dccb59384",
+  "artifact": {
+    "id": 11535040973,
+    "path": "native-evidence.zip",
+    "sha256": "972cc23ed99bc3e5cac0c4559941fa6ddb242bc622b3590a211a6a6a3217eebe",
+    "bytes": 830225,
+    "inner_root_sha256": "9894628403748b1a884071746a9da4f48a52779c938201d710715a12753e92ad"
+  },
+  "closed_consequential_propositions": [],
+  "propositions": [
+    {
+      "id": "EUC-01",
+      "state": "evidence_required",
+      "owner": "VTI / Trust Tasks",
+      "supplemental_attempts": [
+        {
+          "id": "vtc-sender",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "e2e-native",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Execute signed/unsigned, wrong-sender and nested-transport requests through VTA, VTC, mediator and push doors; verify zero forbidden effects.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-02",
+      "state": "evidence_required",
+      "owner": "DTG Credentials / VTI",
+      "supplemental_attempts": [
+        {
+          "id": "rust-dtg-credentials",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Exercise both substitution directions and revoke authority between verification and commit.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-03",
+      "state": "evidence_required",
+      "owner": "VTI / deployment operator",
+      "supplemental_attempts": [
+        {
+          "id": "vtc-self-edit",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Execute label-only, widening, narrowing, sole-admin and multiple-person configurations across HTTPS/DIDComm/TSP; assert audit-before-effect.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-04",
+      "state": "evidence_required",
+      "owner": "VTI / community governance",
+      "supplemental_attempts": [
+        {
+          "id": "vtc-consent",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Exercise repeated approver, requester approval, stale approval, role reduction, threshold change, cancellation, cooling-off and real single-person/multi-person policy.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-05",
+      "state": "evidence_required",
+      "owner": "VTI / mediator",
+      "supplemental_attempts": [
+        {
+          "id": "vta-freshness",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "vta-refresh",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "e2e-native",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Capture and replay identical task, changed payload under same ID, expired consent and post-restart retries; inspect effects and durable state.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-06",
+      "state": "evidence_required",
+      "owner": "TDK / Go / Dart / browser",
+      "supplemental_attempts": [
+        {
+          "id": "go-tsp",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "dart-tsp-package",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "rust-affinidi-tdk-rs",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "e2e-native",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Execute independent byte vectors and old/new endpoint pairs, nested mediator sends, restart and forged relationship transitions.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-07",
+      "state": "evidence_required",
+      "owner": "VTI Rooms / deployment operator",
+      "supplemental_attempts": [
+        {
+          "id": "rooms-native",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Run host, native and browser participants; remove member, rekey, rotate custodian, replay old epoch and corrupt Merkle record.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-08",
+      "state": "evidence_required",
+      "owner": "PCS / DPIP specialist / VTI",
+      "supplemental_attempts": [
+        {
+          "id": "vetting-native",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "rust-predicate-credential-system",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Execute duplicate-vetter, wrong-context, withdrawn-vetter, nonce replay and public/hidden A-B journeys with observable transcripts.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-09",
+      "state": "evidence_required",
+      "owner": "DPIP specialist / OpenVTC / VTA",
+      "supplemental_attempts": [
+        {
+          "id": "rust-openvtc",
+          "state": "EXECUTED_NONZERO"
+        }
+      ],
+      "remaining_retest": "Compare two contexts through issuance, presentation, status discovery, task retention and retirement; measure stable joins and required disclosures.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-10",
+      "state": "evidence_required",
+      "owner": "VGI / VTC / forge operator",
+      "supplemental_attempts": [
+        {
+          "id": "rust-verifiable-git-infrastructure",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Run GitHub and Forgejo adapters against sandbox forges; bypass PR gate, revoke member after approval, replay webhook, exercise break-glass and inspect signer attribution.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-11",
+      "state": "evidence_required",
+      "owner": "TDK / mediator operator",
+      "supplemental_attempts": [
+        {
+          "id": "rust-affinidi-tdk-rs",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Run unauthorized and authorized inspect/purge/patch/reload tasks; verify sender proof, ACL, restart and audit on every transport.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-12",
+      "state": "evidence_required",
+      "owner": "TDK / DID hosting / browser",
+      "supplemental_attempts": [
+        {
+          "id": "rust-affinidi-webvh-service",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "rust-didwebvh-rs",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Execute private/IP-encoding/redirect/rebinding vectors through real resolver, mediator client and DID hosting rather than the URL predicate alone.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-13",
+      "state": "evidence_required",
+      "owner": "VTA / VTC / governance operator",
+      "supplemental_attempts": [
+        {
+          "id": "rooms-native",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Tamper, truncate, roll back and rotate keys; independently verify chains and reconstruct a contested action after agent replacement.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-14",
+      "state": "evidence_required",
+      "owner": "VTI / TSP PQ",
+      "supplemental_attempts": [
+        {
+          "id": "rust-affinidi-tdk-rs",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "rust-dtg-credentials",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "e2e-native",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Exercise mixed algorithms, absent hybrid member, wrong key type, malformed signature and downgraded peer; pin actual crypto packages.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-15",
+      "state": "evidence_required",
+      "owner": "Trust registry / relying-party operator",
+      "supplemental_attempts": [
+        {
+          "id": "rust-affinidi-trust-registry-rs",
+          "state": "EXECUTED_NONZERO"
+        }
+      ],
+      "remaining_retest": "Run unauthorized write, replay, key rotation, stale status and cross-context recognition; verify policy version, effective time and audit.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-16",
+      "state": "evidence_required",
+      "owner": "Mobile / push / VTA",
+      "supplemental_attempts": [
+        {
+          "id": "rust-vti-push-gateway",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "ios-approval",
+          "state": "EXECUTED_NONZERO"
+        }
+      ],
+      "remaining_retest": "Exercise unsolicited pairing, forged push, altered display/action digest, decline, expiry and revoked device through physical approval journey.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-17",
+      "state": "evidence_required",
+      "owner": "Agent memory / VTA operator",
+      "supplemental_attempts": [
+        {
+          "id": "rust-vta-agent-memory",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Feed delimiter escape, command injection, excessive record and cross-owner recall through actual MCP consumer; observe decisions and stored bytes.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-18",
+      "state": "evidence_required",
+      "owner": "RP SDK / browser operator",
+      "supplemental_attempts": [],
+      "remaining_retest": "Run wrong recipient, stale token, reused challenge, deeply nested payload and modified signed token through actual relying service.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-19",
+      "state": "evidence_required",
+      "owner": "All component maintainers / RAHP",
+      "supplemental_attempts": [
+        {
+          "id": "rust-dtgwg-trust-tasks-tf",
+          "state": "EXECUTED_PASS"
+        }
+      ],
+      "remaining_retest": "Build locked consumers; compare resolved package identities to coordinated sources and execute old/new request-schema and lifecycle pairs.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-20",
+      "state": "evidence_required",
+      "owner": "Community governance / client maintainers",
+      "supplemental_attempts": [],
+      "remaining_retest": "Run assistive-technology and unavailable-device journeys; document supported alternatives and verify a challenged decision can be corrected without bypassing authority.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    }
+  ],
+  "limits": [
+    "Counts aggregate overlapping test events and include partial passes from nonzero attempts.",
+    "No actual participant independence, observer privacy, supported Apple device journey, hosted forge or operational resilience conclusion is established.",
+    "Initial sealed campaign remains unchanged."
+  ]
+}

@@ -9,6 +9,10 @@ has_toc: true
 
 The [initial sealed campaign](eucalyptus-clean-room-2026-10-08.md) remains the assessment baseline. [Issue #960](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/960) tracks supplemental evidence; collecting native tests does not automatically close its consequential composition propositions.
 
+## Published native result
+
+The [retained native packet](../../instances/dtg/reviews/eucalyptus-native-2026-10-08/report.md) records the completed [CI run](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/37733481776): 26 attempts, with 19 passing, four nonzero and three unavailable. Eight focused consuming-path fixture suites passed. Aggregate counts are 11,528 passing events, including partial passes from failed attempts; these counts overlap and are not assurance claims. The exact downloaded archive, original machine records and detailed residual disposition are retained with their verified hashes. Overall assurance remains INDETERMINATE and all 20 consequential propositions remain evidence-required.
+
 ## Run the supplemental collector
 
 Provision Rust 1.95.0, Go 1.27.0, Dart 3.10.0, Python 3.11+ and RAHP dependencies. Linux Rust builds also need the system prerequisites declared by the tagged projects, including D-Bus development headers and `pkg-config`; OpenVTC also requires PC/SC headers. Apple tests require the actual supported Apple platform/toolchain and binary inputs.

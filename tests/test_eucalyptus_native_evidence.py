@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
@@ -12,6 +13,16 @@ import eucalyptus_native_evidence as native
 
 
 class NativeEvidenceTests(unittest.TestCase):
+    def test_rejected_cli_reuse_preserves_every_sealed_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            output = Path(d) / 'sealed'
+            output.mkdir()
+            (output / 'integrity.json').write_text('{"original":true}')
+            before = {p.name: p.read_bytes() for p in output.iterdir()}
+            with patch.object(sys, 'argv', ['native', '--sources', d, '--output', str(output)]):
+                self.assertEqual(1, native.main())
+            self.assertEqual(before, {p.name: p.read_bytes() for p in output.iterdir()})
+
     def test_cargo_aggregates_suites_without_crediting_ignored(self):
         text = 'test result: ok. 2 passed; 0 failed; 3 ignored;\ntest result: ok. 4 passed; 0 failed; 0 ignored;'
         self.assertEqual({'passed': 6, 'failed': 0, 'skipped': 3}, native.test_counts(['cargo', 'test'], text))
@@ -75,3 +86,4 @@ class NativeEvidenceTests(unittest.TestCase):
 
 
 if __name__ == '__main__': unittest.main()
+
