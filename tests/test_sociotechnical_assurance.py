@@ -2,12 +2,15 @@
 from copy import deepcopy
 import json
 from pathlib import Path
+import tempfile
 import unittest
 
 import yaml
 
 from tools.assurance_record import canonical_record, markdown
-from tools.sociotechnical_assurance import build_record, digest, evaluate, replay, validate_input
+from tools.sociotechnical_assurance import (
+    MAX_INPUT_BYTES, build_record, digest, evaluate, read_json_limited, replay, validate_input,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CORPUS = ROOT / "examples/sociotechnical-assurance"
@@ -18,6 +21,27 @@ def case(prefix):
 
 
 class SociotechnicalAssuranceTests(unittest.TestCase):
+    def test_single_input_size_limit_is_enforced_before_json_parse(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "oversized.json"
+            path.write_bytes(b" " * (MAX_INPUT_BYTES + 1))
+            with self.assertRaisesRegex(ValueError, "size limit"):
+                read_json_limited(path)
+
+    def test_replay_rejects_oversized_corpus_member(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            member = root / "oversized.json"
+            member.write_bytes(b" " * (MAX_INPUT_BYTES + 1))
+            corpus = root / "corpus.json"
+            corpus.write_text(json.dumps({
+                "schema": "rahp-sociotechnical-corpus/v1",
+                "baseline": "test",
+                "cases": [{"path": member.name, "sha256": "0" * 64, "expected_outcome": "PASS"}],
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "size limit"):
+                replay(corpus)
+
     def test_frozen_corpus_expected_outcomes(self):
         report = replay(CORPUS / "corpus.json")
         self.assertEqual(len(report["cases"]), 8)

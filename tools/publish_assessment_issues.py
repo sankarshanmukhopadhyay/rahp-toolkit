@@ -49,6 +49,18 @@ def enforce_publication_repository(repository: str) -> str:
     return repo
 
 
+class GitHubAPIError(RuntimeError):
+    """Sanitized GitHub API failure that never includes the response body."""
+
+    def __init__(self, status_code: int, request_id: str | None = None):
+        self.status_code = status_code
+        self.request_id = request_id
+        detail = f"GitHub API request failed (HTTP {status_code}"
+        if request_id:
+            detail += f"; request id {request_id}"
+        super().__init__(detail + ")")
+
+
 def request(method: str, url: str, token: str, payload=None):
     data = json.dumps(payload).encode() if payload is not None else None
     req = urllib.request.Request(
@@ -67,8 +79,10 @@ def request(method: str, url: str, token: str, payload=None):
             raw = response.read().decode()
             return json.loads(raw) if raw else {}
     except urllib.error.HTTPError as exc:
-        body = exc.read().decode(errors="replace")
-        raise RuntimeError(f"GitHub API {method} {url} failed: {exc.code} {body}") from exc
+        request_id = exc.headers.get("X-GitHub-Request-Id") if exc.headers else None
+        # Do not read or surface the response body: GitHub error payloads can echo
+        # submitted content and are commonly included in CI logs by callers.
+        raise GitHubAPIError(exc.code, request_id) from None
 
 
 def ensure_label(repo: str, label: str, token: str):
@@ -77,8 +91,8 @@ def ensure_label(repo: str, label: str, token: str):
     try:
         request("GET", url, token)
         return
-    except RuntimeError as exc:
-        if " 404 " not in str(exc):
+    except GitHubAPIError as exc:
+        if exc.status_code != 404:
             raise
     palette = {
         "assessment-required": "d73a4a",

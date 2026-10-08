@@ -9,9 +9,9 @@ parent: Reference
 
 ## Unreleased
 
-v2.7.0 is staged for qualification; no publication claim.
+No subsequent release is announced. Post-release security hardening and evidence follow-up is tracked in [#958](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/958).
 
-## v2.7.0 — candidate — Common Rose
+## v2.7.0 — 2026-10-08 — Common Rose
 
 - Assessment routing and queue reliability, onboarding and adoption documentation.
 - Optional experimental R1 evidence adequacy, R2 temporal provenance and R3 reproducibility/challenge profiles.

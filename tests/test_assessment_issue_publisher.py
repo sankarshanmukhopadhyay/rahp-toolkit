@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import importlib.util
+from io import BytesIO
 from pathlib import Path
 import unittest
+from unittest.mock import patch
+import urllib.error
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = ROOT / "tools" / "publish_assessment_issues.py"
@@ -27,6 +30,23 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                 "body": f"<!-- rahp-assessment-key:{self.key} -->",
             },
         ]
+
+    def test_api_errors_never_expose_response_body(self) -> None:
+        secret_body = b'{"message":"private request detail"}'
+        error = urllib.error.HTTPError(
+            "https://api.github.com/repos/example/private",
+            422,
+            "Unprocessable Entity",
+            {"X-GitHub-Request-Id": "request-123"},
+            BytesIO(secret_body),
+        )
+        with patch.object(publisher.urllib.request, "urlopen", side_effect=error):
+            with self.assertRaises(publisher.GitHubAPIError) as caught:
+                publisher.request("POST", "https://api.github.com/repos/example/private", "token")
+        self.assertNotIn("private request detail", str(caught.exception))
+        self.assertNotIn(secret_body.decode(), str(caught.exception))
+        self.assertIn("HTTP 422", str(caught.exception))
+        self.assertEqual(caught.exception.request_id, "request-123")
 
     def test_earliest_closed_owner_survives_duplicate_history(self) -> None:
         index = publisher.issues_by_key(self.issues)
