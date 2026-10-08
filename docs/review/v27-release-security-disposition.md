@@ -1,6 +1,6 @@
 # v2.7.0 candidate security and privacy review disposition
 
-**Status:** BOUNDED_REVIEW_COMPLETE / RELEASE_SECURITY_GATE_PENDING  
+**Status:** BOUNDED_REVIEW_COMPLETE / RELEASE_OWNER_RESIDUAL_ACCEPTANCE_RECORDED  
 **Date:** 2026-10-08  
 **Candidate SHA:** `0c1773640e211157766574d295f58360b591a358`  
 **Release enforcement SHA:** `86266def567009a87aae7c756f339777d60be021`  
@@ -38,9 +38,9 @@ This is a bounded source/control review, **not** a complete adversarial security
 - [ ] Record security gate PASS only if the reviewer concludes no release-blocking unresolved findings.
 - [ ] Obtain final maintainer GO **after** complete seven-gate evidence inspection. The prior conditional risk acceptance is not that final GO.
 
-## Release disposition
+## Initial pre-disposition release status (superseded by the owner-risk disposition below)
 
-**NO-GO.** CI is green, but a successful CI run is not security review. The candidate is not independently adopted; no terminal assurance claim is authorized. Do not create `method/v2.7-release-evidence.json` with fabricated PASS entries or dispatch the release workflow until all mandatory evidence exists.
+**NO-GO at initial review.** CI is green, but a successful CI run is not security review. The candidate is not independently adopted; no terminal assurance claim is authorized. Do not create `method/v2.7-release-evidence.json` with fabricated PASS entries or dispatch the release workflow until all mandatory evidence exists.
 
 ## Release owner risk disposition — 2026-10-08
 
