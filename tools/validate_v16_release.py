@@ -40,9 +40,9 @@ def main() -> int:
         errors.append("PROJECT-STATUS stable_release must be at least 1.6.0")
     if semver_tuple(str(status.get("development_target", "0.0.0"))) < semver_tuple("1.6.0"):
         errors.append("PROJECT-STATUS development_target must be at least 1.6.0")
-    if status.get("release_status") != "released":
+    if semver_tuple(str(status.get("stable_release", "0.0.0"))) == semver_tuple("1.6.0") and status.get("release_status") != "released":
         errors.append("v1.6.0 release commit must declare release_status released")
-    if status.get("qualification_status") != "qualified":
+    if semver_tuple(str(status.get("stable_release", "0.0.0"))) == semver_tuple("1.6.0") and status.get("qualification_status") != "qualified":
         errors.append("v1.6.0 release commit must declare qualification_status qualified")
     if semver_tuple(str(status.get("stable_release", "0.0.0"))) == semver_tuple("1.6.0") and status.get("qualification_contract") != "method/v1.6-release-qualification.yaml":
         errors.append("v1.6 release state must point at the v1.6 qualification contract")
