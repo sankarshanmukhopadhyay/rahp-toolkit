@@ -1,19 +1,25 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.7.0 (candidate) · Common Rose · CC-BY 4.0
+Release v2.7.0 · Common Rose · CC-BY 4.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
 RAHP is deliberately evidence-conservative: **missing evidence never becomes PASS**. Workflow success is not assurance success. A component PASS does not imply a composition PASS, and normative convergence does not silently become implementation conformance.
 
-## v2.7.0 candidate: maintenance and optional profiles
+## v2.7.0 — qualified release: maintenance and optional profiles
 
-**Not yet qualified or published.** v2.7.0 retains the v2.6.0 stable engine/result/evidence contracts. Post-v2.6 maintenance, adoption guidance and R1–R3 reasoning profiles remain subject to pinned-SHA qualification. Optional reasoning outputs are not terminal assurance; independent adoption is NOT_YET_TESTED. See [candidate release notes](docs/releases/v2.7.0.md).
+**Published and qualified on 2026-10-08.** v2.7.0 consolidates post-v2.6 maintenance of assessment ownership, routing and onboarding, alongside optional experimental sociotechnical and reasoning profiles. It retains the v2.6.0 stable engine, result and evidence-retention contracts.
 
-## What v2.6.0 adds
+- Assessment and queue-ownership reliability, standalone specification examination, and adoption guidance.
+- Optional R1 evidence adequacy, R2 temporal provenance and R3 reproducibility/challenge profiles, with synthetic worked examples and an independent-consumer exercise kit.
+- Independent adoption remains **NOT_YET_TESTED**. Optional profiles do not establish terminal assurance or independent reproduction.
 
-v2.6.0 **Full-Stack Assurance Orchestration and Explicit Evidence State** makes three claims independently inspectable: whether orchestration completed, what assurance outcome the evidence supports, and how mature that evidence is.
+The release security disposition was bounded and non-independent; documented residual risks were accepted for this release, not remediated or independently audited. See the [v2.7.0 release notes](docs/releases/v2.7.0.md), [qualification record](method/v2.7-release-qualification.yaml), [security disposition](docs/review/v27-release-security-disposition.md), and [GitHub release](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.7.0).
+
+## Stable foundation established in v2.6.0
+
+v2.6.0 **Full-Stack Assurance Orchestration and Explicit Evidence State** made three claims independently inspectable: whether orchestration completed, what assurance outcome the evidence supports, and how mature that evidence is.
 
 - explicit `process_state`, `assurance_state`, and `evidence_maturity` dimensions;
 - explicit dispositions for RAHP, security, composition, DRARM, and specialist-assessment lenses;
@@ -106,11 +112,11 @@ DPIP is an independently governed privacy specialist that can return portable ex
 
 ## Coordinated portfolio context
 
-v2.6.0 packages Full-Stack Assurance Orchestration and Explicit Evidence State as an additive RAHP product capability. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
+v2.7.0 preserves Full-Stack Assurance Orchestration and Explicit Evidence State as the stable RAHP product foundation. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
 
-The current maintained cross-repository context is **RAHP v2.6.0**, **DPIP v0.3.0**, and **Trust Protocol Interop Lab v0.7.0**. These are independently versioned capabilities joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
+DPIP and the Trust Protocol Interop Lab remain independently governed collaborators. Consult each repository’s release records for current versions. The repositories are joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
 
-The v2.6 release preserves those capabilities and adds explicit full-stack lens/evidence disposition while retaining the stable v1 engine/result/evidence contracts.
+The v2.7.0 release retains the stable v1 engine/result/evidence contracts and adds optional experimental profiles and adoption material without making those profiles part of terminal assurance.
 
 ## Quick start
 
@@ -124,10 +130,13 @@ Start with [How RAHP works](docs/how-rahp-works.md), [RAHP data model](docs/data
 
 ## Current release
 
-v2.6.0 **Commander** (*Moduza procris*) is the stable **Full-Stack Assurance Orchestration and Explicit Evidence State** release.
+v2.7.0 **Common Rose** (*Pachliopta aristolochiae*) is the current **published and qualified** release. It retains the v2.6 stable assurance contracts and adds maintenance, adoption guidance, and optional experimental profiles. R1–R3 and sociotechnical assurance do not change terminal assurance semantics; independent adoption remains **NOT_YET_TESTED**.
 
-- [v2.6.0 release notes](docs/releases/v2.6.0.md)
-- [v2.6 qualification contract](method/v2.6-release-qualification.yaml)
+- [v2.7.0 release notes](docs/releases/v2.7.0.md)
+- [v2.7.0 qualification contract](method/v2.7-release-qualification.yaml)
+- [v2.7.0 release evidence](method/v2.7-release-evidence.json)
+- [v2.7.0 security disposition](docs/review/v27-release-security-disposition.md)
+- [GitHub Release v2.7.0](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.7.0)
 - [VTI assessment index](docs/vti-assessment-index.md)
 - [VTI programme reconciliation](docs/vti-programme-reconciliation.md)
 - [Project status](PROJECT-STATUS.yaml)
@@ -138,8 +147,10 @@ Historical release records remain immutable. Release presentation metadata follo
 
 ## Release lineage
 
-| Version | Codename | Historical boundary |
+| Version | Codename | Release boundary |
 |---|---|---|
+| v2.7.0 | **Common Rose** | Qualified maintenance and optional experimental profiles |
+| v2.6.0 | **Commander** | Full-Stack Assurance Orchestration and Explicit Evidence State |
 | v2.5.0 | **Psyche** | Continuous Realization Assurance and Portable Adoption |
 | v2.4.0 | **Redbreast Jezebel** | VTI Composition Assessment and Evidence-Conservative Reconciliation |
 | v2.3.0 | **Common Five-ring** | Portable Coverage and Source-Preserving Assurance |
