@@ -56,6 +56,8 @@ RAHP is **materiality-governed**: the preferred assurance scope is the smallest 
 
 For a code-level explanation of where assessment reasoning occurs, see [RAHP reasoning architecture](docs/reasoning-architecture.md). For external agents and tool callers, see [agent integration guidance](docs/reasoning-integration.md). RAHP can be used without an agent or LLM.
 
+The optional [evidence adequacy profile](docs/evidence-adequacy.md) experiments with deterministic sufficiency and contradiction semantics; it does not change stable assessor or controller contracts.
+
 ## Start adopting RAHP
 
 **You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
