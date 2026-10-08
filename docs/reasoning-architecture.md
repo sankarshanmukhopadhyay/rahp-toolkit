@@ -72,6 +72,10 @@ The optional [evidence adequacy profile](evidence-adequacy.md) evaluates declare
 
 The optional [temporal and provenance profile](temporal-provenance.md) distinguishes historical target time, knowledge cutoff, evaluation time, claimed effective intervals, and source pins. It does not determine source authority or historical truth and does not modify terminal assurance.
 
+## Reproducibility and challenges
+
+The optional [R3 reproducibility and challenge profile](reproducibility-challenge.md) compares declared input pins, evaluator versions and outcomes, while retaining unresolved challenges. It does not establish independent execution, source authenticity or authoritative adjudication.
+
 ## What remains outside this boundary
 
 RAHP does not automatically confer delegation to an agent, authenticate an agent's principal, approve a policy exception, guarantee freshness of external evidence, or settle a contested substantive judgment. An optional reasoning trace is **not** a chain-of-thought transcript. [The trace profile](reasoning-trace.md) currently validates a bounded explanation only when explicitly invoked by a consumer.
