@@ -1,6 +1,16 @@
+---
+layout: default
+title: "Optional reasoning trace"
+parent: Learn RAHP
+nav_order: 5
+has_toc: true
+permalink: /docs/reasoning-trace/
+---
 # Optional reasoning trace profile (experimental)
 
 Tracking: [#928](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/928).
+
+Read [reasoning architecture](reasoning-architecture.md) first for the distinction between invocation, assessment, and assurance terminalization.
 
 ## Scope and authority
 

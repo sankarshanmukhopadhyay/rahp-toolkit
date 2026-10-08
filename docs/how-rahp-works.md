@@ -7,6 +7,8 @@ parent: Learn RAHP
 ---
 # How RAHP works
 
+**Looking for the code-level reasoning flow or agent independence?** See [Reasoning architecture and boundaries](reasoning-architecture.md) and [Using RAHP with external agents](reasoning-integration.md).
+
 RAHP converts changes in trust-system artefacts into attributable, reproducible and actionable assurance knowledge.
 
 The easiest way to understand RAHP is to separate two layers that work together.

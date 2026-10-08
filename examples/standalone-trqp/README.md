@@ -12,6 +12,8 @@ This is the next exercise after the [smallest Hello RAHP scaffold](../hello-rahp
 
 The subject is a real specification. The three response fixtures are constructed teaching inputs, not captured service traffic. The two specification examples checked by the replay come directly from the retained source. This exercise takes about 20–30 minutes after installing the repository's dependencies.
 
+For a walkthrough of which components perform reasoning, see [reasoning architecture](../../docs/reasoning-architecture.md). For the agent-orchestrated variant of this **same** replay, see [external-agent integration](../../docs/reasoning-integration.md). The retained [F-002 reasoning trace](reasoning-trace-f002.json) is a bounded explanatory artifact, not a controller decision.
+
 ## 1. Bound the question and pin the source
 
 **Question:** What does a schema-valid authorization response establish, and what additional evidence is needed before relying on its authority or time claim?
