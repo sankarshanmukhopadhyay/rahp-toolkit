@@ -10,7 +10,7 @@ candidate:
     engine_revision: '1.3'
     result_schema: 1
     evidence_retention: rahp-evidence-retention-v1
-  codename: null
+  codename: Common Rose
   release_sha: null
   publication_authorized: false
 experimental:
