@@ -41,3 +41,16 @@ This is a bounded source/control review, **not** a complete adversarial security
 ## Release disposition
 
 **NO-GO.** CI is green, but a successful CI run is not security review. The candidate is not independently adopted; no terminal assurance claim is authorized. Do not create `method/v2.7-release-evidence.json` with fabricated PASS entries or dispatch the release workflow until all mandatory evidence exists.
+
+## Release owner risk disposition — 2026-10-08
+
+**Decision scope:** v2.7.0 only, pinned tested baseline `81acbff96f7a7e840a427aae99263eb9f46f041f`. This supplements, but does not rewrite, the earlier bounded review observations. The release owner expressed conditional willingness to accept documented residual risks [here](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/941#issuecomment-6051116581), subsequently instructed publication [here](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/941#issuecomment-6051355105). The review itself was AI-assisted and **not independent or a penetration test**.
+
+| Residual | Severity / decision for this release | Required operational boundary |
+| --- | --- | --- |
+| Publisher API error bodies may reach logs | MODERATE / accepted for publication under canonical-repository-only publication | Use minimum-scope token; do not include secrets or personal information in issue payloads; restrict log access |
+| Optional sociotechnical JSON can be large or contain sensitive evidence | MODERATE / accepted as optional, experimental tooling | Only trusted inputs in controlled environments; bound input size externally and keep output artifacts private |
+| Evidence URL/SHA validator does not authenticate reviewer identity | MODERATE / accepted with explicit human verification requirement | Owner checks linked Actions results and scope before dispatch; do not interpret structural validation as attestation |
+| Dependencies and Actions are not fully hash-pinned | MODERATE / accepted as pre-existing supply-chain exposure | Use repository-controlled Actions permissions and revisit dependency pinning in a subsequent hardening release |
+
+**Bounded release-security conclusion:** No release-blocking exploit was demonstrated in the examined changed surfaces. These four documented residuals are treated as accepted for **this specific release**, not as resolved vulnerabilities or evidence of independent assurance. The `security_review` gate represents this **bounded and disclosed risk disposition only**; it must not be described as an independent audit. The owner must verify this record and the linked CI runs before manually entering `PUBLISH` in the guarded workflow. If the owner does not accept any residual, publication must be withheld.
