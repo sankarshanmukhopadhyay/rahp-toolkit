@@ -1,0 +1,19 @@
+{
+  "assurance_state": "indeterminate",
+  "auxiliary_sources": 2,
+  "campaign_identity": "06bc77950b572bf0154bf01dea9cd6f839856e2ce668b5784fef834f1076a30e",
+  "component_attempts": {
+    "ATTEMPTED_UNAVAILABLE": 18,
+    "EXECUTED_NONZERO": 4,
+    "EXECUTED_PASS": 43
+  },
+  "composition_pass": 0,
+  "governance_disposition": "AI-assisted assessment proposal; no human risk acceptance or conformance grant.",
+  "historical_inputs_used": false,
+  "node_tests_passed": 295,
+  "operator_actions_after_trigger": 0,
+  "process_state": "complete",
+  "propositions": 20,
+  "schema": "rahp-eucalyptus-summary/v1",
+  "sources": 18
+}

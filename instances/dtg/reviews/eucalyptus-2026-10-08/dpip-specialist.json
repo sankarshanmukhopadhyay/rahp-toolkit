@@ -1,0 +1,34 @@
+{
+  "action_required": "Acquire the missing observer/runtime evidence and rerun; do not infer PASS from absence of evidence.",
+  "assessment_id": "dpip-privacy-observability:DTG-VTC-EUCALYPTUS-2026-10-08",
+  "assessor": "DPIP privacy observability",
+  "details": {
+    "correlation": {
+      "effective_join": false,
+      "signal": "not-tested"
+    },
+    "executed": false,
+    "observer_planes": [
+      "host",
+      "verifier",
+      "transport",
+      "audit"
+    ],
+    "ownership_boundary": "DPIP owns privacy interpretation for the declared experiment/observer scope; RAHP owns terminal assurance reconciliation.",
+    "privacy_observability_schema": "dpip-privacy-observability-result/v1",
+    "privacy_result": "evidence-incomplete",
+    "unsupported_inference": [
+      "effective_join=false is not an observed no-join outcome",
+      "No privacy PASS may be inferred"
+    ]
+  },
+  "evidence_used": [
+    "dpip-privacy-observability-result/v1:DTG-VTC-EUCALYPTUS-2026-10-08:result=evidence-incomplete",
+    "observer-planes:host,verifier,transport,audit",
+    "correlation:not-tested|effective_join=false"
+  ],
+  "outcome": "INDETERMINATE",
+  "reason_code": "evidence-incomplete",
+  "residual_risk": "No Eucalyptus-compatible native A/B observations are available to this campaign.; Unsupported inference: effective_join=false is not an observed no-join outcome; Unsupported inference: No privacy PASS may be inferred",
+  "schema": "rahp-assessor-result/v1"
+}

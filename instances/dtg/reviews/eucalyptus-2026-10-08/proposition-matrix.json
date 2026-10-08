@@ -1,0 +1,1742 @@
+{
+  "propositions": [
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519"
+      ],
+      "component_attempt_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ],
+      "control": "document proof plus transport-sender binding",
+      "diagnostic_nonzero_attempts": [
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-vta-didcomm",
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "unauthorized actuation",
+      "id": "EUC-01",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "VTI / Trust Tasks",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "requester",
+      "pressure_cases": {
+        "adversarial": "Execute signed/unsigned, wrong-sender and nested-transport requests through VTA, VTC, mediator and push doors; verify zero forbidden effects.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Task proofs are bound to the actual sender across all consuming doors",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Execute signed/unsigned, wrong-sender and nested-transport requests through VTA, VTC, mediator and push doors; verify zero forbidden effects.",
+      "scenario": "Forged or sender-mismatched task enters an authenticated transport",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vtc-service/tests/it/auth_authcrypt_sender_binding.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "3eeef742d3f997d336d36a7a08e2ac82aaa2f9de611815052a00f1b442186270",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vtc-service/tests/it/auth_authcrypt_sender_binding.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "test/sender-binding.test.js",
+          "repository": "OpenVTC/vti-didcomm-js",
+          "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+          "sha256": "a3be54264f1a363559cd3262ebe21cf22a2b87cf75fc59758b514c8b54bf9283",
+          "url": "https://github.com/OpenVTC/vti-didcomm-js/blob/afd11e1f5dab611118253d2ebaffd1cfee29962a/test/sender-binding.test.js"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vtc-service/tests/it/auth_authcrypt_sender_binding.rs",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "path": "test/sender-binding.test.js",
+          "source": "vti-didcomm-js"
+        }
+      ],
+      "suite_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "rust-dtg-credentials"
+      ],
+      "control": "joint authority/delegation/current-state checks",
+      "diagnostic_nonzero_attempts": [],
+      "evidence_maturity": "source-only",
+      "harm": "unauthorized delegated action",
+      "id": "EUC-02",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "DTG Credentials / VTI",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "principal",
+      "pressure_cases": {
+        "adversarial": "Exercise both substitution directions and revoke authority between verification and commit.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Credential validity, delegation and authority remain non-substitutable",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Exercise both substitution directions and revoke authority between verification and commit.",
+      "scenario": "Valid VAC/VDC with expired or absent mandate reaches consequential execution",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "tests/authority_chain.rs",
+          "repository": "OpenVTC/dtg-credentials",
+          "revision": "fc9954d8d529d312ebac7ec1d413179857474c96",
+          "sha256": "13b81d7415308b4df456efb113258b4e7a93739df1f1c969092fe200d5af690d",
+          "url": "https://github.com/OpenVTC/dtg-credentials/blob/fc9954d8d529d312ebac7ec1d413179857474c96/tests/authority_chain.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "tests/delegation_chain.rs",
+          "repository": "OpenVTC/dtg-credentials",
+          "revision": "fc9954d8d529d312ebac7ec1d413179857474c96",
+          "sha256": "29ecb0b83a2eb95173aca931afa39275833278c78144e908b7e02c20815d140d",
+          "url": "https://github.com/OpenVTC/dtg-credentials/blob/fc9954d8d529d312ebac7ec1d413179857474c96/tests/delegation_chain.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "tests/authority_chain.rs",
+          "source": "dtg-credentials"
+        },
+        {
+          "path": "tests/delegation_chain.rs",
+          "source": "dtg-credentials"
+        }
+      ],
+      "suite_ids": [
+        "rust-dtg-credentials"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ],
+      "control": "ceiling-bound ACL updates and explicit exceptions",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "self-escalation",
+      "id": "EUC-03",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "VTI / deployment operator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "community administrator",
+      "pressure_cases": {
+        "adversarial": "Execute label-only, widening, narrowing, sole-admin and multiple-person configurations across HTTPS/DIDComm/TSP; assert audit-before-effect.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Self-edit restrictions and exception boundaries are enforced at each transport",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Execute label-only, widening, narrowing, sole-admin and multiple-person configurations across HTTPS/DIDComm/TSP; assert audit-before-effect.",
+      "scenario": "One principal attempts widening its own ACL entry",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vtc-service/tests/it/acl_self_edit.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "2683f934dac6b87021522812e256525d86164ece9b54b8b8106bb079389ded51",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vtc-service/tests/it/acl_self_edit.rs"
+        },
+        {
+          "anchor_lines": [
+            20
+          ],
+          "class": "static-specification-analysis",
+          "observation": "The tagged source explicitly documents consent waiver even when other administrator entries exist. Host configuration asserts those identities represent one person; this is a configuration boundary, not a detected exploit.",
+          "path": "vtc-service/src/acl/single_admin.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "f1793a2172efa71918c595d1005b1f555051ca516e8bcbd3c9910925f65ce598",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vtc-service/src/acl/single_admin.rs"
+        },
+        {
+          "anchor_lines": [
+            180
+          ],
+          "class": "static-specification-analysis",
+          "observation": "Default configuration disables single-administrator mode; assessment must distinguish default and explicitly enabled deployment policy.",
+          "path": "vtc-service/src/config.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "552b988873609d8c074ac970c7209f65f3001138ffb83e71ff5759f6a52be454",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vtc-service/src/config.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vtc-service/tests/it/acl_self_edit.rs",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "needle": "waives a consent whether or not",
+          "observation": "The tagged source explicitly documents consent waiver even when other administrator entries exist. Host configuration asserts those identities represent one person; this is a configuration boundary, not a detected exploit.",
+          "path": "vtc-service/src/acl/single_admin.rs",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "needle": "single_admin_mode: false",
+          "observation": "Default configuration disables single-administrator mode; assessment must distinguish default and explicitly enabled deployment policy.",
+          "path": "vtc-service/src/config.rs",
+          "source": "verifiable-trust-infrastructure"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ],
+      "control": "operation-bound approvals plus eligibility and deduplication",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "false independence and unauthorized action",
+      "id": "EUC-04",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "VTI / community governance",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "approver",
+      "pressure_cases": {
+        "adversarial": "Exercise repeated approver, requester approval, stale approval, role reduction, threshold change, cancellation, cooling-off and real single-person/multi-person policy.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "N approvals provide the declared independent authorization under actual host policy",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Exercise repeated approver, requester approval, stale approval, role reduction, threshold change, cancellation, cooling-off and real single-person/multi-person policy.",
+      "scenario": "Duplicate, stale or correlated approvals accumulate toward a threshold",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vtc-service/tests/it/unrestricted_admin_consent.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "72c7610d81813dbb60cfe96c98e12a6be5554871443d7c2ea107cb8290b855f2",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vtc-service/tests/it/unrestricted_admin_consent.rs"
+        },
+        {
+          "anchor_lines": [
+            23
+          ],
+          "class": "static-specification-analysis",
+          "observation": "The node documents that it cannot distinguish one person using multiple identifiers from two people. Cryptographic identity cardinality cannot by itself establish independent people.",
+          "path": "vtc-service/src/acl/single_admin.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "f1793a2172efa71918c595d1005b1f555051ca516e8bcbd3c9910925f65ce598",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vtc-service/src/acl/single_admin.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vtc-service/tests/it/unrestricted_admin_consent.rs",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "needle": "the node cannot",
+          "observation": "The node documents that it cannot distinguish one person using multiple identifiers from two people. Cryptographic identity cardinality cannot by itself establish independent people.",
+          "path": "vtc-service/src/acl/single_admin.rs",
+          "source": "verifiable-trust-infrastructure"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ],
+      "control": "freshness, durable replay state and idempotency",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "duplicate or stale consequential effect",
+      "id": "EUC-05",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "VTI / mediator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "service operator",
+      "pressure_cases": {
+        "adversarial": "Capture and replay identical task, changed payload under same ID, expired consent and post-restart retries; inspect effects and durable state.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Replay and restart cannot create a second authorization path",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Capture and replay identical task, changed payload under same ID, expired consent and post-restart retries; inspect effects and durable state.",
+      "scenario": "A task is replayed across transport change and restart",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vta-service/tests/it/push_new_attempt_freshness.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "227b8d6f4e201c4604611df27be797aa3db8df1ac303bea0714c571c9fa9685f",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vta-service/tests/it/push_new_attempt_freshness.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vta-service/tests/it/refresh_trust_task.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "5b762f88631f49a7ee7a9b10b97f1e4d1e5b002e097a3b9cd57c7c19b5eebdac",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vta-service/tests/it/refresh_trust_task.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vta-service/tests/it/push_new_attempt_freshness.rs",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "path": "vta-service/tests/it/refresh_trust_task.rs",
+          "source": "verifiable-trust-infrastructure"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519"
+      ],
+      "component_attempt_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "go-tsp",
+        "dart-tsp"
+      ],
+      "control": "version-bound codecs and fail-closed state transitions",
+      "diagnostic_nonzero_attempts": [
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-vta-didcomm"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "downgrade or lost relationship authority",
+      "id": "EUC-06",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "TDK / Go / Dart / browser",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "agent owner",
+      "pressure_cases": {
+        "adversarial": "Execute independent byte vectors and old/new endpoint pairs, nested mediator sends, restart and forged relationship transitions.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Transport compatibility does not weaken authentication or relationship semantics",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Execute independent byte vectors and old/new endpoint pairs, nested mediator sends, restart and forged relationship transitions.",
+      "scenario": "Rev 2 client contacts Rev 3 service and relationship state changes",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vectors_test.go",
+          "repository": "affinidi/affinidi-tsp-go",
+          "revision": "d32ca7cdde208e93509c1f140ad7ee04d52ca7cc",
+          "sha256": "08bd1220860da91741afd8e063c1cb760d8bccbc8706237ff43c67ef43fa7bde",
+          "url": "https://github.com/affinidi/affinidi-tsp-go/blob/d32ca7cdde208e93509c1f140ad7ee04d52ca7cc/vectors_test.go"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "packages/affinidi_tsp/test/negative_test.dart",
+          "repository": "affinidi/affinidi-tsp-dart",
+          "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78",
+          "sha256": "5b584f603fef2109b45ebc14fcdfc849d87dc2aef9908d45a9bffe953ed6ec0f",
+          "url": "https://github.com/affinidi/affinidi-tsp-dart/blob/a64814c8043d6af0955a3ce01bfc6033d8daeb78/packages/affinidi_tsp/test/negative_test.dart"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "test/tsp-frame.test.js",
+          "repository": "OpenVTC/vti-didcomm-js",
+          "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+          "sha256": "8e2670a17ee620eaac264b44d6d7741447e95f7d92c732f602fcb4854352e0d6",
+          "url": "https://github.com/OpenVTC/vti-didcomm-js/blob/afd11e1f5dab611118253d2ebaffd1cfee29962a/test/tsp-frame.test.js"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vectors_test.go",
+          "source": "affinidi-tsp-go"
+        },
+        {
+          "path": "packages/affinidi_tsp/test/negative_test.dart",
+          "source": "affinidi-tsp-dart"
+        },
+        {
+          "path": "test/tsp-frame.test.js",
+          "source": "vti-didcomm-js"
+        }
+      ],
+      "suite_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "go-tsp",
+        "dart-tsp"
+      ]
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "lab-room-handoff"
+      ],
+      "control": "epoch rekey and explicit custodian succession",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "confidentiality loss or custody lockout",
+      "id": "EUC-07",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "VTI Rooms / deployment operator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "room member",
+      "pressure_cases": {
+        "adversarial": "Run host, native and browser participants; remove member, rekey, rotate custodian, replay old epoch and corrupt Merkle record.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Room removal and custody succession preserve confidentiality and recoverability",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Run host, native and browser participants; remove member, rekey, rotate custodian, replay old epoch and corrupt Merkle record.",
+      "scenario": "Removed member attempts access after MLS epoch rotation or succession",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vti-rooms/tests/epoch_backfill.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "848c01960d10289c6c71828e8db37e80df4b5153095e6a7077d577ca93a0cd6d",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vti-rooms/tests/epoch_backfill.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vti-rooms/README.md",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "ad50861599dff4b4ffb0183bb7793f20a7cdd9ad511a3b86096ea86a9b102ae9",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vti-rooms/README.md"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vti-rooms/tests/epoch_backfill.rs",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "path": "vti-rooms/README.md",
+          "source": "verifiable-trust-infrastructure"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "lab-room-handoff"
+      ]
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "bounded_component_passes": [
+        "dpip-incomplete-return"
+      ],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "rust-predicate-credential-system",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ],
+      "control": "distinct-attestation predicate and binding",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "false admission or disclosure of vetters",
+      "id": "EUC-08",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "PCS / DPIP specialist / VTI",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "applicant",
+      "pressure_cases": {
+        "adversarial": "Execute duplicate-vetter, wrong-context, withdrawn-vetter, nonce replay and public/hidden A-B journeys with observable transcripts.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Hidden vetting enforces its declared threshold without excess disclosure",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Execute duplicate-vetter, wrong-context, withdrawn-vetter, nonce replay and public/hidden A-B journeys with observable transcripts.",
+      "scenario": "Hidden vetting is replayed or uses correlated attestations",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "tests/pcs_review_regressions.rs",
+          "repository": "OpenVTC/predicate-credential-system",
+          "revision": "4be4598563f422b9a3a4e37032d22487836d322c",
+          "sha256": "66b6f9f5f4e189c5fd9eb4c7d7fc162bc540b5530e28f0cfbe3bde0c930c9190",
+          "url": "https://github.com/OpenVTC/predicate-credential-system/blob/4be4598563f422b9a3a4e37032d22487836d322c/tests/pcs_review_regressions.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vtc-service/tests/it/hidden_vetting_tasks.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "7191b287b6c274cb95347660dd7954f046f0d9f6463d42ba5f3ea6dcfd545a42",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vtc-service/tests/it/hidden_vetting_tasks.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "tests/pcs_review_regressions.rs",
+          "source": "predicate-credential-system"
+        },
+        {
+          "path": "vtc-service/tests/it/hidden_vetting_tasks.rs",
+          "source": "verifiable-trust-infrastructure"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "rust-predicate-credential-system",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ]
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "bounded_component_passes": [
+        "dpip-incomplete-return"
+      ],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-openvtc",
+        "rust-verifiable-trust-infrastructure",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ],
+      "control": "context boundaries and lifecycle checks",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "cross-context correlation and disclosure",
+      "id": "EUC-09",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "DPIP specialist / OpenVTC / VTA",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "holder",
+      "pressure_cases": {
+        "adversarial": "Compare two contexts through issuance, presentation, status discovery, task retention and retirement; measure stable joins and required disclosures.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Persona and face boundaries survive composed credential/task/UI use",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Compare two contexts through issuance, presentation, status discovery, task retention and retirement; measure stable joins and required disclosures.",
+      "scenario": "Faces are reused, composed or retired across communities",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vta-persona/src/face_values.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "13f192bfbd593c1a5d148e650376952de89c4a4e559c87046648d4eaa9663953",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vta-persona/src/face_values.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "openvtc-core/src/persona/lifecycle.rs",
+          "repository": "OpenVTC/openvtc",
+          "revision": "2a4fa2b3c8e831dbe3184a1119c4c87b6f197220",
+          "sha256": "b490ae1fe3875e161709239b212ae17d8f15d01c6cc608c719db53ce96420693",
+          "url": "https://github.com/OpenVTC/openvtc/blob/2a4fa2b3c8e831dbe3184a1119c4c87b6f197220/openvtc-core/src/persona/lifecycle.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vta-persona/src/face_values.rs",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "path": "openvtc-core/src/persona/lifecycle.rs",
+          "source": "openvtc"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-openvtc",
+        "rust-verifiable-trust-infrastructure",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "rust-verifiable-git-infrastructure"
+      ],
+      "control": "forge gate plus current authorization and protected signing",
+      "diagnostic_nonzero_attempts": [],
+      "evidence_maturity": "source-only",
+      "harm": "unauthorized merge or misattributed code",
+      "id": "EUC-10",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "VGI / VTC / forge operator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "repository contributor",
+      "pressure_cases": {
+        "adversarial": "Run GitHub and Forgejo adapters against sandbox forges; bypass PR gate, revoke member after approval, replay webhook, exercise break-glass and inspect signer attribution.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Forge enforcement preserves current authority through PR, approval and merge",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Run GitHub and Forgejo adapters against sandbox forges; bypass PR gate, revoke member after approval, replay webhook, exercise break-glass and inspect signer attribution.",
+      "scenario": "Unauthorized push, unapproved PR or stale membership reaches forge",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "crates/vgi-bridge/tests/pr_gate.rs",
+          "repository": "OpenVTC/verifiable-git-infrastructure",
+          "revision": "92f32dd4c107545bd42b009ca55fc1ed4759309d",
+          "sha256": "97d9bbee35be9c2d44d83970626d90a075d730d066d90038272bd697a7ad3884",
+          "url": "https://github.com/OpenVTC/verifiable-git-infrastructure/blob/92f32dd4c107545bd42b009ca55fc1ed4759309d/crates/vgi-bridge/tests/pr_gate.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "crates/verify-trust/tests/verify_trust_e2e.rs",
+          "repository": "OpenVTC/verifiable-git-infrastructure",
+          "revision": "92f32dd4c107545bd42b009ca55fc1ed4759309d",
+          "sha256": "a723cf5b75e4f7fc9b89c106d53d0b78db6652b7f0469e08cdf8983f5cb43554",
+          "url": "https://github.com/OpenVTC/verifiable-git-infrastructure/blob/92f32dd4c107545bd42b009ca55fc1ed4759309d/crates/verify-trust/tests/verify_trust_e2e.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "crates/vgi-bridge/tests/pr_gate.rs",
+          "source": "verifiable-git-infrastructure"
+        },
+        {
+          "path": "crates/verify-trust/tests/verify_trust_e2e.rs",
+          "source": "verifiable-git-infrastructure"
+        }
+      ],
+      "suite_ids": [
+        "rust-verifiable-git-infrastructure"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "rust-affinidi-tdk-rs"
+      ],
+      "control": "signed management and least privilege",
+      "diagnostic_nonzero_attempts": [],
+      "evidence_maturity": "source-only",
+      "harm": "message loss or unsafe routing",
+      "id": "EUC-11",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "TDK / mediator operator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "mediator operator",
+      "pressure_cases": {
+        "adversarial": "Run unauthorized and authorized inspect/purge/patch/reload tasks; verify sender proof, ACL, restart and audit on every transport.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Mediator administration stays authorized and auditable",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Run unauthorized and authorized inspect/purge/patch/reload tasks; verify sender proof, ACL, restart and audit on every transport.",
+      "scenario": "Queue purge or runtime configuration mutation occurs without authority",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "README.md",
+          "repository": "affinidi/affinidi-tdk-rs",
+          "revision": "a1611baa011620a6ca62649b105c2b8c898f2653",
+          "sha256": "590b7c2fb87f25ea312fb91144b3f07c458920e91b1e9153ec1d1838e480b94a",
+          "url": "https://github.com/affinidi/affinidi-tdk-rs/blob/a1611baa011620a6ca62649b105c2b8c898f2653/README.md"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "README.md",
+          "source": "affinidi-tdk-rs"
+        }
+      ],
+      "suite_ids": [
+        "rust-affinidi-tdk-rs"
+      ]
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "bounded_component_passes": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "dpip-incomplete-return",
+        "local-dns-diagnostic"
+      ],
+      "component_attempt_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "rust-affinidi-webvh-service",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return",
+        "local-dns-diagnostic"
+      ],
+      "control": "egress guard and DNS vetting",
+      "diagnostic_nonzero_attempts": [
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-vta-didcomm"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "SSRF and confidential data exposure",
+      "id": "EUC-12",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "TDK / DID hosting / browser",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "relying party",
+      "pressure_cases": {
+        "adversarial": "Execute private/IP-encoding/redirect/rebinding vectors through real resolver, mediator client and DID hosting rather than the URL predicate alone.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Network guards hold across actual resolver and transport composition",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Execute private/IP-encoding/redirect/rebinding vectors through real resolver, mediator client and DID hosting rather than the URL predicate alone.",
+      "scenario": "Resolution follows a private address, redirect or rebound DNS",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "test/net-guard.test.js",
+          "repository": "OpenVTC/vti-didcomm-js",
+          "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+          "sha256": "be32dd1bbea06cd14fd5a3f5207200a05ca678027f7c825f5657430ba324bc6c",
+          "url": "https://github.com/OpenVTC/vti-didcomm-js/blob/afd11e1f5dab611118253d2ebaffd1cfee29962a/test/net-guard.test.js"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "test/dns-rebinding.test.js",
+          "repository": "OpenVTC/vti-didcomm-js",
+          "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+          "sha256": "5a02782905e89520128543aa770e8ef3a7f4f52bc89891e5e7ca3fedb90df65b",
+          "url": "https://github.com/OpenVTC/vti-didcomm-js/blob/afd11e1f5dab611118253d2ebaffd1cfee29962a/test/dns-rebinding.test.js"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "did-hosting-control/tests/no_rest_surface.rs",
+          "repository": "affinidi/affinidi-webvh-service",
+          "revision": "1686668623e0bba0e18880074d82794cb929a7fc",
+          "sha256": "61b9471a730350ad7df4c846ca80f854fc340b5f992f9facf915d87dd8c86074",
+          "url": "https://github.com/affinidi/affinidi-webvh-service/blob/1686668623e0bba0e18880074d82794cb929a7fc/did-hosting-control/tests/no_rest_surface.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "The pinned resolver includes revocation test design; its execution and consuming transport behavior are separately required.",
+          "path": "tests/revoked.rs",
+          "repository": "decentralized-identity/didwebvh-rs",
+          "revision": "155eb4e71c9d45db57c6f7329f286bbd753e0138",
+          "sha256": "66336ca4693b32bb9b1caa5470b838e2d5be142e03d8df23d97eec37117edb77",
+          "url": "https://github.com/decentralized-identity/didwebvh-rs/blob/155eb4e71c9d45db57c6f7329f286bbd753e0138/tests/revoked.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "test/net-guard.test.js",
+          "source": "vti-didcomm-js"
+        },
+        {
+          "path": "test/dns-rebinding.test.js",
+          "source": "vti-didcomm-js"
+        },
+        {
+          "path": "did-hosting-control/tests/no_rest_surface.rs",
+          "source": "affinidi-webvh-service"
+        },
+        {
+          "observation": "The pinned resolver includes revocation test design; its execution and consuming transport behavior are separately required.",
+          "path": "tests/revoked.rs",
+          "source": "didwebvh-rs"
+        }
+      ],
+      "suite_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "rust-affinidi-webvh-service",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return",
+        "local-dns-diagnostic"
+      ]
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "bounded_component_passes": [
+        "dpip-incomplete-return"
+      ],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ],
+      "control": "hash-chain verification and durable attributable receipts",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "undetectable tampering or failed redress",
+      "id": "EUC-13",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "VTA / VTC / governance operator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "auditor",
+      "pressure_cases": {
+        "adversarial": "Tamper, truncate, roll back and rotate keys; independently verify chains and reconstruct a contested action after agent replacement.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Audit and retained task evidence support challenge without silent tampering",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Tamper, truncate, roll back and rotate keys; independently verify chains and reconstruct a contested action after agent replacement.",
+      "scenario": "Evidence is truncated, rolled back or moved after key rotation",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vta-audit/README.md",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "b310ac3855186205994eaf1d185e48642389b65801f15ed12ad940d839288d1b",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vta-audit/README.md"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vta-service/tests/it/audit_sink.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "525145dab6c18c693bde9a70d48022577a39256e35af2f776e1ae2da2b9b3f8d",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vta-service/tests/it/audit_sink.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vta-audit/README.md",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "path": "vta-service/tests/it/audit_sink.rs",
+          "source": "verifiable-trust-infrastructure"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "dart-tsp"
+      ],
+      "control": "algorithm-bound keys and proof-set verification",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "algorithm downgrade or custody compromise",
+      "id": "EUC-14",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "VTI / TSP PQ",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "key custodian",
+      "pressure_cases": {
+        "adversarial": "Exercise mixed algorithms, absent hybrid member, wrong key type, malformed signature and downgraded peer; pin actual crypto packages.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Post-quantum and hybrid processing reject omitted or incompatible proofs",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Exercise mixed algorithms, absent hybrid member, wrong key type, malformed signature and downgraded peer; pin actual crypto packages.",
+      "scenario": "Hybrid proof set omits one proof or signs under wrong algorithm",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "vtc-service/src/credentials/proof_set.rs",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "e0ad74b10d7e4fcf73661090c57a5c421e749d9b1ffd80d39157ae4cf9808db4",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/vtc-service/src/credentials/proof_set.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "packages/affinidi_tsp_pq/test/pq_test.dart",
+          "repository": "affinidi/affinidi-tsp-dart",
+          "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78",
+          "sha256": "b2436eead38f5709c762b5f122025a81f58d2336ffc7b3630dcc9c05b1300356",
+          "url": "https://github.com/affinidi/affinidi-tsp-dart/blob/a64814c8043d6af0955a3ce01bfc6033d8daeb78/packages/affinidi_tsp_pq/test/pq_test.dart"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "vtc-service/src/credentials/proof_set.rs",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "path": "packages/affinidi_tsp_pq/test/pq_test.dart",
+          "source": "affinidi-tsp-dart"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "dart-tsp"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "rust-affinidi-trust-registry-rs"
+      ],
+      "control": "authenticated bound writes and signed responses",
+      "diagnostic_nonzero_attempts": [],
+      "evidence_maturity": "source-only",
+      "harm": "illegitimate recognition or stale authority",
+      "id": "EUC-15",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "Trust registry / relying-party operator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "trust-registry administrator",
+      "pressure_cases": {
+        "adversarial": "Run unauthorized write, replay, key rotation, stale status and cross-context recognition; verify policy version, effective time and audit.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Registry mutations and reliance preserve authority and temporal meaning",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Run unauthorized write, replay, key rotation, stale status and cross-context recognition; verify policy version, effective time and audit.",
+      "scenario": "Wrong sender mutates registry or stale signed answer is consumed",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "trql-client/tests/https_binding.rs",
+          "repository": "affinidi/affinidi-trust-registry-rs",
+          "revision": "c77052f9bffe8bb7b4a3f357d9ef54cf632950f0",
+          "sha256": "aac4bac98fcac1fdfccc2dbafd9ae974f46dc349d0543967f2abc13f15e5f9cc",
+          "url": "https://github.com/affinidi/affinidi-trust-registry-rs/blob/c77052f9bffe8bb7b4a3f357d9ef54cf632950f0/trql-client/tests/https_binding.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "trql-client/tests/https_binding.rs",
+          "source": "affinidi-trust-registry-rs"
+        }
+      ],
+      "suite_ids": [
+        "rust-affinidi-trust-registry-rs"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "rust-vti-push-gateway",
+        "ios-approval"
+      ],
+      "control": "device-bound key and deliberate approval gate",
+      "diagnostic_nonzero_attempts": [],
+      "evidence_maturity": "source-only",
+      "harm": "owner consent bypass",
+      "id": "EUC-16",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "Mobile / push / VTA",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "mobile approver",
+      "pressure_cases": {
+        "adversarial": "Exercise unsolicited pairing, forged push, altered display/action digest, decline, expiry and revoked device through physical approval journey.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Mobile approval binds owner intent, displayed action and current authority",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Exercise unsolicited pairing, forged push, altered display/action digest, decline, expiry and revoked device through physical approval journey.",
+      "scenario": "Pairing or push causes unattended approval",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "Tests/VtaMobileAgentTests/ApprovalGateTests.swift",
+          "repository": "OpenVTC/vta-mobile-agent-ios",
+          "revision": "863a1e912042b28908ec2cf3675677ad9c151e0e",
+          "sha256": "c1705f0d25dae9898d1490b9818303a1301ad97e27827f0af3cf545ae97d73d6",
+          "url": "https://github.com/OpenVTC/vta-mobile-agent-ios/blob/863a1e912042b28908ec2cf3675677ad9c151e0e/Tests/VtaMobileAgentTests/ApprovalGateTests.swift"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "tests/document_auth.rs",
+          "repository": "OpenVTC/vti-push-gateway",
+          "revision": "44342121e161ccb12e43013f33ce80abb2486acb",
+          "sha256": "951e616ebf15b0d7620783139aaa9d29dfb9fda76bd6425f670d32d356e4a425",
+          "url": "https://github.com/OpenVTC/vti-push-gateway/blob/44342121e161ccb12e43013f33ce80abb2486acb/tests/document_auth.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "Tests/VtaMobileAgentTests/ApprovalGateTests.swift",
+          "source": "vta-mobile-agent-ios"
+        },
+        {
+          "path": "tests/document_auth.rs",
+          "source": "vti-push-gateway"
+        }
+      ],
+      "suite_ids": [
+        "rust-vti-push-gateway",
+        "ios-approval"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [],
+      "component_attempt_ids": [
+        "rust-vta-agent-memory"
+      ],
+      "control": "untrusted-data fence and bounded storage",
+      "diagnostic_nonzero_attempts": [],
+      "evidence_maturity": "source-only",
+      "harm": "prompt injection and secret exposure",
+      "id": "EUC-17",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "Agent memory / VTA operator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "agent operator",
+      "pressure_cases": {
+        "adversarial": "Feed delimiter escape, command injection, excessive record and cross-owner recall through actual MCP consumer; observe decisions and stored bytes.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Agent memory cannot silently acquire instruction authority",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Feed delimiter escape, command injection, excessive record and cross-owner recall through actual MCP consumer; observe decisions and stored bytes.",
+      "scenario": "Recalled memory carries executable instructions or excessive data",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "src/fence.rs",
+          "repository": "OpenVTC/vta-agent-memory",
+          "revision": "85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5",
+          "sha256": "fb22af23cd43711478b06b572268eb52bff17292622615fcab6eac379d3f4604",
+          "url": "https://github.com/OpenVTC/vta-agent-memory/blob/85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5/src/fence.rs"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "tests/mcp_starts_without_a_vta.rs",
+          "repository": "OpenVTC/vta-agent-memory",
+          "revision": "85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5",
+          "sha256": "5045b829016a298e34968cb1f36af2246ec72e3c17b2d8678f70c86fc73735d6",
+          "url": "https://github.com/OpenVTC/vta-agent-memory/blob/85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5/tests/mcp_starts_without_a_vta.rs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "src/fence.rs",
+          "source": "vta-agent-memory"
+        },
+        {
+          "path": "tests/mcp_starts_without_a_vta.rs",
+          "source": "vta-agent-memory"
+        }
+      ],
+      "suite_ids": [
+        "rust-vta-agent-memory"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [
+        "npm-vta-browser-plugin",
+        "rp-jcs-direct-boundary"
+      ],
+      "component_attempt_ids": [
+        "npm-rp-sdk-js",
+        "npm-vta-browser-plugin",
+        "rp-jcs-direct-boundary"
+      ],
+      "control": "expiry/audience/challenge checks and bounded canonicalization",
+      "diagnostic_nonzero_attempts": [
+        "npm-rp-sdk-js"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "session substitution or denial of service",
+      "id": "EUC-18",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "RP SDK / browser operator",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "relying party",
+      "pressure_cases": {
+        "adversarial": "Run wrong recipient, stale token, reused challenge, deeply nested payload and modified signed token through actual relying service.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "RP sessions are bound to audience, challenge, time and valid proof",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Run wrong recipient, stale token, reused challenge, deeply nested payload and modified signed token through actual relying service.",
+      "scenario": "Expired token, wrong audience or malicious canonicalization reaches session",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "test/verify-id-token.test.ts",
+          "repository": "OpenVTC/rp-sdk-js",
+          "revision": "8594c2acba4014232e842fe7613e8a7cdc0e2b0f",
+          "sha256": "8e5ae0dc45843f4a6f08fc81c44783782b54af28176d47eb6d6bb81136d203e4",
+          "url": "https://github.com/OpenVTC/rp-sdk-js/blob/8594c2acba4014232e842fe7613e8a7cdc0e2b0f/test/verify-id-token.test.ts"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "test/jcs.test.ts",
+          "repository": "OpenVTC/rp-sdk-js",
+          "revision": "8594c2acba4014232e842fe7613e8a7cdc0e2b0f",
+          "sha256": "51eab88ffbfe7f403067c78b8a8be7a74ff72ec50aa1f394c0015d474e8cdb13",
+          "url": "https://github.com/OpenVTC/rp-sdk-js/blob/8594c2acba4014232e842fe7613e8a7cdc0e2b0f/test/jcs.test.ts"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "packages/tsp-js/tests/relationship.test.mjs",
+          "repository": "OpenVTC/vta-browser-plugin",
+          "revision": "d6df67971688fd927cd5b095424fa4093d4264df",
+          "sha256": "8384ae155ced86233c130b852ac5eb3dc0152eb1f20ee584cfde47b39ba33473",
+          "url": "https://github.com/OpenVTC/vta-browser-plugin/blob/d6df67971688fd927cd5b095424fa4093d4264df/packages/tsp-js/tests/relationship.test.mjs"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "test/verify-id-token.test.ts",
+          "source": "rp-sdk-js"
+        },
+        {
+          "path": "test/jcs.test.ts",
+          "source": "rp-sdk-js"
+        },
+        {
+          "path": "packages/tsp-js/tests/relationship.test.mjs",
+          "source": "vta-browser-plugin"
+        }
+      ],
+      "suite_ids": [
+        "npm-rp-sdk-js",
+        "npm-vta-browser-plugin",
+        "rp-jcs-direct-boundary"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [
+        "tt-check-bindings-conformance",
+        "tt-validate-ceremonies",
+        "tt-check-dart-packages"
+      ],
+      "component_attempt_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "rust-dtgwg-trust-tasks-tf",
+        "tt-check-bindings-conformance",
+        "tt-validate-ceremonies",
+        "tt-check-dart-packages"
+      ],
+      "control": "exact lockfiles and producer-consumer version skew tests",
+      "diagnostic_nonzero_attempts": [
+        "vti-deploy-helper"
+      ],
+      "evidence_maturity": "source-only",
+      "harm": "false assurance or unreproducible build",
+      "id": "EUC-19",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "All component maintainers / RAHP",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "new adopter",
+      "pressure_cases": {
+        "adversarial": "Build locked consumers; compare resolved package identities to coordinated sources and execute old/new request-schema and lifecycle pairs.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Actual build inputs and cross-project consumption match the claimed baseline",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Build locked consumers; compare resolved package identities to coordinated sources and execute old/new request-schema and lifecycle pairs.",
+      "scenario": "Coordinated tags are treated as a guarantee of dependency compatibility",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "Cargo.lock",
+          "repository": "OpenVTC/verifiable-trust-infrastructure",
+          "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+          "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62",
+          "url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/blob/49f5f1beb61adc34bdf7cf0bd3eb10f594415b80/Cargo.lock"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "SPEC.md",
+          "repository": "trustoverip/dtgwg-trust-tasks-tf",
+          "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+          "sha256": "4898dd8b59f055fdf6a3404d5c6090b0a7fc13a01a07f8e38fe704677f7ea1dc",
+          "url": "https://github.com/trustoverip/dtgwg-trust-tasks-tf/blob/7b6bb488ffd838bef058310c909207d4a7b77125/SPEC.md"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "Cargo.lock",
+          "source": "verifiable-trust-infrastructure"
+        },
+        {
+          "path": "SPEC.md",
+          "source": "dtgwg-trust-tasks-tf"
+        }
+      ],
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "rust-dtgwg-trust-tasks-tf",
+        "tt-check-bindings-conformance",
+        "tt-validate-ceremonies",
+        "tt-check-dart-packages"
+      ]
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "bounded_component_passes": [
+        "npm-vta-browser-plugin"
+      ],
+      "component_attempt_ids": [
+        "rust-openvtc",
+        "npm-vta-browser-plugin"
+      ],
+      "control": "accessible alternative journey and durable redress",
+      "diagnostic_nonzero_attempts": [],
+      "evidence_maturity": "source-only",
+      "harm": "exclusion, loss of autonomy or unreviewable denial",
+      "id": "EUC-20",
+      "inference": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "outcome": "INDETERMINATE",
+      "owner": "Community governance / client maintainers",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "persona": "excluded participant",
+      "pressure_cases": {
+        "adversarial": "Run assistive-technology and unavailable-device journeys; document supported alternatives and verify a challenged decision can be corrected without bypassing authority.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "positive": "Authorized current operation completes with attributable receipt."
+      },
+      "producer_gap": "No accepted source-compatible automated deployed-composition/specialist producer is bound for this exact proposition and release.",
+      "proposition": "Consent and redress remain usable for affected people",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "retest": "Run assistive-technology and unavailable-device journeys; document supported alternatives and verify a challenged decision can be corrected without bypassing authority.",
+      "scenario": "Participant cannot complete gesture or challenge an adverse decision",
+      "source_observations": [
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "README.md",
+          "repository": "OpenVTC/openvtc",
+          "revision": "2a4fa2b3c8e831dbe3184a1119c4c87b6f197220",
+          "sha256": "004734dd2acb2de00e47f244dd44ca49b81fd8f97e32d4f992d9c0554d367228",
+          "url": "https://github.com/OpenVTC/openvtc/blob/2a4fa2b3c8e831dbe3184a1119c4c87b6f197220/README.md"
+        },
+        {
+          "anchor_lines": [],
+          "class": "static-specification-analysis",
+          "observation": "Source and test design inspected; presence is not execution.",
+          "path": "README.md",
+          "repository": "OpenVTC/vta-browser-plugin",
+          "revision": "d6df67971688fd927cd5b095424fa4093d4264df",
+          "sha256": "e2d0dfae30704e9dfd9b8803c221427ec3e782eb323e881e6f81d60221d0131a",
+          "url": "https://github.com/OpenVTC/vta-browser-plugin/blob/d6df67971688fd927cd5b095424fa4093d4264df/README.md"
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "README.md",
+          "source": "openvtc"
+        },
+        {
+          "path": "README.md",
+          "source": "vta-browser-plugin"
+        }
+      ],
+      "suite_ids": [
+        "rust-openvtc",
+        "npm-vta-browser-plugin"
+      ]
+    }
+  ],
+  "schema": "rahp-eucalyptus-propositions/v1"
+}

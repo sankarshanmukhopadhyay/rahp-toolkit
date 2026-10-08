@@ -1,0 +1,3165 @@
+{
+  "actions": [
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "VTI / Trust Tasks: Execute signed/unsigned, wrong-sender and nested-transport requests through VTA, VTC, mediator and push doors; verify zero forbidden effects.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "DTG Credentials / VTI: Exercise both substitution directions and revoke authority between verification and commit.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "VTI / deployment operator: Execute label-only, widening, narrowing, sole-admin and multiple-person configurations across HTTPS/DIDComm/TSP; assert audit-before-effect.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "VTI / community governance: Exercise repeated approver, requester approval, stale approval, role reduction, threshold change, cancellation, cooling-off and real single-person/multi-person policy.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "VTI / mediator: Capture and replay identical task, changed payload under same ID, expired consent and post-restart retries; inspect effects and durable state.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "TDK / Go / Dart / browser: Execute independent byte vectors and old/new endpoint pairs, nested mediator sends, restart and forged relationship transitions.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "VTI Rooms / deployment operator: Run host, native and browser participants; remove member, rekey, rotate custodian, replay old epoch and corrupt Merkle record.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "PCS / DPIP specialist / VTI: Execute duplicate-vetter, wrong-context, withdrawn-vetter, nonce replay and public/hidden A-B journeys with observable transcripts.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "DPIP specialist / OpenVTC / VTA: Compare two contexts through issuance, presentation, status discovery, task retention and retirement; measure stable joins and required disclosures.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "VGI / VTC / forge operator: Run GitHub and Forgejo adapters against sandbox forges; bypass PR gate, revoke member after approval, replay webhook, exercise break-glass and inspect signer attribution.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "TDK / mediator operator: Run unauthorized and authorized inspect/purge/patch/reload tasks; verify sender proof, ACL, restart and audit on every transport.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "TDK / DID hosting / browser: Execute private/IP-encoding/redirect/rebinding vectors through real resolver, mediator client and DID hosting rather than the URL predicate alone.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "VTA / VTC / governance operator: Tamper, truncate, roll back and rotate keys; independently verify chains and reconstruct a contested action after agent replacement.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "VTI / TSP PQ: Exercise mixed algorithms, absent hybrid member, wrong key type, malformed signature and downgraded peer; pin actual crypto packages.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "Trust registry / relying-party operator: Run unauthorized write, replay, key rotation, stale status and cross-context recognition; verify policy version, effective time and audit.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "Mobile / push / VTA: Exercise unsolicited pairing, forged push, altered display/action digest, decline, expiry and revoked device through physical approval journey.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "Agent memory / VTA operator: Feed delimiter escape, command injection, excessive record and cross-owner recall through actual MCP consumer; observe decisions and stored bytes.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "RP SDK / browser operator: Run wrong recipient, stale token, reused challenge, deeply nested payload and modified signed token through actual relying service.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "All component maintainers / RAHP: Build locked consumers; compare resolved package identities to coordinated sources and execute old/new request-schema and lifecycle pairs.",
+      "surface": "evidence-test"
+    },
+    {
+      "acceptance_criterion": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "action": "Community governance / client maintainers: Run assistive-technology and unavailable-device journeys; document supported alternatives and verify a challenged decision can be corrected without bypassing authority.",
+      "surface": "evidence-test"
+    }
+  ],
+  "assessment_id": "rahp:f1df8dcef625798eacf5",
+  "assurance_propositions": [
+    "Task proofs are bound to the actual sender across all consuming doors",
+    "Credential validity, delegation and authority remain non-substitutable",
+    "Self-edit restrictions and exception boundaries are enforced at each transport",
+    "N approvals provide the declared independent authorization under actual host policy",
+    "Replay and restart cannot create a second authorization path",
+    "Transport compatibility does not weaken authentication or relationship semantics",
+    "Room removal and custody succession preserve confidentiality and recoverability",
+    "Hidden vetting enforces its declared threshold without excess disclosure",
+    "Persona and face boundaries survive composed credential/task/UI use",
+    "Forge enforcement preserves current authority through PR, approval and merge",
+    "Mediator administration stays authorized and auditable",
+    "Network guards hold across actual resolver and transport composition",
+    "Audit and retained task evidence support challenge without silent tampering",
+    "Post-quantum and hybrid processing reject omitted or incompatible proofs",
+    "Registry mutations and reliance preserve authority and temporal meaning",
+    "Mobile approval binds owner intent, displayed action and current authority",
+    "Agent memory cannot silently acquire instruction authority",
+    "RP sessions are bound to audience, challenge, time and valid proof",
+    "Actual build inputs and cross-project consumption match the claimed baseline",
+    "Consent and redress remain usable for affected people"
+  ],
+  "assurance_state": "indeterminate",
+  "boundedness": "Conclusion applies only to the configured subject, immutable pins and evidence classes represented in this run.",
+  "confidence": "bounded by named evidence and assessor result",
+  "correlation_key": "06bc77950b572bf0154bf01dea9cd6f839856e2ce668b5784fef834f1076a30e",
+  "cross_spec_assumptions": [],
+  "evidence": [
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "VTI / Trust Tasks",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-01",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "DTG Credentials / VTI",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-02",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "VTI / deployment operator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-03",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "VTI / community governance",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-04",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "VTI / mediator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-05",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "TDK / Go / Dart / browser",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-06",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "VTI Rooms / deployment operator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-07",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "PCS / DPIP specialist / VTI",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-08",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "DPIP specialist / OpenVTC / VTA",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-09",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "VGI / VTC / forge operator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-10",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "TDK / mediator operator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-11",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "TDK / DID hosting / browser",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-12",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "ATTEMPTED_UNAVAILABLE",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "VTA / VTC / governance operator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-13",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "VTI / TSP PQ",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-14",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "Trust registry / relying-party operator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-15",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "Mobile / push / VTA",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-16",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "Agent memory / VTA operator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-17",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "RP SDK / browser operator",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-18",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "All component maintainers / RAHP",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-19",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "attempt_state": "NO_APPLICABLE_PRODUCER",
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "attribution": "Community governance / client maintainers",
+        "evidence_file": null,
+        "producer": null,
+        "producer_revision": null
+      },
+      "requirement_id": "EUC-20",
+      "result": "NOT_EVIDENCED",
+      "surface_classifications": []
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "model/evidence-contract-definition",
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--fetch-retries=0",
+          "--fetch-timeout=10000",
+          "--audit=false",
+          "--fund=false"
+        ],
+        "duration_seconds": 1.094,
+        "evidence_class": "model/evidence-contract-definition",
+        "id": "dependencies-dtgwg-trust-tasks-tf",
+        "purpose": "Attempt locked JavaScript dependency acquisition; success alone carries no behavioral assurance.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "returncode": 0,
+        "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+        "source": "dtgwg-trust-tasks-tf",
+        "started_at": "2026-10-08T04:32:08.937939+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/dependencies-dtgwg-trust-tasks-tf.stderr.txt",
+          "sha256": "7125f194612fcff2f454c05d848e7cb71facc1967b4d5017e25b34fdee3ba74f"
+        },
+        "stdout": {
+          "path": "logs/dependencies-dtgwg-trust-tasks-tf.stdout.txt",
+          "sha256": "49273be1aaed0170ae0157f99ba5297e134e11a6e6cc03c34aca5393b9ff358e"
+        },
+        "timeout_seconds": 25
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "model/evidence-contract-definition",
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--fetch-retries=0",
+          "--fetch-timeout=10000",
+          "--audit=false",
+          "--fund=false"
+        ],
+        "duration_seconds": 16.493,
+        "evidence_class": "model/evidence-contract-definition",
+        "id": "dependencies-vta-browser-plugin",
+        "purpose": "Attempt locked JavaScript dependency acquisition; success alone carries no behavioral assurance.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "OpenVTC/vta-browser-plugin",
+        "returncode": 0,
+        "revision": "d6df67971688fd927cd5b095424fa4093d4264df",
+        "source": "vta-browser-plugin",
+        "started_at": "2026-10-08T04:32:10.032542+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/dependencies-vta-browser-plugin.stderr.txt",
+          "sha256": "233a44148c19e2f8a5eadbaf1e2afc52adff40795eb386965ebfd3040c25295f"
+        },
+        "stdout": {
+          "path": "logs/dependencies-vta-browser-plugin.stdout.txt",
+          "sha256": "8d995fdd74298fbc6459c7fe175ce53de3c473f5bc0d35a645eca1118da90b5e"
+        },
+        "timeout_seconds": 25
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "model/evidence-contract-definition",
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--fetch-retries=0",
+          "--fetch-timeout=10000",
+          "--audit=false",
+          "--fund=false"
+        ],
+        "duration_seconds": 1.114,
+        "evidence_class": "model/evidence-contract-definition",
+        "id": "dependencies-rp-sdk-js",
+        "purpose": "Attempt locked JavaScript dependency acquisition; success alone carries no behavioral assurance.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "OpenVTC/rp-sdk-js",
+        "returncode": 0,
+        "revision": "8594c2acba4014232e842fe7613e8a7cdc0e2b0f",
+        "source": "rp-sdk-js",
+        "started_at": "2026-10-08T04:32:26.526031+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/dependencies-rp-sdk-js.stderr.txt",
+          "sha256": "7125f194612fcff2f454c05d848e7cb71facc1967b4d5017e25b34fdee3ba74f"
+        },
+        "stdout": {
+          "path": "logs/dependencies-rp-sdk-js.stdout.txt",
+          "sha256": "c780b24e0cf1ad2fefc6665e7a16a029fef8d280296a159e51b08b8e7b079a3e"
+        },
+        "timeout_seconds": 25
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "model/evidence-contract-definition",
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--fetch-retries=0",
+          "--fetch-timeout=10000",
+          "--audit=false",
+          "--fund=false"
+        ],
+        "duration_seconds": 0.908,
+        "evidence_class": "model/evidence-contract-definition",
+        "id": "dependencies-vti-didcomm-js",
+        "purpose": "Attempt locked JavaScript dependency acquisition; success alone carries no behavioral assurance.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:27.641139+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/dependencies-vti-didcomm-js.stderr.txt",
+          "sha256": "7125f194612fcff2f454c05d848e7cb71facc1967b4d5017e25b34fdee3ba74f"
+        },
+        "stdout": {
+          "path": "logs/dependencies-vti-didcomm-js.stdout.txt",
+          "sha256": "bc5d8a5c79e25fbcf51bae826061b65483f1baab7606e00c42d2c9c469a178e7"
+        },
+        "timeout_seconds": 25
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/a256cbc-hs512.test.js"
+        ],
+        "duration_seconds": 0.203,
+        "id": "didcomm-a256cbc-hs512",
+        "passed": 6,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:28.549430+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-a256cbc-hs512.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-a256cbc-hs512.stdout.txt",
+          "sha256": "1ab5c7887f4be0691513d5de525b2cf394d8ab66a3b81f34bea2ad23e80f699a"
+        },
+        "tests": 6,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/aes.test.js"
+        ],
+        "duration_seconds": 0.193,
+        "id": "didcomm-aes",
+        "passed": 4,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:28.753110+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-aes.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-aes.stdout.txt",
+          "sha256": "77c881e1ab10e47ae2eed8dd301530e9bd36e241a1e17130d30b066cd58e8391"
+        },
+        "tests": 4,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/anoncrypt.test.js"
+        ],
+        "duration_seconds": 0.287,
+        "id": "didcomm-anoncrypt",
+        "passed": 3,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:28.947050+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-anoncrypt.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-anoncrypt.stdout.txt",
+          "sha256": "9b7fdad306dd4560f7f02ac738b1ab6dbc094872ff985f1239705c245ffa9bf8"
+        },
+        "tests": 5,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/base64url.test.js"
+        ],
+        "duration_seconds": 0.186,
+        "id": "didcomm-base64url",
+        "passed": 19,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:29.235505+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-base64url.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-base64url.stdout.txt",
+          "sha256": "ddb2b69ae333191e3c6055b9e9e575adedea435907f00b107c233cc92cc0b5c4"
+        },
+        "tests": 19,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/concat-kdf.test.js"
+        ],
+        "duration_seconds": 0.197,
+        "id": "didcomm-concat-kdf",
+        "passed": 13,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:29.422580+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-concat-kdf.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-concat-kdf.stdout.txt",
+          "sha256": "2bfd9509e3a7a5c856ccb2be899e7b51f201655ecea1c9b7987570fd6fb2eb53"
+        },
+        "tests": 13,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/did-key.test.js"
+        ],
+        "duration_seconds": 0.326,
+        "id": "didcomm-did-key",
+        "passed": 13,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:29.620329+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-did-key.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-did-key.stdout.txt",
+          "sha256": "48651ce0f4373f43a9449442828a17d6f7aee22b2d363af66c9c5f71719d4d38"
+        },
+        "tests": 13,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/did-peer.test.js"
+        ],
+        "duration_seconds": 0.281,
+        "id": "didcomm-did-peer",
+        "passed": 8,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:29.947636+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-did-peer.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-did-peer.stdout.txt",
+          "sha256": "e6f4b547436a3b93297d7294935ae814e3ed1e4443547b61983aa8fea9a390fe"
+        },
+        "tests": 8,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/did-webvh-ssrf.test.js"
+        ],
+        "duration_seconds": 0.376,
+        "id": "didcomm-did-webvh-ssrf",
+        "passed": 13,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:30.229285+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-did-webvh-ssrf.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-did-webvh-ssrf.stdout.txt",
+          "sha256": "861ab5e8ba915fd76fa3cccfa7eed2d1faa0a94237432ddf647bd942696f1b01"
+        },
+        "tests": 13,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/did-webvh.test.js"
+        ],
+        "duration_seconds": 0.206,
+        "id": "didcomm-did-webvh",
+        "passed": 4,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:30.606468+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-did-webvh.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-did-webvh.stdout.txt",
+          "sha256": "fb1e79aa8f329824cc1f8a52b83aa79f9a564fd32df467e7788b1d705c9786aa"
+        },
+        "tests": 8,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/dns-rebinding.test.js"
+        ],
+        "duration_seconds": 0.319,
+        "id": "didcomm-dns-rebinding",
+        "passed": 3,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:30.813145+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-dns-rebinding.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-dns-rebinding.stdout.txt",
+          "sha256": "421bf1d423c1627960c3b1a8cedcedad2593419f5eeda1016956f23c86e602e7"
+        },
+        "tests": 3,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/ecdh-1pu.test.js"
+        ],
+        "duration_seconds": 0.255,
+        "id": "didcomm-ecdh-1pu",
+        "passed": 3,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:31.132778+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-ecdh-1pu.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-ecdh-1pu.stdout.txt",
+          "sha256": "2763a48f67e1239e1b9a7a250d1b7abe3be90bf6e8a08081b3046472c7d23a3c"
+        },
+        "tests": 3,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/ecdh-es.test.js"
+        ],
+        "duration_seconds": 0.259,
+        "id": "didcomm-ecdh-es",
+        "passed": 4,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:31.388874+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-ecdh-es.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-ecdh-es.stdout.txt",
+          "sha256": "8118ae64377a1e16cd0b5d217d14a56f9a9e8c8caff014dc92e20a9bc00ff8d0"
+        },
+        "tests": 4,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/ecdh-p256.test.js"
+        ],
+        "duration_seconds": 0.309,
+        "id": "didcomm-ecdh-p256",
+        "passed": 3,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:31.648435+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-ecdh-p256.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-ecdh-p256.stdout.txt",
+          "sha256": "ae35c1aeaef3a3b0001b37e800344c8273306472d7167d4e1842d76cbef047a6"
+        },
+        "tests": 3,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/forward.test.js"
+        ],
+        "duration_seconds": 0.234,
+        "id": "didcomm-forward",
+        "passed": 3,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:31.958677+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-forward.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-forward.stdout.txt",
+          "sha256": "1570388a8318c29798b8a9f8775b2757ae0864f7eef3b4dc5067bed52dc5a371"
+        },
+        "tests": 4,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/jwk.test.js"
+        ],
+        "duration_seconds": 0.323,
+        "id": "didcomm-jwk",
+        "passed": 15,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:32.193596+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-jwk.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-jwk.stdout.txt",
+          "sha256": "80db7ff25442399e80b0481161b2e94e5f8153623423497e9207956466761e15"
+        },
+        "tests": 15,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/key-agreement.test.js"
+        ],
+        "duration_seconds": 0.321,
+        "id": "didcomm-key-agreement",
+        "passed": 6,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:32.517621+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-key-agreement.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-key-agreement.stdout.txt",
+          "sha256": "71f91bacec2556ed53acb84131f2f94c062ac4251abf92438a54f1b96604da1e"
+        },
+        "tests": 6,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/mediator-auth-ssrf.test.js"
+        ],
+        "duration_seconds": 10.804,
+        "id": "didcomm-mediator-auth-ssrf",
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Nonzero execution requires diagnosis; neither automatic defect finding nor PASS.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 1,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:32.840034+00:00",
+        "state": "EXECUTED_NONZERO",
+        "stderr": {
+          "path": "logs/didcomm-mediator-auth-ssrf.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-mediator-auth-ssrf.stdout.txt",
+          "sha256": "cbbb618167ec6b0e5c2d469eebce723bfac8514c591f3e6a51838e39557d0b39"
+        },
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_NONZERO"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/mediator-auth.test.js"
+        ],
+        "duration_seconds": 0.301,
+        "id": "didcomm-mediator-auth",
+        "passed": 7,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:43.644852+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-mediator-auth.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-mediator-auth.stdout.txt",
+          "sha256": "aad0ae2304a741ad83168ad8f836b674f6f530a66e66de438205b73c207b012f"
+        },
+        "tests": 9,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/mediator-transport.test.js"
+        ],
+        "duration_seconds": 1.671,
+        "id": "didcomm-mediator-transport",
+        "passed": 36,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:43.946669+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-mediator-transport.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-mediator-transport.stdout.txt",
+          "sha256": "98c19de657c094e541d12770e97bf105752ac67d2496a1ae9cb27defc3057416"
+        },
+        "tests": 36,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/migration-fallback.test.js"
+        ],
+        "duration_seconds": 0.294,
+        "id": "didcomm-migration-fallback",
+        "passed": 3,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:45.618599+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-migration-fallback.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-migration-fallback.stdout.txt",
+          "sha256": "b2b7241061d77aaec6942fa79c1f6c4e63995a7e6d2107b5ed8c50ce7510464d"
+        },
+        "tests": 3,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/multibase.test.js"
+        ],
+        "duration_seconds": 0.185,
+        "id": "didcomm-multibase",
+        "passed": 14,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:45.913220+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-multibase.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-multibase.stdout.txt",
+          "sha256": "7fc7d80f9bea5d2cb96881a851b67ad75fc56fbc5a0693b7b863a3519c77eca7"
+        },
+        "tests": 14,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/net-guard-node.test.js"
+        ],
+        "duration_seconds": 0.201,
+        "id": "didcomm-net-guard-node",
+        "passed": 4,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:46.099731+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-net-guard-node.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-net-guard-node.stdout.txt",
+          "sha256": "8a6c6a7369ee8bd8ba9ec92ddaf728a300773abc3e7750c053f88cd2835e2c7e"
+        },
+        "tests": 4,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/net-guard.test.js"
+        ],
+        "duration_seconds": 0.246,
+        "id": "didcomm-net-guard",
+        "passed": 20,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:46.301149+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-net-guard.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-net-guard.stdout.txt",
+          "sha256": "51443a4a5b954f0ddd2935561bb5fa6461a787e9b121fabfae4f47d6989bba4b"
+        },
+        "tests": 20,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/p256.test.js"
+        ],
+        "duration_seconds": 0.336,
+        "id": "didcomm-p256",
+        "passed": 7,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:46.548697+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-p256.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-p256.stdout.txt",
+          "sha256": "40f4bf29c0cdc48dcfee0a0e3d27f142fed0550926a76b10dac50be56f426467"
+        },
+        "tests": 7,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/pack-unpack-p256.test.js"
+        ],
+        "duration_seconds": 0.76,
+        "id": "didcomm-pack-unpack-p256",
+        "passed": 6,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:46.886707+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-pack-unpack-p256.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-pack-unpack-p256.stdout.txt",
+          "sha256": "5ab06fd68d5b35e323d21622792ae32149093c1614d3ed62b77e09ab8a46e2ec"
+        },
+        "tests": 6,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/pack-unpack.test.js"
+        ],
+        "duration_seconds": 0.344,
+        "id": "didcomm-pack-unpack",
+        "passed": 8,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:47.647933+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-pack-unpack.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-pack-unpack.stdout.txt",
+          "sha256": "c5c33e56279a1d76440fa8e4d4d1edad7f08aa3ab1d3f3cbfec31ec26c10aec2"
+        },
+        "tests": 8,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/resolver.test.js"
+        ],
+        "duration_seconds": 0.247,
+        "id": "didcomm-resolver",
+        "passed": 19,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:47.993216+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-resolver.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-resolver.stdout.txt",
+          "sha256": "18f0a54a6a3dc40ca87dc81e646fd9639a94d06b4d95ef229c30d37b139b7d82"
+        },
+        "tests": 19,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/roundtrip-rust.test.js"
+        ],
+        "duration_seconds": 0.208,
+        "id": "didcomm-roundtrip-rust",
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "zero or unverified executed test count",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:48.241419+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/didcomm-roundtrip-rust.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-roundtrip-rust.stdout.txt",
+          "sha256": "ddc3c1549bf9aebeea27ced78ca1d70cc28d6314358752591ce483937ece7bd3"
+        },
+        "timeout_seconds": 45
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/sender-binding.test.js"
+        ],
+        "duration_seconds": 0.478,
+        "id": "didcomm-sender-binding",
+        "passed": 12,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:48.450127+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-sender-binding.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-sender-binding.stdout.txt",
+          "sha256": "d4124e2a419199ccb618bcbc9501b76176d4d4c697a49e8f5d365743e50ee4a4"
+        },
+        "tests": 12,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/tsp-frame.test.js"
+        ],
+        "duration_seconds": 0.183,
+        "id": "didcomm-tsp-frame",
+        "passed": 7,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:48.929352+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-tsp-frame.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-tsp-frame.stdout.txt",
+          "sha256": "5bf623d720e175f2bdb5b8944976a5f2174d8c00fdd120d302467802860130dd"
+        },
+        "tests": 7,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/vta-didcomm.test.js"
+        ],
+        "duration_seconds": 9.945,
+        "id": "didcomm-vta-didcomm",
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Nonzero execution requires diagnosis; neither automatic defect finding nor PASS.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 1,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:49.112879+00:00",
+        "state": "EXECUTED_NONZERO",
+        "stderr": {
+          "path": "logs/didcomm-vta-didcomm.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-vta-didcomm.stdout.txt",
+          "sha256": "b23430488dee11fd7e9ba6f2c6378722ec17c09f76b8e6eb2d1808dc1f838e3a"
+        },
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_NONZERO"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/vta-rest-auth.test.js"
+        ],
+        "duration_seconds": 0.311,
+        "id": "didcomm-vta-rest-auth",
+        "passed": 13,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:59.059506+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-vta-rest-auth.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-vta-rest-auth.stdout.txt",
+          "sha256": "36504e79dc80da37daa8629deac5b9a6054af2101888780cca6e9dcf06f0a320"
+        },
+        "tests": 13,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "test/x25519.test.js"
+        ],
+        "duration_seconds": 0.245,
+        "id": "didcomm-x25519",
+        "passed": 4,
+        "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:32:59.371675+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/didcomm-x25519.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/didcomm-x25519.stdout.txt",
+          "sha256": "1f051134899796c411393faa3f8addd7fcd27c8e4ff1d1351875e59702123782"
+        },
+        "tests": 4,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "bash",
+          "deploy/nitro/deploy-common.test.sh"
+        ],
+        "duration_seconds": 0.036,
+        "id": "vti-deploy-helper",
+        "purpose": "Pinned deployment helper regression tests; no enclave certification.",
+        "reason": "Nonzero execution requires diagnosis; neither automatic defect finding nor PASS.",
+        "repository": "OpenVTC/verifiable-trust-infrastructure",
+        "returncode": 1,
+        "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+        "source": "verifiable-trust-infrastructure",
+        "started_at": "2026-10-08T04:32:59.619729+00:00",
+        "state": "EXECUTED_NONZERO",
+        "stderr": {
+          "path": "logs/vti-deploy-helper.stderr.txt",
+          "sha256": "78c9942f3de21de1fa2e472f6ace7efe0e626c9bbc40df2e3d1a4d57dc14ee2a"
+        },
+        "stdout": {
+          "path": "logs/vti-deploy-helper.stdout.txt",
+          "sha256": "84af7f123a48c1cc2035f0aa8b7ae17fa696545f95d6d5dec2af9eea2c36575b"
+        },
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_NONZERO"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-openvtc",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "OpenVTC/openvtc",
+        "returncode": null,
+        "revision": "2a4fa2b3c8e831dbe3184a1119c4c87b6f197220",
+        "source": "openvtc",
+        "started_at": "2026-10-08T04:32:59.656638+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-openvtc.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-openvtc.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-verifiable-trust-infrastructure",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "OpenVTC/verifiable-trust-infrastructure",
+        "returncode": null,
+        "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+        "source": "verifiable-trust-infrastructure",
+        "started_at": "2026-10-08T04:32:59.657190+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-verifiable-trust-infrastructure.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-verifiable-trust-infrastructure.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-affinidi-tdk-rs",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "affinidi/affinidi-tdk-rs",
+        "returncode": null,
+        "revision": "a1611baa011620a6ca62649b105c2b8c898f2653",
+        "source": "affinidi-tdk-rs",
+        "started_at": "2026-10-08T04:32:59.657642+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-affinidi-tdk-rs.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-affinidi-tdk-rs.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-affinidi-webvh-service",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "affinidi/affinidi-webvh-service",
+        "returncode": null,
+        "revision": "1686668623e0bba0e18880074d82794cb929a7fc",
+        "source": "affinidi-webvh-service",
+        "started_at": "2026-10-08T04:32:59.658132+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-affinidi-webvh-service.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-affinidi-webvh-service.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-affinidi-trust-registry-rs",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "affinidi/affinidi-trust-registry-rs",
+        "returncode": null,
+        "revision": "c77052f9bffe8bb7b4a3f357d9ef54cf632950f0",
+        "source": "affinidi-trust-registry-rs",
+        "started_at": "2026-10-08T04:32:59.658520+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-affinidi-trust-registry-rs.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-affinidi-trust-registry-rs.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-dtgwg-trust-tasks-tf",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "returncode": null,
+        "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+        "source": "dtgwg-trust-tasks-tf",
+        "started_at": "2026-10-08T04:32:59.659376+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-dtgwg-trust-tasks-tf.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-dtgwg-trust-tasks-tf.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-verifiable-git-infrastructure",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "OpenVTC/verifiable-git-infrastructure",
+        "returncode": null,
+        "revision": "92f32dd4c107545bd42b009ca55fc1ed4759309d",
+        "source": "verifiable-git-infrastructure",
+        "started_at": "2026-10-08T04:32:59.659911+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-verifiable-git-infrastructure.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-verifiable-git-infrastructure.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-didwebvh-rs",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "decentralized-identity/didwebvh-rs",
+        "returncode": null,
+        "revision": "155eb4e71c9d45db57c6f7329f286bbd753e0138",
+        "source": "didwebvh-rs",
+        "started_at": "2026-10-08T04:32:59.660421+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-didwebvh-rs.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-didwebvh-rs.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-dtg-credentials",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "OpenVTC/dtg-credentials",
+        "returncode": null,
+        "revision": "fc9954d8d529d312ebac7ec1d413179857474c96",
+        "source": "dtg-credentials",
+        "started_at": "2026-10-08T04:32:59.660858+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-dtg-credentials.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-dtg-credentials.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-predicate-credential-system",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "OpenVTC/predicate-credential-system",
+        "returncode": null,
+        "revision": "4be4598563f422b9a3a4e37032d22487836d322c",
+        "source": "predicate-credential-system",
+        "started_at": "2026-10-08T04:32:59.661263+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-predicate-credential-system.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-predicate-credential-system.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-vta-agent-memory",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "OpenVTC/vta-agent-memory",
+        "returncode": null,
+        "revision": "85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5",
+        "source": "vta-agent-memory",
+        "started_at": "2026-10-08T04:32:59.661657+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-vta-agent-memory.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-vta-agent-memory.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "duration_seconds": 0.0,
+        "id": "rust-vti-push-gateway",
+        "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+        "reason": "executable unavailable: cargo",
+        "repository": "OpenVTC/vti-push-gateway",
+        "returncode": null,
+        "revision": "44342121e161ccb12e43013f33ce80abb2486acb",
+        "source": "vti-push-gateway",
+        "started_at": "2026-10-08T04:32:59.662088+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/rust-vti-push-gateway.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/rust-vti-push-gateway.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "go",
+          "test",
+          "./..."
+        ],
+        "duration_seconds": 0.0,
+        "id": "go-tsp",
+        "purpose": "Independent Go TSP implementation vectors.",
+        "reason": "executable unavailable: go",
+        "repository": "affinidi/affinidi-tsp-go",
+        "returncode": null,
+        "revision": "d32ca7cdde208e93509c1f140ad7ee04d52ca7cc",
+        "source": "affinidi-tsp-go",
+        "started_at": "2026-10-08T04:32:59.662529+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/go-tsp.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/go-tsp.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 120
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "dart",
+          "test",
+          "packages/affinidi_tsp/test"
+        ],
+        "duration_seconds": 0.0,
+        "id": "dart-tsp",
+        "purpose": "Dart vectors; package runtime setup is separately required.",
+        "reason": "executable unavailable: dart",
+        "repository": "affinidi/affinidi-tsp-dart",
+        "returncode": null,
+        "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78",
+        "source": "affinidi-tsp-dart",
+        "started_at": "2026-10-08T04:32:59.663100+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/dart-tsp.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/dart-tsp.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 90
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "swift",
+          "test"
+        ],
+        "duration_seconds": 0.0,
+        "id": "ios-approval",
+        "purpose": "Swift owner approval component tests; Apple platform prerequisites apply.",
+        "reason": "executable unavailable: swift",
+        "repository": "OpenVTC/vta-mobile-agent-ios",
+        "returncode": null,
+        "revision": "863a1e912042b28908ec2cf3675677ad9c151e0e",
+        "source": "vta-mobile-agent-ios",
+        "started_at": "2026-10-08T04:32:59.664023+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/ios-approval.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/ios-approval.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 90
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "duration_seconds": 1.23,
+        "id": "npm-rp-sdk-js",
+        "purpose": "Declared package tests; missing dependencies remain explicit.",
+        "reason": "Nonzero execution requires diagnosis; neither automatic defect finding nor PASS.",
+        "repository": "OpenVTC/rp-sdk-js",
+        "returncode": 1,
+        "revision": "8594c2acba4014232e842fe7613e8a7cdc0e2b0f",
+        "source": "rp-sdk-js",
+        "started_at": "2026-10-08T04:32:59.664595+00:00",
+        "state": "EXECUTED_NONZERO",
+        "stderr": {
+          "path": "logs/npm-rp-sdk-js.stderr.txt",
+          "sha256": "87807c3f435058bbcf7ad3fcaded5adf2b7b50fca51f0c3d54f7708ed1e86305"
+        },
+        "stdout": {
+          "path": "logs/npm-rp-sdk-js.stdout.txt",
+          "sha256": "196b69aaadef8f174e1341ffc9139ba1763be2348c47f9b9a724270f6f58fbe5"
+        },
+        "timeout_seconds": 60
+      },
+      "result": "EXECUTED_NONZERO"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "duration_seconds": 37.814,
+        "id": "npm-vta-browser-plugin",
+        "purpose": "Declared package tests; missing dependencies remain explicit.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "OpenVTC/vta-browser-plugin",
+        "returncode": 0,
+        "revision": "d6df67971688fd927cd5b095424fa4093d4264df",
+        "source": "vta-browser-plugin",
+        "started_at": "2026-10-08T04:33:00.896249+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/npm-vta-browser-plugin.stderr.txt",
+          "sha256": "d829d0b399a760edea60c001d051836938a28d8fb33b019376efae7483db3eda"
+        },
+        "stdout": {
+          "path": "logs/npm-vta-browser-plugin.stdout.txt",
+          "sha256": "467cac78a47aca7bf1d6f07cbdca2846cfe9e8238c1649a23019a60beaaaef2b"
+        },
+        "timeout_seconds": 60
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "static-specification-analysis",
+      "provenance": {
+        "class": "static-specification-analysis",
+        "command": [
+          "node",
+          "scripts/check-bindings-conformance.mjs"
+        ],
+        "duration_seconds": 3.346,
+        "evidence_class": "static-specification-analysis",
+        "id": "tt-check-bindings-conformance",
+        "purpose": "Shipped static registry/bindings/ceremony validation, not deployed runtime.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "returncode": 0,
+        "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+        "source": "dtgwg-trust-tasks-tf",
+        "started_at": "2026-10-08T04:33:38.712110+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/tt-check-bindings-conformance.stderr.txt",
+          "sha256": "6f9b5bdc5480854ee0c147d4a5d8539442cf307c7408b39c9f5b40131229ae3f"
+        },
+        "stdout": {
+          "path": "logs/tt-check-bindings-conformance.stdout.txt",
+          "sha256": "64197e12a1e9ad709bf5a17bd28c3cae5c58727c7fe1cd2783de47978f921a7d"
+        },
+        "timeout_seconds": 90
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "static-specification-analysis",
+      "provenance": {
+        "class": "static-specification-analysis",
+        "command": [
+          "node",
+          "scripts/validate-ceremonies.mjs"
+        ],
+        "duration_seconds": 0.213,
+        "evidence_class": "static-specification-analysis",
+        "id": "tt-validate-ceremonies",
+        "purpose": "Shipped static registry/bindings/ceremony validation, not deployed runtime.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "returncode": 0,
+        "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+        "source": "dtgwg-trust-tasks-tf",
+        "started_at": "2026-10-08T04:33:42.058519+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/tt-validate-ceremonies.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/tt-validate-ceremonies.stdout.txt",
+          "sha256": "5c77f74fe8d216bc6dcfc21eb786329d186c6fc3d323e28994b32a8f58b01b60"
+        },
+        "timeout_seconds": 90
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "static-specification-analysis",
+      "provenance": {
+        "class": "static-specification-analysis",
+        "command": [
+          "node",
+          "scripts/check-dart-packages.mjs"
+        ],
+        "duration_seconds": 0.165,
+        "evidence_class": "static-specification-analysis",
+        "id": "tt-check-dart-packages",
+        "purpose": "Shipped static registry/bindings/ceremony validation, not deployed runtime.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "returncode": 0,
+        "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+        "source": "dtgwg-trust-tasks-tf",
+        "started_at": "2026-10-08T04:33:42.271530+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/tt-check-dart-packages.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/tt-check-dart-packages.stdout.txt",
+          "sha256": "3b11d88def951e27f77a0cc17a50f04ce3684063785f23de77f35ab4af4ed4b3"
+        },
+        "timeout_seconds": 90
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "packages/demo-rp/tests/cors.test.mjs"
+        ],
+        "duration_seconds": 0.346,
+        "id": "browser-demo-cors",
+        "passed": 6,
+        "purpose": "Shipped demo security vectors; no whole-browser assurance.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vta-browser-plugin",
+        "returncode": 0,
+        "revision": "d6df67971688fd927cd5b095424fa4093d4264df",
+        "source": "vta-browser-plugin",
+        "started_at": "2026-10-08T04:33:42.437003+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/browser-demo-cors.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/browser-demo-cors.stdout.txt",
+          "sha256": "15164b1b04f661e51f6d0490dc15de85fb849510a7e1051f05768487b54e5de4"
+        },
+        "tests": 6,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "packages/reviewer-demo/tests/parse-grant-command.test.mjs"
+        ],
+        "duration_seconds": 0.232,
+        "id": "browser-demo-grant-parser",
+        "passed": 9,
+        "purpose": "Shipped demo security vectors; no whole-browser assurance.",
+        "reason": "Pinned component test vectors passed; no cross-service inference.",
+        "repository": "OpenVTC/vta-browser-plugin",
+        "returncode": 0,
+        "revision": "d6df67971688fd927cd5b095424fa4093d4264df",
+        "source": "vta-browser-plugin",
+        "started_at": "2026-10-08T04:33:42.783307+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/browser-demo-grant-parser.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/browser-demo-grant-parser.stdout.txt",
+          "sha256": "23b321475caeb3de755113232c387153e98e5f2b52e0a91dc9f51d2fecbf6d02"
+        },
+        "tests": 9,
+        "timeout_seconds": 45
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "python3",
+          "experiments/dtg-data-room-runtime/run_current_openvtc.py",
+          "--target",
+          "../verifiable-trust-infrastructure",
+          "--output",
+          "../../output/lab-room.json"
+        ],
+        "duration_seconds": 0.051,
+        "id": "lab-room-handoff",
+        "purpose": "Actual producer admission against the Eucalyptus pin; older hardcoded target must fail closed.",
+        "reason": "dependency or network prerequisite unavailable; see full logs",
+        "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+        "returncode": 1,
+        "revision": "895e1af0f441995cada90dad2a429e56885bd394",
+        "source": "trust-protocol-interop-lab",
+        "started_at": "2026-10-08T04:33:43.016129+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/lab-room-handoff.stderr.txt",
+          "sha256": "43f1bce60547ae1d3a1bae6289e2855d8134b3d4c6b881e1d5d07ca47c46f62b"
+        },
+        "stdout": {
+          "path": "logs/lab-room-handoff.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 30
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "python3",
+          "experiments/dtg-protected-access/current_openvtc_context.py",
+          "--checkout",
+          "../verifiable-trust-infrastructure",
+          "--context",
+          "A",
+          "--verifier",
+          "https://verifier.example.invalid",
+          "--purpose",
+          "eucalyptus-cleanroom",
+          "--challenge",
+          "eucalyptus-960",
+          "--client-seed",
+          "1"
+        ],
+        "duration_seconds": 0.047,
+        "id": "lab-privacy-handoff",
+        "purpose": "Actual source-compatible privacy probe attempt; incompatible source pins cannot become new runtime evidence.",
+        "reason": "dependency or network prerequisite unavailable; see full logs",
+        "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+        "returncode": 2,
+        "revision": "895e1af0f441995cada90dad2a429e56885bd394",
+        "source": "trust-protocol-interop-lab",
+        "started_at": "2026-10-08T04:33:43.067059+00:00",
+        "state": "ATTEMPTED_UNAVAILABLE",
+        "stderr": {
+          "path": "logs/lab-privacy-handoff.stderr.txt",
+          "sha256": "732dbf45a20aba302215b40fd30e31e142793d51f75e181d44abd85b4eaa39e0"
+        },
+        "stdout": {
+          "path": "logs/lab-privacy-handoff.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 30
+      },
+      "result": "ATTEMPTED_UNAVAILABLE"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "class": "model/evidence-contract-definition",
+        "command": [
+          "python3",
+          "scripts/evaluate_privacy_observability.py",
+          "../../output/privacy-observability-input.json",
+          "--output",
+          "../../output/dpip-specialist.json"
+        ],
+        "duration_seconds": 0.121,
+        "evidence_class": "model/evidence-contract-definition",
+        "id": "dpip-incomplete-return",
+        "purpose": "DPIP portable return for explicitly unavailable A/B observations; not a runtime privacy experiment.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile",
+        "returncode": 0,
+        "revision": "991c92bad6ccb61dbc2511162bf11a9eb59679e2",
+        "source": "dtg-privacy-implementation-profile",
+        "started_at": "2026-10-08T04:33:43.113980+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/dpip-incomplete-return.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/dpip-incomplete-return.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "timeout_seconds": 30
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--experimental-transform-types",
+          "--input-type=module",
+          "-e",
+          "import assert from \"node:assert/strict\"; import {jcsCanonicalize,JcsLimitExceededError,JCS_MAX_DEPTH} from \"./src/jcs.ts\"; let deep=0; for(let i=0;i<5000;i++) deep=[deep]; assert.throws(()=>jcsCanonicalize(deep),e=>e instanceof JcsLimitExceededError && e.limit===\"depth\"); let bounded=0; for(let i=0;i<JCS_MAX_DEPTH;i++) bounded=[bounded]; assert.doesNotThrow(()=>jcsCanonicalize(bounded)); assert.throws(()=>jcsCanonicalize([bounded]),JcsLimitExceededError); console.log(\"PASS actual JCS depth-bound vectors: 5000 levels, exact boundary, boundary+1\");"
+        ],
+        "duration_seconds": 0.143,
+        "id": "rp-jcs-direct-boundary",
+        "purpose": "Direct execution of tagged canonicalizer at 5000 levels, maximum permitted depth and depth+1; avoids the failing JSON.stringify precondition without changing target tests.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "OpenVTC/rp-sdk-js",
+        "returncode": 0,
+        "revision": "8594c2acba4014232e842fe7613e8a7cdc0e2b0f",
+        "source": "rp-sdk-js",
+        "started_at": "2026-10-08T04:33:43.235649+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/rp-jcs-direct-boundary.stderr.txt",
+          "sha256": "769f0c1b188c5dcd3a206ebd2af6bb6289e6d6c7a7b6e05acd58501898bcf538"
+        },
+        "stdout": {
+          "path": "logs/rp-jcs-direct-boundary.stdout.txt",
+          "sha256": "bec47b67d0f21cc1e687b7d0beb64fb0cc84e7ef5bfbddbcbe1c3474b626f1cd"
+        },
+        "timeout_seconds": 30
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "runtime-observation",
+      "provenance": {
+        "class": "runtime-observation",
+        "command": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {lookup} from \"node:dns/promises\"; for(const host of [\"localhost\",\"localhost.\",\"mediator.localhost\",\"mediator.localhost.\",\"127.0.0.1.\"]){try { console.log(host,JSON.stringify(await lookup(host)));}catch(e){console.log(host,e.code)}}"
+        ],
+        "duration_seconds": 0.078,
+        "id": "local-dns-diagnostic",
+        "purpose": "Environment-only diagnostic for the failing SSRF positive control; never proof that the guard holds.",
+        "reason": "Pinned command completed; assurance limited to its declared purpose.",
+        "repository": "OpenVTC/vti-didcomm-js",
+        "returncode": 0,
+        "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+        "source": "vti-didcomm-js",
+        "started_at": "2026-10-08T04:33:43.378759+00:00",
+        "state": "EXECUTED_PASS",
+        "stderr": {
+          "path": "logs/local-dns-diagnostic.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": "logs/local-dns-diagnostic.stdout.txt",
+          "sha256": "80407d1d4b9f1271b2a21f202aa6dc903328d8fe8f27f212f5579b2218c0f5a5"
+        },
+        "timeout_seconds": 30
+      },
+      "result": "EXECUTED_PASS"
+    },
+    {
+      "class": "model/evidence-contract-definition",
+      "provenance": {
+        "artifact": "dpip-specialist.json",
+        "scope": "Explicitly missing privacy observations; no native experiment executed.",
+        "sha256": "7c24ce9385e0bddad5fa7744b1494bdf211bffe44b518d810e8939690e33a5b9",
+        "source_pins": [
+          {
+            "path": "sources/trust-protocol-interop-lab",
+            "release": "HEAD",
+            "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+            "revision": "895e1af0f441995cada90dad2a429e56885bd394",
+            "role": "evidence-producer/specialist snapshot; outside coordinated release",
+            "tag_object": "895e1af0f441995cada90dad2a429e56885bd394"
+          },
+          {
+            "path": "sources/dtg-privacy-implementation-profile",
+            "release": "HEAD",
+            "repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile",
+            "revision": "991c92bad6ccb61dbc2511162bf11a9eb59679e2",
+            "role": "evidence-producer/specialist snapshot; outside coordinated release",
+            "tag_object": "991c92bad6ccb61dbc2511162bf11a9eb59679e2"
+          }
+        ]
+      },
+      "result": "INDETERMINATE"
+    }
+  ],
+  "evidence_maturity": "source-only",
+  "harm_traceability": [
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "document proof plus transport-sender binding",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "unauthorized actuation",
+      "persona": "requester",
+      "proposition": "Task proofs are bound to the actual sender across all consuming doors",
+      "scenario": "Forged or sender-mismatched task enters an authenticated transport"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "joint authority/delegation/current-state checks",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "unauthorized delegated action",
+      "persona": "principal",
+      "proposition": "Credential validity, delegation and authority remain non-substitutable",
+      "scenario": "Valid VAC/VDC with expired or absent mandate reaches consequential execution"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "ceiling-bound ACL updates and explicit exceptions",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "self-escalation",
+      "persona": "community administrator",
+      "proposition": "Self-edit restrictions and exception boundaries are enforced at each transport",
+      "scenario": "One principal attempts widening its own ACL entry"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "operation-bound approvals plus eligibility and deduplication",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "false independence and unauthorized action",
+      "persona": "approver",
+      "proposition": "N approvals provide the declared independent authorization under actual host policy",
+      "scenario": "Duplicate, stale or correlated approvals accumulate toward a threshold"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "freshness, durable replay state and idempotency",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "duplicate or stale consequential effect",
+      "persona": "service operator",
+      "proposition": "Replay and restart cannot create a second authorization path",
+      "scenario": "A task is replayed across transport change and restart"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "version-bound codecs and fail-closed state transitions",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "downgrade or lost relationship authority",
+      "persona": "agent owner",
+      "proposition": "Transport compatibility does not weaken authentication or relationship semantics",
+      "scenario": "Rev 2 client contacts Rev 3 service and relationship state changes"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "epoch rekey and explicit custodian succession",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "confidentiality loss or custody lockout",
+      "persona": "room member",
+      "proposition": "Room removal and custody succession preserve confidentiality and recoverability",
+      "scenario": "Removed member attempts access after MLS epoch rotation or succession"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "distinct-attestation predicate and binding",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "false admission or disclosure of vetters",
+      "persona": "applicant",
+      "proposition": "Hidden vetting enforces its declared threshold without excess disclosure",
+      "scenario": "Hidden vetting is replayed or uses correlated attestations"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "context boundaries and lifecycle checks",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "cross-context correlation and disclosure",
+      "persona": "holder",
+      "proposition": "Persona and face boundaries survive composed credential/task/UI use",
+      "scenario": "Faces are reused, composed or retired across communities"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "forge gate plus current authorization and protected signing",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "unauthorized merge or misattributed code",
+      "persona": "repository contributor",
+      "proposition": "Forge enforcement preserves current authority through PR, approval and merge",
+      "scenario": "Unauthorized push, unapproved PR or stale membership reaches forge"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "signed management and least privilege",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "message loss or unsafe routing",
+      "persona": "mediator operator",
+      "proposition": "Mediator administration stays authorized and auditable",
+      "scenario": "Queue purge or runtime configuration mutation occurs without authority"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "egress guard and DNS vetting",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "SSRF and confidential data exposure",
+      "persona": "relying party",
+      "proposition": "Network guards hold across actual resolver and transport composition",
+      "scenario": "Resolution follows a private address, redirect or rebound DNS"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "hash-chain verification and durable attributable receipts",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "undetectable tampering or failed redress",
+      "persona": "auditor",
+      "proposition": "Audit and retained task evidence support challenge without silent tampering",
+      "scenario": "Evidence is truncated, rolled back or moved after key rotation"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "algorithm-bound keys and proof-set verification",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "algorithm downgrade or custody compromise",
+      "persona": "key custodian",
+      "proposition": "Post-quantum and hybrid processing reject omitted or incompatible proofs",
+      "scenario": "Hybrid proof set omits one proof or signs under wrong algorithm"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "authenticated bound writes and signed responses",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "illegitimate recognition or stale authority",
+      "persona": "trust-registry administrator",
+      "proposition": "Registry mutations and reliance preserve authority and temporal meaning",
+      "scenario": "Wrong sender mutates registry or stale signed answer is consumed"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "device-bound key and deliberate approval gate",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "owner consent bypass",
+      "persona": "mobile approver",
+      "proposition": "Mobile approval binds owner intent, displayed action and current authority",
+      "scenario": "Pairing or push causes unattended approval"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "untrusted-data fence and bounded storage",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "prompt injection and secret exposure",
+      "persona": "agent operator",
+      "proposition": "Agent memory cannot silently acquire instruction authority",
+      "scenario": "Recalled memory carries executable instructions or excessive data"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "expiry/audience/challenge checks and bounded canonicalization",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "session substitution or denial of service",
+      "persona": "relying party",
+      "proposition": "RP sessions are bound to audience, challenge, time and valid proof",
+      "scenario": "Expired token, wrong audience or malicious canonicalization reaches session"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "exact lockfiles and producer-consumer version skew tests",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "false assurance or unreproducible build",
+      "persona": "new adopter",
+      "proposition": "Actual build inputs and cross-project consumption match the claimed baseline",
+      "scenario": "Coordinated tags are treated as a guarantee of dependency compatibility"
+    },
+    {
+      "conclusion": "INDETERMINATE",
+      "control": "accessible alternative journey and durable redress",
+      "evidence": "EUC-01, EUC-02, EUC-03, EUC-04, EUC-05, EUC-06, EUC-07, EUC-08, EUC-09, EUC-10, EUC-11, EUC-12, EUC-13, EUC-14, EUC-15, EUC-16, EUC-17, EUC-18, EUC-19, EUC-20",
+      "harm": "exclusion, loss of autonomy or unreviewable denial",
+      "persona": "excluded participant",
+      "proposition": "Consent and redress remain usable for affected people",
+      "scenario": "Participant cannot complete gesture or challenge an adverse decision"
+    }
+  ],
+  "harms": [
+    "unauthorized actuation",
+    "unauthorized delegated action",
+    "self-escalation",
+    "false independence and unauthorized action",
+    "duplicate or stale consequential effect",
+    "downgrade or lost relationship authority",
+    "confidentiality loss or custody lockout",
+    "false admission or disclosure of vetters",
+    "cross-context correlation and disclosure",
+    "unauthorized merge or misattributed code",
+    "message loss or unsafe routing",
+    "SSRF and confidential data exposure",
+    "undetectable tampering or failed redress",
+    "algorithm downgrade or custody compromise",
+    "illegitimate recognition or stale authority",
+    "owner consent bypass",
+    "prompt injection and secret exposure",
+    "session substitution or denial of service",
+    "false assurance or unreproducible build",
+    "exclusion, loss of autonomy or unreviewable denial"
+  ],
+  "inference": "20 consequential propositions lack accepted deployed-composition/specialist evidence. Component results and configuration exceptions are bounded observations, not certification.",
+  "lenses": {
+    "composition": {
+      "evidence_maturity": "source-only",
+      "execution": "required-but-not-executed",
+      "materiality": "applicable",
+      "reason": "Lab handoffs attempted; historical native adapters reject this new pin. No full deployed-composition trace accepted.",
+      "result": "INDETERMINATE"
+    },
+    "drarm": {
+      "evidence_maturity": "source-only",
+      "execution": "required-but-not-executed",
+      "materiality": "applicable",
+      "reason": "Restart, crash, partition, stale authority, room custody and recovery require target-native induced-failure evidence.",
+      "result": "INDETERMINATE"
+    },
+    "rahp": {
+      "evidence_maturity": "source-only",
+      "execution": "executed",
+      "materiality": "applicable",
+      "reason": "Fresh scenario/harm/proposition source examination completed; broader required evidence remains absent.",
+      "result": "INDETERMINATE"
+    },
+    "security": {
+      "evidence_maturity": "automated-conformance",
+      "execution": "executed",
+      "materiality": "applicable",
+      "reason": "Bounded target JavaScript positive/negative vectors executed; Rust/native security and service-composition coverage remain incomplete.",
+      "result": "INDETERMINATE"
+    },
+    "specialist": {
+      "evidence_maturity": "modeled",
+      "execution": "executed",
+      "materiality": "applicable",
+      "reason": "DPIP incomplete-evidence interpretation is separate from unexecuted native observer experiments; human-independence/exclusion evidence also remains required.",
+      "result": "INDETERMINATE"
+    }
+  },
+  "lineage": {
+    "campaign_identity": "06bc77950b572bf0154bf01dea9cd6f839856e2ce668b5784fef834f1076a30e",
+    "clean_room": true,
+    "historical_inputs_used": false,
+    "run": {
+      "instance": "dtg",
+      "lineage_prefix": "06bc77950b572bf0154bf01dea9cd6f839856e2ce668b5784fef834f1076a30e",
+      "snapshot": "VTI-Eucalyptus"
+    }
+  },
+  "non_scope": "Production certification; independent security or cryptographic audit; human risk acceptance; unpinned normative specifications; exhaustive path/feature coverage; native device, enclave and hosted-forge deployment claims. Full campaign scope does not mean every implementation path was executed.",
+  "outcome": "INDETERMINATE",
+  "personas": [
+    "agent operator",
+    "agent owner",
+    "applicant",
+    "approver",
+    "auditor",
+    "community administrator",
+    "excluded participant",
+    "holder",
+    "key custodian",
+    "mediator operator",
+    "mobile approver",
+    "new adopter",
+    "principal",
+    "relying party",
+    "repository contributor",
+    "requester",
+    "room member",
+    "service operator",
+    "trust-registry administrator"
+  ],
+  "process_state": "complete",
+  "reason_code": "eucalyptus-composition-evidence-required",
+  "requirements_examined": [
+    "EUC-01",
+    "EUC-02",
+    "EUC-03",
+    "EUC-04",
+    "EUC-05",
+    "EUC-06",
+    "EUC-07",
+    "EUC-08",
+    "EUC-09",
+    "EUC-10",
+    "EUC-11",
+    "EUC-12",
+    "EUC-13",
+    "EUC-14",
+    "EUC-15",
+    "EUC-16",
+    "EUC-17",
+    "EUC-18",
+    "EUC-19",
+    "EUC-20"
+  ],
+  "residuals": [
+    {
+      "id": "EUC-01",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-02",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-03",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-04",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-05",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-06",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-07",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-08",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-09",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-10",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-11",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-12",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-13",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-14",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-15",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-16",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-17",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-18",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-19",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    },
+    {
+      "id": "EUC-20",
+      "summary": "Source inspection and bounded component checks do not establish this consequential composition. Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted."
+    }
+  ],
+  "risks": [],
+  "scenarios": [
+    "Forged or sender-mismatched task enters an authenticated transport",
+    "Valid VAC/VDC with expired or absent mandate reaches consequential execution",
+    "One principal attempts widening its own ACL entry",
+    "Duplicate, stale or correlated approvals accumulate toward a threshold",
+    "A task is replayed across transport change and restart",
+    "Rev 2 client contacts Rev 3 service and relationship state changes",
+    "Removed member attempts access after MLS epoch rotation or succession",
+    "Hidden vetting is replayed or uses correlated attestations",
+    "Faces are reused, composed or retired across communities",
+    "Unauthorized push, unapproved PR or stale membership reaches forge",
+    "Queue purge or runtime configuration mutation occurs without authority",
+    "Resolution follows a private address, redirect or rebound DNS",
+    "Evidence is truncated, rolled back or moved after key rotation",
+    "Hybrid proof set omits one proof or signs under wrong algorithm",
+    "Wrong sender mutates registry or stale signed answer is consumed",
+    "Pairing or push causes unattended approval",
+    "Recalled memory carries executable instructions or excessive data",
+    "Expired token, wrong audience or malicious canonicalization reaches session",
+    "Coordinated tags are treated as a guarantee of dependency compatibility",
+    "Participant cannot complete gesture or challenge an adverse decision"
+  ],
+  "schema": "rahp-assurance-run-state/v1",
+  "scope": "Fresh source-pinned RAHP examination of all 18 VTI-Eucalyptus coordinated repositories, component test attempts and 20 consequential composition/human-harm propositions.",
+  "source_pins": [
+    {
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80"
+    },
+    {
+      "repository": "OpenVTC/openvtc",
+      "revision": "2a4fa2b3c8e831dbe3184a1119c4c87b6f197220"
+    },
+    {
+      "repository": "affinidi/affinidi-tdk-rs",
+      "revision": "a1611baa011620a6ca62649b105c2b8c898f2653"
+    },
+    {
+      "repository": "affinidi/affinidi-webvh-service",
+      "revision": "1686668623e0bba0e18880074d82794cb929a7fc"
+    },
+    {
+      "repository": "affinidi/affinidi-trust-registry-rs",
+      "revision": "c77052f9bffe8bb7b4a3f357d9ef54cf632950f0"
+    },
+    {
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "revision": "7b6bb488ffd838bef058310c909207d4a7b77125"
+    },
+    {
+      "repository": "OpenVTC/verifiable-git-infrastructure",
+      "revision": "92f32dd4c107545bd42b009ca55fc1ed4759309d"
+    },
+    {
+      "repository": "OpenVTC/vta-browser-plugin",
+      "revision": "d6df67971688fd927cd5b095424fa4093d4264df"
+    },
+    {
+      "repository": "decentralized-identity/didwebvh-rs",
+      "revision": "155eb4e71c9d45db57c6f7329f286bbd753e0138"
+    },
+    {
+      "repository": "OpenVTC/dtg-credentials",
+      "revision": "fc9954d8d529d312ebac7ec1d413179857474c96"
+    },
+    {
+      "repository": "OpenVTC/predicate-credential-system",
+      "revision": "4be4598563f422b9a3a4e37032d22487836d322c"
+    },
+    {
+      "repository": "OpenVTC/vta-agent-memory",
+      "revision": "85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5"
+    },
+    {
+      "repository": "affinidi/affinidi-tsp-go",
+      "revision": "d32ca7cdde208e93509c1f140ad7ee04d52ca7cc"
+    },
+    {
+      "repository": "affinidi/affinidi-tsp-dart",
+      "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78"
+    },
+    {
+      "repository": "OpenVTC/vti-push-gateway",
+      "revision": "44342121e161ccb12e43013f33ce80abb2486acb"
+    },
+    {
+      "repository": "OpenVTC/rp-sdk-js",
+      "revision": "8594c2acba4014232e842fe7613e8a7cdc0e2b0f"
+    },
+    {
+      "repository": "OpenVTC/vti-didcomm-js",
+      "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a"
+    },
+    {
+      "repository": "OpenVTC/vta-mobile-agent-ios",
+      "revision": "863a1e912042b28908ec2cf3675677ad9c151e0e"
+    },
+    {
+      "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+      "revision": "895e1af0f441995cada90dad2a429e56885bd394"
+    },
+    {
+      "repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile",
+      "revision": "991c92bad6ccb61dbc2511162bf11a9eb59679e2"
+    }
+  ],
+  "state": "TERMINAL_INDETERMINATE_EVIDENCE_REQUIRED",
+  "subject": {
+    "components": [
+      "OpenVTC/openvtc",
+      "OpenVTC/verifiable-trust-infrastructure",
+      "affinidi/affinidi-tdk-rs",
+      "affinidi/affinidi-webvh-service",
+      "affinidi/affinidi-trust-registry-rs",
+      "trustoverip/dtgwg-trust-tasks-tf",
+      "OpenVTC/verifiable-git-infrastructure",
+      "OpenVTC/vta-browser-plugin",
+      "decentralized-identity/didwebvh-rs",
+      "OpenVTC/dtg-credentials",
+      "OpenVTC/predicate-credential-system",
+      "OpenVTC/vta-agent-memory",
+      "affinidi/affinidi-tsp-go",
+      "affinidi/affinidi-tsp-dart",
+      "OpenVTC/vti-push-gateway",
+      "OpenVTC/rp-sdk-js",
+      "OpenVTC/vti-didcomm-js",
+      "OpenVTC/vta-mobile-agent-ios"
+    ],
+    "id": "DTG-VTC-EUCALYPTUS-2026-10-08",
+    "type": "portfolio-composition"
+  },
+  "terminal": true,
+  "tests": [
+    "dependencies-dtgwg-trust-tasks-tf",
+    "dependencies-vta-browser-plugin",
+    "dependencies-rp-sdk-js",
+    "dependencies-vti-didcomm-js",
+    "didcomm-a256cbc-hs512",
+    "didcomm-aes",
+    "didcomm-anoncrypt",
+    "didcomm-base64url",
+    "didcomm-concat-kdf",
+    "didcomm-did-key",
+    "didcomm-did-peer",
+    "didcomm-did-webvh-ssrf",
+    "didcomm-did-webvh",
+    "didcomm-dns-rebinding",
+    "didcomm-ecdh-1pu",
+    "didcomm-ecdh-es",
+    "didcomm-ecdh-p256",
+    "didcomm-forward",
+    "didcomm-jwk",
+    "didcomm-key-agreement",
+    "didcomm-mediator-auth-ssrf",
+    "didcomm-mediator-auth",
+    "didcomm-mediator-transport",
+    "didcomm-migration-fallback",
+    "didcomm-multibase",
+    "didcomm-net-guard-node",
+    "didcomm-net-guard",
+    "didcomm-p256",
+    "didcomm-pack-unpack-p256",
+    "didcomm-pack-unpack",
+    "didcomm-resolver",
+    "didcomm-roundtrip-rust",
+    "didcomm-sender-binding",
+    "didcomm-tsp-frame",
+    "didcomm-vta-didcomm",
+    "didcomm-vta-rest-auth",
+    "didcomm-x25519",
+    "vti-deploy-helper",
+    "rust-openvtc",
+    "rust-verifiable-trust-infrastructure",
+    "rust-affinidi-tdk-rs",
+    "rust-affinidi-webvh-service",
+    "rust-affinidi-trust-registry-rs",
+    "rust-dtgwg-trust-tasks-tf",
+    "rust-verifiable-git-infrastructure",
+    "rust-didwebvh-rs",
+    "rust-dtg-credentials",
+    "rust-predicate-credential-system",
+    "rust-vta-agent-memory",
+    "rust-vti-push-gateway",
+    "go-tsp",
+    "dart-tsp",
+    "ios-approval",
+    "npm-rp-sdk-js",
+    "npm-vta-browser-plugin",
+    "tt-check-bindings-conformance",
+    "tt-validate-ceremonies",
+    "tt-check-dart-packages",
+    "browser-demo-cors",
+    "browser-demo-grant-parser",
+    "lab-room-handoff",
+    "lab-privacy-handoff",
+    "dpip-incomplete-return",
+    "rp-jcs-direct-boundary",
+    "local-dns-diagnostic"
+  ]
+}

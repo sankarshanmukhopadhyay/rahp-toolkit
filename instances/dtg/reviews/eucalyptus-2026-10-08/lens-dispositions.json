@@ -1,0 +1,37 @@
+{
+  "composition": {
+    "evidence_maturity": "source-only",
+    "execution": "required-but-not-executed",
+    "materiality": "applicable",
+    "reason": "Lab handoffs attempted; historical native adapters reject this new pin. No full deployed-composition trace accepted.",
+    "result": "INDETERMINATE"
+  },
+  "drarm": {
+    "evidence_maturity": "source-only",
+    "execution": "required-but-not-executed",
+    "materiality": "applicable",
+    "reason": "Restart, crash, partition, stale authority, room custody and recovery require target-native induced-failure evidence.",
+    "result": "INDETERMINATE"
+  },
+  "rahp": {
+    "evidence_maturity": "source-only",
+    "execution": "executed",
+    "materiality": "applicable",
+    "reason": "Fresh scenario/harm/proposition source examination completed; broader required evidence remains absent.",
+    "result": "INDETERMINATE"
+  },
+  "security": {
+    "evidence_maturity": "automated-conformance",
+    "execution": "executed",
+    "materiality": "applicable",
+    "reason": "Bounded target JavaScript positive/negative vectors executed; Rust/native security and service-composition coverage remain incomplete.",
+    "result": "INDETERMINATE"
+  },
+  "specialist": {
+    "evidence_maturity": "modeled",
+    "execution": "executed",
+    "materiality": "applicable",
+    "reason": "DPIP incomplete-evidence interpretation is separate from unexecuted native observer experiments; human-independence/exclusion evidence also remains required.",
+    "result": "INDETERMINATE"
+  }
+}

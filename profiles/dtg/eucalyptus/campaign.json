@@ -1,0 +1,1756 @@
+{
+  "schema": "rahp-eucalyptus-campaign/v1",
+  "id": "DTG-VTC-EUCALYPTUS-2026-10-08",
+  "sources": [
+    {
+      "repository": "OpenVTC/openvtc",
+      "revision": "2a4fa2b3c8e831dbe3184a1119c4c87b6f197220",
+      "tag_object": "9f59c7cbb1284c898eaaf7ee27e93cf8d3f276aa",
+      "path": "sources/openvtc",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/verifiable-trust-infrastructure",
+      "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+      "tag_object": "e93b977cb084c1dd0f93044c518315d5a81b692f",
+      "path": "sources/verifiable-trust-infrastructure",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "affinidi/affinidi-tdk-rs",
+      "revision": "a1611baa011620a6ca62649b105c2b8c898f2653",
+      "tag_object": "b174f86e4e2fb5c048c3ee2b12ec98bce2bd9659",
+      "path": "sources/affinidi-tdk-rs",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "affinidi/affinidi-webvh-service",
+      "revision": "1686668623e0bba0e18880074d82794cb929a7fc",
+      "tag_object": "985ce18546eece07f9c25da4af4f4d5985ab3268",
+      "path": "sources/affinidi-webvh-service",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "affinidi/affinidi-trust-registry-rs",
+      "revision": "c77052f9bffe8bb7b4a3f357d9ef54cf632950f0",
+      "tag_object": "89f8979c42c276427b9b664289cb9e2969dacae0",
+      "path": "sources/affinidi-trust-registry-rs",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+      "tag_object": "a6cdf5f1f748b86e0af6543b61c1c6c360a8c068",
+      "path": "sources/dtgwg-trust-tasks-tf",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/verifiable-git-infrastructure",
+      "revision": "92f32dd4c107545bd42b009ca55fc1ed4759309d",
+      "tag_object": "39d2f2c6e3de0b0781ac073d661183a1091004d1",
+      "path": "sources/verifiable-git-infrastructure",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/vta-browser-plugin",
+      "revision": "d6df67971688fd927cd5b095424fa4093d4264df",
+      "tag_object": "b18546168d56d23477094a98c1cbdb5bf5656652",
+      "path": "sources/vta-browser-plugin",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "decentralized-identity/didwebvh-rs",
+      "revision": "155eb4e71c9d45db57c6f7329f286bbd753e0138",
+      "tag_object": "8718bca6feb2bbe41a6e38e9a61f5f6c8b827060",
+      "path": "sources/didwebvh-rs",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/dtg-credentials",
+      "revision": "fc9954d8d529d312ebac7ec1d413179857474c96",
+      "tag_object": "ea58f1688bbef54716b7de35f37a0216c59fcdb0",
+      "path": "sources/dtg-credentials",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/predicate-credential-system",
+      "revision": "4be4598563f422b9a3a4e37032d22487836d322c",
+      "tag_object": "cba7740c38bf8ec2242e46f2ff33fab47bf623c6",
+      "path": "sources/predicate-credential-system",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/vta-agent-memory",
+      "revision": "85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5",
+      "tag_object": "982e542b08bffe82f07e5166d0eb6e92424657c1",
+      "path": "sources/vta-agent-memory",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "affinidi/affinidi-tsp-go",
+      "revision": "d32ca7cdde208e93509c1f140ad7ee04d52ca7cc",
+      "tag_object": "85dc84159e26111e537f4b38e6dd36e8789de34b",
+      "path": "sources/affinidi-tsp-go",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "affinidi/affinidi-tsp-dart",
+      "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78",
+      "tag_object": "8a7347c0b184528dd153cc694f6208f7f49e2d5e",
+      "path": "sources/affinidi-tsp-dart",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/vti-push-gateway",
+      "revision": "44342121e161ccb12e43013f33ce80abb2486acb",
+      "tag_object": "2eeccd4465b05e19f9e0a0f6f2d9a07c733eb400",
+      "path": "sources/vti-push-gateway",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/rp-sdk-js",
+      "revision": "8594c2acba4014232e842fe7613e8a7cdc0e2b0f",
+      "tag_object": "facdb2208dd50fb00625d6da623bc6d94a3bde8d",
+      "path": "sources/rp-sdk-js",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/vti-didcomm-js",
+      "revision": "afd11e1f5dab611118253d2ebaffd1cfee29962a",
+      "tag_object": "919feef3dee0e1e3f8453f82acdd6f27ca59d4c4",
+      "path": "sources/vti-didcomm-js",
+      "release": "VTI-Eucalyptus"
+    },
+    {
+      "repository": "OpenVTC/vta-mobile-agent-ios",
+      "revision": "863a1e912042b28908ec2cf3675677ad9c151e0e",
+      "tag_object": "e68e325423cfed1cb01c97a80f442af196c82c6b",
+      "path": "sources/vta-mobile-agent-ios",
+      "release": "VTI-Eucalyptus"
+    }
+  ],
+  "propositions": [
+    {
+      "id": "EUC-01",
+      "persona": "requester",
+      "scenario": "Forged or sender-mismatched task enters an authenticated transport",
+      "harm": "unauthorized actuation",
+      "control": "document proof plus transport-sender binding",
+      "proposition": "Task proofs are bound to the actual sender across all consuming doors",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vtc-service/tests/it/auth_authcrypt_sender_binding.rs"
+        },
+        {
+          "source": "vti-didcomm-js",
+          "path": "test/sender-binding.test.js"
+        }
+      ],
+      "owner": "VTI / Trust Tasks",
+      "retest": "Execute signed/unsigned, wrong-sender and nested-transport requests through VTA, VTC, mediator and push doors; verify zero forbidden effects.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Execute signed/unsigned, wrong-sender and nested-transport requests through VTA, VTC, mediator and push doors; verify zero forbidden effects."
+      },
+      "suite_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ]
+    },
+    {
+      "id": "EUC-02",
+      "persona": "principal",
+      "scenario": "Valid VAC/VDC with expired or absent mandate reaches consequential execution",
+      "harm": "unauthorized delegated action",
+      "control": "joint authority/delegation/current-state checks",
+      "proposition": "Credential validity, delegation and authority remain non-substitutable",
+      "source_refs": [
+        {
+          "source": "dtg-credentials",
+          "path": "tests/authority_chain.rs"
+        },
+        {
+          "source": "dtg-credentials",
+          "path": "tests/delegation_chain.rs"
+        }
+      ],
+      "owner": "DTG Credentials / VTI",
+      "retest": "Exercise both substitution directions and revoke authority between verification and commit.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Exercise both substitution directions and revoke authority between verification and commit."
+      },
+      "suite_ids": [
+        "rust-dtg-credentials"
+      ]
+    },
+    {
+      "id": "EUC-03",
+      "persona": "community administrator",
+      "scenario": "One principal attempts widening its own ACL entry",
+      "harm": "self-escalation",
+      "control": "ceiling-bound ACL updates and explicit exceptions",
+      "proposition": "Self-edit restrictions and exception boundaries are enforced at each transport",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vtc-service/tests/it/acl_self_edit.rs"
+        },
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vtc-service/src/acl/single_admin.rs",
+          "needle": "waives a consent whether or not",
+          "observation": "The tagged source explicitly documents consent waiver even when other administrator entries exist. Host configuration asserts those identities represent one person; this is a configuration boundary, not a detected exploit."
+        },
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vtc-service/src/config.rs",
+          "needle": "single_admin_mode: false",
+          "observation": "Default configuration disables single-administrator mode; assessment must distinguish default and explicitly enabled deployment policy."
+        }
+      ],
+      "owner": "VTI / deployment operator",
+      "retest": "Execute label-only, widening, narrowing, sole-admin and multiple-person configurations across HTTPS/DIDComm/TSP; assert audit-before-effect.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Execute label-only, widening, narrowing, sole-admin and multiple-person configurations across HTTPS/DIDComm/TSP; assert audit-before-effect."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ]
+    },
+    {
+      "id": "EUC-04",
+      "persona": "approver",
+      "scenario": "Duplicate, stale or correlated approvals accumulate toward a threshold",
+      "harm": "false independence and unauthorized action",
+      "control": "operation-bound approvals plus eligibility and deduplication",
+      "proposition": "N approvals provide the declared independent authorization under actual host policy",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vtc-service/tests/it/unrestricted_admin_consent.rs"
+        },
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vtc-service/src/acl/single_admin.rs",
+          "needle": "the node cannot",
+          "observation": "The node documents that it cannot distinguish one person using multiple identifiers from two people. Cryptographic identity cardinality cannot by itself establish independent people."
+        }
+      ],
+      "owner": "VTI / community governance",
+      "retest": "Exercise repeated approver, requester approval, stale approval, role reduction, threshold change, cancellation, cooling-off and real single-person/multi-person policy.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Exercise repeated approver, requester approval, stale approval, role reduction, threshold change, cancellation, cooling-off and real single-person/multi-person policy."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ]
+    },
+    {
+      "id": "EUC-05",
+      "persona": "service operator",
+      "scenario": "A task is replayed across transport change and restart",
+      "harm": "duplicate or stale consequential effect",
+      "control": "freshness, durable replay state and idempotency",
+      "proposition": "Replay and restart cannot create a second authorization path",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vta-service/tests/it/push_new_attempt_freshness.rs"
+        },
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vta-service/tests/it/refresh_trust_task.rs"
+        }
+      ],
+      "owner": "VTI / mediator",
+      "retest": "Capture and replay identical task, changed payload under same ID, expired consent and post-restart retries; inspect effects and durable state.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Capture and replay identical task, changed payload under same ID, expired consent and post-restart retries; inspect effects and durable state."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure"
+      ]
+    },
+    {
+      "id": "EUC-06",
+      "persona": "agent owner",
+      "scenario": "Rev 2 client contacts Rev 3 service and relationship state changes",
+      "harm": "downgrade or lost relationship authority",
+      "control": "version-bound codecs and fail-closed state transitions",
+      "proposition": "Transport compatibility does not weaken authentication or relationship semantics",
+      "source_refs": [
+        {
+          "source": "affinidi-tsp-go",
+          "path": "vectors_test.go"
+        },
+        {
+          "source": "affinidi-tsp-dart",
+          "path": "packages/affinidi_tsp/test/negative_test.dart"
+        },
+        {
+          "source": "vti-didcomm-js",
+          "path": "test/tsp-frame.test.js"
+        }
+      ],
+      "owner": "TDK / Go / Dart / browser",
+      "retest": "Execute independent byte vectors and old/new endpoint pairs, nested mediator sends, restart and forged relationship transitions.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Execute independent byte vectors and old/new endpoint pairs, nested mediator sends, restart and forged relationship transitions."
+      },
+      "suite_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "go-tsp",
+        "dart-tsp"
+      ]
+    },
+    {
+      "id": "EUC-07",
+      "persona": "room member",
+      "scenario": "Removed member attempts access after MLS epoch rotation or succession",
+      "harm": "confidentiality loss or custody lockout",
+      "control": "epoch rekey and explicit custodian succession",
+      "proposition": "Room removal and custody succession preserve confidentiality and recoverability",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vti-rooms/tests/epoch_backfill.rs"
+        },
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vti-rooms/README.md"
+        }
+      ],
+      "owner": "VTI Rooms / deployment operator",
+      "retest": "Run host, native and browser participants; remove member, rekey, rotate custodian, replay old epoch and corrupt Merkle record.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Run host, native and browser participants; remove member, rekey, rotate custodian, replay old epoch and corrupt Merkle record."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "lab-room-handoff"
+      ]
+    },
+    {
+      "id": "EUC-08",
+      "persona": "applicant",
+      "scenario": "Hidden vetting is replayed or uses correlated attestations",
+      "harm": "false admission or disclosure of vetters",
+      "control": "distinct-attestation predicate and binding",
+      "proposition": "Hidden vetting enforces its declared threshold without excess disclosure",
+      "source_refs": [
+        {
+          "source": "predicate-credential-system",
+          "path": "tests/pcs_review_regressions.rs"
+        },
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vtc-service/tests/it/hidden_vetting_tasks.rs"
+        }
+      ],
+      "owner": "PCS / DPIP specialist / VTI",
+      "retest": "Execute duplicate-vetter, wrong-context, withdrawn-vetter, nonce replay and public/hidden A-B journeys with observable transcripts.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Execute duplicate-vetter, wrong-context, withdrawn-vetter, nonce replay and public/hidden A-B journeys with observable transcripts."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "rust-predicate-credential-system",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ]
+    },
+    {
+      "id": "EUC-09",
+      "persona": "holder",
+      "scenario": "Faces are reused, composed or retired across communities",
+      "harm": "cross-context correlation and disclosure",
+      "control": "context boundaries and lifecycle checks",
+      "proposition": "Persona and face boundaries survive composed credential/task/UI use",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vta-persona/src/face_values.rs"
+        },
+        {
+          "source": "openvtc",
+          "path": "openvtc-core/src/persona/lifecycle.rs"
+        }
+      ],
+      "owner": "DPIP specialist / OpenVTC / VTA",
+      "retest": "Compare two contexts through issuance, presentation, status discovery, task retention and retirement; measure stable joins and required disclosures.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Compare two contexts through issuance, presentation, status discovery, task retention and retirement; measure stable joins and required disclosures."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-openvtc",
+        "rust-verifiable-trust-infrastructure",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ]
+    },
+    {
+      "id": "EUC-10",
+      "persona": "repository contributor",
+      "scenario": "Unauthorized push, unapproved PR or stale membership reaches forge",
+      "harm": "unauthorized merge or misattributed code",
+      "control": "forge gate plus current authorization and protected signing",
+      "proposition": "Forge enforcement preserves current authority through PR, approval and merge",
+      "source_refs": [
+        {
+          "source": "verifiable-git-infrastructure",
+          "path": "crates/vgi-bridge/tests/pr_gate.rs"
+        },
+        {
+          "source": "verifiable-git-infrastructure",
+          "path": "crates/verify-trust/tests/verify_trust_e2e.rs"
+        }
+      ],
+      "owner": "VGI / VTC / forge operator",
+      "retest": "Run GitHub and Forgejo adapters against sandbox forges; bypass PR gate, revoke member after approval, replay webhook, exercise break-glass and inspect signer attribution.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Run GitHub and Forgejo adapters against sandbox forges; bypass PR gate, revoke member after approval, replay webhook, exercise break-glass and inspect signer attribution."
+      },
+      "suite_ids": [
+        "rust-verifiable-git-infrastructure"
+      ]
+    },
+    {
+      "id": "EUC-11",
+      "persona": "mediator operator",
+      "scenario": "Queue purge or runtime configuration mutation occurs without authority",
+      "harm": "message loss or unsafe routing",
+      "control": "signed management and least privilege",
+      "proposition": "Mediator administration stays authorized and auditable",
+      "source_refs": [
+        {
+          "source": "affinidi-tdk-rs",
+          "path": "README.md"
+        }
+      ],
+      "owner": "TDK / mediator operator",
+      "retest": "Run unauthorized and authorized inspect/purge/patch/reload tasks; verify sender proof, ACL, restart and audit on every transport.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Run unauthorized and authorized inspect/purge/patch/reload tasks; verify sender proof, ACL, restart and audit on every transport."
+      },
+      "suite_ids": [
+        "rust-affinidi-tdk-rs"
+      ]
+    },
+    {
+      "id": "EUC-12",
+      "persona": "relying party",
+      "scenario": "Resolution follows a private address, redirect or rebound DNS",
+      "harm": "SSRF and confidential data exposure",
+      "control": "egress guard and DNS vetting",
+      "proposition": "Network guards hold across actual resolver and transport composition",
+      "source_refs": [
+        {
+          "source": "vti-didcomm-js",
+          "path": "test/net-guard.test.js"
+        },
+        {
+          "source": "vti-didcomm-js",
+          "path": "test/dns-rebinding.test.js"
+        },
+        {
+          "source": "affinidi-webvh-service",
+          "path": "did-hosting-control/tests/no_rest_surface.rs"
+        },
+        {
+          "source": "didwebvh-rs",
+          "path": "tests/revoked.rs",
+          "observation": "The pinned resolver includes revocation test design; its execution and consuming transport behavior are separately required."
+        }
+      ],
+      "owner": "TDK / DID hosting / browser",
+      "retest": "Execute private/IP-encoding/redirect/rebinding vectors through real resolver, mediator client and DID hosting rather than the URL predicate alone.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Execute private/IP-encoding/redirect/rebinding vectors through real resolver, mediator client and DID hosting rather than the URL predicate alone."
+      },
+      "suite_ids": [
+        "didcomm-a256cbc-hs512",
+        "didcomm-aes",
+        "didcomm-anoncrypt",
+        "didcomm-base64url",
+        "didcomm-concat-kdf",
+        "didcomm-did-key",
+        "didcomm-did-peer",
+        "didcomm-did-webvh-ssrf",
+        "didcomm-did-webvh",
+        "didcomm-dns-rebinding",
+        "didcomm-ecdh-1pu",
+        "didcomm-ecdh-es",
+        "didcomm-ecdh-p256",
+        "didcomm-forward",
+        "didcomm-jwk",
+        "didcomm-key-agreement",
+        "didcomm-mediator-auth-ssrf",
+        "didcomm-mediator-auth",
+        "didcomm-mediator-transport",
+        "didcomm-migration-fallback",
+        "didcomm-multibase",
+        "didcomm-net-guard-node",
+        "didcomm-net-guard",
+        "didcomm-p256",
+        "didcomm-pack-unpack-p256",
+        "didcomm-pack-unpack",
+        "didcomm-resolver",
+        "didcomm-roundtrip-rust",
+        "didcomm-sender-binding",
+        "didcomm-tsp-frame",
+        "didcomm-vta-didcomm",
+        "didcomm-vta-rest-auth",
+        "didcomm-x25519",
+        "rust-affinidi-webvh-service",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return",
+        "local-dns-diagnostic"
+      ]
+    },
+    {
+      "id": "EUC-13",
+      "persona": "auditor",
+      "scenario": "Evidence is truncated, rolled back or moved after key rotation",
+      "harm": "undetectable tampering or failed redress",
+      "control": "hash-chain verification and durable attributable receipts",
+      "proposition": "Audit and retained task evidence support challenge without silent tampering",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vta-audit/README.md"
+        },
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vta-service/tests/it/audit_sink.rs"
+        }
+      ],
+      "owner": "VTA / VTC / governance operator",
+      "retest": "Tamper, truncate, roll back and rotate keys; independently verify chains and reconstruct a contested action after agent replacement.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Tamper, truncate, roll back and rotate keys; independently verify chains and reconstruct a contested action after agent replacement."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "lab-privacy-handoff",
+        "dpip-incomplete-return"
+      ]
+    },
+    {
+      "id": "EUC-14",
+      "persona": "key custodian",
+      "scenario": "Hybrid proof set omits one proof or signs under wrong algorithm",
+      "harm": "algorithm downgrade or custody compromise",
+      "control": "algorithm-bound keys and proof-set verification",
+      "proposition": "Post-quantum and hybrid processing reject omitted or incompatible proofs",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "vtc-service/src/credentials/proof_set.rs"
+        },
+        {
+          "source": "affinidi-tsp-dart",
+          "path": "packages/affinidi_tsp_pq/test/pq_test.dart"
+        }
+      ],
+      "owner": "VTI / TSP PQ",
+      "retest": "Exercise mixed algorithms, absent hybrid member, wrong key type, malformed signature and downgraded peer; pin actual crypto packages.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Exercise mixed algorithms, absent hybrid member, wrong key type, malformed signature and downgraded peer; pin actual crypto packages."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "dart-tsp"
+      ]
+    },
+    {
+      "id": "EUC-15",
+      "persona": "trust-registry administrator",
+      "scenario": "Wrong sender mutates registry or stale signed answer is consumed",
+      "harm": "illegitimate recognition or stale authority",
+      "control": "authenticated bound writes and signed responses",
+      "proposition": "Registry mutations and reliance preserve authority and temporal meaning",
+      "source_refs": [
+        {
+          "source": "affinidi-trust-registry-rs",
+          "path": "trql-client/tests/https_binding.rs"
+        }
+      ],
+      "owner": "Trust registry / relying-party operator",
+      "retest": "Run unauthorized write, replay, key rotation, stale status and cross-context recognition; verify policy version, effective time and audit.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Run unauthorized write, replay, key rotation, stale status and cross-context recognition; verify policy version, effective time and audit."
+      },
+      "suite_ids": [
+        "rust-affinidi-trust-registry-rs"
+      ]
+    },
+    {
+      "id": "EUC-16",
+      "persona": "mobile approver",
+      "scenario": "Pairing or push causes unattended approval",
+      "harm": "owner consent bypass",
+      "control": "device-bound key and deliberate approval gate",
+      "proposition": "Mobile approval binds owner intent, displayed action and current authority",
+      "source_refs": [
+        {
+          "source": "vta-mobile-agent-ios",
+          "path": "Tests/VtaMobileAgentTests/ApprovalGateTests.swift"
+        },
+        {
+          "source": "vti-push-gateway",
+          "path": "tests/document_auth.rs"
+        }
+      ],
+      "owner": "Mobile / push / VTA",
+      "retest": "Exercise unsolicited pairing, forged push, altered display/action digest, decline, expiry and revoked device through physical approval journey.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Exercise unsolicited pairing, forged push, altered display/action digest, decline, expiry and revoked device through physical approval journey."
+      },
+      "suite_ids": [
+        "rust-vti-push-gateway",
+        "ios-approval"
+      ]
+    },
+    {
+      "id": "EUC-17",
+      "persona": "agent operator",
+      "scenario": "Recalled memory carries executable instructions or excessive data",
+      "harm": "prompt injection and secret exposure",
+      "control": "untrusted-data fence and bounded storage",
+      "proposition": "Agent memory cannot silently acquire instruction authority",
+      "source_refs": [
+        {
+          "source": "vta-agent-memory",
+          "path": "src/fence.rs"
+        },
+        {
+          "source": "vta-agent-memory",
+          "path": "tests/mcp_starts_without_a_vta.rs"
+        }
+      ],
+      "owner": "Agent memory / VTA operator",
+      "retest": "Feed delimiter escape, command injection, excessive record and cross-owner recall through actual MCP consumer; observe decisions and stored bytes.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Feed delimiter escape, command injection, excessive record and cross-owner recall through actual MCP consumer; observe decisions and stored bytes."
+      },
+      "suite_ids": [
+        "rust-vta-agent-memory"
+      ]
+    },
+    {
+      "id": "EUC-18",
+      "persona": "relying party",
+      "scenario": "Expired token, wrong audience or malicious canonicalization reaches session",
+      "harm": "session substitution or denial of service",
+      "control": "expiry/audience/challenge checks and bounded canonicalization",
+      "proposition": "RP sessions are bound to audience, challenge, time and valid proof",
+      "source_refs": [
+        {
+          "source": "rp-sdk-js",
+          "path": "test/verify-id-token.test.ts"
+        },
+        {
+          "source": "rp-sdk-js",
+          "path": "test/jcs.test.ts"
+        },
+        {
+          "source": "vta-browser-plugin",
+          "path": "packages/tsp-js/tests/relationship.test.mjs"
+        }
+      ],
+      "owner": "RP SDK / browser operator",
+      "retest": "Run wrong recipient, stale token, reused challenge, deeply nested payload and modified signed token through actual relying service.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Run wrong recipient, stale token, reused challenge, deeply nested payload and modified signed token through actual relying service."
+      },
+      "suite_ids": [
+        "npm-rp-sdk-js",
+        "npm-vta-browser-plugin",
+        "rp-jcs-direct-boundary"
+      ]
+    },
+    {
+      "id": "EUC-19",
+      "persona": "new adopter",
+      "scenario": "Coordinated tags are treated as a guarantee of dependency compatibility",
+      "harm": "false assurance or unreproducible build",
+      "control": "exact lockfiles and producer-consumer version skew tests",
+      "proposition": "Actual build inputs and cross-project consumption match the claimed baseline",
+      "source_refs": [
+        {
+          "source": "verifiable-trust-infrastructure",
+          "path": "Cargo.lock"
+        },
+        {
+          "source": "dtgwg-trust-tasks-tf",
+          "path": "SPEC.md"
+        }
+      ],
+      "owner": "All component maintainers / RAHP",
+      "retest": "Build locked consumers; compare resolved package identities to coordinated sources and execute old/new request-schema and lifecycle pairs.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Build locked consumers; compare resolved package identities to coordinated sources and execute old/new request-schema and lifecycle pairs."
+      },
+      "suite_ids": [
+        "vti-deploy-helper",
+        "rust-verifiable-trust-infrastructure",
+        "rust-dtgwg-trust-tasks-tf",
+        "tt-check-bindings-conformance",
+        "tt-validate-ceremonies",
+        "tt-check-dart-packages"
+      ]
+    },
+    {
+      "id": "EUC-20",
+      "persona": "excluded participant",
+      "scenario": "Participant cannot complete gesture or challenge an adverse decision",
+      "harm": "exclusion, loss of autonomy or unreviewable denial",
+      "control": "accessible alternative journey and durable redress",
+      "proposition": "Consent and redress remain usable for affected people",
+      "source_refs": [
+        {
+          "source": "openvtc",
+          "path": "README.md"
+        },
+        {
+          "source": "vta-browser-plugin",
+          "path": "README.md"
+        }
+      ],
+      "owner": "Community governance / client maintainers",
+      "retest": "Run assistive-technology and unavailable-device journeys; document supported alternatives and verify a challenged decision can be corrected without bypassing authority.",
+      "required_evidence": "Attributable positive, negative and adversarial traces from the pinned consuming composition, including configuration, policy, clock, participants, expected/observed outcomes and effects; specialist return where privacy or human independence is asserted.",
+      "patterns": [
+        "SP-COMP-01"
+      ],
+      "pressure_cases": {
+        "positive": "Authorized current operation completes with attributable receipt.",
+        "negative": "Missing, stale or out-of-scope authorization is denied with zero forbidden effect.",
+        "adversarial": "Run assistive-technology and unavailable-device journeys; document supported alternatives and verify a challenged decision can be corrected without bypassing authority."
+      },
+      "suite_ids": [
+        "rust-openvtc",
+        "npm-vta-browser-plugin"
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "dependencies-dtgwg-trust-tasks-tf",
+      "source": "dtgwg-trust-tasks-tf",
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--fetch-retries=0",
+        "--fetch-timeout=10000",
+        "--audit=false",
+        "--fund=false"
+      ],
+      "purpose": "Attempt locked JavaScript dependency acquisition; success alone carries no behavioral assurance.",
+      "evidence_class": "model/evidence-contract-definition",
+      "timeout_seconds": 25
+    },
+    {
+      "id": "dependencies-vta-browser-plugin",
+      "source": "vta-browser-plugin",
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--fetch-retries=0",
+        "--fetch-timeout=10000",
+        "--audit=false",
+        "--fund=false"
+      ],
+      "purpose": "Attempt locked JavaScript dependency acquisition; success alone carries no behavioral assurance.",
+      "evidence_class": "model/evidence-contract-definition",
+      "timeout_seconds": 25
+    },
+    {
+      "id": "dependencies-rp-sdk-js",
+      "source": "rp-sdk-js",
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--fetch-retries=0",
+        "--fetch-timeout=10000",
+        "--audit=false",
+        "--fund=false"
+      ],
+      "purpose": "Attempt locked JavaScript dependency acquisition; success alone carries no behavioral assurance.",
+      "evidence_class": "model/evidence-contract-definition",
+      "timeout_seconds": 25
+    },
+    {
+      "id": "dependencies-vti-didcomm-js",
+      "source": "vti-didcomm-js",
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--fetch-retries=0",
+        "--fetch-timeout=10000",
+        "--audit=false",
+        "--fund=false"
+      ],
+      "purpose": "Attempt locked JavaScript dependency acquisition; success alone carries no behavioral assurance.",
+      "evidence_class": "model/evidence-contract-definition",
+      "timeout_seconds": 25
+    },
+    {
+      "id": "didcomm-a256cbc-hs512",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/a256cbc-hs512.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-aes",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/aes.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-anoncrypt",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/anoncrypt.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-base64url",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/base64url.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-concat-kdf",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/concat-kdf.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-did-key",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/did-key.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-did-peer",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/did-peer.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-did-webvh-ssrf",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/did-webvh-ssrf.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-did-webvh",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/did-webvh.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-dns-rebinding",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/dns-rebinding.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-ecdh-1pu",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/ecdh-1pu.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-ecdh-es",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/ecdh-es.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-ecdh-p256",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/ecdh-p256.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-forward",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/forward.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-jwk",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/jwk.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-key-agreement",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/key-agreement.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-mediator-auth-ssrf",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/mediator-auth-ssrf.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-mediator-auth",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/mediator-auth.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-mediator-transport",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/mediator-transport.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-migration-fallback",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/migration-fallback.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-multibase",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/multibase.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-net-guard-node",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/net-guard-node.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-net-guard",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/net-guard.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-p256",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/p256.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-pack-unpack-p256",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/pack-unpack-p256.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-pack-unpack",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/pack-unpack.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-resolver",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/resolver.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-roundtrip-rust",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/roundtrip-rust.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-sender-binding",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/sender-binding.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-tsp-frame",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/tsp-frame.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-vta-didcomm",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/vta-didcomm.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-vta-rest-auth",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/vta-rest-auth.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "didcomm-x25519",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "test/x25519.test.js"
+      ],
+      "purpose": "Shipped JavaScript component vectors; no service-composition proof.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "vti-deploy-helper",
+      "source": "verifiable-trust-infrastructure",
+      "command": [
+        "bash",
+        "deploy/nitro/deploy-common.test.sh"
+      ],
+      "purpose": "Pinned deployment helper regression tests; no enclave certification.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "rust-openvtc",
+      "source": "openvtc",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-verifiable-trust-infrastructure",
+      "source": "verifiable-trust-infrastructure",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-affinidi-tdk-rs",
+      "source": "affinidi-tdk-rs",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-affinidi-webvh-service",
+      "source": "affinidi-webvh-service",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-affinidi-trust-registry-rs",
+      "source": "affinidi-trust-registry-rs",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-dtgwg-trust-tasks-tf",
+      "source": "dtgwg-trust-tasks-tf",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-verifiable-git-infrastructure",
+      "source": "verifiable-git-infrastructure",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-didwebvh-rs",
+      "source": "didwebvh-rs",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-dtg-credentials",
+      "source": "dtg-credentials",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-predicate-credential-system",
+      "source": "predicate-credential-system",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-vta-agent-memory",
+      "source": "vta-agent-memory",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "rust-vti-push-gateway",
+      "source": "vti-push-gateway",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "go-tsp",
+      "source": "affinidi-tsp-go",
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "purpose": "Independent Go TSP implementation vectors.",
+      "timeout_seconds": 120
+    },
+    {
+      "id": "dart-tsp",
+      "source": "affinidi-tsp-dart",
+      "command": [
+        "dart",
+        "test",
+        "packages/affinidi_tsp/test"
+      ],
+      "purpose": "Dart vectors; package runtime setup is separately required.",
+      "timeout_seconds": 90
+    },
+    {
+      "id": "ios-approval",
+      "source": "vta-mobile-agent-ios",
+      "command": [
+        "swift",
+        "test"
+      ],
+      "purpose": "Swift owner approval component tests; Apple platform prerequisites apply.",
+      "timeout_seconds": 90
+    },
+    {
+      "id": "npm-rp-sdk-js",
+      "source": "rp-sdk-js",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "purpose": "Declared package tests; missing dependencies remain explicit.",
+      "timeout_seconds": 60
+    },
+    {
+      "id": "npm-vta-browser-plugin",
+      "source": "vta-browser-plugin",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "purpose": "Declared package tests; missing dependencies remain explicit.",
+      "timeout_seconds": 60
+    },
+    {
+      "id": "tt-check-bindings-conformance",
+      "source": "dtgwg-trust-tasks-tf",
+      "command": [
+        "node",
+        "scripts/check-bindings-conformance.mjs"
+      ],
+      "purpose": "Shipped static registry/bindings/ceremony validation, not deployed runtime.",
+      "timeout_seconds": 90,
+      "evidence_class": "static-specification-analysis"
+    },
+    {
+      "id": "tt-validate-ceremonies",
+      "source": "dtgwg-trust-tasks-tf",
+      "command": [
+        "node",
+        "scripts/validate-ceremonies.mjs"
+      ],
+      "purpose": "Shipped static registry/bindings/ceremony validation, not deployed runtime.",
+      "timeout_seconds": 90,
+      "evidence_class": "static-specification-analysis"
+    },
+    {
+      "id": "tt-check-dart-packages",
+      "source": "dtgwg-trust-tasks-tf",
+      "command": [
+        "node",
+        "scripts/check-dart-packages.mjs"
+      ],
+      "purpose": "Shipped static registry/bindings/ceremony validation, not deployed runtime.",
+      "timeout_seconds": 90,
+      "evidence_class": "static-specification-analysis"
+    },
+    {
+      "id": "browser-demo-cors",
+      "source": "vta-browser-plugin",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "packages/demo-rp/tests/cors.test.mjs"
+      ],
+      "purpose": "Shipped demo security vectors; no whole-browser assurance.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "browser-demo-grant-parser",
+      "source": "vta-browser-plugin",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "packages/reviewer-demo/tests/parse-grant-command.test.mjs"
+      ],
+      "purpose": "Shipped demo security vectors; no whole-browser assurance.",
+      "timeout_seconds": 45
+    },
+    {
+      "id": "lab-room-handoff",
+      "source": "trust-protocol-interop-lab",
+      "command": [
+        "python3",
+        "experiments/dtg-data-room-runtime/run_current_openvtc.py",
+        "--target",
+        "../verifiable-trust-infrastructure",
+        "--output",
+        "../../output/lab-room.json"
+      ],
+      "purpose": "Actual producer admission against the Eucalyptus pin; older hardcoded target must fail closed.",
+      "timeout_seconds": 30
+    },
+    {
+      "id": "lab-privacy-handoff",
+      "source": "trust-protocol-interop-lab",
+      "command": [
+        "python3",
+        "experiments/dtg-protected-access/current_openvtc_context.py",
+        "--checkout",
+        "../verifiable-trust-infrastructure",
+        "--context",
+        "A",
+        "--verifier",
+        "https://verifier.example.invalid",
+        "--purpose",
+        "eucalyptus-cleanroom",
+        "--challenge",
+        "eucalyptus-960",
+        "--client-seed",
+        "1"
+      ],
+      "purpose": "Actual source-compatible privacy probe attempt; incompatible source pins cannot become new runtime evidence.",
+      "timeout_seconds": 30
+    },
+    {
+      "id": "dpip-incomplete-return",
+      "source": "dtg-privacy-implementation-profile",
+      "command": [
+        "python3",
+        "scripts/evaluate_privacy_observability.py",
+        "../../output/privacy-observability-input.json",
+        "--output",
+        "../../output/dpip-specialist.json"
+      ],
+      "purpose": "DPIP portable return for explicitly unavailable A/B observations; not a runtime privacy experiment.",
+      "evidence_class": "model/evidence-contract-definition",
+      "timeout_seconds": 30
+    },
+    {
+      "id": "rp-jcs-direct-boundary",
+      "source": "rp-sdk-js",
+      "command": [
+        "node",
+        "--experimental-transform-types",
+        "--input-type=module",
+        "-e",
+        "import assert from \"node:assert/strict\"; import {jcsCanonicalize,JcsLimitExceededError,JCS_MAX_DEPTH} from \"./src/jcs.ts\"; let deep=0; for(let i=0;i<5000;i++) deep=[deep]; assert.throws(()=>jcsCanonicalize(deep),e=>e instanceof JcsLimitExceededError && e.limit===\"depth\"); let bounded=0; for(let i=0;i<JCS_MAX_DEPTH;i++) bounded=[bounded]; assert.doesNotThrow(()=>jcsCanonicalize(bounded)); assert.throws(()=>jcsCanonicalize([bounded]),JcsLimitExceededError); console.log(\"PASS actual JCS depth-bound vectors: 5000 levels, exact boundary, boundary+1\");"
+      ],
+      "purpose": "Direct execution of tagged canonicalizer at 5000 levels, maximum permitted depth and depth+1; avoids the failing JSON.stringify precondition without changing target tests.",
+      "timeout_seconds": 30
+    },
+    {
+      "id": "local-dns-diagnostic",
+      "source": "vti-didcomm-js",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import {lookup} from \"node:dns/promises\"; for(const host of [\"localhost\",\"localhost.\",\"mediator.localhost\",\"mediator.localhost.\",\"127.0.0.1.\"]){try { console.log(host,JSON.stringify(await lookup(host)));}catch(e){console.log(host,e.code)}}"
+      ],
+      "purpose": "Environment-only diagnostic for the failing SSRF positive control; never proof that the guard holds.",
+      "timeout_seconds": 30
+    }
+  ],
+  "scope": "Fresh source-pinned RAHP examination of all 18 VTI-Eucalyptus coordinated repositories, component test attempts and 20 consequential composition/human-harm propositions.",
+  "non_scope": "Production certification; independent security or cryptographic audit; human risk acceptance; unpinned normative specifications; exhaustive path/feature coverage; native device, enclave and hosted-forge deployment claims. Full campaign scope does not mean every implementation path was executed.",
+  "provenance": {
+    "trigger": "Repository-owner request on 2026-10-08; issue #960",
+    "contributor": "Codex (AI-assisted)",
+    "release_url": "https://github.com/OpenVTC/verifiable-trust-infrastructure/releases/tag/VTI-Eucalyptus",
+    "corpora_reused": [
+      "corpora/credential-zkp-trust-tasks-composed.yaml",
+      "corpora/trust-tasks-credspec-composed.yaml",
+      "profiles/dtg/coverage/data-rooms.yaml",
+      "profiles/dtg/coverage/persona.yaml"
+    ],
+    "prior_outcomes_used": false
+  },
+  "auxiliary_sources": [
+    {
+      "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+      "revision": "895e1af0f441995cada90dad2a429e56885bd394",
+      "tag_object": "895e1af0f441995cada90dad2a429e56885bd394",
+      "release": "HEAD",
+      "path": "sources/trust-protocol-interop-lab",
+      "role": "evidence-producer/specialist snapshot; outside coordinated release"
+    },
+    {
+      "repository": "sankarshanmukhopadhyay/dtg-privacy-implementation-profile",
+      "revision": "991c92bad6ccb61dbc2511162bf11a9eb59679e2",
+      "tag_object": "991c92bad6ccb61dbc2511162bf11a9eb59679e2",
+      "release": "HEAD",
+      "path": "sources/dtg-privacy-implementation-profile",
+      "role": "evidence-producer/specialist snapshot; outside coordinated release"
+    }
+  ]
+}

@@ -112,6 +112,8 @@ DPIP is an independently governed privacy specialist that can return portable ex
 
 ## Coordinated portfolio context
 
+The [Eucalyptus clean-room campaign](docs/reports/eucalyptus-clean-room-2026-10-08.md) examines the 18 coordinated `VTI-Eucalyptus` repositories with fresh source-pinned evidence and explicit component/composition limits. Its execution and assurance outcomes are separate; no historical PASS is inherited.
+
 v2.7.0 preserves Full-Stack Assurance Orchestration and Explicit Evidence State as the stable RAHP product foundation. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
 
 DPIP and the Trust Protocol Interop Lab remain independently governed collaborators. Consult each repository’s release records for current versions. The repositories are joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
