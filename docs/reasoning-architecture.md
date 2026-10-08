@@ -76,6 +76,8 @@ The optional [temporal and provenance profile](temporal-provenance.md) distingui
 
 The optional [R3 reproducibility and challenge profile](reproducibility-challenge.md) compares declared input pins, evaluator versions and outcomes, while retaining unresolved challenges. It does not establish independent execution, source authenticity or authoritative adjudication.
 
+A standalone [R1–R3 worked consumption example](reasoning-worked-example.md) demonstrates how the optional profiles can be invoked without promoting their results to terminal assurance.
+
 ## What remains outside this boundary
 
 RAHP does not automatically confer delegation to an agent, authenticate an agent's principal, approve a policy exception, guarantee freshness of external evidence, or settle a contested substantive judgment. An optional reasoning trace is **not** a chain-of-thought transcript. [The trace profile](reasoning-trace.md) currently validates a bounded explanation only when explicitly invoked by a consumer.

@@ -65,6 +65,8 @@ python3 -m unittest tests.test_evidence_adequacy tests.test_temporal_provenance 
 python3 tools/evidence_assertion_assessor.py --self-test
 ```
 
+For a runnable cross-profile scenario, see the [R1–R3 worked reasoning example](reasoning-worked-example.md).
+
 ## Assurance boundary
 
 This is an optional **structural comparison profile**, not a challenge tribunal, provenance verifier, execution replay facility, controller, or authorization mechanism. A `DECLARED_MATCH` can occur even when both declared outcomes are wrong. It is not an RAHP terminal PASS. No changes are made to existing assessor-result v1, R1, R2, reasoning trace, or assurance FSM.
