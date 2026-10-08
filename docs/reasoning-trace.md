@@ -56,6 +56,8 @@ The optional [evidence adequacy profile](evidence-adequacy.md) addresses a diffe
 
 Temporal applicability is a separate, optional check: see [R2 temporal and provenance reasoning](temporal-provenance.md). A valid reasoning trace does not imply historically applicable or authenticated evidence.
 
+The optional [R3 reproducibility and challenge profile](reproducibility-challenge.md) supports declared-run comparison and open challenge records. Trace validity alone does not prove independent reproducibility.
+
 ## Verification
 
 ```bash
