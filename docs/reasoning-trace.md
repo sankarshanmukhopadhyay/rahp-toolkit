@@ -52,6 +52,8 @@ The validator rejects a PASS with an unresolved or contradictory observation. Th
 
 This example is a proposed trace over the documented TRQP example discrepancy, **not** a newly executed TRQP assessment. It does not resolve the upstream finding.
 
+The optional [evidence adequacy profile](evidence-adequacy.md) addresses a different concern: declared evidence sufficiency and contradictions. Trace validation does not automatically invoke it.
+
 ## Verification
 
 ```bash
