@@ -7,7 +7,7 @@
 **Comparison:** [v2.6.0…candidate](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/compare/v2.6.0...0c1773640e211157766574d295f58360b591a358)  
 **Tracking:** [#941](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/941)
 
-This is a bounded source/control review, **not** a complete adversarial security audit, an independent review, or a publication authorization. The historical release decision remains recorded below. Current-main follow-up work is tracked in [#958](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/958); changes there do not rewrite the v2.7.0 tag or retroactively convert the review into an independent audit. The candidate delta comprises 27 commits through the later enforcement commit; review focus was changed executable surfaces, authority boundaries, optional assurance semantics, evidence validation, and existing security limitations.
+This is a bounded source/control review, **not** a complete adversarial security audit, an independent review, or a publication authorization. The historical release decision remains recorded below. Current-main follow-up work is tracked in [#958](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/958), with implementation proposals in [#959](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/959); changes there do not rewrite the v2.7.0 tag or retroactively convert the review into an independent audit. The candidate delta comprises 27 commits through the later enforcement commit; review focus was changed executable surfaces, authority boundaries, optional assurance semantics, evidence validation, and existing security limitations.
 
 ## Examined controls and observations
 
@@ -48,8 +48,8 @@ This is a bounded source/control review, **not** a complete adversarial security
 
 | Residual | Severity / decision for this release | Required operational boundary |
 | --- | --- | --- |
-| Publisher API error bodies may reach logs | MODERATE / accepted for v2.7.0 publication | Follow-up #958 removes raw response bodies from surfaced errors and records live token-scope evidence |
-| Optional sociotechnical JSON can be large or contain sensitive evidence | MODERATE / accepted as optional, experimental tooling | Follow-up #958 adds parser size limits; keep generated records and artifacts private |
+| Publisher API error bodies may reach logs | MODERATE / accepted for v2.7.0 publication | PR #959 proposes removing raw response bodies from surfaced errors; live token-scope evidence remains in #958 |
+| Optional sociotechnical JSON can be large or contain sensitive evidence | MODERATE / accepted as optional, experimental tooling | PR #959 proposes parser size limits; keep generated records and artifacts private |
 | Evidence URL/SHA validator does not authenticate reviewer identity | MODERATE / accepted with explicit human verification requirement | Owner checks linked Actions results and scope before dispatch; do not interpret structural validation as attestation |
 | Dependencies and Actions are not fully hash-pinned | MODERATE / accepted as pre-existing supply-chain exposure | Follow-up #958 tracks immutable action pins, dependency hash locking and permission review |
 
