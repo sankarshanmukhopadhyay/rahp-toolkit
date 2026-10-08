@@ -54,6 +54,8 @@ This example is a proposed trace over the documented TRQP example discrepancy, *
 
 The optional [evidence adequacy profile](evidence-adequacy.md) addresses a different concern: declared evidence sufficiency and contradictions. Trace validation does not automatically invoke it.
 
+Temporal applicability is a separate, optional check: see [R2 temporal and provenance reasoning](temporal-provenance.md). A valid reasoning trace does not imply historically applicable or authenticated evidence.
+
 ## Verification
 
 ```bash
