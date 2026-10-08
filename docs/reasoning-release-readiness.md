@@ -45,6 +45,8 @@ The independent participant exercise is a **research/adoption gate**, not automa
 - [ ] Publish an evidence-linked release recommendation (GO / CONDITIONAL_GO / NO_GO) with explicit scope and residuals.
 - [ ] If GO, prepare release notes and create a release only after approval.
 
+For the complete post-v2.6.0 change inventory and candidate decision, see the [release candidate assessment](post-v26-release-assessment.md) and [release tracker #941](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/941).
+
 ## Decision ownership
 
 Maintainer/release authority: repository owner. This document provides evidence and recommendations; it does not delegate release authority to an automated evaluator. Closing #939 requires actual independent participant evidence, regardless of whether a release proceeds.
