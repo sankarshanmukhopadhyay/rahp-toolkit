@@ -1,11 +1,15 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.6.0 (stable) · Commander · CC-BY 4.0
+Release v2.7.0 (candidate) · Common Rose · CC-BY 4.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
 RAHP is deliberately evidence-conservative: **missing evidence never becomes PASS**. Workflow success is not assurance success. A component PASS does not imply a composition PASS, and normative convergence does not silently become implementation conformance.
+
+## v2.7.0 candidate: maintenance and optional profiles
+
+**Not yet qualified or published.** v2.7.0 retains the v2.6.0 stable engine/result/evidence contracts. Post-v2.6 maintenance, adoption guidance and R1–R3 reasoning profiles remain subject to pinned-SHA qualification. Optional reasoning outputs are not terminal assurance; independent adoption is NOT_YET_TESTED. See [candidate release notes](docs/releases/v2.7.0.md).
 
 ## What v2.6.0 adds
 
