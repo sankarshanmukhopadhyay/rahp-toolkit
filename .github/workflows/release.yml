@@ -1,19 +1,6 @@
 name: Publish qualified RAHP release
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'method/release.yaml'
-      - 'method/*release-qualification.yaml'
-      - 'PROJECT-STATUS.yaml'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'packages/**/package.json'
-      - 'docs/releases/**'
-      - 'tools/release.py'
-      - 'tools/validate_v*_release.py'
-      - '.github/workflows/release.yml'
   workflow_dispatch:
     inputs:
       release_tag:
