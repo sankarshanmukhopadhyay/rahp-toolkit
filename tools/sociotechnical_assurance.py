@@ -27,6 +27,16 @@ PROFILE = "rahp-sociotechnical/v1"
 BOUNDARY = "Reviewed assertion reconciliation only; no deployment approval, legal certification or independent human validation is inferred."
 SCHEMA_PATH = ROOT / "schemas/rahp-sociotechnical-input-v1.schema.json"
 EVALUATORS = {"disclosure-pressure": evaluate_disclosure_pressure, "meaningful-choice": evaluate_meaningful_choice}
+MAX_INPUT_BYTES = 1_048_576
+
+
+def read_json_limited(path: Path, *, max_bytes: int = MAX_INPUT_BYTES) -> Any:
+    """Read one JSON file while bounding bytes consumed before parsing."""
+    with path.open("rb") as handle:
+        raw = handle.read(max_bytes + 1)
+    if len(raw) > max_bytes:
+        raise ValueError(f"JSON input exceeds the {max_bytes}-byte size limit")
+    return json.loads(raw.decode("utf-8"))
 
 
 def digest(value: Any) -> str:
@@ -233,7 +243,7 @@ def replay(corpus_path: Path, output: Path | None = None) -> dict[str, Any]:
         from .assurance_record import canonical_record, markdown
     except ImportError:
         from assurance_record import canonical_record, markdown
-    corpus = json.loads(corpus_path.read_text(encoding="utf-8"))
+    corpus = read_json_limited(corpus_path)
     if not isinstance(corpus, dict) or corpus.get("schema") != "rahp-sociotechnical-corpus/v1" or not corpus.get("cases"):
         raise ValueError("non-empty sociotechnical corpus/v1 is required")
     paths = [case.get("path") for case in corpus["cases"]]
@@ -244,7 +254,7 @@ def replay(corpus_path: Path, output: Path | None = None) -> dict[str, Any]:
         path = (corpus_path.parent / case["path"]).resolve()
         if not path.is_relative_to(corpus_path.parent.resolve()):
             raise ValueError("corpus case escapes its input directory")
-        value = json.loads(path.read_text(encoding="utf-8"))
+        value = read_json_limited(path)
         if digest(value) != case["sha256"]:
             raise ValueError(f"corpus input digest mismatch: {case['path']}")
         record = canonical_record(build_record(value))
@@ -263,7 +273,10 @@ def replay(corpus_path: Path, output: Path | None = None) -> dict[str, Any]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog="Generated records include reviewed input. Store outputs only in access-controlled locations.",
+    )
     parser.add_argument("--input", type=Path)
     parser.add_argument("--corpus", type=Path)
     parser.add_argument("--output-dir", type=Path)
@@ -271,7 +284,7 @@ def main() -> int:
     if bool(args.input) == bool(args.corpus):
         parser.error("provide exactly one of --input or --corpus")
     try:
-        result = replay(args.corpus, args.output_dir) if args.corpus else build_record(json.loads(args.input.read_text(encoding="utf-8")))
+        result = replay(args.corpus, args.output_dir) if args.corpus else build_record(read_json_limited(args.input))
         print(json.dumps(result, indent=2, sort_keys=True))
     except (ValueError, OSError) as exc:
         parser.exit(1, f"ERROR: {exc}\n")
