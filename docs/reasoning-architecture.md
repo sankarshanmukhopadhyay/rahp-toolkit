@@ -64,6 +64,10 @@ python3 examples/standalone-trqp/replay.py --check
 python3 -m unittest tests.test_reasoning_trace tests.test_trqp_reasoning_trace tests.test_standalone_trqp -v
 ```
 
+## Experimental evidence adequacy
+
+The optional [evidence adequacy profile](evidence-adequacy.md) evaluates declared requirements and observations, including missing, conflicting and out-of-scope cases. It is not wired into controller terminalization and does not establish source authority.
+
 ## What remains outside this boundary
 
 RAHP does not automatically confer delegation to an agent, authenticate an agent's principal, approve a policy exception, guarantee freshness of external evidence, or settle a contested substantive judgment. An optional reasoning trace is **not** a chain-of-thought transcript. [The trace profile](reasoning-trace.md) currently validates a bounded explanation only when explicitly invoked by a consumer.
