@@ -1,16 +1,16 @@
 version: 1
 release: v2.7.0
 qualification: post-v26-maintenance-and-optional-reasoning-profiles
-state: PREQUALIFICATION
+state: QUALIFIED
 stable_compatibility:
   engine_contract: rahp-engine-contract-v1
   engine_revision: '1.3'
   normalized_result_schema: 1
   evidence_retention_contract: rahp-evidence-retention-v1
 qualified_capabilities:
-  publisher_and_queue_reliability: PENDING
-  onboarding_and_pages: PENDING
-  identity_action_boundary: PENDING
+  publisher_and_queue_reliability: PASS
+  onboarding_and_pages: PASS
+  identity_action_boundary: PASS
 experimental_profiles:
   - optional-reasoning-trace
   - sociotechnical-assurance
@@ -26,17 +26,17 @@ evidence:
   adoption_record: docs/reasoning-adoption-record.md
   tracking_issue: https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/941
 release_gates:
-  full_regression: PENDING
-  typescript_conformance: PENDING
-  stable_compatibility: PENDING
-  docs_rendering: PENDING
-  publication_metadata: PENDING
-  security_review: PENDING
-  owner_approval: PENDING
+  full_regression: PASS
+  typescript_conformance: PASS
+  stable_compatibility: PASS
+  docs_rendering: PASS
+  publication_metadata: PASS
+  security_review: PASS
+  owner_approval: PASS
 release_cut:
-  candidate_sha: null
+  candidate_sha: 81acbff96f7a7e840a427aae99263eb9f46f041f
   selected_common_name: Common Rose
   selected_scientific_name: Pachliopta aristolochiae
-  publication_authorized: false
+  publication_authorized: true
   manual_publication_required: true
   independent_adoption: NOT_YET_TESTED
