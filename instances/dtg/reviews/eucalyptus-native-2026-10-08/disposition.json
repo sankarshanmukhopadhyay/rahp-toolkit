@@ -221,8 +221,16 @@
       "owner": "VTI / TSP PQ",
       "supplemental_attempts": [
         {
-          "id": "rust-affinidi-trust-registry-rs",
-          "state": "EXECUTED_NONZERO"
+          "id": "rust-affinidi-tdk-rs",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "rust-dtg-credentials",
+          "state": "EXECUTED_PASS"
+        },
+        {
+          "id": "e2e-native",
+          "state": "EXECUTED_PASS"
         }
       ],
       "remaining_retest": "Exercise mixed algorithms, absent hybrid member, wrong key type, malformed signature and downgraded peer; pin actual crypto packages.",
@@ -234,8 +242,8 @@
       "owner": "Trust registry / relying-party operator",
       "supplemental_attempts": [
         {
-          "id": "rust-predicate-credential-system",
-          "state": "EXECUTED_PASS"
+          "id": "rust-affinidi-trust-registry-rs",
+          "state": "EXECUTED_NONZERO"
         }
       ],
       "remaining_retest": "Run unauthorized write, replay, key rotation, stale status and cross-context recognition; verify policy version, effective time and audit.",
