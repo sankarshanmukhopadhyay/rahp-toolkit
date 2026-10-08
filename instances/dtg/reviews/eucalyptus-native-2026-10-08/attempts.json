@@ -1,0 +1,1109 @@
+[
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/openvtc/Cargo.lock",
+        "sha256": "10e42e19934543b460faf90dad2e576a466d5c9f5465859d93dfaadb4bea66d9"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 425.945,
+    "id": "rust-openvtc",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Nonzero execution requires diagnosis; neither automatic defect finding nor PASS.",
+    "repository": "OpenVTC/openvtc",
+    "returncode": 101,
+    "revision": "2a4fa2b3c8e831dbe3184a1119c4c87b6f197220",
+    "source": "openvtc",
+    "started_at": "2026-10-08T05:40:34.989623+00:00",
+    "state": "EXECUTED_NONZERO",
+    "stderr": {
+      "path": "logs/rust-openvtc.stderr.txt",
+      "sha256": "e51b0635621d6a87e8f709ec6c92710b7a710ed17d159fe1626296da0a08dc95"
+    },
+    "stdout": {
+      "path": "logs/rust-openvtc.stdout.txt",
+      "sha256": "82333f9f9f153d77ee597f35e1b5dfdec43165ffebedd3d26e327f293a5f9634"
+    },
+    "test_counts": {
+      "failed": 1,
+      "passed": 957,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 900.037,
+    "id": "rust-verifiable-trust-infrastructure",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "execution exceeded bounded timeout",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": -9,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T05:47:41.178594+00:00",
+    "state": "ATTEMPTED_UNAVAILABLE",
+    "stderr": {
+      "path": "logs/rust-verifiable-trust-infrastructure.stderr.txt",
+      "sha256": "dd5f0ffc9468f2fbf0db40a7709a8085090fba1e3589d61cababbfd174b51674"
+    },
+    "stdout": {
+      "path": "logs/rust-verifiable-trust-infrastructure.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 0,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/affinidi-tdk-rs/Cargo.lock",
+        "sha256": "fca8006ef95df18a38264535fb86c8c4275b7e86ccb31c820ef25f080192b5e5"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 860.071,
+    "id": "rust-affinidi-tdk-rs",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "affinidi/affinidi-tdk-rs",
+    "returncode": 0,
+    "revision": "a1611baa011620a6ca62649b105c2b8c898f2653",
+    "source": "affinidi-tdk-rs",
+    "started_at": "2026-10-08T06:02:41.255100+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-affinidi-tdk-rs.stderr.txt",
+      "sha256": "959f05f39090fad04afa5360955615cf500db307224135ada79af089dce0585a"
+    },
+    "stdout": {
+      "path": "logs/rust-affinidi-tdk-rs.stdout.txt",
+      "sha256": "ba9f96c83733f859722b746b2800a3460be764527ad99b830325cd507117822c"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 3905,
+      "skipped": 41
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/affinidi-webvh-service/Cargo.lock",
+        "sha256": "d073bd2d4fa71ce4edd36848257c400709cba8ba6e727b50ee1efe9e66d828ff"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 306.6,
+    "id": "rust-affinidi-webvh-service",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "affinidi/affinidi-webvh-service",
+    "returncode": 0,
+    "revision": "1686668623e0bba0e18880074d82794cb929a7fc",
+    "source": "affinidi-webvh-service",
+    "started_at": "2026-10-08T06:17:01.465616+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-affinidi-webvh-service.stderr.txt",
+      "sha256": "3f838e1d943ee1557f93e73369a65f23f29eeb8123bc49f49b5540be66be8dc3"
+    },
+    "stdout": {
+      "path": "logs/rust-affinidi-webvh-service.stdout.txt",
+      "sha256": "a4c52ce1b97b64ebccd08cbfc76a6ba5be3f0760fe965cd738aff83f6bccda86"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 1220,
+      "skipped": 4
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/affinidi-trust-registry-rs/Cargo.lock",
+        "sha256": "38399508fb7a531fd8de846353af5166b84c2c0bbc948aeef856397d9ffec3a6"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 254.175,
+    "id": "rust-affinidi-trust-registry-rs",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Nonzero execution requires diagnosis; neither automatic defect finding nor PASS.",
+    "repository": "affinidi/affinidi-trust-registry-rs",
+    "returncode": 101,
+    "revision": "c77052f9bffe8bb7b4a3f357d9ef54cf632950f0",
+    "source": "affinidi-trust-registry-rs",
+    "started_at": "2026-10-08T06:22:08.246261+00:00",
+    "state": "EXECUTED_NONZERO",
+    "stderr": {
+      "path": "logs/rust-affinidi-trust-registry-rs.stderr.txt",
+      "sha256": "74fd7fbe4001722a85dd050f12086b7531d97c50c8fa274116fa15952bb4cc56"
+    },
+    "stdout": {
+      "path": "logs/rust-affinidi-trust-registry-rs.stdout.txt",
+      "sha256": "e85e257148e5cc7ebfd6f57da27db315c608057437828af7c7b2bdcfff567693"
+    },
+    "test_counts": {
+      "failed": 9,
+      "passed": 290,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/dtgwg-trust-tasks-tf/Cargo.lock",
+        "sha256": "9a148a601c4fa63751b0e62fee29c1645ef4929bf26c64922a224a1c1bacb203"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 376.768,
+    "id": "rust-dtgwg-trust-tasks-tf",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "trustoverip/dtgwg-trust-tasks-tf",
+    "returncode": 0,
+    "revision": "7b6bb488ffd838bef058310c909207d4a7b77125",
+    "source": "dtgwg-trust-tasks-tf",
+    "started_at": "2026-10-08T06:26:22.463557+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-dtgwg-trust-tasks-tf.stderr.txt",
+      "sha256": "648e395d6efc5d0495d96e8d1f27b1d51e87b3edd015d03ac0a148babbfd446c"
+    },
+    "stdout": {
+      "path": "logs/rust-dtgwg-trust-tasks-tf.stdout.txt",
+      "sha256": "8634da36e0da4d80438a02000cf6dbeb9a924ab01b6a9c4b90f982e65c414343"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 1459,
+      "skipped": 30
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-git-infrastructure/Cargo.lock",
+        "sha256": "501114a9dde67d37750fab41a9dd5aaf6eacc0e6eedee732c1f046f20a570478"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 313.186,
+    "id": "rust-verifiable-git-infrastructure",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-git-infrastructure",
+    "returncode": 0,
+    "revision": "92f32dd4c107545bd42b009ca55fc1ed4759309d",
+    "source": "verifiable-git-infrastructure",
+    "started_at": "2026-10-08T06:32:39.870694+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-verifiable-git-infrastructure.stderr.txt",
+      "sha256": "1db064b3bffc5ca8f21d2830de5dbbc962716750480c0e94b61043f93d9da37c"
+    },
+    "stdout": {
+      "path": "logs/rust-verifiable-git-infrastructure.stdout.txt",
+      "sha256": "2d05e31e4eaa4d4d880ba223fad58be9664b899dbe8e613ce88f281c98295aca"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 820,
+      "skipped": 1
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/didwebvh-rs/Cargo.lock",
+        "sha256": "9ce28a4c7948a32d114afb7e76155d13c6c75f18fdffdbc016b4aeec9800ab19"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 82.1,
+    "id": "rust-didwebvh-rs",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "decentralized-identity/didwebvh-rs",
+    "returncode": 0,
+    "revision": "155eb4e71c9d45db57c6f7329f286bbd753e0138",
+    "source": "didwebvh-rs",
+    "started_at": "2026-10-08T06:37:53.106034+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-didwebvh-rs.stderr.txt",
+      "sha256": "e153ab9c4ffed0850f878266540845a7ac633fb5c2ed131d4dfbec081d5023a4"
+    },
+    "stdout": {
+      "path": "logs/rust-didwebvh-rs.stdout.txt",
+      "sha256": "5b643a4c0f3477a69a804bd0ae01f175d0d409141cfc88b40f120530bfd629db"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 523,
+      "skipped": 1
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/dtg-credentials/Cargo.lock",
+        "sha256": "c0c0295236740bac5e45935087cba7cf13c514d5b28463f0c36225af36763d29"
+      },
+      "release_lock_available": false,
+      "state": "fresh-resolution-not-release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--workspace"
+    ],
+    "duration_seconds": 148.694,
+    "id": "rust-dtg-credentials",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/dtg-credentials",
+    "returncode": 0,
+    "revision": "fc9954d8d529d312ebac7ec1d413179857474c96",
+    "source": "dtg-credentials",
+    "started_at": "2026-10-08T06:39:15.235358+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-dtg-credentials.stderr.txt",
+      "sha256": "2fdb10cde18583fb3ce01b0f2461aa6d332b6695cf0bfec6d4a15595557aa650"
+    },
+    "stdout": {
+      "path": "logs/rust-dtg-credentials.stdout.txt",
+      "sha256": "ce3ef5a6509cbecec9b923a9907b1e2de20d4976593e487892c3033a1f474424"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 213,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/predicate-credential-system/Cargo.lock",
+        "sha256": "b657097c36b3885b6a643b0c8c64f7a6f97cc1efa5da1c910a8719c571e242fe"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 404.204,
+    "id": "rust-predicate-credential-system",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/predicate-credential-system",
+    "returncode": 0,
+    "revision": "4be4598563f422b9a3a4e37032d22487836d322c",
+    "source": "predicate-credential-system",
+    "started_at": "2026-10-08T06:41:43.951264+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-predicate-credential-system.stderr.txt",
+      "sha256": "615c05293ffdf6e30f0b9d5e0d23a55d5560c567527f82166e6512398f1fb7b1"
+    },
+    "stdout": {
+      "path": "logs/rust-predicate-credential-system.stdout.txt",
+      "sha256": "7fdabd78188fe53f5ac2ad47f1544260f65ad913cf01139f9eb77417b00a778b"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 446,
+      "skipped": 1
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/vta-agent-memory/Cargo.lock",
+        "sha256": "1442f6750e7d7bd61fe0f527a78f575a1e21ca71bfa17cb9fb13ad1ad31aa460"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 147.521,
+    "id": "rust-vta-agent-memory",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/vta-agent-memory",
+    "returncode": 0,
+    "revision": "85db98a8a9c6d25b673a38a9e7e60d3435f3fcc5",
+    "source": "vta-agent-memory",
+    "started_at": "2026-10-08T06:48:28.185914+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-vta-agent-memory.stderr.txt",
+      "sha256": "1f0e812815d12aa4a8df8de27af2940442018e4ac5400b04a2ce0da17c001d72"
+    },
+    "stdout": {
+      "path": "logs/rust-vta-agent-memory.stdout.txt",
+      "sha256": "26069afdf39c1860eeca8e51d44428aa873aba4ada463e1e171abf78e60c2c1b"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 119,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/vti-push-gateway/Cargo.lock",
+        "sha256": "53dc93308c912ffedb5965e7387e9872bfa3b18efa775c4a1dac42e7d8b0ab58"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--workspace"
+    ],
+    "duration_seconds": 166.835,
+    "id": "rust-vti-push-gateway",
+    "purpose": "Shipped Rust workspace tests; runtime prerequisites may be unavailable.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/vti-push-gateway",
+    "returncode": 0,
+    "revision": "44342121e161ccb12e43013f33ce80abb2486acb",
+    "source": "vti-push-gateway",
+    "started_at": "2026-10-08T06:50:55.732571+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rust-vti-push-gateway.stderr.txt",
+      "sha256": "ddaee88350194eaeb247960649e425c6995ce105bac8582524a246198cbabb10"
+    },
+    "stdout": {
+      "path": "logs/rust-vti-push-gateway.stdout.txt",
+      "sha256": "cb5f6e191473a1f5df82e4d3444b19a26f9f39658ab0d670d3b709cb1eb51486"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 141,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "go.mod": {
+        "path": "build-inputs/affinidi-tsp-go/go.mod",
+        "sha256": "a3bf006a8c5fc82dd3ba9b6d80f6bd599ad690c08114bdb49006aafe27753a0c"
+      },
+      "go.sum": {
+        "path": "build-inputs/affinidi-tsp-go/go.sum",
+        "sha256": "9ed39d768f5630b78e2bdce9a5b5cf47549f4841051e16d7f42e724f62522e50"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "go",
+      "test",
+      "-count=1",
+      "-json",
+      "./..."
+    ],
+    "duration_seconds": 10.516,
+    "id": "go-tsp",
+    "purpose": "Independent Go TSP implementation vectors.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "affinidi/affinidi-tsp-go",
+    "returncode": 0,
+    "revision": "d32ca7cdde208e93509c1f140ad7ee04d52ca7cc",
+    "source": "affinidi-tsp-go",
+    "started_at": "2026-10-08T06:53:42.587563+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/go-tsp.stderr.txt",
+      "sha256": "7a8830d34d74f18e7dddb8ef41cb596208987bddb0d16d2bba58e77e167c6146"
+    },
+    "stdout": {
+      "path": "logs/go-tsp.stdout.txt",
+      "sha256": "9d678be9093476d96c772bf36755e6082b8124cc3ddbc41c1eca5d433a391f5f"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 782,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "pubspec.lock": {
+        "path": "build-inputs/affinidi-tsp-dart/pubspec.lock",
+        "sha256": "034c18707754a6989cc7efd62d3192f25b6cda958957a684d099a01b4fdd57b2"
+      },
+      "release_lock_available": false,
+      "state": "fresh-resolution-not-release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "dart",
+      "test",
+      "packages/affinidi_tsp/test",
+      "--reporter=json"
+    ],
+    "duration_seconds": 10.004,
+    "id": "dart-tsp",
+    "purpose": "Dart vectors; package runtime setup is separately required.",
+    "reason": "Nonzero execution requires diagnosis; neither automatic defect finding nor PASS.",
+    "repository": "affinidi/affinidi-tsp-dart",
+    "returncode": 1,
+    "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78",
+    "source": "affinidi-tsp-dart",
+    "started_at": "2026-10-08T06:53:53.194999+00:00",
+    "state": "EXECUTED_NONZERO",
+    "stderr": {
+      "path": "logs/dart-tsp.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "path": "logs/dart-tsp.stdout.txt",
+      "sha256": "a70340985a5bc8e01f944c188989e82a7edfbf49e4069652bb88e4423a2d40d6"
+    },
+    "test_counts": {
+      "failed": 4,
+      "passed": 39,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "pubspec.lock": {
+        "path": "build-inputs/affinidi-tsp-dart/pubspec.lock",
+        "sha256": "034c18707754a6989cc7efd62d3192f25b6cda958957a684d099a01b4fdd57b2"
+      },
+      "release_lock_available": false,
+      "state": "fresh-resolution-not-release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "dart",
+      "test",
+      "--reporter=json"
+    ],
+    "duration_seconds": 6.51,
+    "id": "dart-tsp-package",
+    "purpose": "Same tagged Dart tests from their package-relative fixture directory; original invocation retained separately.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "affinidi/affinidi-tsp-dart",
+    "returncode": 0,
+    "revision": "a64814c8043d6af0955a3ce01bfc6033d8daeb78",
+    "source": "affinidi-tsp-dart",
+    "started_at": "2026-10-08T06:54:03.225324+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/dart-tsp-package.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "path": "logs/dart-tsp-package.stdout.txt",
+      "sha256": "3e6d1cff957dc70ae12d0f58a866543d1885823ba5fd9729a525a77a5afd23a7"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 83,
+      "skipped": 0
+    },
+    "timeout_seconds": 900,
+    "working_directory": "packages/affinidi_tsp"
+  },
+  {
+    "build_inputs": {
+      "release_lock_available": false,
+      "state": "fresh-resolution-not-release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "swift",
+      "test"
+    ],
+    "duration_seconds": 36.112,
+    "id": "ios-approval",
+    "purpose": "Swift owner approval component tests; Apple platform prerequisites apply.",
+    "reason": "Nonzero execution requires diagnosis; neither automatic defect finding nor PASS.",
+    "repository": "OpenVTC/vta-mobile-agent-ios",
+    "returncode": 1,
+    "revision": "863a1e912042b28908ec2cf3675677ad9c151e0e",
+    "source": "vta-mobile-agent-ios",
+    "started_at": "2026-10-08T06:54:09.753913+00:00",
+    "state": "EXECUTED_NONZERO",
+    "stderr": {
+      "path": "logs/ios-approval.stderr.txt",
+      "sha256": "2dc93aeba2a09aea4d7798f90627b062381354a9f1e20c77cdc5d236e92b88b0"
+    },
+    "stdout": {
+      "path": "logs/ios-approval.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "release_lock_available": false,
+      "state": "fresh-resolution-not-release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "python3",
+      "experiments/dtg-data-room-runtime/run_current_openvtc.py",
+      "--target",
+      "../verifiable-trust-infrastructure",
+      "--output",
+      "../../output/lab-room.json"
+    ],
+    "duration_seconds": 0.078,
+    "id": "lab-room-handoff",
+    "purpose": "Actual producer admission against the Eucalyptus pin; older hardcoded target must fail closed.",
+    "reason": "dependency or network prerequisite unavailable; see full logs",
+    "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+    "returncode": 1,
+    "revision": "895e1af0f441995cada90dad2a429e56885bd394",
+    "source": "trust-protocol-interop-lab",
+    "started_at": "2026-10-08T06:54:45.879481+00:00",
+    "state": "ATTEMPTED_UNAVAILABLE",
+    "stderr": {
+      "path": "logs/lab-room-handoff.stderr.txt",
+      "sha256": "43f1bce60547ae1d3a1bae6289e2855d8134b3d4c6b881e1d5d07ca47c46f62b"
+    },
+    "stdout": {
+      "path": "logs/lab-room-handoff.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "release_lock_available": false,
+      "state": "fresh-resolution-not-release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "python3",
+      "experiments/dtg-protected-access/current_openvtc_context.py",
+      "--checkout",
+      "../verifiable-trust-infrastructure",
+      "--context",
+      "A",
+      "--verifier",
+      "https://verifier.example.invalid",
+      "--purpose",
+      "eucalyptus-cleanroom",
+      "--challenge",
+      "eucalyptus-960",
+      "--client-seed",
+      "1"
+    ],
+    "duration_seconds": 0.047,
+    "id": "lab-privacy-handoff",
+    "purpose": "Actual source-compatible privacy probe attempt; incompatible source pins cannot become new runtime evidence.",
+    "reason": "dependency or network prerequisite unavailable; see full logs",
+    "repository": "sankarshanmukhopadhyay/trust-protocol-interop-lab",
+    "returncode": 2,
+    "revision": "895e1af0f441995cada90dad2a429e56885bd394",
+    "source": "trust-protocol-interop-lab",
+    "started_at": "2026-10-08T06:54:46.076959+00:00",
+    "state": "ATTEMPTED_UNAVAILABLE",
+    "stderr": {
+      "path": "logs/lab-privacy-handoff.stderr.txt",
+      "sha256": "732dbf45a20aba302215b40fd30e31e142793d51f75e181d44abd85b4eaa39e0"
+    },
+    "stdout": {
+      "path": "logs/lab-privacy-handoff.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "vtc-service",
+      "--test",
+      "it",
+      "auth_authcrypt_sender_binding::"
+    ],
+    "duration_seconds": 568.163,
+    "id": "vtc-sender",
+    "propositions": [
+      "EUC-01"
+    ],
+    "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": 0,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T06:54:46.145852+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/vtc-sender.stderr.txt",
+      "sha256": "7491ffb36d4d3aca03695d57db0750e93034fbcd0e56016646ec8b4dd40c8164"
+    },
+    "stdout": {
+      "path": "logs/vtc-sender.stdout.txt",
+      "sha256": "ed76e57535fce48e4d5ef5d0e34c4b6acdef5a1d02dcf6898910cb374218f85c"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 5,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "vtc-service",
+      "--test",
+      "it",
+      "acl_self_edit::"
+    ],
+    "duration_seconds": 6.632,
+    "id": "vtc-self-edit",
+    "propositions": [
+      "EUC-03"
+    ],
+    "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": 0,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T07:04:14.396471+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/vtc-self-edit.stderr.txt",
+      "sha256": "af19ac6308047e27aa853e3a23b6a1d229dfb76c4e66947bf6017429dbce29ab"
+    },
+    "stdout": {
+      "path": "logs/vtc-self-edit.stdout.txt",
+      "sha256": "71a738593f1b925a09993588390599a0acb5af711a8f94ae25b02fe463fa5c9e"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 11,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "vtc-service",
+      "--test",
+      "it",
+      "unrestricted_admin_consent::"
+    ],
+    "duration_seconds": 10.945,
+    "id": "vtc-consent",
+    "propositions": [
+      "EUC-04"
+    ],
+    "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": 0,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T07:04:21.046478+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/vtc-consent.stderr.txt",
+      "sha256": "5a932f0fdeb2c18c368c65d1f74317fb8119a1435ace032001485f7b41d48bf1"
+    },
+    "stdout": {
+      "path": "logs/vtc-consent.stdout.txt",
+      "sha256": "47d1e8ee2aa4b492b4a071f4e80cf91d3b2f27deed83263d472d37c948bd3780"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 31,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "vta-service",
+      "--test",
+      "it",
+      "push_new_attempt_freshness::"
+    ],
+    "duration_seconds": 228.398,
+    "id": "vta-freshness",
+    "propositions": [
+      "EUC-05"
+    ],
+    "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": 0,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T07:04:32.011936+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/vta-freshness.stderr.txt",
+      "sha256": "a6e93fd397bba11a793581790d642e6195a2574aa72ae53d5d4f7d4dea919fa4"
+    },
+    "stdout": {
+      "path": "logs/vta-freshness.stdout.txt",
+      "sha256": "4e7051c475d4901e7bbd761a06eb484bf04970bddb6bce01ad4a928c0a33982a"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 3,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "vta-service",
+      "--test",
+      "it",
+      "refresh_trust_task::"
+    ],
+    "duration_seconds": 2.071,
+    "id": "vta-refresh",
+    "propositions": [
+      "EUC-05"
+    ],
+    "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": 0,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T07:08:20.427112+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/vta-refresh.stderr.txt",
+      "sha256": "7aeb72a3e346199ae9e715e80b6951e6056ab075d2cb4da4d60d138514007bd0"
+    },
+    "stdout": {
+      "path": "logs/vta-refresh.stdout.txt",
+      "sha256": "5aa99a9cf1efcdd1cea1941ff410fe692745ddcdb654d6c7651cb78cf61f6f61"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 5,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "vti-rooms",
+      "-p",
+      "vti-rooms-dtg",
+      "-p",
+      "room-host"
+    ],
+    "duration_seconds": 378.904,
+    "id": "rooms-native",
+    "propositions": [
+      "EUC-07",
+      "EUC-13"
+    ],
+    "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": 0,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T07:08:22.515475+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/rooms-native.stderr.txt",
+      "sha256": "895c65c946bfa2031b6801979137182d9f28a61117633b087236980f84353b93"
+    },
+    "stdout": {
+      "path": "logs/rooms-native.stdout.txt",
+      "sha256": "7fb5bfc1d02e2e7e79b2009205c02cc4ddc726716a29b5af4e34f06a9dd886c5"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 198,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "vti-vetting-pcs"
+    ],
+    "duration_seconds": 364.102,
+    "id": "vetting-native",
+    "propositions": [
+      "EUC-08"
+    ],
+    "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": 0,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T07:14:41.441682+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/vetting-native.stderr.txt",
+      "sha256": "fc396ff0c08a022a9f12e96f6745d67afb49124e81dd23a39f240858e11e99d9"
+    },
+    "stdout": {
+      "path": "logs/vetting-native.stdout.txt",
+      "sha256": "693a0ac27b912ba8d45759b6d7f2dadaa69b08d115296b5bc3dd9559bf7400a0"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 7,
+      "skipped": 0
+    },
+    "timeout_seconds": 900
+  },
+  {
+    "build_inputs": {
+      "Cargo.lock": {
+        "path": "build-inputs/verifiable-trust-infrastructure/Cargo.lock",
+        "sha256": "cd3432acc5142a9fde694b7d1665b32a4200415f46c214df8c37c1b0a8abbc62"
+      },
+      "release_lock_available": true,
+      "state": "release-locked"
+    },
+    "class": "runtime-observation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "vti-e2e-tests"
+    ],
+    "duration_seconds": 351.858,
+    "id": "e2e-native",
+    "propositions": [
+      "EUC-01",
+      "EUC-05",
+      "EUC-06"
+    ],
+    "purpose": "Tagged native consuming-path tests; fixture participants do not establish real-person governance or deployment-wide assurance.",
+    "reason": "Pinned command completed; assurance limited to its declared purpose.",
+    "repository": "OpenVTC/verifiable-trust-infrastructure",
+    "returncode": 0,
+    "revision": "49f5f1beb61adc34bdf7cf0bd3eb10f594415b80",
+    "source": "verifiable-trust-infrastructure",
+    "started_at": "2026-10-08T07:20:45.563182+00:00",
+    "state": "EXECUTED_PASS",
+    "stderr": {
+      "path": "logs/e2e-native.stderr.txt",
+      "sha256": "99e93b0f5e4a6141ec39744430b9f87382f69b901c90940de1f5c0bf804c9b88"
+    },
+    "stdout": {
+      "path": "logs/e2e-native.stdout.txt",
+      "sha256": "110ffdff2f2dcbbae616828220b0bb7f1e151649336b3ee94f79305297e5602d"
+    },
+    "test_counts": {
+      "failed": 0,
+      "passed": 271,
+      "skipped": 11
+    },
+    "timeout_seconds": 900
+  }
+]

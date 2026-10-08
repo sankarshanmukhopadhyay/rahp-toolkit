@@ -1,0 +1,18 @@
+{
+  "assurance_state": "INDETERMINATE",
+  "attempts": {
+    "ATTEMPTED_UNAVAILABLE": 3,
+    "EXECUTED_NONZERO": 4,
+    "EXECUTED_PASS": 19
+  },
+  "closed_propositions": [],
+  "composition_pass": 0,
+  "native_test_counts": {
+    "failed": 14,
+    "passed": 11528,
+    "skipped": 89
+  },
+  "process_state": "complete",
+  "residual": "Actual deployment, observer captures, real participant independence, Apple device and accessibility/redress evidence remain required. Native fixture passes are bounded.",
+  "schema": "rahp-eucalyptus-native-summary/v1"
+}

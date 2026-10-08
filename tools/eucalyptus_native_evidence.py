@@ -147,7 +147,7 @@ def collect(sources: Path, output: Path, selected: list[str] | None = None, time
         for filename in ('Cargo.lock', 'pubspec.lock', 'go.mod', 'go.sum'):
             path = root / filename
             if path.exists():
-                dest = output / 'build-inputs' / suite['source'] / filename
+                dest = output / 'build-inputs' / suite['id'] / suite['source'] / filename
                 dest.parent.mkdir(parents=True, exist_ok=True); dest.write_bytes(path.read_bytes())
                 result['build_inputs'][filename] = {'path': str(dest.relative_to(output)), 'sha256': campaign.digest(path.read_bytes())}
         campaign.verify_source(indexed[suite['source']], root, require_clean=False)
@@ -175,10 +175,11 @@ def main() -> int:
     parser.add_argument('--suite', action='append')
     parser.add_argument('--timeout-seconds', type=int, default=900)
     args = parser.parse_args()
+    output_existed = args.output.exists()
     try:
         summary = collect(args.sources.resolve(), args.output.resolve(), args.suite, args.timeout_seconds)
     except (ValueError, OSError, subprocess.SubprocessError) as exc:
-        if args.output.exists():
+        if not output_existed and args.output.exists():
             campaign.write(args.output / 'execution-failure.json', {'process_state': 'failed', 'error': str(exc), 'type': type(exc).__name__})
         print(f'Native evidence collection failed: {exc}', file=sys.stderr)
         return 1
@@ -188,3 +189,4 @@ def main() -> int:
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
