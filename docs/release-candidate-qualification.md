@@ -65,4 +65,4 @@ The existing publisher is declaration-driven and creates/verifies tags. It must 
 
 **Decision: NO_GO for publication until mandatory gates pass.** The independent adoption study remains NOT_YET_TESTED; that limitation may be disclosed for experimental profiles but cannot be represented as completed testing.
 
-See [draft candidate release notes](../release-candidate-post-v2.6-draft.md).
+See [draft candidate release notes](release-candidate-post-v2.6-draft.md).
