@@ -62,6 +62,8 @@ The experimental [temporal and provenance profile](docs/temporal-provenance.md) 
 
 The optional [R3 reproducibility and challenge profile](docs/reproducibility-challenge.md) compares declared runs and preserves open challenges without changing assurance outcomes.
 
+A runnable [R1–R3 worked reasoning example](docs/reasoning-worked-example.md) demonstrates bounded evidence adequacy, historical applicability and challenge handling with deterministic tests.
+
 ## Start adopting RAHP
 
 **You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
