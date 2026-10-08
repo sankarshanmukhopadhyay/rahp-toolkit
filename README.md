@@ -60,6 +60,8 @@ The optional [evidence adequacy profile](docs/evidence-adequacy.md) experiments 
 
 The experimental [temporal and provenance profile](docs/temporal-provenance.md) evaluates claimed historical applicability and as-known-at cutoffs without changing controller or assessor contracts.
 
+The optional [R3 reproducibility and challenge profile](docs/reproducibility-challenge.md) compares declared runs and preserves open challenges without changing assurance outcomes.
+
 ## Start adopting RAHP
 
 **You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
