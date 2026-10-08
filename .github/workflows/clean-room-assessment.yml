@@ -10,7 +10,9 @@ on:
       - 'tools/clean_room.py'
       - 'tools/clean_room_execute.py'
       - 'tools/eucalyptus_campaign.py'
+      - 'tools/eucalyptus_native_evidence.py'
       - 'tests/test_eucalyptus_campaign.py'
+      - 'tests/test_eucalyptus_native_evidence.py'
       - 'profiles/dtg/eucalyptus/**'
       - 'tools/evidence_probe_orchestrator.py'
       - 'tools/autonomous_assurance_controller.py'
@@ -23,7 +25,7 @@ on:
         description: Existing clean-room run or pinned Eucalyptus campaign
         default: standard
         type: choice
-        options: [standard, eucalyptus]
+        options: [standard, eucalyptus, eucalyptus-native]
       run_spec_path:
         description: Repository-relative clean-room run specification
         required: false
@@ -40,7 +42,7 @@ permissions:
 
 jobs:
   clean-room:
-    if: inputs.run_mode != 'eucalyptus'
+    if: inputs.run_mode != 'eucalyptus' && inputs.run_mode != 'eucalyptus-native'
     runs-on: ubuntu-latest
     timeout-minutes: 50
     env:
@@ -67,7 +69,7 @@ jobs:
           python rahp/tools/assurance_record.py --self-test
           python rahp/tools/autonomous_assurance_controller.py --self-test
           python rahp/tools/clean_room_execute.py --self-test
-          cd rahp && python -m unittest discover -s tests -p 'test_eucalyptus_campaign.py' -v
+          cd rahp && python -m unittest discover -s tests -p 'test_eucalyptus*.py' -v
 
       - name: Execute isolated assurance run or qualification matrix
         shell: bash
@@ -117,6 +119,79 @@ jobs:
             output/
             qualification-output/
           if-no-files-found: error
+
+  native-evidence:
+    if: (github.event_name == 'workflow_dispatch' && inputs.run_mode == 'eucalyptus-native') || (github.event_name == 'pull_request' && startsWith(github.head_ref, 'assessment/eucalyptus-evidence-'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      RUSTUP_TOOLCHAIN: '1.95.0'
+      CARGO_BUILD_JOBS: '2'
+      CARGO_INCREMENTAL: '0'
+      CARGO_PROFILE_DEV_DEBUG: '0'
+      CARGO_PROFILE_DEV_CODEGEN_UNITS: '1'
+      CARGO_PROFILE_DEV_BUILD_OVERRIDE_CODEGEN_UNITS: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.27.0'
+          cache: false
+      - name: Provision tagged native prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup toolchain install 1.95.0 --profile minimal
+          sudo timeout 120 apt-get install -y libdbus-1-dev libpcsclite-dev pkg-config clang cmake
+          curl --fail --location --max-time 180 https://storage.googleapis.com/dart-archive/channels/stable/release/3.10.0/sdk/dartsdk-linux-x64-release.zip -o "$RUNNER_TEMP/dart-sdk.zip"
+          echo "a27681be873c3891692285db8d656e7494ca80c74e86613b8085fc6cffa3e31d  $RUNNER_TEMP/dart-sdk.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/dart-sdk.zip" -d "$RUNNER_TEMP/native-toolchains"
+          echo "$RUNNER_TEMP/native-toolchains/dart-sdk/bin" >> "$GITHUB_PATH"
+          python -m pip install -r requirements.txt
+      - name: Acquire exact coordinated and auxiliary source identities
+        env:
+          NATIVE_WORKSPACE: ${{ runner.temp }}/eucalyptus-native
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, sys
+          from concurrent.futures import ThreadPoolExecutor
+          sys.path.insert(0, 'tools')
+          import eucalyptus_campaign as campaign
+          config=json.loads(pathlib.Path('profiles/dtg/eucalyptus/campaign.json').read_text())
+          campaign.validate(config)
+          workspace=pathlib.Path(os.environ['NATIVE_WORKSPACE'])
+          workspace.mkdir()
+          with ThreadPoolExecutor(max_workers=6) as pool:
+              list(pool.map(lambda source: campaign.acquire(source, workspace, False), config['sources']+config['auxiliary_sources']))
+          PY
+      - name: Resolve and record Dart workspace dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/native-prerequisites"
+          cd "$RUNNER_TEMP/eucalyptus-native/sources/affinidi-tsp-dart"
+          timeout 180 dart pub get > "$RUNNER_TEMP/native-prerequisites/dart-pub-get.log" 2>&1
+      - name: Collect supplemental native and consuming-path evidence
+        env:
+          CARGO_TARGET_DIR: ${{ runner.temp }}/native-target
+        run: python tools/eucalyptus_native_evidence.py --sources "$RUNNER_TEMP/eucalyptus-native/sources" --output "$RUNNER_TEMP/native-evidence" --timeout-seconds 900
+      - name: Verify supplemental seal
+        run: python tools/eucalyptus_campaign.py --verify-package "$RUNNER_TEMP/native-evidence"
+      - name: Preserve native attempts including prerequisite failures
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: eucalyptus-native-evidence-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/native-evidence/
+            ${{ runner.temp }}/native-prerequisites/
+          if-no-files-found: warn
 
   current-portfolio:
     if: github.event_name == 'pull_request'
