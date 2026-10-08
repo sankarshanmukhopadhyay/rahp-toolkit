@@ -1,8 +1,8 @@
 project: rahp-toolkit
 stable_release: 2.7.0
 development_target: 2.7.0
-release_status: candidate
-qualification_status: candidate
+release_status: released
+qualification_status: qualified
 qualification_contract: method/v2.7-release-qualification.yaml
 release_name:
   common_name: Common Rose
