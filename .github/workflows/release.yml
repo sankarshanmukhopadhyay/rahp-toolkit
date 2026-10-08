@@ -116,7 +116,9 @@ jobs:
         run: |
           set -euo pipefail
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release edit "$TAG" --latest
+            # A candidate may have been created before qualification; reconcile
+            # its description and title with the now-qualified release notes.
+            gh release edit "$TAG" --title "$TITLE" --notes-file "$NOTES_PATH" --latest
           else
             gh release create "$TAG" --verify-tag --title "$TITLE" --notes-file "$NOTES_PATH" --latest
           fi
