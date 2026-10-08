@@ -7,6 +7,11 @@ parent: Releases
 ---
 # RAHP roadmap
 
+## v2.7.0 candidate — Common Rose
+
+**Prequalification, not published.** Post-v2.6 maintenance, adoption guidance and optional experimental reasoning profiles await seven pinned-SHA gates and maintainer GO. v2.6.0 Commander remains the last published release.
+
+
 ## Current release boundary — v2.6.0 Commander
 
 v2.6.0 qualifies **Full-Stack Assurance Orchestration and Explicit Evidence State** as the stable post-v2.5 boundary.
