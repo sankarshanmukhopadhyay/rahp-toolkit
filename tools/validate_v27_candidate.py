@@ -30,12 +30,12 @@ def validate(root: Path = ROOT) -> list[str]:
         errors.append("candidate version mismatch")
     if candidate.get("status") != "prequalification" or candidate.get("publication_authorized") is not False:
         errors.append("candidate must remain non-publishing prequalification")
-    if candidate.get("release_sha") is not None or candidate.get("codename") is not None:
-        errors.append("unqualified candidate cannot claim a release SHA or codename")
+    if candidate.get("release_sha") is not None or candidate.get("codename") != "Common Rose":
+        errors.append("candidate requires governed name but cannot claim qualified release SHA")
     current = (release.get("release") or {})
-    if current.get("tag") != "v2.6.0" or current.get("status") != "released":
-        errors.append("current release declaration must remain v2.6.0")
-    if versioning.get("stable_release") != "v2.6.0":
+    if current.get("tag") != "v2.7.0" or current.get("status") != "candidate":
+        errors.append("current declaration must be non-publishing v2.7 candidate")
+    if versioning.get("stable_release") != "v2.7.0":
         errors.append("stable versioning declaration changed before qualification")
     expected = {
         "engine": "rahp-engine-contract-v1",

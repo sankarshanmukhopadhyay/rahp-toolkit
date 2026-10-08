@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 2.6.0
-development_target: 2.6.0
-release_status: released
-qualification_status: qualified
-qualification_contract: method/v2.6-release-qualification.yaml
+stable_release: 2.7.0
+development_target: 2.7.0
+release_status: candidate
+qualification_status: candidate
+qualification_contract: method/v2.7-release-qualification.yaml
 release_name:
-  common_name: Commander
-  scientific_name: Moduza procris
+  common_name: Common Rose
+  scientific_name: Pachliopta aristolochiae
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-10-01'
+  selected_on: '2026-10-08'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1

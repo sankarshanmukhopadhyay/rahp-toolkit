@@ -35,8 +35,8 @@ release_gates:
   owner_approval: PENDING
 release_cut:
   candidate_sha: null
-  selected_common_name: null
-  selected_scientific_name: null
+  selected_common_name: Common Rose
+  selected_scientific_name: Pachliopta aristolochiae
   publication_authorized: false
   manual_publication_required: true
   independent_adoption: NOT_YET_TESTED

@@ -20,8 +20,9 @@ class CandidateQualificationTests(unittest.TestCase):
         manifest = yaml.safe_load((ROOT / "method/v2.7-release-candidate.yaml").read_text())
         release = yaml.safe_load((ROOT / "method/release.yaml").read_text())
         self.assertFalse(manifest["candidate"]["publication_authorized"])
-        self.assertIsNone(manifest["candidate"]["codename"])
-        self.assertEqual(release["release"]["tag"], "v2.6.0")
+        self.assertEqual(manifest["candidate"]["codename"], "Common Rose")
+        self.assertEqual(release["release"]["tag"], "v2.7.0")
+        self.assertEqual(release["release"]["status"], "candidate")
 
 
 if __name__ == "__main__":

@@ -38,13 +38,18 @@ def main() -> int:
         return 1
 
     versioning = load_yaml("method/versioning.yaml")
+    release_declaration = load_yaml("method/release.yaml")
+    release_status = (release_declaration.get("release") or {}).get("status")
+    # The review pack is pinned to the last published release during staging.
+    # A candidate must not silently become the reviewed/assured baseline.
+    review_release = versioning.get("stable_release") if release_status == "released" else (load_yaml("method/v2.7-release-candidate.yaml").get("candidate") or {}).get("base_tag")
     ledger = load_yaml("method/review/claim-evidence-ledger.yaml")
     challenges = load_yaml("method/review/false-assurance-challenges.yaml")
 
     target = ledger.get("review_target") or {}
     contracts = versioning.get("contracts") or {}
     expected = {
-        "toolkit_release": versioning.get("stable_release"),
+        "toolkit_release": review_release,
         "engine_contract": contracts.get("engine"),
         "engine_revision": str(contracts.get("engine_revision")),
         "normalized_result_schema": contracts.get("result_schema"),

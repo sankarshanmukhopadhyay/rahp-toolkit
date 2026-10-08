@@ -9,7 +9,14 @@ parent: Reference
 
 ## Unreleased
 
-No stable capability changes have been accepted after the v2.6.0 qualification boundary.
+v2.7.0 is staged for qualification; no publication claim.
+
+## v2.7.0 — candidate — Common Rose
+
+- Assessment routing and queue reliability, onboarding and adoption documentation.
+- Optional experimental R1 evidence adequacy, R2 temporal provenance and R3 reproducibility/challenge profiles.
+- Stable engine contract v1 revision 1.3, result schema 1 and evidence-retention v1 unchanged.
+- Independent adoption remains NOT_YET_TESTED; optional profiles do not imply terminal assurance.
 
 ## v2.6.0 — 2026-10-01 — Commander
 

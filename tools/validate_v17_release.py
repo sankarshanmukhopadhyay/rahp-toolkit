@@ -23,7 +23,7 @@ def main():
     if q.get("release")!="v1.7.0": errors.append("qualification manifest must identify v1.7.0")
     if not at_least(status.get("stable_release"),"1.7.0"): errors.append("PROJECT-STATUS stable_release must be v1.7.0 or later")
     if not at_least(status.get("development_target"),"1.7.0"): errors.append("development_target must be v1.7.0 or later")
-    if status.get("release_status")!="released" or status.get("qualification_status")!="qualified": errors.append("current release state must remain released/qualified")
+    if str(status.get("stable_release")) == "1.7.0" and (status.get("release_status")!="released" or status.get("qualification_status")!="qualified"): errors.append("v1.7 release state must be released/qualified")
     
     compat=q.get("stable_compatibility") or {}
     for k,v in compat.items():

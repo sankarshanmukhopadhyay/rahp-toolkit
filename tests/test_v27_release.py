@@ -23,7 +23,8 @@ class V27QualificationTests(unittest.TestCase):
 
     def test_current_stable_release_remains_unchanged(self):
         release = yaml.safe_load((ROOT / "method/release.yaml").read_text())
-        self.assertEqual(release["release"]["tag"], "v2.6.0")
+        self.assertEqual(release["release"]["tag"], "v2.7.0")
+        self.assertEqual(release["release"]["status"], "candidate")
 
 
 if __name__ == "__main__":

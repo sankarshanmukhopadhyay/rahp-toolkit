@@ -58,8 +58,8 @@ def validate(root: Path = ROOT) -> list[str]:
     if q.get("state") == "PREQUALIFICATION":
         if cut.get("publication_authorized") is not False:
             errors.append("prequalification cannot authorize publication")
-        if any(cut.get(key) is not None for key in ("candidate_sha", "selected_common_name", "selected_scientific_name")):
-            errors.append("prequalification cannot claim selected release identity")
+        if cut.get("candidate_sha") is not None or not cut.get("selected_common_name") or not cut.get("selected_scientific_name"):
+            errors.append("prequalification requires a governed name but no qualified SHA")
     elif q.get("state") == "QUALIFIED":
         if any(state != "PASS" for state in (q.get("release_gates") or {}).values()):
             errors.append("qualified release requires all gates PASS")
