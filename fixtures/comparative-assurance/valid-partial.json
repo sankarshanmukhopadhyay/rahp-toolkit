@@ -1,0 +1,96 @@
+{
+  "schema_version": "rahp-comparative-assurance-digest/v1",
+  "comparison_id": "dogwood-to-eucalyptus",
+  "baseline": {
+    "assessment_id": "VTI-Dogwood-RC-1",
+    "artifact_ref": "issue:253",
+    "schema_version": "rahp-assessment/v1",
+    "profile_id": "vti-clean-room",
+    "profile_version": "dogwood"
+  },
+  "candidate": {
+    "assessment_id": "VTI-Eucalyptus",
+    "artifact_ref": "issue:960",
+    "schema_version": "rahp-assessment/v1",
+    "profile_id": "vti-clean-room",
+    "profile_version": "eucalyptus"
+  },
+  "profile": {
+    "id": "release-comparison",
+    "version": "1",
+    "artifact_ref": "profile:release-comparison-v1"
+  },
+  "comparability": {
+    "status": "partial",
+    "reasons": ["The candidate admits a broader scope and proposition set."],
+    "matched_basis": ["Evidence preservation mechanics"],
+    "unmatched_basis": ["Privacy propositions are not equivalent across the two assessments."]
+  },
+  "scope": {
+    "directly_assessed": [
+      {"component_id": "vti-eucalyptus", "resolved_ref": "eucalyptus", "reason": "Candidate release target"}
+    ],
+    "supporting_dependencies": [
+      {"component_id": "rahp-toolkit", "resolved_ref": "v2.7.0", "treatment": "observed_not_assessed", "limitations": ["Used as an assurance producer, not independently assessed by this comparison."]}
+    ],
+    "excluded": [
+      {"component_id": "unmatched-transitive-components", "reason": "Outside the declared comparison boundary"}
+    ],
+    "coverage_state": "partial",
+    "limitations": ["Only matched propositions support comparative judgments."]
+  },
+  "finding_deltas": [
+    {
+      "delta_id": "delta-evidence-preservation",
+      "state": "evidence_strengthened",
+      "match_basis": "profile proposition evidence-preservation",
+      "baseline": {"finding_id": "DOG-EVIDENCE", "evidence_refs": ["issue:253"]},
+      "candidate": {"finding_id": "EUC-EVIDENCE", "evidence_refs": ["issue:960"]},
+      "disposition_changed": false,
+      "evidence_change": "strengthened",
+      "limitations": []
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension_id": "assessment-capability",
+      "category": "assessment_process",
+      "comparability": "compatible",
+      "judgment": "materially_improved",
+      "confidence": "high",
+      "justification": "The candidate preserves a broader campaign through sealed machine and human dispositions.",
+      "evidence_refs": ["issue:253", "issue:960"],
+      "counterevidence_refs": [],
+      "unresolved_limitations": []
+    },
+    {
+      "dimension_id": "privacy-assurance",
+      "category": "assurance_outcome",
+      "comparability": "not_comparable",
+      "judgment": "not_comparable",
+      "confidence": "high",
+      "justification": "The assessments use materially different privacy scope and propositions.",
+      "evidence_refs": ["issue:253", "issue:960"],
+      "counterevidence_refs": [],
+      "unresolved_limitations": ["A common privacy-pressure profile has not been executed."]
+    }
+  ],
+  "overall": {
+    "judgment": "indeterminate",
+    "confidence": "high",
+    "justification": "Assessment capability improved, but matched evidence does not establish release-assurance superiority.",
+    "evidence_refs": ["issue:253", "issue:960"],
+    "counterevidence_refs": [],
+    "unresolved_limitations": ["Release assurance is only partially comparable."],
+    "release_disposition": "human_judgment_required",
+    "release_superiority_established": false
+  },
+  "recommendations": [
+    {
+      "action": "Execute a common matched-proposition profile against both releases.",
+      "basis": ["privacy-assurance"],
+      "normative": false
+    }
+  ],
+  "reassessment_triggers": ["Completion of the matched Dogwood and Eucalyptus proposition set"]
+}
