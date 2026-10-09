@@ -11,7 +11,10 @@ from collections import defaultdict
 from copy import deepcopy
 import hashlib
 import json
+from pathlib import Path
 from typing import Any
+
+from jsonschema import Draft202012Validator, FormatChecker
 
 
 DEFAULT_MATCH_RULES = [
@@ -57,6 +60,8 @@ RELEASE_DISPOSITIONS = {
     "indeterminate",
     "not_applicable",
 }
+
+DIGEST_SCHEMA = Path(__file__).resolve().parents[1] / "method" / "schema" / "comparative-assurance-digest.schema.json"
 
 
 def _canonical(value: Any) -> Any:
@@ -569,3 +574,171 @@ def aggregate_judgment(
         "release_disposition": disposition,
         "release_superiority_established": superiority,
     }
+
+
+def determine_compatibility(
+    baseline: dict[str, Any],
+    candidate: dict[str, Any],
+    scope_delta: dict[str, Any],
+    profile: dict[str, Any],
+) -> dict[str, Any]:
+    """Determine whether the declared assessment contracts support comparison."""
+    reasons: list[str] = []
+    matched: list[str] = []
+    unmatched: list[str] = []
+    baseline_schema = baseline["assessment"]["schema_version"]
+    candidate_schema = candidate["assessment"]["schema_version"]
+    allowed_schema_pairs = {tuple(item) for item in profile.get("compatible_schema_versions", [])}
+    if baseline_schema == candidate_schema or (baseline_schema, candidate_schema) in allowed_schema_pairs:
+        matched.append("assessment schema")
+    else:
+        reasons.append(f"Assessment schema versions differ: {baseline_schema} vs {candidate_schema}.")
+        unmatched.append("assessment schema")
+    baseline_profile = baseline["assessment"]["profile_id"]
+    candidate_profile = candidate["assessment"]["profile_id"]
+    allowed_profile_pairs = {tuple(item) for item in profile.get("compatible_profile_ids", [])}
+    if baseline_profile == candidate_profile or (baseline_profile, candidate_profile) in allowed_profile_pairs:
+        matched.append("assessment profile identity")
+    else:
+        reasons.append(f"Assessment profile identities differ: {baseline_profile} vs {candidate_profile}.")
+        unmatched.append("assessment profile identity")
+    baseline_version = baseline["assessment"]["profile_version"]
+    candidate_version = candidate["assessment"]["profile_version"]
+    allowed_version_pairs = {tuple(item) for item in profile.get("compatible_profile_versions", [])}
+    if baseline_version == candidate_version or (baseline_version, candidate_version) in allowed_version_pairs:
+        matched.append("assessment profile version")
+    else:
+        reasons.append(f"Assessment profile versions lack an equivalence rule: {baseline_version} vs {candidate_version}.")
+        unmatched.append("assessment profile version")
+    if unmatched:
+        return {"status": "not_comparable", "reasons": reasons, "matched_basis": sorted(matched), "unmatched_basis": sorted(unmatched)}
+    if scope_delta["status"] != "equivalent":
+        reasons.append(f"Assessment boundary is {scope_delta['status']} relative to the baseline.")
+        unmatched.append("assessment scope")
+        return {"status": "partial", "reasons": reasons, "matched_basis": sorted(matched), "unmatched_basis": sorted(unmatched)}
+    return {"status": "compatible", "reasons": [], "matched_basis": sorted(matched + ["assessment scope"]), "unmatched_basis": []}
+
+
+def _assessment_input(value: dict[str, Any], label: str) -> None:
+    required = {"assessment", "scope", "findings"}
+    missing = sorted(required - set(value))
+    if missing:
+        raise ValueError(f"{label} assessment is missing: {', '.join(missing)}")
+    assessment_required = {"assessment_id", "artifact_ref", "schema_version", "profile_id", "profile_version"}
+    missing_identity = sorted(assessment_required - set(value["assessment"]))
+    if missing_identity:
+        raise ValueError(f"{label} assessment identity is missing: {', '.join(missing_identity)}")
+
+
+def validate_digest(digest: dict[str, Any]) -> None:
+    schema = json.loads(DIGEST_SCHEMA.read_text(encoding="utf-8"))
+    errors = sorted(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(digest), key=lambda error: list(error.absolute_path))
+    if errors:
+        error = errors[0]
+        location = ".".join(str(item) for item in error.absolute_path) or "<root>"
+        raise ValueError(f"invalid comparative digest at {location}: {error.message}")
+
+
+def build_digest(baseline: dict[str, Any], candidate: dict[str, Any], profile: dict[str, Any]) -> dict[str, Any]:
+    """Build and validate the authoritative digest artifact."""
+    _assessment_input(baseline, "baseline")
+    _assessment_input(candidate, "candidate")
+    if "profile" not in profile:
+        raise ValueError("comparison profile requires profile identity")
+    scope_delta = compare_scope(baseline["scope"], candidate["scope"], profile)
+    comparability = determine_compatibility(baseline, candidate, scope_delta, profile)
+    finding_deltas = compare_findings(baseline["findings"], candidate["findings"], profile)
+    comparison = candidate.get("comparison") or {}
+    if comparison.get("baseline_assessment_id") != baseline["assessment"]["assessment_id"]:
+        raise ValueError("candidate comparison does not identify the supplied baseline assessment")
+    dimensions = comparison.get("dimensions") or []
+    overall = aggregate_judgment(dimensions, comparability, scope_delta, profile, comparison.get("candidate_release_disposition"))
+    digest = {
+        "schema_version": "rahp-comparative-assurance-digest/v1",
+        "comparison_id": comparison.get("comparison_id") or f"{baseline['assessment']['assessment_id']}-to-{candidate['assessment']['assessment_id']}",
+        "baseline": deepcopy(baseline["assessment"]),
+        "candidate": deepcopy(candidate["assessment"]),
+        "profile": deepcopy(profile["profile"]),
+        "comparability": comparability,
+        "scope": deepcopy(candidate["scope"]),
+        "scope_delta": scope_delta,
+        "finding_deltas": finding_deltas,
+        "dimensions": sorted(deepcopy(dimensions), key=lambda item: item["dimension_id"]),
+        "overall": overall,
+        "recommendations": deepcopy(comparison.get("recommendations") or []),
+        "reassessment_triggers": sorted(set(comparison.get("reassessment_triggers") or [])),
+    }
+    validate_digest(digest)
+    return digest
+
+
+def _markdown_cell(value: Any) -> str:
+    return str(value).replace("|", "\\|").replace("\n", " ")
+
+
+def render_digest_markdown(digest: dict[str, Any]) -> str:
+    """Render a non-normative Markdown view from a validated digest."""
+    validate_digest(digest)
+    overall = digest["overall"]
+    scope_delta = digest.get("scope_delta") or {}
+    lines = [
+        f"# Comparative Assurance Digest: {digest['comparison_id']}", "",
+        "> This report is a non-normative rendering of the machine-readable comparison artifact. It informs but does not replace accountable human acceptance or release authority.", "",
+        "## Summary", "", "| Field | Result |", "|---|---|",
+        f"| Baseline | {_markdown_cell(digest['baseline']['assessment_id'])} |",
+        f"| Candidate | {_markdown_cell(digest['candidate']['assessment_id'])} |",
+        f"| Comparability | {_markdown_cell(digest['comparability']['status'])} |",
+        f"| Overall judgment | {_markdown_cell(overall['judgment'])} |",
+        f"| Confidence | {_markdown_cell(overall['confidence'])} |",
+        f"| Release disposition | {_markdown_cell(overall['release_disposition'])} |",
+        f"| Release superiority established | {'yes' if overall['release_superiority_established'] else 'no'} |", "",
+        overall["justification"], "", "## Scope and coverage", "",
+        f"- Boundary change: **{scope_delta.get('status', 'not reported')}**",
+        f"- Material scope change: **{'yes' if scope_delta.get('material_change') else 'no'}**",
+    ]
+    coverage = scope_delta.get("coverage") or {}
+    if coverage:
+        lines.append(f"- Coverage: **{coverage.get('baseline')} → {coverage.get('candidate')}** ({coverage.get('change')})")
+    admitted = scope_delta.get("newly_admitted_components") or []
+    lines.append("- Newly admitted components: " + (", ".join(admitted) if admitted else "none"))
+    direct_added = (scope_delta.get("directly_assessed") or {}).get("added") or []
+    dependency_added = (scope_delta.get("supporting_dependencies") or {}).get("added") or []
+    lines.append("- Added directly assessed components: " + (", ".join(direct_added) if direct_added else "none"))
+    lines.append("- Added supporting dependencies (not independently assessed by inclusion): " + (", ".join(dependency_added) if dependency_added else "none"))
+    lines += ["", "## Dimension judgments", "", "| Dimension | Category | Comparability | Judgment | Confidence |", "|---|---|---|---|---|"]
+    for item in digest["dimensions"]:
+        lines.append("| " + " | ".join(_markdown_cell(item[key]) for key in ("dimension_id", "category", "comparability", "judgment", "confidence")) + " |")
+    material = [item for item in digest["finding_deltas"] if item["state"] != "unchanged"]
+    lines += ["", "## Material finding and evidence changes", ""]
+    if material:
+        for item in material:
+            left = (item.get("baseline") or {}).get("finding_id", "none")
+            right = (item.get("candidate") or {}).get("finding_id", "none")
+            lines.append(f"- **{item['state']}**: {_markdown_cell(left)} → {_markdown_cell(right)}; evidence: {_markdown_cell(item['evidence_change'])}")
+    else:
+        lines.append("No material finding or evidence delta was reported.")
+    limitations = sorted(set((digest["comparability"].get("reasons") or []) + (scope_delta.get("limitations") or []) + (overall.get("unresolved_limitations") or [])))
+    lines += ["", "## Unresolved limitations", ""]
+    lines += [f"- {_markdown_cell(item)}" for item in limitations] or ["No unresolved limitation was reported."]
+    lines += ["", "## Recommended next actions", ""]
+    recommendations = digest.get("recommendations") or []
+    if recommendations:
+        for item in recommendations:
+            label = "profile-declared" if item["normative"] else "non-normative"
+            lines.append(f"- {_markdown_cell(item['action'])} ({label})")
+    else:
+        lines.append("No recommendation was reported.")
+    triggers = digest.get("reassessment_triggers") or []
+    if triggers:
+        lines += ["", "### Reassessment triggers", ""]
+        lines += [f"- {_markdown_cell(item)}" for item in triggers]
+    return "\n".join(lines) + "\n"
+
+
+def write_digest_outputs(digest: dict[str, Any], output_dir: Path) -> tuple[Path, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "comparison.json"
+    markdown_path = output_dir / "comparison.md"
+    json_path.write_text(json.dumps(digest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    markdown_path.write_text(render_digest_markdown(digest), encoding="utf-8")
+    return json_path, markdown_path

@@ -1,4 +1,8 @@
 {
+  "profile": {"id": "release-comparison", "version": "1", "artifact_ref": "fixtures/comparative-assurance/release-comparison-profile.json"},
+  "compatible_schema_versions": [["rahp-assessment/v1", "rahp-assessment/v1"]],
+  "compatible_profile_ids": [["vti-clean-room", "vti-clean-room"]],
+  "compatible_profile_versions": [["dogwood", "eucalyptus"]],
   "dimensions": [
     "assessment-capability",
     "evidence-preservation",
