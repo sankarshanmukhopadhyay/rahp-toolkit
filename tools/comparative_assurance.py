@@ -26,6 +26,16 @@ ALLOWED_MATCH_FIELDS = {
     "claim_id",
 }
 
+DEFAULT_SCOPE_MATERIALITY = {
+    "directly_assessed_change": True,
+    "supporting_dependency_change": False,
+    "dependency_treatment_change": True,
+    "excluded_change": False,
+    "coverage_weakening": True,
+}
+
+DEFAULT_COVERAGE_ORDER = ["insufficient", "partial", "bounded", "complete"]
+
 
 def _canonical(value: Any) -> Any:
     if isinstance(value, list):
@@ -234,3 +244,134 @@ def compare_findings(
         deltas.append(_unmatched_delta(candidate[finding_id], "candidate", limitations))
 
     return sorted(deltas, key=lambda delta: delta["delta_id"])
+
+
+def _index_components(scope: dict[str, Any], field: str) -> dict[str, dict[str, Any]]:
+    records = scope.get(field) or []
+    result: dict[str, dict[str, Any]] = {}
+    for record in records:
+        component_id = record.get("component_id")
+        if not component_id:
+            raise ValueError(f"every {field} record requires component_id")
+        if component_id in result:
+            raise ValueError(f"duplicate component_id {component_id!r} in {field}")
+        result[component_id] = record
+    return result
+
+
+def _component_changes(
+    baseline: dict[str, dict[str, Any]],
+    candidate: dict[str, dict[str, Any]],
+    compared_fields: list[str],
+) -> dict[str, list[str]]:
+    shared = set(baseline) & set(candidate)
+    return {
+        "added": sorted(set(candidate) - set(baseline)),
+        "removed": sorted(set(baseline) - set(candidate)),
+        "changed": sorted(
+            component_id
+            for component_id in shared
+            if any(
+                _canonical(baseline[component_id].get(field))
+                != _canonical(candidate[component_id].get(field))
+                for field in compared_fields
+            )
+        ),
+    }
+
+
+def _coverage_change(baseline: str, candidate: str, order: list[str]) -> str:
+    if baseline == candidate:
+        return "preserved"
+    if baseline not in order or candidate not in order or len(order) != len(set(order)):
+        return "not_comparable"
+    return "strengthened" if order.index(candidate) > order.index(baseline) else "weakened"
+
+
+def compare_scope(
+    baseline_scope: dict[str, Any],
+    candidate_scope: dict[str, Any],
+    profile: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Compare declared assessment boundaries without inferring assurance change.
+
+    Component identity is the stable ``component_id``. A broader candidate
+    boundary is reported as scope expansion and newly admitted work, not as an
+    assurance regression. Materiality remains profile-declared.
+    """
+
+    profile = deepcopy(profile or {})
+    materiality = {**DEFAULT_SCOPE_MATERIALITY, **(profile.get("scope_materiality") or {})}
+    unknown_materiality = set(materiality) - set(DEFAULT_SCOPE_MATERIALITY)
+    if unknown_materiality:
+        raise ValueError(f"unsupported scope materiality rule(s): {', '.join(sorted(unknown_materiality))}")
+    if any(not isinstance(value, bool) for value in materiality.values()):
+        raise ValueError("scope materiality rules must be boolean")
+
+    baseline_direct = _index_components(baseline_scope, "directly_assessed")
+    candidate_direct = _index_components(candidate_scope, "directly_assessed")
+    baseline_dependencies = _index_components(baseline_scope, "supporting_dependencies")
+    candidate_dependencies = _index_components(candidate_scope, "supporting_dependencies")
+    baseline_excluded = _index_components(baseline_scope, "excluded")
+    candidate_excluded = _index_components(candidate_scope, "excluded")
+
+    direct = _component_changes(baseline_direct, candidate_direct, ["resolved_ref", "reason"])
+    dependencies = _component_changes(
+        baseline_dependencies,
+        candidate_dependencies,
+        ["resolved_ref", "treatment", "independent_assessment_ref", "limitations"],
+    )
+    excluded = _component_changes(baseline_excluded, candidate_excluded, ["reason"])
+
+    baseline_coverage = baseline_scope.get("coverage_state")
+    candidate_coverage = candidate_scope.get("coverage_state")
+    coverage_order = profile.get("coverage_order") or DEFAULT_COVERAGE_ORDER
+    coverage_change = _coverage_change(baseline_coverage, candidate_coverage, coverage_order)
+
+    added = bool(direct["added"] or dependencies["added"] or excluded["added"])
+    removed = bool(direct["removed"] or dependencies["removed"] or excluded["removed"])
+    changed = bool(direct["changed"] or dependencies["changed"] or excluded["changed"])
+    if not (added or removed or changed):
+        status = "equivalent"
+    elif added and not removed and not changed:
+        status = "expanded"
+    elif removed and not added and not changed:
+        status = "contracted"
+    else:
+        status = "changed"
+
+    dependency_treatment_changed = any(
+        baseline_dependencies[component_id].get("treatment")
+        != candidate_dependencies[component_id].get("treatment")
+        for component_id in set(baseline_dependencies) & set(candidate_dependencies)
+    )
+    material_change = any([
+        materiality["directly_assessed_change"] and any(direct.values()),
+        materiality["supporting_dependency_change"] and bool(dependencies["added"] or dependencies["removed"]),
+        materiality["dependency_treatment_change"] and dependency_treatment_changed,
+        materiality["excluded_change"] and any(excluded.values()),
+        materiality["coverage_weakening"] and coverage_change == "weakened",
+    ])
+
+    limitations = sorted(set((baseline_scope.get("limitations") or []) + (candidate_scope.get("limitations") or [])))
+    if status == "expanded":
+        limitations.append("Newly admitted components require assessment; scope expansion is not an assurance regression.")
+    if coverage_change == "not_comparable":
+        limitations.append("Coverage states cannot be ranked under the declared comparison profile.")
+
+    return {
+        "status": status,
+        "material_change": material_change,
+        "directly_assessed": direct,
+        "supporting_dependencies": dependencies,
+        "excluded": excluded,
+        "coverage": {
+            "baseline": baseline_coverage,
+            "candidate": candidate_coverage,
+            "change": coverage_change,
+        },
+        "newly_admitted_components": sorted(
+            set(direct["added"]) | set(dependencies["added"])
+        ),
+        "limitations": sorted(set(limitations)),
+    }
