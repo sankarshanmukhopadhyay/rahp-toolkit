@@ -1,0 +1,27 @@
+{
+  "dimensions": [
+    "assessment-capability",
+    "evidence-preservation",
+    "composition-assurance",
+    "privacy-assurance"
+  ],
+  "required_dimensions": [
+    "assessment-capability",
+    "evidence-preservation",
+    "composition-assurance",
+    "privacy-assurance"
+  ],
+  "require_evidence_for": [
+    "assessment-capability",
+    "evidence-preservation",
+    "composition-assurance",
+    "privacy-assurance"
+  ],
+  "blocking_judgments": ["materially_regressed"],
+  "minimum_coverage": "bounded",
+  "coverage_order": ["insufficient", "partial", "bounded", "complete"],
+  "minimum_confidence": "moderate",
+  "counterevidence_blocks": true,
+  "blocking_release_disposition": "not_acceptable",
+  "improvement_establishes_superiority": false
+}
