@@ -1,0 +1,271 @@
+{
+  "baseline": {
+    "artifact_ref": "issue:253",
+    "assessment_id": "VTI-Dogwood-RC-1",
+    "profile_id": "vti-clean-room",
+    "profile_version": "dogwood",
+    "release": "Dogwood RC-1",
+    "schema_version": "rahp-assessment/v1"
+  },
+  "candidate": {
+    "artifact_ref": "issue:960",
+    "assessment_id": "VTI-Eucalyptus",
+    "profile_id": "vti-clean-room",
+    "profile_version": "eucalyptus",
+    "release": "Eucalyptus",
+    "schema_version": "rahp-assessment/v1"
+  },
+  "comparability": {
+    "matched_basis": [
+      "assessment profile identity",
+      "assessment profile version",
+      "assessment schema"
+    ],
+    "reasons": [
+      "Assessment boundary is changed relative to the baseline."
+    ],
+    "status": "partial",
+    "unmatched_basis": [
+      "assessment scope"
+    ]
+  },
+  "comparison_id": "dogwood-to-eucalyptus",
+  "dimensions": [
+    {
+      "category": "assessment_process",
+      "comparability": "compatible",
+      "confidence": "high",
+      "counterevidence_refs": [],
+      "dimension_id": "assessment-capability",
+      "evidence_refs": [
+        "issue:253",
+        "issue:960"
+      ],
+      "judgment": "materially_improved",
+      "justification": "The candidate used a broader campaign with native follow-up and durable publication.",
+      "unresolved_limitations": []
+    },
+    {
+      "category": "assurance_outcome",
+      "comparability": "partial",
+      "confidence": "high",
+      "counterevidence_refs": [],
+      "dimension_id": "composition-assurance",
+      "evidence_refs": [
+        "issue:253#composition",
+        "issue:960#composition"
+      ],
+      "judgment": "indeterminate",
+      "justification": "No matched proposition set establishes whole-composition improvement.",
+      "unresolved_limitations": [
+        "Candidate composition propositions remain unclosed."
+      ]
+    },
+    {
+      "category": "evidence",
+      "comparability": "compatible",
+      "confidence": "high",
+      "counterevidence_refs": [],
+      "dimension_id": "evidence-preservation",
+      "evidence_refs": [
+        "issue:253",
+        "issue:960#sealed-evidence"
+      ],
+      "judgment": "materially_improved",
+      "justification": "The candidate preserved sealed campaign and native archives with integrity roots.",
+      "unresolved_limitations": []
+    },
+    {
+      "category": "assurance_outcome",
+      "comparability": "not_comparable",
+      "confidence": "high",
+      "counterevidence_refs": [],
+      "dimension_id": "privacy-assurance",
+      "evidence_refs": [
+        "issue:253#privacy",
+        "issue:960#privacy"
+      ],
+      "judgment": "not_comparable",
+      "justification": "The two assessments use materially different privacy scope and propositions.",
+      "unresolved_limitations": [
+        "A common privacy-pressure profile has not been executed."
+      ]
+    }
+  ],
+  "finding_deltas": [
+    {
+      "baseline": null,
+      "candidate": {
+        "evidence_refs": [
+          "issue:960#sealed-evidence"
+        ],
+        "finding_id": "EUC-EVIDENCE-PRESERVATION"
+      },
+      "delta_id": "delta-2d859ceab75e5ad4",
+      "disposition_changed": false,
+      "evidence_change": "none",
+      "limitations": [],
+      "match_basis": "explicit-lineage:introduced",
+      "state": "introduced"
+    },
+    {
+      "baseline": {
+        "evidence_refs": [
+          "issue:253#composition"
+        ],
+        "finding_id": "VTI-COMPOSITION"
+      },
+      "candidate": {
+        "evidence_refs": [
+          "issue:960#composition"
+        ],
+        "finding_id": "VTI-COMPOSITION"
+      },
+      "delta_id": "delta-68c8d33e68efad0b",
+      "disposition_changed": true,
+      "evidence_change": "not_comparable",
+      "limitations": [
+        "Evidence references changed in both directions; strength cannot be inferred."
+      ],
+      "match_basis": "profile-key:finding_id",
+      "state": "changed"
+    },
+    {
+      "baseline": {
+        "evidence_refs": [
+          "issue:253#privacy"
+        ],
+        "finding_id": "VTI-PRIVACY"
+      },
+      "candidate": {
+        "evidence_refs": [
+          "issue:960#privacy"
+        ],
+        "finding_id": "VTI-PRIVACY"
+      },
+      "delta_id": "delta-f579a767e1e590aa",
+      "disposition_changed": false,
+      "evidence_change": "not_comparable",
+      "limitations": [
+        "Evidence references changed in both directions; strength cannot be inferred."
+      ],
+      "match_basis": "profile-key:finding_id",
+      "state": "changed"
+    }
+  ],
+  "overall": {
+    "confidence": "high",
+    "counterevidence_refs": [],
+    "evidence_refs": [
+      "issue:253",
+      "issue:253#composition",
+      "issue:253#privacy",
+      "issue:960",
+      "issue:960#composition",
+      "issue:960#privacy",
+      "issue:960#sealed-evidence"
+    ],
+    "judgment": "indeterminate",
+    "justification": "Profile gates produced an indeterminate comparison: Candidate coverage partial is below required bounded.",
+    "release_disposition": "indeterminate",
+    "release_superiority_established": false,
+    "unresolved_limitations": [
+      "A common privacy-pressure profile has not been executed.",
+      "Candidate composition propositions remain unclosed.",
+      "Candidate coverage partial is below required bounded."
+    ]
+  },
+  "profile": {
+    "artifact_ref": "fixtures/comparative-assurance/release-comparison-profile.json",
+    "id": "release-comparison",
+    "version": "1"
+  },
+  "reassessment_triggers": [
+    "Completion of the matched Dogwood and Eucalyptus proposition set"
+  ],
+  "recommendations": [
+    {
+      "action": "Execute matched privacy and composition propositions against both releases.",
+      "basis": [
+        "composition-assurance",
+        "privacy-assurance"
+      ],
+      "normative": false
+    }
+  ],
+  "schema_version": "rahp-comparative-assurance-digest/v1",
+  "scope": {
+    "coverage_state": "partial",
+    "directly_assessed": [
+      {
+        "component_id": "vti-release",
+        "reason": "Coordinated Eucalyptus release target",
+        "resolved_ref": "eucalyptus"
+      },
+      {
+        "component_id": "vti-composition",
+        "reason": "Composition boundary admitted by the campaign",
+        "resolved_ref": "eucalyptus"
+      }
+    ],
+    "excluded": [
+      {
+        "component_id": "transitive-components",
+        "reason": "Not independently assessed by dependency inclusion"
+      }
+    ],
+    "limitations": [
+      "Twenty propositions were admitted; substantive evidence gaps remain."
+    ],
+    "supporting_dependencies": [
+      {
+        "component_id": "rahp-toolkit",
+        "limitations": [
+          "Assurance producer, not an independently assessed release component."
+        ],
+        "resolved_ref": "v2.7.0",
+        "treatment": "observed_not_assessed"
+      }
+    ]
+  },
+  "scope_delta": {
+    "coverage": {
+      "baseline": "bounded",
+      "candidate": "partial",
+      "change": "weakened"
+    },
+    "directly_assessed": {
+      "added": [
+        "vti-composition"
+      ],
+      "changed": [
+        "vti-release"
+      ],
+      "removed": []
+    },
+    "excluded": {
+      "added": [],
+      "changed": [
+        "transitive-components"
+      ],
+      "removed": []
+    },
+    "limitations": [
+      "Four bounded evidence requirements were assessed.",
+      "Twenty propositions were admitted; substantive evidence gaps remain."
+    ],
+    "material_change": true,
+    "newly_admitted_components": [
+      "rahp-toolkit",
+      "vti-composition"
+    ],
+    "status": "changed",
+    "supporting_dependencies": {
+      "added": [
+        "rahp-toolkit"
+      ],
+      "changed": [],
+      "removed": []
+    }
+  }
+}
