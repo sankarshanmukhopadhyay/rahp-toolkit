@@ -36,6 +36,28 @@ DEFAULT_SCOPE_MATERIALITY = {
 
 DEFAULT_COVERAGE_ORDER = ["insufficient", "partial", "bounded", "complete"]
 
+COMPARATIVE_JUDGMENTS = {
+    "materially_improved",
+    "improved",
+    "mixed",
+    "no_material_change",
+    "regressed",
+    "materially_regressed",
+    "indeterminate",
+    "not_comparable",
+}
+
+CONFIDENCE_ORDER = ["insufficient", "low", "moderate", "high"]
+
+RELEASE_DISPOSITIONS = {
+    "acceptable",
+    "conditionally_acceptable",
+    "not_acceptable",
+    "human_judgment_required",
+    "indeterminate",
+    "not_applicable",
+}
+
 
 def _canonical(value: Any) -> Any:
     if isinstance(value, list):
@@ -374,4 +396,176 @@ def compare_scope(
             set(direct["added"]) | set(dependencies["added"])
         ),
         "limitations": sorted(set(limitations)),
+    }
+
+
+def _validate_dimension_results(dimensions: list[dict[str, Any]], profile: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    declared = profile.get("dimensions")
+    if not declared or not isinstance(declared, list):
+        raise ValueError("comparison profile must declare dimensions")
+    if len(declared) != len(set(declared)):
+        raise ValueError("comparison profile dimensions must be unique")
+    results: dict[str, dict[str, Any]] = {}
+    for dimension in dimensions:
+        dimension_id = dimension.get("dimension_id")
+        if not dimension_id:
+            raise ValueError("every dimension result requires dimension_id")
+        if dimension_id in results:
+            raise ValueError(f"duplicate dimension result {dimension_id!r}")
+        if dimension_id not in declared:
+            raise ValueError(f"dimension {dimension_id!r} is not declared by the comparison profile")
+        if dimension.get("judgment") not in COMPARATIVE_JUDGMENTS:
+            raise ValueError(f"unsupported comparative judgment for {dimension_id!r}")
+        if dimension.get("confidence") not in CONFIDENCE_ORDER:
+            raise ValueError(f"unsupported confidence for {dimension_id!r}")
+        results[dimension_id] = dimension
+    return results
+
+
+def _overall_judgment(judgments: list[str], profile: dict[str, Any]) -> str:
+    blocking = set(profile.get("blocking_judgments") or ["materially_regressed"])
+    if any(judgment in blocking for judgment in judgments):
+        return "materially_regressed"
+    improvement = any(judgment in {"improved", "materially_improved"} for judgment in judgments)
+    regression = any(judgment in {"regressed", "materially_regressed"} for judgment in judgments)
+    if improvement and regression:
+        return "mixed"
+    if any(judgment == "materially_regressed" for judgment in judgments):
+        return "materially_regressed"
+    if regression:
+        return "regressed"
+    if any(judgment == "mixed" for judgment in judgments):
+        return "mixed"
+    if any(judgment == "indeterminate" for judgment in judgments):
+        return "indeterminate"
+    if any(judgment == "not_comparable" for judgment in judgments):
+        return "indeterminate"
+    if any(judgment == "materially_improved" for judgment in judgments):
+        return "materially_improved"
+    if improvement:
+        return "improved"
+    if judgments and all(judgment == "no_material_change" for judgment in judgments):
+        return "no_material_change"
+    return "indeterminate"
+
+
+def aggregate_judgment(
+    dimensions: list[dict[str, Any]],
+    comparability: dict[str, Any],
+    scope_delta: dict[str, Any],
+    profile: dict[str, Any],
+    candidate_release_disposition: str | None = None,
+) -> dict[str, Any]:
+    """Execute declared comparison policy without numerical compensation.
+
+    Dimension judgments are inputs produced by profile-specific evaluators. The
+    engine checks the profile's coverage, evidence and blocking gates, then
+    combines the bounded states through a conservative precedence lattice.
+    Release disposition remains independent and must come from candidate
+    evidence or an explicit profile blocking rule.
+    """
+
+    results = _validate_dimension_results(dimensions, profile)
+    required = profile.get("required_dimensions") or profile.get("dimensions")
+    unknown_required = set(required) - set(profile["dimensions"])
+    if unknown_required:
+        raise ValueError(f"required dimension(s) are undeclared: {', '.join(sorted(unknown_required))}")
+
+    evidence_refs = sorted({ref for item in dimensions for ref in (item.get("evidence_refs") or [])})
+    counterevidence_refs = sorted({ref for item in dimensions for ref in (item.get("counterevidence_refs") or [])})
+    limitations = sorted({text for item in dimensions for text in (item.get("unresolved_limitations") or [])})
+    reasons: list[str] = []
+
+    if comparability.get("status") == "not_comparable":
+        reasons.append("Top-level assessment compatibility was not established.")
+        return {
+            "judgment": "not_comparable",
+            "confidence": "insufficient",
+            "justification": "The profile forbids an overall comparison because the assessments are not comparable.",
+            "evidence_refs": evidence_refs,
+            "counterevidence_refs": counterevidence_refs,
+            "unresolved_limitations": sorted(set(limitations + reasons + (comparability.get("reasons") or []))),
+            "release_disposition": "not_applicable",
+            "release_superiority_established": False,
+        }
+
+    missing_dimensions = sorted(set(required) - set(results))
+    if missing_dimensions:
+        reasons.append("Missing required dimension results: " + ", ".join(missing_dimensions))
+
+    require_evidence = set(profile.get("require_evidence_for") or required)
+    missing_evidence = sorted(
+        dimension_id
+        for dimension_id in require_evidence
+        if dimension_id not in results or not results[dimension_id].get("evidence_refs")
+    )
+    if missing_evidence:
+        reasons.append("Missing required evidence for: " + ", ".join(missing_evidence))
+
+    coverage_order = profile.get("coverage_order") or DEFAULT_COVERAGE_ORDER
+    minimum_coverage = profile.get("minimum_coverage")
+    candidate_coverage = (scope_delta.get("coverage") or {}).get("candidate")
+    if minimum_coverage:
+        if minimum_coverage not in coverage_order or candidate_coverage not in coverage_order:
+            reasons.append("Candidate coverage cannot be ranked against the profile minimum.")
+        elif coverage_order.index(candidate_coverage) < coverage_order.index(minimum_coverage):
+            reasons.append(f"Candidate coverage {candidate_coverage} is below required {minimum_coverage}.")
+
+    if profile.get("counterevidence_blocks") and counterevidence_refs:
+        reasons.append("Unresolved counterevidence is blocking under the comparison profile.")
+
+    required_results = [results[dimension_id] for dimension_id in required if dimension_id in results]
+    confidence = min(
+        (item["confidence"] for item in required_results),
+        key=CONFIDENCE_ORDER.index,
+        default="insufficient",
+    )
+    minimum_confidence = profile.get("minimum_confidence")
+    if minimum_confidence:
+        if minimum_confidence not in CONFIDENCE_ORDER:
+            raise ValueError("unsupported profile minimum_confidence")
+        if CONFIDENCE_ORDER.index(confidence) < CONFIDENCE_ORDER.index(minimum_confidence):
+            reasons.append(f"Overall confidence {confidence} is below required {minimum_confidence}.")
+
+    judgments = [item["judgment"] for item in required_results]
+    bounded_judgment = _overall_judgment(judgments, profile)
+    blocking_observed = bounded_judgment == "materially_regressed"
+    overall = bounded_judgment if blocking_observed else ("indeterminate" if reasons else bounded_judgment)
+    if overall == "indeterminate" and not reasons:
+        reasons.append("The bounded dimension states do not support a dominant comparative judgment.")
+
+    disposition = candidate_release_disposition or "human_judgment_required"
+    if disposition not in RELEASE_DISPOSITIONS:
+        raise ValueError("unsupported candidate release disposition")
+    blocking_disposition = profile.get("blocking_release_disposition")
+    if overall == "materially_regressed" and blocking_disposition:
+        if blocking_disposition not in RELEASE_DISPOSITIONS:
+            raise ValueError("unsupported blocking_release_disposition")
+        disposition = blocking_disposition
+    if reasons and not blocking_observed:
+        disposition = "indeterminate"
+
+    superiority = bool(
+        overall in {"improved", "materially_improved"}
+        and profile.get("improvement_establishes_superiority", False)
+        and disposition in {"acceptable", "conditionally_acceptable"}
+    )
+    if blocking_observed and reasons:
+        justification = (
+            "A profile-defined material regression remains blocking despite additional evidence limitations: "
+            + " ".join(reasons)
+        )
+    elif reasons:
+        justification = "Profile gates produced an indeterminate comparison: " + " ".join(reasons)
+    else:
+        justification = f"Profile-bound precedence produced {overall} from the required dimension judgments without numerical compensation."
+    return {
+        "judgment": overall,
+        "confidence": confidence,
+        "justification": justification,
+        "evidence_refs": evidence_refs,
+        "counterevidence_refs": counterevidence_refs,
+        "unresolved_limitations": sorted(set(limitations + reasons)),
+        "release_disposition": disposition,
+        "release_superiority_established": superiority,
     }

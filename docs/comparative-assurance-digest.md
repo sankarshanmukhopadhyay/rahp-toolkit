@@ -158,3 +158,24 @@ Supporting dependency inclusion never promotes a component into the directly ass
 Coverage change is represented separately as `preserved`, `strengthened`, `weakened` or `not_comparable`. The comparison profile supplies the coverage ordering. When either coverage state is absent from that ordering, RAHP declines to rank it.
 
 Scope materiality is profile-controlled. The default rules treat directly assessed boundary changes, dependency-treatment changes and coverage weakening as material. Ordinary dependency additions and exclusion-list changes remain visible without automatically becoming material.
+
+## Profile-bound judgment aggregation
+
+`aggregate_judgment` consumes dimension judgments produced by profile-specific evaluators. It does not invent dimensions or calculate a universal score. The comparison profile must declare its dimensions, required dimensions, evidence requirements, minimum coverage, minimum confidence, blocking judgments and any counterevidence gate.
+
+The engine evaluates gates before aggregation. Missing required dimensions or evidence, insufficient coverage or confidence, and profile-blocking counterevidence produce `indeterminate`. Top-level incompatibility produces `not_comparable`.
+
+For admissible inputs, a conservative precedence lattice applies:
+
+1. a blocking or material regression dominates improvements;
+2. coexisting improvement and regression produces `mixed`;
+3. ordinary regression dominates no-change results;
+4. indeterminate or non-comparable required dimensions prevent a favourable aggregate;
+5. material improvement dominates ordinary improvement only when no regression is present; and
+6. no material change requires all required dimensions to support that state.
+
+There is no weighting or compensating arithmetic. Several favourable dimensions cannot offset a profile-defined blocking regression.
+
+Overall confidence is the least favourable confidence among required dimensions. This is a conservative aggregation of already justified dimension confidence; it is not inferred from finding or evidence counts.
+
+Release disposition remains independent. In the absence of candidate release evidence, improvement produces `human_judgment_required`, not `acceptable`. A profile may force a blocking regression to `not_acceptable`, while a candidate disposition supplied from separate release evidence is preserved for non-blocking comparisons. Comparative superiority is false unless the profile explicitly permits that inference and the independent disposition is favourable.
