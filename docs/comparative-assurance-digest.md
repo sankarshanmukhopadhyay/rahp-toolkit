@@ -128,3 +128,21 @@ Aggregation policy is governance-bearing behavior. It must be explicit and testa
 [`fixtures/comparative-assurance/valid-partial.json`](../fixtures/comparative-assurance/valid-partial.json) captures the bounded result exposed by the Dogwood-to-Eucalyptus manual comparison: assessment capability and evidence preservation improved materially, while release-assurance superiority remains unestablished.
 
 This fixture validates the contract. It is not yet the output of a deterministic comparison engine. Finding matching, profile execution, CLI integration and Markdown rendering remain later delivery increments.
+
+## Deterministic finding matching
+
+`tools/comparative_assurance.py` provides the first executable comparison increment. `compare_findings` evaluates ordered, profile-declared identity rules and emits schema-shaped finding deltas.
+
+The default rule order is:
+
+1. exact stable `finding_id`; then
+2. the tuple `criteria_id + affected_components + claim_id`.
+
+Profiles may select and order those stable fields, but may not use a human-readable title as identity authority. A rule establishes a match only when it resolves exactly one still-unmatched finding on each side. Ambiguous groups remain `unmatched` and carry an explicit limitation.
+
+One-sided findings are also conservative:
+
+- an unmatched baseline finding remains `unmatched`, never implicitly `resolved`; and
+- an unmatched candidate finding remains `unmatched` unless its source record explicitly declares `lineage_state: introduced`.
+
+Evidence-reference changes are evaluated independently from disposition changes. Strict evidence-set inclusion can establish `strengthened` or `weakened`; changes in both directions produce `not_comparable` rather than an invented strength ranking. The comparison does not infer evidence quality from reference counts.
