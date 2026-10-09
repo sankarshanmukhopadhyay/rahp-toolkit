@@ -1,25 +1,29 @@
-# Agent assurance I1 — qualification report (baseline pass)
+# Agent assurance — qualification report
 
 Tracking: #970
 
 ## Disposition
-**I1 BASELINE ESTABLISHED / EXECUTABLE COVERAGE VERIFICATION CONTINUES**
+**I1–I5 DOWNSTREAM EXPERIMENTAL QUALIFICATION COMPLETE, SUBJECT TO CI**
 
-The first repository pass finds that RAHP already contains much of the generic substrate required for agent assurance: profile separation, authority and delegation contracts, evidence provenance, finite assessor outcomes, assurance graphs, evidence-conservative terminal semantics, and explicit external-agent integration boundaries.
+The repository now contains:
+- baseline/reuse inventory and linked-issue reconciliation;
+- stable AAP-001…AAP-015 propositions and qualified coverage matrix;
+- bounded action-authority evaluator and negative tests;
+- handoff/substitution/redress continuity evaluator and negative tests;
+- explicit reuse of existing evidence-adequacy and Track-G actuation/replay work;
+- pinned ARPA/TRQP/DTFC revisions and explicit unresolved discovery entries;
+- a reproducible pinned-ARPA plus bounded Git-merge worked example;
+- adoption, interpretation, remediation, residual-risk and portable-core guidance.
 
-## Decision
-Proceed **reuse-first**. Do not redesign core RAHP.
-
-The next I1 pass should prove executable coverage proposition-by-proposition and reconcile #884, #172, #165, #177, #186, #189, #379 and #774. Only verified gaps should generate child implementation issues.
-
-## Current confidence
-- Core architectural suitability: **supported by inspected contracts/documentation**
-- Full AAP proposition coverage: **not yet established**
-- Need for new core controller semantics: **not supported**
-- Need for bounded profile/evaluator extensions: **likely, subject to executable coverage verification**
+## Increment disposition
+- **I1:** complete — scope, propositions, evidence ledger, compatibility and pins recorded.
+- **I2:** complete — identity/authority boundaries plus executable delegation/action constraints.
+- **I3:** complete — executable attenuation/handoff plus qualified Track-G execution/replay reuse.
+- **I4:** complete — substitution continuity and reconstructable redress evidence; governance sufficiency remains external.
+- **I5:** complete — pinned ARPA examination and reproducible bounded Git-operation fixtures.
 
 ## Compatibility
-This documentation-only baseline changes no engine, schema, evaluator, controller or terminal semantics.
+No existing schema, controller or terminal semantics are changed. New controls are optional modules and add no dependency.
 
-## Residual uncertainty
-The pass does not claim that structural schema support equals runtime enforcement. It also does not yet pin external ARPA/ARA/TRQP/DTFC revisions. Those remain I1 work.
+## Promotion boundary
+This is downstream experimental qualification. Upstream convergence, normative legal semantics, or selection of an external authority source requires a separate human/governance decision.
