@@ -197,3 +197,21 @@ The command writes `comparison.json` and `comparison.md`. The JSON artifact is a
 Assessment inputs provide identity, declared scope, findings and evidence-linked dimension results. The profile provides compatibility declarations and aggregation policy. A candidate comparison must name the supplied baseline assessment, preventing accidental comparison against the wrong lineage.
 
 The fixture pair demonstrates the bounded design result: Eucalyptus assessment capability and evidence preservation improved materially, while broader scope and unmatched assurance propositions leave overall release assurance indeterminate and release superiority unestablished.
+
+## Reuse across release families
+
+Dogwood and Eucalyptus are the first worked validation pair, not built-in release types. The engine and CLI contain no VTI, Dogwood or Eucalyptus identifiers. All release-specific semantics arrive through the baseline assessment, candidate assessment and comparison profile.
+
+For another release family, supply:
+
+- assessment identities and artifact references;
+- declared component boundaries and coverage;
+- findings with stable or profile-matchable identities;
+- evidence-linked dimension results;
+- profile-specific dimensions and compatibility/equivalence declarations;
+- materiality, evidence, confidence and blocking rules; and
+- any independently supported candidate release disposition.
+
+Dimensions are not globally fixed. A profile may compare supply-chain assurance, governance authority, operational readiness or another bounded domain without modifying the engine. The portable schema vocabulary and invariants remain common while the profile supplies the domain-specific judgment surface.
+
+The preserved [Dogwood → Eucalyptus example](../examples/comparative-assurance/dogwood-eucalyptus/README.md) is therefore an example of use, not the functional limit of the capability.
