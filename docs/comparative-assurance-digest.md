@@ -179,3 +179,21 @@ There is no weighting or compensating arithmetic. Several favourable dimensions 
 Overall confidence is the least favourable confidence among required dimensions. This is a conservative aggregation of already justified dimension confidence; it is not inferred from finding or evidence counts.
 
 Release disposition remains independent. In the absence of candidate release evidence, improvement produces `human_judgment_required`, not `acceptable`. A profile may force a blocking regression to `not_acceptable`, while a candidate disposition supplied from separate release evidence is preserved for non-blocking comparisons. Comparative superiority is false unless the profile explicitly permits that inference and the independent disposition is favourable.
+
+## Generate a digest
+
+Use the supported CLI surface:
+
+```bash
+python3 tools/rahp.py compare \
+  --baseline fixtures/comparative-assurance/dogwood-assessment.json \
+  --candidate fixtures/comparative-assurance/eucalyptus-assessment.json \
+  --profile fixtures/comparative-assurance/release-comparison-profile.json \
+  --output build/comparison
+```
+
+The command writes `comparison.json` and `comparison.md`. The JSON artifact is authoritative for automation. Markdown is generated only after schema validation, consumes that artifact, and does not calculate judgments, confidence or release disposition.
+
+Assessment inputs provide identity, declared scope, findings and evidence-linked dimension results. The profile provides compatibility declarations and aggregation policy. A candidate comparison must name the supplied baseline assessment, preventing accidental comparison against the wrong lineage.
+
+The fixture pair demonstrates the bounded design result: Eucalyptus assessment capability and evidence preservation improved materially, while broader scope and unmatched assurance propositions leave overall release assurance indeterminate and release superiority unestablished.
