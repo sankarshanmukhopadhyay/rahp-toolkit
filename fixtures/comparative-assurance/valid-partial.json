@@ -39,6 +39,16 @@
     "coverage_state": "partial",
     "limitations": ["Only matched propositions support comparative judgments."]
   },
+  "scope_delta": {
+    "status": "changed",
+    "material_change": true,
+    "directly_assessed": {"added": ["vti-eucalyptus"], "removed": ["vti-dogwood"], "changed": []},
+    "supporting_dependencies": {"added": ["rahp-toolkit"], "removed": [], "changed": []},
+    "excluded": {"added": ["unmatched-transitive-components"], "removed": [], "changed": []},
+    "coverage": {"baseline": "bounded", "candidate": "partial", "change": "not_comparable"},
+    "newly_admitted_components": ["vti-eucalyptus"],
+    "limitations": ["Release-specific component identities require matched proposition analysis."]
+  },
   "finding_deltas": [
     {
       "delta_id": "delta-evidence-preservation",

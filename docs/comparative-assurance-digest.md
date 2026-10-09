@@ -146,3 +146,15 @@ One-sided findings are also conservative:
 - an unmatched candidate finding remains `unmatched` unless its source record explicitly declares `lineage_state: introduced`.
 
 Evidence-reference changes are evaluated independently from disposition changes. Strict evidence-set inclusion can establish `strengthened` or `weakened`; changes in both directions produce `not_comparable` rather than an invented strength ranking. The comparison does not infer evidence quality from reference counts.
+
+## Scope and coverage comparison
+
+`compare_scope` compares assessment boundaries using stable `component_id` values. It reports additions, removals and material record changes independently for directly assessed components, supporting dependencies and exclusions.
+
+The output uses `equivalent`, `expanded`, `contracted`, `changed` or `indeterminate`. A broader candidate boundary is an `expanded` scope with newly admitted components. It is not, by itself, evidence that candidate assurance regressed. Those new components instead identify assessment work that must be closed before a broader assurance claim is made.
+
+Supporting dependency inclusion never promotes a component into the directly assessed set. Changing a dependency from `observed_not_assessed` to `independently_assessed` is material by default and requires the independent assessment reference already enforced by the digest schema.
+
+Coverage change is represented separately as `preserved`, `strengthened`, `weakened` or `not_comparable`. The comparison profile supplies the coverage ordering. When either coverage state is absent from that ordering, RAHP declines to rank it.
+
+Scope materiality is profile-controlled. The default rules treat directly assessed boundary changes, dependency-treatment changes and coverage weakening as material. Ordinary dependency additions and exclusion-list changes remain visible without automatically becoming material.

@@ -28,6 +28,7 @@
     "profile": {"$ref": "#/$defs/profileRef"},
     "comparability": {"$ref": "#/$defs/comparability"},
     "scope": {"$ref": "#/$defs/scope"},
+    "scope_delta": {"$ref": "#/$defs/scopeDelta"},
     "finding_deltas": {
       "type": "array",
       "items": {"$ref": "#/$defs/findingDelta"}
@@ -173,6 +174,43 @@
         "supporting_dependencies": {"type": "array", "items": {"$ref": "#/$defs/supportingDependency"}},
         "excluded": {"type": "array", "items": {"$ref": "#/$defs/excludedComponent"}},
         "coverage_state": {"enum": ["complete", "bounded", "partial", "insufficient"]},
+        "limitations": {"$ref": "#/$defs/nonEmptyStringArray"}
+      }
+    },
+    "scopeChangeSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["added", "removed", "changed"],
+      "properties": {
+        "added": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "removed": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "changed": {"$ref": "#/$defs/nonEmptyStringArray"}
+      }
+    },
+    "scopeDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status", "material_change", "directly_assessed", "supporting_dependencies",
+        "excluded", "coverage", "newly_admitted_components", "limitations"
+      ],
+      "properties": {
+        "status": {"enum": ["equivalent", "expanded", "contracted", "changed", "indeterminate"]},
+        "material_change": {"type": "boolean"},
+        "directly_assessed": {"$ref": "#/$defs/scopeChangeSet"},
+        "supporting_dependencies": {"$ref": "#/$defs/scopeChangeSet"},
+        "excluded": {"$ref": "#/$defs/scopeChangeSet"},
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["baseline", "candidate", "change"],
+          "properties": {
+            "baseline": {"enum": ["complete", "bounded", "partial", "insufficient"]},
+            "candidate": {"enum": ["complete", "bounded", "partial", "insufficient"]},
+            "change": {"enum": ["preserved", "strengthened", "weakened", "not_comparable"]}
+          }
+        },
+        "newly_admitted_components": {"$ref": "#/$defs/nonEmptyStringArray"},
         "limitations": {"$ref": "#/$defs/nonEmptyStringArray"}
       }
     },
