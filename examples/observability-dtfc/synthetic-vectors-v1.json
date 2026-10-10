@@ -3,9 +3,7 @@
   "provenance": {
     "source_issue": "https://github.com/qbf-consulting/digital-trust-failure-corpus/issues/107",
     "evidence_class": "author-supplied-synthetic",
-    "deployment_evidence": false,
-    "imported_from": "https://github.com/qbf-consulting/digital-trust-failure-corpus/blob/faf7e911ae10fa07e74d557a77ac82f0d53ed5ad/research/observability/synthetic-vectors-v1.json",
-    "imported_blob_sha": "d5844a78206ea442a23a2bdc0e9fdc4140485cb5"
+    "deployment_evidence": false
   },
   "vectors": [
     {
