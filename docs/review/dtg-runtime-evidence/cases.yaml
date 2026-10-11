@@ -4,15 +4,28 @@
 metadata:
   issue: 994
   packet: dtg-runtime-evidence
-  status: scaffold
+  status: classified
+  classification_date: 2026-10-12
+  operational_states:
+    local-reproducible: Evidence appears collectable from a local or downstream-controlled harness once fixtures are available.
+    upstream-evidence-needed: Evidence requires upstream maintainer runtime access, implementation traces, or authoritative fixture output.
+    blocked: Evidence cannot be collected until the relevant implementation path or deployment fixture is available.
+    source-only: Current support is source/spec review only and is insufficient for final runtime closure.
   note: >-
     This matrix defines the runtime evidence required to resolve the consolidated
     DTG Portfolio residual. Source/spec evidence alone is insufficient for final
     closure unless a case is explicitly transferred to a more specific durable owner.
+    The operational_state field records how evidence should be collected next; it
+    is not itself a PASS/FAIL assurance conclusion.
 
 scopes:
   trigger_link_wallet_signin:
     source_issue: 990
+    collection_priority: 3
+    collection_note: >-
+      Highest integration complexity. Most cases span VTC portal, browser plugin,
+      wallet/VTA, TrustTaskHTTPS and retained task/session evidence. Treat as
+      upstream-evidence-needed unless a complete local OpenVTC fixture is available.
     findings:
       - d6f06da6be6c24f2917a
       - 14345600ab746827b9d8
@@ -20,6 +33,7 @@ scopes:
       - c15ef701e115583e2756
     cases:
       - case_id: A01-valid-member-portal
+        operational_state: upstream-evidence-needed
         expected_result: PASS
         purpose: Valid trigger-link sign-in to member portal binds page origin, community DID, wallet identity, session target and freshness.
         required_artifacts:
@@ -30,6 +44,7 @@ scopes:
           - task/session/audit record
           - retained-evidence note
       - case_id: A02-valid-operator-console
+        operational_state: upstream-evidence-needed
         expected_result: PASS
         purpose: Valid trigger-link sign-in to operator console is distinguishable from member portal sign-in.
         required_artifacts:
@@ -38,48 +53,56 @@ scopes:
           - wallet identity reference
           - session/audit record
       - case_id: A03-wrong-target-member-console-mismatch
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Member portal and operator console targets cannot be silently confused.
         required_artifacts:
           - mismatched link or target fixture
           - rejection or non-positive outcome record
       - case_id: A04-expired-trigger-link
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Expired trigger link is rejected or produces explicit non-positive result.
         required_artifacts:
           - expired link fixture
           - rejection trace
       - case_id: A05-replayed-trigger-link
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Reuse of a previously consumed trigger link is rejected or explicitly non-positive.
         required_artifacts:
           - first-use trace
           - replay trace
       - case_id: A06-wrong-page-origin
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Link clicked from a wrong or unbound page origin is rejected.
         required_artifacts:
           - page origin fixture
           - sender origin check evidence
       - case_id: A07-wrong-community-did
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Community DID mismatch does not produce a successful sign-in.
         required_artifacts:
           - community DID fixture
           - rejection trace
       - case_id: A08-disconnected-wallet
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: No-wallet or disconnected-wallet path does not silently sign in.
         required_artifacts:
           - disconnected wallet trace
           - navigation or non-positive outcome
       - case_id: A09-locked-wallet
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Locked wallet requires unlock or explicit verification before claim/sign-in.
         required_artifacts:
           - locked wallet trace
           - prompt or non-positive outcome
       - case_id: A10-invalid-domain-linked-contact
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Invalid domain-linked contact fails before claim or binding, with no contact service use.
         required_artifacts:
@@ -89,10 +112,16 @@ scopes:
 
   foreign_protocol_binding:
     source_issue: 992
+    collection_priority: 2
+    collection_note: >-
+      Requires an implementation fixture for the concrete foreign protocol, likely
+      OID4VP. The claim/evidence matrix is source-complete, but task-bound runtime
+      traces are still required.
     findings:
       - 1c2869a18869681e741b
     cases:
       - case_id: B01-valid-task-bound-foreign-protocol
+        operational_state: upstream-evidence-needed
         expected_result: PASS
         purpose: Foreign-protocol response is bound to an exchange begun by a task and accepted under original task authority.
         required_artifacts:
@@ -102,48 +131,56 @@ scopes:
           - foreign-protocol transcript redacted
           - task-visible outcome
       - case_id: B02-direct-endpoint-no-task
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Direct foreign-protocol endpoint invocation without task context fails.
         required_artifacts:
           - endpoint invocation trace
           - rejection record
       - case_id: B03-reuse-after-completion
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Reuse after successful completion is rejected.
         required_artifacts:
           - successful first-use trace
           - reuse rejection trace
       - case_id: B04-expired-exchange
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Expired exchange cannot produce authoritative task success.
         required_artifacts:
           - expired exchange fixture
           - rejection or non-positive task outcome
       - case_id: B05-wrong-audience
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Wrong verifier/client identifier audience is rejected.
         required_artifacts:
           - presentation transcript redacted
           - rejection record
       - case_id: B06-wrong-challenge
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Presentation not committed to beginning task challenge is rejected.
         required_artifacts:
           - challenge mismatch fixture
           - rejection record
       - case_id: B07-task-authority-invalid
+        operational_state: upstream-evidence-needed
         expected_result: FAIL_CLOSED
         purpose: Foreign protocol success does not create authority when beginning task authority is invalid or stale.
         required_artifacts:
           - invalid task authority fixture
           - non-success task outcome
       - case_id: B08-protocol-fails-task-records-failure
+        operational_state: upstream-evidence-needed
         expected_result: PASS
         purpose: Task records decline, timeout or protocol failure distinctly rather than treating it as credential failure without basis.
         required_artifacts:
           - failed protocol trace
           - task-visible failure outcome
       - case_id: B09-holder-initiator-distinct
+        operational_state: upstream-evidence-needed
         expected_result: PASS
         purpose: Holder, presenter, credential subject and initiating party are not silently conflated unless protocol binding proves equivalence.
         required_artifacts:
@@ -152,10 +189,17 @@ scopes:
 
   vta_held_key_signing:
     source_issue: 993
+    collection_priority: 1
+    collection_note: >-
+      First tranche. These cases are the most bounded because they can be exercised
+      through Trust Tasks protocol-signing request/response fixtures and negative
+      request fixtures before broader portal/browser integration is available.
     findings:
       - 220fb4eea5c0200f190b
     cases:
       - case_id: C01-valid-sign-jws
+        operational_state: local-reproducible
+        tranche: C-initial
         expected_result: PASS
         purpose: Valid sign-jws request produces a protocol-valid JWS from custodian-built signing input.
         required_artifacts:
@@ -164,24 +208,33 @@ scopes:
           - signing input digest
           - audit event
       - case_id: C02-sign-jws-prohibited-header
+        operational_state: local-reproducible
+        tranche: C-initial
         expected_result: FAIL_CLOSED
         purpose: Prohibited or unsafe JWS header members are rejected.
         required_artifacts:
           - request fixture
           - rejection record
       - case_id: C03-sign-jws-replay
+        operational_state: blocked
+        blocked_reason: Requires freshness or replay fixture from the implementation under test.
+        tranche: C-runtime-followup
         expected_result: FAIL_CLOSED
         purpose: Replayed or stale sign-jws request is rejected where freshness is required.
         required_artifacts:
           - original request trace
           - replay rejection trace
       - case_id: C04-sign-jws-wrong-purpose
+        operational_state: local-reproducible
+        tranche: C-initial
         expected_result: FAIL_CLOSED
         purpose: Wrong-purpose or wrong-audience sign-jws request is rejected.
         required_artifacts:
           - request fixture
           - rejection record
       - case_id: C05-valid-sign-csr
+        operational_state: local-reproducible
+        tranche: C-initial
         expected_result: PASS
         purpose: Valid sign-csr request binds subject, SANs and key public material under constrained CSR semantics.
         required_artifacts:
@@ -190,30 +243,41 @@ scopes:
           - CSR digest or PEM redacted
           - audit event
       - case_id: C06-sign-csr-wrong-subject
+        operational_state: local-reproducible
+        tranche: C-initial
         expected_result: FAIL_CLOSED
         purpose: Wrong-subject CSR request is rejected.
         required_artifacts:
           - request fixture
           - rejection record
       - case_id: C07-sign-csr-arbitrary-extension
+        operational_state: local-reproducible
+        tranche: C-initial
         expected_result: FAIL_CLOSED
         purpose: Arbitrary CSR extensions are refused unless explicitly permitted.
         required_artifacts:
           - request fixture
           - rejection record
       - case_id: C08-generic-sign-substitution
+        operational_state: local-reproducible
+        tranche: C-initial
         expected_result: FAIL_CLOSED
         purpose: Generic opaque sign cannot substitute for protocol-valid sign-jws or sign-csr.
         required_artifacts:
           - generic sign attempt trace
           - verification failure or rejection record
       - case_id: C09-requester-no-authority
+        operational_state: blocked
+        blocked_reason: Requires concrete requester-authority fixture from implementation or upstream maintainer.
+        tranche: C-runtime-followup
         expected_result: FAIL_CLOSED
         purpose: Requester without current authority cannot use the VTA-held key for protocol signing.
         required_artifacts:
           - requester fixture
           - rejection record
       - case_id: C10-audit-reconstruction
+        operational_state: upstream-evidence-needed
+        tranche: C-runtime-followup
         expected_result: PASS
         purpose: Retained evidence reconstructs the signing decision without overclaiming user intent or non-repudiation.
         required_artifacts:
