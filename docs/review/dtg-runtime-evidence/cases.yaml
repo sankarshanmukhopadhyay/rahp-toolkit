@@ -1,0 +1,222 @@
+# Case matrix for issue #994.
+# Each case should be completed using evidence-template.yaml.
+
+metadata:
+  issue: 994
+  packet: dtg-runtime-evidence
+  status: scaffold
+  note: >-
+    This matrix defines the runtime evidence required to resolve the consolidated
+    DTG Portfolio residual. Source/spec evidence alone is insufficient for final
+    closure unless a case is explicitly transferred to a more specific durable owner.
+
+scopes:
+  trigger_link_wallet_signin:
+    source_issue: 990
+    findings:
+      - d6f06da6be6c24f2917a
+      - 14345600ab746827b9d8
+      - 5daf04aa9bf26ef41594
+      - c15ef701e115583e2756
+    cases:
+      - case_id: A01-valid-member-portal
+        expected_result: PASS
+        purpose: Valid trigger-link sign-in to member portal binds page origin, community DID, wallet identity, session target and freshness.
+        required_artifacts:
+          - redacted trigger link
+          - page origin
+          - community DID
+          - wallet identity reference
+          - task/session/audit record
+          - retained-evidence note
+      - case_id: A02-valid-operator-console
+        expected_result: PASS
+        purpose: Valid trigger-link sign-in to operator console is distinguishable from member portal sign-in.
+        required_artifacts:
+          - redacted trigger link
+          - console target indicator
+          - wallet identity reference
+          - session/audit record
+      - case_id: A03-wrong-target-member-console-mismatch
+        expected_result: FAIL_CLOSED
+        purpose: Member portal and operator console targets cannot be silently confused.
+        required_artifacts:
+          - mismatched link or target fixture
+          - rejection or non-positive outcome record
+      - case_id: A04-expired-trigger-link
+        expected_result: FAIL_CLOSED
+        purpose: Expired trigger link is rejected or produces explicit non-positive result.
+        required_artifacts:
+          - expired link fixture
+          - rejection trace
+      - case_id: A05-replayed-trigger-link
+        expected_result: FAIL_CLOSED
+        purpose: Reuse of a previously consumed trigger link is rejected or explicitly non-positive.
+        required_artifacts:
+          - first-use trace
+          - replay trace
+      - case_id: A06-wrong-page-origin
+        expected_result: FAIL_CLOSED
+        purpose: Link clicked from a wrong or unbound page origin is rejected.
+        required_artifacts:
+          - page origin fixture
+          - sender origin check evidence
+      - case_id: A07-wrong-community-did
+        expected_result: FAIL_CLOSED
+        purpose: Community DID mismatch does not produce a successful sign-in.
+        required_artifacts:
+          - community DID fixture
+          - rejection trace
+      - case_id: A08-disconnected-wallet
+        expected_result: FAIL_CLOSED
+        purpose: No-wallet or disconnected-wallet path does not silently sign in.
+        required_artifacts:
+          - disconnected wallet trace
+          - navigation or non-positive outcome
+      - case_id: A09-locked-wallet
+        expected_result: FAIL_CLOSED
+        purpose: Locked wallet requires unlock or explicit verification before claim/sign-in.
+        required_artifacts:
+          - locked wallet trace
+          - prompt or non-positive outcome
+      - case_id: A10-invalid-domain-linked-contact
+        expected_result: FAIL_CLOSED
+        purpose: Invalid domain-linked contact fails before claim or binding, with no contact service use.
+        required_artifacts:
+          - contact DID fixture
+          - well-known DID configuration outcome
+          - rejection trace
+
+  foreign_protocol_binding:
+    source_issue: 992
+    findings:
+      - 1c2869a18869681e741b
+    cases:
+      - case_id: B01-valid-task-bound-foreign-protocol
+        expected_result: PASS
+        purpose: Foreign-protocol response is bound to an exchange begun by a task and accepted under original task authority.
+        required_artifacts:
+          - initiating task record
+          - challenge
+          - audience
+          - foreign-protocol transcript redacted
+          - task-visible outcome
+      - case_id: B02-direct-endpoint-no-task
+        expected_result: FAIL_CLOSED
+        purpose: Direct foreign-protocol endpoint invocation without task context fails.
+        required_artifacts:
+          - endpoint invocation trace
+          - rejection record
+      - case_id: B03-reuse-after-completion
+        expected_result: FAIL_CLOSED
+        purpose: Reuse after successful completion is rejected.
+        required_artifacts:
+          - successful first-use trace
+          - reuse rejection trace
+      - case_id: B04-expired-exchange
+        expected_result: FAIL_CLOSED
+        purpose: Expired exchange cannot produce authoritative task success.
+        required_artifacts:
+          - expired exchange fixture
+          - rejection or non-positive task outcome
+      - case_id: B05-wrong-audience
+        expected_result: FAIL_CLOSED
+        purpose: Wrong verifier/client identifier audience is rejected.
+        required_artifacts:
+          - presentation transcript redacted
+          - rejection record
+      - case_id: B06-wrong-challenge
+        expected_result: FAIL_CLOSED
+        purpose: Presentation not committed to beginning task challenge is rejected.
+        required_artifacts:
+          - challenge mismatch fixture
+          - rejection record
+      - case_id: B07-task-authority-invalid
+        expected_result: FAIL_CLOSED
+        purpose: Foreign protocol success does not create authority when beginning task authority is invalid or stale.
+        required_artifacts:
+          - invalid task authority fixture
+          - non-success task outcome
+      - case_id: B08-protocol-fails-task-records-failure
+        expected_result: PASS
+        purpose: Task records decline, timeout or protocol failure distinctly rather than treating it as credential failure without basis.
+        required_artifacts:
+          - failed protocol trace
+          - task-visible failure outcome
+      - case_id: B09-holder-initiator-distinct
+        expected_result: PASS
+        purpose: Holder, presenter, credential subject and initiating party are not silently conflated unless protocol binding proves equivalence.
+        required_artifacts:
+          - holder/initiator fixture
+          - task outcome and audit note
+
+  vta_held_key_signing:
+    source_issue: 993
+    findings:
+      - 220fb4eea5c0200f190b
+    cases:
+      - case_id: C01-valid-sign-jws
+        expected_result: PASS
+        purpose: Valid sign-jws request produces a protocol-valid JWS from custodian-built signing input.
+        required_artifacts:
+          - requester authority evidence
+          - redacted request
+          - signing input digest
+          - audit event
+      - case_id: C02-sign-jws-prohibited-header
+        expected_result: FAIL_CLOSED
+        purpose: Prohibited or unsafe JWS header members are rejected.
+        required_artifacts:
+          - request fixture
+          - rejection record
+      - case_id: C03-sign-jws-replay
+        expected_result: FAIL_CLOSED
+        purpose: Replayed or stale sign-jws request is rejected where freshness is required.
+        required_artifacts:
+          - original request trace
+          - replay rejection trace
+      - case_id: C04-sign-jws-wrong-purpose
+        expected_result: FAIL_CLOSED
+        purpose: Wrong-purpose or wrong-audience sign-jws request is rejected.
+        required_artifacts:
+          - request fixture
+          - rejection record
+      - case_id: C05-valid-sign-csr
+        expected_result: PASS
+        purpose: Valid sign-csr request binds subject, SANs and key public material under constrained CSR semantics.
+        required_artifacts:
+          - requester authority evidence
+          - redacted request
+          - CSR digest or PEM redacted
+          - audit event
+      - case_id: C06-sign-csr-wrong-subject
+        expected_result: FAIL_CLOSED
+        purpose: Wrong-subject CSR request is rejected.
+        required_artifacts:
+          - request fixture
+          - rejection record
+      - case_id: C07-sign-csr-arbitrary-extension
+        expected_result: FAIL_CLOSED
+        purpose: Arbitrary CSR extensions are refused unless explicitly permitted.
+        required_artifacts:
+          - request fixture
+          - rejection record
+      - case_id: C08-generic-sign-substitution
+        expected_result: FAIL_CLOSED
+        purpose: Generic opaque sign cannot substitute for protocol-valid sign-jws or sign-csr.
+        required_artifacts:
+          - generic sign attempt trace
+          - verification failure or rejection record
+      - case_id: C09-requester-no-authority
+        expected_result: FAIL_CLOSED
+        purpose: Requester without current authority cannot use the VTA-held key for protocol signing.
+        required_artifacts:
+          - requester fixture
+          - rejection record
+      - case_id: C10-audit-reconstruction
+        expected_result: PASS
+        purpose: Retained evidence reconstructs the signing decision without overclaiming user intent or non-repudiation.
+        required_artifacts:
+          - audit event
+          - retained evidence inventory
+          - non-repudiation boundary note
