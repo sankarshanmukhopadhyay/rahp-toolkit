@@ -1,0 +1,57 @@
+# Copy this template for each completed runtime evidence case.
+# Do not include secrets, private keys, bearer tokens, full unredacted transcripts or private user data.
+
+case_id: ""
+scope: "" # trigger-link-wallet-signin | foreign-protocol-binding | vta-held-key-signing
+finding_ids: []
+status: INDETERMINATE # PASS | FAIL | FAIL_CLOSED | INDETERMINATE | TRANSFERRED
+
+source_refs:
+  - repository: ""
+    ref: "" # commit, tag or release
+    evidence_url: ""
+
+preconditions:
+  - ""
+
+input:
+  description: ""
+  redaction_level: "redacted"
+  artifact_refs: []
+
+execution:
+  actor_or_component: ""
+  started_at: ""
+  completed_at: ""
+  command_or_flow: ""
+  environment: "" # local dev, CI, upstream maintainer run, interop lab, etc.
+
+expected_result: ""
+actual_result: ""
+observed_controls:
+  actor_binding: INDETERMINATE
+  authority_binding: INDETERMINATE
+  audience_binding: INDETERMINATE
+  challenge_or_freshness: INDETERMINATE
+  replay_protection: INDETERMINATE
+  wrong_target_handling: INDETERMINATE
+  retained_evidence_sufficiency: INDETERMINATE
+
+retained_evidence:
+  retained: []
+  deliberately_not_retained: []
+  redaction_notes: ""
+  audit_or_task_record_refs: []
+
+privacy_assessment:
+  dpip_required: INDETERMINATE # true | false | INDETERMINATE
+  rationale: ""
+  correlation_surfaces: []
+
+non_repudiation_boundary:
+  applies: false
+  statement: ""
+
+result_rationale: ""
+limitations: []
+next_action: ""

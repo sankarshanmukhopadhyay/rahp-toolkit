@@ -219,6 +219,25 @@ def cmd_resilience(a: argparse.Namespace) -> None:
     subprocess.run(cmd, cwd=ROOT, check=True)
 
 
+def cmd_compare(a: argparse.Namespace) -> None:
+    from comparative_assurance import build_digest, write_digest_outputs
+    def load(path: pathlib.Path) -> dict[str, Any]:
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise SystemExit(f"cannot read comparison input {path}: {exc}")
+        if not isinstance(value, dict):
+            raise SystemExit(f"comparison input must be a JSON object: {path}")
+        return value
+    try:
+        digest = build_digest(load(a.baseline), load(a.candidate), load(a.profile))
+        json_path, markdown_path = write_digest_outputs(digest, a.output)
+    except ValueError as exc:
+        raise SystemExit(f"comparison failed: {exc}")
+    print(f"Comparative assurance digest written: {json_path}")
+    print(f"Human-readable rendering written: {markdown_path}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     sub = ap.add_subparsers(dest="command", required=True)
@@ -247,6 +266,12 @@ def main() -> None:
     dr.add_argument("--repository"); dr.add_argument("--revision")
     dr.add_argument("--json", type=pathlib.Path); dr.add_argument("--markdown", type=pathlib.Path); dr.add_argument("--events", type=pathlib.Path)
     dr.set_defaults(func=cmd_resilience)
+    cp = sub.add_parser("compare", help="generate a profile-bound comparative assurance digest")
+    cp.add_argument("--baseline", type=pathlib.Path, required=True, help="baseline assessment JSON")
+    cp.add_argument("--candidate", type=pathlib.Path, required=True, help="candidate assessment JSON")
+    cp.add_argument("--profile", type=pathlib.Path, required=True, help="comparison profile JSON")
+    cp.add_argument("--output", type=pathlib.Path, required=True, help="output directory for comparison.json and comparison.md")
+    cp.set_defaults(func=cmd_compare)
     a = ap.parse_args()
     if hasattr(a, "all") and not a.all and not a.target:
         ap.error("specify --target ID or --all")
@@ -254,3 +279,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

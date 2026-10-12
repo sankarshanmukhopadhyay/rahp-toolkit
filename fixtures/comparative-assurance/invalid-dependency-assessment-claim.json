@@ -1,0 +1,14 @@
+{
+  "schema_version": "rahp-comparative-assurance-digest/v1",
+  "comparison_id": "invalid-dependency-assessment-claim",
+  "baseline": {"assessment_id": "A", "artifact_ref": "a.json", "schema_version": "1", "profile_id": "p", "profile_version": "1"},
+  "candidate": {"assessment_id": "B", "artifact_ref": "b.json", "schema_version": "1", "profile_id": "p", "profile_version": "1"},
+  "profile": {"id": "p", "version": "1", "artifact_ref": "p.json"},
+  "comparability": {"status": "compatible", "reasons": [], "matched_basis": ["same profile"], "unmatched_basis": []},
+  "scope": {"directly_assessed": [], "supporting_dependencies": [{"component_id": "dependency", "resolved_ref": "abc123", "treatment": "independently_assessed"}], "excluded": [], "coverage_state": "bounded", "limitations": []},
+  "finding_deltas": [],
+  "dimensions": [{"dimension_id": "evidence", "category": "evidence", "comparability": "compatible", "judgment": "no_material_change", "confidence": "moderate", "justification": "No change.", "evidence_refs": [], "counterevidence_refs": [], "unresolved_limitations": []}],
+  "overall": {"judgment": "no_material_change", "confidence": "moderate", "justification": "No change.", "evidence_refs": [], "counterevidence_refs": [], "unresolved_limitations": [], "release_disposition": "not_applicable", "release_superiority_established": false},
+  "recommendations": [],
+  "reassessment_triggers": []
+}

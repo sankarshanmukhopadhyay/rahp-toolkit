@@ -1,0 +1,9 @@
+{
+  "matching_rules": [
+    ["finding_id"],
+    ["criteria_id", "affected_components", "claim_id"]
+  ],
+  "resolved_dispositions": ["resolved"],
+  "not_applicable_dispositions": ["not_applicable"],
+  "not_reassessed_dispositions": ["not_reassessed"]
+}

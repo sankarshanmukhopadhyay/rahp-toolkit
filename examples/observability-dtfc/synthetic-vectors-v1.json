@@ -1,0 +1,77 @@
+{
+  "contract": "dtfc-observability-synthetic-vectors/v1",
+  "provenance": {
+    "source_issue": "https://github.com/qbf-consulting/digital-trust-failure-corpus/issues/107",
+    "evidence_class": "author-supplied-synthetic",
+    "deployment_evidence": false
+  },
+  "vectors": [
+    {
+      "id": "OBS-NEG-01",
+      "proposition": "Cross-context trace join defeats claimed unlinkability",
+      "events": [
+        {
+          "context": "relying-a",
+          "trace_id": "shared-fixture",
+          "evidence_state": "verified"
+        },
+        {
+          "context": "relying-b",
+          "trace_id": "shared-fixture",
+          "evidence_state": "verified"
+        }
+      ],
+      "expected": {
+        "state": "FAIL",
+        "reason": "cross-context-trace-correlation"
+      }
+    },
+    {
+      "id": "OBS-NEG-02",
+      "proposition": "Missing operational evidence cannot establish positive assurance",
+      "events": [
+        {
+          "context": "relying-a",
+          "trace_id": "single-fixture",
+          "evidence_state": "missing"
+        }
+      ],
+      "expected": {
+        "state": "INDETERMINATE",
+        "reason": "insufficient-observation-evidence"
+      }
+    },
+    {
+      "id": "OBS-NEG-03",
+      "proposition": "Telemetry is not consequential decision authority",
+      "events": [
+        {
+          "context": "relying-a",
+          "trace_id": "single-fixture",
+          "evidence_state": "verified",
+          "decision_source": "telemetry",
+          "consequential_action": "suspend"
+        }
+      ],
+      "expected": {
+        "state": "FAIL",
+        "reason": "telemetry-promoted-to-authority"
+      }
+    },
+    {
+      "id": "OBS-NEG-04",
+      "proposition": "Absence of detected failure does not establish safety",
+      "events": [
+        {
+          "context": "relying-a",
+          "trace_id": "single-fixture",
+          "evidence_state": "verified"
+        }
+      ],
+      "expected": {
+        "state": "INDETERMINATE",
+        "reason": "no-failure-observed-not-proof-of-safety"
+      }
+    }
+  ]
+}

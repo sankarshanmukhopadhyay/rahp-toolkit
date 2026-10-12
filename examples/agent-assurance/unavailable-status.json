@@ -1,0 +1,18 @@
+{
+  "schema": "rahp-agent-authority/v1",
+  "delegation": {
+    "principal": "did:example:principal",
+    "delegate": "did:example:agent",
+    "capabilities": ["repo.merge"],
+    "resource_scope": ["repo:qbf/example"],
+    "validity": {"valid_from": "2026-01-01T00:00:00Z", "valid_until": "2026-12-31T23:59:59Z"},
+    "constraints": {"human_confirmation_required": true}
+  },
+  "action": {
+    "capability": "repo.merge",
+    "resource": "repo:qbf/example",
+    "evaluated_at": "2026-10-09T10:00:00Z",
+    "revocation_status": "UNAVAILABLE",
+    "human_confirmed": true
+  }
+}
