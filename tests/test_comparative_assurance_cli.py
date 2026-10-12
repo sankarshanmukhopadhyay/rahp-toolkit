@@ -5,7 +5,7 @@ import sys
 import tempfile
 import unittest
 
-from tools.comparative_assurance import build_digest, render_digest_markdown
+from tools.comparative_assurance import build_digest, plain_language_conclusion, render_digest_markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "fixtures" / "comparative-assurance"
@@ -26,11 +26,23 @@ class ComparativeAssuranceCliTests(unittest.TestCase):
     def test_builder_is_deterministic(self):
         self.assertEqual(build_digest(self.baseline, self.candidate, self.profile), build_digest(self.baseline, self.candidate, self.profile))
 
+    def test_plain_language_conclusion_preserves_bounded_result(self):
+        digest = build_digest(self.baseline, self.candidate, self.profile)
+        conclusion = plain_language_conclusion(digest)
+        self.assertIn("VTI-Eucalyptus shows improvement over VTI-Dogwood-RC-1", conclusion)
+        self.assertIn("assessment capability", conclusion)
+        self.assertIn("evidence preservation", conclusion)
+        self.assertIn("not proven better assured", conclusion)
+        self.assertIn("partial", conclusion)
+
     def test_renderer_uses_authoritative_artifact(self):
         digest = build_digest(self.baseline, self.candidate, self.profile)
         markdown = render_digest_markdown(digest)
         self.assertIn("Overall judgment | indeterminate", markdown)
         self.assertIn("Release superiority established | no", markdown)
+        self.assertIn("## Plain-language conclusion", markdown)
+        self.assertIn("not proven better assured", markdown)
+        self.assertIn("## Profile-gate explanation", markdown)
         self.assertIn("## Scope and coverage", markdown)
         self.assertIn("Added supporting dependencies (not independently assessed by inclusion): rahp-toolkit", markdown)
         self.assertIn("## Unresolved limitations", markdown)
@@ -49,6 +61,7 @@ class ComparativeAssuranceCliTests(unittest.TestCase):
             report = (output / "comparison.md").read_text(encoding="utf-8")
             self.assertEqual("dogwood-to-eucalyptus", artifact["comparison_id"])
             self.assertIn(artifact["overall"]["judgment"], report)
+            self.assertIn("## Plain-language conclusion", report)
 
     def test_candidate_must_bind_to_supplied_baseline(self):
         candidate = json.loads(json.dumps(self.candidate))
