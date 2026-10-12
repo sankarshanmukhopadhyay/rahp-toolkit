@@ -14,6 +14,12 @@
 | Release disposition | indeterminate |
 | Release superiority established | no |
 
+## Plain-language conclusion
+
+VTI-Eucalyptus shows improvement over VTI-Dogwood-RC-1 in assessment capability and evidence preservation. VTI-Eucalyptus is not proven better assured than VTI-Dogwood-RC-1 because the overall comparison remains indeterminate. The comparison is partial, so unsupported whole-release conclusions are deliberately withheld. The main unresolved assurance surfaces are composition assurance and privacy assurance.
+
+## Profile-gate explanation
+
 Profile gates produced an indeterminate comparison: Candidate coverage partial is below required bounded.
 
 ## Scope and coverage
