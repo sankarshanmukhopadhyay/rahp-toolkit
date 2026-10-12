@@ -15,6 +15,9 @@ on:
       - 'tools/validate_workflow_governance.py'
       - 'docs/workflow-governance.md'
   workflow_dispatch:
+  schedule:
+    - cron: '0 23 * * 5'
+      timezone: Asia/Kolkata
 
 permissions:
   contents: read
@@ -30,3 +33,13 @@ jobs:
       - run: pip install PyYAML
       - name: Enforce workflow inventory, budget and ownership boundaries
         run: python3 tools/validate_workflow_governance.py
+
+  merged_branch_housekeeping:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
+      pull-requests: read
+    uses: qbf-consulting/.github/.github/workflows/branch-housekeeping-reusable.yml@b4bfac1af4f9e2c23a69ec9d6f787d91c117c703
+    with:
+      dry_run: true
+      preserve_patterns: 'convergence/**,research/**,draft/**,gh-pages'
