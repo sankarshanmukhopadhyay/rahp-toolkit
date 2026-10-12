@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rahp.dev/schema/comparative-assessment-input.schema.json",
+  "title": "RAHP Comparative Assessment Input",
+  "description": "Input contract consumed by the Comparative Assurance Digest builder before comparison logic executes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["assessment", "scope", "findings"],
+  "properties": {
+    "assessment": {"$ref": "#/$defs/assessmentRef"},
+    "scope": {"$ref": "#/$defs/scope"},
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "comparison": {"$ref": "#/$defs/comparison"}
+  },
+  "$defs": {
+    "nonEmptyStringArray": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "assessmentRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assessment_id", "artifact_ref", "schema_version", "profile_id", "profile_version"],
+      "properties": {
+        "assessment_id": {"type": "string", "minLength": 1},
+        "artifact_ref": {"type": "string", "minLength": 1},
+        "release": {"type": "string", "minLength": 1},
+        "schema_version": {"type": "string", "minLength": 1},
+        "profile_id": {"type": "string", "minLength": 1},
+        "profile_version": {"type": "string", "minLength": 1},
+        "evaluated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "componentRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "resolved_ref", "reason"],
+      "properties": {
+        "component_id": {"type": "string", "minLength": 1},
+        "resolved_ref": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "supportingDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "resolved_ref", "treatment"],
+      "properties": {
+        "component_id": {"type": "string", "minLength": 1},
+        "resolved_ref": {"type": "string", "minLength": 1},
+        "treatment": {"enum": ["observed_not_assessed", "independently_assessed"]},
+        "independent_assessment_ref": {"type": "string", "minLength": 1},
+        "limitations": {"$ref": "#/$defs/nonEmptyStringArray"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"treatment": {"const": "independently_assessed"}}},
+          "then": {"required": ["independent_assessment_ref"]}
+        },
+        {
+          "if": {"properties": {"treatment": {"const": "observed_not_assessed"}}},
+          "then": {"not": {"required": ["independent_assessment_ref"]}}
+        }
+      ]
+    },
+    "excludedComponent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "reason"],
+      "properties": {
+        "component_id": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["directly_assessed", "supporting_dependencies", "excluded", "coverage_state", "limitations"],
+      "properties": {
+        "directly_assessed": {"type": "array", "items": {"$ref": "#/$defs/componentRef"}},
+        "supporting_dependencies": {"type": "array", "items": {"$ref": "#/$defs/supportingDependency"}},
+        "excluded": {"type": "array", "items": {"$ref": "#/$defs/excludedComponent"}},
+        "coverage_state": {"enum": ["complete", "bounded", "partial", "insufficient"]},
+        "limitations": {"$ref": "#/$defs/nonEmptyStringArray"}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["finding_id", "evidence_refs"],
+      "properties": {
+        "finding_id": {"type": "string", "minLength": 1},
+        "criteria_id": {"type": "string", "minLength": 1},
+        "affected_components": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "claim_id": {"type": "string", "minLength": 1},
+        "disposition": {"type": "string", "minLength": 1},
+        "lineage_state": {"enum": ["introduced"]},
+        "evidence_refs": {"$ref": "#/$defs/nonEmptyStringArray"}
+      }
+    },
+    "dimensionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimension_id", "category", "comparability", "judgment", "confidence", "justification", "evidence_refs", "counterevidence_refs", "unresolved_limitations"],
+      "properties": {
+        "dimension_id": {"type": "string", "minLength": 1},
+        "category": {"enum": ["assessment_process", "evidence", "assurance_outcome", "release_acceptability"]},
+        "comparability": {"enum": ["compatible", "partial", "not_comparable"]},
+        "judgment": {"enum": ["materially_improved", "improved", "mixed", "no_material_change", "regressed", "materially_regressed", "indeterminate", "not_comparable"]},
+        "confidence": {"enum": ["high", "moderate", "low", "insufficient"]},
+        "justification": {"type": "string", "minLength": 1},
+        "evidence_refs": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "counterevidence_refs": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "unresolved_limitations": {"$ref": "#/$defs/nonEmptyStringArray"}
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "basis", "normative"],
+      "properties": {
+        "action": {"type": "string", "minLength": 1},
+        "basis": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "normative": {"type": "boolean"}
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseline_assessment_id", "dimensions"],
+      "properties": {
+        "comparison_id": {"type": "string", "minLength": 1},
+        "baseline_assessment_id": {"type": "string", "minLength": 1},
+        "candidate_release_disposition": {"enum": ["acceptable", "conditionally_acceptable", "not_acceptable", "human_judgment_required", "indeterminate", "not_applicable"]},
+        "dimensions": {"type": "array", "items": {"$ref": "#/$defs/dimensionResult"}},
+        "recommendations": {"type": "array", "items": {"$ref": "#/$defs/recommendation"}},
+        "reassessment_triggers": {"$ref": "#/$defs/nonEmptyStringArray"}
+      }
+    }
+  }
+}
