@@ -1,14 +1,15 @@
-"""Deterministic, conservative finding comparison for RAHP digests.
+"""Deterministic, conservative comparison support for RAHP digests.
 
-The differ establishes identity only through profile-declared stable keys. It
-does not infer identity from titles and does not convert an unmatched record
-into a resolved or introduced finding without explicit lineage evidence.
+The comparison engine executes profile-declared comparison policy. It does not
+infer release acceptability, use human-readable titles as finding identity, or
+treat dependency inclusion as independent assessment evidence.
 """
 
 from __future__ import annotations
 
 from collections import defaultdict
 from copy import deepcopy
+from datetime import date, datetime, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -17,17 +18,8 @@ from typing import Any
 from jsonschema import Draft202012Validator, FormatChecker
 
 
-DEFAULT_MATCH_RULES = [
-    ["finding_id"],
-    ["criteria_id", "affected_components", "claim_id"],
-]
-
-ALLOWED_MATCH_FIELDS = {
-    "finding_id",
-    "criteria_id",
-    "affected_components",
-    "claim_id",
-}
+DEFAULT_MATCH_RULES = [["finding_id"], ["criteria_id", "affected_components", "claim_id"]]
+ALLOWED_MATCH_FIELDS = {"finding_id", "criteria_id", "affected_components", "claim_id"}
 
 DEFAULT_SCOPE_MATERIALITY = {
     "directly_assessed_change": True,
@@ -38,7 +30,6 @@ DEFAULT_SCOPE_MATERIALITY = {
 }
 
 DEFAULT_COVERAGE_ORDER = ["insufficient", "partial", "bounded", "complete"]
-
 COMPARATIVE_JUDGMENTS = {
     "materially_improved",
     "improved",
@@ -49,9 +40,7 @@ COMPARATIVE_JUDGMENTS = {
     "indeterminate",
     "not_comparable",
 }
-
 CONFIDENCE_ORDER = ["insufficient", "low", "moderate", "high"]
-
 RELEASE_DISPOSITIONS = {
     "acceptable",
     "conditionally_acceptable",
@@ -61,7 +50,9 @@ RELEASE_DISPOSITIONS = {
     "not_applicable",
 }
 
-DIGEST_SCHEMA = Path(__file__).resolve().parents[1] / "method" / "schema" / "comparative-assurance-digest.schema.json"
+ROOT = Path(__file__).resolve().parents[1]
+DIGEST_SCHEMA = ROOT / "method" / "schema" / "comparative-assurance-digest.schema.json"
+ASSESSMENT_INPUT_SCHEMA = ROOT / "method" / "schema" / "comparative-assessment-input.schema.json"
 
 
 def _canonical(value: Any) -> Any:
@@ -70,6 +61,18 @@ def _canonical(value: Any) -> Any:
     if isinstance(value, dict):
         return {key: _canonical(value[key]) for key in sorted(value)}
     return value
+
+
+def _schema_errors(schema: dict[str, Any], value: dict[str, Any]) -> list[Any]:
+    return sorted(
+        Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(value),
+        key=lambda error: list(error.absolute_path),
+    )
+
+
+def _format_schema_error(error: Any) -> str:
+    location = ".".join(str(item) for item in error.absolute_path) or "<root>"
+    return f"{location}: {error.message}"
 
 
 def _validate_rules(rules: list[list[str]]) -> None:
@@ -98,10 +101,7 @@ def _evidence_refs(finding: dict[str, Any]) -> list[str]:
 
 
 def _finding_ref(finding: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "finding_id": finding["finding_id"],
-        "evidence_refs": _evidence_refs(finding),
-    }
+    return {"finding_id": finding["finding_id"], "evidence_refs": _evidence_refs(finding)}
 
 
 def _evidence_change(baseline: dict[str, Any], candidate: dict[str, Any]) -> tuple[str, list[str]]:
@@ -117,26 +117,16 @@ def _evidence_change(baseline: dict[str, Any], candidate: dict[str, Any]) -> tup
 
 
 def _delta_id(baseline_id: str | None, candidate_id: str | None, match_basis: str) -> str:
-    material = json.dumps(
-        {"baseline": baseline_id, "candidate": candidate_id, "match_basis": match_basis},
-        sort_keys=True,
-        separators=(",", ":"),
-    )
+    material = json.dumps({"baseline": baseline_id, "candidate": candidate_id, "match_basis": match_basis}, sort_keys=True, separators=(",", ":"))
     return f"delta-{hashlib.sha256(material.encode('utf-8')).hexdigest()[:16]}"
 
 
-def _matched_state(
-    baseline: dict[str, Any],
-    candidate: dict[str, Any],
-    profile: dict[str, Any],
-    evidence_change: str,
-) -> str:
+def _matched_state(baseline: dict[str, Any], candidate: dict[str, Any], profile: dict[str, Any], evidence_change: str) -> str:
     before = baseline.get("disposition")
     after = candidate.get("disposition")
     resolved = set(profile.get("resolved_dispositions") or ["resolved"])
     not_applicable = set(profile.get("not_applicable_dispositions") or ["not_applicable"])
     not_reassessed = set(profile.get("not_reassessed_dispositions") or ["not_reassessed"])
-
     if after in not_reassessed:
         return "not_reassessed"
     if after in not_applicable and before not in not_applicable:
@@ -156,12 +146,7 @@ def _matched_state(
     return "unchanged"
 
 
-def _matched_delta(
-    baseline: dict[str, Any],
-    candidate: dict[str, Any],
-    match_basis: str,
-    profile: dict[str, Any],
-) -> dict[str, Any]:
+def _matched_delta(baseline: dict[str, Any], candidate: dict[str, Any], match_basis: str, profile: dict[str, Any]) -> dict[str, Any]:
     evidence_change, limitations = _evidence_change(baseline, candidate)
     return {
         "delta_id": _delta_id(baseline["finding_id"], candidate["finding_id"], match_basis),
@@ -175,14 +160,8 @@ def _matched_delta(
     }
 
 
-def _unmatched_delta(
-    finding: dict[str, Any],
-    side: str,
-    limitations: list[str],
-) -> dict[str, Any]:
+def _unmatched_delta(finding: dict[str, Any], side: str, limitations: list[str]) -> dict[str, Any]:
     explicit_introduction = side == "candidate" and finding.get("lineage_state") == "introduced"
-    baseline = _finding_ref(finding) if side == "baseline" else None
-    candidate = _finding_ref(finding) if side == "candidate" else None
     match_basis = "explicit-lineage:introduced" if explicit_introduction else "unmatched"
     return {
         "delta_id": _delta_id(
@@ -192,44 +171,30 @@ def _unmatched_delta(
         ),
         "state": "introduced" if explicit_introduction else "unmatched",
         "match_basis": match_basis,
-        "baseline": baseline,
-        "candidate": candidate,
+        "baseline": _finding_ref(finding) if side == "baseline" else None,
+        "candidate": _finding_ref(finding) if side == "candidate" else None,
         "disposition_changed": False,
         "evidence_change": "none",
         "limitations": limitations,
     }
 
 
-def compare_findings(
-    baseline_findings: list[dict[str, Any]],
-    candidate_findings: list[dict[str, Any]],
-    profile: dict[str, Any] | None = None,
-) -> list[dict[str, Any]]:
-    """Return schema-shaped finding deltas in deterministic order.
-
-    Rules are evaluated in order. A rule establishes a match only where its
-    canonical key identifies exactly one still-unmatched record on each side.
-    Ambiguous groups remain unmatched and retain an explicit limitation.
-    """
-
+def compare_findings(baseline_findings: list[dict[str, Any]], candidate_findings: list[dict[str, Any]], profile: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     profile = deepcopy(profile or {})
     rules = profile.get("matching_rules") or DEFAULT_MATCH_RULES
     _validate_rules(rules)
-
     for collection_name, findings in (("baseline", baseline_findings), ("candidate", candidate_findings)):
         ids = [finding.get("finding_id") for finding in findings]
         if any(not finding_id for finding_id in ids):
             raise ValueError(f"every {collection_name} finding requires finding_id")
         if len(ids) != len(set(ids)):
             raise ValueError(f"duplicate finding_id in {collection_name} findings")
-
     baseline = {finding["finding_id"]: deepcopy(finding) for finding in baseline_findings}
     candidate = {finding["finding_id"]: deepcopy(finding) for finding in candidate_findings}
     unmatched_baseline = set(baseline)
     unmatched_candidate = set(candidate)
     matches: list[tuple[str, str, str]] = []
     ambiguity: dict[tuple[str, str], set[str]] = defaultdict(set)
-
     for rule in rules:
         basis = "profile-key:" + "+".join(rule)
         left: dict[str, list[str]] = defaultdict(list)
@@ -242,7 +207,6 @@ def compare_findings(
             key = _match_key(candidate[finding_id], rule)
             if key is not None:
                 right[key].append(finding_id)
-
         for key in sorted(set(left) & set(right)):
             if len(left[key]) == 1 and len(right[key]) == 1:
                 baseline_id, candidate_id = left[key][0], right[key][0]
@@ -255,11 +219,7 @@ def compare_findings(
                     ambiguity[("baseline", finding_id)].add(message)
                 for finding_id in right[key]:
                     ambiguity[("candidate", finding_id)].add(message)
-
-    deltas = [
-        _matched_delta(baseline[left_id], candidate[right_id], basis, profile)
-        for left_id, right_id, basis in matches
-    ]
+    deltas = [_matched_delta(baseline[left_id], candidate[right_id], basis, profile) for left_id, right_id, basis in matches]
     for finding_id in sorted(unmatched_baseline):
         limitations = sorted(ambiguity.get(("baseline", finding_id), set()))
         limitations.append("No unique candidate match was established; resolution is not inferred.")
@@ -269,7 +229,6 @@ def compare_findings(
         if candidate[finding_id].get("lineage_state") != "introduced":
             limitations.append("No unique baseline match was established; introduction is not inferred.")
         deltas.append(_unmatched_delta(candidate[finding_id], "candidate", limitations))
-
     return sorted(deltas, key=lambda delta: delta["delta_id"])
 
 
@@ -286,11 +245,7 @@ def _index_components(scope: dict[str, Any], field: str) -> dict[str, dict[str, 
     return result
 
 
-def _component_changes(
-    baseline: dict[str, dict[str, Any]],
-    candidate: dict[str, dict[str, Any]],
-    compared_fields: list[str],
-) -> dict[str, list[str]]:
+def _component_changes(baseline: dict[str, dict[str, Any]], candidate: dict[str, dict[str, Any]], compared_fields: list[str]) -> dict[str, list[str]]:
     shared = set(baseline) & set(candidate)
     return {
         "added": sorted(set(candidate) - set(baseline)),
@@ -298,11 +253,7 @@ def _component_changes(
         "changed": sorted(
             component_id
             for component_id in shared
-            if any(
-                _canonical(baseline[component_id].get(field))
-                != _canonical(candidate[component_id].get(field))
-                for field in compared_fields
-            )
+            if any(_canonical(baseline[component_id].get(field)) != _canonical(candidate[component_id].get(field)) for field in compared_fields)
         ),
     }
 
@@ -315,18 +266,7 @@ def _coverage_change(baseline: str, candidate: str, order: list[str]) -> str:
     return "strengthened" if order.index(candidate) > order.index(baseline) else "weakened"
 
 
-def compare_scope(
-    baseline_scope: dict[str, Any],
-    candidate_scope: dict[str, Any],
-    profile: dict[str, Any] | None = None,
-) -> dict[str, Any]:
-    """Compare declared assessment boundaries without inferring assurance change.
-
-    Component identity is the stable ``component_id``. A broader candidate
-    boundary is reported as scope expansion and newly admitted work, not as an
-    assurance regression. Materiality remains profile-declared.
-    """
-
+def compare_scope(baseline_scope: dict[str, Any], candidate_scope: dict[str, Any], profile: dict[str, Any] | None = None) -> dict[str, Any]:
     profile = deepcopy(profile or {})
     materiality = {**DEFAULT_SCOPE_MATERIALITY, **(profile.get("scope_materiality") or {})}
     unknown_materiality = set(materiality) - set(DEFAULT_SCOPE_MATERIALITY)
@@ -334,27 +274,19 @@ def compare_scope(
         raise ValueError(f"unsupported scope materiality rule(s): {', '.join(sorted(unknown_materiality))}")
     if any(not isinstance(value, bool) for value in materiality.values()):
         raise ValueError("scope materiality rules must be boolean")
-
     baseline_direct = _index_components(baseline_scope, "directly_assessed")
     candidate_direct = _index_components(candidate_scope, "directly_assessed")
     baseline_dependencies = _index_components(baseline_scope, "supporting_dependencies")
     candidate_dependencies = _index_components(candidate_scope, "supporting_dependencies")
     baseline_excluded = _index_components(baseline_scope, "excluded")
     candidate_excluded = _index_components(candidate_scope, "excluded")
-
     direct = _component_changes(baseline_direct, candidate_direct, ["resolved_ref", "reason"])
-    dependencies = _component_changes(
-        baseline_dependencies,
-        candidate_dependencies,
-        ["resolved_ref", "treatment", "independent_assessment_ref", "limitations"],
-    )
+    dependencies = _component_changes(baseline_dependencies, candidate_dependencies, ["resolved_ref", "treatment", "independent_assessment_ref", "limitations"])
     excluded = _component_changes(baseline_excluded, candidate_excluded, ["reason"])
-
     baseline_coverage = baseline_scope.get("coverage_state")
     candidate_coverage = candidate_scope.get("coverage_state")
     coverage_order = profile.get("coverage_order") or DEFAULT_COVERAGE_ORDER
     coverage_change = _coverage_change(baseline_coverage, candidate_coverage, coverage_order)
-
     added = bool(direct["added"] or dependencies["added"] or excluded["added"])
     removed = bool(direct["removed"] or dependencies["removed"] or excluded["removed"])
     changed = bool(direct["changed"] or dependencies["changed"] or excluded["changed"])
@@ -366,10 +298,8 @@ def compare_scope(
         status = "contracted"
     else:
         status = "changed"
-
     dependency_treatment_changed = any(
-        baseline_dependencies[component_id].get("treatment")
-        != candidate_dependencies[component_id].get("treatment")
+        baseline_dependencies[component_id].get("treatment") != candidate_dependencies[component_id].get("treatment")
         for component_id in set(baseline_dependencies) & set(candidate_dependencies)
     )
     material_change = any([
@@ -379,27 +309,19 @@ def compare_scope(
         materiality["excluded_change"] and any(excluded.values()),
         materiality["coverage_weakening"] and coverage_change == "weakened",
     ])
-
     limitations = sorted(set((baseline_scope.get("limitations") or []) + (candidate_scope.get("limitations") or [])))
     if status == "expanded":
         limitations.append("Newly admitted components require assessment; scope expansion is not an assurance regression.")
     if coverage_change == "not_comparable":
         limitations.append("Coverage states cannot be ranked under the declared comparison profile.")
-
     return {
         "status": status,
         "material_change": material_change,
         "directly_assessed": direct,
         "supporting_dependencies": dependencies,
         "excluded": excluded,
-        "coverage": {
-            "baseline": baseline_coverage,
-            "candidate": candidate_coverage,
-            "change": coverage_change,
-        },
-        "newly_admitted_components": sorted(
-            set(direct["added"]) | set(dependencies["added"])
-        ),
+        "coverage": {"baseline": baseline_coverage, "candidate": candidate_coverage, "change": coverage_change},
+        "newly_admitted_components": sorted(set(direct["added"]) | set(dependencies["added"])),
         "limitations": sorted(set(limitations)),
     }
 
@@ -454,33 +376,65 @@ def _overall_judgment(judgments: list[str], profile: dict[str, Any]) -> str:
     return "indeterminate"
 
 
-def aggregate_judgment(
-    dimensions: list[dict[str, Any]],
-    comparability: dict[str, Any],
-    scope_delta: dict[str, Any],
-    profile: dict[str, Any],
-    candidate_release_disposition: str | None = None,
-) -> dict[str, Any]:
-    """Execute declared comparison policy without numerical compensation.
+def _parse_date(value: str, label: str) -> date:
+    try:
+        if value.endswith("Z"):
+            value = value[:-1] + "+00:00"
+        parsed = datetime.fromisoformat(value)
+        return parsed.date()
+    except ValueError:
+        try:
+            return date.fromisoformat(value)
+        except ValueError as exc:
+            raise ValueError(f"invalid freshness date for {label}: {value}") from exc
 
-    Dimension judgments are inputs produced by profile-specific evaluators. The
-    engine checks the profile's coverage, evidence and blocking gates, then
-    combines the bounded states through a conservative precedence lattice.
-    Release disposition remains independent and must come from candidate
-    evidence or an explicit profile blocking rule.
-    """
 
+def _freshness_reasons(results: dict[str, dict[str, Any]], required: list[str], profile: dict[str, Any]) -> list[str]:
+    policy = profile.get("evidence_freshness") or {}
+    if not policy:
+        return []
+    max_age = policy.get("max_age_days")
+    reference = policy.get("reference_date")
+    evidence_dates = policy.get("evidence_dates") or {}
+    if max_age is None and not policy.get("stale_evidence_refs"):
+        return []
+    if max_age is not None and (not isinstance(max_age, int) or max_age < 0):
+        raise ValueError("evidence_freshness.max_age_days must be a non-negative integer")
+    reference_date = _parse_date(reference, "reference_date") if reference else datetime.now(timezone.utc).date()
+    required_dimensions = policy.get("required_dimensions") or required
+    unknown = set(required_dimensions) - set(profile.get("dimensions") or [])
+    if unknown:
+        raise ValueError(f"freshness dimension(s) are undeclared: {', '.join(sorted(unknown))}")
+    explicit_stale = set(policy.get("stale_evidence_refs") or [])
+    reasons: list[str] = []
+    for dimension_id in required_dimensions:
+        dimension = results.get(dimension_id)
+        if not dimension:
+            continue
+        stale_refs: list[str] = []
+        for ref in dimension.get("evidence_refs") or []:
+            if ref in explicit_stale:
+                stale_refs.append(ref)
+                continue
+            if ref in evidence_dates and max_age is not None:
+                observed = _parse_date(evidence_dates[ref], ref)
+                if (reference_date - observed).days > max_age:
+                    stale_refs.append(ref)
+        if stale_refs:
+            reasons.append("Stale required evidence for " + dimension_id + ": " + ", ".join(sorted(stale_refs)))
+    return reasons
+
+
+def aggregate_judgment(dimensions: list[dict[str, Any]], comparability: dict[str, Any], scope_delta: dict[str, Any], profile: dict[str, Any], candidate_release_disposition: str | None = None) -> dict[str, Any]:
     results = _validate_dimension_results(dimensions, profile)
     required = profile.get("required_dimensions") or profile.get("dimensions")
     unknown_required = set(required) - set(profile["dimensions"])
     if unknown_required:
         raise ValueError(f"required dimension(s) are undeclared: {', '.join(sorted(unknown_required))}")
-
     evidence_refs = sorted({ref for item in dimensions for ref in (item.get("evidence_refs") or [])})
     counterevidence_refs = sorted({ref for item in dimensions for ref in (item.get("counterevidence_refs") or [])})
     limitations = sorted({text for item in dimensions for text in (item.get("unresolved_limitations") or [])})
     reasons: list[str] = []
-
     if comparability.get("status") == "not_comparable":
         reasons.append("Top-level assessment compatibility was not established.")
         return {
@@ -493,20 +447,13 @@ def aggregate_judgment(
             "release_disposition": "not_applicable",
             "release_superiority_established": False,
         }
-
     missing_dimensions = sorted(set(required) - set(results))
     if missing_dimensions:
         reasons.append("Missing required dimension results: " + ", ".join(missing_dimensions))
-
     require_evidence = set(profile.get("require_evidence_for") or required)
-    missing_evidence = sorted(
-        dimension_id
-        for dimension_id in require_evidence
-        if dimension_id not in results or not results[dimension_id].get("evidence_refs")
-    )
+    missing_evidence = sorted(dimension_id for dimension_id in require_evidence if dimension_id not in results or not results[dimension_id].get("evidence_refs"))
     if missing_evidence:
         reasons.append("Missing required evidence for: " + ", ".join(missing_evidence))
-
     coverage_order = profile.get("coverage_order") or DEFAULT_COVERAGE_ORDER
     minimum_coverage = profile.get("minimum_coverage")
     candidate_coverage = (scope_delta.get("coverage") or {}).get("candidate")
@@ -515,30 +462,23 @@ def aggregate_judgment(
             reasons.append("Candidate coverage cannot be ranked against the profile minimum.")
         elif coverage_order.index(candidate_coverage) < coverage_order.index(minimum_coverage):
             reasons.append(f"Candidate coverage {candidate_coverage} is below required {minimum_coverage}.")
-
     if profile.get("counterevidence_blocks") and counterevidence_refs:
         reasons.append("Unresolved counterevidence is blocking under the comparison profile.")
-
     required_results = [results[dimension_id] for dimension_id in required if dimension_id in results]
-    confidence = min(
-        (item["confidence"] for item in required_results),
-        key=CONFIDENCE_ORDER.index,
-        default="insufficient",
-    )
+    confidence = min((item["confidence"] for item in required_results), key=CONFIDENCE_ORDER.index, default="insufficient")
     minimum_confidence = profile.get("minimum_confidence")
     if minimum_confidence:
         if minimum_confidence not in CONFIDENCE_ORDER:
             raise ValueError("unsupported profile minimum_confidence")
         if CONFIDENCE_ORDER.index(confidence) < CONFIDENCE_ORDER.index(minimum_confidence):
             reasons.append(f"Overall confidence {confidence} is below required {minimum_confidence}.")
-
+    reasons.extend(_freshness_reasons(results, required, profile))
     judgments = [item["judgment"] for item in required_results]
     bounded_judgment = _overall_judgment(judgments, profile)
     blocking_observed = bounded_judgment == "materially_regressed"
     overall = bounded_judgment if blocking_observed else ("indeterminate" if reasons else bounded_judgment)
     if overall == "indeterminate" and not reasons:
         reasons.append("The bounded dimension states do not support a dominant comparative judgment.")
-
     disposition = candidate_release_disposition or "human_judgment_required"
     if disposition not in RELEASE_DISPOSITIONS:
         raise ValueError("unsupported candidate release disposition")
@@ -549,17 +489,9 @@ def aggregate_judgment(
         disposition = blocking_disposition
     if reasons and not blocking_observed:
         disposition = "indeterminate"
-
-    superiority = bool(
-        overall in {"improved", "materially_improved"}
-        and profile.get("improvement_establishes_superiority", False)
-        and disposition in {"acceptable", "conditionally_acceptable"}
-    )
+    superiority = bool(overall in {"improved", "materially_improved"} and profile.get("improvement_establishes_superiority", False) and disposition in {"acceptable", "conditionally_acceptable"})
     if blocking_observed and reasons:
-        justification = (
-            "A profile-defined material regression remains blocking despite additional evidence limitations: "
-            + " ".join(reasons)
-        )
+        justification = "A profile-defined material regression remains blocking despite additional evidence limitations: " + " ".join(reasons)
     elif reasons:
         justification = "Profile gates produced an indeterminate comparison: " + " ".join(reasons)
     else:
@@ -576,13 +508,7 @@ def aggregate_judgment(
     }
 
 
-def determine_compatibility(
-    baseline: dict[str, Any],
-    candidate: dict[str, Any],
-    scope_delta: dict[str, Any],
-    profile: dict[str, Any],
-) -> dict[str, Any]:
-    """Determine whether the declared assessment contracts support comparison."""
+def determine_compatibility(baseline: dict[str, Any], candidate: dict[str, Any], scope_delta: dict[str, Any], profile: dict[str, Any]) -> dict[str, Any]:
     reasons: list[str] = []
     matched: list[str] = []
     unmatched: list[str] = []
@@ -620,27 +546,20 @@ def determine_compatibility(
 
 
 def _assessment_input(value: dict[str, Any], label: str) -> None:
-    required = {"assessment", "scope", "findings"}
-    missing = sorted(required - set(value))
-    if missing:
-        raise ValueError(f"{label} assessment is missing: {', '.join(missing)}")
-    assessment_required = {"assessment_id", "artifact_ref", "schema_version", "profile_id", "profile_version"}
-    missing_identity = sorted(assessment_required - set(value["assessment"]))
-    if missing_identity:
-        raise ValueError(f"{label} assessment identity is missing: {', '.join(missing_identity)}")
+    schema = json.loads(ASSESSMENT_INPUT_SCHEMA.read_text(encoding="utf-8"))
+    errors = _schema_errors(schema, value)
+    if errors:
+        raise ValueError(f"invalid {label} assessment input at {_format_schema_error(errors[0])}")
 
 
 def validate_digest(digest: dict[str, Any]) -> None:
     schema = json.loads(DIGEST_SCHEMA.read_text(encoding="utf-8"))
-    errors = sorted(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(digest), key=lambda error: list(error.absolute_path))
+    errors = _schema_errors(schema, digest)
     if errors:
-        error = errors[0]
-        location = ".".join(str(item) for item in error.absolute_path) or "<root>"
-        raise ValueError(f"invalid comparative digest at {location}: {error.message}")
+        raise ValueError(f"invalid comparative digest at {_format_schema_error(errors[0])}")
 
 
 def build_digest(baseline: dict[str, Any], candidate: dict[str, Any], profile: dict[str, Any]) -> dict[str, Any]:
-    """Build and validate the authoritative digest artifact."""
     _assessment_input(baseline, "baseline")
     _assessment_input(candidate, "candidate")
     if "profile" not in profile:
@@ -677,22 +596,30 @@ def _markdown_cell(value: Any) -> str:
 
 
 def render_digest_markdown(digest: dict[str, Any]) -> str:
-    """Render a non-normative Markdown view from a validated digest."""
     validate_digest(digest)
     overall = digest["overall"]
     scope_delta = digest.get("scope_delta") or {}
     lines = [
-        f"# Comparative Assurance Digest: {digest['comparison_id']}", "",
-        "> This report is a non-normative rendering of the machine-readable comparison artifact. It informs but does not replace accountable human acceptance or release authority.", "",
-        "## Summary", "", "| Field | Result |", "|---|---|",
+        f"# Comparative Assurance Digest: {digest['comparison_id']}",
+        "",
+        "> This report is a non-normative rendering of the machine-readable comparison artifact. It informs but does not replace accountable human acceptance or release authority.",
+        "",
+        "## Summary",
+        "",
+        "| Field | Result |",
+        "|---|---|",
         f"| Baseline | {_markdown_cell(digest['baseline']['assessment_id'])} |",
         f"| Candidate | {_markdown_cell(digest['candidate']['assessment_id'])} |",
         f"| Comparability | {_markdown_cell(digest['comparability']['status'])} |",
         f"| Overall judgment | {_markdown_cell(overall['judgment'])} |",
         f"| Confidence | {_markdown_cell(overall['confidence'])} |",
         f"| Release disposition | {_markdown_cell(overall['release_disposition'])} |",
-        f"| Release superiority established | {'yes' if overall['release_superiority_established'] else 'no'} |", "",
-        overall["justification"], "", "## Scope and coverage", "",
+        f"| Release superiority established | {'yes' if overall['release_superiority_established'] else 'no'} |",
+        "",
+        overall["justification"],
+        "",
+        "## Scope and coverage",
+        "",
         f"- Boundary change: **{scope_delta.get('status', 'not reported')}**",
         f"- Material scope change: **{'yes' if scope_delta.get('material_change') else 'no'}**",
     ]
