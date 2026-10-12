@@ -595,6 +595,65 @@ def _markdown_cell(value: Any) -> str:
     return str(value).replace("|", "\\|").replace("\n", " ")
 
 
+def _dimension_label(dimension_id: str) -> str:
+    return dimension_id.replace("-", " ")
+
+
+def _sentence_join(items: list[str]) -> str:
+    if not items:
+        return ""
+    if len(items) == 1:
+        return items[0]
+    if len(items) == 2:
+        return items[0] + " and " + items[1]
+    return ", ".join(items[:-1]) + ", and " + items[-1]
+
+
+def plain_language_conclusion(digest: dict[str, Any]) -> str:
+    """Return a concise non-normative reader conclusion from a validated digest."""
+    validate_digest(digest)
+    baseline = digest["baseline"]["assessment_id"]
+    candidate = digest["candidate"]["assessment_id"]
+    comparability = digest["comparability"]["status"]
+    overall = digest["overall"]
+    dimensions = digest.get("dimensions") or []
+    improved = [
+        _dimension_label(item["dimension_id"])
+        for item in dimensions
+        if item.get("judgment") in {"improved", "materially_improved"}
+    ]
+    not_closed = [
+        _dimension_label(item["dimension_id"])
+        for item in dimensions
+        if item.get("judgment") in {"indeterminate", "not_comparable", "regressed", "materially_regressed", "mixed"}
+    ]
+
+    sentences: list[str] = []
+    if improved:
+        sentences.append(f"{candidate} shows improvement over {baseline} in {_sentence_join(improved)}.")
+    elif overall["judgment"] == "no_material_change":
+        sentences.append(f"{candidate} shows no material assurance change from {baseline} under the supplied profile.")
+    elif overall["judgment"] == "not_comparable":
+        sentences.append(f"{candidate} is not defensibly comparable with {baseline} under the supplied profile.")
+    else:
+        sentences.append(f"{candidate} does not show a supported improvement over {baseline} under the supplied profile.")
+
+    if overall.get("release_superiority_established"):
+        sentences.append("The profile establishes release superiority, subject to the recorded evidence and limitations.")
+    elif overall["judgment"] == "indeterminate":
+        sentences.append(f"{candidate} is not proven better assured than {baseline} because the overall comparison remains indeterminate.")
+    elif overall["judgment"] == "not_comparable":
+        sentences.append("No overall improvement or regression judgment is produced because the inputs are not comparable.")
+    elif overall["release_disposition"] not in {"acceptable", "conditionally_acceptable"}:
+        sentences.append("Comparative improvement does not establish release acceptability under this profile.")
+
+    if comparability != "compatible":
+        sentences.append(f"The comparison is {comparability}, so unsupported whole-release conclusions are deliberately withheld.")
+    if not_closed:
+        sentences.append("The main unresolved assurance surfaces are " + _sentence_join(not_closed) + ".")
+    return " ".join(sentences)
+
+
 def render_digest_markdown(digest: dict[str, Any]) -> str:
     validate_digest(digest)
     overall = digest["overall"]
@@ -615,6 +674,12 @@ def render_digest_markdown(digest: dict[str, Any]) -> str:
         f"| Confidence | {_markdown_cell(overall['confidence'])} |",
         f"| Release disposition | {_markdown_cell(overall['release_disposition'])} |",
         f"| Release superiority established | {'yes' if overall['release_superiority_established'] else 'no'} |",
+        "",
+        "## Plain-language conclusion",
+        "",
+        plain_language_conclusion(digest),
+        "",
+        "## Profile-gate explanation",
         "",
         overall["justification"],
         "",
