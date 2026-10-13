@@ -64,11 +64,11 @@ The problem is that the discipline is currently distributed across:
 - [Engine contract](engine-contract.md);
 - [Continuous assurance](continuous-assurance.md);
 - [Reasoning architecture and boundaries](reasoning-architecture.md);
-- schemas under [`method/schema/`](../method/schema/);
-- portable method material under [`method/`](../method/);
-- implementation code under [`tools/`](../tools/) and [`packages/`](../packages/);
+- schemas under [`method/schema/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/method/schema);
+- portable method material under [`method/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/method);
+- implementation code under [`tools/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/tools) and [`packages/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/packages);
 - examples under [`examples/`](../examples/);
-- profile/instance material under [`profiles/`](../profiles/) and [`instances/`](../instances/); and
+- profile/instance material under [`profiles/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/profiles) and [`instances/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/instances); and
 - release qualification and review records.
 
 This is manageable for maintainers. It is harder for new adopters, upstream reviewers, and future implementers.
@@ -227,14 +227,14 @@ Implementation explains **how this repository realizes the method and contracts*
 
 Important implementation surfaces include:
 
-- [`tools/assessment_controller.py`](../tools/assessment_controller.py);
-- [`tools/autonomous_assurance_controller.py`](../tools/autonomous_assurance_controller.py);
-- [`tools/assurance_fsm.py`](../tools/assurance_fsm.py);
-- [`tools/evidence_assertion_assessor.py`](../tools/evidence_assertion_assessor.py);
-- [`tools/validate.py`](../tools/validate.py);
-- [`tools/validate_engine_contract.py`](../tools/validate_engine_contract.py);
-- [`tools/assurance_posture.py`](../tools/assurance_posture.py);
-- [`packages/`](../packages/).
+- [`tools/assessment_controller.py`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/assessment_controller.py);
+- [`tools/autonomous_assurance_controller.py`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/autonomous_assurance_controller.py);
+- [`tools/assurance_fsm.py`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/assurance_fsm.py);
+- [`tools/evidence_assertion_assessor.py`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/evidence_assertion_assessor.py);
+- [`tools/validate.py`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/validate.py);
+- [`tools/validate_engine_contract.py`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/validate_engine_contract.py);
+- [`tools/assurance_posture.py`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/tools/assurance_posture.py);
+- [`packages/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/packages).
 
 Implementation choices are not automatically method concepts. For example, a file layout, function name, CLI argument, local cache strategy or workflow job name may be a useful implementation decision without being a portable RAHP rule.
 
@@ -249,8 +249,8 @@ Examples:
 - [`examples/hello-rahp/`](../examples/hello-rahp/);
 - [`examples/standalone-trqp/`](../examples/standalone-trqp/);
 - [`examples/composed-assurance/`](../examples/composed-assurance/);
-- [`profiles/`](../profiles/);
-- [`instances/`](../instances/);
+- [`profiles/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/profiles);
+- [`instances/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/instances);
 - [`corpora/`](../corpora/).
 
 The adoption gateway states that an adopter can start with RAHP alone and that DPIP and the Trust Protocol Interop Lab are optional independently governed capabilities used only when a proposition requires their specialist or evidence role. See [Adoption gateway](adoption-guide.md).
@@ -381,8 +381,8 @@ Use this reading order:
 5. [Continuous assurance](continuous-assurance.md) — reassessment, freshness and lineage.
 6. [Reasoning architecture and boundaries](reasoning-architecture.md) — reasoning distribution and agent independence.
 7. [Adoption gateway](adoption-guide.md) — adoption roles and dependency boundaries.
-8. Schemas under [`method/schema/`](../method/schema/) — authoritative machine-readable structures.
-9. Implementation under [`tools/`](../tools/) and [`packages/`](../packages/) — current reference implementation.
+8. Schemas under [`method/schema/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/method/schema) — authoritative machine-readable structures.
+9. Implementation under [`tools/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/tools) and [`packages/`](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/tree/main/packages) — current reference implementation.
 
 ## Compatibility implications
 
