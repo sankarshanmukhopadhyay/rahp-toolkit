@@ -2,6 +2,8 @@
 layout: default
 title: "Fiduciary persona to corpus mapping"
 nav_order: 21
+parent: Learn RAHP
+has_toc: true
 ---
 
 # Fiduciary persona to corpus mapping
@@ -123,7 +125,7 @@ persona_contexts:
     evidence_implications:
       - consent_log_alone_is_insufficient_for_meaningful_control
       - withdrawal_record_must_be_bound_to_execution_time
-      - external_booking_outcome_must_be observed_or_indeterminate
+      - external_booking_outcome_must_be_observed_or_indeterminate
 ```
 
 The exact field names should follow existing RAHP schema conventions when implemented. This note is conceptual, not a schema change.
@@ -131,8 +133,6 @@ The exact field names should follow existing RAHP schema conventions when implem
 ## Scenario design implication
 
 A single core booking-withdrawal scenario can be specialized into affected-context variants without duplicating the underlying risk model.
-
-Example:
 
 | Scenario variant | Functional persona | Overlay | Expected assurance impact |
 |---|---|---|---|
