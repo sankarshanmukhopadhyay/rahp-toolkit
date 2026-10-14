@@ -13,6 +13,7 @@ from tools.assessment_controller import (
     new_lifecycle,
     set_lens_disposition,
     set_run_dimensions,
+    transition,
 )
 
 
@@ -53,6 +54,14 @@ class AdversarialFullStackQualification(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "composition: full-stack PASS prohibited"):
             assert_full_stack_terminalizable(record)
+
+    def test_AA09_terminal_transition_cannot_bypass_lens_guard(self):
+        record = passing_record()
+        record["state"] = "ASSESSED"
+        del record["lenses"]["security"]
+        with self.assertRaisesRegex(ValueError, "security: lens disposition missing"):
+            transition(record, "TERMINAL", "synthetic bypass attempt", terminal_outcome="PASS")
+        self.assertEqual(record["state"], "ASSESSED")
 
     def test_AA07_missing_required_probe_blocks_pass(self):
         record = passing_record()
