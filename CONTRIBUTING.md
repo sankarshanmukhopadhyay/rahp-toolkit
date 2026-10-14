@@ -120,6 +120,28 @@ Regardless of contribution type, a pull request is not ready until the following
 
 Run the additional commands specified by the workflow you followed.
 
+## Independent reviewability and assurance evidence
+
+**Standing acceptance criterion for material assurance changes:** a competent reviewer who did not author the change can identify its bounded assurance claim, authoritative source/implementation baseline, evidence, reproduction steps, relevant failure behaviour and remaining limitations without privileged maintainer knowledge. **Independent audit execution is not required** to satisfy this readiness criterion.
+
+State **APPLICABLE** or **NOT_APPLICABLE** in the PR template (and in a material change's issue acceptance criteria). For APPLICABLE changes, cite existing evidence when sufficient instead of creating duplicate tests or documentation. For NOT_APPLICABLE, provide a one-sentence rationale; formatting fixes and nonsemantic housekeeping will normally qualify.
+
+| Change | Proportionate evidence |
+| --- | --- |
+| Nonsemantic docs, metadata or formatting | N/A rationale; normal link/build checks |
+| Bounded implementation repair | Source/claim reference, focused regression (including relevant negative path), validation result, limitation |
+| New assurance case/profile | Positive and adversarial/negative cases, declared evidence needs, reproducible bounded worked input, unresolved assumptions |
+| Controller, lifecycle or evidence contract | Failure and state-transition invariants, compatibility checks, pinned validation evidence |
+| Material architectural or composition change | Representative end-to-end reproduction and explicit trust/authority boundaries |
+
+For applicable changes, prefer the existing **claim → implementation → evidence → reproduction → limitations → challenge** chain. Reuse [Hello RAHP](examples/hello-rahp/README.md), the [R1–R3 independent-consumer exercise](docs/reasoning-adoption-exercise.md) and [the #1023 adversarial qualification and reviewer protocol](docs/adversarial-assurance-reviewer-protocol.md) as appropriate. A syntactically valid result or passing CI is not by itself proof of evidentiary authority, complete coverage or independent audit. Keep historically pinned results intact.
+
+For issues involving material assurance changes, carry the same bounded acceptance check:
+
+`- [ ] Independent reviewability assessed: affected assurance claims have cited reproducible evidence and challenge/limitation information, or an explicit NOT_APPLICABLE rationale.`
+
+This is a **review discipline**, not a new assurance engine, additional release gate, or an instruction to write new cases for every PR. When checks can be satisfied by existing materials, link them rather than duplicate them.
+
 ## Identifier and naming rules
 
 - Files in `data/` and `method/`: lowercase, hyphenated, `.yaml` where the format is YAML.

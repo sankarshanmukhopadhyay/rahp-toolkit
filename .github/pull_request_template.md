@@ -31,6 +31,17 @@
 ```
 ```
 
+## Independent reviewability
+
+<!-- Required disposition for material assurance changes; concise evidence links suffice.
+     See CONTRIBUTING.md -> Independent reviewability and assurance evidence. -->
+
+- Disposition: APPLICABLE / NOT_APPLICABLE
+- Affected assurance claim and baseline (when applicable):
+- Reproduction: tests, commands, pinned inputs and CI evidence (when applicable):
+- Negative/failure behaviour and outstanding authority or evidence limitations (when applicable):
+- If NOT_APPLICABLE, justification:
+
 ## Checklist
 
 - [ ] `python3 tools/validate.py` exits 0
@@ -39,3 +50,4 @@
 - [ ] No generated file under `build/` was edited by hand
 - [ ] If a risk score changed, the evidence for the change is stated above
 - [ ] New durable files have a clear role and do not duplicate an existing canonical reader document
+- [ ] Independent reviewability disposition and corresponding evidence or N/A rationale recorded above
