@@ -1,0 +1,29 @@
+risks:
+  - id: R-FID-001
+    label: historical_approval_treated_as_current_authority
+    hypothesis: The system treats a historical approval as current authority after withdrawal.
+    harms: [H-HUM-001, H-AUTH-001, H-ASR-001]
+  - id: R-FID-002
+    label: fallback_booking_path_bypasses_gate
+    hypothesis: A fallback booking path bypasses the normal authorization gate.
+    harms: [H-HUM-001, H-AUTH-003, H-ASR-003]
+  - id: R-FID-003
+    label: retry_or_replay_after_withdrawal
+    hypothesis: Retry or replay completes an action after permission is withdrawn.
+    harms: [H-HUM-002, H-AUTH-004]
+  - id: R-FID-004
+    label: stale_configuration_evidence_reused
+    hypothesis: Evidence from one configuration is reused after material configuration change.
+    harms: [H-ASR-002, H-ASR-001]
+  - id: R-FID-005
+    label: delegated_tool_executes_beyond_scope
+    hypothesis: A sub-agent or tool executes under broader authority than the principal granted.
+    harms: [H-AUTH-002, H-HUM-001]
+  - id: R-FID-006
+    label: operational_restriction_not_enforced
+    hypothesis: A recorded operational restriction is not enforced in the deployed execution path.
+    harms: [H-ASR-004, H-HUM-003]
+  - id: R-FID-007
+    label: consent_log_over_read_as_meaningful_control
+    hypothesis: Technical consent logging is treated as proof of meaningful human control.
+    harms: [H-ASR-005, H-HUM-001]
