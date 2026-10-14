@@ -9,6 +9,8 @@ parent: Implement RAHP
 
 RAHP contributions are easiest to review when the contributor first identifies **which authority boundary is changing** and then follows the workflow for that contribution type. This section is intentionally procedural: each path tells you what to change, in what order, what evidence to produce, and what must pass before a pull request is ready.
 
+**Material assurance changes:** apply the [independent reviewability acceptance criterion](../CONTRIBUTING.md#independent-reviewability-and-assurance-evidence) when writing an issue or PR. The criterion requires reproducible, challengeable claims **or a justified NOT_APPLICABLE disposition**, not a completed external audit or new tests for routine housekeeping.
+
 ## Choose the contribution path
 
 | I want to… | Start here | Primary authority |
