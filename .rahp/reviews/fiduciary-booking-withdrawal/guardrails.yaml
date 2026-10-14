@@ -1,0 +1,28 @@
+guardrails:
+  - id: GR-FID-001
+    statement: Unknown current authority must not authorize execution.
+    blocks_pass_when: current_authority_missing_or_unknown
+  - id: GR-FID-002
+    statement: Withdrawal dominates cached permission for future execution.
+    blocks_pass_when: cached_permission_used_after_withdrawal
+  - id: GR-FID-003
+    statement: Fallback paths must not bypass authority checks.
+    blocks_pass_when: fallback_path_completed_without_policy_gate_decision
+  - id: GR-FID-004
+    statement: Missing required evidence must not become PASS.
+    blocks_pass_when: required_evidence_role_absent
+  - id: GR-FID-005
+    statement: Stale evidence must not become PASS.
+    blocks_pass_when: evidence_precedes_material_change_or_withdrawal
+  - id: GR-FID-006
+    statement: Contradictory evidence must not become PASS.
+    blocks_pass_when: gate_denial_and_counterparty_completion_both_present
+  - id: GR-FID-007
+    statement: Technical consent logging must not become proof of meaningful human control.
+    blocks_pass_when: human_outcome_claim_uses_only_control_log_evidence
+  - id: GR-FID-008
+    statement: Recorded operational disposition requires deployed enforcement evidence.
+    blocks_pass_when: disposition_record_has_no_enforcement_trace
+  - id: GR-FID-009
+    statement: NOT APPLICABLE must not be counted as PASS.
+    blocks_pass_when: not_applicable_result_used_as_positive_evidence
