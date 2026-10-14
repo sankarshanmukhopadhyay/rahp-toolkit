@@ -63,6 +63,14 @@ class AdversarialFullStackQualification(unittest.TestCase):
             transition(record, "TERMINAL", "synthetic bypass attempt", terminal_outcome="PASS")
         self.assertEqual(record["state"], "ASSESSED")
 
+    def test_AA09_removed_entire_lens_ledger_cannot_bypass_guard(self):
+        record = passing_record()
+        record["state"] = "ASSESSED"
+        del record["lenses"]
+        with self.assertRaisesRegex(ValueError, "full-stack lens ledger missing"):
+            transition(record, "TERMINAL", "synthetic ledger deletion", terminal_outcome="PASS")
+        self.assertEqual(record["state"], "ASSESSED")
+
     def test_AA07_missing_required_probe_blocks_pass(self):
         record = passing_record()
         record["required_evidence"] = ["REQ-A"]
