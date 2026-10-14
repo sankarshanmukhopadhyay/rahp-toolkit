@@ -426,7 +426,7 @@ def transition(record: dict[str, Any], to_state: str, reason: str, *, blocking_r
         # A full-stack PASS must not bypass the assurance/evidence/lens gate by
         # calling the generic lifecycle transition directly. Validate before
         # mutating the terminal record so rejected transitions are atomic.
-        if terminal_outcome == "PASS" and isinstance(record.get("lenses"), dict):
+        if terminal_outcome == "PASS" and ("assurance_state" in record or "lenses" in record):
             assert_full_stack_terminalizable(record)
         record["terminal_outcome"] = terminal_outcome
     elif terminal_outcome is not None:
