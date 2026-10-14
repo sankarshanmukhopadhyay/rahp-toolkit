@@ -8,7 +8,7 @@ has_toc: true
 
 Tracking: [#1023](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1023).
 
-**Status:** threat-model and coverage inventory established; attack outcomes **NOT_YET_EXECUTED**. This is a maintainer-authored evaluation plan, not evidence of an independent red team, security certification, or target-system conformance.
+**Status:** threat model and initial maintainer-side controller qualification implemented. CI evidence is required for the current amended head; independent attack execution remains **NOT_YET_TESTED**. This is a maintainer-authored evaluation plan, not evidence of an independent red team, security certification, or target-system conformance.
 
 ## Pinned starting point and authorized scope
 
@@ -78,9 +78,9 @@ Broader CI/controller tests and repository validation must be discovered from th
 
 ## Executable first tranche: AA-07 and AA-09
 
-The synthetic test module [`tests/test_adversarial_assurance_1023.py`](../tests/test_adversarial_assurance_1023.py) adds six narrow tests: a positive full-stack terminalization control, missing material security-lens disposition, unexecuted applicable composition lens, absent mandatory evidence-probe ledger, a ledger missing one required attempt, and an attributable but unavailable evidence attempt whose material RAHP lens remains indeterminate.
+The synthetic test module [`tests/test_adversarial_assurance_1023.py`](../tests/test_adversarial_assurance_1023.py) adds seven narrow tests: a positive full-stack terminalization control, missing material security-lens disposition, unexecuted applicable composition lens, absent mandatory evidence-probe ledger, a ledger missing one required attempt, an attributable but unavailable evidence attempt whose material RAHP lens remains indeterminate, and a direct terminal transition attempting to bypass a missing material lens.
 
-**Important scope limitation:** `assert_full_stack_terminalizable` checks the declared full-stack record. The new tests do not establish that *all controller entry points* call this gate, nor do they prove substantive evidence authenticity or sufficiency. In particular, `ATTEMPTED_UNAVAILABLE` is evidence of a recorded attempt, **not** proof of successful evidence acquisition or satisfaction. The separate applicable-lens check must prevent PASS.
+**Important scope limitation:** `assert_full_stack_terminalizable` checks the declared full-stack record. During #1023, direct `transition(..., terminal_outcome="PASS")` was identified as an alternate path that did not call this guard. The #1023 code change enforces the full-stack gate for records carrying a lens ledger before terminal PASS mutation. This establishes a narrower checked boundary, **not** proof that every other controller or handoff path is covered, nor substantive evidence authenticity or sufficiency. In particular, `ATTEMPTED_UNAVAILABLE` is evidence of a recorded attempt, **not** proof of successful evidence acquisition or satisfaction. The separate applicable-lens check must prevent PASS.
 
 Run:
 
@@ -90,6 +90,16 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
 The repository's `.github/workflows/validate.yml` runs the full unittest discovery command on pull requests. **CI results and runtime execution must be linked before these test cases can be marked RESISTED or accepted as validated.** Further controller entry-point inspection remains necessary.
+
+## Implementation finding: direct terminal PASS guard reachability
+
+**Observed from source (2026-10-14):** `tools/assessment_controller.py::transition` accepted `terminal_outcome="PASS"` from an otherwise legal lifecycle state without invoking `assert_full_stack_terminalizable`. A record could therefore omit a material lens and still request terminal PASS through this generic route, bypassing the separate full-stack assertion gate.
+
+**Change on PR #1024:** a pre-mutation assertion now checks full-stack records carrying a lens ledger whenever the requested terminal outcome is PASS. New regression `test_AA09_terminal_transition_cannot_bypass_lens_guard` verifies the rejection and that the original state remains unchanged. This is an implementation-level finding and proposed fix, not an assertion of malicious exploit in a deployed environment.
+
+**Residuals:** the lifecycle's other terminal outcome paths, standalone legacy producers and any caller that omits a lens ledger were not established as fully covered. A future assessment must distinguish explicit full-stack mode from legitimate legacy non-full-stack use. The broader attack-surface matrix remains a set of hypotheses, not a list of proven defects.
+
+Independent protocol: [adversarial assurance reviewer challenge](adversarial-assurance-reviewer-protocol.md).
 
 ## Findings and independent challenge
 
