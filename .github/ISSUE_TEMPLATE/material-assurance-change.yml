@@ -1,0 +1,48 @@
+name: Material assurance change
+description: Track a feature, assurance profile, controller, or architecture change with material assurance implications.
+title: ""
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use for **material assurance changes**. Routine documentation and housekeeping issues need not use this form. Independent reviewability is not an external-audit requirement. See CONTRIBUTING.md.
+  - type: textarea
+    id: proposition
+    attributes:
+      label: Assurance proposition and scope
+      description: Identify the material assurance claim, affected subject, and trust or authority boundary.
+    validations:
+      required: true
+  - type: textarea
+    id: baseline
+    attributes:
+      label: Baseline and provenance
+      description: Canonical references, source pins, trigger and existing evidence, as applicable.
+    validations:
+      required: false
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed change and failure behavior
+      description: Describe intended behavior, compatibility, negative paths and expected safeguards.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria and validation
+      value: |
+        - [ ] Affected assurance claims and authority boundaries are identified.
+        - [ ] Relevant tests and failure paths are implemented or existing evidence is cited.
+        - [ ] Independent reviewability assessed: material claims are reproducible and challengeable, with documented limitations, or a justified NOT_APPLICABLE disposition is recorded.
+        - [ ] Required CI/documentation evidence is linked; unresolved failures remain explicit.
+    validations:
+      required: false
+  - type: textarea
+    id: reviewability
+    attributes:
+      label: Independent reviewability disposition
+      description: State APPLICABLE with evidence/reproduction links, or NOT_APPLICABLE with a brief justification. List meaningful residuals.
+      placeholder: "APPLICABLE / NOT_APPLICABLE; links; limitations"
+    validations:
+      required: false
