@@ -76,6 +76,21 @@ python3 tools/evidence_assertion_assessor.py --self-test
 
 Broader CI/controller tests and repository validation must be discovered from the current codebase before declaring campaign completion. Commands above are **instructions, not success claims**.
 
+## Executable first tranche: AA-07 and AA-09
+
+The synthetic test module [`tests/test_adversarial_assurance_1023.py`](../tests/test_adversarial_assurance_1023.py) adds six narrow tests: a positive full-stack terminalization control, missing material security-lens disposition, unexecuted applicable composition lens, absent mandatory evidence-probe ledger, a ledger missing one required attempt, and an attributable but unavailable evidence attempt whose material RAHP lens remains indeterminate.
+
+**Important scope limitation:** `assert_full_stack_terminalizable` checks the declared full-stack record. The new tests do not establish that *all controller entry points* call this gate, nor do they prove substantive evidence authenticity or sufficiency. In particular, `ATTEMPTED_UNAVAILABLE` is evidence of a recorded attempt, **not** proof of successful evidence acquisition or satisfaction. The separate applicable-lens check must prevent PASS.
+
+Run:
+
+```bash
+python3 -m unittest tests.test_adversarial_assurance_1023 -v
+python3 -m unittest discover -s tests -p 'test_*.py'
+```
+
+The repository's `.github/workflows/validate.yml` runs the full unittest discovery command on pull requests. **CI results and runtime execution must be linked before these test cases can be marked RESISTED or accepted as validated.** Further controller entry-point inspection remains necessary.
+
 ## Findings and independent challenge
 
 Maintain a separate ledger of observed failures with reproduction and regression references. Unexecuted hypotheses are *not findings*. An external reviewer should receive a pinned baseline, supported command set, evidence-record template, safety/scope rules and enough architecture to discover **novel** attacks without receiving only a script for repeating the maintainer's results.
