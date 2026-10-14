@@ -15,6 +15,7 @@ import argparse
 import copy
 import pathlib
 import sys
+import urllib.error
 from typing import Any
 
 import yaml
@@ -35,6 +36,17 @@ DEFAULT_SCOPE = [
     "**/*spec*.md",
     ".github/workflows/**",
 ]
+
+TRANSIENT_HTTP_STATUS = set(range(500, 600)) | {408, 429}
+
+
+class AuthoritativeDiscoveryUnavailable(RuntimeError):
+    """Raised when authoritative discovery cannot be evaluated right now."""
+
+    def __init__(self, failure_class: str, detail: str):
+        super().__init__(detail)
+        self.failure_class = failure_class
+        self.detail = detail
 
 
 def portable_target(target: dict[str, Any]) -> dict[str, Any]:
@@ -59,8 +71,41 @@ def portable_target(target: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _classify_discovery_exception(exc: Exception) -> AuthoritativeDiscoveryUnavailable:
+    if isinstance(exc, urllib.error.HTTPError):
+        status = int(exc.code)
+        url = getattr(exc, "url", "unknown-url")
+        reason = getattr(exc, "reason", "") or getattr(exc, "msg", "") or "HTTP error"
+        if status in TRANSIENT_HTTP_STATUS:
+            return AuthoritativeDiscoveryUnavailable(
+                "authoritative-discovery-unavailable",
+                f"HTTP {status} from {url}: {reason}",
+            )
+        if status in {401, 403}:
+            return AuthoritativeDiscoveryUnavailable(
+                "authoritative-discovery-authentication-or-rate-limit",
+                f"HTTP {status} from {url}: {reason}",
+            )
+        return AuthoritativeDiscoveryUnavailable(
+            "authoritative-discovery-http-error",
+            f"HTTP {status} from {url}: {reason}",
+        )
+    if isinstance(exc, urllib.error.URLError):
+        return AuthoritativeDiscoveryUnavailable(
+            "authoritative-discovery-network-error",
+            f"network error during authoritative discovery: {exc.reason}",
+        )
+    return AuthoritativeDiscoveryUnavailable(
+        "authoritative-discovery-error",
+        f"unexpected authoritative discovery error: {exc}",
+    )
+
+
 def authoritative_repositories(cfg: dict[str, Any]) -> list[dict[str, Any]]:
-    return [portable_target(t) for t in dtg_portfolio.discover(cfg)]
+    try:
+        return [portable_target(t) for t in dtg_portfolio.discover(cfg)]
+    except (urllib.error.HTTPError, urllib.error.URLError) as exc:
+        raise _classify_discovery_exception(exc) from exc
 
 
 def normalized_repositories(profile: dict[str, Any]) -> list[dict[str, Any]]:
@@ -116,10 +161,22 @@ def synchronized_profile(existing: dict[str, Any], expected: list[dict[str, Any]
     return result
 
 
+def _print_discovery_unavailable(exc: AuthoritativeDiscoveryUnavailable) -> None:
+    print("DTG authoritative discovery unavailable:", file=sys.stderr)
+    print(f"  - class: {exc.failure_class}", file=sys.stderr)
+    print(f"  - detail: {exc.detail}", file=sys.stderr)
+    print("Profile synchronization was not evaluated against live authoritative discovery.", file=sys.stderr)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--instance", type=pathlib.Path, default=DEFAULT_INSTANCE)
     parser.add_argument("--profile", type=pathlib.Path, default=DEFAULT_PROFILE)
+    parser.add_argument(
+        "--strict-live-discovery",
+        action="store_true",
+        help="fail --check when authoritative discovery is unavailable; use for scheduled or mainline freshness gates",
+    )
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--write", action="store_true")
@@ -127,7 +184,16 @@ def main() -> int:
 
     cfg = dtg_portfolio.load_yaml(args.instance)
     existing = dtg_portfolio.load_yaml(args.profile)
-    expected = authoritative_repositories(cfg)
+    try:
+        expected = authoritative_repositories(cfg)
+    except AuthoritativeDiscoveryUnavailable as exc:
+        _print_discovery_unavailable(exc)
+        if args.check and exc.failure_class == "authoritative-discovery-unavailable" and not args.strict_live_discovery:
+            print("SKIP DTG profile live-discovery check: authoritative discovery unavailable")
+            return 0
+        print("Use --check without --strict-live-discovery only for PR validation that should not fail on transient upstream availability.", file=sys.stderr)
+        return 1
+
     problems = diff(existing, expected)
 
     if args.check:
