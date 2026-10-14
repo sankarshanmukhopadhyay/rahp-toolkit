@@ -1,0 +1,49 @@
+harms:
+  human:
+    - id: H-HUM-001
+      label: autonomy_loss
+      description: Booking proceeds after the principal withdrew permission.
+    - id: H-HUM-002
+      label: financial_loss
+      description: Unauthorized charge, cancellation penalty, or unrecoverable booking cost.
+    - id: H-HUM-003
+      label: practical_lock_in
+      description: Principal cannot practically reverse or avoid the external booking outcome.
+    - id: H-HUM-004
+      label: privacy_exposure
+      description: Booking metadata or personal travel context is disclosed after authority changed.
+    - id: H-HUM-005
+      label: recourse_burden
+      description: Principal must spend disproportionate effort correcting the unauthorized outcome.
+  authority:
+    - id: H-AUTH-001
+      label: stale_authority_reliance
+      description: Historical approval is treated as current authority.
+    - id: H-AUTH-002
+      label: delegation_overreach
+      description: Sub-agent or tool executes beyond granted scope.
+    - id: H-AUTH-003
+      label: fallback_bypass
+      description: Alternate path avoids the authority gate.
+    - id: H-AUTH-004
+      label: retry_amplification
+      description: Retry or replay completes a prohibited action.
+    - id: H-AUTH-005
+      label: relationship_state_invalidity
+      description: Assessment evidence does not match current relationship state.
+  assurance:
+    - id: H-ASR-001
+      label: false_assurance
+      description: Unsupported evidence is converted into PASS.
+    - id: H-ASR-002
+      label: evidence_laundering
+      description: Evidence from another subject, revision, authority state, or time window is reused.
+    - id: H-ASR-003
+      label: coverage_blindness
+      description: Excluded or untested path is treated as covered.
+    - id: H-ASR-004
+      label: disposition_drift
+      description: Recorded operational restriction is not enforced in deployment.
+    - id: H-ASR-005
+      label: reviewer_misclassification
+      description: Technical-control evidence is over-read as human-outcome evidence.

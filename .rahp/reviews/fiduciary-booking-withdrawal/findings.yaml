@@ -1,0 +1,31 @@
+findings:
+  - id: F-FID-001
+    status: supported_profile_pattern
+    statement: RAHP can represent fiduciary-style assurance as a bounded profile/review fixture without importing fiduciary duties into core.
+    evidence: [README.md, personas.yaml, scenarios.yaml, expected-results.yaml]
+  - id: F-FID-002
+    status: candidate_method_gap
+    statement: Evidence-role closure is useful and should be considered for future reusable method or validator support.
+    evidence: [evidence-manifest.yaml, expected-results.yaml]
+  - id: F-FID-003
+    status: candidate_method_gap
+    statement: Evidence applicability across subject, revision, authority state, relationship state, configuration, and time is a reusable assurance concern.
+    evidence: [evidence-manifest.yaml, scenarios.yaml]
+  - id: F-FID-004
+    status: documentation_boundary
+    statement: Operational disposition must remain separate from runtime authorization and deployed enforcement.
+    evidence: [controls.yaml, guardrails.yaml, expected-results.yaml]
+  - id: F-FID-005
+    status: documentation_boundary
+    statement: Technical-control evidence and human-outcome evidence must not be collapsed.
+    evidence: [persona-contexts.yaml, controls.yaml, expected-results.yaml]
+  - id: F-FID-006
+    status: limitation
+    statement: This fixture is profile-local review material and may not be fully recognized by existing RAHP validators as structured method data.
+    consequence: Schema or validation limitations should be documented rather than patched through premature core expansion.
+
+closure_assessment:
+  acceptance_gate: No withdrawn, missing, stale, contradictory, out-of-scope, or relationship-invalidated authority evidence may produce PASS.
+  status: represented_in_fixture
+  requires_executable_validator_support: true
+  current_tranche_boundary: data_and_review_fixture_only

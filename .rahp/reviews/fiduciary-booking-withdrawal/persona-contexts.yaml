@@ -1,0 +1,43 @@
+persona_contexts:
+  - id: PC-FID-001
+    functional_persona: beneficiary_principal
+    affected_contexts: [financial_constraint, low_digital_literacy]
+    harm_amplifiers: [disproportionate_financial_loss, invalid_consent_inference, increased_recourse_burden]
+    corpus_pressure_dimensions: [lifecycle_current_state, replay_freshness, redress_adverse_decisions]
+    evidence_implications:
+      - consent_log_alone_is_insufficient_for_meaningful_control
+      - withdrawal_record_must_be_bound_to_execution_time
+      - counterparty_outcome_must_be_observed_or_result_is_indeterminate
+  - id: PC-FID-002
+    functional_persona: beneficiary_principal
+    affected_contexts: [assistive_technology_dependent]
+    harm_amplifiers: [accessible_control_path_bypassed, practical_loss_of_control]
+    corpus_pressure_dimensions: [control_enforcement, fallback_path_coverage, accessibility]
+    evidence_implications:
+      - fallback_path_must_be_evidenced
+      - accessible_withdrawal_and_notice_controls_may_be_required
+  - id: PC-FID-003
+    functional_persona: beneficiary_principal
+    affected_contexts: [caregiver_mediated]
+    harm_amplifiers: [contested_authority, stale_relationship_state]
+    corpus_pressure_dimensions: [relationship_state, suspension_restoration, delegation]
+    evidence_implications:
+      - relationship_state_reference_is_required
+      - authority_source_must_match_current_relationship_state
+  - id: PC-FID-004
+    functional_persona: beneficiary_principal
+    affected_contexts: [time_sensitive_travel]
+    harm_amplifiers: [over_blocking_valid_action]
+    corpus_pressure_dimensions: [positive_authorized_execution, current_authority]
+    evidence_implications:
+      - positive_case_remains_required
+      - controls_must_not_convert_valid_current_authority_into_unwarranted_denial
+
+decision_rule:
+  include_overlay_only_when_it_changes:
+    - severity
+    - required_evidence
+    - required_coverage
+    - recourse_requirements
+    - retest_trigger
+    - operational_disposition

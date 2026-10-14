@@ -1,0 +1,36 @@
+personas:
+  - id: P1
+    key: beneficiary_principal
+    label: Beneficiary / principal
+    type: functional_role
+    assurance_relevance: Person whose current permission controls whether paid booking may proceed.
+  - id: P2
+    key: fiduciary_agent_system
+    label: Fiduciary agent / acting system
+    type: functional_role
+    assurance_relevance: Assembled workflow attempting to exercise delegated booking capability.
+  - id: P3
+    key: workspace_policy_gate
+    label: Workspace / policy gate
+    type: functional_role
+    assurance_relevance: Runtime enforcement point for authority, capability, fallback, and retry limits.
+  - id: P4
+    key: merchant_counterparty
+    label: Merchant / booking counterparty
+    type: functional_role
+    assurance_relevance: External system that may complete or reject the transaction.
+  - id: P5
+    key: assessor_reviewer
+    label: Assessor / reviewer
+    type: functional_role
+    assurance_relevance: Reviews whether evidence satisfies the bounded assurance proposition.
+  - id: P6
+    key: responsible_operator
+    label: Responsible operator
+    type: functional_role
+    assurance_relevance: Owns restriction, repair, restoration, recourse, and evidence retention.
+
+rules:
+  - Functional fiduciary roles are not demographic personas.
+  - Affected-context overlays are modeled separately in persona-contexts.yaml.
+  - Role determines authority semantics; affected context determines harm amplification and evidence or coverage obligations.

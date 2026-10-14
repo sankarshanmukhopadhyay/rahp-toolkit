@@ -1,0 +1,33 @@
+controls:
+  - id: C-FID-001
+    label: current_authority_check
+    description: Evaluate current authority immediately before paid booking execution.
+    mitigates: [R-FID-001, R-FID-005]
+  - id: C-FID-002
+    label: withdrawal_propagation
+    description: Propagate withdrawal to the policy gate and execution path before future execution.
+    mitigates: [R-FID-001, R-FID-003]
+  - id: C-FID-003
+    label: capability_bounding
+    description: Bind booking capability to explicit scope, amount, counterparty, and time constraints.
+    mitigates: [R-FID-005]
+  - id: C-FID-004
+    label: fallback_path_enforcement
+    description: Require every configured fallback path to call the same current-authority gate.
+    mitigates: [R-FID-002]
+  - id: C-FID-005
+    label: retry_replay_protection
+    description: Make retries idempotent and re-evaluate authority after withdrawal.
+    mitigates: [R-FID-003]
+  - id: C-FID-006
+    label: evidence_applicability_check
+    description: Bind evidence to subject, revision, authority state, relationship state, configuration, and time window.
+    mitigates: [R-FID-004]
+  - id: C-FID-007
+    label: operational_restriction_enforcement
+    description: Verify that recorded restrictions are deployed in the execution path.
+    mitigates: [R-FID-006]
+  - id: C-FID-008
+    label: human_outcome_evidence_separation
+    description: Require separate evidence for meaningful human control; do not infer it from consent logs alone.
+    mitigates: [R-FID-007]
