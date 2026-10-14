@@ -423,6 +423,11 @@ def transition(record: dict[str, Any], to_state: str, reason: str, *, blocking_r
     if to_state == "TERMINAL":
         if terminal_outcome not in TERMINALS:
             raise ValueError("terminal transition requires PASS/FAIL/INDETERMINATE/NOT_APPLICABLE/UNMAPPED")
+        # A full-stack PASS must not bypass the assurance/evidence/lens gate by
+        # calling the generic lifecycle transition directly. Validate before
+        # mutating the terminal record so rejected transitions are atomic.
+        if terminal_outcome == "PASS" and isinstance(record.get("lenses"), dict):
+            assert_full_stack_terminalizable(record)
         record["terminal_outcome"] = terminal_outcome
     elif terminal_outcome is not None:
         raise ValueError("terminal_outcome only valid for TERMINAL")
