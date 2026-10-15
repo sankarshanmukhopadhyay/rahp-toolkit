@@ -42,7 +42,17 @@ def main() -> int:
     release_status = (release_declaration.get("release") or {}).get("status")
     # The review pack is pinned to the last published release during staging.
     # A candidate must not silently become the reviewed/assured baseline.
-    review_release = versioning.get("stable_release") if release_status == "released" else (load_yaml("method/v2.7-release-candidate.yaml").get("candidate") or {}).get("base_tag")
+    if release_status == "released":
+        review_release = versioning.get("stable_release")
+    else:
+        tag = str((release_declaration.get("release") or {}).get("tag") or "")
+        parts = tag[1:].split(".") if tag.startswith("v") else []
+        candidate_path = f"method/v{parts[0]}.{parts[1]}-release-candidate.yaml" if len(parts) >= 2 else ""
+        if not candidate_path or not (ROOT / candidate_path).is_file():
+            errors.append(f"current candidate manifest not found for {tag!r}")
+            review_release = None
+        else:
+            review_release = (load_yaml(candidate_path).get("candidate") or {}).get("base_tag")
     ledger = load_yaml("method/review/claim-evidence-ledger.yaml")
     challenges = load_yaml("method/review/false-assurance-challenges.yaml")
 

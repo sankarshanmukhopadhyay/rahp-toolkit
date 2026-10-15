@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.7.0 · Common Rose · CC-BY 4.0
+Release v2.8.0 · Common Birdwing · CC-BY 4.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
@@ -16,6 +16,19 @@ RAHP is deliberately evidence-conservative: **missing evidence never becomes PAS
 - Independent adoption remains **NOT_YET_TESTED**. Optional profiles do not establish terminal assurance or independent reproduction.
 
 The release security disposition was bounded and non-independent; documented residual risks were accepted for this release, not remediated or independently audited. See the [v2.7.0 release notes](docs/releases/v2.7.0.md), [qualification record](method/v2.7-release-qualification.yaml), [security disposition](docs/review/v27-release-security-disposition.md), and [GitHub release](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.7.0).
+
+## v2.8.0 - release candidate: comparative, adversarial and consumer-interaction assurance
+
+v2.8.0 packages the post-v2.7 work into an additive release candidate while preserving the stable engine/result/evidence compatibility boundary.
+
+- Generic comparative assurance can compare arbitrary source-pinned assessment or release sets without making Dogwood/Eucalyptus-specific assumptions.
+- Adversarial assurance, reviewer protocols and evidence ledgers strengthen independent challenge and reviewability of material assurance claims.
+- Agent authority/continuity and lifecycle-continuation checks preserve the distinction between identity, lineage, historical validity and current authority.
+- Consumer-facing wallets, VTAs, browsers and agent interfaces can emit framework-neutral evidence through `rahp-evidence-producer-result/v1`; UI success never becomes authorization or terminal PASS.
+- Synthetic observability-harm vectors and source-pinned Eucalyptus evidence extend bounded evidence without claiming deployment-wide certification.
+- Release publication is hardened with declaration-driven preflight/postflight checks and idempotent release reconciliation.
+
+The stable compatibility authority remains `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1`. Independent external adoption remains **NOT_YET_TESTED**. See the [v2.8.0 release notes](docs/releases/v2.8.0.md) and [qualification record](method/v2.8-release-qualification.yaml).
 
 ## Stable foundation established in v2.6.0
 
@@ -114,11 +127,11 @@ DPIP is an independently governed privacy specialist that can return portable ex
 
 The [Eucalyptus clean-room campaign](docs/reports/eucalyptus-clean-room-2026-10-08.md) examines the 18 coordinated `VTI-Eucalyptus` repositories with fresh source-pinned evidence and explicit component/composition limits. Its execution and assurance outcomes are separate; no historical PASS is inherited.
 
-v2.7.0 preserves Full-Stack Assurance Orchestration and Explicit Evidence State as the stable RAHP product foundation. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
+v2.8.0 preserves Full-Stack Assurance Orchestration and Explicit Evidence State while adding comparative, adversarial and consumer-interaction assurance surfaces. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
 
-DPIP and the Trust Protocol Interop Lab remain independently governed collaborators. Consult each repository’s release records for current versions. The repositories are joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
+DPIP and the Trust Protocol Interop Lab remain independently governed collaborators. Consult each repository's release records for current versions. The repositories are joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
 
-The v2.7.0 release retains the stable v1 engine/result/evidence contracts and adds optional experimental profiles and adoption material without making those profiles part of terminal assurance.
+The v2.8.0 release candidate retains the stable v1 engine/result/evidence contracts. Consumer-interaction evidence, comparative assurance and adversarial qualification remain bounded by their declared evidence and do not manufacture terminal assurance.
 
 ## Quick start
 
@@ -132,15 +145,13 @@ Start with [How RAHP works](docs/how-rahp-works.md), [RAHP data model](docs/data
 
 ## Current release
 
-v2.7.0 **Common Rose** (*Pachliopta aristolochiae*) is the current **published and qualified** release. It retains the v2.6 stable assurance contracts and adds maintenance, adoption guidance, and optional experimental profiles. R1–R3 and sociotechnical assurance do not change terminal assurance semantics; independent adoption remains **NOT_YET_TESTED**.
+v2.8.0 **Common Birdwing** (*Troides helena*) is the current **release candidate**. It adds comparative assurance, adversarial qualification, agent/lifecycle authority checks, consumer-interaction evidence integration, observability-harm vectors and publication hardening without changing the stable engine/result/evidence contracts.
 
-- [v2.7.0 release notes](docs/releases/v2.7.0.md)
-- [v2.7.0 qualification contract](method/v2.7-release-qualification.yaml)
-- [v2.7.0 release evidence](method/v2.7-release-evidence.json)
-- [v2.7.0 security disposition](docs/review/v27-release-security-disposition.md)
-- [GitHub Release v2.7.0](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.7.0)
-- [VTI assessment index](docs/vti-assessment-index.md)
-- [VTI programme reconciliation](docs/vti-programme-reconciliation.md)
+- [v2.8.0 release notes](docs/releases/v2.8.0.md)
+- [v2.8.0 qualification contract](method/v2.8-release-qualification.yaml)
+- [v2.8.0 release evidence](method/v2.8-release-evidence.json)
+- [Consumer-interaction assurance](docs/consumer-interaction-assurance.md)
+- [Comparative assurance digest](docs/comparative-assurance-digest.md)
 - [Project status](PROJECT-STATUS.yaml)
 - [Roadmap](ROADMAP.md)
 - [Release history](CHANGELOG.md)
@@ -151,6 +162,7 @@ Historical release records remain immutable. Release presentation metadata follo
 
 | Version | Codename | Release boundary |
 |---|---|---|
+| v2.8.0 | **Common Birdwing** | Comparative, Adversarial and Consumer Interaction Assurance |
 | v2.7.0 | **Common Rose** | Qualified maintenance and optional experimental profiles |
 | v2.6.0 | **Commander** | Full-Stack Assurance Orchestration and Explicit Evidence State |
 | v2.5.0 | **Psyche** | Continuous Realization Assurance and Portable Adoption |

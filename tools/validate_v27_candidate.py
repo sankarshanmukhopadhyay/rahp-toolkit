@@ -33,21 +33,25 @@ def validate(root: Path = ROOT) -> list[str]:
     if candidate.get("release_sha") is not None or candidate.get("codename") != "Common Rose":
         errors.append("candidate requires governed name but cannot claim qualified release SHA")
     current = (release.get("release") or {})
-    if current.get("tag") != "v2.7.0":
-        errors.append("current declaration must identify v2.7.0")
-    if current.get("status") == "candidate":
-        if current.get("qualification_status") != "candidate":
-            errors.append("candidate release declaration must remain candidate-qualified")
-    elif current.get("status") == "released":
-        if current.get("qualification_status") != "qualified":
-            errors.append("released declaration must be qualified")
-        qualification = yaml.safe_load((root / "method/v2.7-release-qualification.yaml").read_text(encoding="utf-8")) or {}
-        if qualification.get("state") != "QUALIFIED" or qualification.get("release_cut", {}).get("publication_authorized") is not True:
-            errors.append("released declaration requires authorized qualified v2.7 manifest")
-    else:
-        errors.append("release declaration must be candidate or released")
-    if versioning.get("stable_release") != "v2.7.0":
-        errors.append("stable versioning declaration changed before qualification")
+    # Historical candidate validation must not pin the repository's current
+    # release metadata forever. If v2.7 is still current, preserve its
+    # candidate/released consistency checks. If a later release is current,
+    # validate the immutable v2.7 candidate artifact without requiring
+    # method/release.yaml or method/versioning.yaml to remain v2.7.
+    if current.get("tag") == "v2.7.0":
+        if current.get("status") == "candidate":
+            if current.get("qualification_status") != "candidate":
+                errors.append("candidate release declaration must remain candidate-qualified")
+        elif current.get("status") == "released":
+            if current.get("qualification_status") != "qualified":
+                errors.append("released declaration must be qualified")
+            qualification = yaml.safe_load((root / "method/v2.7-release-qualification.yaml").read_text(encoding="utf-8")) or {}
+            if qualification.get("state") != "QUALIFIED" or qualification.get("release_cut", {}).get("publication_authorized") is not True:
+                errors.append("released declaration requires authorized qualified v2.7 manifest")
+        else:
+            errors.append("release declaration must be candidate or released")
+        if versioning.get("stable_release") != "v2.7.0":
+            errors.append("stable versioning declaration changed while v2.7 remains current")
     expected = {
         "engine": "rahp-engine-contract-v1",
         "engine_revision": "1.3",

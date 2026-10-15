@@ -18,15 +18,15 @@ class CandidateQualificationTests(unittest.TestCase):
 
     def test_historical_candidate_remains_non_publishing_after_promotion(self):
         manifest = yaml.safe_load((ROOT / "method/v2.7-release-candidate.yaml").read_text())
-        release = yaml.safe_load((ROOT / "method/release.yaml").read_text())
+        qualification = yaml.safe_load((ROOT / "method/v2.7-release-qualification.yaml").read_text())
         self.assertEqual(manifest["candidate"]["status"], "prequalification")
         self.assertFalse(manifest["candidate"]["publication_authorized"])
         self.assertIsNone(manifest["candidate"]["release_sha"])
         self.assertEqual(manifest["candidate"]["codename"], "Common Rose")
-        self.assertEqual(release["release"]["tag"], "v2.7.0")
-        self.assertIn(release["release"]["status"], {"candidate", "released"})
-        if release["release"]["status"] == "released":
-            self.assertEqual(release["release"]["qualification_status"], "qualified")
+        self.assertEqual(manifest["candidate"]["proposed_tag"], "v2.7.0")
+        self.assertEqual(qualification["release"], "v2.7.0")
+        self.assertEqual(qualification["state"], "QUALIFIED")
+        self.assertTrue(qualification["release_cut"]["publication_authorized"])
 
 
 if __name__ == "__main__":

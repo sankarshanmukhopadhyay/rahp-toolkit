@@ -1,0 +1,21 @@
+{
+  "contract": "rahp-release-evidence/v1",
+  "candidate_version": "v2.8.0",
+  "candidate_sha": null,
+  "publication_authorized": false,
+  "gates": {
+    "full_regression": {"result": "PENDING", "candidate_sha": null, "source": null},
+    "typescript_conformance": {"result": "PENDING", "candidate_sha": null, "source": null},
+    "stable_compatibility": {"result": "PENDING", "candidate_sha": null, "source": null},
+    "docs_rendering": {"result": "PENDING", "candidate_sha": null, "source": null},
+    "publication_metadata": {"result": "PENDING", "candidate_sha": null, "source": null},
+    "release_publication_preflight": {"result": "PENDING", "candidate_sha": null, "source": null},
+    "security_review": {"result": "PENDING", "candidate_sha": null, "source": null},
+    "owner_approval": {
+      "result": "PASS",
+      "candidate_sha": null,
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1034",
+      "decision": "GO"
+    }
+  }
+}
