@@ -64,6 +64,11 @@
     {
       "version": "v2.7.0",
       "codename": "Common Rose",
+      "status": "published"
+    },
+    {
+      "version": "v2.8.0",
+      "codename": "Common Birdwing",
       "status": "candidate"
     }
   ]
