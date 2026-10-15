@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 2.7.0
-development_target: 2.7.0
-release_status: released
-qualification_status: qualified
-qualification_contract: method/v2.7-release-qualification.yaml
+stable_release: 2.8.0
+development_target: 2.8.0
+release_status: candidate
+qualification_status: candidate
+qualification_contract: method/v2.8-release-qualification.yaml
 release_name:
-  common_name: Common Rose
-  scientific_name: Pachliopta aristolochiae
+  common_name: Common Birdwing
+  scientific_name: Troides helena
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-10-08'
+  selected_on: '2026-10-15'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -26,23 +26,21 @@ release_naming:
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
   selection: random-at-release-time
 release_intent: >-
-  v2.6.0 Full-Stack Assurance Orchestration and Explicit Evidence State packages
-  independent process/assurance/evidence dimensions, explicit material-lens disposition,
-  attributable required-evidence attempts, composition/version-skew reasoning, privacy
-  catalogue advances and measured execution engineering as stable additive capabilities
-  without changing the v1 engine/result/evidence compatibility families.
+  v2.8.0 packages comparative assurance, adversarial assurance qualification,
+  agent authority and continuity, lifecycle-continuation authority, consumer-interaction
+  evidence integration, observability harm analysis and release-publication hardening as
+  additive capabilities while preserving the stable v1 engine/result/evidence contracts.
 development_posture: >-
-  v2.6 preserves evidence-conservative materiality-bounded assurance while making full-stack
-  orchestration explicit. Process completion is not assurance success; every material lens
-  must be dispositioned; required evidence attempts must be attributable; and applicable
-  unexecuted work remains INDETERMINATE. Experimental policy-as-subject and decision-resolution
-  research remain outside the stable boundary.
+  v2.8 remains evidence-conservative and materiality-bounded. Comparative or UI evidence
+  cannot manufacture authority or terminal PASS; missing, stale, contradictory or external
+  runtime evidence remains explicit. Research-only fiduciary work and deployment-specific
+  runtime residuals remain outside the stable capability boundary unless separately qualified.
 post_v2_5_programme:
   issue: 882
   name: full-stack-assurance-orchestration-and-explicit-evidence-state
   release_commitment: v2.6.0-qualified
   current_portfolio_context:
-    rahp: 2.6.0
+    rahp: 2.8.0
     dpip: 0.3.0
     interop_lab: 0.7.0
   invariants:
