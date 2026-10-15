@@ -17,9 +17,9 @@ RAHP is deliberately evidence-conservative: **missing evidence never becomes PAS
 
 The release security disposition was bounded and non-independent; documented residual risks were accepted for this release, not remediated or independently audited. See the [v2.7.0 release notes](docs/releases/v2.7.0.md), [qualification record](method/v2.7-release-qualification.yaml), [security disposition](docs/review/v27-release-security-disposition.md), and [GitHub release](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.7.0).
 
-## v2.8.0 - release candidate: comparative, adversarial and consumer-interaction assurance
+## v2.8.0 — qualified release: comparative, adversarial and consumer-interaction assurance
 
-v2.8.0 packages the post-v2.7 work into an additive release candidate while preserving the stable engine/result/evidence compatibility boundary.
+**Published and qualified on 2026-10-15.** v2.8.0 packages the post-v2.7 work into an additive release while preserving the stable engine/result/evidence compatibility boundary.
 
 - Generic comparative assurance can compare arbitrary source-pinned assessment or release sets without making Dogwood/Eucalyptus-specific assumptions.
 - Adversarial assurance, reviewer protocols and evidence ledgers strengthen independent challenge and reviewability of material assurance claims.
@@ -131,7 +131,7 @@ v2.8.0 preserves Full-Stack Assurance Orchestration and Explicit Evidence State 
 
 DPIP and the Trust Protocol Interop Lab remain independently governed collaborators. Consult each repository's release records for current versions. The repositories are joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
 
-The v2.8.0 release candidate retains the stable v1 engine/result/evidence contracts. Consumer-interaction evidence, comparative assurance and adversarial qualification remain bounded by their declared evidence and do not manufacture terminal assurance.
+The v2.8.0 qualified release retains the stable v1 engine/result/evidence contracts. Consumer-interaction evidence, comparative assurance and adversarial qualification remain bounded by their declared evidence and do not manufacture terminal assurance.
 
 ## Quick start
 
@@ -145,7 +145,7 @@ Start with [How RAHP works](docs/how-rahp-works.md), [RAHP data model](docs/data
 
 ## Current release
 
-v2.8.0 **Common Birdwing** (*Troides helena*) is the current **release candidate**. It adds comparative assurance, adversarial qualification, agent/lifecycle authority checks, consumer-interaction evidence integration, observability-harm vectors and publication hardening without changing the stable engine/result/evidence contracts.
+v2.8.0 **Common Birdwing** (*Troides helena*) is the current **qualified release**. It adds comparative assurance, adversarial qualification, agent/lifecycle authority checks, consumer-interaction evidence integration, observability-harm vectors and publication hardening without changing the stable engine/result/evidence contracts.
 
 - [v2.8.0 release notes](docs/releases/v2.8.0.md)
 - [v2.8.0 qualification contract](method/v2.8-release-qualification.yaml)
