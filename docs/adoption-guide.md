@@ -72,6 +72,8 @@ subject
 
 Read [How RAHP works](how-rahp-works.md), [Evidence classification](evidence-classification.md), [Assurance evaluation](assurance-evaluation.md) and [Interpreting results](interpreting-results.md).
 
+If your evidence comes from a wallet, VTA, browser, agent interface or other consumer-facing interaction, see [Consumer-interaction assurance](consumer-interaction-assurance.md) for the framework-neutral producer boundary and worked mapping.
+
 ### Track C — composed assurance
 
 Use this when RAHP determines that a bounded question needs a specialist assessor, an external evidence producer, or both.
