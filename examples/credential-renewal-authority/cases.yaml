@@ -1,0 +1,49 @@
+schema_version: "1.0"
+id: credential-renewal-authority
+purpose: >
+  Regression fixture for lifecycle-continuation assurance. It demonstrates that unchanged claims, successful
+  reissuance, historical validity or partial cascade completion do not by themselves establish current authority.
+portable_assurance:
+  risk_patterns:
+    - RKP-AUTH-02
+    - RKP-AUTH-05
+    - RKP-DEL-03
+  control_patterns:
+    - CTP-AUTH-02
+    - CTP-DEL-02
+  guardrail_patterns:
+    - GRP-AUTH-02
+  assurance_patterns:
+    - ATP-AUTH-03
+  evidence_patterns:
+    - EVP-AUTH-01
+    - EVP-DEL-02
+cases:
+  - id: CRA-001
+    name: deliberate non-renewal
+    authority_evidence: denied
+    dependency_state: not_applicable
+    historical_evidence: preserved
+    expected_decision: DENY
+    rationale: A prior automation preference cannot override an explicit decision not to continue authority.
+  - id: CRA-002
+    name: successor without dependent rebinding
+    authority_evidence: established_for_successor
+    dependency_state: unresolved
+    historical_evidence: preserved
+    expected_decision: INDETERMINATE
+    rationale: Authority for the successor does not carry forward dependent consent, delegation or attestation.
+  - id: CRA-003
+    name: partial cascade
+    authority_evidence: established_for_parent
+    dependency_state: partial
+    historical_evidence: preserved
+    expected_decision: INDETERMINATE
+    rationale: Successful parent renewal cannot be reported as successful continuation of unresolved dependents.
+  - id: CRA-004
+    name: unchanged claims with current continuation authority
+    authority_evidence: established
+    dependency_state: satisfied
+    historical_evidence: preserved
+    expected_decision: ALLOW
+    rationale: Automation is eligible only because current continuation authority and all required dependencies are established.
