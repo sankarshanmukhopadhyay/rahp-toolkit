@@ -35,6 +35,35 @@ An assessor should seek evidence for:
 - Missing, stale, ambiguous, conflicting or unsupported material authority evidence remains **INDETERMINATE/AMBER** or a stricter repository-defined posture; it MUST NOT become PASS.
 - Reputation, capability, identity, discovery and assurance evidence may inform the assessment but cannot create authority.
 
+## Lifecycle continuation and renewal
+
+Renewal, reissuance, supersession or another operation that extends consequential state is itself an authority
+boundary when continuation requires a current decision. Unchanged claims do not prove unchanged authority.
+
+Apply `ATP-AUTH-03` where a system can continue a credential, delegation, entitlement, relationship, consent or
+dependent credential state. The assessment should distinguish:
+
+1. **request initiation** — whether a wallet or agent may ask for renewal automatically;
+2. **issuer continuation authority** — whether the issuer may reissue or extend the credential under current policy;
+3. **holder agency** — whether fresh consent, acknowledgement or authorization is required;
+4. **dependent applicability** — whether statements, delegations, attestations or other credentials bound to the old
+   object remain applicable to a successor;
+5. **historical evidence** — whether an older object remains usable to resolve or verify a historical statement without
+   being accepted as current authority.
+
+Minimum negative vectors are:
+
+| Vector | Required assurance posture |
+| --- | --- |
+| Deliberate non-renewal or explicit withdrawal | continuation is blocked; prior automation permission cannot revive authority |
+| Missing, stale, unavailable or contradictory continuation evidence | **INDETERMINATE/AMBER** or stricter; never PASS |
+| Successor credential with no fresh dependent binding | dependent consent, delegation or attestation is not carried forward by implication |
+| Partial cascade | completed nodes remain distinguishable from blocked or unresolved dependents; the whole graph is not reported as current |
+| Historical credential needed to resolve an earlier digest-bound statement | historical verification remains distinct from acceptance for current use |
+
+A standing automation preference can authorize a request where policy permits. It does not itself authorize the issuer
+to continue authority, nor does issuer-side automation substitute for a fresh holder act when one is required.
+
 ## Boundary
 
 RAHP evaluates risks, harms, security/composition concerns and assurance evidence. It does not define the underlying mandate protocol, negotiation state machine, runtime admission policy or settlement semantics.
