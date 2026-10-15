@@ -93,8 +93,7 @@ jobs:
         if: steps.publication.outputs.publish == 'true'
         run: python3 tools/release.py qualify
       - name: Require pinned v2.7 qualification evidence and explicit GO
-        if: steps.publication.outputs.publish == 'true'
-        if: steps.release.outputs.tag == 'v2.7.0'
+        if: steps.publication.outputs.publish == 'true' && steps.release.outputs.tag == 'v2.7.0'
         env:
           RELEASE_SHA: ${{ github.sha }}
         shell: bash
@@ -174,8 +173,7 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name > "$RUNNER_TEMP/latest-release-tag"
           python3 tools/verify_published_release.py postflight "$RUNNER_TEMP/published-release.json" "$NOTES_PATH" "$TAG" "$TITLE" "$(cat "$RUNNER_TEMP/latest-release-tag")"
       - name: Record publication outcome
-        if: steps.publication.outputs.publish == 'true'
-        if: success()
+        if: success() && steps.publication.outputs.publish == 'true'
         env:
           TAG: ${{ steps.release.outputs.tag }}
           TITLE: ${{ steps.release.outputs.title }}
