@@ -57,14 +57,8 @@ jobs:
       - name: Resolve release declaration
         id: release
         run: python3 tools/release.py metadata --github-output "$GITHUB_OUTPUT"
-      - name: Verify target branch
-        env:
-          TARGET_BRANCH: ${{ steps.release.outputs.target_branch }}
-        run: |
-          test "$GITHUB_REF_NAME" = "$TARGET_BRANCH" || { echo "::error::release publication must run from declared branch $TARGET_BRANCH"; exit 1; }
-      - name: Requalify current release state
-        run: python3 tools/release.py qualify
-      - name: Require explicit maintainer publication authorization
+      - name: Classify publication readiness
+        id: publication
         env:
           REQUESTED_TAG: ${{ inputs.release_tag }}
           CONFIRMATION: ${{ inputs.confirm_publication }}
@@ -77,15 +71,29 @@ jobs:
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             test "$CONFIRMATION" = PUBLISH || { echo "::error::Manual publication requires PUBLISH"; exit 1; }
             test "$REQUESTED_TAG" = "$DECLARED_TAG" || { echo "::error::Requested tag must match declaration"; exit 1; }
+            test "$RELEASE_STATUS" = released || { echo "::error::Manual publication requires a released declaration"; exit 1; }
+            test "$QUALIFICATION_STATUS" = qualified || { echo "::error::Manual publication requires a qualified declaration"; exit 1; }
+            echo "publish=true" >> "$GITHUB_OUTPUT"
           else
             test "$GITHUB_EVENT_NAME" = push || { echo "::error::Unsupported publication event"; exit 1; }
-            # A merge to protected main is the authorization to evaluate the
-            # declared, qualified release; no separate maintainer dispatch.
+            if [ "$RELEASE_STATUS" = released ] && [ "$QUALIFICATION_STATUS" = qualified ]; then
+              echo "publish=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "publish=false" >> "$GITHUB_OUTPUT"
+              echo "Release declaration is $RELEASE_STATUS/$QUALIFICATION_STATUS; publication is intentionally skipped."
+            fi
           fi
-          test "$RELEASE_STATUS" = released || { echo "::error::Release declaration must be released"; exit 1; }
-          test "$QUALIFICATION_STATUS" = qualified || { echo "::error::Release must be qualified"; exit 1; }
+      - name: Verify target branch
+        if: steps.publication.outputs.publish == 'true'
+        env:
+          TARGET_BRANCH: ${{ steps.release.outputs.target_branch }}
+        run: |
+          test "$GITHUB_REF_NAME" = "$TARGET_BRANCH" || { echo "::error::release publication must run from declared branch $TARGET_BRANCH"; exit 1; }
+      - name: Requalify current release state
+        if: steps.publication.outputs.publish == 'true'
+        run: python3 tools/release.py qualify
       - name: Require pinned v2.7 qualification evidence and explicit GO
-        if: steps.release.outputs.tag == 'v2.7.0'
+        if: steps.publication.outputs.publish == 'true' && steps.release.outputs.tag == 'v2.7.0'
         env:
           RELEASE_SHA: ${{ github.sha }}
         shell: bash
@@ -110,10 +118,12 @@ jobs:
           candidate_sha="$(python3 -c 'import json; print(json.load(open("method/v2.7-release-evidence.json"))["candidate_sha"])')"
           git merge-base --is-ancestor "$candidate_sha" "$RELEASE_SHA" || { echo "::error::Evidence candidate SHA is not an ancestor of release commit"; exit 1; }
       - name: Reject stale candidate release notes before publication
+        if: steps.publication.outputs.publish == 'true'
         env:
           NOTES_PATH: ${{ steps.release.outputs.notes_path }}
         run: python3 tools/verify_published_release.py preflight "$NOTES_PATH"
       - name: Create or verify declared release tag
+        if: steps.publication.outputs.publish == 'true'
         env:
           TAG: ${{ steps.release.outputs.tag }}
           VERSION: ${{ steps.release.outputs.version }}
@@ -133,6 +143,7 @@ jobs:
             git push origin "$TAG"
           fi
       - name: Publish or reconcile declared GitHub Release
+        if: steps.publication.outputs.publish == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag }}
@@ -149,6 +160,7 @@ jobs:
           fi
           gh release view "$TAG" >/dev/null
       - name: Verify published release matches declaration
+        if: steps.publication.outputs.publish == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag }}
@@ -161,7 +173,7 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name > "$RUNNER_TEMP/latest-release-tag"
           python3 tools/verify_published_release.py postflight "$RUNNER_TEMP/published-release.json" "$NOTES_PATH" "$TAG" "$TITLE" "$(cat "$RUNNER_TEMP/latest-release-tag")"
       - name: Record publication outcome
-        if: success()
+        if: success() && steps.publication.outputs.publish == 'true'
         env:
           TAG: ${{ steps.release.outputs.tag }}
           TITLE: ${{ steps.release.outputs.title }}
