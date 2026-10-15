@@ -46,7 +46,8 @@ def main() -> int:
         review_release = versioning.get("stable_release")
     else:
         tag = str((release_declaration.get("release") or {}).get("tag") or "")
-        candidate_path = f"method/{tag[1:]}-release-candidate.yaml" if tag.startswith("v") else ""
+        parts = tag[1:].split(".") if tag.startswith("v") else []
+        candidate_path = f"method/v{parts[0]}.{parts[1]}-release-candidate.yaml" if len(parts) >= 2 else ""
         if not candidate_path or not (ROOT / candidate_path).is_file():
             errors.append(f"current candidate manifest not found for {tag!r}")
             review_release = None
