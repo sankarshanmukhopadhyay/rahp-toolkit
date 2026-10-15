@@ -37,6 +37,22 @@ class PublicationGuardTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, source)
 
+
+    def test_candidate_push_is_a_clean_non_publication_state(self):
+        source = (ROOT / ".github/workflows/release.yml").read_text()
+        self.assertIn("Classify publication readiness", source)
+        self.assertIn('echo "publish=false" >> "$GITHUB_OUTPUT"', source)
+        self.assertIn("publication is intentionally skipped", source)
+        self.assertIn("if: steps.publication.outputs.publish == 'true'", source)
+        self.assertIn(
+            "if: success() && steps.publication.outputs.publish == 'true'",
+            source,
+        )
+        # Manual recovery remains fail-closed when the declaration is not
+        # explicitly released and qualified.
+        self.assertIn("Manual publication requires a released declaration", source)
+        self.assertIn("Manual publication requires a qualified declaration", source)
+
     def test_publication_is_serialized_and_fail_closed(self):
         workflow = yaml.safe_load((ROOT / ".github/workflows/release.yml").read_text())
         self.assertFalse(workflow["concurrency"]["cancel-in-progress"])
