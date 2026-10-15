@@ -35,6 +35,30 @@ records:
   - EVP-AUTH-01
   automation_level: automated
   assurance_level: A3
+- id: ATP-AUTH-03
+  name: Lifecycle continuation authority test
+  assertion: Renewal, reissuance or successor creation that extends consequential state proceeds only when current
+    continuation authority is positively established, and does not implicitly carry forward consent, delegation,
+    attestation or dependent validity.
+  control_patterns:
+  - CTP-AUTH-02
+  - CTP-DEL-02
+  guardrail_patterns:
+  - GRP-AUTH-02
+  preconditions:
+  - system or specification supports renewal, reissuance, supersession or another lifecycle-continuation operation
+  procedure: Exercise unchanged-claims renewal, deliberate non-renewal, successor/dependency inheritance and partial
+    cascade cases; inspect the authority decision, policy basis, dependent state and any holder approval required.
+  expected_result: Explicit denial blocks continuation; missing, stale, unavailable or contradictory authority remains
+    non-PASS; successor credentials do not inherit consent, delegation, attestation or dependent validity without
+    separately sufficient evidence; historical evidence remains distinguishable from current authority.
+  failure_interpretation: Automation can convert prior validity, successful reissuance, unchanged claims or partial
+    cascade completion into current authority without sufficient contemporary evidence.
+  evidence_patterns:
+  - EVP-AUTH-01
+  - EVP-DEL-02
+  automation_level: assisted
+  assurance_level: A3
 - id: ATP-DEL-01
   name: Delegation attenuation test
   assertion: Each downstream delegation is equal to or narrower than the authority received upstream.
