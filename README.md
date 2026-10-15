@@ -131,7 +131,7 @@ Optional reasoning surfaces remain bounded:
 
 These surfaces do not silently change terminal RAHP assurance semantics.
 
-## Architecture and authority boundaries
+## Current architecture
 
 RAHP has a portable method/engine core plus consumer-specific profiles, instances, corpora and worked assessments. The generic engine owns lifecycle, proposition/evidence contracts, inference boundaries and terminal assurance semantics; consumer material demonstrates those contracts without becoming a dependency of the core.
 
