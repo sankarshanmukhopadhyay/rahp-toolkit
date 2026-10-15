@@ -9,14 +9,21 @@ parent: Reference
 
 ## Unreleased
 
-No subsequent release is announced. Post-release security hardening and evidence follow-up is tracked in [#958](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/958).
+No changes are recorded after the v2.8.0 release candidate.
 
-- Added portable lifecycle-continuation assurance for credential renewal/reissuance without introducing a duplicate
-  renewal-specific risk pattern. `ATP-AUTH-03` composes existing authority and revocation risks/controls, with a
-  maintained regression example covering deliberate non-renewal, dependency inheritance, partial cascade and a
-  positive current-authority case.
-- Clarified that action-time authority evidence must cover any required continuation authorization and preserve the
-  distinction between historical evidence, current authority and successor applicability.
+## v2.8.0 - 2026-10-15 - Common Birdwing
+
+- Added generic comparative assurance for arbitrary source-pinned assessment/release sets with explicit comparability and judgment boundaries.
+- Added adversarial assurance qualification, cross-boundary challenge cases, evidence ledgers and reviewer protocol.
+- Added agent-authority/continuity assurance and lifecycle-continuation authority checks.
+- Added framework-neutral consumer-interaction evidence guidance and contract regressions for wallet and VTA-shaped observations.
+- Added bounded observability-induced-harm evaluation using synthetic DTFC vectors.
+- Added Eucalyptus clean-room/native evidence packages and release-set comparison evidence.
+- Hardened release publication with declaration-driven preflight/postflight verification and idempotent reconciliation.
+- Stable engine contract v1 revision 1.3, normalized result schema 1 and evidence-retention v1 remain unchanged.
+- Independent external adoption remains NOT_YET_TESTED; deployment-specific runtime residuals remain explicit.
+
+See [v2.8.0 release notes](docs/releases/v2.8.0.md).
 
 ## v2.7.0 — 2026-10-08 — Common Rose
 
