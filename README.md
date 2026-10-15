@@ -5,48 +5,55 @@ Release v2.8.0 · Common Birdwing · CC-BY 4.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
-RAHP is deliberately evidence-conservative: **missing evidence never becomes PASS**. Workflow success is not assurance success. A component PASS does not imply a composition PASS, and normative convergence does not silently become implementation conformance.
+RAHP is deliberately evidence-conservative:
 
-## v2.7.0 — qualified release: maintenance and optional profiles
+- **missing evidence never becomes PASS**;
+- workflow success is not assurance success;
+- a component PASS does not imply a composition PASS;
+- normative convergence does not silently become implementation conformance;
+- identity or lineage evidence does not silently become authorization.
 
-**Published and qualified on 2026-10-08.** v2.7.0 consolidates post-v2.6 maintenance of assessment ownership, routing and onboarding, alongside optional experimental sociotechnical and reasoning profiles. It retains the v2.6.0 stable engine, result and evidence-retention contracts.
+## Current release — v2.8.0 Common Birdwing
 
-- Assessment and queue-ownership reliability, standalone specification examination, and adoption guidance.
-- Optional R1 evidence adequacy, R2 temporal provenance and R3 reproducibility/challenge profiles, with synthetic worked examples and an independent-consumer exercise kit.
-- Independent adoption remains **NOT_YET_TESTED**. Optional profiles do not establish terminal assurance or independent reproduction.
+v2.8.0 **Comparative, Adversarial and Consumer Interaction Assurance** was published and qualified on 2026-10-15.
 
-The release security disposition was bounded and non-independent; documented residual risks were accepted for this release, not remediated or independently audited. See the [v2.7.0 release notes](docs/releases/v2.7.0.md), [qualification record](method/v2.7-release-qualification.yaml), [security disposition](docs/review/v27-release-security-disposition.md), and [GitHub release](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.7.0).
+It preserves the stable compatibility boundary established by the v1 engine/result/evidence contracts while adding:
 
-## v2.8.0 — qualified release: comparative, adversarial and consumer-interaction assurance
+- **comparative assurance** for arbitrary source-pinned assessment or release sets;
+- **adversarial assurance qualification** with challenge cases, evidence ledgers and stronger reviewability;
+- **agent authority and continuity** checks that distinguish identity, lineage and actionable authority;
+- **lifecycle-continuation authority** for renewal, reissuance and successor creation;
+- **consumer-interaction evidence** for wallets, VTAs, browsers and agent interfaces without introducing a UI-automation dependency into RAHP core;
+- **observability-induced harm** analysis using bounded synthetic DTFC vectors;
+- **source-pinned Eucalyptus clean-room evidence** and release-set comparison;
+- **release-publication hardening** with qualification, preflight, postflight and latest-release verification.
 
-**Published and qualified on 2026-10-15.** v2.8.0 packages the post-v2.7 work into an additive release while preserving the stable engine/result/evidence compatibility boundary.
+Consumer-visible success remains only an interaction observation until correlated with the authoritative protocol, authorization and runtime evidence required by the proposition.
 
-- Generic comparative assurance can compare arbitrary source-pinned assessment or release sets without making Dogwood/Eucalyptus-specific assumptions.
-- Adversarial assurance, reviewer protocols and evidence ledgers strengthen independent challenge and reviewability of material assurance claims.
-- Agent authority/continuity and lifecycle-continuation checks preserve the distinction between identity, lineage, historical validity and current authority.
-- Consumer-facing wallets, VTAs, browsers and agent interfaces can emit framework-neutral evidence through `rahp-evidence-producer-result/v1`; UI success never becomes authorization or terminal PASS.
-- Synthetic observability-harm vectors and source-pinned Eucalyptus evidence extend bounded evidence without claiming deployment-wide certification.
-- Release publication is hardened with declaration-driven preflight/postflight checks and idempotent release reconciliation.
+See:
 
-The stable compatibility authority remains `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1`. Independent external adoption remains **NOT_YET_TESTED**. See the [v2.8.0 release notes](docs/releases/v2.8.0.md) and [qualification record](method/v2.8-release-qualification.yaml).
+- [v2.8.0 release notes](docs/releases/v2.8.0.md)
+- [v2.8.0 qualification contract](method/v2.8-release-qualification.yaml)
+- [v2.8.0 release evidence](method/v2.8-release-evidence.json)
+- [GitHub Release v2.8.0](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.8.0)
 
-## Stable foundation established in v2.6.0
+Independent external adoption remains **NOT_YET_TESTED**. Source-pinned clean-room or synthetic evidence does not constitute deployment certification or independent audit.
 
-v2.6.0 **Full-Stack Assurance Orchestration and Explicit Evidence State** made three claims independently inspectable: whether orchestration completed, what assurance outcome the evidence supports, and how mature that evidence is.
+## Stable compatibility boundary
 
-- explicit `process_state`, `assurance_state`, and `evidence_maturity` dimensions;
-- explicit dispositions for RAHP, security, composition, DRARM, and specialist-assessment lenses;
-- attributable required-evidence attempts using executed, attempted-unavailable, or no-applicable-producer states;
-- evidence-required terminal indeterminacy rather than silent PASS;
-- portable old/new producer-consumer version-skew propositions;
-- reusable privacy/correlation risk, guardrail, and control mechanisms;
-- exact-snapshot portfolio assurance binding and tighter DTG/VSC routing;
-- measured performance characterization and semantic-preserving execution optimization;
-- LPC pre-demo scope/evidence/assurance artifacts that informed the generic full-stack contract without becoming a core dependency.
+The compatibility authority for v2.8.0 remains:
 
-Policy-as-assurance-subject work under #662/#667 and decision-resolution research under PR #817 remain experimental and are not part of the v2.6.0 stable boundary.
+```text
+rahp-engine-contract-v1 revision 1.3
+normalized result schema version 1
+rahp-evidence-retention-v1
+```
+
+Existing conforming v2.7 consumers do not require a schema migration solely to consume v2.8.
 
 ## How RAHP works
+
+A RAHP examination connects a bounded assurance question to attributable evidence:
 
 ```text
 persona/scenario
@@ -75,63 +82,66 @@ subject/change observation
 
 The controller, not GitHub workflow choreography, owns assurance state.
 
-RAHP is **materiality-governed**: the preferred assurance scope is the smallest scope that completely covers the materially affected proposition set. Broader execution is not inherently stronger assurance. Evidence that remains valid is retained with provenance; stale, invalidated or unavailable evidence stays explicit; and a full campaign/rebaseline is used when bounded reassessment cannot defend the current conclusion.
+RAHP is **materiality-governed**: the preferred scope is the smallest scope that completely covers the materially affected proposition set. Broader execution is not inherently stronger assurance. Evidence that remains valid is retained with provenance; stale, invalidated or unavailable evidence stays explicit; and a full campaign or rebaseline is used when bounded reassessment cannot defend the current conclusion.
 
-For a code-level explanation of where assessment reasoning occurs, see [RAHP reasoning architecture](docs/reasoning-architecture.md). For external agents and tool callers, see [agent integration guidance](docs/reasoning-integration.md). RAHP can be used without an agent or LLM.
-
-The optional [evidence adequacy profile](docs/evidence-adequacy.md) experiments with deterministic sufficiency and contradiction semantics; it does not change stable assessor or controller contracts.
-
-The experimental [temporal and provenance profile](docs/temporal-provenance.md) evaluates claimed historical applicability and as-known-at cutoffs without changing controller or assessor contracts.
-
-The optional [R3 reproducibility and challenge profile](docs/reproducibility-challenge.md) compares declared runs and preserves open challenges without changing assurance outcomes.
-
-A runnable [R1–R3 worked reasoning example](docs/reasoning-worked-example.md) demonstrates bounded evidence adequacy, historical applicability and challenge handling with deterministic tests.
-
-For independent evaluation, use the [R1–R3 adoption exercise](docs/reasoning-adoption-exercise.md), [evidence record](docs/reasoning-adoption-record.md), and [release-readiness decision record](docs/reasoning-release-readiness.md). These distinguish internal checks from external consumer evidence.
+For the code-level reasoning model, see [RAHP reasoning architecture](docs/reasoning-architecture.md). For external agents and tool callers, see [agent integration guidance](docs/reasoning-integration.md). RAHP does not require an agent or LLM.
 
 ## Start adopting RAHP
 
 **You can start with RAHP alone.** A first bounded review does not require DPIP, the Trust Protocol Interop Lab, the DTG deployment, or any portfolio-specific machinery.
 
-Use the [Adoption gateway](docs/adoption-guide.md) to decide which path fits your assurance question:
+Use the [Adoption gateway](docs/adoption-guide.md) to choose the smallest useful path:
 
 - **RAHP-only:** configure one bounded subject and run a first review;
 - **specialist assessment:** add a compatible specialist such as DPIP only when the proposition requires specialist semantics;
-- **executable evidence:** add a compatible evidence producer such as the Trust Protocol Interop Lab only when the proposition requires that evidence class;
+- **executable evidence:** add a compatible evidence producer only when the proposition requires that evidence class;
 - **continuous assurance:** add freshness, reassessment, remediation and governed disposition after the first assessment.
 
 For a maintained executable first exercise, use [Hello RAHP](examples/hello-rahp/README.md).
 
+For consumer-facing interaction evidence, see [Consumer-interaction assurance](docs/consumer-interaction-assurance.md).
 
 ## Current capability boundary
 
-Current capabilities include multi-granularity assurance subjects; deterministic assessment identity and replay; clean-room execution; semantic `rahp-assurance-obligation/v1` records; evidence-producer routing; portable specialist contracts including `rahp-assessor-result/v1`; durable specialist returns; explicit PASS/FAIL/NOT_APPLICABLE/INDETERMINATE outcomes; materially equivalent machine/human terminal records; evidence provenance and freshness; normative-versus-realization separation; action-target precision; human-harm traceability; source-pinned corpora; generic capability coverage; resilience proposition/evidence routing; materiality-bounded reassessment; and governed continuous reassessment with explicit full-campaign escalation when warranted.
+Current portable capabilities include:
 
-The stable compatibility authority remains:
+- multi-granularity assurance subjects;
+- deterministic assessment identity and replay;
+- clean-room execution;
+- semantic `rahp-assurance-obligation/v1` records;
+- evidence-producer routing and `rahp-evidence-producer-result/v1`;
+- portable specialist contracts including `rahp-assessor-result/v1`;
+- explicit PASS / FAIL / NOT_APPLICABLE / INDETERMINATE outcomes;
+- evidence provenance, integrity and freshness;
+- normative-versus-realization separation;
+- materiality-bounded reassessment and full-campaign escalation;
+- generic comparative assurance;
+- agent authority, delegation and continuity checks;
+- lifecycle-continuation authority;
+- framework-neutral consumer-interaction evidence;
+- bounded adversarial and observability-harm evaluation;
+- governed remediation and retest lineage.
 
-```text
-rahp-engine-contract-v1 revision 1.3
-normalized result schema version 1
-rahp-evidence-retention-v1
-```
+Optional reasoning surfaces remain bounded:
 
-## Current architecture
+- [Evidence adequacy](docs/evidence-adequacy.md)
+- [Temporal and provenance](docs/temporal-provenance.md)
+- [Reproducibility and challenge](docs/reproducibility-challenge.md)
+- [Worked R1–R3 reasoning example](docs/reasoning-worked-example.md)
+
+These surfaces do not silently change terminal RAHP assurance semantics.
+
+## Architecture and authority boundaries
 
 RAHP has a portable method/engine core plus consumer-specific profiles, instances, corpora and worked assessments. The generic engine owns lifecycle, proposition/evidence contracts, inference boundaries and terminal assurance semantics; consumer material demonstrates those contracts without becoming a dependency of the core.
 
-The **Bundled DTG exemplar** remains the deepest maintained portfolio demonstration and includes Credentials, Trust Tasks, ZKP/VDS, OpenVTC realization evidence and composition pressure tests. **CAWG/C2PA** remains a separate maintained consumer family demonstrating that the portable assurance model is not DTG-specific. A2A, ARPA and other consumers exercise additional portability and composition surfaces.
+The **Bundled DTG exemplar** remains the deepest maintained portfolio demonstration and includes Credentials, Trust Tasks, ZKP/VDS, OpenVTC realization evidence and composition pressure tests. **CAWG/C2PA** remains a separate maintained consumer family demonstrating that the portable model is not DTG-specific. A2A, ARPA and other consumers exercise additional portability and composition surfaces.
 
 DPIP is an independently governed privacy specialist that can return portable examination results to a compatible RAHP controller. The Trust Protocol Interop Lab is an independently governed evidence producer and composition-test environment. Neither repository is folded into RAHP authority: evidence and specialist results cross repository boundaries through explicit versioned contracts and provenance.
 
-## Coordinated portfolio context
+The [Eucalyptus clean-room campaign](docs/reports/eucalyptus-clean-room-2026-10-08.md) examines the coordinated `VTI-Eucalyptus` portfolio with fresh source-pinned evidence and explicit component/composition limits. Its execution and assurance outcomes are separate; historical PASS is not inherited.
 
-The [Eucalyptus clean-room campaign](docs/reports/eucalyptus-clean-room-2026-10-08.md) examines the 18 coordinated `VTI-Eucalyptus` repositories with fresh source-pinned evidence and explicit component/composition limits. Its execution and assurance outcomes are separate; no historical PASS is inherited.
-
-v2.8.0 preserves Full-Stack Assurance Orchestration and Explicit Evidence State while adding comparative, adversarial and consumer-interaction assurance surfaces. VTI and other upstream specifications remain normative/conformance authorities for their own semantics; RAHP records independent assurance evidence. DPIP remains the specialist privacy authority for composed privacy questions routed to it.
-
-DPIP and the Trust Protocol Interop Lab remain independently governed collaborators. Consult each repository's release records for current versions. The repositories are joined only through explicit contracts, source-pinned evidence and bounded hand-offs. A matching date or green workflow is not a compatibility or assurance claim.
-
-The v2.8.0 qualified release retains the stable v1 engine/result/evidence contracts. Consumer-interaction evidence, comparative assurance and adversarial qualification remain bounded by their declared evidence and do not manufacture terminal assurance.
+VTI and other upstream specifications remain normative or conformance authorities for their own semantics. RAHP records independent assurance evidence and does not replace those authorities.
 
 ## Quick start
 
@@ -141,29 +151,21 @@ python3 tools/review.py --help
 python3 tools/validate.py
 ```
 
-Start with [How RAHP works](docs/how-rahp-works.md), [RAHP data model](docs/data-model.md), [Getting started](docs/getting-started.md), [Continuous assurance](docs/continuous-assurance.md), and [Adopting RAHP](ADOPTION.md).
+Useful starting points:
 
-## Current release
-
-v2.8.0 **Common Birdwing** (*Troides helena*) is the current **qualified release**. It adds comparative assurance, adversarial qualification, agent/lifecycle authority checks, consumer-interaction evidence integration, observability-harm vectors and publication hardening without changing the stable engine/result/evidence contracts.
-
-- [v2.8.0 release notes](docs/releases/v2.8.0.md)
-- [v2.8.0 qualification contract](method/v2.8-release-qualification.yaml)
-- [v2.8.0 release evidence](method/v2.8-release-evidence.json)
-- [Consumer-interaction assurance](docs/consumer-interaction-assurance.md)
+- [How RAHP works](docs/how-rahp-works.md)
+- [RAHP data model](docs/data-model.md)
+- [Getting started](docs/getting-started.md)
+- [Continuous assurance](docs/continuous-assurance.md)
+- [Adopting RAHP](ADOPTION.md)
 - [Comparative assurance digest](docs/comparative-assurance-digest.md)
-- [Project status](PROJECT-STATUS.yaml)
-- [Roadmap](ROADMAP.md)
-- [Release history](CHANGELOG.md)
-
-Historical release records remain immutable. Release presentation metadata follows the governed West Bengal butterfly naming policy; semantic versioning and contract identifiers remain the compatibility authority.
 
 ## Release lineage
 
 | Version | Codename | Release boundary |
 |---|---|---|
 | v2.8.0 | **Common Birdwing** | Comparative, Adversarial and Consumer Interaction Assurance |
-| v2.7.0 | **Common Rose** | Qualified maintenance and optional experimental profiles |
+| v2.7.0 | **Common Rose** | Maintenance, Adoption and Optional Reasoning Profiles |
 | v2.6.0 | **Commander** | Full-Stack Assurance Orchestration and Explicit Evidence State |
 | v2.5.0 | **Psyche** | Continuous Realization Assurance and Portable Adoption |
 | v2.4.0 | **Redbreast Jezebel** | VTI Composition Assessment and Evidence-Conservative Reconciliation |
@@ -177,7 +179,7 @@ Historical release records remain immutable. Release presentation metadata follo
 | v1.6.0 | **Common Earl** | Historical qualified release |
 | v1.5.0 | **Purple Leaf Blue** | Historical qualified release |
 
-The table preserves release identity only; historical qualification records and release notes remain authoritative for what each earlier release actually established.
+Historical qualification records and release notes remain authoritative for what each earlier release established. Release codenames are presentation metadata; semantic versioning and contract identifiers remain the compatibility authority.
 
 ## Repository map
 
