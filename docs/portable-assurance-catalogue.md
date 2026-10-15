@@ -801,7 +801,7 @@ Require an explicit authorization decision independent of identity, authenticati
 
 ### CTP-AUTH-02 — Action-time authority evaluation
 
-Evaluate current authority, status, expiry and revocation immediately before a consequential action.
+Evaluate current authority, status, expiry, revocation and any required continuation authorization immediately before a consequential action, including renewal or reissuance that extends consequential state.
 
 | Field | Value |
 |---|---|
@@ -1449,6 +1449,17 @@ A revoked or expired authority cannot be exercised after the effective revocatio
 | Guardrail Patterns | `GRP-AUTH-02` |
 | Evidence Patterns | `EVP-AUTH-01` |
 
+### ATP-AUTH-03 — Lifecycle continuation authority test
+
+Renewal, reissuance or successor creation that extends consequential state proceeds only when current continuation authority is positively established, and does not implicitly carry forward consent, delegation, attestation or dependent validity.
+
+| Field | Value |
+|---|---|
+| Assurance level | A3 |
+| Control Patterns | `CTP-AUTH-02`, `CTP-DEL-02` |
+| Guardrail Patterns | `GRP-AUTH-02` |
+| Evidence Patterns | `EVP-AUTH-01`, `EVP-DEL-02` |
+
 ### ATP-DEL-01 — Delegation attenuation test
 
 Each downstream delegation is equal to or narrower than the authority received upstream.
@@ -1650,7 +1661,7 @@ Actor or delegation lineage remains attribution evidence only; independent grant
 
 ### EVP-AUTH-01 — Authorization decision trace
 
-Shows identity/authentication inputs separately from current authorization/status evaluation.
+Shows identity/authentication inputs separately from current authorization/status evaluation, including the policy and actor authorizing lifecycle continuation where relevant.
 
 ### EVP-AUTH-02 — Authority envelope fixture
 

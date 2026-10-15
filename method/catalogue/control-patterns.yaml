@@ -22,8 +22,8 @@ records:
 - id: CTP-AUTH-02
   name: Action-time authority evaluation
   control_function: prevent
-  control_objective: Evaluate current authority, status, expiry and revocation immediately before a consequential
-    action.
+  control_objective: Evaluate current authority, status, expiry, revocation and any required continuation authorization
+    immediately before a consequential action, including renewal or reissuance that extends consequential state.
   risk_patterns:
   - RKP-AUTH-02
   - RKP-CRD-02

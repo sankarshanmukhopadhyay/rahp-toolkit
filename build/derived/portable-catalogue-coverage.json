@@ -4,7 +4,7 @@
     "risk_patterns": 52,
     "control_patterns": 39,
     "guardrail_patterns": 25,
-    "assurance_patterns": 20,
+    "assurance_patterns": 21,
     "evidence_patterns": 15
   },
   "risks_without_portable_control": [
