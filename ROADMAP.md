@@ -35,7 +35,7 @@ RAHP remains materiality-bounded and evidence-conservative. Broader execution is
 
 ## Current portfolio context
 
-- RAHP v2.7.0;
+- RAHP v2.8.0;
 - DPIP v0.3.0;
 - Trust Protocol Interop Lab v0.7.0.
 
@@ -55,9 +55,9 @@ The v2.6 operating model is additive and retains the previously qualified capabi
 
 These capability names are retained because they remain registered stable capabilities; v2.6 extends rather than replaces them.
 
-## Post-v2.7 priorities
+## Post-v2.8 priorities
 
-Complete the security and privacy hardening and evidence follow-up tracked in [#958](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/958). Future assurance work should remain trigger-driven rather than release-driven: reassess waiting-external/evidence-required owners when their evidence trigger fires; deepen non-DTG adoption and higher-level resilience evidence; continue measured performance work only where semantic equivalence is preserved; and keep experimental research behind explicit graduation gates.
+Continue trigger-driven security/privacy hardening and evidence follow-up, including runtime evidence tracked in [#994](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/994), without turning external evidence gaps into release-driven work. Future assurance work should remain trigger-driven rather than release-driven: reassess waiting-external/evidence-required owners when their evidence trigger fires; deepen non-DTG adoption and higher-level resilience evidence; continue measured performance work only where semantic equivalence is preserved; and keep experimental research behind explicit graduation gates.
 
 ## Non-regression rules
 
@@ -75,6 +75,9 @@ Complete the security and privacy hardening and evidence follow-up tracked in [#
 - Experimental research is never silently graduated.
 
 ## Historical roadmap
+
+- v2.8.0 - **Common Birdwing** - Comparative, Adversarial and Consumer Interaction Assurance
+- v2.7.0 - **Common Rose** - Maintenance, Adoption and Optional Reasoning Profiles
 
 The named release lineage is retained because each release validator treats those identities as part of the public compatibility history:
 
