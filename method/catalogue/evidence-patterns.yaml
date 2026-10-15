@@ -3,7 +3,8 @@ record_type: evidence_pattern
 records:
 - id: EVP-AUTH-01
   name: Authorization decision trace
-  claim_supported: Shows identity/authentication inputs separately from current authorization/status evaluation.
+  claim_supported: Shows identity/authentication inputs separately from current authorization/status evaluation,
+    including the policy and actor authorizing lifecycle continuation where relevant.
   producer: authorization service or verifier
   consumer: assessor/auditor
   collection_event: when the relevant control is exercised or tested
