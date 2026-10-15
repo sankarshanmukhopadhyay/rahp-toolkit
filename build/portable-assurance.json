@@ -1602,7 +1602,7 @@
         "id": "CTP-AUTH-02",
         "name": "Action-time authority evaluation",
         "control_function": "prevent",
-        "control_objective": "Evaluate current authority, status, expiry and revocation immediately before a consequential action.",
+        "control_objective": "Evaluate current authority, status, expiry, revocation and any required continuation authorization immediately before a consequential action, including renewal or reissuance that extends consequential state.",
         "risk_patterns": [
           "RKP-AUTH-02",
           "RKP-CRD-02",
@@ -3002,6 +3002,30 @@
         "assurance_level": "A3"
       },
       {
+        "id": "ATP-AUTH-03",
+        "name": "Lifecycle continuation authority test",
+        "assertion": "Renewal, reissuance or successor creation that extends consequential state proceeds only when current continuation authority is positively established, and does not implicitly carry forward consent, delegation, attestation or dependent validity.",
+        "control_patterns": [
+          "CTP-AUTH-02",
+          "CTP-DEL-02"
+        ],
+        "guardrail_patterns": [
+          "GRP-AUTH-02"
+        ],
+        "preconditions": [
+          "system or specification supports renewal, reissuance, supersession or another lifecycle-continuation operation"
+        ],
+        "procedure": "Exercise unchanged-claims renewal, deliberate non-renewal, successor/dependency inheritance and partial cascade cases; inspect the authority decision, policy basis, dependent state and any holder approval required.",
+        "expected_result": "Explicit denial blocks continuation; missing, stale, unavailable or contradictory authority remains non-PASS; successor credentials do not inherit consent, delegation, attestation or dependent validity without separately sufficient evidence; historical evidence remains distinguishable from current authority.",
+        "failure_interpretation": "Automation can convert prior validity, successful reissuance, unchanged claims or partial cascade completion into current authority without sufficient contemporary evidence.",
+        "evidence_patterns": [
+          "EVP-AUTH-01",
+          "EVP-DEL-02"
+        ],
+        "automation_level": "assisted",
+        "assurance_level": "A3"
+      },
+      {
         "id": "ATP-DEL-01",
         "name": "Delegation attenuation test",
         "assertion": "Each downstream delegation is equal to or narrower than the authority received upstream.",
@@ -3425,7 +3449,7 @@
       {
         "id": "EVP-AUTH-01",
         "name": "Authorization decision trace",
-        "claim_supported": "Shows identity/authentication inputs separately from current authorization/status evaluation.",
+        "claim_supported": "Shows identity/authentication inputs separately from current authorization/status evaluation, including the policy and actor authorizing lifecycle continuation where relevant.",
         "producer": "authorization service or verifier",
         "consumer": "assessor/auditor",
         "collection_event": "when the relevant control is exercised or tested",
