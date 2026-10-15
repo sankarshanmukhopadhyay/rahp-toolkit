@@ -3,8 +3,8 @@ contract: rahp-release-declaration-v1
 release:
   version: 2.8.0
   tag: v2.8.0
-  status: candidate
-  qualification_status: candidate
+  status: released
+  qualification_status: qualified
   title: RAHP Toolkit v2.8.0 - Common Birdwing
   theme: Comparative, Adversarial and Consumer Interaction Assurance
   name:

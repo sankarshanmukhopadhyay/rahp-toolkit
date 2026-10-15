@@ -1,19 +1,47 @@
 {
   "contract": "rahp-release-evidence/v1",
   "candidate_version": "v2.8.0",
-  "candidate_sha": null,
-  "publication_authorized": false,
+  "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
+  "publication_authorized": true,
   "gates": {
-    "full_regression": {"result": "PENDING", "candidate_sha": null, "source": null},
-    "typescript_conformance": {"result": "PENDING", "candidate_sha": null, "source": null},
-    "stable_compatibility": {"result": "PENDING", "candidate_sha": null, "source": null},
-    "docs_rendering": {"result": "PENDING", "candidate_sha": null, "source": null},
-    "publication_metadata": {"result": "PENDING", "candidate_sha": null, "source": null},
-    "release_publication_preflight": {"result": "PENDING", "candidate_sha": null, "source": null},
-    "security_review": {"result": "PENDING", "candidate_sha": null, "source": null},
+    "full_regression": {
+      "result": "PASS",
+      "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/38671257750"
+    },
+    "typescript_conformance": {
+      "result": "PASS",
+      "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/38671257750"
+    },
+    "stable_compatibility": {
+      "result": "PASS",
+      "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/38671257750"
+    },
+    "docs_rendering": {
+      "result": "PASS",
+      "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/38671257647"
+    },
+    "publication_metadata": {
+      "result": "PASS",
+      "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/38671257750"
+    },
+    "release_publication_preflight": {
+      "result": "PASS",
+      "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1034"
+    },
+    "security_review": {
+      "result": "PASS",
+      "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/38671257750"
+    },
     "owner_approval": {
       "result": "PASS",
-      "candidate_sha": null,
+      "candidate_sha": "eae51929670c9aa1ac5db3796ae87af7c75361da",
       "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1034",
       "decision": "GO"
     }
