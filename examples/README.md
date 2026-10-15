@@ -75,6 +75,14 @@ Exploratory examples can apply the same portable RAHP method before they have th
 
 Exploratory examples are intentionally **not** added to `current-baselines.yaml` merely because they exist. Promotion requires the evidence and maintenance commitments described by the canonical policy above.
 
+## Authority lifecycle regression example
+
+[`credential-renewal-authority/`](./credential-renewal-authority/) is a protocol-neutral regression example for
+automated renewal and other lifecycle-continuation operations. It demonstrates that unchanged claims, successful
+reissuance, prior automation preferences and partial dependency renewal do not by themselves establish current
+authority. The example deliberately reuses existing portable risk patterns and adds a focused assurance proposition
+rather than creating a renewal-specific risk family.
+
 ## Maintainer-feedback resilience exemplar
 
 `examples/resilience/openvtc-cypress/` is maintained as a different kind of example: it demonstrates how DRARM evidence is dispositioned after a target maintainer supplies counter-evidence, sharper implementation evidence, ownership information, and remediation records.
