@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.8.0 · Common Birdwing · CC-BY 4.0
+Release v2.8.0 · Common Birdwing · Documentation: CC BY 4.0 · Code: Apache 2.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
@@ -201,4 +201,12 @@ AI systems may assist with review, change analysis, scenario generation, evidenc
 
 ## License and provenance
 
-RAHP Toolkit preserves its DTG origin as provenance while operating as an independently reusable assurance toolkit. **CC-BY 4.0 — reuse with attribution.**
+RAHP Toolkit preserves its DTG origin as provenance while operating as an independently reusable assurance toolkit.
+
+- **Documentation, methodology, assessment narratives and original non-code content:** [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+- **Source code and executable tooling:** [Apache License, Version 2.0](LICENSE), including Python and TypeScript code, tests, automation and executable scripts.
+- **Third-party or imported material:** remains subject to its original license, copyright notices and attribution requirements. This repository's licensing declaration does not relicense third-party content or override upstream rights.
+
+For mixed-purpose files (including schemas, configuration, fixtures and machine-readable method records), applicable original notices and provenance take precedence. Original executable software components are Apache-2.0; original substantive method and assessment content is CC-BY-4.0. Preserve existing notices when reusing or modifying material.
+
+SPDX identifiers: `Apache-2.0` and `CC-BY-4.0`.
