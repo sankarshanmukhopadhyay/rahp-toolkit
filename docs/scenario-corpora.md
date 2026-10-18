@@ -20,16 +20,16 @@ Scenario corpora connect domain-specific use cases to portable RAHP pressure-tes
 | [Trust Tasks](../corpora/trust-tasks/) | `trustoverip/dtgwg-trust-tasks-tf` | Framework plus concrete task authorization, lifecycle, consent, redress, privacy and interoperability | 30 |
 | [DTG Credential Spec](../corpora/credential-spec/) | `trustoverip/dtgwg-cred-spec` | Credential lifecycle, relationship semantics, privacy, authority, task context and evidence closure | 30 |
 | [Trust Tasks × CredSpec](../corpora/trust-tasks-credspec-composed/) | RAHP-authored DTG profile adapter | Emergent failure modes at the task/credential seam | 20 |
-| VDS interface baseline | `trustoverip/dtgwg-vds-tf` | Scenario-baseline probes while normative VDS text remains thin | 4 |
-| Agent Names interface baseline | `trustoverip/dtgwg-agent-names-tf` | Scenario-baseline probes separating naming, control and authority | 4 |
-| CredSpec × ZKP | RAHP-authored DTG profile adapter | Proof semantics, lifecycle, authority and privacy composition | 4 |
-| CredSpec × VDS | RAHP-authored DTG profile adapter | Persistent state, lifecycle, authority and provenance | 4 |
-| Trust Tasks × ZKP | RAHP-authored DTG profile adapter | Proof-versus-authority, delegation, replay and freshness | 4 |
-| Trust Tasks × VDS | RAHP-authored DTG profile adapter | Persistent relationship state versus current task authority | 4 |
-| ZKP × VDS | RAHP-authored DTG profile adapter | Linkability, selective disclosure, lifecycle and provenance | 4 |
-| Agent Names × Trust Tasks | RAHP-authored DTG profile adapter | Naming versus principal/delegate/task authority | 4 |
-| Agent Names × CredSpec | RAHP-authored DTG profile adapter | Identifier, subject/controller and issuer-authority semantics | 4 |
-| Credential Spec × ZKP × Trust Tasks | RAHP-authored DTG profile adapter | Complete credential/proof/task seam: action-time authority, privacy composition, freshness, execution state, replay and non-inference | 7 |
+| [VDS interface baseline](../corpora/vds/) | `trustoverip/dtgwg-vds-tf` | Scenario-baseline probes while normative VDS text remains thin | 4 |
+| [Agent Names interface baseline](../corpora/agent-names/) | `trustoverip/dtgwg-agent-names-tf` | Scenario-baseline probes separating naming, control and authority | 4 |
+| [CredSpec × ZKP](../corpora/credential-spec-zkp-composed/) | RAHP-authored DTG profile adapter | Proof semantics, lifecycle, authority and privacy composition | 4 |
+| [CredSpec × VDS](../corpora/credential-spec-vds-composed/) | RAHP-authored DTG profile adapter | Persistent state, lifecycle, authority and provenance | 4 |
+| [Trust Tasks × ZKP](../corpora/trust-tasks-zkp-composed/) | RAHP-authored DTG profile adapter | Proof-versus-authority, delegation, replay and freshness | 4 |
+| [Trust Tasks × VDS](../corpora/trust-tasks-vds-composed/) | RAHP-authored DTG profile adapter | Persistent relationship state versus current task authority | 4 |
+| [ZKP × VDS](../corpora/zkp-vds-composed/) | RAHP-authored DTG profile adapter | Linkability, selective disclosure, lifecycle and provenance | 4 |
+| [Agent Names × Trust Tasks](../corpora/agent-names-trust-tasks-composed/) | RAHP-authored DTG profile adapter | Naming versus principal/delegate/task authority | 4 |
+| [Agent Names × CredSpec](../corpora/agent-names-credential-spec-composed/) | RAHP-authored DTG profile adapter | Identifier, subject/controller and issuer-authority semantics | 4 |
+| [Credential Spec × ZKP × Trust Tasks](../corpora/credential-zkp-trust-tasks-composed/) | RAHP-authored DTG profile adapter | Complete credential/proof/task seam: action-time authority, privacy composition, freshness, execution state, replay and non-inference | 7 |
 | [CAWG/C2PA](../corpora/cawg/) | Multi-source external CAWG/C2PA portfolio | Identity, governance, consent, delegation, metadata, privacy, UX, security and mandate-readiness interactions | 36 |
 
 Together these adapters expose **189 scenario test vectors across 15 corpora** to the RAHP pressure-testing workflow. The CAWG/C2PA corpus is intentionally multi-source: its primary source and additional specification repositories are declared without inventing a DTG Portfolio Monitor relationship.

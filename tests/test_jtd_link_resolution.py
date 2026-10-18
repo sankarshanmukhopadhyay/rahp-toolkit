@@ -15,6 +15,17 @@ def literal_assignment(name):
         if isinstance(node, ast.Assign):
             for target in node.targets:
                 if isinstance(target, ast.Name) and target.id == name:
+                    if isinstance(node.value, ast.BinOp) and isinstance(node.value.op, ast.Add):
+                        # Corpus paths are derived from the actual adapter inventory
+                        # in the site validator, not a hard-coded five-entry list.
+                        corpus_files = sorted(
+                            p for p in (ROOT / "corpora").glob("*.yaml")
+                            if p.name != "sources.yaml"
+                        )
+                        if name == "REQUIRED_STRUCTURED_SOURCES":
+                            return [p.relative_to(ROOT).as_posix() for p in corpus_files] + ast.literal_eval(node.value.right)
+                        if name == "REQUIRED_HUMAN_PROJECTIONS":
+                            return [f"corpora/{p.stem}/index.html" for p in corpus_files] + ast.literal_eval(node.value.right)
                     return ast.literal_eval(node.value)
     raise AssertionError(f"{name} not found")
 
