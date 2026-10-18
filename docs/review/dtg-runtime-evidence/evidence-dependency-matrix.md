@@ -104,3 +104,25 @@ Closure is not appropriate merely because Scopes A, B and C have been documented
 2. Decide whether to prepare downstream-only evidence-request drafts for Scope A and Scope B without posting upstream.
 3. Add a final #994 status comment pointing to this matrix after this file merges.
 4. Keep #994 open as the durable consolidated runtime-evidence issue.
+
+
+## Scope C rebaseline — 2026-10-18
+
+**This section supersedes the historical Scope C INDETERMINATE blanket statements above, which document the 2026-10-12 evidence state.** Scopes A and B are unchanged.
+
+Pinned VTI implementation: [OpenVTC/verifiable-trust-infrastructure#2057](https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/2057), merged at `dda501dddf48540a3f4b1c36bc6ee917754f4c9b`; Trust Tasks [#752 maintainer answer](https://github.com/trustoverip/dtgwg-trust-tasks-tf/issues/752#issuecomment-6211354820) and [#792 known implementation](https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/792). Canonical case-level detail: [scope-c-vti-2026-10-18-rebaseline.md](scope-c-vti-2026-10-18-rebaseline.md).
+
+| Case | Updated source/implementation evidence state | Residual |
+|---|---|---|
+| C01 | Implementation-evidenced JWS signing-input reconstruction and digest | No independently collected request/audit trace |
+| C02 | Implementation-evidenced header prohibition/error | No independently collected refusal trace |
+| C03 | Indeterminate; replay claim needs consumer-specific boundary | Define artifact freshness/nonce/audience separately from legitimate signing retry |
+| C04 | **NOT ENFORCED**: key/protocol binding SHOULD and provisioned typ MAY | Record as deployment policy gap, not universal mandatory task failure |
+| C05 | Implementation-evidenced CSR construction/signature verification | No independently collected runtime trace |
+| C06 | Subject identity authority **outside task guarantee** | CA/deployment subject verification; task only validates form |
+| C07 | Schema/conformance-evidenced arbitrary extension rejection | No independent VTA negative trace |
+| C08 | Implementation-evidenced VTA opaque-domain signing isolation and protocol capability gates | Specific to this framing custodian |
+| C09 | Partially implementation-evidenced requester authorization path | Inspect negative tests/current-authority behavior |
+| C10 | Audit fields implementation-described | Confirm emitted audit, retention, non-repudiation attribution and privacy |
+
+**#994 remains open**: A/B runtime evidence is missing, Scope C has C03/C09/C10 and policy residuals, and retained-evidence/DPIP applicability is unclosed. These are not asserted PASS by this rebaseline.

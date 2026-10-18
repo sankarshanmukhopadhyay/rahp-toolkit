@@ -191,96 +191,69 @@ scopes:
     source_issue: 993
     collection_priority: 1
     collection_note: >-
-      First tranche. These cases are the most bounded because they can be exercised
-      through Trust Tasks protocol-signing request/response fixtures and negative
-      request fixtures before broader portal/browser integration is available.
-    findings:
-      - 220fb4eea5c0200f190b
+      Rebaselined against VTI #2057 merge commit dda501dddf48540a3f4b1c36bc6ee917754f4c9b
+      and Glenn's Trust Tasks #752 comment. See scope-c-vti-2026-10-18-rebaseline.md.
+      Implementation and schema evidence are distinguished from independently observed
+      deployment traces. No blanket runtime PASS is claimed.
+    findings: [220fb4eea5c0200f190b]
     cases:
       - case_id: C01-valid-sign-jws
-        operational_state: local-reproducible
-        tranche: C-initial
+        operational_state: upstream-evidence-needed
+        evidence_state: implementation-evidenced
         expected_result: PASS
-        purpose: Valid sign-jws request produces a protocol-valid JWS from custodian-built signing input.
-        required_artifacts:
-          - requester authority evidence
-          - redacted request
-          - signing input digest
-          - audit event
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: Custodian constructs protocol-valid JWS signing input and audits its digest.
       - case_id: C02-sign-jws-prohibited-header
-        operational_state: local-reproducible
-        tranche: C-initial
+        operational_state: upstream-evidence-needed
+        evidence_state: implementation-evidenced
         expected_result: FAIL_CLOSED
-        purpose: Prohibited or unsafe JWS header members are rejected.
-        required_artifacts:
-          - request fixture
-          - rejection record
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: Prohibited header member yields declared trust-task-error, not a JWS response.
       - case_id: C03-sign-jws-replay
         operational_state: blocked
-        blocked_reason: Requires freshness or replay fixture from the implementation under test.
-        tranche: C-runtime-followup
-        expected_result: FAIL_CLOSED
-        purpose: Replayed or stale sign-jws request is rejected where freshness is required.
-        required_artifacts:
-          - original request trace
-          - replay rejection trace
+        evidence_state: indeterminate
+        blocked_reason: Consumer-side replay and freshness contract has not been pinned; task-level retries can be legitimate.
+        expected_result: CONTEXT_DEPENDENT
+        purpose: Verify nonce/audience/expiry and replay at the protocol-consumer boundary where required.
       - case_id: C04-sign-jws-wrong-purpose
-        operational_state: local-reproducible
-        tranche: C-initial
-        expected_result: FAIL_CLOSED
-        purpose: Wrong-purpose or wrong-audience sign-jws request is rejected.
-        required_artifacts:
-          - request fixture
-          - rejection record
+        operational_state: upstream-evidence-needed
+        evidence_state: not-enforced
+        expected_result: POLICY_DEPENDENT
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: Establish key-to-protocol binding (SHOULD) and allowed typ restriction (MAY); absent in pinned VTI.
       - case_id: C05-valid-sign-csr
-        operational_state: local-reproducible
-        tranche: C-initial
+        operational_state: upstream-evidence-needed
+        evidence_state: implementation-evidenced
         expected_result: PASS
-        purpose: Valid sign-csr request binds subject, SANs and key public material under constrained CSR semantics.
-        required_artifacts:
-          - requester authority evidence
-          - redacted request
-          - CSR digest or PEM redacted
-          - audit event
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: Custodian builds CSR from allowed subject/SAN and its own public key.
       - case_id: C06-sign-csr-wrong-subject
-        operational_state: local-reproducible
-        tranche: C-initial
-        expected_result: FAIL_CLOSED
-        purpose: Wrong-subject CSR request is rejected.
-        required_artifacts:
-          - request fixture
-          - rejection record
+        operational_state: source-only
+        evidence_state: out-of-task-guarantee
+        expected_result: NOT_APPLICABLE_TO_TASK
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: CA validates authority over subject; task validates form only.
       - case_id: C07-sign-csr-arbitrary-extension
-        operational_state: local-reproducible
-        tranche: C-initial
+        operational_state: source-only
+        evidence_state: schema-conformance-evidenced
         expected_result: FAIL_CLOSED
-        purpose: Arbitrary CSR extensions are refused unless explicitly permitted.
-        required_artifacts:
-          - request fixture
-          - rejection record
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: additionalProperties false excludes arbitrary extension input; generated Rust negative conformance test.
       - case_id: C08-generic-sign-substitution
-        operational_state: local-reproducible
-        tranche: C-initial
+        operational_state: upstream-evidence-needed
+        evidence_state: implementation-evidenced
         expected_result: FAIL_CLOSED
-        purpose: Generic opaque sign cannot substitute for protocol-valid sign-jws or sign-csr.
-        required_artifacts:
-          - generic sign attempt trace
-          - verification failure or rejection record
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: VTA domain-separated opaque signing and protocol-specific capability gates prevent substitution.
       - case_id: C09-requester-no-authority
-        operational_state: blocked
-        blocked_reason: Requires concrete requester-authority fixture from implementation or upstream maintainer.
-        tranche: C-runtime-followup
+        operational_state: upstream-evidence-needed
+        evidence_state: partially-implementation-evidenced
         expected_result: FAIL_CLOSED
-        purpose: Requester without current authority cannot use the VTA-held key for protocol signing.
-        required_artifacts:
-          - requester fixture
-          - rejection record
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: Verify missing/wrong/revoked authority and key-context negative paths at execution.
       - case_id: C10-audit-reconstruction
         operational_state: upstream-evidence-needed
-        tranche: C-runtime-followup
+        evidence_state: partial
         expected_result: PASS
-        purpose: Retained evidence reconstructs the signing decision without overclaiming user intent or non-repudiation.
-        required_artifacts:
-          - audit event
-          - retained evidence inventory
-          - non-repudiation boundary note
+        evidence_ref: scope-c-vti-2026-10-18-rebaseline.md
+        purpose: Verify emitted audit data, retention, attribution limits and privacy applicability.
