@@ -69,3 +69,17 @@ Remaining mandatory closure gate for #1054: all **48** qualifying finding dispos
 ## Post-merge owner convergence
 
 The two initially unassigned #1054 findings have since been explicitly transferred to [#1057](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1057), a bounded holder-private contact vs community directory/group publication assessment, supported by pinned Trust Tasks PR #815 and VTI spec PR #68. They are **owned for review**, not assurance-passed. The machine-readable ledger now contains 15 mapped/reviewed findings, zero unowned UNMAPPED entries. **Controller closure remains forbidden** until combined/covered/no-action/DPIP routing for all 48 qualifying findings is reconciled.
+
+## Proposed terminal-wrapper lifecycle guardrail
+
+The reviewed root cause is in `tools/materiality_journal_gate.py`: any previously unseen finding directed to a closed owner sets `reopen_closed_owner=True`, even if the issue is an explicitly transferred historical wrapper, and `tools/publish_assessment_issues.py` honors that signal. This conservative policy is correct for normal closed assessments, but it can turn completed historical wrappers into rolling journals.
+
+The guarded change introduces an **explicit opt-in marker** (`<!-- rahp-terminal-wrapper:transferred -->`) for a wrapper that has a documented and independently reviewed transfer matrix. With the marker and no separate invalidation reason:
+
+- A new material finding goes into a **new bounded successor assessment**, uniquely identified by the historical wrapper key and the SHA-256 digest prefix of the sorted new finding identities.
+- Repeated observations of the same novel finding set reuse the same successor identity. No novel findings means no successor or reopening.
+- The successor body includes only the previously unseen finding rows and mandatory evidence/ownership/DPIP acceptance steps. It is not a substantive PASS.
+- The historical wrapper remains CLOSED and its terminal history is preserved.
+- An explicit invalidation of the old terminal conclusion still reopens the original issue. Unmarked normal closed owners retain their existing fail-closed reopening behavior.
+
+The marker **must not** be placed on open or unresolved assessments merely to suppress queue growth. In this tranche it is reserved for #121 and #527, whose transfer decisions and successor owners are documented. The marker is not a claim that their successors are complete. Regression coverage is in `tests/test_portfolio_materiality_journal.py`, and the existing issue publisher continues to enforce unique assessment keys/idempotence.

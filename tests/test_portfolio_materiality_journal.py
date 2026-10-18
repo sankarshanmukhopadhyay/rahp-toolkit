@@ -78,6 +78,43 @@ class MaterialityJournalGateTests(unittest.TestCase):
         self.assertNotIn("retest_reason", enriched)
         self.assertNotIn("reopen_closed_owner", enriched)
 
+    def test_transferred_closed_wrapper_produces_bounded_idempotent_successor(self) -> None:
+        owner = dict(self.owner)
+        owner["body"] += "\n<!-- rahp-terminal-wrapper:transferred -->\n"
+        event = self.event([
+            ("f-1", "example/repo", "old claim"),
+            ("f-2", "example/repo", "new material change"),
+        ])
+        event["related_assessment_key"] = self.key
+        first = gate.enrich_event(dict(event), owner)
+        second = gate.enrich_event(dict(event), owner)
+        self.assertEqual(first["assessment_key"], second["assessment_key"])
+        self.assertIn(f"{self.key}:successor:", first["assessment_key"])
+        self.assertEqual(636, first["successor_of_terminal_issue"])
+        self.assertNotIn("reopen_closed_owner", first)
+        self.assertNotIn("retest_reason", first)
+        self.assertNotIn("related_assessment_key", first)
+        self.assertIn("finding", first["body"])
+        self.assertIn("f-2", first["body"])
+        self.assertNotIn("f-1", first["body"])
+        self.assertIn("terminal dispositions or explicit durable transfers", first["body"])
+
+    def test_transferred_wrapper_new_finding_set_gets_distinct_successor(self) -> None:
+        owner = dict(self.owner)
+        owner["body"] += "\n<!-- rahp-terminal-wrapper:transferred -->\n"
+        a = gate.enrich_event(self.event([("f-2", "example/repo", "new a")]), owner)
+        b = gate.enrich_event(self.event([("f-3", "example/repo", "new b")]), owner)
+        self.assertNotEqual(a["assessment_key"], b["assessment_key"])
+
+    def test_real_explicit_invalidation_still_reopens_terminal_wrapper(self) -> None:
+        owner = dict(self.owner)
+        owner["body"] += "\n<!-- rahp-terminal-wrapper:transferred -->\n"
+        event = self.event([("f-2", "example/repo", "new material")])
+        event["invalidation_reason"] = "direct negative evidence invalidates original terminal claim"
+        enriched = gate.enrich_event(event, owner)
+        self.assertTrue(enriched["reopen_closed_owner"])
+        self.assertEqual(self.key, enriched["assessment_key"])
+
     def test_new_proposition_is_not_treated_as_reassessment(self) -> None:
         enriched = gate.enrich_event(self.event([("f-2", "example/repo", "first observation")]), None)
         self.assertEqual("new-proposition", enriched["evidence_impact"])
