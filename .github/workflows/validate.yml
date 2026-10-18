@@ -304,6 +304,24 @@ jobs:
         if: always()
         run: python3 tools/validate.py --summary >> $GITHUB_STEP_SUMMARY
 
+  # Unlike PR validation, scheduled freshness must never accept an unavailable
+  # authoritative discovery endpoint as a successful synchronization check.
+  dtg-profile-freshness:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Fail closed on unavailable or drifting authoritative DTG discovery
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/sync_dtg_profile.py --check --strict-live-discovery
+
   typescript-conformance:
     name: TypeScript conformance
     needs: impact
