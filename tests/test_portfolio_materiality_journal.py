@@ -139,6 +139,19 @@ class MaterialityJournalGateTests(unittest.TestCase):
         self.assertNotIn("reopen_closed_owner", enriched)
         self.assertNotEqual(key, enriched["assessment_key"])
 
+    def test_known_transferred_id_does_not_create_duplicate_successor(self):
+        key = "dtg:portfolio:combined:openvtc-security-combined"
+        event = self.event([
+            ("aa28149c7babc678e9e7", "OpenVTC/verifiable-trust-infrastructure",
+             "breaking wallet sign-in already transferred to #994")
+        ])
+        event["assessment_key"] = key
+        enriched = gate.enrich_event(event, None)
+        self.assertEqual(key, enriched["assessment_key"])
+        self.assertEqual("preserved", enriched["evidence_impact"])
+        self.assertNotIn("reopen_closed_owner", enriched)
+        self.assertNotIn("successor_of_terminal_issue", enriched)
+
     def test_frozen_wrapper_explicit_invalidation_remains_fail_closed(self):
         key = "dtg:portfolio:combined:openvtc-security-combined"
         event = self.event([("fresh", "example/repo", "new contrary evidence")])
