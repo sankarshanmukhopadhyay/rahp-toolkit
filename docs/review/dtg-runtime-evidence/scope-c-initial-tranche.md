@@ -69,3 +69,8 @@ This tranche is complete only when each initial case has one of the following ou
 - marked `INDETERMINATE` with the exact missing runtime evidence stated.
 
 Do not close #994 from this tranche alone. Scope A, Scope B and deferred Scope C cases remain open unless separately resolved or transferred.
+
+
+## Subsequent rebaseline (2026-10-18)
+
+**Historical note:** The initial classification and expected-results table above records the pre-maintainer-response hypothesis. Do not use its C03/C04/C06 expected outcomes as current normative assertions. See [Scope C pinned VTI rebaseline](scope-c-vti-2026-10-18-rebaseline.md) and [current case matrix](cases.yaml). VTI #2057 supplies implementation-level evidence, without an independent downstream runtime execution. In particular, C04's protocol/typ restrictions are not enforced in VTI, C06 subject authority is outside the task guarantee, and C03 must distinguish permissible retries from consumer-side replay/freshness.
