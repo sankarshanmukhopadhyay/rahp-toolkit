@@ -65,3 +65,7 @@ Two new substantive finding IDs need exact semantic owner verification, and rema
 **Lifecycle defect still unresolved:** #121 and #527 are OPEN despite explicit completed/transferred closure comments. These are historical wrappers, and must not be used as ever-growing journals for fresh materiality. Investigate the publishing workflow's closed-owner reactivation rule in its authoritative source before changing it; only transfer truly unowned new propositions to narrower owners. A checkpoint that merely closes these two again is not a durable fix. No automatic GitHub mutation is performed by this manifest validator.
 
 Remaining mandatory closure gate for #1054: all **48** qualifying finding dispositions, including 21 combined, 3 covered, 9 no-action and any linked DPIP referrals, independently reconciled. The other seven snapshot controllers likewise remain open pending full routed-child reconciliation.
+
+## Post-merge owner convergence
+
+The two initially unassigned #1054 findings have since been explicitly transferred to [#1057](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1057), a bounded holder-private contact vs community directory/group publication assessment, supported by pinned Trust Tasks PR #815 and VTI spec PR #68. They are **owned for review**, not assurance-passed. The machine-readable ledger now contains 15 mapped/reviewed findings, zero unowned UNMAPPED entries. **Controller closure remains forbidden** until combined/covered/no-action/DPIP routing for all 48 qualifying findings is reconciled.
