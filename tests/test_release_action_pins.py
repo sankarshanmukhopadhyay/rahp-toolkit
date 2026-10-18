@@ -13,7 +13,7 @@ WORKFLOWS = (
     ROOT / ".github/workflows/release.yml",
     ROOT / ".github/workflows/release-codename-policy.yml",
 )
-ACTION_RE = re.compile(r"^\\s*-?\\s*uses:\\s*([^\\s#]+)", re.M)
+ACTION_RE = re.compile(r"^\s*-?\s*uses:\s*([^\s#]+)", re.M)
 
 
 def pin_errors(workflow_text):
@@ -40,15 +40,15 @@ class ReleaseActionPinsTest(unittest.TestCase):
     def test_tag_reference_fails(self):
         self.assertIn(
             "un-pinned external action: actions/checkout@v7",
-            pin_errors("steps:\\n  - uses: actions/checkout@v7\\n"),
+            pin_errors("steps:\n  - uses: actions/checkout@v7\n"),
         )
 
     def test_lookalike_revision_and_unknown_ref_fail(self):
-        self.assertTrue(pin_errors("- uses: actions/setup-python@deadbeef\\n"))
-        self.assertTrue(pin_errors("- uses: actions/setup-python\\n"))
+        self.assertTrue(pin_errors("- uses: actions/setup-python@deadbeef\n"))
+        self.assertTrue(pin_errors("- uses: actions/setup-python\n"))
 
     def test_local_action_remains_allowed(self):
-        self.assertEqual([], pin_errors("- uses: ./.github/actions/local\\n"))
+        self.assertEqual([], pin_errors("- uses: ./.github/actions/local\n"))
 
 
 if __name__ == "__main__":
