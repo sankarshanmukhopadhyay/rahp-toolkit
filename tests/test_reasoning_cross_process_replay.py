@@ -60,11 +60,11 @@ class CrossProcessReasoningReplayTests(unittest.TestCase):
         self.assertEqual("OPEN", first["r3"]["challenges"][0]["status"])
         self.assertNotIn("terminal_assurance", first)
 
-    def test_changed_declared_fixture_is_not_the_same_input_pin(self):
+    def test_changed_declared_fixture_changes_run_record_digest(self):
         baseline = invoke("baseline")
         missing = invoke("missing")
-        bpin = baseline["r3"]["runs"][0]["input_pin"]["digest"]
-        mpin = missing["r3"]["runs"][0]["input_pin"]["digest"]
+        bpin = baseline["r3"]["runs"][0]["record_digest"]
+        mpin = missing["r3"]["runs"][0]["record_digest"]
         self.assertNotEqual(bpin, mpin)
 
 
