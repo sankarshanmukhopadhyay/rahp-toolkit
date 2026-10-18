@@ -424,6 +424,8 @@ semantic_rules:
     when:
       dimensions: [release]
       concerns: [aggregation]
+    unless:
+      change_kind: [behavior-change]
     outcome: no-action
     rationale: >-
       Material implementation/alignment or packaging evidence remains in the
