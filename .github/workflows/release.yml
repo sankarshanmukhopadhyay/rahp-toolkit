@@ -148,36 +148,36 @@ jobs:
           cache-dependency-path: requirements.txt
       - name: Install deterministic qualification dependencies
         run: pip install -r requirements.txt
-      - name: Reauthorize immutable qualified declaration before write
+      - name: Resolve current declaration and requalify before write
         id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/release.py metadata --github-output "$GITHUB_OUTPUT"
+          python3 tools/release.py qualify
+      - name: Check qualified-to-publish handoff
         env:
           EXPECTED_TAG: ${{ needs.qualify.outputs.tag }}
           EXPECTED_VERSION: ${{ needs.qualify.outputs.version }}
           EXPECTED_TITLE: ${{ needs.qualify.outputs.title }}
           EXPECTED_NOTES_PATH: ${{ needs.qualify.outputs.notes_path }}
           EXPECTED_TARGET_BRANCH: ${{ needs.qualify.outputs.target_branch }}
+          ACTUAL_TAG: ${{ steps.release.outputs.tag }}
+          ACTUAL_VERSION: ${{ steps.release.outputs.version }}
+          ACTUAL_TITLE: ${{ steps.release.outputs.title }}
+          ACTUAL_NOTES_PATH: ${{ steps.release.outputs.notes_path }}
+          ACTUAL_TARGET_BRANCH: ${{ steps.release.outputs.target_branch }}
         shell: bash
         run: |
           set -euo pipefail
-          python3 tools/release.py metadata --github-output "$GITHUB_OUTPUT"
-          python3 tools/release.py qualify
-          expected_tag="$EXPECTED_TAG"
-          actual_tag="$(python3 tools/release.py metadata --field tag)"
-          test "$actual_tag" = "$expected_tag" || { echo "::error::Qualified tag changed between jobs"; exit 1; }
-          test "$GITHUB_REF_NAME" = "$EXPECTED_TARGET_BRANCH" || { echo "::error::Published branch does not match qualified target"; exit 1; }
-          python3 - <<'PY'
-          import os, pathlib, yaml
-          m = yaml.safe_load(pathlib.Path("method/release.yaml").read_text())
-          # Qualification has already verified the declaration; metadata check below
-          # also verifies every transferred output before publishing.
-          assert m, "missing release declaration"
-          PY
-          test "$EXPECTED_TAG" = "${{ steps.release.outputs.tag }}" || exit 1
-          test "$EXPECTED_VERSION" = "${{ steps.release.outputs.version }}" || exit 1
-          test "$EXPECTED_TITLE" = "${{ steps.release.outputs.title }}" || exit 1
-          test "$EXPECTED_NOTES_PATH" = "${{ steps.release.outputs.notes_path }}" || exit 1
-          test "$EXPECTED_TARGET_BRANCH" = "${{ steps.release.outputs.target_branch }}" || exit 1
-          python3 tools/verify_published_release.py preflight "$EXPECTED_NOTES_PATH"
+          test -n "$EXPECTED_TAG" || { echo "::error::Missing qualified release tag"; exit 1; }
+          test "$EXPECTED_TAG" = "$ACTUAL_TAG" || { echo "::error::Qualified tag changed between jobs"; exit 1; }
+          test "$EXPECTED_VERSION" = "$ACTUAL_VERSION" || { echo "::error::Qualified version changed between jobs"; exit 1; }
+          test "$EXPECTED_TITLE" = "$ACTUAL_TITLE" || { echo "::error::Qualified title changed between jobs"; exit 1; }
+          test "$EXPECTED_NOTES_PATH" = "$ACTUAL_NOTES_PATH" || { echo "::error::Qualified notes path changed between jobs"; exit 1; }
+          test "$EXPECTED_TARGET_BRANCH" = "$ACTUAL_TARGET_BRANCH" || { echo "::error::Qualified branch changed between jobs"; exit 1; }
+          test "$GITHUB_REF_NAME" = "$ACTUAL_TARGET_BRANCH" || { echo "::error::Release cannot publish from a foreign branch"; exit 1; }
+          python3 tools/verify_published_release.py preflight "$ACTUAL_NOTES_PATH"
       - name: Create or verify declared release tag
                 env:
           TAG: ${{ steps.release.outputs.tag }}
