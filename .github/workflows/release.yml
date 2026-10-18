@@ -28,12 +28,21 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  publish:
+  qualify:
     if: github.repository == 'sankarshanmukhopadhyay/rahp-toolkit' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      publish: ${{ steps.publication.outputs.publish }}
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.release.outputs.version }}
+      title: ${{ steps.release.outputs.title }}
+      notes_path: ${{ steps.release.outputs.notes_path }}
+      target_branch: ${{ steps.release.outputs.target_branch }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -122,9 +131,55 @@ jobs:
         env:
           NOTES_PATH: ${{ steps.release.outputs.notes_path }}
         run: python3 tools/verify_published_release.py preflight "$NOTES_PATH"
-      - name: Create or verify declared release tag
-        if: steps.publication.outputs.publish == 'true'
+  publish:
+    needs: qualify
+    if: github.repository == 'sankarshanmukhopadhyay/rahp-toolkit' && needs.qualify.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install deterministic qualification dependencies
+        run: pip install -r requirements.txt
+      - name: Reauthorize immutable qualified declaration before write
+        id: release
         env:
+          EXPECTED_TAG: ${{ needs.qualify.outputs.tag }}
+          EXPECTED_VERSION: ${{ needs.qualify.outputs.version }}
+          EXPECTED_TITLE: ${{ needs.qualify.outputs.title }}
+          EXPECTED_NOTES_PATH: ${{ needs.qualify.outputs.notes_path }}
+          EXPECTED_TARGET_BRANCH: ${{ needs.qualify.outputs.target_branch }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/release.py metadata --github-output "$GITHUB_OUTPUT"
+          python3 tools/release.py qualify
+          expected_tag="$EXPECTED_TAG"
+          actual_tag="$(python3 tools/release.py metadata --field tag)"
+          test "$actual_tag" = "$expected_tag" || { echo "::error::Qualified tag changed between jobs"; exit 1; }
+          test "$GITHUB_REF_NAME" = "$EXPECTED_TARGET_BRANCH" || { echo "::error::Published branch does not match qualified target"; exit 1; }
+          python3 - <<'PY'
+          import os, pathlib, yaml
+          m = yaml.safe_load(pathlib.Path("method/release.yaml").read_text())
+          # Qualification has already verified the declaration; metadata check below
+          # also verifies every transferred output before publishing.
+          assert m, "missing release declaration"
+          PY
+          test "$EXPECTED_TAG" = "${{ steps.release.outputs.tag }}" || exit 1
+          test "$EXPECTED_VERSION" = "${{ steps.release.outputs.version }}" || exit 1
+          test "$EXPECTED_TITLE" = "${{ steps.release.outputs.title }}" || exit 1
+          test "$EXPECTED_NOTES_PATH" = "${{ steps.release.outputs.notes_path }}" || exit 1
+          test "$EXPECTED_TARGET_BRANCH" = "${{ steps.release.outputs.target_branch }}" || exit 1
+          python3 tools/verify_published_release.py preflight "$EXPECTED_NOTES_PATH"
+      - name: Create or verify declared release tag
+                env:
           TAG: ${{ steps.release.outputs.tag }}
           VERSION: ${{ steps.release.outputs.version }}
           TITLE: ${{ steps.release.outputs.title }}
@@ -143,8 +198,7 @@ jobs:
             git push origin "$TAG"
           fi
       - name: Publish or reconcile declared GitHub Release
-        if: steps.publication.outputs.publish == 'true'
-        env:
+                env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag }}
           TITLE: ${{ steps.release.outputs.title }}
@@ -160,8 +214,7 @@ jobs:
           fi
           gh release view "$TAG" >/dev/null
       - name: Verify published release matches declaration
-        if: steps.publication.outputs.publish == 'true'
-        env:
+                env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag }}
           TITLE: ${{ steps.release.outputs.title }}
@@ -173,8 +226,7 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name > "$RUNNER_TEMP/latest-release-tag"
           python3 tools/verify_published_release.py postflight "$RUNNER_TEMP/published-release.json" "$NOTES_PATH" "$TAG" "$TITLE" "$(cat "$RUNNER_TEMP/latest-release-tag")"
       - name: Record publication outcome
-        if: success() && steps.publication.outputs.publish == 'true'
-        env:
+                env:
           TAG: ${{ steps.release.outputs.tag }}
           TITLE: ${{ steps.release.outputs.title }}
         run: |
