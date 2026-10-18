@@ -1,0 +1,92 @@
+{
+  "schema": "rahp-controller-routing-manifest/v1",
+  "controller_issue": 1054,
+  "snapshot_date": "2026-10-18",
+  "snapshot_digest": "f2aac57efb2cb547b79de37f86242dfdaead40f2cefc2f05fdde185355c2dc78",
+  "qualifying_findings": 48,
+  "distribution": {
+    "UNMAPPED": 15,
+    "no-action": 9,
+    "combined": 21,
+    "covered": 3
+  },
+  "scope": "UNMAPPED-only",
+  "closure_authorized": false,
+  "findings": [
+    {
+      "finding_id": "2a5769f69aaf67636efe",
+      "owner_issue": 691,
+      "status": "review-candidate"
+    },
+    {
+      "finding_id": "3474aeed99edbff13c5c",
+      "owner_issue": 1022,
+      "status": "already-assessed-trigger"
+    },
+    {
+      "finding_id": "3b5cd4abd5496f985033",
+      "owner_issue": 481,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "58f3e21a7dd7227a41ab",
+      "owner_issue": 272,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "93dc1d4c3ed05d832936",
+      "owner_issue": 1051,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "d6faa3f201a07951f331",
+      "owner_issue": 1022,
+      "status": "already-assessed-trigger"
+    },
+    {
+      "finding_id": "14345600ab746827b9d8",
+      "owner_issue": 994,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "5daf04aa9bf26ef41594",
+      "owner_issue": 994,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "c15ef701e115583e2756",
+      "owner_issue": 994,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "ffa81bd16533fbada219",
+      "owner_issue": 994,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "220fb4eea5c0200f190b",
+      "owner_issue": 994,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "ffae6e60e266a4363cc4",
+      "owner_issue": null,
+      "status": "owner-unresolved"
+    },
+    {
+      "finding_id": "1c2869a18869681e741b",
+      "owner_issue": 994,
+      "status": "review-open"
+    },
+    {
+      "finding_id": "e11d65af7635eafb7ecb",
+      "owner_issue": null,
+      "status": "owner-unresolved"
+    },
+    {
+      "finding_id": "f25a1dc1e894092b09d0",
+      "owner_issue": 1022,
+      "status": "already-assessed-trigger"
+    }
+  ]
+}

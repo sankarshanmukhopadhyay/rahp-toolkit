@@ -50,3 +50,18 @@ Before closing an individual controller:
 5. Close as **transferred** only when no qualifying item remains without ownership; unresolved evidence can remain open on the accepted narrow owner. Never mark a source-only or unexecuted trace PASS.
 
 The provisional map in #1047 has been superseded in part by direct verification of [VTI PR #2123](https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/2123), and room/vetter/first-boot transfer comments on #481/#691/#1022. Cross-repository specification authority remains upstream. **No controller was closed solely by preparing this report.**
+
+## Addendum: controller #1054 and the lifecycle-safety boundary
+
+[Controller #1054](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1054), 2026-10-18 exact snapshot digest `f2aac57efb2cb547b79de37f86242dfdaead40f2cefc2f05fdde185355c2dc78`, reports 48 qualifying findings: 15 UNMAPPED, 9 no-action, 21 combined, 3 covered. Its machine-readable [UNMAPPED ledger](../../data/assurance/controller-1054-routing.json) is tested by `python3 tools/validate_controller_routing_manifest.py` and `python3 -m unittest tests.test_controller_routing_manifest -v`. It explicitly forbids deriving full controller closure from an UNMAPPED-only mapping.
+
+Existing durable owners: #691 (vetter refusal, provisional), #481 (room administration), #272 (dependency delta), #1051 (VTA witness), #994 (sign-in and protocol-signing), and closed bounded assessment #1022 for the *historical implemented* TEE bootstrap changes. The three observed TEE finding IDs `3474aeed99edbff13c5c`, `d6faa3f201a07951f331`, and `f25a1dc1e894092b09d0` link to #1022 **as already-assessed source triggers, not a new authority-conformance PASS**. Normative interpretation remains with [VTI #64](https://github.com/trustoverip/dtgwg-vti-spec/issues/64). A genuinely new implementation/interpretation change must receive a fresh bounded assessment and cannot be silently routed into closed #1022.
+
+Two new substantive finding IDs need exact semantic owner verification, and remain **unresolved** in the ledger rather than assigned by title resemblance:
+
+- `ffae6e60e266a4363cc4`: Trust Tasks persona/contact stars, petnames and holder-agent lists, and the addition of administrative directory/group events. Verify the exact change against the current DTG directory/privacy reviews; test cross-context disclosure, agency and retention semantics.
+- `e11d65af7635eafb7ecb`: VTI community directory and group publication for non-recognition purposes. Verify VTI-DIR-001–130 and VTI-REG-001/004 against the specification status and actual consuming path; decide if #689 or #690 cover anything specific or if a narrower durable review is needed.
+
+**Lifecycle defect still unresolved:** #121 and #527 are OPEN despite explicit completed/transferred closure comments. These are historical wrappers, and must not be used as ever-growing journals for fresh materiality. Investigate the publishing workflow's closed-owner reactivation rule in its authoritative source before changing it; only transfer truly unowned new propositions to narrower owners. A checkpoint that merely closes these two again is not a durable fix. No automatic GitHub mutation is performed by this manifest validator.
+
+Remaining mandatory closure gate for #1054: all **48** qualifying finding dispositions, including 21 combined, 3 covered, 9 no-action and any linked DPIP referrals, independently reconciled. The other seven snapshot controllers likewise remain open pending full routed-child reconciliation.
