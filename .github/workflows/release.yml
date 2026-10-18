@@ -179,7 +179,7 @@ jobs:
           test "$GITHUB_REF_NAME" = "$ACTUAL_TARGET_BRANCH" || { echo "::error::Release cannot publish from a foreign branch"; exit 1; }
           python3 tools/verify_published_release.py preflight "$ACTUAL_NOTES_PATH"
       - name: Create or verify declared release tag
-                env:
+        env:
           TAG: ${{ steps.release.outputs.tag }}
           VERSION: ${{ steps.release.outputs.version }}
           TITLE: ${{ steps.release.outputs.title }}
@@ -198,7 +198,7 @@ jobs:
             git push origin "$TAG"
           fi
       - name: Publish or reconcile declared GitHub Release
-                env:
+        env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag }}
           TITLE: ${{ steps.release.outputs.title }}
@@ -214,7 +214,7 @@ jobs:
           fi
           gh release view "$TAG" >/dev/null
       - name: Verify published release matches declaration
-                env:
+        env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag }}
           TITLE: ${{ steps.release.outputs.title }}
@@ -226,7 +226,7 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name > "$RUNNER_TEMP/latest-release-tag"
           python3 tools/verify_published_release.py postflight "$RUNNER_TEMP/published-release.json" "$NOTES_PATH" "$TAG" "$TITLE" "$(cat "$RUNNER_TEMP/latest-release-tag")"
       - name: Record publication outcome
-                env:
+        env:
           TAG: ${{ steps.release.outputs.tag }}
           TITLE: ${{ steps.release.outputs.title }}
         run: |
