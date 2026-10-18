@@ -15,6 +15,7 @@ journaled finding is not incorrectly treated as new again.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -25,6 +26,7 @@ from typing import Any
 KEY_RE = re.compile(r"<!--\s*rahp-assessment-key:([^>]+?)\s*-->")
 TABLE_RE = re.compile(r"^\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*(.*?)\s*\|\s*$", re.M)
 JOURNAL_FINDING_RE = re.compile(r"\bfinding=([^\s;]+)\s+@")
+TERMINAL_TRANSFER_MARKER = "<!-- rahp-terminal-wrapper:transferred -->"
 
 
 def request_json(url: str, token: str) -> Any:
@@ -117,6 +119,58 @@ def enrich_event(event: dict[str, Any], owner: dict[str, Any] | None) -> dict[st
     event["evidence_impact"] = impact
     event["journal_findings"] = rows
     event["theme"] = journal_summary(rows, impact)
+
+    if (
+        owner and owner.get("state") == "closed" and new_rows
+        and TERMINAL_TRANSFER_MARKER in owner_body
+        and not event.get("invalidation_reason")
+    ):
+        # A frozen historical wrapper must not become a rolling materiality journal.
+        # Create a deterministic successor *assessment* instead, fail-closed with
+        # its own acceptance gate. Identical sets reuse the same successor key.
+        number = owner.get("number")
+        old_key = issue_key(owner_body)
+        if not isinstance(number, int) or number <= 0 or not old_key:
+            raise ValueError("terminal transfer wrapper requires owner issue number and key")
+        novel_ids = sorted({row["finding_id"] for row in new_rows})
+        fingerprint = hashlib.sha256("\\n".join(novel_ids).encode("utf-8")).hexdigest()[:16]
+        successor_key = f"{old_key}:successor:{fingerprint}"
+        rows_table = "\\n".join(
+            [
+                "| Finding | Repository | Change |",
+                "|---|---|---|",
+                *(
+                    f"| \`{row['finding_id']}\` | \`{row['repository']}\` | "
+                    f"{row['title'].replace('|', chr(92) + '|')} |"
+                    for row in new_rows
+                ),
+            ]
+        )
+        event["assessment_key"] = successor_key
+        event.pop("related_assessment_key", None)
+        event["title"] = f"[DTG review required] New material after transferred wrapper #{number}"
+        event["labels"] = ["assessment-required", "dtg-instance"]
+        event["body"] = (
+            f"# New bounded assurance proposition after terminal wrapper #{number}\\n\\n"
+            f"<!-- rahp-transfer-source:{old_key} -->\\n\\n"
+            "The prior bounded review was explicitly completed and transferred. "
+            "These previously unseen material findings are NOT dispositioned by "
+            "that closeout, and MUST be independently assessed and transferred to "
+            "an appropriate durable owner. Do not re-open the historical wrapper "
+            "as an ever-growing journal.\\n\\n"
+            f"## New findings\\n\\n{rows_table}\\n\\n"
+            "## Acceptance\\n\\n"
+            "- [ ] Classify each new finding against existing narrow assurance owners.\\n"
+            "- [ ] Record source pins, disposition, and regression/evidence limits.\\n"
+            "- [ ] Route privacy-relevant observations through the canonical DPIP path.\\n"
+            "- [ ] Close this bounded successor only after all finding IDs have "
+            "terminal dispositions or explicit durable transfers.\\n"
+        )
+        event["successor_of_terminal_issue"] = number
+        event["evidence_impact"] = "uncertain"
+        event.pop("retest_reason", None)
+        event.pop("reopen_closed_owner", None)
+        return event
 
     if owner and owner.get("state") == "closed" and new_rows:
         detail = journal_summary(new_rows, "uncertain")
