@@ -100,6 +100,17 @@ def semantic_match(rule: dict[str, Any], finding: dict[str, Any]) -> bool:
     when = rule.get("when")
     if not isinstance(when, dict):
         return False
+    # A lower-priority routine classification must not hide a simultaneously
+    # observed material behavior change. An 'unless' clause is a veto: any
+    # overlapping excluded semantic attribute blocks this rule.
+    veto = rule.get("unless") or {}
+    if not isinstance(veto, dict):
+        return False
+    for field, excluded in veto.items():
+        if field not in SEMANTIC_LIST_FIELDS:
+            return False
+        if set(_strings(finding.get(field))) & set(_strings(excluded)):
+            return False
     for field, required in when.items():
         if field in SEMANTIC_LIST_FIELDS:
             actual = set(_strings(finding.get(field)))
