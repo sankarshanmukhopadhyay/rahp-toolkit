@@ -1,0 +1,439 @@
+{
+  "schema": "rahp-dtg-controller-transfer/v1",
+  "captured_on": "2026-10-18",
+  "scope": "historical eight DTG Portfolio Monitor controller snapshots; immutable routing.json from GitHub Actions",
+  "no_terminal_assurance_claim": true,
+  "closure_condition": "All snapshot findings routed, no unsupported no-action, any DPIP child transferred; controllers can be administratively closed, substantive owners remain active.",
+  "snapshots": [
+    {
+      "controller_issue": 1028,
+      "snapshot_digest": "d9376b63c67af659e04173641ee05013c4f24d793eebb3b06713a0c234349371",
+      "artifact_id": 11917900406,
+      "routing_sha256": "93804eb266e7a26ac6e3952a69c8f5b8952471565ce626586517b0bc628b5503",
+      "count": 19,
+      "distribution": {
+        "UNMAPPED": 10,
+        "no-action": 4,
+        "combined": 5,
+        "covered": 0
+      }
+    },
+    {
+      "controller_issue": 1040,
+      "snapshot_digest": "9cc5d6aadf3d8ffd6aaecc26b0b0e46d17692349872f811406bd0add2a3f2d11",
+      "artifact_id": 11952015077,
+      "routing_sha256": "a6b50ba6d82a0e41809ef7e83df71e2207322cafe0c41564078f4d1d315564c3",
+      "count": 21,
+      "distribution": {
+        "UNMAPPED": 10,
+        "no-action": 4,
+        "combined": 5,
+        "covered": 2
+      }
+    },
+    {
+      "controller_issue": 1042,
+      "snapshot_digest": "dfd064bd455b6f2c7ce32d999b299414295fd397ac0fddfc7e895f0914125ad2",
+      "artifact_id": 11995530743,
+      "routing_sha256": "d07a6a4e9825ebd8670bab2849d719dc26926c6a08987fa160f7b9fb8230c537",
+      "count": 24,
+      "distribution": {
+        "UNMAPPED": 12,
+        "no-action": 4,
+        "combined": 6,
+        "covered": 2
+      }
+    },
+    {
+      "controller_issue": 1043,
+      "snapshot_digest": "71712d87c90d90012ba0d8a65ceeb855adfa27a5e3d52c62d3ca1b8cb83a6dea",
+      "artifact_id": 12027418690,
+      "routing_sha256": "376bcd21a23a4e262147318a50243c69cd50a9d8dbd58f88b711858662522f28",
+      "count": 31,
+      "distribution": {
+        "UNMAPPED": 12,
+        "no-action": 10,
+        "combined": 7,
+        "covered": 2
+      }
+    },
+    {
+      "controller_issue": 1045,
+      "snapshot_digest": "b6d91818a00b8882c62c0adde6abe930d603aaf2afe689e673b8d0d630464398",
+      "artifact_id": 12061354601,
+      "routing_sha256": "1dd68f96eab9cb6d00fa16bc1acc62e52684a9cfda6a07ceac5ce63a0b69f0e3",
+      "count": 38,
+      "distribution": {
+        "UNMAPPED": 12,
+        "no-action": 10,
+        "combined": 13,
+        "covered": 3
+      }
+    },
+    {
+      "controller_issue": 1046,
+      "snapshot_digest": "46a8f7a819cf143430585a5fdad3f5e6004d3b3c23462abeb3b2f0fdd7c22e0f",
+      "artifact_id": 12091431545,
+      "routing_sha256": "87d4185fb02a54953336128259a41834026d69044d9a07ebb37b66e7a83666ad",
+      "count": 40,
+      "distribution": {
+        "UNMAPPED": 12,
+        "no-action": 10,
+        "combined": 15,
+        "covered": 3
+      }
+    },
+    {
+      "controller_issue": 1047,
+      "snapshot_digest": "b5f7925b2105c03e88b809730c1c738f9616a5180696fa77b85a5f6771674b09",
+      "artifact_id": 12106657917,
+      "routing_sha256": "1a8dcacacfabe61e49d836cfe0e0831404d57389e37305bda0107389cc8c1b4d",
+      "count": 44,
+      "distribution": {
+        "UNMAPPED": 13,
+        "no-action": 10,
+        "combined": 18,
+        "covered": 3
+      }
+    },
+    {
+      "controller_issue": 1054,
+      "snapshot_digest": "f2aac57efb2cb547b79de37f86242dfdaead40f2cefc2f05fdde185355c2dc78",
+      "artifact_id": 12126614224,
+      "routing_sha256": "a4801c1bb7151c2ff284034e85b1e54c426b8b06fbf0594d0573ab183953f58a",
+      "count": 48,
+      "distribution": {
+        "UNMAPPED": 15,
+        "no-action": 9,
+        "combined": 21,
+        "covered": 3
+      }
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "02cb514c440bf1b3d1fb",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "03ed5e52452e39afa501",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "044add6d73492d7afedf",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "0883f0a9d45e86e0d674",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "0ab1aa8e2e70a9099d73",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "0c8d4b7268c99b170168",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "0f981181d6bb584e3ab3",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "14345600ab746827b9d8",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "1a1152510cfda3e78869",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "1c2869a18869681e741b",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "1d5c7aef616605f3a972",
+      "source_outcome": "covered",
+      "disposition": "review-transfer",
+      "owner_issue": 691
+    },
+    {
+      "finding_id": "20bc88fe966b21280abf",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "220fb4eea5c0200f190b",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "29ce25ed1301d491fbc1",
+      "source_outcome": "covered",
+      "disposition": "review-transfer",
+      "owner_issue": 610
+    },
+    {
+      "finding_id": "2a5769f69aaf67636efe",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 691
+    },
+    {
+      "finding_id": "3474aeed99edbff13c5c",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 1022
+    },
+    {
+      "finding_id": "3b5cd4abd5496f985033",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "3b62b0cd590b9b45b3da",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 272
+    },
+    {
+      "finding_id": "3b87559a2585b735cd19",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "4117307f07550112138d",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "52ca93666c0c60642917",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "58f3e21a7dd7227a41ab",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 272
+    },
+    {
+      "finding_id": "5daf04aa9bf26ef41594",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "5ef1e22b1e5bbb81ed1d",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "5f287722cb80cafcb503",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "867d58d41e822f48ff63",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "89df71bd703073d8f481",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "90a68168d75c97c9975e",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "93176b4d2a918609a33b",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "93bb8641b0306b9106f3",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "93dc1d4c3ed05d832936",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 1051
+    },
+    {
+      "finding_id": "a1b1873b6fa9f5b793b7",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "aa28149c7babc678e9e7",
+      "source_outcome": "no-action",
+      "disposition": "corrected-material-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "b7ca5337f11ad6768d1b",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "c114e0f0e370484459c1",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "c15ef701e115583e2756",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "caa004a99bd850892774",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "d4ca7e8e254b707a483f",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "d6f06da6be6c24f2917a",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "d6faa3f201a07951f331",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 1022
+    },
+    {
+      "finding_id": "da3e439ebf70650d0c35",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "dc0309a730276b1501b7",
+      "source_outcome": "covered",
+      "disposition": "review-transfer",
+      "owner_issue": 691
+    },
+    {
+      "finding_id": "dcdca42b0805836ae648",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "e0da9d8b03dd7f460a60",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 1022
+    },
+    {
+      "finding_id": "e11d65af7635eafb7ecb",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 1057
+    },
+    {
+      "finding_id": "e121b18291ff4d8f4d55",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "e413e271cca08a30df8c",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 272
+    },
+    {
+      "finding_id": "f25a1dc1e894092b09d0",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 1022
+    },
+    {
+      "finding_id": "f3c9a30182e22f96df2d",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "fb1c3392f267894af058",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 610
+    },
+    {
+      "finding_id": "fbfd90f7a4819de43b76",
+      "source_outcome": "no-action",
+      "disposition": "reasoned-release-aggregate",
+      "owner_issue": null
+    },
+    {
+      "finding_id": "fde49552f3a619512012",
+      "source_outcome": "combined",
+      "disposition": "review-transfer",
+      "owner_issue": 481
+    },
+    {
+      "finding_id": "ffa81bd16533fbada219",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 994
+    },
+    {
+      "finding_id": "ffae6e60e266a4363cc4",
+      "source_outcome": "UNMAPPED",
+      "disposition": "review-transfer",
+      "owner_issue": 1057
+    }
+  ]
+}
