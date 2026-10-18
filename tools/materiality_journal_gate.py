@@ -27,6 +27,13 @@ KEY_RE = re.compile(r"<!--\s*rahp-assessment-key:([^>]+?)\s*-->")
 TABLE_RE = re.compile(r"^\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*(.*?)\s*\|\s*$", re.M)
 JOURNAL_FINDING_RE = re.compile(r"\bfinding=([^\s;]+)\s+@")
 TERMINAL_TRANSFER_MARKER = "<!-- rahp-terminal-wrapper:transferred -->"
+TERMINAL_TRANSFER_KEYS = {
+    # Frozen historical wrappers, explicitly transferred and CLOSED.
+    # Key-based recognition is necessary because issue-list pagination/body
+    # projection may omit the marker on an otherwise known historical owner.
+    "dtg:portfolio:combined:openvtc-security-combined": 121,
+    "dtg:portfolio:combined:data-room-custody-lifecycle": 527,
+}
 
 
 def request_json(url: str, token: str) -> Any:
@@ -106,12 +113,25 @@ def enrich_event(event: dict[str, Any], owner: dict[str, Any] | None) -> dict[st
     owner_body = (owner or {}).get("body") or ""
     known_rows = finding_rows(owner_body)
     known_ids = {row["finding_id"] for row in known_rows} | journaled_finding_ids(owner_body)
+    key = event.get("related_assessment_key") or event.get("assessment_key")
+    if key in TERMINAL_TRANSFER_KEYS:
+        # Closed historical wrappers have a reviewed, durable frozen-transfer
+        # ledger. Recognize its finding IDs even when an issue-list body is
+        # missing, truncated, or contains no journal marker.
+        ledger_path = Path(__file__).resolve().parents[1] / (
+            "data/assurance/dtg-eight-controller-transfer-2026-10-18.json"
+        )
+        if ledger_path.is_file():
+            ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+            if ledger.get("schema") != "rahp-dtg-controller-transfer/v1" or len(ledger.get("findings") or []) != 54:
+                raise ValueError("invalid frozen controller transfer ledger")
+            known_ids.update(row["finding_id"] for row in ledger["findings"])
     new_rows = [row for row in rows if row["finding_id"] not in known_ids]
 
-    if owner is None:
-        impact = "new-proposition"
-    elif not new_rows:
+    if not new_rows:
         impact = "preserved"
+    elif owner is None:
+        impact = "new-proposition"
     else:
         # Same proposition identity does not prove that prior evidence covers new material.
         impact = "uncertain"
@@ -120,16 +140,23 @@ def enrich_event(event: dict[str, Any], owner: dict[str, Any] | None) -> dict[st
     event["journal_findings"] = rows
     event["theme"] = journal_summary(rows, impact)
 
-    if (
-        owner and owner.get("state") == "closed" and new_rows
+    old_key = event.get("related_assessment_key") or event.get("assessment_key")
+    historical_number = TERMINAL_TRANSFER_KEYS.get(old_key)
+    historical_terminal = historical_number is not None and (
+        owner is None or owner.get("state") == "closed"
+    )
+    opted_in_terminal = bool(
+        owner and owner.get("state") == "closed"
         and TERMINAL_TRANSFER_MARKER in owner_body
-        and not event.get("invalidation_reason")
+    )
+    if new_rows and not event.get("invalidation_reason") and (
+        historical_terminal or opted_in_terminal
     ):
         # A frozen historical wrapper must not become a rolling materiality journal.
         # Create a deterministic successor *assessment* instead, fail-closed with
         # its own acceptance gate. Identical sets reuse the same successor key.
-        number = owner.get("number")
-        old_key = issue_key(owner_body)
+        number = historical_number if historical_terminal else owner.get("number")
+        old_key = old_key if historical_terminal else issue_key(owner_body)
         if not isinstance(number, int) or number <= 0 or not old_key:
             raise ValueError("terminal transfer wrapper requires owner issue number and key")
         novel_ids = sorted({row["finding_id"] for row in new_rows})

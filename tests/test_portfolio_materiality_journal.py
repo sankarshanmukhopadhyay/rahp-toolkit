@@ -115,6 +115,53 @@ class MaterialityJournalGateTests(unittest.TestCase):
         self.assertTrue(enriched["reopen_closed_owner"])
         self.assertEqual(self.key, enriched["assessment_key"])
 
+    def test_frozen_openvtc_wrapper_never_reopens_when_marker_missing(self):
+        key = "dtg:portfolio:combined:openvtc-security-combined"
+        event = self.event([("fresh", "example/repo", "breaking new sign-in")])
+        event["assessment_key"] = key
+        owner = {
+            "state": "closed", "number": 121,
+            "body": f"<!-- rahp-assessment-key:{key} -->",
+        }
+        enriched = gate.enrich_event(event, owner)
+        self.assertEqual(121, enriched["successor_of_terminal_issue"])
+        self.assertIn(":successor:", enriched["assessment_key"])
+        self.assertNotIn("reopen_closed_owner", enriched)
+        self.assertNotIn("retest_reason", enriched)
+
+    def test_closed_data_room_wrapper_missing_from_index_still_gets_successor(self):
+        key = "dtg:portfolio:combined:data-room-custody-lifecycle"
+        event = self.event([("room-new", "OpenVTC/verifiable-trust-infrastructure", "new room revocation")])
+        event["assessment_key"] = key
+        enriched = gate.enrich_event(event, None)
+        self.assertEqual(527, enriched["successor_of_terminal_issue"])
+        self.assertIn("room-new", enriched["body"])
+        self.assertNotIn("reopen_closed_owner", enriched)
+        self.assertNotEqual(key, enriched["assessment_key"])
+
+    def test_known_transferred_id_does_not_create_duplicate_successor(self):
+        key = "dtg:portfolio:combined:openvtc-security-combined"
+        event = self.event([
+            ("aa28149c7babc678e9e7", "OpenVTC/verifiable-trust-infrastructure",
+             "breaking wallet sign-in already transferred to #994")
+        ])
+        event["assessment_key"] = key
+        enriched = gate.enrich_event(event, None)
+        self.assertEqual(key, enriched["assessment_key"])
+        self.assertEqual("preserved", enriched["evidence_impact"])
+        self.assertNotIn("reopen_closed_owner", enriched)
+        self.assertNotIn("successor_of_terminal_issue", enriched)
+
+    def test_frozen_wrapper_explicit_invalidation_remains_fail_closed(self):
+        key = "dtg:portfolio:combined:openvtc-security-combined"
+        event = self.event([("fresh", "example/repo", "new contrary evidence")])
+        event["assessment_key"] = key
+        event["invalidation_reason"] = "negative evidence overturns original terminal conclusion"
+        owner = {"state": "closed", "number": 121, "body": f"<!-- rahp-assessment-key:{key} -->"}
+        enriched = gate.enrich_event(event, owner)
+        self.assertTrue(enriched["reopen_closed_owner"])
+        self.assertEqual(key, enriched["assessment_key"])
+
     def test_new_proposition_is_not_treated_as_reassessment(self) -> None:
         enriched = gate.enrich_event(self.event([("f-2", "example/repo", "first observation")]), None)
         self.assertEqual("new-proposition", enriched["evidence_impact"])
