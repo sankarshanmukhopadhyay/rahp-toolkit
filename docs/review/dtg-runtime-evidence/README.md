@@ -82,3 +82,8 @@ Use these values consistently:
 ## Closure gate for #994
 
 Issue #994 should not close merely because source/spec evidence exists. It should close only when all three scopes are resolved or transferred, each finding has an explicit disposition, retained evidence is inventoried, and DPIP applicability is ruled out with rationale or promoted to DPIP.
+
+
+## Current Scope C source-pinned rebaseline (2026-10-18)
+
+The original Scope C problem statement above is historical and is not a claim that the task guarantees wrong-audience or wrong-subject refusal. The [pinned evidence rebaseline](scope-c-vti-2026-10-18-rebaseline.md) reconciles the [#752 maintainer response](https://github.com/trustoverip/dtgwg-trust-tasks-tf/issues/752#issuecomment-6211354820) with the implementation in VTI #2057. `cases.yaml` holds the updated machine-readable case dispositions. Positive VTA implementation evidence must not be mistaken for downstream-executed traces; audit/retention/DPIP and remaining authority/replay evidence are not yet closed.
