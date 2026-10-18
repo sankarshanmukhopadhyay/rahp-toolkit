@@ -23,7 +23,7 @@ class ControllerTransferTests(unittest.TestCase):
 
     def test_missing_owner_cannot_be_laundered_as_transfer(self):
         data = copy.deepcopy(self.original)
-        data["findings"][0]["owner_issue"] = 527
+        next(f for f in data["findings"] if f["disposition"] == "review-transfer")["owner_issue"] = 527
         self.assertTrue(any("no active/narrow owner" in x for x in validate_manifest(data)))
 
     def test_duplicate_or_omitted_finding_fails(self):
