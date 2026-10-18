@@ -70,8 +70,8 @@
     },
     {
       "finding_id": "ffae6e60e266a4363cc4",
-      "owner_issue": null,
-      "status": "owner-unresolved"
+      "owner_issue": 1057,
+      "status": "review-open"
     },
     {
       "finding_id": "1c2869a18869681e741b",
@@ -80,8 +80,8 @@
     },
     {
       "finding_id": "e11d65af7635eafb7ecb",
-      "owner_issue": null,
-      "status": "owner-unresolved"
+      "owner_issue": 1057,
+      "status": "review-open"
     },
     {
       "finding_id": "f25a1dc1e894092b09d0",
