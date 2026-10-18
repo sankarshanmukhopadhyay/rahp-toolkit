@@ -14,3 +14,7 @@ For these two keys, a previously unseen qualifying finding is never silently ign
 **Tests:** `tests/test_portfolio_materiality_journal.py` now covers missing marker on a known closed wrapper, absent issue-index owner for the Data Rooms key, and explicit normative invalidation bypass of successor routing. The two keys are intentionally fixed and limited; adding another key requires a reviewed terminal-transfer justification.
 
 **Closure boundary:** This repairs identity/lifecycle routing, not downstream runtime behavior. Original #121/#527 successor owners remain #994/#908/#610 and #481/#482/#608/#609 respectively. Changes that cannot be mapped to an existing successor receive a new bounded assessment; no assurance PASS is inferred.
+
+## Duplicate-suppression evidence
+
+The gate also loads the frozen, reviewed [54-ID eight-controller transfer ledger](../../data/assurance/dtg-eight-controller-transfer-2026-10-18.json) when processing either historical key. Previously transferred IDs are treated as **known** even if the historical issue body is unavailable. This prevents a routine rerun of an already-transfered source set from generating a spurious new successor issue. Only genuinely unseen finding identities form a new bounded successor; the original approved transfer does **not** confer a runtime PASS. Missing ledger is fail-closed to new review; invalid ledger schema/count is an explicit error. The regression suite covers both known and novel identities.
