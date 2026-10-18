@@ -133,14 +133,14 @@ def enrich_event(event: dict[str, Any], owner: dict[str, Any] | None) -> dict[st
         if not isinstance(number, int) or number <= 0 or not old_key:
             raise ValueError("terminal transfer wrapper requires owner issue number and key")
         novel_ids = sorted({row["finding_id"] for row in new_rows})
-        fingerprint = hashlib.sha256("\\n".join(novel_ids).encode("utf-8")).hexdigest()[:16]
+        fingerprint = hashlib.sha256("\n".join(novel_ids).encode("utf-8")).hexdigest()[:16]
         successor_key = f"{old_key}:successor:{fingerprint}"
-        rows_table = "\\n".join(
+        rows_table = "\n".join(
             [
                 "| Finding | Repository | Change |",
                 "|---|---|---|",
                 *(
-                    f"| \`{row['finding_id']}\` | \`{row['repository']}\` | "
+                    f"| `{row['finding_id']}` | `{row['repository']}` | "
                     f"{row['title'].replace('|', chr(92) + '|')} |"
                     for row in new_rows
                 ),
@@ -151,20 +151,20 @@ def enrich_event(event: dict[str, Any], owner: dict[str, Any] | None) -> dict[st
         event["title"] = f"[DTG review required] New material after transferred wrapper #{number}"
         event["labels"] = ["assessment-required", "dtg-instance"]
         event["body"] = (
-            f"# New bounded assurance proposition after terminal wrapper #{number}\\n\\n"
-            f"<!-- rahp-transfer-source:{old_key} -->\\n\\n"
+            f"# New bounded assurance proposition after terminal wrapper #{number}\n\n"
+            f"<!-- rahp-transfer-source:{old_key} -->\n\n"
             "The prior bounded review was explicitly completed and transferred. "
             "These previously unseen material findings are NOT dispositioned by "
             "that closeout, and MUST be independently assessed and transferred to "
             "an appropriate durable owner. Do not re-open the historical wrapper "
-            "as an ever-growing journal.\\n\\n"
-            f"## New findings\\n\\n{rows_table}\\n\\n"
-            "## Acceptance\\n\\n"
-            "- [ ] Classify each new finding against existing narrow assurance owners.\\n"
-            "- [ ] Record source pins, disposition, and regression/evidence limits.\\n"
-            "- [ ] Route privacy-relevant observations through the canonical DPIP path.\\n"
+            "as an ever-growing journal.\n\n"
+            f"## New findings\n\n{rows_table}\n\n"
+            "## Acceptance\n\n"
+            "- [ ] Classify each new finding against existing narrow assurance owners.\n"
+            "- [ ] Record source pins, disposition, and regression/evidence limits.\n"
+            "- [ ] Route privacy-relevant observations through the canonical DPIP path.\n"
             "- [ ] Close this bounded successor only after all finding IDs have "
-            "terminal dispositions or explicit durable transfers.\\n"
+            "terminal dispositions or explicit durable transfers.\n"
         )
         event["successor_of_terminal_issue"] = number
         event["evidence_impact"] = "uncertain"
