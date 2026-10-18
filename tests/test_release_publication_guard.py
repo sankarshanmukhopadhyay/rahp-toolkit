@@ -45,7 +45,7 @@ class PublicationGuardTests(unittest.TestCase):
         self.assertIn("publication is intentionally skipped", source)
         self.assertIn("if: steps.publication.outputs.publish == 'true'", source)
         self.assertIn(
-            "if: success() && steps.publication.outputs.publish == 'true'",
+            "needs.qualify.outputs.publish == 'true'",
             source,
         )
         # Manual recovery remains fail-closed when the declaration is not
@@ -56,7 +56,9 @@ class PublicationGuardTests(unittest.TestCase):
     def test_publication_is_serialized_and_fail_closed(self):
         workflow = yaml.safe_load((ROOT / ".github/workflows/release.yml").read_text())
         self.assertFalse(workflow["concurrency"]["cancel-in-progress"])
-        self.assertEqual(workflow["permissions"]["contents"], "write")
+        self.assertEqual(workflow["permissions"]["contents"], "read")
+        self.assertEqual(workflow["jobs"]["qualify"]["permissions"]["contents"], "read")
+        self.assertEqual(workflow["jobs"]["publish"]["permissions"]["contents"], "write")
         self.assertEqual(workflow["jobs"]["publish"]["runs-on"], "ubuntu-latest")
 
 
