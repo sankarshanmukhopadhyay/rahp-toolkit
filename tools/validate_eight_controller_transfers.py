@@ -122,7 +122,7 @@ def audit_archives(data: dict, directory: Path) -> list[str]:
                     errors.append(f"#{number}: combined child missing for {fid}")
                 if target["disposition"] == "reasoned-release-aggregate":
                     title = finding.get("title", "")
-                    if not (re.search(r"-v[0-9]+\\.[0-9]+\\.[0-9]+$", title) or title == "chore: release"):
+                    if not (re.search(r"-v[0-9]+\.[0-9]+\.[0-9]+$", title) or title == "chore: release"):
                         errors.append(f"#{number}: non-release silently no-action {fid}")
                 if target["disposition"] == "corrected-material-transfer":
                     if "behavior-change" not in x["normalized_finding"].get("change_kind", []):
