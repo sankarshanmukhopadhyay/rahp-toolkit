@@ -7,12 +7,13 @@ import sys
 ROOT = Path(__file__).resolve().parent.parent
 SITE = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / '_site'
 
-REQUIRED_STRUCTURED_SOURCES = [
-    'corpora/dtg-zkp.yaml',
-    'corpora/trust-tasks.yaml',
-    'corpora/credential-spec.yaml',
-    'corpora/trust-tasks-credspec-composed.yaml',
-    'corpora/cawg.yaml',
+CORPUS_PATHS = sorted(
+    p.relative_to(ROOT).as_posix()
+    for p in (ROOT / 'corpora').glob('*.yaml')
+    if p.name != 'sources.yaml'
+)
+
+REQUIRED_STRUCTURED_SOURCES = CORPUS_PATHS + [
     'instances/cawg/mandate-readiness.yaml',
     'instances/cawg/watch/issues.yaml',
     'instances/dtg/watch/issues.yaml',
@@ -42,15 +43,12 @@ REQUIRED_STRUCTURED_SOURCES = [
 ]
 
 REQUIRED_HUMAN_PROJECTIONS = [
+    path.removesuffix('.yaml') + '/index.html' for path in CORPUS_PATHS
+] + [
     'examples/standalone-trqp/pressure-test/index.html',
     'examples/standalone-trqp/source-manifest/index.html',
     'examples/standalone-trqp/cases/index.html',
     'examples/standalone-trqp/expected-replay/index.html',
-    'corpora/dtg-zkp/index.html',
-    'corpora/trust-tasks/index.html',
-    'corpora/credential-spec/index.html',
-    'corpora/trust-tasks-credspec-composed/index.html',
-    'corpora/cawg/index.html',
     'method/catalogue/index.html',
     'method/catalog/index.html',
     'method/catalogue/harm-patterns/index.html',
@@ -146,6 +144,13 @@ def resolve_site_target(path_text):
         if candidate.exists():
             return candidate
     return target
+
+# Require navigation discoverability in source, not merely generated HTML existence.
+browser = (ROOT / 'corpora' / 'index.md').read_text(encoding='utf-8')
+for path in CORPUS_PATHS:
+    stem = Path(path).stem
+    if f']({stem}/)' not in browser:
+        errors.append(f'corpus browser missing link to packaged adapter: {path}')
 
 for required in REQUIRED_DOCS:
     target = resolve_site_target(required)
