@@ -1,0 +1,66 @@
+{
+  "schema": "rahp-runtime-evidence-packet/v1",
+  "issue": 994,
+  "as_of": "2026-10-18",
+  "claim_boundary": "No deployment traces or independent operator attestation supplied. All obligations remain INDETERMINATE.",
+  "scopes": [
+    {
+      "scope": "A",
+      "surface": "trigger-link sign-in and wallet authorization",
+      "source_findings": [
+        "14345600ab746827b9d8",
+        "5daf04aa9bf26ef41594",
+        "c15ef701e115583e2756",
+        "ffa81bd16533fbada219",
+        "aa28149c7babc678e9e7"
+      ],
+      "state": "INDETERMINATE",
+      "negative_cases": [
+        "wrong-origin",
+        "wrong-persona",
+        "stale-signature",
+        "link-replay",
+        "consent-withdrawn"
+      ],
+      "runtime_evidence": null,
+      "retained_evidence_inventory": null,
+      "dpip": "NOT_ASSESSED"
+    },
+    {
+      "scope": "B",
+      "surface": "foreign-protocol exchange task binding",
+      "source_findings": [
+        "1c2869a18869681e741b"
+      ],
+      "state": "INDETERMINATE",
+      "negative_cases": [
+        "foreign-without-task-authority",
+        "wrong-audience",
+        "expired-exchange",
+        "replay-after-completion"
+      ],
+      "runtime_evidence": null,
+      "retained_evidence_inventory": null,
+      "dpip": "NOT_ASSESSED"
+    },
+    {
+      "scope": "C",
+      "surface": "VTA-held-key sign-jws/sign-csr",
+      "source_findings": [
+        "220fb4eea5c0200f190b"
+      ],
+      "state": "INDETERMINATE",
+      "negative_cases": [
+        "wrong-purpose",
+        "wrong-key",
+        "wrong-context",
+        "stale-authorization",
+        "replay",
+        "unauthorized-requester"
+      ],
+      "runtime_evidence": null,
+      "retained_evidence_inventory": null,
+      "dpip": "NOT_ASSESSED"
+    }
+  ]
+}
