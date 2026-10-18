@@ -78,6 +78,16 @@ The optional [R3 reproducibility and challenge profile](reproducibility-challeng
 
 A standalone [R1–R3 worked consumption example](reasoning-worked-example.md) demonstrates how the optional profiles can be invoked without promoting their results to terminal assurance.
 
+## Cross-process replay qualification (bounded R4 exercise)
+
+For the constructed [R1–R3 worked fixture](reasoning-worked-example.md), the regression suite also invokes the published CLI in **fresh Python interpreter processes** and compares complete output records:
+
+```bash
+python3 -m unittest tests.test_reasoning_cross_process_replay -v
+```
+
+This checks deterministic repetition of the *constructed* baseline and missing-evidence scenario, preserved as-known-at interpretation of a later retroactive record, an open challenge under declared output disagreement, and distinct R3 run-record digests for changed declared inputs. This is stronger evidence than comparing two hard-coded `runs` within one invocation because actual command processes are repeated. It is **not** independent implementation provenance, source retrieval/authentication, external reviewer agreement, or authoritative terminal PASS. Reviewer-controlled source pins, contradiction interpretation and governed challenge resolution remain separately necessary for #928.
+
 ## What remains outside this boundary
 
 RAHP does not automatically confer delegation to an agent, authenticate an agent's principal, approve a policy exception, guarantee freshness of external evidence, or settle a contested substantive judgment. An optional reasoning trace is **not** a chain-of-thought transcript. [The trace profile](reasoning-trace.md) currently validates a bounded explanation only when explicitly invoked by a consumer.
