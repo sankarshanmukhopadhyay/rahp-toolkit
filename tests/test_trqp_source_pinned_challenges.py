@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 import pathlib
 import shutil
 import subprocess
@@ -11,8 +12,10 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 EXAMPLE = ROOT / "examples" / "standalone-trqp"
-sys.path.insert(0, str(EXAMPLE))
-import replay as trqp_replay
+SPEC = importlib.util.spec_from_file_location("standalone_trqp_replay_qualification", EXAMPLE / "replay.py")
+assert SPEC and SPEC.loader
+trqp_replay = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(trqp_replay)
 
 
 class TRQPSourcePinnedChallengeTests(unittest.TestCase):
