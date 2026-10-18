@@ -102,3 +102,32 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  observe_published:
+    if: github.event_name != 'pull_request'
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout observation requirements
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Qualify observer using negative fixtures
+        run: python3 -m unittest tests.test_verify_published_pages -v
+      - name: Observe published pages after deployment
+        shell: bash
+        run: |
+          mkdir -p build/publication
+          python3 tools/verify_published_pages.py --output build/publication/observation.json
+      - name: Preserve independent public-route observation
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: published-pages-observation
+          path: build/publication/observation.json
+          if-no-files-found: warn
+          retention-days: 14
