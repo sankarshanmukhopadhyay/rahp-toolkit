@@ -113,12 +113,25 @@ def enrich_event(event: dict[str, Any], owner: dict[str, Any] | None) -> dict[st
     owner_body = (owner or {}).get("body") or ""
     known_rows = finding_rows(owner_body)
     known_ids = {row["finding_id"] for row in known_rows} | journaled_finding_ids(owner_body)
+    key = event.get("related_assessment_key") or event.get("assessment_key")
+    if key in TERMINAL_TRANSFER_KEYS:
+        # Closed historical wrappers have a reviewed, durable frozen-transfer
+        # ledger. Recognize its finding IDs even when an issue-list body is
+        # missing, truncated, or contains no journal marker.
+        ledger_path = Path(__file__).resolve().parents[1] / (
+            "data/assurance/dtg-eight-controller-transfer-2026-10-18.json"
+        )
+        if ledger_path.is_file():
+            ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+            if ledger.get("schema") != "rahp-dtg-controller-transfer/v1" or len(ledger.get("findings") or []) != 54:
+                raise ValueError("invalid frozen controller transfer ledger")
+            known_ids.update(row["finding_id"] for row in ledger["findings"])
     new_rows = [row for row in rows if row["finding_id"] not in known_ids]
 
-    if owner is None:
-        impact = "new-proposition"
-    elif not new_rows:
+    if not new_rows:
         impact = "preserved"
+    elif owner is None:
+        impact = "new-proposition"
     else:
         # Same proposition identity does not prove that prior evidence covers new material.
         impact = "uncertain"
