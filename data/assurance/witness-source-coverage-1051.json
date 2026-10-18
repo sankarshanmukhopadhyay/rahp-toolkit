@@ -1,0 +1,74 @@
+{
+  "schema": "rahp-vta-witness-source-coverage/v1",
+  "upstream_repository": "OpenVTC/verifiable-trust-infrastructure",
+  "upstream_pr": 2123,
+  "revision": "e9c5f9342e97ebc0a15ab53170d9692f5d2ad768",
+  "test_source": "vta-service/src/trust_tasks/witness_tests.rs",
+  "module_source": "vta-service/src/trust_tasks/witness.rs",
+  "scope": "source-declared async test inventory, not individually observed test execution or external client-carrier qualification",
+  "tests": [
+    {
+      "name": "witnessed_end_to_end_through_the_member_link",
+      "proposition": "accepted end-to-end witnessed party path",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "witnessed_with_membership_naming_the_relationship_did",
+      "proposition": "membership and relationship DID attribution",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "a_repeated_present_is_safe",
+      "proposition": "repeat present and spent witness challenge",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "an_answer_from_anywhere_else_is_refused",
+      "proposition": "wrong-session response and tampered challenge",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "a_vwc_from_another_session_is_refused",
+      "proposition": "foreign-session VWC substitution",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "session_unknown_says_nothing_about_why",
+      "proposition": "unknown session/wrong context indistinguishable error",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "key_custody_refuses_another_contexts_relationship_did",
+      "proposition": "cross-context key and membership custody",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "sign_alone_does_not_satisfy_witness_request",
+      "proposition": "explicit witness-request capability boundary",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "open_refuses_what_cannot_succeed_before_anything_is_disclosed",
+      "proposition": "fail-closed pre-disclosure validation",
+      "evidence_status": "source-assertions-only"
+    },
+    {
+      "name": "present_refuses_a_credential_changed_since_open",
+      "proposition": "credential stale/change after open",
+      "evidence_status": "source-assertions-only"
+    }
+  ],
+  "ci": {
+    "workflow_run": 38756165903,
+    "job": 116495482783,
+    "command": "cargo nextest run --profile ci --workspace --exclude vtc-service --exclude vtc-client --no-fail-fast",
+    "passed": 6063,
+    "skipped": 23,
+    "attribution": "aggregate-success-only"
+  },
+  "negative_limitations": [
+    "exact witness test names not observed individually in CI output",
+    "client-carrier across trust boundaries not independently reproduced",
+    "deployment audit/retention and privacy not observed"
+  ]
+}
