@@ -212,6 +212,10 @@ semantic_rules:
     when:
       dimensions: [release]
       concerns: [aggregation]
+    # Dual-classified functional changes are material even if the release
+    # aggregation label also matched; never downgrade them to no-action.
+    unless:
+      change_kind: [behavior-change]
     outcome: no-action
     rationale: >-
       Release markers and editorial merge plans aggregate already-visible constituent
