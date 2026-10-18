@@ -1,0 +1,271 @@
+{
+  "schema": "rahp-queue-rebaseline/v1",
+  "repository": "sankarshanmukhopadhyay/rahp-toolkit",
+  "snapshot_date": "2026-10-18",
+  "scope": "open-issues",
+  "source_query": "repo:sankarshanmukhopadhyay/rahp-toolkit is:issue is:open",
+  "open_issue_count": 52,
+  "classification_limits": "Point-in-time routing assessment. Not evidence of substantive PASS, issue closure, or normative resolution.",
+  "issues": [
+    {
+      "number": 65,
+      "title": "F-002: Define reusable threshold and co-approval composition semantics",
+      "classification": "bounded-research"
+    },
+    {
+      "number": 67,
+      "title": "F-004: Preserve privacy, retained agency and fiduciary-governance boundaries",
+      "classification": "bounded-research"
+    },
+    {
+      "number": 272,
+      "title": "[DTG portfolio] Residual dependency-alignment delta review — Trust Tasks releases",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 310,
+      "title": "[DPIP residual] DTG credential identifier cross-context correlation — evidence-external",
+      "classification": "external-privacy-evidence"
+    },
+    {
+      "number": 338,
+      "title": "[DPIP residual] DTG portfolio privacy examination — relationship-correlation-privacy — evidence-external",
+      "classification": "external-privacy-evidence"
+    },
+    {
+      "number": 339,
+      "title": "[DPIP remediation watch] DTG device-metadata privacy — prohibited correlation observed",
+      "classification": "external-privacy-evidence"
+    },
+    {
+      "number": 481,
+      "title": "[Data Rooms] reconcile implementation/runtime evidence residuals",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 482,
+      "title": "[WD02 residual] common-control proof semantics remain externally unresolved",
+      "classification": "upstream-normative-dependency"
+    },
+    {
+      "number": 500,
+      "title": "chore(coordination): track common-control dependency and downstream reassessment impact",
+      "classification": "upstream-normative-dependency"
+    },
+    {
+      "number": 531,
+      "title": "[DPIP residual] DTG portfolio privacy examination — binder-enumerability-privacy — evidence-external",
+      "classification": "external-privacy-evidence"
+    },
+    {
+      "number": 608,
+      "title": "[DTG data rooms] Identity assurance after room-owner DID/key rotation",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 609,
+      "title": "[DTG authority] Live VAC revocation/status and policy freshness at action time",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 610,
+      "title": "[DTG governance] Cross-boundary contestability and adverse-decision evidence closure",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 619,
+      "title": "[Cross-spec] DTG Credential Specification × VDS pressure-test review",
+      "classification": "upstream-normative-dependency"
+    },
+    {
+      "number": 620,
+      "title": "[Cross-spec] Trust Tasks × VDS pressure-test review",
+      "classification": "upstream-normative-dependency"
+    },
+    {
+      "number": 642,
+      "title": "[remediation watch] OpenVTC vetted-admission retained profile binder cross-context reuse",
+      "classification": "external-privacy-evidence"
+    },
+    {
+      "number": 662,
+      "title": "research: ingest policy documents as assurance subjects for risk and harm evaluation",
+      "classification": "bounded-research"
+    },
+    {
+      "number": 668,
+      "title": "research: run policy-as-subject graduation evidence exercise",
+      "classification": "bounded-research"
+    },
+    {
+      "number": 682,
+      "title": "[DTG portfolio] Evidence: delete retry convergence without causal attribution",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 689,
+      "title": "[DTG governance/privacy] Join-discovery policy failure must not silently widen disclosure",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 690,
+      "title": "chore(coordination): track task citation, outcome evidence, and correlation convergence",
+      "classification": "upstream-normative-dependency"
+    },
+    {
+      "number": 691,
+      "title": "[DTG assurance] declared Trust Task error semantics must survive implementation and composition",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 695,
+      "title": "[DPIP residual] persona retention and admission-attribute disclosure — evidence-required",
+      "classification": "external-privacy-evidence"
+    },
+    {
+      "number": 797,
+      "title": "assurance(provenance): track forge projection normative alignment",
+      "classification": "upstream-normative-dependency"
+    },
+    {
+      "number": 826,
+      "title": "security(proof): converge VTC operation-bound step-up from approve-response 0.4 to proof-required 0.5",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 827,
+      "title": "security(keys): establish implementation evidence for named DID key roles and per-role rotation",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 836,
+      "title": "evidence(transport): verify producer uses recipient-advertised acceptance windows",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 837,
+      "title": "evidence(authority): prove step-up expiry and intervening authority change at redemption",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 889,
+      "title": "[DPIP residual] VTI hidden-vetter admission correlation and retention — evidence-external",
+      "classification": "external-privacy-evidence"
+    },
+    {
+      "number": 898,
+      "title": "assurance(delivery): verify approved-join credential redelivery semantics",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 899,
+      "title": "security(keys): assess signing-key enrolment authorization and atomic replacement",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 908,
+      "title": "security(audit): refuse single-administrator waivers when mandatory audit is unavailable",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 915,
+      "title": "governance(assurance): obtain independent human review of sociotechnical candidate",
+      "classification": "independent-human-judgment"
+    },
+    {
+      "number": 921,
+      "title": "research(assurance): examine community-governed Git contribution authorization",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 928,
+      "title": "research(assessment): establish reasoning traceability and reproducibility across RAHP",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 937,
+      "title": "test(examples): end-to-end consumption walkthrough for R1–R3 reasoning profiles",
+      "classification": "publication-verification"
+    },
+    {
+      "number": 958,
+      "title": "security: finish v2.7.0 supply-chain and deployment evidence",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 965,
+      "title": "test(eucalyptus): diagnose remaining native execution boundaries",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 966,
+      "title": "test(eucalyptus): establish source-compatible Lab consuming-path evidence",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 973,
+      "title": "Agent Assurance: integration qualification and extension tracker",
+      "classification": "intentional-dormancy"
+    },
+    {
+      "number": 994,
+      "title": "[DTG portfolio] Consolidated runtime evidence packet — trigger links, foreign-protocol binding and VTA-held-key signing",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 1028,
+      "title": "DTG portfolio materiality assessment required — 2026-10-14 — d9376b63c67a",
+      "classification": "controller-reconciliation"
+    },
+    {
+      "number": 1039,
+      "title": "Scenario corpora browser: every packaged corpus reachable, with reading guidance",
+      "classification": "publication-verification"
+    },
+    {
+      "number": 1040,
+      "title": "DTG portfolio materiality assessment required — 2026-10-15 — 9cc5d6aadf3d",
+      "classification": "controller-reconciliation"
+    },
+    {
+      "number": 1042,
+      "title": "DTG portfolio materiality assessment required — 2026-10-15 — dfd064bd455b",
+      "classification": "controller-reconciliation"
+    },
+    {
+      "number": 1043,
+      "title": "DTG portfolio materiality assessment required — 2026-10-16 — 71712d87c90d",
+      "classification": "controller-reconciliation"
+    },
+    {
+      "number": 1045,
+      "title": "DTG portfolio materiality assessment required — 2026-10-16 — b6d91818a00b",
+      "classification": "controller-reconciliation"
+    },
+    {
+      "number": 1046,
+      "title": "DTG portfolio materiality assessment required — 2026-10-17 — 46a8f7a819cf",
+      "classification": "controller-reconciliation"
+    },
+    {
+      "number": 1047,
+      "title": "DTG portfolio materiality assessment required — 2026-10-17 — b5f7925b2105",
+      "classification": "controller-reconciliation"
+    },
+    {
+      "number": 1051,
+      "title": "assurance(witness): verify VTA principal-bound witness task authority and evidence",
+      "classification": "implementation-evidence"
+    },
+    {
+      "number": 1054,
+      "title": "DTG portfolio materiality assessment required — 2026-10-18 — f2aac57efb2c",
+      "classification": "controller-reconciliation"
+    },
+    {
+      "number": 1057,
+      "title": "assurance(directory): bound holder-private contacts and community publication semantics",
+      "classification": "implementation-evidence"
+    }
+  ]
+}
