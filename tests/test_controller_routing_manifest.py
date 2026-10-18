@@ -15,7 +15,7 @@ class RoutingManifestTests(unittest.TestCase):
         self.assertEqual([], validate_manifest(DATA))
         self.assertFalse(DATA["closure_authorized"])
         self.assertEqual(15, len(DATA["findings"]))
-        self.assertEqual(2, sum(x["status"] == "owner-unresolved" for x in DATA["findings"]))
+        self.assertEqual(0, sum(x["status"] == "owner-unresolved" for x in DATA["findings"]))
 
     def test_a_missing_finding_fails(self):
         modified = copy.deepcopy(DATA)
@@ -34,8 +34,8 @@ class RoutingManifestTests(unittest.TestCase):
 
     def test_unknown_must_not_be_silently_assigned(self):
         modified = copy.deepcopy(DATA)
-        unresolved = next(x for x in modified["findings"] if x["status"] == "owner-unresolved")
-        unresolved["owner_issue"] = 690
+        unresolved = modified["findings"][0]
+        unresolved["status"] = "owner-unresolved"
         self.assertTrue(any("cannot declare owner" in e for e in validate_manifest(modified)))
 
     def test_routed_owners_cannot_be_omitted(self):
