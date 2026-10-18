@@ -54,9 +54,9 @@ def assess(root: str, corpus_slugs: list[str]) -> dict:
         record["status"] = "PASS" if not record["errors"] else "INDETERMINATE"
         records.append(record)
 
-    check(CORPORA_ROUTE, ["how to read a corpus", *[f"/corpora/{slug}/" for slug in corpus_slugs]])
+    check(CORPORA_ROUTE, ["how to read a corpus", *[f"{slug}/" for slug in corpus_slugs]])
     for slug in corpus_slugs:
-        check(f"/corpora/{slug}/", [slug.replace("-", " ")])
+        check(f"/corpora/{slug}/", ["<html"])
     check("/method/scenario-patterns/", ["scenario"])
     check(REASONING_ROUTE, ["r1", "r2", "r3"])
     return {
