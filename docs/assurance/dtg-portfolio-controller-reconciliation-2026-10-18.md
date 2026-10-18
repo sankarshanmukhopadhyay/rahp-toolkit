@@ -1,0 +1,52 @@
+# DTG portfolio snapshot controller reconciliation — 2026-10-18
+
+**Purpose:** Auditable transfer/disposal record for RAHP issues [#1028](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1028), [#1040](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1040), [#1042](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1042), [#1043](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1043), [#1045](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1045), [#1046](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1046) and [#1047](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1047). These issues are immutable snapshot-specific controller records. This file consolidates *their explicit UNMAPPED subsets*, not all qualifying findings, and never marks implementation assurance PASS.
+
+## Snapshot inventory
+
+| Controller | Snapshot date | SHA-256 prefix | Qualifying findings | UNMAPPED entries |
+|---|---|---|---:|---:|
+| #1028 | 2026-10-14 | `d9376b63c67a` | 19 | 10 |
+| #1040 | 2026-10-15 | `9cc5d6aadf3d` | 21 | 10 |
+| #1042 | 2026-10-15 | `dfd064bd455b` | 24 | 12 |
+| #1043 | 2026-10-16 | `71712d87c90d` | 31 | 12 |
+| #1045 | 2026-10-16 | `b6d91818a00b` | 38 | 12 |
+| #1046 | 2026-10-17 | `46a8f7a819cf` | 40 | 12 |
+| #1047 | 2026-10-17 | `b5f7925b2105` | 44 | 13 |
+
+The seven lists contain **14 distinct UNMAPPED finding IDs**. A finding disappearing from the newest snapshot is **not** proof that its older disposition was completed; the earlier `3b62...` dependency finding is present in six earlier controllers but not in #1047.
+
+## Unique UNMAPPED finding-to-owner ledger
+
+| Finding ID | Snapshot controllers | Durable owner | Transfer status and unresolved evidence |
+|---|---|---|---|
+| `58f3e21a7dd7227a41ab` | 1028,1040,1042,1043,1045,1046,1047 | [#272](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/272) | Dependency update; transitive assurance changes not yet classified, not automatic no-action |
+| `d6f06da6be6c24f2917a` | all 7 | [#994 Scope A](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/994) | Member-portal trigger-link runtime evidence outstanding |
+| `14345600ab746827b9d8` | all 7 | #994 Scope A | Trigger-link parser binding evidence outstanding |
+| `3b62b0cd590b9b45b3da` | 1028,1040,1042,1043,1045,1046 | [#272](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/272) | Trust Tasks dependency 0.23.0→0.23.1; semantic equivalence unverified |
+| `5daf04aa9bf26ef41594` | all 7 | #994 Scope A | Member-console target distinction evidence outstanding |
+| `c15ef701e115583e2756` | all 7 | #994 Scope A | Contact DID/domain binding evidence outstanding |
+| `ffa81bd16533fbada219` | all 7 | #994 Scope A | Unknown-community join from sign-in code; confirm residual coverage within Scope A before terminal disposition |
+| `220fb4eea5c0200f190b` | all 7 | [#994 Scope C](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/994) | Source/test rebaseline via merged [#1048](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/1048); C03/C04/C09/C10 nonterminal |
+| `1c2869a18869681e741b` | all 7 | #994 Scope B | Task-initiated foreign-protocol binding runtime evidence outstanding |
+| `e0da9d8b03dd7f460a60` | all 7 | [#1022](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1022) | First-administrator bootstrap spec interpretation and runtime evidence unresolved |
+| `2a5769f69aaf67636efe` | 1042,1043,1045,1046,1047 | [#691](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/691) | Provisional task-visible vetter-refusal semantics; assess scope and transfer further if outside Trust Task error contract |
+| `93dc1d4c3ed05d832936` | 1042,1043,1045,1046,1047 | [#1051](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1051) | New bounded witness task owner. VTI PR [#2123](https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/2123), merged 2026-10-15; source/test evidenced, independent consuming path still needed |
+| `3b5cd4abd5496f985033` | 1047 | [#481](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/481) | Community-room metadata and administrator update, with authorization and disclosure reassessment; spec [#805](https://github.com/trustoverip/dtgwg-trust-tasks-tf/issues/805) |
+| `d6faa3f201a07951f331` | 1047 | [#1022](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1022) | TEE bootstrap claim-DID implementation movement, VTI PR #2182; not proof of prior authority |
+
+**Meaning of “durable owner”:** the issue has been linked and, for newer residuals, received an explicit reassessment comment; it does not mean the security proposition is proven, that privacy has been assessed, or that every downstream case has been exercised.
+
+## Controller closure gate
+
+The snapshot issue bodies themselves impose a broader closure rule: **all qualifying findings**, including `combined`, `covered`, `no-action`, external DPIP referrals and unresolved child reviews, must have accountable dispositions or transfers. The table above accounts for the union of **UNMAPPED** items only. It does not itself authorize closure of the seven controllers.
+
+Before closing an individual controller:
+
+1. Reconcile its full source finding roster, not only UNMAPPED IDs, against the routing journal and current durable issue states.
+2. Confirm `no-action` is reasoned, not a default caused by unknown semantics.
+3. Confirm every `combined`/cross-spec/DPIP child either has a terminal decision or an explicitly accepted successor issue.
+4. Record source snapshot full SHA-256, unique IDs, reassessment conditions, and whether the source has changed since the snapshot.
+5. Close as **transferred** only when no qualifying item remains without ownership; unresolved evidence can remain open on the accepted narrow owner. Never mark a source-only or unexecuted trace PASS.
+
+The provisional map in #1047 has been superseded in part by direct verification of [VTI PR #2123](https://github.com/OpenVTC/verifiable-trust-infrastructure/pull/2123), and room/vetter/first-boot transfer comments on #481/#691/#1022. Cross-repository specification authority remains upstream. **No controller was closed solely by preparing this report.**
