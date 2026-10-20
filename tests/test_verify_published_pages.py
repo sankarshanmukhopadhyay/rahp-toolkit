@@ -22,7 +22,7 @@ class PublishedPagesTests(unittest.TestCase):
         self.assertTrue(any(x["status"] == "INDETERMINATE" for x in report["records"]))
 
     def test_all_expected_pages_meet_bounded_contract(self):
-        with patch.object(pages, "fetch", return_value="<!doctype html><html>how to read a corpus vds/ r1 r2 r3 scenario</html>"):
+        with patch.object(pages, "fetch", return_value="<!doctype html><html>how to read a corpus vds/ r1 r2 r3 scenario Reading a scenario corpus TT-002 RAHP glossary</html>"):
             report = pages.assess("https://example.invalid/rahp-toolkit", ["vds"])
         self.assertEqual("PASS", report["disposition"])
         self.assertEqual(6, len(report["records"]))
