@@ -39,3 +39,7 @@ A control is incomplete if no actor has authority to operate it, no evidence sho
 ## Portable assurance patterns
 
 RAHP v1.1 adds a reusable assurance layer above deployment records. `HRM-*` names harms, `RKP-*` names recurring failure mechanisms, `CTP-*` names control objectives, `GRP-*` defines prohibited-state boundaries, `ATP-*` defines testable propositions and `EVP-*` defines evidence contracts. A finding may map to these patterns through `portable_assurance` while retaining local risk/control IDs and source evidence. See [Assurance knowledge model](assurance-knowledge-model.md).
+
+## Potentially affected people and interests
+
+The bounded [people-impact pathway pilot](people-impact-pathway-pilot.html) explains how corpus scenarios may affect roles and protected interests without asserting observed harm. The [source-facing Trust Tasks](../corpora/trust-tasks/) and [composed Trust Tasks × Credential Spec](../corpora/trust-tasks-credspec-composed/) pages show each scenario's **provisional** or **not-established** mapping status. These are analyst hypotheses or recorded evidence gaps, not upstream requirements, test executions or named-person claims. For non-specialists, start with [Reading a scenario corpus](reading-scenario-corpus.html).
