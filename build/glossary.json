@@ -4,6 +4,25 @@
   "writing_style": "simple English",
   "terms": [
     {
+      "term": "Adapter",
+      "slug": "adapter",
+      "status": "stable",
+      "definition": "A mapping that brings a source system or specification into RAHP's scenario and assessment vocabulary without replacing the source's authority.",
+      "plain_example": "A Trust Tasks adapter maps selected source pressures to RAHP patterns.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario-corpus",
+        "provenance"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
       "term": "Agent",
       "slug": "agent",
       "status": "stable",
@@ -37,6 +56,28 @@
         "guardrail-requirement"
       ],
       "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Assurance",
+      "slug": "assurance",
+      "status": "stable",
+      "definition": "Reasoned confidence, supported by evidence, that a system or control behaves as claimed.",
+      "plain_example": "A replay test and its retained trace support confidence that duplicate execution is blocked.",
+      "term_type": "rahp-native",
+      "scope": "general",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "assurance-pattern",
+        "evidence"
+      ],
+      "related_catalogue": [
+        "AT-*",
+        "ATP-*"
+      ],
       "source": {
         "authority": "RAHP Toolkit",
         "note": "Definition written for RAHP in simple English."
@@ -82,28 +123,6 @@
         "control-pattern"
       ],
       "related_catalogue": [
-        "ATP-*"
-      ],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
-      "term": "Assurance",
-      "slug": "assurance",
-      "status": "stable",
-      "definition": "Reasoned confidence, supported by evidence, that a system or control behaves as claimed.",
-      "plain_example": "A replay test and its retained trace support confidence that duplicate execution is blocked.",
-      "term_type": "rahp-native",
-      "scope": "general",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "assurance-pattern",
-        "evidence"
-      ],
-      "related_catalogue": [
-        "AT-*",
         "ATP-*"
       ],
       "source": {
@@ -229,6 +248,25 @@
       }
     },
     {
+      "term": "Composed corpus",
+      "slug": "composed-corpus",
+      "status": "stable",
+      "definition": "A collection of scenarios about interactions between two or more systems or specifications. Its provenance and conclusions must be assessed for the composition.",
+      "plain_example": "A credential and task scenario can test a failure that neither component shows alone.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario-corpus",
+        "composition-boundary"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
       "term": "Composition boundary",
       "slug": "composition-boundary",
       "status": "stable",
@@ -305,6 +343,27 @@
       }
     },
     {
+      "term": "Control",
+      "slug": "control",
+      "status": "stable",
+      "definition": "A deployment-specific measure used to reduce, detect, contain or recover from a risk.",
+      "plain_example": "A verifier checks status immediately before approving a transaction.",
+      "term_type": "rahp-native",
+      "scope": "deployment",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "control-pattern",
+        "guardrail"
+      ],
+      "related_catalogue": [
+        "CT-*"
+      ],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
       "term": "Control pattern",
       "slug": "control-pattern",
       "status": "stable",
@@ -341,27 +400,6 @@
       ],
       "related_catalogue": [
         "CTP-RISK-01"
-      ],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
-      "term": "Control",
-      "slug": "control",
-      "status": "stable",
-      "definition": "A deployment-specific measure used to reduce, detect, contain or recover from a risk.",
-      "plain_example": "A verifier checks status immediately before approving a transaction.",
-      "term_type": "rahp-native",
-      "scope": "deployment",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "control-pattern",
-        "guardrail"
-      ],
-      "related_catalogue": [
-        "CT-*"
       ],
       "source": {
         "authority": "RAHP Toolkit",
@@ -449,27 +487,6 @@
       }
     },
     {
-      "term": "Evidence pattern",
-      "slug": "evidence-pattern",
-      "status": "stable",
-      "definition": "A reusable description of what evidence should be produced, who produces it, how fresh it must be and when it becomes invalid.",
-      "plain_example": "A revocation propagation trace records when each enforcement point learned about a revocation.",
-      "term_type": "rahp-native",
-      "scope": "portable-method",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "evidence",
-        "assurance-pattern"
-      ],
-      "related_catalogue": [
-        "EVP-*"
-      ],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
       "term": "Evidence",
       "slug": "evidence",
       "status": "stable",
@@ -484,6 +501,46 @@
       ],
       "related_catalogue": [
         "EV-*",
+        "EVP-*"
+      ],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Evidence grade",
+      "slug": "evidence-grade",
+      "status": "stable",
+      "definition": "A corpus label describing how its scenarios are grounded in source material, not whether an implementation is safe or has passed tests.",
+      "plain_example": "A source-informed corpus can suggest useful tests without proving conformance.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario-corpus",
+        "evidence"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
+      "term": "Evidence pattern",
+      "slug": "evidence-pattern",
+      "status": "stable",
+      "definition": "A reusable description of what evidence should be produced, who produces it, how fresh it must be and when it becomes invalid.",
+      "plain_example": "A revocation propagation trace records when each enforcement point learned about a revocation.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "evidence",
+        "assurance-pattern"
+      ],
+      "related_catalogue": [
         "EVP-*"
       ],
       "source": {
@@ -530,25 +587,6 @@
       }
     },
     {
-      "term": "Finding disposition",
-      "slug": "finding-disposition",
-      "status": "stable",
-      "definition": "The recorded outcome for an earlier finding, such as unchanged, weakened, resolved or superseded.",
-      "plain_example": "A new normative replay rule changes a replay finding from open to resolved.",
-      "term_type": "rahp-native",
-      "scope": "deployment",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "finding",
-        "reassessment"
-      ],
-      "related_catalogue": [],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
       "term": "Finding",
       "slug": "finding",
       "status": "stable",
@@ -561,6 +599,25 @@
         "risk",
         "recommendation",
         "finding-disposition"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Finding disposition",
+      "slug": "finding-disposition",
+      "status": "stable",
+      "definition": "The recorded outcome for an earlier finding, such as unchanged, weakened, resolved or superseded.",
+      "plain_example": "A new normative replay rule changes a replay finding from open to resolved.",
+      "term_type": "rahp-native",
+      "scope": "deployment",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "finding",
+        "reassessment"
       ],
       "related_catalogue": [],
       "source": {
@@ -582,6 +639,29 @@
         "stale-state"
       ],
       "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Guardrail",
+      "slug": "guardrail",
+      "status": "stable",
+      "definition": "A rule that blocks or stops an unacceptable state. It is stronger than normal guidance.",
+      "plain_example": "Do not let a consequential action proceed when current authority cannot be established.",
+      "term_type": "rahp-native",
+      "scope": "general",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "control",
+        "prohibited-state",
+        "fail-closed"
+      ],
+      "related_catalogue": [
+        "GR-*",
+        "GRP-*"
+      ],
       "source": {
         "authority": "RAHP Toolkit",
         "note": "Definition written for RAHP in simple English."
@@ -631,22 +711,20 @@
       }
     },
     {
-      "term": "Guardrail",
-      "slug": "guardrail",
+      "term": "Harm",
+      "slug": "harm",
       "status": "stable",
-      "definition": "A rule that blocks or stops an unacceptable state. It is stronger than normal guidance.",
-      "plain_example": "Do not let a consequential action proceed when current authority cannot be established.",
+      "definition": "A bad effect on a person, group, organization or public interest.",
+      "plain_example": "A person is wrongly locked out of an essential service.",
       "term_type": "rahp-native",
-      "scope": "general",
+      "scope": "portable-method",
       "do_not_confuse_with": [],
       "see_also": [
-        "control",
-        "prohibited-state",
-        "fail-closed"
+        "risk",
+        "harm-pattern"
       ],
       "related_catalogue": [
-        "GR-*",
-        "GRP-*"
+        "HRM-*"
       ],
       "source": {
         "authority": "RAHP Toolkit",
@@ -665,27 +743,6 @@
       "see_also": [
         "harm",
         "risk-pattern"
-      ],
-      "related_catalogue": [
-        "HRM-*"
-      ],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
-      "term": "Harm",
-      "slug": "harm",
-      "status": "stable",
-      "definition": "A bad effect on a person, group, organization or public interest.",
-      "plain_example": "A person is wrongly locked out of an essential service.",
-      "term_type": "rahp-native",
-      "scope": "portable-method",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "risk",
-        "harm-pattern"
       ],
       "related_catalogue": [
         "HRM-*"
@@ -736,6 +793,25 @@
       }
     },
     {
+      "term": "Override",
+      "slug": "override",
+      "status": "stable",
+      "definition": "A governed exception that allows a normal control or guardrail outcome to be changed by an authorized actor.",
+      "plain_example": "An emergency override may be allowed only to a named governance role and must be logged.",
+      "term_type": "rahp-native",
+      "scope": "general",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "override-authority",
+        "audit-event"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
       "term": "Override authority",
       "slug": "override-authority",
       "status": "stable",
@@ -755,22 +831,41 @@
       }
     },
     {
-      "term": "Override",
-      "slug": "override",
+      "term": "P0 priority",
+      "slug": "p0-priority",
       "status": "stable",
-      "definition": "A governed exception that allows a normal control or guardrail outcome to be changed by an authorized actor.",
-      "plain_example": "An emergency override may be allowed only to a named governance role and must be logged.",
+      "definition": "A high-priority scenario pressure to examine first. P0 is not a measurement of incident severity or probability.",
+      "plain_example": "Recipient-binding replay is marked P0 for early attention.",
       "term_type": "rahp-native",
-      "scope": "general",
+      "scope": "portable-method",
       "do_not_confuse_with": [],
       "see_also": [
-        "override-authority",
-        "audit-event"
+        "scenario",
+        "risk"
       ],
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
+      "term": "P1 priority",
+      "slug": "p1-priority",
+      "status": "stable",
+      "definition": "A secondary-priority scenario pressure. P1 is not a statement that harm is impossible or that a system is safe.",
+      "plain_example": "A less immediate interoperability question may be marked P1.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario",
+        "risk"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
       }
     },
     {
@@ -1007,6 +1102,27 @@
       }
     },
     {
+      "term": "Risk",
+      "slug": "risk",
+      "status": "stable",
+      "definition": "A possible way a specific deployment can cause harm or fail to meet its goals.",
+      "plain_example": "A registry may keep an old key after it should have been removed.",
+      "term_type": "rahp-native",
+      "scope": "deployment",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "risk-pattern",
+        "finding"
+      ],
+      "related_catalogue": [
+        "RK-*"
+      ],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
       "term": "Risk acceptance",
       "slug": "risk-acceptance",
       "status": "stable",
@@ -1050,24 +1166,79 @@
       }
     },
     {
-      "term": "Risk",
-      "slug": "risk",
+      "term": "Scenario",
+      "slug": "scenario",
       "status": "stable",
-      "definition": "A possible way a specific deployment can cause harm or fail to meet its goals.",
-      "plain_example": "A registry may keep an old key after it should have been removed.",
+      "definition": "A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened.",
+      "plain_example": "A signed request might reach the wrong recipient.",
       "term_type": "rahp-native",
-      "scope": "deployment",
+      "scope": "portable-method",
       "do_not_confuse_with": [],
       "see_also": [
-        "risk-pattern",
+        "risk",
         "finding"
       ],
-      "related_catalogue": [
-        "RK-*"
-      ],
+      "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
+      "term": "Scenario-baseline",
+      "slug": "scenario-baseline",
+      "status": "stable",
+      "definition": "An evidence grade for a working pressure-test hypothesis where a source-grounded normative claim has not been established.",
+      "plain_example": "A preliminary interface receives a scenario to explore before its specification is complete.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "evidence-grade",
+        "scenario"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
+      "term": "Scenario corpus",
+      "slug": "scenario-corpus",
+      "status": "stable",
+      "definition": "A collection of domain-specific scenarios linked to reusable scenario patterns. A corpus suggests what to test, not what passed.",
+      "plain_example": "The Trust Tasks corpus lists possible failure situations for task workflows.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario",
+        "scenario-pattern"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
+      "term": "Scenario pattern",
+      "slug": "scenario-pattern",
+      "status": "stable",
+      "definition": "A reusable kind of pressure or failure possibility that can be tested in many systems.",
+      "plain_example": "Replay of a valid proof is a pattern that may appear in several corpora.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario",
+        "risk-pattern"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
       }
     },
     {
@@ -1088,6 +1259,63 @@
       "source": {
         "authority": "RAHP Toolkit",
         "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Source-informed",
+      "slug": "source-informed",
+      "status": "stable",
+      "definition": "An evidence grade used when scenarios draw on known source semantics without claiming a complete pinned normative baseline.",
+      "plain_example": "A scenario is based on published design concepts but not a complete frozen text.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "evidence-grade",
+        "source-pin"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
+      "term": "Source pin",
+      "slug": "source-pin",
+      "status": "stable",
+      "definition": "A declared source revision used when preparing an adapter. A symbolic or descriptive value is not an immutable commit identifier.",
+      "plain_example": "A full commit SHA can identify the revision of a specification used for review.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "provenance",
+        "evidence"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+      }
+    },
+    {
+      "term": "Source-pinned",
+      "slug": "source-pinned",
+      "status": "stable",
+      "definition": "An evidence grade used when an adapter declares reviewable grounding in pinned source material. It does not certify the target.",
+      "plain_example": "A scenario cites a checked specification revision, but still needs execution evidence.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "evidence-grade",
+        "source-pin"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
       }
     },
     {
