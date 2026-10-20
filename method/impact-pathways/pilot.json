@@ -12,7 +12,7 @@
         {
           "scenario_id": "TT-001",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Proof omitted because transport is assumed sufficient” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-002",
@@ -35,142 +35,142 @@
         {
           "scenario_id": "TT-003",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “In-band and transport-derived identities disagree” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-004",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Expired task is acted on after clock or queue delay” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-005",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Retried task causes duplicate side effects” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-006",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Thread and parent-thread binding is inconsistent across transports” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-007",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Ceremony membership is mistaken for authorization” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-008",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Bearer specification is used where recipient binding is necessary” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-009",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Capability discovery leaks sensitive supported operations” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-010",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Different framework versions produce divergent acceptance” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-011",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Transport binding weakens framework security assumptions” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-012",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Error response discloses party or task information” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-013",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Large or adversarial payload causes validation denial of service” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-014",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Agent executes a task after principal intent is withdrawn” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-015",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Exposure class understates delegated data egress” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-016",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Private or unpublished task type becomes an interoperability island” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-017",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “ACL grant is accepted from an issuer not permitted to assign the requested role” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-018",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “ACL scope reduction is implemented as a widening update instead of revocation” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-019",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Expired ACL entry is treated as current because retained grant evidence still verifies” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-020",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “ACL allowedKeys empty value is collapsed into unrestricted access” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-021",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Role change is represented as a fresh grant and obscures authority history” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-022",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Revoked or reduced ACL authority remains effective in a downstream cache” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-023",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Consent decision is replayed against a different or mutated pending request” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-024",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Consent decision is accepted after its approver ceased to be authorized” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-025",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Approver-set update and approval race produce inconsistent quorum conclusions” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-026",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Multiple individually valid approvals are combined without a defined threshold rule” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-027",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Removal notice cannot be presented as evidence because required proof is absent or invalid” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-028",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Member removal terminates the only channel capable of delivering the removal reason” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-029",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Persistent audit evidence exposes sensitive role or relationship information beyond its purpose” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "TT-030",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Different consumers treat the same authoritative post-state response differently” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         }
       ]
     },
@@ -213,97 +213,97 @@
         {
           "scenario_id": "XSP-002",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Credential authority changes after task authorization but before execution” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-003",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Task is replayed with a still-valid credential to repeat a side effect” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-004",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Trust Task issuer identity and credential issuer/holder semantics are conflated” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-005",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Bearer task carries a credential whose disclosure should be recipient-scoped” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-006",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Two individually minimal credentials become identifying when composed in one task” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-007",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Agent continues using a credential after human delegation is withdrawn” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-008",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Transport-level identity conflicts with credential subject or relationship identity” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-009",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Offline task processing relies on stale credential or registry state” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-010",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Framework or credential version migration occurs on only one side of the interaction” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-011",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Error response exposes details derived from a sensitive credential” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-012",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “A cross-spec adverse decision cannot be explained or appealed because responsibility is split” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-013",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “ACL authority changes while a still-valid credential continues to support task execution” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-014",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Approval remains valid after the credential authority supporting the approver changes” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-015",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Threshold approvals are combined across different transaction or credential-state versions” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-016",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Removal notice conflicts with a still-cryptographically-valid membership credential” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-017",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Witness credential digest is used inside a task without the referenced VRC needed to identify the edge” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-018",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Status lookup and task metadata jointly create a durable relationship correlator” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-019",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “Authority is restored in one layer while stale suspension or revocation remains effective in another” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         },
         {
           "scenario_id": "XSP-020",
           "status": "not-established",
-          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+          "reason": "The corpus proposes “All task and credential artifacts verify but fiduciary or constrained-action propriety is inferred without” as a test pressure. No scenario-specific, independently qualified causal mapping identifies an affected role and protected interest from this record; impact remains not established."
         }
       ]
     }
