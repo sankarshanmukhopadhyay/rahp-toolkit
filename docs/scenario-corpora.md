@@ -161,3 +161,7 @@ The adapter version and source pin make that lifecycle visible without transferr
 
 {: .warning }
 A corpus broadens review coverage; it does not establish that the target specification is safe or conformant.
+
+## Potentially affected people and interests
+
+The bounded [people-impact pathway pilot](people-impact-pathway-pilot.html) explains how corpus scenarios may affect roles and protected interests without asserting observed harm. The [source-facing Trust Tasks](../corpora/trust-tasks/) and [composed Trust Tasks × Credential Spec](../corpora/trust-tasks-credspec-composed/) pages show each scenario's **provisional** or **not-established** mapping status. These are analyst hypotheses or recorded evidence gaps, not upstream requirements, test executions or named-person claims. For non-specialists, start with [Reading a scenario corpus](reading-scenario-corpus.html).
