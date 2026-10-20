@@ -168,7 +168,9 @@ module RahpPagesProjection
       lines << source_button(site, path)
       lines << ""
       if parsed.is_a?(Hash) && parsed["corpus"].is_a?(Hash)
-        lines.concat(corpus_summary(parsed["corpus"]))
+        lines.concat(corpus_summary(site, parsed["corpus"]))
+      elsif parsed.is_a?(Hash) && parsed["record_type"] == "scenario_pattern" && parsed["patterns"].is_a?(Array)
+        lines.concat(scenario_patterns_summary(parsed))
       elsif path.start_with?("method/catalogue/") && parsed.is_a?(Hash) && parsed["records"].is_a?(Array)
         lines.concat(catalogue_summary(parsed))
       elsif parsed.is_a?(Hash) && parsed["review"].is_a?(Hash)
@@ -191,25 +193,96 @@ module RahpPagesProjection
       lines.join("\n")
     end
 
-    def corpus_summary(corpus)
+
+    def corpus_routes(site)
+      @corpus_routes ||= Dir.glob(File.join(site.source, "corpora", "*.yaml")).each_with_object({}) do |file, routes|
+        begin
+          data = YAML.safe_load(File.read(file), aliases: true)
+          id = data.is_a?(Hash) && data.dig("corpus", "id")
+          routes[id] = "/corpora/#{File.basename(file, '.yaml')}/" if id
+        rescue StandardError
+          # Invalid sources are diagnosed by repository validators.
+        end
+      end
+    end
+
+    def source_anchor_link(corpus, anchor)
+      value = anchor.to_s
+      repo = corpus["source_repository"].to_s
+      sha = corpus["source_commit"].to_s
+      if repo.match?(%r{\A[\w.-]+/[\w.-]+\z}) && sha.match?(/\A[0-9a-fA-F]{7,40}\z/) &&
+         value.match?(%r{\A[\w./-]+(?:#[\w.-]+)?\z}) && !value.split("/").include?("..")
+        "[#{escape_cell(value)}](https://github.com/#{repo}/blob/#{sha}/#{value})"
+      else
+        escape_cell(value)
+      end
+    end
+
+    def site_route(site, path)
+      baseurl = site.respond_to?(:config) ? site.config.fetch("baseurl", "").to_s : ""
+      "#{baseurl.sub(%r{/$}, "")}#{path}"
+    end
+
+    def corpus_summary(site, corpus)
       scenarios = Array(corpus["scenarios"])
       out = ["## Corpus metadata", "", "| Field | Value |", "|---|---|"]
-      %w[id source_repository source_path source_commit adapter_version description].each do |key|
-        next unless corpus.key?(key)
-        out << "| `#{key}` | #{escape_cell(corpus[key])} |"
+      %w[id source_repository source_path source_commit adapter_version description evidence_grade provenance_status provenance_note assurance_catalogue].each do |key|
+        out << "| `#{key}` | #{escape_cell(format_value(corpus[key]))} |" if corpus.key?(key)
+      end
+      out << "| `evidence_grade` | Not declared |" unless corpus.key?("evidence_grade")
+      if corpus.key?("depends_on")
+        links = Array(corpus["depends_on"]).map do |dependency|
+          id = dependency.is_a?(Hash) ? dependency["corpus_id"] : dependency
+          route = corpus_routes(site)[id]
+          label = escape_cell(id || format_value(dependency))
+          route ? "[#{label}](#{site_route(site, route)})" : label
+        end
+        out << "| `depends_on` | #{links.join(', ')} |"
       end
       out << "| `scenario_count` | #{scenarios.length} |"
+      if corpus["coverage"].is_a?(Hash) && !corpus["coverage"].empty?
+        out += ["", "### Coverage", "", "| Dimension | Value |", "|---|---|"]
+        corpus["coverage"].each { |key, value| out << "| #{escape_cell(key)} | #{escape_cell(format_value(value))} |" }
+      end
       unless scenarios.empty?
-        out += ["", "## Scenarios", "", "| ID | Title | Domain | Pressure | Priority | RAHP patterns |", "|---|---|---|---|---|---|"]
+        out += ["", "## Scenarios", "", "| ID | Title | Goal | Source | Domain | Pressure | Priority | RAHP patterns |", "|---|---|---|---|---|---|---|---|"]
         scenarios.each do |scenario|
-          patterns = Array(scenario["scenario_patterns"]).map { |v| "`#{v}`" }.join(", ")
-          out << "| `#{scenario['id']}` | #{escape_cell(scenario['title'])} | #{escape_cell(scenario['domain'])} | #{escape_cell(scenario['primary_pressure'])} | #{escape_cell(scenario['priority'])} | #{patterns} |"
+          patterns = Array(scenario["scenario_patterns"]).map { |id| "[`#{escape_cell(id)}`](#{site_route(site, "/method/scenario-patterns/##{id.to_s.downcase}")})" }.join(", ")
+          source = scenario.key?("source_anchor") ? source_anchor_link(corpus, scenario["source_anchor"]) : "Not declared"
+          goal = scenario.key?("primary_goal") ? escape_cell(scenario["primary_goal"]) : "Not declared"
+          out << "| `#{escape_cell(scenario['id'])}` | #{escape_cell(scenario['title'])} | #{goal} | #{source} | #{escape_cell(scenario['domain'])} | #{escape_cell(scenario['primary_pressure'])} | #{escape_cell(scenario['priority'])} | #{patterns} |"
+        end
+        details = scenarios.select { |scenario| %w[dependencies portable_assurance core_predicates].any? { |key| scenario.key?(key) } }
+        unless details.empty?
+          out += ["", "### Additional scenario fields", ""]
+          details.each do |scenario|
+            out += ["#### #{escape_cell(scenario['id'])}", ""]
+            %w[dependencies portable_assurance core_predicates].each do |key|
+              out << "- **#{key.tr('_', ' ')}:** #{escape_cell(format_value(scenario[key]))}" if scenario.key?(key)
+            end
+            out << ""
+          end
         end
       end
       out
     end
 
-
+    def scenario_patterns_summary(parsed)
+      patterns = parsed["patterns"].select { |p| p.is_a?(Hash) }
+      out = ["## Scenario patterns", "", "These #{patterns.length} patterns describe reusable testing pressures, not observed failures.", "", "| ID | Name | Category | Description |", "|---|---|---|---|"]
+      patterns.each do |pattern|
+        id = pattern["id"].to_s
+        next unless id.match?(/\ASP-[A-Za-z0-9-]+\z/)
+        out << "| [`#{id}`](##{id.downcase}) | #{escape_cell(pattern['name'])} | #{escape_cell(pattern['category'])} | #{escape_cell(pattern['description'])} |"
+      end
+      out << ""
+      patterns.each do |pattern|
+        id = pattern["id"].to_s
+        next unless id.match?(/\ASP-[A-Za-z0-9-]+\z/)
+        out += ["<a id=\"#{id.downcase}\"></a>", "", "### #{id}: #{escape_cell(pattern['name'])}", "", "**Category:** #{escape_cell(pattern['category'])}", "", escape_cell(pattern["description"]), ""]
+      end
+      out
+    end
 
     def catalogue_summary(parsed)
       records = Array(parsed["records"]).select { |item| item.is_a?(Hash) }
