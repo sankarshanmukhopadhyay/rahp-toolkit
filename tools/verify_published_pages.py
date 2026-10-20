@@ -63,6 +63,7 @@ def assess(root: str, corpus_slugs: list[str]) -> dict:
     check("/method/scenario-patterns/", ["scenario"])
     check("/docs/reading-scenario-corpus.html", ["Reading a scenario corpus", "TT-002"])
     check("/docs/glossary.html", ["RAHP glossary"])
+    check("/docs/people-impact-pathway-pilot.html", ["People-impact pathway pilot", "TT-002", "XSP-001"])
     check(REASONING_ROUTE, ["r1", "r2", "r3"])
     return {
         "schema": "rahp-published-pages-observation/v1",
