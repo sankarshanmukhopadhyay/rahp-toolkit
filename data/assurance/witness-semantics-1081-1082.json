@@ -1,0 +1,99 @@
+{
+  "schema": "rahp-witness-assurance/v1",
+  "owners": [1081, 1082],
+  "source_pins": [
+    {
+      "repository": "trustoverip/dtgwg-vsc-registry",
+      "revision": "7b30c7567581686ce77243856088a865b465cfe3",
+      "paths": ["predicates/witnessed/1/predicate.jsonld", "predicates/witnessed/1/profile.md"],
+      "role": "normative witnessed/1 predicate/profile"
+    },
+    {
+      "repository": "trustoverip/dtgwg-trust-tasks-tf",
+      "revision": "696783ede3e8aa74abb361b16465b7cad1b90ba3",
+      "paths": ["specs/witness/session/0.2/spec.md", "specs/witness/session/submit/0.2/spec.md"],
+      "role": "witness ceremony and outcome-evidence contract"
+    },
+    {
+      "repository": "trustoverip/dtgwg-cred-spec",
+      "revision": "2e3c5beffb6de1a90c3e8dd3eae472d90afd336c",
+      "paths": ["spec/terms-definitions/verifiable_witness_credential.md", "spec/body.md"],
+      "role": "credential model and governance boundary"
+    }
+  ],
+  "authority_boundary": {
+    "assessment": "RAHP downstream assessment of pinned DTG semantics",
+    "does_not_define": [
+      "DTG witness authority",
+      "relying-party witness acceptance policy",
+      "privacy conclusions owned by issue #338/DPIP"
+    ],
+    "privacy_owner": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/338"
+  },
+  "propositions": [
+    {"id": "WIT-ROLE-001", "issue": 1081, "statement": "Party non-participation is distinct from organizational or governance independence."},
+    {"id": "WIT-ROLE-002", "issue": 1081, "statement": "Witness role or independence is not established solely by the witness's self-assertion."},
+    {"id": "WIT-ID-001", "issue": 1081, "statement": "Where the pinned task contract requires ceremony identity continuity, VWC issuer, session recipient and response signer identify the same witness."},
+    {"id": "WIT-ID-002", "issue": 1081, "statement": "Ceremony identity continuity does not prove organizational independence or require reuse of unrelated operational identifiers."},
+    {"id": "WIT-TIME-001", "issue": 1082, "statement": "VRC and VWC lifecycle state do not cascade implicitly."},
+    {"id": "WIT-REV-001", "issue": 1082, "statement": "Revocation reason semantics are not stronger than the profile evidence exposes."},
+    {"id": "WIT-KEY-001", "issue": 1082, "statement": "Historical key authorization does not prove absence of compromise at issuance."},
+    {"id": "WIT-AVAIL-001", "issue": 1082, "statement": "Unavailable status evidence is neither VALID nor REVOKED."},
+    {"id": "WIT-SUCC-001", "issue": 1082, "statement": "Availability succession does not imply status-mutation authority succession."},
+    {"id": "WIT-RET-001", "issue": 1082, "statement": "Minimal retention creates an explicit later-review evidence boundary."}
+  ],
+  "strategy_comparison": {
+    "short_validity_no_status": {
+      "immediate_withdrawal": false,
+      "availability_dependency": "clock/expiry evidence",
+      "privacy_dependency": "no status lookup required by strategy"
+    },
+    "online_status": {
+      "immediate_withdrawal": true,
+      "availability_dependency": "status evidence availability",
+      "privacy_dependency": "status lookup may create observable traffic; privacy conclusion routed to #338/DPIP"
+    },
+    "assurance_equivalent": false
+  },
+  "cases": [
+    {"id": "ROLE-POS-COMMUNITY", "proposition": "WIT-ROLE-001", "input": {"witness_is_event_party": false, "witness_role": "community", "policy_requires_org_independence": false}, "expected": "PASS"},
+    {"id": "ROLE-NEG-PARTY", "proposition": "WIT-ROLE-001", "input": {"witness_is_event_party": true, "witness_role": "community", "policy_requires_org_independence": false}, "expected": "FAIL"},
+    {"id": "ROLE-IND-AFFILIATION", "proposition": "WIT-ROLE-001", "input": {"witness_is_event_party": false, "witness_role": "third-party", "policy_requires_org_independence": true, "external_independence_evidence": "unknown"}, "expected": "INDETERMINATE"},
+    {"id": "ROLE-NEG-SELF-ASSERTED", "proposition": "WIT-ROLE-002", "input": {"policy_requires_org_independence": true, "self_asserted_independent": true, "external_independence_evidence": false}, "expected": "INDETERMINATE"},
+    {"id": "ROLE-POS-EXTERNAL", "proposition": "WIT-ROLE-002", "input": {"policy_requires_org_independence": true, "self_asserted_independent": true, "external_independence_evidence": true}, "expected": "PASS"},
+    {"id": "ID-POS-CONTINUITY", "proposition": "WIT-ID-001", "input": {"continuity_required": true, "vwc_issuer": "did:example:witness", "session_recipient": "did:example:witness", "response_signer": "did:example:witness"}, "expected": "PASS"},
+    {"id": "ID-NEG-DIVERGENCE", "proposition": "WIT-ID-001", "input": {"continuity_required": true, "vwc_issuer": "did:example:w1", "session_recipient": "did:example:w1", "response_signer": "did:example:w2"}, "expected": "FAIL"},
+    {"id": "ID-IND-MISSING", "proposition": "WIT-ID-001", "input": {"continuity_required": true, "vwc_issuer": "did:example:witness", "session_recipient": null, "response_signer": "did:example:witness"}, "expected": "INDETERMINATE"},
+    {"id": "ID-POS-DEDICATED", "proposition": "WIT-ID-002", "input": {"ceremony_identity_continuous": true, "reuses_unrelated_operational_id": false, "claims_org_independence_from_identifier": false}, "expected": "PASS"},
+    {"id": "ID-NEG-COLLAPSE", "proposition": "WIT-ID-002", "input": {"ceremony_identity_continuous": true, "reuses_unrelated_operational_id": true, "claims_org_independence_from_identifier": true}, "expected": "FAIL"},
+    {"id": "TIME-N1-VRC-LATER-REVOKED", "proposition": "WIT-TIME-001", "input": {"vrc_at_witnessing": "valid", "vrc_current": "revoked", "vwc_current": "valid", "cascade_applied": false}, "expected": "PASS"},
+    {"id": "TIME-N1-NEG-CASCADE", "proposition": "WIT-TIME-001", "input": {"vrc_at_witnessing": "valid", "vrc_current": "revoked", "vwc_current": "revoked", "cascade_applied": true}, "expected": "FAIL"},
+    {"id": "TIME-N2-VWC-REVOKED", "proposition": "WIT-TIME-001", "input": {"vrc_at_witnessing": "valid", "vrc_current": "valid", "vwc_current": "revoked", "cascade_applied": false}, "expected": "PASS"},
+    {"id": "REV-N6-AMBIGUOUS", "proposition": "WIT-REV-001", "input": {"vwc_status": "revoked", "reason_semantics": "undifferentiated", "attempted_interpretation": "historical-attestation-invalid"}, "expected": "INDETERMINATE"},
+    {"id": "REV-POS-INVALIDATION", "proposition": "WIT-REV-001", "input": {"vwc_status": "revoked", "reason_semantics": "attestation-invalidation", "attempted_interpretation": "historical-attestation-invalid"}, "expected": "PASS"},
+    {"id": "KEY-N5-UNKNOWN-ONSET", "proposition": "WIT-KEY-001", "input": {"key_authorized_at_issuance": true, "compromise_discovered_later": true, "compromise_onset": "unknown"}, "expected": "INDETERMINATE"},
+    {"id": "KEY-POS-NO-COMPROMISE-EVIDENCE", "proposition": "WIT-KEY-001", "input": {"key_authorized_at_issuance": true, "compromise_discovered_later": false, "compromise_onset": null}, "expected": "PASS"},
+    {"id": "AVAIL-N3-OUTAGE", "proposition": "WIT-AVAIL-001", "input": {"status_evidence": "unavailable", "witness_state": "temporary-outage"}, "expected": "INDETERMINATE"},
+    {"id": "AVAIL-N4-RETIRED", "proposition": "WIT-AVAIL-001", "input": {"status_evidence": "unavailable", "witness_state": "retired"}, "expected": "INDETERMINATE"},
+    {"id": "SUCC-N4-FROZEN-HOST", "proposition": "WIT-SUCC-001", "input": {"successor_hosts_frozen_evidence": true, "successor_mutates_status": false, "mutation_authority": "none"}, "expected": "PASS"},
+    {"id": "SUCC-N4-NEG-MUTATION", "proposition": "WIT-SUCC-001", "input": {"successor_hosts_frozen_evidence": true, "successor_mutates_status": true, "mutation_authority": "none"}, "expected": "FAIL"},
+    {"id": "SUCC-IND-AUTHORITY", "proposition": "WIT-SUCC-001", "input": {"successor_hosts_frozen_evidence": true, "successor_mutates_status": true, "mutation_authority": "unknown"}, "expected": "INDETERMINATE"},
+    {"id": "RET-POS-LIMITATION", "proposition": "WIT-RET-001", "input": {"original_presentation_retained": false, "digest_retained": true, "claims_original_reconstructible": false}, "expected": "PASS"},
+    {"id": "RET-NEG-RECONSTRUCTION", "proposition": "WIT-RET-001", "input": {"original_presentation_retained": false, "digest_retained": true, "claims_original_reconstructible": true}, "expected": "FAIL"}
+  ],
+  "privacy_routing": [
+    "mediator choice",
+    "DID-log hosting",
+    "membership gating",
+    "retained attestation records",
+    "status-query traffic",
+    "cross-role identifier correlation"
+  ],
+  "evidence_state": "mechanically-reviewable-source-pinned-cases",
+  "provenance": {
+    "source": "RAHP issues #1081 and #1082 plus pinned DTG source revisions",
+    "triggered_by": "issues-1081-1082",
+    "contributor": "Sankarshan Mukhopadhyay (AI-assisted)",
+    "imported": "2026-10-20"
+  }
+}
