@@ -64,3 +64,7 @@ The version-qualified [source-review packet](../method/impact-pathways/source-re
 The review compares candidate `HRM-INF-01`, `HRM-SEC-02` and `HRM-AUT-04` meanings against their canonical harm definitions. They remain candidates or unestablished, not automatically adopted mappings. Actual impact qualification requires accountable, independently challengeable review of the affected-role → interest → consequence chain. The source review deliberately makes **zero** claims of runtime PASS, real-world injury, independently qualified harm, or source authority transfer.
 
 To reproduce the bounded checks, execute `python3 -m unittest tests.test_impact_source_review -v`, then `python3 tools/validate_impact_pathways.py --check --report`. Reassess if either source pin or the harm catalogue semantics change.
+
+## People-impact qualification acceptance tranche
+
+The [qualification acceptance packet](people-impact-qualification-acceptance.html) records six atomic candidate relationships across `TT-002`, `XSP-001`, `TT-005` and `XSP-018`, separating decision actors from potentially affected roles. Its reviewer acceptance status is **not recorded**, so no canonical pilot mapping is promoted to qualified. The packet includes source pins, harm candidates, falsification cases and a practical independent-review handoff.

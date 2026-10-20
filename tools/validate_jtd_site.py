@@ -64,6 +64,7 @@ REQUIRED_DOCS = [
     'docs/using-an-ai-agent.html',
     'docs/reading-scenario-corpus.html',
     'docs/people-impact-pathway-pilot.html',
+    'docs/people-impact-qualification-acceptance.html',
     'docs/glossary.html',
     'docs/pages-coverage.html',
     'docs/normative-triage.html',
