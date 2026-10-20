@@ -5,6 +5,7 @@ import json
 from collections import Counter
 from pathlib import Path
 import yaml
+from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
 PILOT = ROOT / "method/impact-pathways/pilot.json"
@@ -15,6 +16,8 @@ SOURCE = {"CORPUS-TRUST-TASKS": "corpora/trust-tasks.yaml",
 
 def validate(data, root=ROOT):
     errors = []
+    schema = json.loads((root / "method/schema/impact-pathways.schema.json").read_text())
+    errors.extend("schema: " + e.message for e in Draft202012Validator(schema).iter_errors(data))
     if data.get("contract") != SCHEMA:
         errors.append("unsupported contract")
     if len(data.get("pilot_corpora", [])) != len(SOURCE):
@@ -62,10 +65,13 @@ def validate(data, root=ROOT):
                     errors.append(f"{cid}/{sid}: incorrect source anchor")
                 if set(pathway.get("harm_patterns", [])) - harms:
                     errors.append(f"{cid}/{sid}: invalid harm IDs")
-                if status == "qualified" and evidence.get("kind") != "direct-source":
-                    errors.append(f"{cid}/{sid}: analyst hypothesis cannot be qualified")
+                if status == "qualified":
+                    if evidence.get("kind") != "direct-source" or not row.get("adjudication", {}).get("decision_evidence"):
+                        errors.append(f"{cid}/{sid}: qualification needs direct source and accountable reviewed evidence")
             elif pathway:
                 errors.append(f"{cid}/{sid}: unsupported positive relationship")
+            if status != "qualified" and row.get("adjudication"):
+                errors.append(f"{cid}/{sid}: adjudication cannot silently upgrade non-qualified judgment")
             if "execution_status" in row or "persona_id" in row:
                 errors.append(f"{cid}/{sid}: execution/persona assertion outside contract")
     if seen_groups != set(SOURCE):
