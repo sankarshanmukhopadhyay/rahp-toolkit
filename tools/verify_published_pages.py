@@ -57,6 +57,9 @@ def assess(root: str, corpus_slugs: list[str]) -> dict:
     check(CORPORA_ROUTE, ["how to read a corpus", *[f"{slug}/" for slug in corpus_slugs]])
     for slug in corpus_slugs:
         check(f"/corpora/{slug}/", ["<html"])
+    # #1091: publication must include the actual people-impact projection, not merely a working corpus route.
+    check("/corpora/trust-tasks/", ["Potential people-impact pathways", "TT-002", "provisional", "not-established"])
+    check("/corpora/trust-tasks-credspec-composed/", ["Potential people-impact pathways", "XSP-001", "provisional", "not-established"])
     check("/method/scenario-patterns/", ["scenario"])
     check("/docs/reading-scenario-corpus.html", ["Reading a scenario corpus", "TT-002"])
     check("/docs/glossary.html", ["RAHP glossary"])
