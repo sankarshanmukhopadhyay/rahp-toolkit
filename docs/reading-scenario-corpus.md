@@ -29,7 +29,7 @@ Open [TT-002 in the Trust Tasks corpus](../corpora/trust-tasks/). It asks whethe
 
 | Reader's question | What the current evidence supports |
 |---|---|
-| **1. What could go wrong?** | A proof may verify cryptographically without binding the signed task to the intended recipient. Another consumer could then rely on it. This is a *scenario to test*, not a reported failure. |
+| **1. What could go wrong?** | A proof may verify cryptographically without binding the signed task to the intended recipient. Another consumer could then rely on it. This is a *scenario to test*, **not** evidence of a reported failure. |
 | **2. Who could be affected?** | The producer or accountable principal might have an assertion used outside its intended audience; an unintended recipient might mistakenly rely on it. A further affected person would depend on a consequential downstream action. These **possible roles are provisional**, not independently accepted person–harm links. |
 | **3. How serious is it?** | `P0` marks high priority for *pressure-testing*, **not** measured severity, probability, prevalence or a finding that the system is unsafe. Without deployment context and outcome evidence, real-world severity is **not established**. |
 | **4. Has anybody checked?** | RAHP's [source-review packet](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/method/impact-pathways/source-review-2026-10-20.json) examines the *specification's mechanism*, but no exact, revision-qualified review-to-scenario execution reference was established by the current corpus inventory. **Execution status is unknown**, not PASS, FAIL or “never tested”. |
