@@ -1,0 +1,311 @@
+{
+  "contract": "rahp-people-impact-pathways/v1",
+  "authority": "RAHP analyst mapping; not upstream norm, runtime finding or safety rating",
+  "pilot_corpora": [
+    {
+      "corpus_id": "CORPUS-TRUST-TASKS",
+      "adapter_version": "1.1",
+      "baseline": {
+        "source_commit": "4937c70df95e56ed6404b8c004106ecb121a23cf"
+      },
+      "dispositions": [
+        {
+          "scenario_id": "TT-001",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-002",
+          "status": "provisional",
+          "reason": "Cross-recipient reuse can expose a signed task to an unintended recipient, but the source anchor alone does not identify a harmed individual, deployment or executed failure.",
+          "pathway": {
+            "failure_condition": "A proof-bearing task is accepted outside its intended audience.",
+            "affected_role": "intended task recipient or relying party",
+            "relationship": "direct",
+            "protected_interest": "control over who can rely on an authorized task",
+            "potential_consequence": "A different recipient might act on an otherwise authentic task outside its intended audience.",
+            "harm_patterns": [],
+            "evidence": {
+              "kind": "analyst-interpretation",
+              "source_anchor": "SPEC.md#482-audience-binding",
+              "limitation": "No independently reviewed person-to-harm linkage or runtime execution evidence."
+            }
+          }
+        },
+        {
+          "scenario_id": "TT-003",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-004",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-005",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-006",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-007",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-008",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-009",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-010",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-011",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-012",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-013",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-014",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-015",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-016",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-017",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-018",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-019",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-020",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-021",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-022",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-023",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-024",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-025",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-026",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-027",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-028",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-029",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "TT-030",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        }
+      ]
+    },
+    {
+      "corpus_id": "CORPUS-TT-CREDSPEC-COMPOSED",
+      "adapter_version": "1.2",
+      "baseline": {
+        "depends_on": [
+          {
+            "corpus_id": "CORPUS-TRUST-TASKS",
+            "source_commit": "4937c70df95e56ed6404b8c004106ecb121a23cf",
+            "adapter_version": "1.1"
+          },
+          {
+            "corpus_id": "CORPUS-DTG-CREDSPEC",
+            "source_commit": "b89f389abbdae77ba60b673c0836c781c2b54169",
+            "adapter_version": "1.1"
+          }
+        ]
+      },
+      "dispositions": [
+        {
+          "scenario_id": "XSP-001",
+          "status": "provisional",
+          "reason": "The composition suggests a reliance/decision consequence but the precise protected-interest and harm taxonomy relation requires independent source review.",
+          "pathway": {
+            "failure_condition": "A credential is relied on without evidence of its originating Trust Task outcome.",
+            "affected_role": "credential relying party",
+            "relationship": "direct",
+            "protected_interest": "informed consequential decision-making",
+            "potential_consequence": "A relying party might accept incomplete assurance for a consequential decision.",
+            "harm_patterns": [],
+            "evidence": {
+              "kind": "analyst-interpretation",
+              "source_anchor": "Trust Tasks §4.9 + CredSpec Trust Task Context Binding",
+              "limitation": "Derived cross-spec scenario; no executed test or independently qualified person-harm mapping."
+            }
+          }
+        },
+        {
+          "scenario_id": "XSP-002",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-003",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-004",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-005",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-006",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-007",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-008",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-009",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-010",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-011",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-012",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-013",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-014",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-015",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-016",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-017",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-018",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-019",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        },
+        {
+          "scenario_id": "XSP-020",
+          "status": "not-established",
+          "reason": "No independently qualified affected-role and harm causal pathway has yet been established from the existing scenario and provenance records."
+        }
+      ]
+    }
+  ]
+}
