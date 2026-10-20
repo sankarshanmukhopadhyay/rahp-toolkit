@@ -12,6 +12,8 @@ Use the [Scenario corpora browser](../corpora/) for themed reader views of each 
 
 Scenario corpora connect domain-specific use cases to portable RAHP pressure-test patterns. They are **adapters, not normative forks**: source projects retain authority over their scenario meaning and identifiers.
 
+For non-specialist readers, start with [Reading a scenario corpus](reading-scenario-corpus.md), which explains priority, source pins, evidence grades, the difference between a test question and a finding, and a worked example.
+
 ## Available corpora
 
 | Corpus | Source | Purpose | Scenario count |
