@@ -2,6 +2,7 @@
 
 require "yaml"
 require "json"
+require_relative "corpus_evidence_links"
 
 module RahpPagesProjection
   STRUCTURED_ROOTS = %w[corpora method data build/derived build/jsonld examples archive/historical-builds].freeze
@@ -239,6 +240,12 @@ module RahpPagesProjection
         end
         out << "| `depends_on` | #{links.join(', ')} |"
       end
+      # Review citations are opt-in and exact-version only. No review link
+      # establishes execution, PASS, or a person/harm mapping.
+      references = CorpusEvidenceLinks.for_corpus(
+        (@review_citations ||= CorpusEvidenceLinks.collect(site.source)), corpus
+      )
+      out << "| \`qualified_review_references\` | #{references.length} |"
       out << "| `scenario_count` | #{scenarios.length} |"
       if corpus["coverage"].is_a?(Hash) && !corpus["coverage"].empty?
         out += ["", "### Coverage", "", "| Dimension | Value |", "|---|---|"]
@@ -264,6 +271,21 @@ module RahpPagesProjection
           end
         end
       end
+      out += ["", "## Review evidence links", "",
+              "A reference below establishes only that a review explicitly cites the same corpus scenario at the declared source revision; it does not establish a passing test or a harm finding.", ""]
+      if references.empty?
+        out << "**No linked review evidence identified.** This does not mean the scenario has not been tested."
+      else
+        out += ["| Scenario | Review | Evidence reference |", "|---|---|---|"]
+        references.each do |ref|
+          path = ref["review_path"]
+          route = human_route(path)
+          url = site_route(site, "/#{route}/")
+          # All indexed review sources are structured documents with clean Pages routes.
+          out << "| \`#{escape_cell(ref['scenario_id'])}\` | [#{escape_cell(ref['review_id'])}](#{url}) | \`#{escape_cell(ref['evidence_path'])}\` |"
+        end
+      end
+      out += ["", "**People and harms:** Corpus scenarios and people-linked \`SC-*\` scenarios are distinct namespaces. No persona is inferred from an \`SP-*\` pattern. Declared \`portable_assurance.harm_patterns\` values are catalogue references, not demonstrated harm to a particular person.", ""]
       out
     end
 
