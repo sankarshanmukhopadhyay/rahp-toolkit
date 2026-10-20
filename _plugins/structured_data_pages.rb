@@ -280,19 +280,20 @@ module RahpPagesProjection
         end
         if group
           out += ["", "## Potential people-impact pathways", "",
-                  "These RAHP analyst interpretations describe possible affected roles and interests. They are **not** executed tests, observed harms, source-specification requirements or safety ratings.", "",
-                  "| Scenario | Qualification | Potentially affected role and consequence |", "|---|---|---|"]
+                  "A scenario is a question to investigate, **not** a recorded failure. \`provisional\` denotes an analyst hypothesis; \`not-established\` means no supported people-impact relationship has been established. Neither status is a test result, harm-severity rating or independent approval.", "",
+                  "| Scenario | Status | Who might be affected? | Possible consequence / evidence limit |", "|---|---|---|---|"]
           Array(group["dispositions"]).each do |entry|
             if entry["pathway"]
               path = entry["pathway"]
-              statement = "#{escape_cell(path['affected_role'])}: #{escape_cell(path['potential_consequence'])}"
-              statement += " (protected interest: #{escape_cell(path['protected_interest'])}; source anchor: #{escape_cell(path.dig('evidence', 'source_anchor'))}; limitation: #{escape_cell(path.dig('evidence', 'limitation'))})"
+              role = escape_cell(path["affected_role"])
+              consequence = "#{escape_cell(path['potential_consequence'])} (interest: #{escape_cell(path['protected_interest'])})."
+              consequence += " **Evidence limit:** #{escape_cell(path.dig('evidence', 'limitation'))}"
+              out << "| \`#{escape_cell(entry['scenario_id'])}\` | Provisional | #{role} | #{consequence} |"
             else
-              statement = escape_cell(entry["reason"])
+              out << "| \`#{escape_cell(entry['scenario_id'])}\` | Not established | — | No verified scenario-specific people-impact link. |"
             end
-            out << "| \`#{escape_cell(entry['scenario_id'])}\` | #{escape_cell(entry['status'])} | #{statement} |"
           end
-          out += ["", "Portable affected roles do not automatically identify named DTG personas; unresolved mappings remain **not-established**.", ""]
+          out += ["", "The source-grounded failure may be meaningful even when an affected-person relationship is **not established**. P0/P1 are test priorities, not harm severity. No named DTG persona is inferred. For a complete non-specialist example, read [TT-002's five-question walkthrough](#{site_route(site, '/docs/reading-scenario-corpus.html')}). Independent review and candidate harms are explained in [qualification acceptance](#{site_route(site, '/docs/people-impact-qualification-acceptance.html')}).", ""]
         end
       end
       out += ["", "## Review evidence links", "",
