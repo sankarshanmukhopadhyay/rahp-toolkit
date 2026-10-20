@@ -48,4 +48,28 @@ class ImpactPilotTest(unittest.TestCase):
     def test_missing_reason(self):
         self.assert_invalid(lambda d:d["pilot_corpora"][0]["dispositions"][0].update(reason=""))
 
+
+    def test_unknown_role_rejected(self):
+        self.assert_invalid(lambda d:d["pilot_corpora"][0]["dispositions"][1]["pathway"].update(role_id="fictional-persona"))
+
+    def test_qualified_without_harm_and_adjudication_rejected(self):
+        self.assert_invalid(lambda d:d["pilot_corpora"][1]["dispositions"][0].update(status="qualified"))
+
+    def test_zero_positive_dispositions_valid(self):
+        data=copy.deepcopy(DATA)
+        for group in data["pilot_corpora"]:
+            for row in group["dispositions"]:
+                row.pop("pathway",None)
+                row.pop("adjudication",None)
+                row["status"]="not-established"
+                row["reason"]="No direct source-qualified people-impact pathway has been established at this baseline."
+        errors,counts=validate(data)
+        self.assertFalse(errors,errors)
+        self.assertEqual(counts["not-established"],50)
+
+    def test_harm_membership_does_not_make_qualification(self):
+        self.assert_invalid(lambda d:d["pilot_corpora"][1]["dispositions"][0].update(
+            status="qualified",
+            adjudication={"reviewer":"unverified","reviewed_on":"2026-10-20","decision_evidence":"not source-grounded"}))
+
 if __name__=="__main__": unittest.main()

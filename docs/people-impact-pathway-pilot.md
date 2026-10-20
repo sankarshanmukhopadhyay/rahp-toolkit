@@ -45,3 +45,11 @@ An `SP-*` pattern, a similar `SC-*` record, or a finding identifier such as `SEC
 The 50-row pilot establishes a reproducible structure and exposes coverage gaps; it does **not** convert currently available specification or corpus evidence into a full set of accepted people-impact statements. The practical next activity is *independent adjudication of the two hypotheses and source-by-source qualification of additional scenarios*. This is a material evidence activity, not something validation alone can decide.
 
 The public pages label provisional and not-established rows accordingly and retain an explanation of the authority boundary.
+
+## Second increment: portable role identity and coverage evidence
+
+The pilot now uses a bounded portable [affected-role vocabulary](../method/impact-pathways/roles.json). A role ID identifies an accountable or potentially affected *capacity* in a system, not an individual, demographic group or DTG-specific persona. The current two provisional hypotheses use `task-recipient-or-relying-party` and `credential-relying-party` respectively. The role identifiers provide a stable join key while avoiding automatic persona-to-role inference.
+
+The validation command emits machine-readable status totals, per-role counts, harm-reference count, upstream baselines, unresolved scenario identifiers, and qualification totals. These figures describe coverage and evidence gaps; they are not a safety score. A zero-positive baseline is an expressly valid input and a regression test verifies that outcome.
+
+**Outstanding source qualification:** There are still no adjudicated `qualified` pathways. A reviewed judgment needs a direct source claim, a defensible causal chain connecting role, protected interest and harm taxonomy, and accountable review evidence. The existence of a harm identifier in a composed adapter is not, by itself, such a judgment. Rebaseline dependency hashes before reusing composed impact conclusions.

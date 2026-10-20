@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PILOT = ROOT / "method/impact-pathways/pilot.json"
 SCHEMA = "rahp-people-impact-pathways/v1"
 STATES = {"qualified", "provisional", "rejected", "not-established"}
+ROLE_VOCAB = ROOT / "method/impact-pathways/roles.json"
 SOURCE = {"CORPUS-TRUST-TASKS": "corpora/trust-tasks.yaml",
           "CORPUS-TT-CREDSPEC-COMPOSED": "corpora/trust-tasks-credspec-composed.yaml"}
 
@@ -24,6 +25,8 @@ def validate(data, root=ROOT):
         errors.append("pilot set differs from declared contract")
     harm_data = yaml.safe_load((root / "method/catalogue/harm-patterns.yaml").read_text())
     harms = {record["id"] for record in harm_data["records"]}
+    roles = json.loads(ROLE_VOCAB.read_text())["roles"]
+    role_ids = {r["id"] for r in roles}
     seen_groups = set()
     counts = Counter()
     for group in data.get("pilot_corpora", []):
@@ -63,9 +66,16 @@ def validate(data, root=ROOT):
                     errors.append(f"{cid}/{sid}: missing source qualification")
                 if sid in ids and evidence.get("source_anchor") != ids[sid].get("source_anchor"):
                     errors.append(f"{cid}/{sid}: incorrect source anchor")
+                role = pathway.get("role_id")
+                if role not in role_ids:
+                    errors.append(f"{cid}/{sid}: unrecognized portable role {role}")
+                if any(token in str(pathway.get("affected_role", "")).lower() for token in ("daniel wright", "laila hassan")):
+                    errors.append(f"{cid}/{sid}: named deployment persona in portable pathway")
                 if set(pathway.get("harm_patterns", [])) - harms:
                     errors.append(f"{cid}/{sid}: invalid harm IDs")
                 if status == "qualified":
+                    if not pathway.get("harm_patterns"):
+                        errors.append(f"{cid}/{sid}: qualified people-impact claim requires reviewed harm mapping")
                     if evidence.get("kind") != "direct-source" or not row.get("adjudication", {}).get("decision_evidence"):
                         errors.append(f"{cid}/{sid}: qualification needs direct source and accountable reviewed evidence")
             elif pathway:
@@ -85,7 +95,18 @@ def main():
     args=p.parse_args()
     data=json.loads(PILOT.read_text())
     errors,counts=validate(data)
-    result={"contract":SCHEMA,"pilot_corpora":len(SOURCE),"scenarios":sum(counts.values()),"dispositions":counts,"validation":"PASS" if not errors else "FAIL","errors":errors}
+    groups=data.get("pilot_corpora", [])
+    report={
+      "contract":SCHEMA,"pilot_corpora":len(groups),
+      "scenarios":sum(counts.values()),"dispositions":counts,
+      "affected_roles":dict(sorted(Counter(row["pathway"]["role_id"] for group in groups for row in group.get("dispositions", []) if isinstance(row.get("pathway"), dict) and row["pathway"].get("role_id")).items())),
+      "harm_reference_count":sum(len(row.get("pathway", {}).get("harm_patterns", [])) for group in groups for row in group.get("dispositions", [])),
+      "qualified_causal_claims":counts.get("qualified",0),
+      "source_baselines":{g.get("corpus_id"):g.get("baseline") for g in groups},
+      "unresolved_scenarios":[{"corpus_id":g.get("corpus_id"),"scenario_id":row.get("scenario_id"),"status":row.get("status")} for g in groups for row in g.get("dispositions", []) if row.get("status") in {"not-established","rejected"}],
+      "validation":"PASS" if not errors else "FAIL","errors":errors
+    }
+    result=report
     print(json.dumps(result,indent=2))
     raise SystemExit(1 if errors else 0)
 
