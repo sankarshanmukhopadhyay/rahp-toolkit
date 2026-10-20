@@ -218,6 +218,11 @@ module RahpPagesProjection
       end
     end
 
+    def site_route(site, path)
+      baseurl = site.respond_to?(:config) ? site.config.fetch("baseurl", "").to_s : ""
+      "#{baseurl.sub(%r{/$}, "")}#{path}"
+    end
+
     def corpus_summary(site, corpus)
       scenarios = Array(corpus["scenarios"])
       out = ["## Corpus metadata", "", "| Field | Value |", "|---|---|"]
@@ -230,7 +235,7 @@ module RahpPagesProjection
           id = dependency.is_a?(Hash) ? dependency["corpus_id"] : dependency
           route = corpus_routes(site)[id]
           label = escape_cell(id || format_value(dependency))
-          route ? "[#{label}](#{route})" : label
+          route ? "[#{label}](#{site_route(site, route)})" : label
         end
         out << "| `depends_on` | #{links.join(', ')} |"
       end
@@ -242,7 +247,7 @@ module RahpPagesProjection
       unless scenarios.empty?
         out += ["", "## Scenarios", "", "| ID | Title | Goal | Source | Domain | Pressure | Priority | RAHP patterns |", "|---|---|---|---|---|---|---|---|"]
         scenarios.each do |scenario|
-          patterns = Array(scenario["scenario_patterns"]).map { |id| "[`#{escape_cell(id)}`](/method/scenario-patterns/##{id.to_s.downcase})" }.join(", ")
+          patterns = Array(scenario["scenario_patterns"]).map { |id| "[`#{escape_cell(id)}`](#{site_route(site, "/method/scenario-patterns/##{id.to_s.downcase}")})" }.join(", ")
           source = scenario.key?("source_anchor") ? source_anchor_link(corpus, scenario["source_anchor"]) : "Not declared"
           goal = scenario.key?("primary_goal") ? escape_cell(scenario["primary_goal"]) : "Not declared"
           out << "| `#{escape_cell(scenario['id'])}` | #{escape_cell(scenario['title'])} | #{goal} | #{source} | #{escape_cell(scenario['domain'])} | #{escape_cell(scenario['primary_pressure'])} | #{escape_cell(scenario['priority'])} | #{patterns} |"
