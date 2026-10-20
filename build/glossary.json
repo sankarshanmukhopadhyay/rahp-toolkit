@@ -19,7 +19,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -56,28 +56,6 @@
         "guardrail-requirement"
       ],
       "related_catalogue": [],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
-      "term": "Assurance",
-      "slug": "assurance",
-      "status": "stable",
-      "definition": "Reasoned confidence, supported by evidence, that a system or control behaves as claimed.",
-      "plain_example": "A replay test and its retained trace support confidence that duplicate execution is blocked.",
-      "term_type": "rahp-native",
-      "scope": "general",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "assurance-pattern",
-        "evidence"
-      ],
-      "related_catalogue": [
-        "AT-*",
-        "ATP-*"
-      ],
       "source": {
         "authority": "RAHP Toolkit",
         "note": "Definition written for RAHP in simple English."
@@ -123,6 +101,28 @@
         "control-pattern"
       ],
       "related_catalogue": [
+        "ATP-*"
+      ],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Assurance",
+      "slug": "assurance",
+      "status": "stable",
+      "definition": "Reasoned confidence, supported by evidence, that a system or control behaves as claimed.",
+      "plain_example": "A replay test and its retained trace support confidence that duplicate execution is blocked.",
+      "term_type": "rahp-native",
+      "scope": "general",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "assurance-pattern",
+        "evidence"
+      ],
+      "related_catalogue": [
+        "AT-*",
         "ATP-*"
       ],
       "source": {
@@ -263,7 +263,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -343,27 +343,6 @@
       }
     },
     {
-      "term": "Control",
-      "slug": "control",
-      "status": "stable",
-      "definition": "A deployment-specific measure used to reduce, detect, contain or recover from a risk.",
-      "plain_example": "A verifier checks status immediately before approving a transaction.",
-      "term_type": "rahp-native",
-      "scope": "deployment",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "control-pattern",
-        "guardrail"
-      ],
-      "related_catalogue": [
-        "CT-*"
-      ],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
       "term": "Control pattern",
       "slug": "control-pattern",
       "status": "stable",
@@ -400,6 +379,27 @@
       ],
       "related_catalogue": [
         "CTP-RISK-01"
+      ],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Control",
+      "slug": "control",
+      "status": "stable",
+      "definition": "A deployment-specific measure used to reduce, detect, contain or recover from a risk.",
+      "plain_example": "A verifier checks status immediately before approving a transaction.",
+      "term_type": "rahp-native",
+      "scope": "deployment",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "control-pattern",
+        "guardrail"
+      ],
+      "related_catalogue": [
+        "CT-*"
       ],
       "source": {
         "authority": "RAHP Toolkit",
@@ -487,28 +487,6 @@
       }
     },
     {
-      "term": "Evidence",
-      "slug": "evidence",
-      "status": "stable",
-      "definition": "Information kept to support or challenge an assurance claim, decision or finding.",
-      "plain_example": "A signed authorization decision record shows what policy and authority were used.",
-      "term_type": "rahp-native",
-      "scope": "general",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "evidence-pattern",
-        "audit-event"
-      ],
-      "related_catalogue": [
-        "EV-*",
-        "EVP-*"
-      ],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
       "term": "Evidence grade",
       "slug": "evidence-grade",
       "status": "stable",
@@ -524,7 +502,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -541,6 +519,28 @@
         "assurance-pattern"
       ],
       "related_catalogue": [
+        "EVP-*"
+      ],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Evidence",
+      "slug": "evidence",
+      "status": "stable",
+      "definition": "Information kept to support or challenge an assurance claim, decision or finding.",
+      "plain_example": "A signed authorization decision record shows what policy and authority were used.",
+      "term_type": "rahp-native",
+      "scope": "general",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "evidence-pattern",
+        "audit-event"
+      ],
+      "related_catalogue": [
+        "EV-*",
         "EVP-*"
       ],
       "source": {
@@ -587,6 +587,25 @@
       }
     },
     {
+      "term": "Finding disposition",
+      "slug": "finding-disposition",
+      "status": "stable",
+      "definition": "The recorded outcome for an earlier finding, such as unchanged, weakened, resolved or superseded.",
+      "plain_example": "A new normative replay rule changes a replay finding from open to resolved.",
+      "term_type": "rahp-native",
+      "scope": "deployment",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "finding",
+        "reassessment"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
       "term": "Finding",
       "slug": "finding",
       "status": "stable",
@@ -599,25 +618,6 @@
         "risk",
         "recommendation",
         "finding-disposition"
-      ],
-      "related_catalogue": [],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
-      "term": "Finding disposition",
-      "slug": "finding-disposition",
-      "status": "stable",
-      "definition": "The recorded outcome for an earlier finding, such as unchanged, weakened, resolved or superseded.",
-      "plain_example": "A new normative replay rule changes a replay finding from open to resolved.",
-      "term_type": "rahp-native",
-      "scope": "deployment",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "finding",
-        "reassessment"
       ],
       "related_catalogue": [],
       "source": {
@@ -639,29 +639,6 @@
         "stale-state"
       ],
       "related_catalogue": [],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
-      "term": "Guardrail",
-      "slug": "guardrail",
-      "status": "stable",
-      "definition": "A rule that blocks or stops an unacceptable state. It is stronger than normal guidance.",
-      "plain_example": "Do not let a consequential action proceed when current authority cannot be established.",
-      "term_type": "rahp-native",
-      "scope": "general",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "control",
-        "prohibited-state",
-        "fail-closed"
-      ],
-      "related_catalogue": [
-        "GR-*",
-        "GRP-*"
-      ],
       "source": {
         "authority": "RAHP Toolkit",
         "note": "Definition written for RAHP in simple English."
@@ -711,20 +688,22 @@
       }
     },
     {
-      "term": "Harm",
-      "slug": "harm",
+      "term": "Guardrail",
+      "slug": "guardrail",
       "status": "stable",
-      "definition": "A bad effect on a person, group, organization or public interest.",
-      "plain_example": "A person is wrongly locked out of an essential service.",
+      "definition": "A rule that blocks or stops an unacceptable state. It is stronger than normal guidance.",
+      "plain_example": "Do not let a consequential action proceed when current authority cannot be established.",
       "term_type": "rahp-native",
-      "scope": "portable-method",
+      "scope": "general",
       "do_not_confuse_with": [],
       "see_also": [
-        "risk",
-        "harm-pattern"
+        "control",
+        "prohibited-state",
+        "fail-closed"
       ],
       "related_catalogue": [
-        "HRM-*"
+        "GR-*",
+        "GRP-*"
       ],
       "source": {
         "authority": "RAHP Toolkit",
@@ -743,6 +722,27 @@
       "see_also": [
         "harm",
         "risk-pattern"
+      ],
+      "related_catalogue": [
+        "HRM-*"
+      ],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Harm",
+      "slug": "harm",
+      "status": "stable",
+      "definition": "A bad effect on a person, group, organization or public interest.",
+      "plain_example": "A person is wrongly locked out of an essential service.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "risk",
+        "harm-pattern"
       ],
       "related_catalogue": [
         "HRM-*"
@@ -793,25 +793,6 @@
       }
     },
     {
-      "term": "Override",
-      "slug": "override",
-      "status": "stable",
-      "definition": "A governed exception that allows a normal control or guardrail outcome to be changed by an authorized actor.",
-      "plain_example": "An emergency override may be allowed only to a named governance role and must be logged.",
-      "term_type": "rahp-native",
-      "scope": "general",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "override-authority",
-        "audit-event"
-      ],
-      "related_catalogue": [],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
       "term": "Override authority",
       "slug": "override-authority",
       "status": "stable",
@@ -823,6 +804,25 @@
       "see_also": [
         "override",
         "authority"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Override",
+      "slug": "override",
+      "status": "stable",
+      "definition": "A governed exception that allows a normal control or guardrail outcome to be changed by an authorized actor.",
+      "plain_example": "An emergency override may be allowed only to a named governance role and must be logged.",
+      "term_type": "rahp-native",
+      "scope": "general",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "override-authority",
+        "audit-event"
       ],
       "related_catalogue": [],
       "source": {
@@ -846,7 +846,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -865,7 +865,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -1102,27 +1102,6 @@
       }
     },
     {
-      "term": "Risk",
-      "slug": "risk",
-      "status": "stable",
-      "definition": "A possible way a specific deployment can cause harm or fail to meet its goals.",
-      "plain_example": "A registry may keep an old key after it should have been removed.",
-      "term_type": "rahp-native",
-      "scope": "deployment",
-      "do_not_confuse_with": [],
-      "see_also": [
-        "risk-pattern",
-        "finding"
-      ],
-      "related_catalogue": [
-        "RK-*"
-      ],
-      "source": {
-        "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP in simple English."
-      }
-    },
-    {
       "term": "Risk acceptance",
       "slug": "risk-acceptance",
       "status": "stable",
@@ -1166,22 +1145,24 @@
       }
     },
     {
-      "term": "Scenario",
-      "slug": "scenario",
+      "term": "Risk",
+      "slug": "risk",
       "status": "stable",
-      "definition": "A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened.",
-      "plain_example": "A signed request might reach the wrong recipient.",
+      "definition": "A possible way a specific deployment can cause harm or fail to meet its goals.",
+      "plain_example": "A registry may keep an old key after it should have been removed.",
       "term_type": "rahp-native",
-      "scope": "portable-method",
+      "scope": "deployment",
       "do_not_confuse_with": [],
       "see_also": [
-        "risk",
+        "risk-pattern",
         "finding"
       ],
-      "related_catalogue": [],
+      "related_catalogue": [
+        "RK-*"
+      ],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP in simple English."
       }
     },
     {
@@ -1200,7 +1181,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -1219,7 +1200,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -1238,7 +1219,26 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
+      "term": "Scenario",
+      "slug": "scenario",
+      "status": "stable",
+      "definition": "A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened.",
+      "plain_example": "A signed request might reach the wrong recipient.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "risk",
+        "finding"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -1277,7 +1277,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -1296,7 +1296,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -1315,7 +1315,7 @@
       "related_catalogue": [],
       "source": {
         "authority": "RAHP Toolkit",
-        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077."
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {

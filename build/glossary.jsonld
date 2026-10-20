@@ -38,16 +38,6 @@
       ]
     },
     {
-      "@id": "rahp:assurance",
-      "@type": "rahp:GlossaryTerm",
-      "term": "Assurance",
-      "definition": "Reasoned confidence, supported by evidence, that a system or control behaves as claimed.",
-      "seeAlso": [
-        "rahp:assurance-pattern",
-        "rahp:evidence"
-      ]
-    },
-    {
       "@id": "rahp:assurance-level",
       "@type": "rahp:GlossaryTerm",
       "term": "Assurance level",
@@ -66,6 +56,16 @@
         "rahp:assurance",
         "rahp:evidence-pattern",
         "rahp:control-pattern"
+      ]
+    },
+    {
+      "@id": "rahp:assurance",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Assurance",
+      "definition": "Reasoned confidence, supported by evidence, that a system or control behaves as claimed.",
+      "seeAlso": [
+        "rahp:assurance-pattern",
+        "rahp:evidence"
       ]
     },
     {
@@ -182,16 +182,6 @@
       ]
     },
     {
-      "@id": "rahp:control",
-      "@type": "rahp:GlossaryTerm",
-      "term": "Control",
-      "definition": "A deployment-specific measure used to reduce, detect, contain or recover from a risk.",
-      "seeAlso": [
-        "rahp:control-pattern",
-        "rahp:guardrail"
-      ]
-    },
-    {
       "@id": "rahp:control-pattern",
       "@type": "rahp:GlossaryTerm",
       "term": "Control pattern",
@@ -210,6 +200,16 @@
       "seeAlso": [
         "rahp:control",
         "rahp:risk-pattern"
+      ]
+    },
+    {
+      "@id": "rahp:control",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Control",
+      "definition": "A deployment-specific measure used to reduce, detect, contain or recover from a risk.",
+      "seeAlso": [
+        "rahp:control-pattern",
+        "rahp:guardrail"
       ]
     },
     {
@@ -255,16 +255,6 @@
       ]
     },
     {
-      "@id": "rahp:evidence",
-      "@type": "rahp:GlossaryTerm",
-      "term": "Evidence",
-      "definition": "Information kept to support or challenge an assurance claim, decision or finding.",
-      "seeAlso": [
-        "rahp:evidence-pattern",
-        "rahp:audit-event"
-      ]
-    },
-    {
       "@id": "rahp:evidence-grade",
       "@type": "rahp:GlossaryTerm",
       "term": "Evidence grade",
@@ -282,6 +272,16 @@
       "seeAlso": [
         "rahp:evidence",
         "rahp:assurance-pattern"
+      ]
+    },
+    {
+      "@id": "rahp:evidence",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Evidence",
+      "definition": "Information kept to support or challenge an assurance claim, decision or finding.",
+      "seeAlso": [
+        "rahp:evidence-pattern",
+        "rahp:audit-event"
       ]
     },
     {
@@ -305,6 +305,16 @@
       ]
     },
     {
+      "@id": "rahp:finding-disposition",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Finding disposition",
+      "definition": "The recorded outcome for an earlier finding, such as unchanged, weakened, resolved or superseded.",
+      "seeAlso": [
+        "rahp:finding",
+        "rahp:reassessment"
+      ]
+    },
+    {
       "@id": "rahp:finding",
       "@type": "rahp:GlossaryTerm",
       "term": "Finding",
@@ -316,16 +326,6 @@
       ]
     },
     {
-      "@id": "rahp:finding-disposition",
-      "@type": "rahp:GlossaryTerm",
-      "term": "Finding disposition",
-      "definition": "The recorded outcome for an earlier finding, such as unchanged, weakened, resolved or superseded.",
-      "seeAlso": [
-        "rahp:finding",
-        "rahp:reassessment"
-      ]
-    },
-    {
       "@id": "rahp:freshness",
       "@type": "rahp:GlossaryTerm",
       "term": "Freshness",
@@ -333,17 +333,6 @@
       "seeAlso": [
         "rahp:lifecycle",
         "rahp:stale-state"
-      ]
-    },
-    {
-      "@id": "rahp:guardrail",
-      "@type": "rahp:GlossaryTerm",
-      "term": "Guardrail",
-      "definition": "A rule that blocks or stops an unacceptable state. It is stronger than normal guidance.",
-      "seeAlso": [
-        "rahp:control",
-        "rahp:prohibited-state",
-        "rahp:fail-closed"
       ]
     },
     {
@@ -368,13 +357,14 @@
       ]
     },
     {
-      "@id": "rahp:harm",
+      "@id": "rahp:guardrail",
       "@type": "rahp:GlossaryTerm",
-      "term": "Harm",
-      "definition": "A bad effect on a person, group, organization or public interest.",
+      "term": "Guardrail",
+      "definition": "A rule that blocks or stops an unacceptable state. It is stronger than normal guidance.",
       "seeAlso": [
-        "rahp:risk",
-        "rahp:harm-pattern"
+        "rahp:control",
+        "rahp:prohibited-state",
+        "rahp:fail-closed"
       ]
     },
     {
@@ -385,6 +375,16 @@
       "seeAlso": [
         "rahp:harm",
         "rahp:risk-pattern"
+      ]
+    },
+    {
+      "@id": "rahp:harm",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Harm",
+      "definition": "A bad effect on a person, group, organization or public interest.",
+      "seeAlso": [
+        "rahp:risk",
+        "rahp:harm-pattern"
       ]
     },
     {
@@ -410,16 +410,6 @@
       ]
     },
     {
-      "@id": "rahp:override",
-      "@type": "rahp:GlossaryTerm",
-      "term": "Override",
-      "definition": "A governed exception that allows a normal control or guardrail outcome to be changed by an authorized actor.",
-      "seeAlso": [
-        "rahp:override-authority",
-        "rahp:audit-event"
-      ]
-    },
-    {
       "@id": "rahp:override-authority",
       "@type": "rahp:GlossaryTerm",
       "term": "Override authority",
@@ -427,6 +417,16 @@
       "seeAlso": [
         "rahp:override",
         "rahp:authority"
+      ]
+    },
+    {
+      "@id": "rahp:override",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Override",
+      "definition": "A governed exception that allows a normal control or guardrail outcome to be changed by an authorized actor.",
+      "seeAlso": [
+        "rahp:override-authority",
+        "rahp:audit-event"
       ]
     },
     {
@@ -573,16 +573,6 @@
       ]
     },
     {
-      "@id": "rahp:risk",
-      "@type": "rahp:GlossaryTerm",
-      "term": "Risk",
-      "definition": "A possible way a specific deployment can cause harm or fail to meet its goals.",
-      "seeAlso": [
-        "rahp:risk-pattern",
-        "rahp:finding"
-      ]
-    },
-    {
       "@id": "rahp:risk-acceptance",
       "@type": "rahp:GlossaryTerm",
       "term": "Risk acceptance",
@@ -604,12 +594,12 @@
       ]
     },
     {
-      "@id": "rahp:scenario",
+      "@id": "rahp:risk",
       "@type": "rahp:GlossaryTerm",
-      "term": "Scenario",
-      "definition": "A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened.",
+      "term": "Risk",
+      "definition": "A possible way a specific deployment can cause harm or fail to meet its goals.",
       "seeAlso": [
-        "rahp:risk",
+        "rahp:risk-pattern",
         "rahp:finding"
       ]
     },
@@ -641,6 +631,16 @@
       "seeAlso": [
         "rahp:scenario",
         "rahp:risk-pattern"
+      ]
+    },
+    {
+      "@id": "rahp:scenario",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Scenario",
+      "definition": "A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened.",
+      "seeAlso": [
+        "rahp:risk",
+        "rahp:finding"
       ]
     },
     {
