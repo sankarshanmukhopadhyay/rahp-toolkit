@@ -47,3 +47,9 @@ To ask *who bears the consequence*, inspect the [personas](personas.md), relevan
 Begin with the [corpora browser](../corpora/), read the relevant scenario, follow its `SP-*` link and inspect its canonical YAML. Where a pinned source link is available, read that source passage. For any assertion that the pressure was actually tested, request the assessment record, test conditions, observed result, provenance and unresolved limitations. **If that evidence cannot be found, the testing status remains unknown**, not passed or failed.
 
 The [scenario corpora reference](scenario-corpora.md) and [corpus synchronization and provenance](corpus-synchronization.md) explain adapter ownership, drift and re-baselining.
+
+## Evidence-qualified reverse references and affected people
+
+A corpus page now has a **Review evidence links** section. A linked review means that its canonical structured review has an explicit `corpus_scenario_references` entry naming the exact corpus ID, scenario ID, source commit, and a resolvable evidence path within that review. It does **not** mean that the scenario passed, that a deployment was tested, or that harm occurred. If the page says **No linked review evidence identified**, read that literally. Reviews of a similarly named specification or security finding are not interchangeable with scenario-level evidence. Existing reviews without explicit, version-qualified citations are not silently assigned to scenarios.
+
+`SC-*` records provide an independent, people-linked assurance path. Corpus scenario IDs do not automatically identify affected personas. Where a corpus explicitly lists `portable_assurance.harm_patterns`, those are proposed reusable catalogue mappings, not findings about a person. A future direct persona relationship would require an explicit, source-qualified method and an accountable review. For now, no `affected_personas` schema field or automatic `SP-*`-based mapping is introduced.
