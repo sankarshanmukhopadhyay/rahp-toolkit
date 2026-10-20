@@ -1,0 +1,15 @@
+term: "Source-pinned"
+slug: source-pinned
+status: stable
+definition: "An evidence grade used when an adapter declares reviewable grounding in pinned source material. It does not certify the target."
+plain_example: "A scenario cites a checked specification revision, but still needs execution evidence."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - evidence-grade
+  - source-pin
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.
