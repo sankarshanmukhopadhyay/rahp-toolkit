@@ -38,7 +38,7 @@ end
 load ARGV.fetch(0)
 root = ARGV.fetch(1)
 renderer = RahpPagesProjection::Generator.allocate
-site = Struct.new(:source).new(root)
+site = Struct.new(:source, :config).new(root, {"baseurl" => "/rahp-toolkit"})
 catalogue = YAML.safe_load(File.read(File.join(root, "method/scenario-patterns.yaml")), aliases: true)
 pattern_page = renderer.send(:scenario_patterns_summary, catalogue).join("\n")
 catalogue.fetch("patterns").each do |pattern|
@@ -57,13 +57,13 @@ Dir.glob(File.join(root, "corpora", "*.yaml")).each do |file|
       raise "missing source #{scenario['id']}" unless page.include?(scenario.fetch("source_anchor"))
     end
     Array(scenario["scenario_patterns"]).each do |id|
-      raise "missing pattern link #{id}" unless page.include?("](/method/scenario-patterns/##{id.downcase})")
+      raise "missing pattern link #{id}" unless page.include?("](/rahp-toolkit/method/scenario-patterns/##{id.downcase})")
     end
   end
   if corpus["depends_on"]
     corpus["depends_on"].each do |dependency|
       id = dependency.is_a?(Hash) ? dependency.fetch("corpus_id") : dependency
-      raise "missing dependency #{id}" unless page.include?("[#{id}](/corpora/")
+      raise "missing dependency #{id}" unless page.include?("[#{id}](/rahp-toolkit/corpora/")
     end
   end
   if corpus["evidence_grade"]
