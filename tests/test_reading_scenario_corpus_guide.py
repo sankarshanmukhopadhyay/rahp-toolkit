@@ -9,7 +9,7 @@ class ReadingScenarioCorpusGuideTest(unittest.TestCase):
     def test_guide_has_jekyll_front_matter_and_explicit_limitations(self):
         source = (ROOT / "docs/reading-scenario-corpus.md").read_text()
         self.assertTrue(source.startswith("---\n"))
-        for phrase in ("TT-002", "Not declared", "not evidence", "not automatically", "unknown"):
+        for phrase in ("TT-002", "Not declared", "**not** evidence", "not automatically", "unknown"):
             self.assertIn(phrase.lower(), source.lower())
 
     def test_reader_entry_points_link_to_guide(self):
