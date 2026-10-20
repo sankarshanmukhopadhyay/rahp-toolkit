@@ -1,3 +1,10 @@
+---
+layout: default
+title: People-impact pathway pilot
+parent: Learn RAHP
+nav_order: 6
+---
+
 # People-impact pathway pilot: evidence, use and limitations
 
 This document accompanies [issue #1091](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1091) and is **not** a normative interpretation of the upstream Trust Tasks or Credential Specification.
