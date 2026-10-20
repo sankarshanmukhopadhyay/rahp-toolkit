@@ -62,6 +62,8 @@ REQUIRED_HUMAN_PROJECTIONS = [
 REQUIRED_DOCS = [
     'index.html',
     'docs/using-an-ai-agent.html',
+    'docs/reading-scenario-corpus.html',
+    'docs/glossary.html',
     'docs/pages-coverage.html',
     'docs/normative-triage.html',
     'docs/operational-assurance.html',
