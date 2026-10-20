@@ -61,7 +61,8 @@ Dir.glob(File.join(root, "corpora", "*.yaml")).each do |file|
     end
   end
   if corpus["depends_on"]
-    corpus["depends_on"].each do |id|
+    corpus["depends_on"].each do |dependency|
+      id = dependency.is_a?(Hash) ? dependency.fetch("corpus_id") : dependency
       raise "missing dependency #{id}" unless page.include?("[#{id}](/corpora/")
     end
   end
