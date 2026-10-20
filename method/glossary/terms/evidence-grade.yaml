@@ -1,0 +1,15 @@
+term: "Evidence grade"
+slug: evidence-grade
+status: stable
+definition: "A corpus label describing how its scenarios are grounded in source material, not whether an implementation is safe or has passed tests."
+plain_example: "A source-informed corpus can suggest useful tests without proving conformance."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - scenario-corpus
+  - evidence
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.
