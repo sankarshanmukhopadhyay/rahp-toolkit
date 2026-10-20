@@ -1,0 +1,15 @@
+term: "Scenario"
+slug: scenario
+status: stable
+definition: "A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened."
+plain_example: "A signed request might reach the wrong recipient."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - risk
+  - finding
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.
