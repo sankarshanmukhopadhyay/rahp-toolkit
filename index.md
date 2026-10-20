@@ -13,6 +13,9 @@ RAHP now supports **scenario-driven pressure testing**: a specification can be t
 
 ## Start here
 
+**Not a specification author?** Start with [Reading a scenario corpus](docs/reading-scenario-corpus.md) to understand what a scenario says about possible failure, affected people and evidence, and what it does not establish.
+
+
 - [How RAHP works](docs/how-rahp-works.md)
 - [Pressure-testing a specification](docs/pressure-testing-a-spec.md)
 - [Scenario-driven pressure testing](docs/scenario-driven-pressure-testing.md)

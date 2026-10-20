@@ -28,6 +28,8 @@ RAHP treats harm prevention as an assurance chain rather than a standalone risk 
 | Risk Acceptance | Where residual risk is consciously accepted |
 | Governance Precedent | Existing governance practice that informs treatment |
 
+Corpus scenarios in `corpora/*.yaml` are source/domain pressure-test vectors. The separately maintained `SC-*` scenarios in `data/scenarios.yaml` include people-linked context through personas and user stories. Their identifiers do not imply a validated relationship. See [Reading a scenario corpus](reading-scenario-corpus.md).
+
 The relationship model is visualised in [Artefact relationships](diagrams/artefact-relationships.md).
 
 ## Authority is part of assurance

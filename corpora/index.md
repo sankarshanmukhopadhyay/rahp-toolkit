@@ -9,6 +9,8 @@ has_toc: true
 
 All **15 packaged scenario adapters** are linked below (189 scenarios in total). **Browse** opens a human-readable projection; **YAML** opens the canonical source. An adapter supplies candidate pressure tests and is not evidence that its subject conforms or passes assurance.
 
+For an introduction in everyday language, including a worked scenario and how to check evidence, see [Reading a scenario corpus](../docs/reading-scenario-corpus.md).
+
 ## Source or portfolio adapters
 
 | Corpus | Browse | Canonical YAML | Scenarios | Evidence grade |

@@ -16,6 +16,7 @@ The documentation is organized by task rather than by file type:
 
 | I want to… | Go to |
 |---|---|
+| Understand what a scenario means for people who rely on a system | [Reading a scenario corpus](reading-scenario-corpus.md) |
 | Understand the method and portable assurance catalogue | [Learn RAHP](learn.md) |
 | Configure RAHP for my project | [Adopt RAHP](adopt.md) |
 | Run or interpret an assessment | [Run assessments](assess.md) |
