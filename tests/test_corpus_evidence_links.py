@@ -1,10 +1,20 @@
 """Evidence-qualified reverse links reject ambiguous or ungrounded matches."""
-import pathlib, shutil, subprocess, unittest
+import json, pathlib, shutil, subprocess, unittest
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 
 @unittest.skipUnless(shutil.which("ruby"), "Ruby needed")
 class CorpusEvidenceLinksTests(unittest.TestCase):
+    def test_inventory_matches_all_packaged_corpora(self):
+        result=subprocess.run(["ruby",str(ROOT/"tools/audit_corpus_review_links.rb")],capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stderr)
+        inventory=json.loads(result.stdout)
+        self.assertEqual(inventory["contract"],"rahp-corpus-review-reference/v1")
+        sources=list((ROOT/"corpora").glob("*.yaml"))
+        self.assertEqual(len(inventory["corpora"]),len(sources)-1)
+        self.assertEqual(inventory["total_qualified_references"],sum(x["qualified_references"] for x in inventory["corpora"]))
+        print("QUALIFIED REVIEW REFERENCES:",inventory["total_qualified_references"])
+
     def test_strict_contract_and_projection(self):
         script=r'''
 require "tmpdir"
