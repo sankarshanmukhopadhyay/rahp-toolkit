@@ -29,7 +29,8 @@
               "kind": "analyst-interpretation",
               "source_anchor": "SPEC.md#482-audience-binding",
               "limitation": "No independently reviewed person-to-harm linkage or runtime execution evidence."
-            }
+            },
+            "role_id": "task-recipient-or-relying-party"
           }
         },
         {
@@ -207,7 +208,8 @@
               "kind": "analyst-interpretation",
               "source_anchor": "Trust Tasks §4.9 + CredSpec Trust Task Context Binding",
               "limitation": "Derived cross-spec scenario; no executed test or independently qualified person-harm mapping."
-            }
+            },
+            "role_id": "credential-relying-party"
           }
         },
         {
