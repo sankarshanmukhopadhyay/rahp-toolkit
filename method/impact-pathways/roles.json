@@ -1,0 +1,18 @@
+{
+  "contract": "rahp-portable-affected-roles/v1",
+  "scope": "Portable actors; not named persons or deployment personas",
+  "roles": [
+    {
+      "id": "task-recipient-or-relying-party",
+      "label": "Task recipient or relying party",
+      "definition": "A party expected to receive, act on or rely on a task addressed to a defined audience.",
+      "applicability": "contextual; may be individual or organizational"
+    },
+    {
+      "id": "credential-relying-party",
+      "label": "Credential relying party",
+      "definition": "A party making a decision using credential evidence or associated task outcome evidence.",
+      "applicability": "contextual; may be individual or organizational"
+    }
+  ]
+}
