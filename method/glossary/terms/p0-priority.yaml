@@ -1,0 +1,15 @@
+term: "P0 priority"
+slug: p0-priority
+status: stable
+definition: "A high-priority scenario pressure to examine first. P0 is not a measurement of incident severity or probability."
+plain_example: "Recipient-binding replay is marked P0 for early attention."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - scenario
+  - risk
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.

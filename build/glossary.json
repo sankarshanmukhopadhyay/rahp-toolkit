@@ -4,6 +4,25 @@
   "writing_style": "simple English",
   "terms": [
     {
+      "term": "Adapter",
+      "slug": "adapter",
+      "status": "stable",
+      "definition": "A mapping that brings a source system or specification into RAHP's scenario and assessment vocabulary without replacing the source's authority.",
+      "plain_example": "A Trust Tasks adapter maps selected source pressures to RAHP patterns.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario-corpus",
+        "provenance"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
       "term": "Agent",
       "slug": "agent",
       "status": "stable",
@@ -229,6 +248,25 @@
       }
     },
     {
+      "term": "Composed corpus",
+      "slug": "composed-corpus",
+      "status": "stable",
+      "definition": "A collection of scenarios about interactions between two or more systems or specifications. Its provenance and conclusions must be assessed for the composition.",
+      "plain_example": "A credential and task scenario can test a failure that neither component shows alone.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario-corpus",
+        "composition-boundary"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
       "term": "Composition boundary",
       "slug": "composition-boundary",
       "status": "stable",
@@ -446,6 +484,25 @@
       "source": {
         "authority": "RAHP Toolkit",
         "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Evidence grade",
+      "slug": "evidence-grade",
+      "status": "stable",
+      "definition": "A corpus label describing how its scenarios are grounded in source material, not whether an implementation is safe or has passed tests.",
+      "plain_example": "A source-informed corpus can suggest useful tests without proving conformance.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario-corpus",
+        "evidence"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {
@@ -774,6 +831,44 @@
       }
     },
     {
+      "term": "P0 priority",
+      "slug": "p0-priority",
+      "status": "stable",
+      "definition": "A high-priority scenario pressure to examine first. P0 is not a measurement of incident severity or probability.",
+      "plain_example": "Recipient-binding replay is marked P0 for early attention.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario",
+        "risk"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
+      "term": "P1 priority",
+      "slug": "p1-priority",
+      "status": "stable",
+      "definition": "A secondary-priority scenario pressure. P1 is not a statement that harm is impossible or that a system is safe.",
+      "plain_example": "A less immediate interoperability question may be marked P1.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario",
+        "risk"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
       "term": "Principal",
       "slug": "principal",
       "status": "stable",
@@ -1071,6 +1166,82 @@
       }
     },
     {
+      "term": "Scenario-baseline",
+      "slug": "scenario-baseline",
+      "status": "stable",
+      "definition": "An evidence grade for a working pressure-test hypothesis where a source-grounded normative claim has not been established.",
+      "plain_example": "A preliminary interface receives a scenario to explore before its specification is complete.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "evidence-grade",
+        "scenario"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
+      "term": "Scenario corpus",
+      "slug": "scenario-corpus",
+      "status": "stable",
+      "definition": "A collection of domain-specific scenarios linked to reusable scenario patterns. A corpus suggests what to test, not what passed.",
+      "plain_example": "The Trust Tasks corpus lists possible failure situations for task workflows.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario",
+        "scenario-pattern"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
+      "term": "Scenario pattern",
+      "slug": "scenario-pattern",
+      "status": "stable",
+      "definition": "A reusable kind of pressure or failure possibility that can be tested in many systems.",
+      "plain_example": "Replay of a valid proof is a pattern that may appear in several corpora.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "scenario",
+        "risk-pattern"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
+      "term": "Scenario",
+      "slug": "scenario",
+      "status": "stable",
+      "definition": "A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened.",
+      "plain_example": "A signed request might reach the wrong recipient.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "risk",
+        "finding"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
       "term": "Scope",
       "slug": "scope",
       "status": "stable",
@@ -1088,6 +1259,63 @@
       "source": {
         "authority": "RAHP Toolkit",
         "note": "Definition written for RAHP in simple English."
+      }
+    },
+    {
+      "term": "Source-informed",
+      "slug": "source-informed",
+      "status": "stable",
+      "definition": "An evidence grade used when scenarios draw on known source semantics without claiming a complete pinned normative baseline.",
+      "plain_example": "A scenario is based on published design concepts but not a complete frozen text.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "evidence-grade",
+        "source-pin"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
+      "term": "Source pin",
+      "slug": "source-pin",
+      "status": "stable",
+      "definition": "A declared source revision used when preparing an adapter. A symbolic or descriptive value is not an immutable commit identifier.",
+      "plain_example": "A full commit SHA can identify the revision of a specification used for review.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "provenance",
+        "evidence"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
+      }
+    },
+    {
+      "term": "Source-pinned",
+      "slug": "source-pinned",
+      "status": "stable",
+      "definition": "An evidence grade used when an adapter declares reviewable grounding in pinned source material. It does not certify the target.",
+      "plain_example": "A scenario cites a checked specification revision, but still needs execution evidence.",
+      "term_type": "rahp-native",
+      "scope": "portable-method",
+      "do_not_confuse_with": [],
+      "see_also": [
+        "evidence-grade",
+        "source-pin"
+      ],
+      "related_catalogue": [],
+      "source": {
+        "authority": "RAHP Toolkit",
+        "note": "Definition written for RAHP readers in simple English; scenario corpus guidance issue"
       }
     },
     {

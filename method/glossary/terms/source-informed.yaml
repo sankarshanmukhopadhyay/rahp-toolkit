@@ -1,0 +1,15 @@
+term: "Source-informed"
+slug: source-informed
+status: stable
+definition: "An evidence grade used when scenarios draw on known source semantics without claiming a complete pinned normative baseline."
+plain_example: "A scenario is based on published design concepts but not a complete frozen text."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - evidence-grade
+  - source-pin
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.

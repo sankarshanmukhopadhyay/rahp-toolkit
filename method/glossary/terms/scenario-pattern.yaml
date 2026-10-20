@@ -1,0 +1,15 @@
+term: "Scenario pattern"
+slug: scenario-pattern
+status: stable
+definition: "A reusable kind of pressure or failure possibility that can be tested in many systems."
+plain_example: "Replay of a valid proof is a pattern that may appear in several corpora."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - scenario
+  - risk-pattern
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.

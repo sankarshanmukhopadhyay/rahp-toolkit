@@ -1,0 +1,15 @@
+term: "Adapter"
+slug: adapter
+status: stable
+definition: "A mapping that brings a source system or specification into RAHP's scenario and assessment vocabulary without replacing the source's authority."
+plain_example: "A Trust Tasks adapter maps selected source pressures to RAHP patterns."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - scenario-corpus
+  - provenance
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.

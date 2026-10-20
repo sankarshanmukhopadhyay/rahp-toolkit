@@ -7,6 +7,16 @@
   },
   "@graph": [
     {
+      "@id": "rahp:adapter",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Adapter",
+      "definition": "A mapping that brings a source system or specification into RAHP's scenario and assessment vocabulary without replacing the source's authority.",
+      "seeAlso": [
+        "rahp:scenario-corpus",
+        "rahp:provenance"
+      ]
+    },
+    {
       "@id": "rahp:agent",
       "@type": "rahp:GlossaryTerm",
       "term": "Agent",
@@ -122,6 +132,16 @@
       ]
     },
     {
+      "@id": "rahp:composed-corpus",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Composed corpus",
+      "definition": "A collection of scenarios about interactions between two or more systems or specifications. Its provenance and conclusions must be assessed for the composition.",
+      "seeAlso": [
+        "rahp:scenario-corpus",
+        "rahp:composition-boundary"
+      ]
+    },
+    {
       "@id": "rahp:composition-boundary",
       "@type": "rahp:GlossaryTerm",
       "term": "Composition boundary",
@@ -232,6 +252,16 @@
         "rahp:control",
         "rahp:guardrail",
         "rahp:decision-boundary"
+      ]
+    },
+    {
+      "@id": "rahp:evidence-grade",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Evidence grade",
+      "definition": "A corpus label describing how its scenarios are grounded in source material, not whether an implementation is safe or has passed tests.",
+      "seeAlso": [
+        "rahp:scenario-corpus",
+        "rahp:evidence"
       ]
     },
     {
@@ -400,6 +430,26 @@
       ]
     },
     {
+      "@id": "rahp:p0-priority",
+      "@type": "rahp:GlossaryTerm",
+      "term": "P0 priority",
+      "definition": "A high-priority scenario pressure to examine first. P0 is not a measurement of incident severity or probability.",
+      "seeAlso": [
+        "rahp:scenario",
+        "rahp:risk"
+      ]
+    },
+    {
+      "@id": "rahp:p1-priority",
+      "@type": "rahp:GlossaryTerm",
+      "term": "P1 priority",
+      "definition": "A secondary-priority scenario pressure. P1 is not a statement that harm is impossible or that a system is safe.",
+      "seeAlso": [
+        "rahp:scenario",
+        "rahp:risk"
+      ]
+    },
+    {
       "@id": "rahp:principal",
       "@type": "rahp:GlossaryTerm",
       "term": "Principal",
@@ -554,6 +604,46 @@
       ]
     },
     {
+      "@id": "rahp:scenario-baseline",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Scenario-baseline",
+      "definition": "An evidence grade for a working pressure-test hypothesis where a source-grounded normative claim has not been established.",
+      "seeAlso": [
+        "rahp:evidence-grade",
+        "rahp:scenario"
+      ]
+    },
+    {
+      "@id": "rahp:scenario-corpus",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Scenario corpus",
+      "definition": "A collection of domain-specific scenarios linked to reusable scenario patterns. A corpus suggests what to test, not what passed.",
+      "seeAlso": [
+        "rahp:scenario",
+        "rahp:scenario-pattern"
+      ]
+    },
+    {
+      "@id": "rahp:scenario-pattern",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Scenario pattern",
+      "definition": "A reusable kind of pressure or failure possibility that can be tested in many systems.",
+      "seeAlso": [
+        "rahp:scenario",
+        "rahp:risk-pattern"
+      ]
+    },
+    {
+      "@id": "rahp:scenario",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Scenario",
+      "definition": "A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened.",
+      "seeAlso": [
+        "rahp:risk",
+        "rahp:finding"
+      ]
+    },
+    {
       "@id": "rahp:scope",
       "@type": "rahp:GlossaryTerm",
       "term": "Scope",
@@ -562,6 +652,36 @@
         "rahp:authority",
         "rahp:applicability",
         "rahp:purpose"
+      ]
+    },
+    {
+      "@id": "rahp:source-informed",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Source-informed",
+      "definition": "An evidence grade used when scenarios draw on known source semantics without claiming a complete pinned normative baseline.",
+      "seeAlso": [
+        "rahp:evidence-grade",
+        "rahp:source-pin"
+      ]
+    },
+    {
+      "@id": "rahp:source-pin",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Source pin",
+      "definition": "A declared source revision used when preparing an adapter. A symbolic or descriptive value is not an immutable commit identifier.",
+      "seeAlso": [
+        "rahp:provenance",
+        "rahp:evidence"
+      ]
+    },
+    {
+      "@id": "rahp:source-pinned",
+      "@type": "rahp:GlossaryTerm",
+      "term": "Source-pinned",
+      "definition": "An evidence grade used when an adapter declares reviewable grounding in pinned source material. It does not certify the target.",
+      "seeAlso": [
+        "rahp:evidence-grade",
+        "rahp:source-pin"
       ]
     },
     {

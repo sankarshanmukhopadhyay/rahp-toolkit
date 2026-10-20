@@ -1,0 +1,15 @@
+term: "Source pin"
+slug: source-pin
+status: stable
+definition: "A declared source revision used when preparing an adapter. A symbolic or descriptive value is not an immutable commit identifier."
+plain_example: "A full commit SHA can identify the revision of a specification used for review."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - provenance
+  - evidence
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.
