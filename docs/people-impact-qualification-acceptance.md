@@ -13,7 +13,7 @@ This is a **bounded proposed adjudication**, not a record of independent reviewe
 
 A **qualified potential people-impact relationship** requires (1) a version-pinned technical failure mechanism, (2) a specific potentially affected *role*, distinguished from the party making the decision, (3) an articulated protected interest, (4) an explicit causal chain from failure through consequence, (5) an applicable canonical harm definition and meaningful countercases, and (6) an **accountable, independently reviewable acceptance decision**. It does not mean the failure has been observed or that harm occurred. Analyst-proposed source analyses stay provisional or not established until that review decision exists.
 
-The canonical machine-readable [qualification packet](../method/impact-pathways/qualification-acceptance-2026-10-20.json) contains **six atomic propositions across four scenarios** and deliberately records `independent_acceptance.status = not-recorded`.
+The canonical machine-readable [qualification packet](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/method/impact-pathways/qualification-acceptance-2026-10-20.json) contains **six atomic propositions across four scenarios** and deliberately records `independent_acceptance.status = not-recorded`.
 
 | Scenario | Tested affected-role distinction | Finding | What remains |
 |---|---|---|---|
