@@ -148,7 +148,8 @@
         "protected_interest",
         "potential_consequence",
         "harm_patterns",
-        "evidence"
+        "evidence",
+        "role_id"
       ],
       "properties": {
         "failure_condition": {
@@ -205,6 +206,10 @@
             }
           },
           "additionalProperties": false
+        },
+        "role_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]+$"
         }
       },
       "additionalProperties": false
