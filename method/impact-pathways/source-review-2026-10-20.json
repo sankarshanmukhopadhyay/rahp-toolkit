@@ -1,0 +1,118 @@
+{
+  "contract": "rahp-people-impact-source-review/v1",
+  "review_date": "2026-10-20",
+  "disposition": "source-failure-conditions-supported; people-harm-qualification-unestablished",
+  "authority_boundary": "Upstream normative clauses describe protocol/credential requirements; RAHP analyst impact pathways are hypotheses until separately reviewed. This packet is not independent human adjudication.",
+  "cases": [
+    {
+      "corpus_id": "CORPUS-TRUST-TASKS",
+      "scenario_id": "TT-002",
+      "status": "provisional",
+      "source": {
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "path": "SPEC.md",
+        "commit": "4937c70df95e56ed6404b8c004106ecb121a23cf",
+        "anchors": [
+          "#482-audience-binding",
+          "#101-cross-recipient-replay"
+        ]
+      },
+      "source_support": [
+        {
+          "claim": "A proof-carrying non-bearer Trust Task requires an in-band recipient; the consumer must reject a violating document.",
+          "section": "4.8.2",
+          "kind": "normative"
+        },
+        {
+          "claim": "The specification describes replay to a different consumer, where the original proof may verify without proving intended audience.",
+          "section": "10.1",
+          "kind": "threat-model"
+        }
+      ],
+      "qualification": {
+        "failure_condition": "source-supported",
+        "affected_role": "provisional-analyst-interpretation",
+        "protected_interest": "provisional-analyst-interpretation",
+        "observed_harm": "not-established",
+        "executed_test": "not-established",
+        "status_change": "none"
+      },
+      "taxonomy": [
+        {
+          "id": "HRM-SEC-02",
+          "disposition": "not-established",
+          "reason": "Replay potential does not by itself prove consequential action without sufficient authority."
+        },
+        {
+          "id": "HRM-INF-01",
+          "disposition": "not-established",
+          "reason": "A valid signature incorrectly treated as audience authorization is a possible inference, not yet an adjudicated person-impact finding."
+        }
+      ],
+      "countercase": "A conforming non-bearer consumer rejects missing in-band recipient; bearer specifications intentionally permit unspecified audiences.",
+      "needed_for_qualification": "Source-specific reviewed link connecting affected role, protected interest and harm; accountability/evidence of that decision. Runtime execution is an additional independent claim."
+    },
+    {
+      "corpus_id": "CORPUS-TT-CREDSPEC-COMPOSED",
+      "scenario_id": "XSP-001",
+      "status": "provisional",
+      "source": {
+        "dependencies": [
+          {
+            "repository": "trustoverip/dtgwg-trust-tasks-tf",
+            "path": "SPEC.md",
+            "commit": "4937c70df95e56ed6404b8c004106ecb121a23cf",
+            "anchor": "#49-the-threadid-member"
+          },
+          {
+            "repository": "trustoverip/dtgwg-cred-spec",
+            "path": "spec/body.md",
+            "commit": "b89f389abbdae77ba60b673c0836c781c2b54169",
+            "anchor": "#trust-task-context-binding"
+          }
+        ]
+      },
+      "source_support": [
+        {
+          "claim": "A taskContext-bearing credential does not independently establish associated Trust Task completion; verified outcome evidence is needed.",
+          "section": "Trust Task Context Binding / Outcome Interpretability",
+          "kind": "normative"
+        },
+        {
+          "claim": "The credential-versus-artifact boundary leaves Trust Task completion artifacts to the separate Trust Task layer.",
+          "section": "Credentials versus Trust Task Artifacts",
+          "kind": "informative"
+        }
+      ],
+      "qualification": {
+        "failure_condition": "source-supported",
+        "affected_role": "provisional-analyst-interpretation",
+        "protected_interest": "provisional-analyst-interpretation",
+        "observed_harm": "not-established",
+        "executed_test": "not-established",
+        "status_change": "none"
+      },
+      "taxonomy": [
+        {
+          "id": "HRM-INF-01",
+          "disposition": "candidate-only",
+          "reason": "False provenance/trust inference is semantically relevant, but scenario-specific affected-interest consequence remains unadjudicated."
+        },
+        {
+          "id": "HRM-AUT-04",
+          "disposition": "not-established",
+          "reason": "Context detachment alone does not demonstrate delegated action beyond informed intent."
+        }
+      ],
+      "countercase": "A verifier that obtains and validates matching outcome evidence has not committed the described inference; a credential without taskContext may legitimately stand alone.",
+      "needed_for_qualification": "Independently reviewed affected-role/interest causal evidence and source-level traceability for both composed dependencies."
+    }
+  ],
+  "limits": [
+    "No scenario grade promotion",
+    "No named DTG persona inference",
+    "No invented runtime PASS",
+    "Source-grounded mechanism is not independent evidence of injury",
+    "A source reference and two normative clauses are not a human adjudication"
+  ]
+}
