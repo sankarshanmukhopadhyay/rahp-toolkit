@@ -2,6 +2,7 @@
 
 require "yaml"
 require "json"
+require "date"
 
 # A review reference is evidence of a citation, not evidence of a passed test.
 # Never match a substring, inherited pattern, similarly named finding, or
@@ -35,6 +36,14 @@ module CorpusEvidenceLinks
       data["review"]["id"].is_a?(String) && !data["review"]["id"].empty?
   end
 
+  def self.evidence_exists?(review, path)
+    path.split("/").reduce(review) do |node, segment|
+      if node.is_a?(Hash) then node[segment]
+      elsif node.is_a?(Array) && segment.match?(/\A\d+\z/) then node[segment.to_i]
+      else nil end
+    end != nil
+  end
+
   def self.collect(root)
     review_files(root).flat_map do |file|
       data = parse(file)
@@ -51,6 +60,7 @@ module CorpusEvidenceLinks
         # Evidence path must point to retained material inside this review.
         evidence = ref["evidence_path"]
         next unless evidence.match?(/\A(?:findings|summary|method|scope)(?:\/[A-Za-z0-9_-]+)+\z/)
+        next unless evidence_exists?(review, evidence)
         { "corpus_id" => ref["corpus_id"], "scenario_id" => ref["scenario_id"],
           "source_commit" => ref["source_commit"], "review_id" => review["id"],
           "review_path" => relative, "evidence_path" => evidence }
