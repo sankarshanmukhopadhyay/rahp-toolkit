@@ -1,0 +1,15 @@
+term: "Composed corpus"
+slug: composed-corpus
+status: stable
+definition: "A collection of scenarios about interactions between two or more systems or specifications. Its provenance and conclusions must be assessed for the composition."
+plain_example: "A credential and task scenario can test a failure that neither component shows alone."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - scenario-corpus
+  - composition-boundary
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.
