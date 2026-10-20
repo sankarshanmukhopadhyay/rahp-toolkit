@@ -1,0 +1,15 @@
+term: "Scenario-baseline"
+slug: scenario-baseline
+status: stable
+definition: "An evidence grade for a working pressure-test hypothesis where a source-grounded normative claim has not been established."
+plain_example: "A preliminary interface receives a scenario to explore before its specification is complete."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - evidence-grade
+  - scenario
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.

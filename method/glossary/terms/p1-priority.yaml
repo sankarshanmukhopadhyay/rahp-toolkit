@@ -1,0 +1,15 @@
+term: "P1 priority"
+slug: p1-priority
+status: stable
+definition: "A secondary-priority scenario pressure. P1 is not a statement that harm is impossible or that a system is safe."
+plain_example: "A less immediate interoperability question may be marked P1."
+term_type: rahp-native
+scope: portable-method
+do_not_confuse_with: []
+see_also:
+  - scenario
+  - risk
+related_catalogue: []
+source:
+  authority: RAHP Toolkit
+  note: Definition written for RAHP readers in simple English; scenario corpus guidance issue #1077.

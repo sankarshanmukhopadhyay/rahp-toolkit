@@ -9,6 +9,14 @@ has_toc: true
 
 RAHP terms in simple English. The structured YAML files under `method/glossary/terms/` are authoritative. This page is generated from them.
 
+## Adapter
+
+A mapping that brings a source system or specification into RAHP's scenario and assessment vocabulary without replacing the source's authority.
+
+**Example:** A Trust Tasks adapter maps selected source pressures to RAHP patterns.
+
+**See also:** `scenario-corpus`, `provenance`
+
 ## Agent
 
 A software or human actor that takes actions for itself or for another principal.
@@ -96,6 +104,14 @@ A decision about whether an actor is allowed to perform a particular action in a
 **Example:** An authenticated agent may still be denied permission to transfer funds.
 
 **See also:** `authentication`, `authority`, `scope`
+
+## Composed corpus
+
+A collection of scenarios about interactions between two or more systems or specifications. Its provenance and conclusions must be assessed for the composition.
+
+**Example:** A credential and task scenario can test a failure that neither component shows alone.
+
+**See also:** `scenario-corpus`, `composition-boundary`
 
 ## Composition boundary
 
@@ -192,6 +208,14 @@ Information kept to support or challenge an assurance claim, decision or finding
 **Example:** A signed authorization decision record shows what policy and authority were used.
 
 **See also:** `evidence-pattern`, `audit-event`
+
+## Evidence grade
+
+A corpus label describing how its scenarios are grounded in source material, not whether an implementation is safe or has passed tests.
+
+**Example:** A source-informed corpus can suggest useful tests without proving conformance.
+
+**See also:** `scenario-corpus`, `evidence`
 
 ## Evidence pattern
 
@@ -313,6 +337,22 @@ The role or actor that is allowed to approve an override.
 
 **See also:** `override`, `authority`
 
+## P0 priority
+
+A high-priority scenario pressure to examine first. P0 is not a measurement of incident severity or probability.
+
+**Example:** Recipient-binding replay is marked P0 for early attention.
+
+**See also:** `scenario`, `risk`
+
+## P1 priority
+
+A secondary-priority scenario pressure. P1 is not a statement that harm is impossible or that a system is safe.
+
+**Example:** A less immediate interoperability question may be marked P1.
+
+**See also:** `scenario`, `risk`
+
 ## Principal
 
 The person or organization whose authority, interests or instructions an agent or delegate is expected to serve.
@@ -433,6 +473,38 @@ A reusable failure mechanism that can appear in more than one deployment or spec
 
 **See also:** `risk`, `harm-pattern`, `control-pattern`
 
+## Scenario
+
+A situation or condition used to ask what a system should do under pressure. A scenario is not evidence that a failure happened.
+
+**Example:** A signed request might reach the wrong recipient.
+
+**See also:** `risk`, `finding`
+
+## Scenario corpus
+
+A collection of domain-specific scenarios linked to reusable scenario patterns. A corpus suggests what to test, not what passed.
+
+**Example:** The Trust Tasks corpus lists possible failure situations for task workflows.
+
+**See also:** `scenario`, `scenario-pattern`
+
+## Scenario pattern
+
+A reusable kind of pressure or failure possibility that can be tested in many systems.
+
+**Example:** Replay of a valid proof is a pattern that may appear in several corpora.
+
+**See also:** `scenario`, `risk-pattern`
+
+## Scenario-baseline
+
+An evidence grade for a working pressure-test hypothesis where a source-grounded normative claim has not been established.
+
+**Example:** A preliminary interface receives a scenario to explore before its specification is complete.
+
+**See also:** `evidence-grade`, `scenario`
+
 ## Scope
 
 The boundary of what an authority, control, assessment or claim applies to.
@@ -440,6 +512,30 @@ The boundary of what an authority, control, assessment or claim applies to.
 **Example:** A delegation may allow read access to one record for one hour.
 
 **See also:** `authority`, `applicability`, `purpose`
+
+## Source pin
+
+A declared source revision used when preparing an adapter. A symbolic or descriptive value is not an immutable commit identifier.
+
+**Example:** A full commit SHA can identify the revision of a specification used for review.
+
+**See also:** `provenance`, `evidence`
+
+## Source-informed
+
+An evidence grade used when scenarios draw on known source semantics without claiming a complete pinned normative baseline.
+
+**Example:** A scenario is based on published design concepts but not a complete frozen text.
+
+**See also:** `evidence-grade`, `source-pin`
+
+## Source-pinned
+
+An evidence grade used when an adapter declares reviewable grounding in pinned source material. It does not certify the target.
+
+**Example:** A scenario cites a checked specification revision, but still needs execution evidence.
+
+**See also:** `evidence-grade`, `source-pin`
 
 ## Stale state
 
