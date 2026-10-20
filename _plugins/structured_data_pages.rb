@@ -271,6 +271,30 @@ module RahpPagesProjection
           end
         end
       end
+      # Independent RAHP analyst hypotheses; never a runtime or persona assertion.
+      impact_path = File.join(site.source, "method", "impact-pathways", "pilot.json")
+      if File.file?(impact_path)
+        pilot = JSON.parse(File.read(impact_path))
+        group = Array(pilot["pilot_corpora"]).find do |candidate|
+          candidate["corpus_id"] == corpus["id"] && candidate["adapter_version"].to_s == corpus["adapter_version"].to_s
+        end
+        if group
+          out += ["", "## Potential people-impact pathways", "",
+                  "These RAHP analyst interpretations describe possible affected roles and interests. They are **not** executed tests, observed harms, source-specification requirements or safety ratings.", "",
+                  "| Scenario | Qualification | Potentially affected role and consequence |", "|---|---|---|"]
+          Array(group["dispositions"]).each do |entry|
+            if entry["pathway"]
+              path = entry["pathway"]
+              statement = "#{escape_cell(path['affected_role'])}: #{escape_cell(path['potential_consequence'])}"
+              statement += " (protected interest: #{escape_cell(path['protected_interest'])}; source anchor: #{escape_cell(path.dig('evidence', 'source_anchor'))}; limitation: #{escape_cell(path.dig('evidence', 'limitation'))})"
+            else
+              statement = escape_cell(entry["reason"])
+            end
+            out << "| \`#{escape_cell(entry['scenario_id'])}\` | #{escape_cell(entry['status'])} | #{statement} |"
+          end
+          out += ["", "Portable affected roles do not automatically identify named DTG personas; unresolved mappings remain **not-established**.", ""]
+        end
+      end
       out += ["", "## Review evidence links", "",
               "A reference below establishes only that a review explicitly cites the same corpus scenario at the declared source revision; it does not establish a passing test or a harm finding.", ""]
       if references.empty?

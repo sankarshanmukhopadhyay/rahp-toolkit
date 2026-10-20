@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RAHP bounded people-impact pilot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "authority",
+    "pilot_corpora"
+  ],
+  "properties": {
+    "contract": {
+      "const": "rahp-people-impact-pathways/v1"
+    },
+    "authority": {
+      "type": "string",
+      "minLength": 10
+    },
+    "pilot_corpora": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/group"
+      }
+    }
+  },
+  "$defs": {
+    "group": {
+      "type": "object",
+      "required": [
+        "corpus_id",
+        "adapter_version",
+        "baseline",
+        "dispositions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "corpus_id": {
+          "type": "string",
+          "pattern": "^CORPUS-[A-Z0-9-]+$"
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "baseline": {
+          "type": "object",
+          "minProperties": 1,
+          "properties": {
+            "source_commit": {
+              "type": "string"
+            },
+            "depends_on": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": [
+                  "corpus_id",
+                  "source_commit",
+                  "adapter_version"
+                ],
+                "properties": {
+                  "corpus_id": {
+                    "type": "string"
+                  },
+                  "source_commit": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{40}$"
+                  },
+                  "adapter_version": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "dispositions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/disposition"
+          }
+        }
+      }
+    },
+    "disposition": {
+      "type": "object",
+      "required": [
+        "scenario_id",
+        "status",
+        "reason"
+      ],
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "pattern": "^(TT|XSP)-[0-9]{3}$"
+        },
+        "status": {
+          "enum": [
+            "qualified",
+            "provisional",
+            "rejected",
+            "not-established"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 15
+        },
+        "pathway": {
+          "$ref": "#/$defs/pathway"
+        },
+        "adjudication": {
+          "type": "object",
+          "required": [
+            "reviewer",
+            "reviewed_on",
+            "decision_evidence"
+          ],
+          "properties": {
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "reviewed_on": {
+              "type": "string",
+              "format": "date"
+            },
+            "decision_evidence": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "pathway": {
+      "type": "object",
+      "required": [
+        "failure_condition",
+        "affected_role",
+        "relationship",
+        "protected_interest",
+        "potential_consequence",
+        "harm_patterns",
+        "evidence"
+      ],
+      "properties": {
+        "failure_condition": {
+          "type": "string",
+          "minLength": 10
+        },
+        "affected_role": {
+          "type": "string",
+          "minLength": 3
+        },
+        "relationship": {
+          "enum": [
+            "direct",
+            "indirect"
+          ]
+        },
+        "protected_interest": {
+          "type": "string",
+          "minLength": 3
+        },
+        "potential_consequence": {
+          "type": "string",
+          "minLength": 10
+        },
+        "harm_patterns": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^HRM-[A-Z]+-[0-9]{2}$"
+          }
+        },
+        "evidence": {
+          "type": "object",
+          "required": [
+            "kind",
+            "source_anchor",
+            "limitation"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "analyst-interpretation",
+                "direct-source"
+              ]
+            },
+            "source_anchor": {
+              "type": "string",
+              "minLength": 5
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 10
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
