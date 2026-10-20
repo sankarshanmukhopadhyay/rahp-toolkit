@@ -52,6 +52,19 @@ jobs:
       - name: Rebuild generated evidence
         run: python3 tools/build.py
 
+      # Temporary diagnostic on this PR branch: emit builder-produced artifacts.
+      - name: Emit glossary builder output for contributor synchronization
+        if: github.event_name == 'pull_request'
+        run: |
+          python3 - <<'PY'
+          import pathlib, json
+          for rel in ('build/glossary.json', 'build/glossary.jsonld', 'build/glossary.md', 'docs/glossary.md', 'build/site/glossary.html', 'build/rahp-toolkit.html'):
+              content = pathlib.Path(rel).read_text(encoding='utf-8')
+              for i in range(0, len(content), 1800):
+                  print('ARTIFACT_EXACT::' + rel + '::' + str(i // 1800) + '::' + json.dumps(content[i:i+1800], ensure_ascii=True), flush=True)
+              print('ARTIFACT_END::' + rel + '::' + str((len(content)+1799)//1800), flush=True)
+          PY
+
       - name: Validate RAHP reference links
         run: python3 tools/validate_reference_links.py
 
