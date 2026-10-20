@@ -1,0 +1,209 @@
+{
+  "contract": "rahp-impact-qualification-acceptance/v1",
+  "date": "2026-10-20",
+  "status": "prepared-for-independent-adjudication",
+  "criterion": "Qualified potential impact requires a pinned failure mechanism, an identified potentially affected role distinct from a decision actor where relevant, protected interest, complete plausible causal sequence, harm taxonomy justification, examined countercases, and an accountable review decision. It does not establish an incident, implementation vulnerability or observed injury.",
+  "authority": "RAHP analytical candidate; no independent reviewer acceptance recorded",
+  "source_review": "method/impact-pathways/source-review-2026-10-20.json",
+  "candidates": [
+    {
+      "id": "IMP-TT-002-PRINCIPAL",
+      "corpus_id": "CORPUS-TRUST-TASKS",
+      "scenario_id": "TT-002",
+      "role": "producer or accountable principal",
+      "decision_actor": "unintended recipient consumer",
+      "interest": "control of the assertion's intended audience",
+      "causal_steps": [
+        "Proof-bearing non-bearer task lacks in-band recipient",
+        "Unintended recipient verifies producer proof but cannot infer intended audience",
+        "An assertion could be relied on outside producer intent",
+        "If consequential action follows, principal interests may be affected"
+      ],
+      "source": {
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "commit": "4937c70df95e56ed6404b8c004106ecb121a23cf",
+        "path": "SPEC.md",
+        "anchors": [
+          "#482-audience-binding",
+          "#101-cross-recipient-replay"
+        ]
+      },
+      "candidate_harms": [
+        "HRM-INF-01",
+        "HRM-SEC-02"
+      ],
+      "countercase": "A conformant non-bearer consumer rejects missing recipient; a bearer specification legitimately permits unspecified audience.",
+      "decision": "provisional",
+      "gap": "A person-level protected-interest consequence and review of conditional consequential action have not been independently adjudicated."
+    },
+    {
+      "id": "IMP-TT-002-RECIPIENT",
+      "corpus_id": "CORPUS-TRUST-TASKS",
+      "scenario_id": "TT-002",
+      "role": "unintended recipient or relying party",
+      "decision_actor": "unintended recipient consumer",
+      "interest": "accurate understanding of whether a signed assertion is addressed to it",
+      "causal_steps": [
+        "Proof verifies without an audience commitment",
+        "Recipient could mistake validity for intended authorization",
+        "Recipient may act in reliance on the assertion"
+      ],
+      "source": {
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "commit": "4937c70df95e56ed6404b8c004106ecb121a23cf",
+        "path": "SPEC.md",
+        "anchors": [
+          "#482-audience-binding"
+        ]
+      },
+      "candidate_harms": [
+        "HRM-INF-01"
+      ],
+      "countercase": "Conformance rejection blocks this pathway; the relying party's decision mistake does not itself demonstrate that it was harmed.",
+      "decision": "provisional",
+      "gap": "Role as mistaken decision actor is clearer than role as person harmed; downstream consequence unspecified."
+    },
+    {
+      "id": "IMP-XSP-001-DECISION",
+      "corpus_id": "CORPUS-TT-CREDSPEC-COMPOSED",
+      "scenario_id": "XSP-001",
+      "role": "credential relying party",
+      "decision_actor": "credential relying party",
+      "interest": "sound interpretation of task completion evidence",
+      "causal_steps": [
+        "Credential is presented with taskContext",
+        "Matching task outcome evidence is absent or unverified",
+        "Verifier might mistakenly treat credential validity as completion",
+        "A decision might rely on an unsupported completion inference"
+      ],
+      "source": {
+        "dependencies": [
+          {
+            "repository": "trustoverip/dtgwg-trust-tasks-tf",
+            "path": "SPEC.md",
+            "commit": "4937c70df95e56ed6404b8c004106ecb121a23cf"
+          },
+          {
+            "repository": "trustoverip/dtgwg-cred-spec",
+            "path": "spec/body.md",
+            "commit": "b89f389abbdae77ba60b673c0836c781c2b54169",
+            "anchor": "#trust-task-context-binding"
+          }
+        ]
+      },
+      "candidate_harms": [
+        "HRM-INF-01"
+      ],
+      "countercase": "A verifier obtaining the matching verified outcome evidence does not make this unsupported inference; a standalone credential need not carry taskContext.",
+      "decision": "provisional",
+      "gap": "The relying-party role is a decision actor; its own personally protected interests or concrete consequences are not established."
+    },
+    {
+      "id": "IMP-XSP-001-SUBJECT",
+      "corpus_id": "CORPUS-TT-CREDSPEC-COMPOSED",
+      "scenario_id": "XSP-001",
+      "role": "credential subject or other affected principal",
+      "decision_actor": "credential relying party",
+      "interest": "fair and evidence-supported consequential decisions",
+      "causal_steps": [
+        "Verifier makes an unsupported inference about task completion",
+        "Decision is made based on that inferred status",
+        "Decision may determine a subject's entitlement, participation or standing"
+      ],
+      "source": {
+        "dependencies": [
+          {
+            "repository": "trustoverip/dtgwg-trust-tasks-tf",
+            "path": "SPEC.md",
+            "commit": "4937c70df95e56ed6404b8c004106ecb121a23cf"
+          },
+          {
+            "repository": "trustoverip/dtgwg-cred-spec",
+            "path": "spec/body.md",
+            "commit": "b89f389abbdae77ba60b673c0836c781c2b54169",
+            "anchor": "#trust-task-context-binding"
+          }
+        ]
+      },
+      "candidate_harms": [
+        "HRM-INF-01"
+      ],
+      "countercase": "A credential's subject need not be a party to any consequential decision; neither upstream normative text establishes an affected subject in every context.",
+      "decision": "not-established",
+      "gap": "Missing deployment decision, subject relationship, causal consequence and independent adjudication."
+    },
+    {
+      "id": "IMP-TT-005-RETRY",
+      "corpus_id": "CORPUS-TRUST-TASKS",
+      "scenario_id": "TT-005",
+      "role": "principal exposed to repeat execution",
+      "decision_actor": "task consumer",
+      "interest": "control over consequential repeated side effects",
+      "causal_steps": [
+        "Same task reaches consumer repeatedly",
+        "Duplicate-execution protection fails",
+        "Consequential side effect could repeat"
+      ],
+      "source": {
+        "repository": "trustoverip/dtgwg-trust-tasks-tf",
+        "commit": "4937c70df95e56ed6404b8c004106ecb121a23cf",
+        "path": "SPEC.md",
+        "anchors": [
+          "#84-retry-semantics",
+          "#101-cross-recipient-replay"
+        ]
+      },
+      "candidate_harms": [
+        "HRM-SEC-02"
+      ],
+      "countercase": "The source establishes a normative duplicate-execution guard for consequential tasks; a protected interest or personal consequence depends on the task implementation.",
+      "decision": "provisional",
+      "gap": "No specific consequential operation, principal-interest mapping or independently reviewed harm evidence."
+    },
+    {
+      "id": "IMP-XSP-018-CORRELATION",
+      "corpus_id": "CORPUS-TT-CREDSPEC-COMPOSED",
+      "scenario_id": "XSP-018",
+      "role": "credential holder or relationship subject",
+      "decision_actor": "status lookup observer",
+      "interest": "privacy and freedom from unintended association",
+      "causal_steps": [
+        "Status lookup and task metadata are visible across systems",
+        "An observer might correlate recurring identifiers",
+        "A durable relationship graph might emerge"
+      ],
+      "source": {
+        "dependencies": [
+          {
+            "repository": "trustoverip/dtgwg-trust-tasks-tf",
+            "path": "SPEC.md",
+            "commit": "4937c70df95e56ed6404b8c004106ecb121a23cf"
+          },
+          {
+            "repository": "trustoverip/dtgwg-cred-spec",
+            "path": "spec/body.md",
+            "commit": "b89f389abbdae77ba60b673c0836c781c2b54169"
+          }
+        ]
+      },
+      "candidate_harms": [
+        "HRM-PRV-02",
+        "HRM-PRV-03"
+      ],
+      "countercase": "Endpoint correlation requires identifiable metadata observability across the two systems; no joined traces or deployment evidence supplied.",
+      "decision": "not-established",
+      "gap": "No source-level proof of cross-system correlation, actual visibility or independently qualified people-interest consequence."
+    }
+  ],
+  "decision_statuses": [
+    "qualified",
+    "provisional",
+    "rejected",
+    "not-established"
+  ],
+  "independent_acceptance": {
+    "status": "not-recorded",
+    "required_for": "qualified",
+    "meaning": "Do not substitute assistant-generated source examination or CI tests for accountable review acceptance."
+  }
+}
