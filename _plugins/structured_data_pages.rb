@@ -226,9 +226,11 @@ module RahpPagesProjection
       end
       out << "| `evidence_grade` | Not declared |" unless corpus.key?("evidence_grade")
       if corpus.key?("depends_on")
-        links = Array(corpus["depends_on"]).map do |id|
+        links = Array(corpus["depends_on"]).map do |dependency|
+          id = dependency.is_a?(Hash) ? dependency["corpus_id"] : dependency
           route = corpus_routes(site)[id]
-          route ? "[#{escape_cell(id)}](#{route})" : escape_cell(id)
+          label = escape_cell(id || format_value(dependency))
+          route ? "[#{label}](#{route})" : label
         end
         out << "| `depends_on` | #{links.join(', ')} |"
       end
