@@ -17,7 +17,6 @@ module Jekyll
   def self.priority(x); end
  end
 end
-load ARGV.fetch(0)
 load ARGV.fetch(1)
 Dir.mktmpdir do |tmp|
  FileUtils.mkdir_p(File.join(tmp,"examples","review"))
@@ -39,7 +38,7 @@ Dir.mktmpdir do |tmp|
  page=gen.send(:corpus_summary,site,corpus).join("\n")
  raise "missing site link" unless page.include?("/rahp-toolkit/examples/review/pressure-test/")
  raise "missing caveat" unless page.include?("does not establish a passing test")
- empty=gen.send(:corpus_summary,site,corpus.merge("source_commit"=>"b"*40)).join("\n")
+ empty=gen.send(:corpus_summary,site,corpus.merge("source_commit"=>"c"*40)).join("\n")
  raise "missing honest no-evidence statement" unless empty.include?("No linked review evidence identified")
 end
 '''
