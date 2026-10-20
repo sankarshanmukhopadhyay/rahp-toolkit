@@ -26,9 +26,12 @@ gen=RahpPagesProjection::Generator.allocate
   corpus=YAML.safe_load(File.read(File.join(root,"corpora","#{name}.yaml")),aliases:true).fetch("corpus")
   html=gen.send(:corpus_summary,site,corpus).join("\n")
   raise "missing pathway heading" unless html.include?("Potential people-impact pathways")
-  raise "missing negative status" unless html.include?("not-established")
-  raise "missing provisional status" unless html.include?("provisional")
-  raise "missing caveat" unless html.include?("not")
+  raise "missing negative status" unless html.include?("Not established")
+  raise "missing provisional status" unless html.include?("Provisional")
+  raise "missing safety distinction" unless html.include?("not harm severity")
+  raise "missing reader guide route" unless html.include?("/rahp-toolkit/docs/reading-scenario-corpus.html")
+  raise "missing reviewer route" unless html.include?("/rahp-toolkit/docs/people-impact-qualification-acceptance.html")
+  raise "misleading safety claim" if html.include?("independently certified safe")
 end
 '''
         p=subprocess.run(["ruby","-e",script,str(ROOT/"_plugins/structured_data_pages.rb"),str(ROOT)],capture_output=True,text=True)

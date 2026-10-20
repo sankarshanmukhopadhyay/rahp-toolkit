@@ -23,18 +23,23 @@ A **corpus** is a group of proposed situations in which an implementation or gov
 
 **Do not read a scenario row as a finding.** The scenario is a proposed test question. An **evidence grade** describes how the scenario adapter is grounded in source material, not whether a system is safe. `source-pinned` indicates declared pinned source grounding; `source-informed` draws from source semantics without a complete normative baseline; `scenario-baseline` is a working pressure-test hypothesis. **Not declared** means the canonical corpus has no grade field. Do not infer a stronger grade from descriptive provenance text.
 
-## Worked reading: TT-002
+## Worked reading: TT-002 — five questions, one answer
 
-Open the [Trust Tasks corpus](../corpora/trust-tasks/) and locate `TT-002`, *Proof-bearing document lacks safe audience binding*.
+Open [TT-002 in the Trust Tasks corpus](../corpora/trust-tasks/). It asks whether a signed task can be accepted by a recipient other than its intended audience.
 
-- **In everyday terms:** a document with a valid proof that was intended for one recipient might be accepted by a different recipient.
-- **What should be protected?** Its `primary_goal` is *Bind a signed task to its intended recipient*.
-- **What is the pressure?** Cross-recipient replay. The linked [SP-REPLAY-01](../method/scenario-patterns/#sp-replay-01) pattern concerns valid evidence reused outside its intended scope. [SP-AUTH-01](../method/scenario-patterns/#sp-auth-01) concerns compromised control.
-- **Where did the scenario come from?** The corpus declares `trustoverip/dtgwg-trust-tasks-tf` at commit `4937c70df95e56ed6404b8c004106ecb121a23cf`, and source anchor `SPEC.md#482-audience-binding`. See the [pinned source passage](https://github.com/trustoverip/dtgwg-trust-tasks-tf/blob/4937c70df95e56ed6404b8c004106ecb121a23cf/SPEC.md#482-audience-binding).
-- **Who is harmed?** The row does not declare an authoritative persona or harm-pattern linkage. A reviewer must establish who relies on this task and what consequences would follow; the scenario alone cannot answer that.
-- **Was it tested?** The corpus record does not include an execution result for this scenario. To establish a finding, locate a review, runnable test and its evidence. Absence of a reference on this page is not proof that no assessment exists.
+| Reader's question | What the current evidence supports |
+|---|---|
+| **1. What could go wrong?** | A proof may verify cryptographically without binding the signed task to the intended recipient. Another consumer could then rely on it. This is a *scenario to test*, **not** evidence of a reported failure. |
+| **2. Who could be affected?** | The producer or accountable principal might have an assertion used outside its intended audience; an unintended recipient might mistakenly rely on it. A further affected person would depend on a consequential downstream action. These **possible roles are provisional**, not independently accepted person–harm links. |
+| **3. How serious is it?** | `P0` marks high priority for *pressure-testing*, **not** measured severity, probability, prevalence or a finding that the system is unsafe. Without deployment context and outcome evidence, real-world severity is **not established**. |
+| **4. Has anybody checked?** | RAHP's [source-review packet](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/method/impact-pathways/source-review-2026-10-20.json) examines the *specification's mechanism*, but no exact, revision-qualified review-to-scenario execution reference was established by the current corpus inventory. **Execution status is unknown**, not PASS, FAIL or “never tested”. |
+| **5. Where does this come from?** | [Trust Tasks §4.8.2 at pinned commit `4937c70`](https://github.com/trustoverip/dtgwg-trust-tasks-tf/blob/4937c70df95e56ed6404b8c004106ecb121a23cf/SPEC.md#482-audience-binding) requires recipient binding for proof-carrying non-bearer tasks; §10.1 discusses cross-recipient replay. Bearer specifications are a stated exception. |
 
-This example explains *how to read* a proposed failure mode. It is **not** evidence that Trust Tasks fails audience binding.
+**What the scenario protects:** `primary_goal` is *Bind a signed task to its intended recipient*. The [`SP-REPLAY-01`](../method/scenario-patterns/#sp-replay-01) pattern examines evidence reused outside its intended scope; [`SP-AUTH-01`](../method/scenario-patterns/#sp-auth-01) captures authorization pressure.
+
+**What you can conclude:** The pinned source describes a technically meaningful threat and a normative safeguard. You **cannot** conclude that a compliant Trust Tasks implementation failed, that anyone was harmed, or that its proposed people-impact relationship has received independent acceptance.
+
+**Where to go next:** Readers can stop here. For deeper review, open the [people-impact pilot](people-impact-pathway-pilot.html) for the two provisional mappings and 48 explicitly unestablished cases; specialist reviewers can inspect the [qualification acceptance explanation](people-impact-qualification-acceptance.html) and its cited evidence packet.
 
 ## Two different scenario collections
 

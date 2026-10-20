@@ -15,12 +15,12 @@ A **qualified potential people-impact relationship** requires (1) a version-pinn
 
 The canonical machine-readable [qualification packet](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/blob/main/method/impact-pathways/qualification-acceptance-2026-10-20.json) contains **six atomic propositions across four scenarios** and deliberately records `independent_acceptance.status = not-recorded`.
 
-| Scenario | Tested affected-role distinction | Finding | What remains |
+| Scenario | Evidence is sufficient for | Proposed people-impact disposition | Still needs independent judgment |
 |---|---|---|---|
-| `TT-002` | Producer/accountable principal **versus** unintended recipient as decision actor | Both candidate pathways **provisional** | A downstream consequence and supported interest-to-harm causal chain |
-| `XSP-001` | Relying party as decision maker **versus** credential subject as potentially affected principal | Decision interpretation **provisional**; subject impact **not established** | Evidence that a consequential decision affects a particular subject interest |
-| `TT-005` | Principal affected by repeated consequential action **versus** task consumer | Candidate pathway **provisional** | A specified consequential operation and affected-interest mapping |
-| `XSP-018` | Correlation subject **versus** status-lookup observer | People-impact relationship **not established** | Joint visibility, identifiability and correlation evidence |
+| `TT-002` | Source defines audience binding and describes cross-recipient replay | Producer/principal and unintended recipient relationships **provisional** | Whether a downstream action affects a protected interest; bearer and conforming-rejection countercases |
+| `XSP-001` | Credential Spec requires verified task outcome before inferring completion | Relying-party inference **provisional**; affected credential subject **not established** | Which subject experiences which consequential decision, if any |
+| `TT-005` | Trust Tasks requires duplicate-execution protection for consequential tasks | Principal/consumer consequence **provisional** | Specific repeated operation and demonstrable affected interest |
+| `XSP-018` | Composed scenario proposes a correlation threat | Person/relationship impact **not established** | Whether observable joint identifiers actually permit correlation in the deployment |
 
 These are **packet dispositions** for review propositions. They do not modify the 50-row pilot's canonical scenario classification, which remains 0 qualified, 2 provisional and 48 not established. Candidate `HRM-*` IDs in the packet are **not accepted relationships**; their semantic applicability still requires review.
 
