@@ -1,0 +1,32 @@
+name: TSP source evidence preflight
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "tools/tsp_source_preflight.py"
+      - "tests/test_tsp_source_preflight.py"
+      - ".github/workflows/tsp-source-evidence.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  tsp-source-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Unit tests (offline)
+        run: python -m unittest discover -s tests -p test_tsp_source_preflight.py -v
+      - name: Fetch and inspect immutable upstream source
+        run: python tools/tsp_source_preflight.py --output /tmp/tsp-source-evidence.json
+      - name: Preserve evidence even on failed source check
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tsp-source-evidence
+          path: /tmp/tsp-source-evidence.json
+          if-no-files-found: warn
