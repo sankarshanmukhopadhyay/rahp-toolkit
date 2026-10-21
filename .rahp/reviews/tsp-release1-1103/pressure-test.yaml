@@ -1,0 +1,97 @@
+review:
+  id: SR-TSP-R1-1103
+  status: in-progress
+  title: TSP Release 1.0 source-pinned pressure test
+  reviewed_on: '2026-10-22'
+  evidence_grade: source-pinned
+  target:
+    repository: trustoverip/tswg-tsp-specification
+    version: Release 1.0 (source designation; publication equivalence unverified)
+    commit: ccda6b33159d860f05c328eb436dabe83548b705
+    source_paths:
+      - spec/spec.md
+  reviewed_against:
+    repository: sankarshanmukhopadhyay/rahp-toolkit
+    rahp_version: v2.8.0
+  scope:
+    included:
+      - Protocol version and conformance baseline transition from Rev 3
+      - Sender identity binding and appraisal versus cryptographic verification
+      - Historical negative conformance evidence admission
+    excluded:
+      - Live deployment operation, application authorization and third-party audit
+      - Claims that the GitHub Pages rendering is identical to the source pin
+  method:
+    workflow: docs/pressure-testing-a-spec.md
+    rule: Historical Rev 3 observations are not Release 1.0 implementation test results.
+  assurance:
+    residual_state: review-required
+    runtime_authorization: not-assessed
+    authority_history: not-assessed
+    independent_review: pending
+  summary:
+    finding_count: 3
+    open_count: 3
+    overall_assessment: >-
+      Three source-grounded evidence obligations remain open. No Release 1.0
+      conformance run, deployment assurance or DRARM induced-failure result has
+      been established; overall assurance remains INDETERMINATE.
+  findings:
+    - id: F-001
+      title: Rev 3 wire conformance does not establish Release 1.0 interoperability
+      status: open
+      severity: Medium
+      primary_disposition: implementation-guidance
+      evidence:
+        - source: trustoverip/tswg-tsp-specification spec/spec.md at ccda6b33159d860f05c328eb436dabe83548b705
+          observation: The Release 1.0 source identifies YTSP-BAA (1.0) as the current wire version.
+        - source: trustoverip/tswg-tsp-specification spec/spec.md at f5b8668952aabe8e541b535fcbdf589484ffc4f4
+          observation: Rev 3 uses YTSP-AAC (0.2).
+        - source: OpenVTC/tsp-conformance reports/report.md at b89e62869c686841fc98a4386f3b297babad0194
+          observation: Historical conformance results target Rev 3 and cannot be promoted to Release 1.0 PASS.
+      harm: >-
+        Mixed-version deployments may reject or misinterpret messages, interrupting
+        trusted communications; actual effects are not demonstrated.
+      recommendation: >-
+        Pin Release 1.0 implementations, publish Release 1.0 vectors, test version
+        rejection/negotiation and mixed-version behavior with explicit support policies.
+      retest_when:
+        - Release 1.0 implementation builds and conformance vectors are available.
+    - id: F-002
+      title: Confidential sender binding requires new implementation evidence
+      status: open
+      severity: High
+      primary_disposition: implementation-guidance
+      evidence:
+        - source: trustoverip/tswg-tsp-specification spec/spec.md at ccda6b33159d860f05c328eb436dabe83548b705
+          observation: Confidential payload sender VID is mandatory and must match the envelope sender in both PKAE variants.
+        - source: trustoverip/tswg-tsp-specification merge #86
+          observation: The revision removes the former HPKE-Base allowance for a NULL sender VID in the confidential payload.
+      harm: >-
+        An implementation carrying forward the older nullable sender behavior
+        may accept an identity-binding state forbidden by Release 1.0. Misattribution
+        or authorization harm is conditional on downstream application behavior.
+      recommendation: >-
+        Execute positive and negative HPKE and sealed-box cases for missing,
+        NULL, mismatched and matching sender VID. Independently test envelope
+        to application-principal and policy binding.
+      retest_when:
+        - Pinned Release 1.0 sender-binding implementation tests are executed.
+    - id: F-003
+      title: VID cryptographic verification does not establish appraisal or authorization
+      status: open
+      severity: High
+      primary_disposition: governance
+      evidence:
+        - source: trustoverip/tswg-tsp-specification spec/spec.md at ccda6b33159d860f05c328eb436dabe83548b705
+          observation: Release 1.0 distinguishes cryptographic VID verification from appraisal of records and supporting evidence under endpoint policy.
+      harm: >-
+        A relying application could treat a cryptographically verified VID as
+        sufficient authorization or recognition, resulting in an improperly
+        trusted action. This is a conditional composition risk, not an observed exploit.
+      recommendation: >-
+        Test verification, appraisal, authorization and revocation as separate
+        decision gates with policy provenance, freshness, negative cases and
+        action-time audit evidence.
+      retest_when:
+        - A representative endpoint appraisal and application authorization policy is supplied.
