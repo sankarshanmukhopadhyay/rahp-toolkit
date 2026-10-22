@@ -23,12 +23,12 @@ No document in this directory is itself assurance evidence. The normative portab
 
 ## Stable boundary under review
 
-- Toolkit release: `v2.8.0`
+- Toolkit release: `v2.9.0`
 - Engine contract: `rahp-engine-contract-v1`, revision `1.3`
 - Normalized result schema: `1`
 - Evidence retention contract: `rahp-evidence-retention-v1`
 
-v2.8.0 is the qualified stable RAHP release. Independent-review readiness remains a separate claim and is not implied by release qualification. Independent-review readiness is a separate claim and is not implied by release qualification.
+v2.9.0 is the qualified stable RAHP release. Independent-review readiness remains a separate claim and is not implied by release qualification. Independent-review readiness is a separate claim and is not implied by release qualification.
 
 ## Reviewer operating rule
 
