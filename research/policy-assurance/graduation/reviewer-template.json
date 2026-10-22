@@ -1,0 +1,78 @@
+{
+  "schema": "rahp-policy-graduation-review/v1",
+  "study": "rahp-policy-graduation-668",
+  "reviewer_id": "REPLACE",
+  "reviewer_class": "human-independent",
+  "reviewer_context": {
+    "domain_background": "REPLACE",
+    "raHP_familiarity": "none|basic|experienced",
+    "policy_or_legal_specialist": false,
+    "notes": null
+  },
+  "candidate_implementation_sha": "0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce",
+  "corpus_item_id": "REPLACE",
+  "started_at": null,
+  "completed_at": null,
+  "effort_minutes": null,
+  "proposition_reviews": [
+    {
+      "proposition_id": "REPLACE",
+      "source_span_sha256": "REPLACE",
+      "disposition": "accept",
+      "reviewed_type": null,
+      "reviewed_text": null,
+      "rationale": null,
+      "ambiguity_assessment": "none|correctly-exposed|missed|overstated|specialist-required",
+      "facet_usefulness": {
+        "actor": "useful|not-useful|missing|not-applicable",
+        "object": "useful|not-useful|missing|not-applicable",
+        "trigger": "useful|not-useful|missing|not-applicable",
+        "consequence": "useful|not-useful|missing|not-applicable",
+        "temporal": "useful|not-useful|missing|not-applicable",
+        "affected_party": "useful|not-useful|missing|not-applicable"
+      },
+      "specialist_route": null,
+      "materiality": "low|medium|high",
+      "notes": null
+    }
+  ],
+  "relationship_reviews": [
+    {
+      "relationship_id": "REPLACE",
+      "disposition": "accept|reject|reclassify|judgment-required|specialist-route",
+      "relationship_type": null,
+      "rationale": null,
+      "materiality": "low|medium|high"
+    }
+  ],
+  "hypothesis_reviews": [
+    {
+      "hypothesis_id": "REPLACE",
+      "classification": "useful-supported|useful-deployment-dependent|duplicate-or-low-value|unsupported|wrong-pattern|specialist-required",
+      "rationale": null,
+      "materiality": "low|medium|high"
+    }
+  ],
+  "work_queue_reviews": [
+    {
+      "work_item_id": "REPLACE",
+      "classification": "actionable|relevant-too-generic|unnecessary|wrong-route|missing-companion-question",
+      "rationale": null
+    }
+  ],
+  "document_summary": {
+    "highest_materiality_observations": [],
+    "important_missing_propositions": [],
+    "important_missing_hypotheses": [],
+    "important_missing_evidence_questions": [],
+    "overall_review_burden": "low|moderate|high",
+    "would_use_again": null,
+    "why_or_why_not": null
+  },
+  "attestation": {
+    "independent_of_other_reviewer": true,
+    "saw_other_review_before_completion": false,
+    "ai_assistance_used": false,
+    "ai_assistance_description": null
+  }
+}
