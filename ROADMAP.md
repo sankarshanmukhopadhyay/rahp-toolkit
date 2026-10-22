@@ -7,17 +7,11 @@ parent: Releases
 ---
 # RAHP roadmap
 
-## Current release — v2.7.0 Common Rose
+## Current release candidate — v2.9.0 Common Windmill
 
-**Published and qualified on 2026-10-08.** v2.7.0 advances assessment routing, queue reliability, onboarding and adoption guidance, with optional experimental R1–R3 reasoning profiles. The stable engine contract v1 revision 1.3, result schema 1 and evidence-retention v1 remain unchanged. Independent adoption remains NOT_YET_TESTED; optional profiles do not imply terminal assurance.
+v2.9.0 is the candidate **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** baseline. It packages post-v2.8 people-impact methodology, source-qualified corpus evidence, lifecycle/control-consequence assurance, source-pinned runtime and witness evidence, derived assurance-registry discovery, and release/contribution hardening.
 
-Post-release security hardening and deployment-specific evidence are tracked in [#958](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/958). That follow-up does not alter the historical v2.7.0 release decision or tag.
-
-## Current release boundary — v2.7.0 Common Rose
-
-v2.7.0 retains **Full-Stack Assurance Orchestration and Explicit Evidence State** from v2.6.0 while adding bounded post-v2.6 capabilities.
-
-The release keeps the stable engine/result/evidence compatibility families unchanged while making orchestration completion, assurance outcome, and evidence maturity independently observable. Every configured material assurance lens must receive an explicit disposition, and every declared required evidence obligation must have an attributable attempt state.
+The compatibility boundary remains `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1`. Qualification must preserve zero-positive people-impact outcomes, derived-versus-authoritative registry boundaries, and NOT VERIFIED security evidence where admin/runtime inspection remains unavailable.
 
 ## Completed v2.6 tranche
 
@@ -35,7 +29,7 @@ RAHP remains materiality-bounded and evidence-conservative. Broader execution is
 
 ## Current portfolio context
 
-- RAHP v2.8.0;
+- RAHP v2.9.0 candidate;
 - DPIP v0.3.0;
 - Trust Protocol Interop Lab v0.7.0.
 
@@ -55,7 +49,7 @@ The v2.6 operating model is additive and retains the previously qualified capabi
 
 These capability names are retained because they remain registered stable capabilities; v2.6 extends rather than replaces them.
 
-## Post-v2.8 priorities
+## Post-v2.9 priorities
 
 Continue trigger-driven security/privacy hardening and evidence follow-up, including runtime evidence tracked in [#994](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/994), without turning external evidence gaps into release-driven work. Future assurance work should remain trigger-driven rather than release-driven: reassess waiting-external/evidence-required owners when their evidence trigger fires; deepen non-DTG adoption and higher-level resilience evidence; continue measured performance work only where semantic equivalence is preserved; and keep experimental research behind explicit graduation gates.
 
@@ -76,6 +70,7 @@ Continue trigger-driven security/privacy hardening and evidence follow-up, inclu
 
 ## Historical roadmap
 
+- v2.9.0 - **Common Windmill** - Evidence-Qualified Impact, Source Authority and Reproducible Assurance
 - v2.8.0 - **Common Birdwing** - Comparative, Adversarial and Consumer Interaction Assurance
 - v2.7.0 - **Common Rose** - Maintenance, Adoption and Optional Reasoning Profiles
 

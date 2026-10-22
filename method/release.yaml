@@ -1,20 +1,20 @@
 version: 1
 contract: rahp-release-declaration-v1
 release:
-  version: 2.8.0
-  tag: v2.8.0
-  status: released
-  qualification_status: qualified
-  title: RAHP Toolkit v2.8.0 - Common Birdwing
-  theme: Comparative, Adversarial and Consumer Interaction Assurance
+  version: 2.9.0
+  tag: v2.9.0
+  status: candidate
+  qualification_status: candidate
+  title: RAHP Toolkit v2.9.0 - Common Windmill
+  theme: Evidence-Qualified Impact, Source Authority and Reproducible Assurance
   name:
-    common: Common Birdwing
-    scientific: Troides helena
+    common: Common Windmill
+    scientific: Atrophaneura polyeuctes
     source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-    selected_on: '2026-10-15'
+    selected_on: '2026-10-22'
   qualification:
-    manifest: method/v2.8-release-qualification.yaml
-    validator: tools/validate_v28_release.py
+    manifest: method/v2.9-release-qualification.yaml
+    validator: tools/validate_v29_release.py
     checks:
       - tools/validate_engine_contract.py
       - tools/validate_project_invariants.py
@@ -23,7 +23,7 @@ release:
       - tools/validate_assessment_queue.py
       - tools/validate_workflow_governance.py
   notes:
-    path: docs/releases/v2.8.0.md
+    path: docs/releases/v2.9.0.md
   compatibility:
     engine_contract: rahp-engine-contract-v1
     normalized_result_schema: 1
