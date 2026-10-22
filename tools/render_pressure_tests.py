@@ -44,8 +44,8 @@ REFERENCE_FILES = {
 }
 
 
-def load_reference_index() -> dict[str, dict[str, str]]:
-    index: dict[str, dict[str, str]] = {}
+def load_reference_index() -> dict[str, dict[str, Any]]:
+    index: dict[str, dict[str, Any]] = {}
     for kind, filename in REFERENCE_FILES.items():
         paths = [ROOT / "data" / filename, *sorted((ROOT / "instances").glob(f"*/data/{filename}"))]
         for path in paths:
@@ -60,11 +60,16 @@ def load_reference_index() -> dict[str, dict[str, str]]:
                 if not title and kind == "assurance_tests":
                     criterion = str(rec.get("pass_criterion") or "").strip()
                     title = criterion[:90] + ("…" if len(criterion) > 90 else "") if criterion else "Assurance test"
-                index[rid] = {"title": str(title or rid), "kind": kind, "href": str(rec.get("link") or "")}
+                index[rid] = {
+                    "title": str(title or rid),
+                    "kind": kind,
+                    "href": str(rec.get("link") or ""),
+                    "catalogue_backed": path.parent == ROOT / "data",
+                }
     return index
 
 
-REFERENCE_INDEX: dict[str, dict[str, str]] = {}
+REFERENCE_INDEX: dict[str, dict[str, Any]] = {}
 
 
 def load_yaml(path: pathlib.Path) -> dict[str, Any]:
@@ -88,8 +93,16 @@ def ref_link(value: Any) -> str:
     if not rec:
         return f"`{rid}`"
     title = md_cell(rec["title"])
-    href = rec.get("href") or f"{CATALOGUE_RELATIVE}#{rid}"
-    return f"[{rid} — {title}]({href})"
+    href = rec.get("href")
+    if href:
+        return f"[{rid} — {title}]({href})"
+    if rec.get("catalogue_backed"):
+        return f"[{rid} — {title}]({CATALOGUE_RELATIVE}#{rid})"
+    # Deployment-local records are valid review references but do not belong
+    # to the bundled DTG catalogue. Without an explicit deployment-owned
+    # link, render them as titled code rather than manufacturing a broken
+    # catalogue deep link.
+    return f"`{rid} — {title}`"
 
 
 def ref_list(values: list[Any] | None) -> str:
