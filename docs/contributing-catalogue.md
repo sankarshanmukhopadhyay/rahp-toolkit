@@ -152,10 +152,12 @@ Run:
 
 ```bash
 python3 tools/build.py
+python3 tools/build_assurance_registry.py
+python3 tools/build_assurance_registry.py --check
 python3 tools/validate_reference_links.py
 ```
 
-Confirm that the new ID is discoverable from the generated catalogue and that references resolve.
+Confirm that the new ID is discoverable from the generated catalogue, appears in the derived assurance registry, and that references resolve. The registry is a derived discovery surface only; `method/catalogue/` remains authoritative for portable semantics.
 
 ## Step 10 — Update documentation and changelog when the public method surface changed
 

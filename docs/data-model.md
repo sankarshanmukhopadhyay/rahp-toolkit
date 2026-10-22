@@ -47,6 +47,18 @@ The portable assurance catalogue uses six reusable object families documented in
 
 The catalogue schema is [`method/schema/catalogue.schema.json`](../method/schema/catalogue.schema.json). Deployment-specific findings and evidence remain deployment records; portable patterns do not substitute for local evidence, authority or disposition.
 
+The [Assurance registry](assurance-registry.md) is a derived machine-discovery surface over these canonical records. It does not introduce a second semantic authority:
+
+```text
+method/catalogue/*              authoritative portable semantics
+        ↓
+build/assurance-registry.json   derived discovery/resolution index
+        ↓
+portable_assurance references   assessment consumption
+```
+
+Consumers retain the stable catalogue identifiers in assessment records. Registry resolution may expose type, canonical source and adjacent portable relationships, but applicability, findings, evidence and dispositions remain assessment-local.
+
 ### 2. Assessment execution
 
 The engine contract defines the portable execution chain:
