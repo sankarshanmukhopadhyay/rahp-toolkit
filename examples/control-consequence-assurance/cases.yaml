@@ -1,0 +1,139 @@
+schema_version: "1.0"
+id: control-consequence-assurance
+purpose: >
+  Demonstrate how RAHP assesses material risks or harms introduced, transferred, amplified or redistributed by
+  controls without creating one new portable risk record per consequence.
+portable_assurance:
+  control_patterns:
+    - CTP-RISK-01
+    - CTP-AUTH-02
+    - CTP-ID-03
+    - CTP-RED-01
+    - CTP-DEL-02
+    - CTP-AGT-01
+  assurance_patterns:
+    - ATP-RISK-01
+  evidence_patterns:
+    - EVP-RISK-01
+cases:
+  - id: CCA-001
+    name: renewal assurance uplift shifts proofing burden
+    source_context: "#1106 CRA-008"
+    target_control: CTP-AUTH-02
+    target_benefit:
+      actor: relying-party
+      effect: reduces uncertainty by requiring current continuation authority or stronger renewal evidence
+    affected_actors:
+      - actor: holder
+        exposure_change: increased
+        consequence: stronger proofing or renewal burden; possible exclusion; lifecycle/status timing may become observable
+      - actor: relying-party
+        exposure_change: reduced
+        consequence: lower risk of relying on stale continuation authority
+    introduced_or_amplified_risks:
+      - RKP-EXC-02
+      - RKP-PRV-06
+    evidence_state: partially_verified
+    disposition: context_dependent_residual
+    control_credit: bounded
+    rationale: >
+      The control may be justified, but proportionality, alternative-path and privacy evidence must stay visible. The
+      holder burden is not erased by the relying party's assurance gain.
+
+  - id: CCA-002
+    name: uniqueness assurance can increase exclusion and correlation
+    target_control: CTP-ID-03
+    target_benefit:
+      actor: relying-party
+      effect: supports a bounded uniqueness claim where uniqueness is decision-relevant
+    affected_actors:
+      - actor: applicant
+        exposure_change: increased
+        consequence: stronger proofing may exclude people lacking required institutional/documentary privilege
+      - actor: privacy-subject
+        exposure_change: increased
+        consequence: stable uniqueness evidence may increase cross-context correlation
+      - actor: relying-party
+        exposure_change: reduced
+        consequence: lower duplicate-identity risk within the declared population
+    introduced_or_amplified_risks:
+      - RKP-EXC-02
+      - RKP-PRV-01
+    evidence_state: verified_mapping
+    disposition: existing_coverage
+    control_credit: bounded
+    rationale: >
+      The portable control already declares these side effects machine-readably; assessors still need deployment
+      evidence about fallback, population scope and privacy impact.
+
+  - id: CCA-003
+    name: contestability evidence can create retention concentration
+    target_control: CTP-RED-01
+    target_benefit:
+      actor: affected-party
+      effect: improves explanation, appeal and remediation by preserving decision evidence
+    affected_actors:
+      - actor: affected-party
+        exposure_change: reduced
+        consequence: stronger ability to contest and reconstruct a consequential decision
+      - actor: evidence-subject
+        exposure_change: increased
+        consequence: retained verification and decision artefacts can enlarge privacy and correlation surfaces
+    introduced_or_amplified_risks:
+      - RKP-PRV-09
+      - RKP-PRV-07
+    compensating_controls:
+      - CTP-PRV-07
+      - CTP-PRV-06
+    evidence_state: verified_mapping
+    disposition: existing_coverage
+    control_credit: bounded
+    rationale: >
+      Accountability evidence remains useful, but retention and secondary use must be purpose-bound and minimized.
+
+  - id: CCA-004
+    name: revocation propagation can create cascading invalidation
+    target_control: CTP-DEL-02
+    target_benefit:
+      actor: principal
+      effect: reduces the window in which revoked delegated authority can continue to be exercised
+    affected_actors:
+      - actor: principal
+        exposure_change: reduced
+        consequence: faster removal of withdrawn delegated authority
+      - actor: dependent-user
+        exposure_change: increased
+        consequence: broad dependency invalidation can interrupt legitimate access when continuity is not governed
+    introduced_or_amplified_risks:
+      - RKP-OPS-03
+    compensating_controls:
+      - CTP-OPS-03
+    evidence_state: partially_verified
+    disposition: context_dependent_residual
+    control_credit: bounded
+    rationale: >
+      Rapid propagation is not globally risk-reducing if a dependency invalidation can strand legitimate dependent
+      users without a continuity path.
+
+  - id: CCA-005
+    name: unassessed human intent checkpoint cannot silently pass
+    target_control: CTP-AGT-01
+    target_benefit:
+      actor: principal
+      effect: prevents an agent from executing a consequential action without a current principal checkpoint
+    affected_actors:
+      - actor: principal
+        exposure_change: unknown
+        consequence: repeated or inaccessible prompts may create burden, fatigue or exclusion
+      - actor: system-operator
+        exposure_change: unknown
+        consequence: unresolved confirmation failures may create operational ambiguity
+    introduced_or_amplified_risks:
+      - RKP-EXC-01
+    evidence_state: insufficient
+    disposition: insufficient_evidence
+    control_credit: withheld
+    expected_assurance: INDETERMINATE
+    rationale: >
+      The target mitigation may be valuable, but the side effect has not been assessed. Missing accessibility,
+      frequency and alternative-path evidence cannot become PASS merely because the approval gate exists.
