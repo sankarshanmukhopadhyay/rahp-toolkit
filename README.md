@@ -155,6 +155,7 @@ Useful starting points:
 
 - [How RAHP works](docs/how-rahp-works.md)
 - [RAHP data model](docs/data-model.md)
+- [Assurance registry](docs/assurance-registry.md) — derived machine-discovery index over the portable assurance catalogue
 - [Getting started](docs/getting-started.md)
 - [Continuous assurance](docs/continuous-assurance.md)
 - [Adopting RAHP](ADOPTION.md)
