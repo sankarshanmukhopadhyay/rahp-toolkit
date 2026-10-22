@@ -9,7 +9,22 @@ parent: Reference
 
 ## Unreleased
 
-No changes are recorded after the v2.8.0 release candidate.
+No changes are recorded after the v2.9.0 release candidate.
+
+## v2.9.0 - 2026-10-22 - Common Windmill
+
+- Added evidence-bounded people-impact pathways, portable affected roles, source review and qualification controls while preserving zero-positive and not-established outcomes.
+- Added source-qualified corpus review references, reader guidance, glossary coverage and safer provenance/link handling.
+- Added credential-renewal and generic control-consequence assurance using existing portable catalogue identifiers.
+- Added source-pinned witness/runtime evidence and stronger controller routing/closure boundaries.
+- Added a derived assurance-registry discovery index while preserving `method/catalogue/` as semantic authority.
+- Hardened release qualification with immutable Action pins, qualification/publication privilege separation, hash-locked Python dependencies and bounded artifact retention.
+- Added repository-native DCO enforcement and explicit code/content licensing.
+- Stable engine contract v1 revision 1.3, normalized result schema 1 and evidence-retention v1 remain unchanged.
+- Independent adoption remains NOT_YET_TESTED; #958 admin/human-review evidence gaps remain explicit.
+
+See [v2.9.0 release notes](docs/releases/v2.9.0.md).
+
 
 ## v2.8.0 - 2026-10-15 - Common Birdwing
 

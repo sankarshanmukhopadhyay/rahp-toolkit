@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.8.0 · Common Birdwing · Documentation: CC BY 4.0 · Code: Apache 2.0
+Release v2.9.0 · Common Windmill · Documentation: CC BY 4.0 · Code: Apache 2.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
@@ -13,35 +13,19 @@ RAHP is deliberately evidence-conservative:
 - normative convergence does not silently become implementation conformance;
 - identity or lineage evidence does not silently become authorization.
 
-## Current release — v2.8.0 Common Birdwing
+## Current release candidate — v2.9.0 Common Windmill
 
-v2.8.0 **Comparative, Adversarial and Consumer Interaction Assurance** was published and qualified on 2026-10-15.
+v2.9.0 **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** is being qualified as the next additive baseline.
 
-It preserves the stable compatibility boundary established by the v1 engine/result/evidence contracts while adding:
+It preserves the stable v1 engine/result/evidence compatibility boundary while adding evidence-bounded people-impact pathways, stronger source-qualified corpus provenance, lifecycle/control-consequence assurance, source-pinned runtime and witness evidence, a derived assurance-registry index, reproducible release qualification, repository-native DCO enforcement and explicit licensing.
 
-- **comparative assurance** for arbitrary source-pinned assessment or release sets;
-- **adversarial assurance qualification** with challenge cases, evidence ledgers and stronger reviewability;
-- **agent authority and continuity** checks that distinguish identity, lineage and actionable authority;
-- **lifecycle-continuation authority** for renewal, reissuance and successor creation;
-- **consumer-interaction evidence** for wallets, VTAs, browsers and agent interfaces without introducing a UI-automation dependency into RAHP core;
-- **observability-induced harm** analysis using bounded synthetic DTFC vectors;
-- **source-pinned Eucalyptus clean-room evidence** and release-set comparison;
-- **release-publication hardening** with qualification, preflight, postflight and latest-release verification.
+See [v2.9.0 release notes](docs/releases/v2.9.0.md), [qualification contract](method/v2.9-release-qualification.yaml), [release evidence](method/v2.9-release-evidence.json), and [release tracker #1126](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1126).
 
-Consumer-visible success remains only an interaction observation until correlated with the authoritative protocol, authorization and runtime evidence required by the proposition.
-
-See:
-
-- [v2.8.0 release notes](docs/releases/v2.8.0.md)
-- [v2.8.0 qualification contract](method/v2.8-release-qualification.yaml)
-- [v2.8.0 release evidence](method/v2.8-release-evidence.json)
-- [GitHub Release v2.8.0](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.8.0)
-
-Independent external adoption remains **NOT_YET_TESTED**. Source-pinned clean-room or synthetic evidence does not constitute deployment certification or independent audit.
+Independent external adoption remains **NOT_YET_TESTED**. Method qualification does not manufacture independently adjudicated causal harm claims, deployment certification or independent audit.
 
 ## Stable compatibility boundary
 
-The compatibility authority for v2.8.0 remains:
+The compatibility authority for v2.9.0 remains:
 
 ```text
 rahp-engine-contract-v1 revision 1.3
@@ -49,7 +33,7 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-Existing conforming v2.7 consumers do not require a schema migration solely to consume v2.8.
+Existing conforming v2.8 consumers do not require a schema migration solely to consume v2.9.
 
 ## How RAHP works
 
@@ -165,6 +149,7 @@ Useful starting points:
 
 | Version | Codename | Release boundary |
 |---|---|---|
+| v2.9.0 | **Common Windmill** | Evidence-Qualified Impact, Source Authority and Reproducible Assurance |
 | v2.8.0 | **Common Birdwing** | Comparative, Adversarial and Consumer Interaction Assurance |
 | v2.7.0 | **Common Rose** | Maintenance, Adoption and Optional Reasoning Profiles |
 | v2.6.0 | **Commander** | Full-Stack Assurance Orchestration and Explicit Evidence State |

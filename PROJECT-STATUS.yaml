@@ -1,14 +1,14 @@
 project: rahp-toolkit
-stable_release: 2.8.0
-development_target: 2.8.0
-release_status: released
-qualification_status: qualified
-qualification_contract: method/v2.8-release-qualification.yaml
+stable_release: 2.9.0
+development_target: 2.9.0
+release_status: candidate
+qualification_status: candidate
+qualification_contract: method/v2.9-release-qualification.yaml
 release_name:
-  common_name: Common Birdwing
-  scientific_name: Troides helena
+  common_name: Common Windmill
+  scientific_name: Atrophaneura polyeuctes
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
-  selected_on: '2026-10-15'
+  selected_on: '2026-10-22'
 compatibility:
   engine_contract: rahp-engine-contract-v1
   normalized_result_schema: 1
@@ -26,21 +26,21 @@ release_naming:
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
   selection: random-at-release-time
 release_intent: >-
-  v2.8.0 packages comparative assurance, adversarial assurance qualification,
-  agent authority and continuity, lifecycle-continuation authority, consumer-interaction
-  evidence integration, observability harm analysis and release-publication hardening as
-  additive capabilities while preserving the stable v1 engine/result/evidence contracts.
+  v2.9.0 packages evidence-qualified people-impact methodology, source-qualified corpus
+  evidence, lifecycle/control-consequence assurance, source-pinned runtime and witness
+  evidence, derived assurance-registry discovery, and reproducible release/contribution
+  controls while preserving the stable v1 engine/result/evidence contracts.
 development_posture: >-
-  v2.8 remains evidence-conservative and materiality-bounded. Comparative or UI evidence
-  cannot manufacture authority or terminal PASS; missing, stale, contradictory or external
-  runtime evidence remains explicit. Research-only fiduciary work and deployment-specific
-  runtime residuals remain outside the stable capability boundary unless separately qualified.
+  v2.9 remains evidence-conservative and materiality-bounded. Method capability does not
+  manufacture qualified causal pathways; derived registry discovery does not become catalogue
+  authority; missing, stale, contradictory, external or administratively inaccessible evidence
+  remains explicit rather than becoming PASS.
 post_v2_5_programme:
   issue: 882
   name: full-stack-assurance-orchestration-and-explicit-evidence-state
   release_commitment: v2.6.0-qualified
   current_portfolio_context:
-    rahp: 2.8.0
+    rahp: 2.9.0
     dpip: 0.3.0
     interop_lab: 0.7.0
   invariants:
