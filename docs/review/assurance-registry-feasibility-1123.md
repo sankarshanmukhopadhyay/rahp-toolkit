@@ -1,8 +1,10 @@
 # Assurance registry feasibility evaluation — #1123
 
-**Status:** implementation evidence available; final issue disposition pending PR validation  
-**Issue:** #1123  
-**Implementation:** PR #1124  
+**Status:** completed  
+**Issue:** #1123 — closed as completed  
+**Implementation:** PR #1125 — squash-merged as `c84bfed34129cfab3eb6ec716a276781091918fe`  
+**Superseded precursor:** PR #1124  
+**Decision:** B — continue within RAHP, narrowly  
 **Authority boundary:** `method/catalogue/` remains authoritative for portable assurance semantics.
 
 ## Question
@@ -25,7 +27,7 @@ This means a second registry ontology, new identifier namespace, or duplicate li
 
 ## Implemented experiment
 
-PR #1124 adds a derived registry index builder over the existing catalogue.
+PR #1125 added a derived registry index builder over the existing catalogue.
 
 The index exposes:
 
@@ -168,8 +170,7 @@ inspection showed to be already satisfied or superseded:
 - assessment integration: existing `portable_assurance` mappings, now exercised
   through the derived registry index.
 
-The remaining completion evidence is successful PR validation after the real
-consumption test is added.
+The merge-ready head passed the repository-required DCO, validation and TypeScript conformance gates before PR #1125 was merged. No further implementation evidence is required for this tranche.
 
 ## Required repository gate
 
