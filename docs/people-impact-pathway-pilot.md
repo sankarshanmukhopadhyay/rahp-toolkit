@@ -68,3 +68,16 @@ To reproduce the bounded checks, execute `python3 -m unittest tests.test_impact_
 ## People-impact qualification acceptance tranche
 
 The [qualification acceptance packet](people-impact-qualification-acceptance.html) records six atomic candidate relationships across `TT-002`, `XSP-001`, `TT-005` and `XSP-018`, separating decision actors from potentially affected roles. Its reviewer acceptance status is **not recorded**, so no canonical pilot mapping is promoted to qualified. The packet includes source pins, harm candidates, falsification cases and a practical independent-review handoff.
+
+
+## Method capability acceptance boundary
+
+The people-impact pathway capability and the qualification of an individual pathway are separate decisions.
+
+A conforming implementation may legitimately contain **zero qualified pathways**. The validator must still preserve complete scenario disposition coverage, source/dependency pins, portable-role validity, causal-evidence limits and truthful negative output. A lack of independently adjudicated positive mappings is therefore not itself a method failure.
+
+The canonical pilot remains intentionally bounded to Trust Tasks and Trust Tasks × Credential Specification. Generality is tested without silently expanding that pilot: regression coverage adds the separately source-pinned Credential Specification corpus with all scenarios set to `not-established`, and requires the same validator to accept the third namespace while preserving the original two mandatory pilot corpora.
+
+Qualification of any individual pathway remains stricter. It still requires direct source support, applicable harm mapping and accountable adjudication evidence. CI, AI assistance, source presence or method acceptance cannot substitute for that human judgment.
+
+Source anchors used by positive/provisional records are also treated as trust-boundary inputs. Obvious absolute, traversal and executable-scheme values are rejected rather than rendered or followed as evidence references.

@@ -12,8 +12,27 @@ PILOT = ROOT / "method/impact-pathways/pilot.json"
 SCHEMA = "rahp-people-impact-pathways/v1"
 STATES = {"qualified", "provisional", "rejected", "not-established"}
 ROLE_VOCAB = ROOT / "method/impact-pathways/roles.json"
-SOURCE = {"CORPUS-TRUST-TASKS": "corpora/trust-tasks.yaml",
-          "CORPUS-TT-CREDSPEC-COMPOSED": "corpora/trust-tasks-credspec-composed.yaml"}
+REQUIRED_PILOT = {"CORPUS-TRUST-TASKS", "CORPUS-TT-CREDSPEC-COMPOSED"}
+
+def load_corpus_registry(root=ROOT):
+    registry = {}
+    for path in sorted((root / "corpora").glob("*.yaml")):
+        if path.name == "sources.yaml":
+            continue
+        payload = yaml.safe_load(path.read_text()) or {}
+        corpus = payload.get("corpus")
+        if isinstance(corpus, dict) and corpus.get("id"):
+            registry[corpus["id"]] = path.relative_to(root).as_posix()
+    return registry
+
+def source_anchor_is_safe(value):
+    text = str(value or "").strip()
+    lowered = text.lower()
+    if not text or text.startswith("/") or ".." in text or "\\" in text:
+        return False
+    if lowered.startswith(("javascript:", "data:", "file:")):
+        return False
+    return True
 
 def validate(data, root=ROOT):
     errors = []
@@ -21,8 +40,7 @@ def validate(data, root=ROOT):
     errors.extend("schema: " + e.message for e in Draft202012Validator(schema).iter_errors(data))
     if data.get("contract") != SCHEMA:
         errors.append("unsupported contract")
-    if len(data.get("pilot_corpora", [])) != len(SOURCE):
-        errors.append("pilot set differs from declared contract")
+    source_registry = load_corpus_registry(root)
     harm_data = yaml.safe_load((root / "method/catalogue/harm-patterns.yaml").read_text())
     harms = {record["id"] for record in harm_data["records"]}
     roles = json.loads(ROLE_VOCAB.read_text())["roles"]
@@ -31,11 +49,11 @@ def validate(data, root=ROOT):
     counts = Counter()
     for group in data.get("pilot_corpora", []):
         cid = group.get("corpus_id")
-        if cid not in SOURCE or cid in seen_groups:
+        if cid not in source_registry or cid in seen_groups:
             errors.append(f"unknown or repeated corpus {cid}")
             continue
         seen_groups.add(cid)
-        corpus = yaml.safe_load((root / SOURCE[cid]).read_text())["corpus"]
+        corpus = yaml.safe_load((root / source_registry[cid]).read_text())["corpus"]
         if corpus["id"] != cid or str(corpus["adapter_version"]) != str(group.get("adapter_version")):
             errors.append(f"{cid}: identifier/adapter drift")
         baseline = group.get("baseline", {})
@@ -66,6 +84,8 @@ def validate(data, root=ROOT):
                     errors.append(f"{cid}/{sid}: missing source qualification")
                 if sid in ids and evidence.get("source_anchor") != ids[sid].get("source_anchor"):
                     errors.append(f"{cid}/{sid}: incorrect source anchor")
+                if not source_anchor_is_safe(evidence.get("source_anchor")):
+                    errors.append(f"{cid}/{sid}: unsafe source anchor")
                 role = pathway.get("role_id")
                 if role not in role_ids:
                     errors.append(f"{cid}/{sid}: unrecognized portable role {role}")
@@ -84,8 +104,8 @@ def validate(data, root=ROOT):
                 errors.append(f"{cid}/{sid}: adjudication cannot silently upgrade non-qualified judgment")
             if "execution_status" in row or "persona_id" in row:
                 errors.append(f"{cid}/{sid}: execution/persona assertion outside contract")
-    if seen_groups != set(SOURCE):
-        errors.append("required corpus omitted")
+    if not REQUIRED_PILOT <= seen_groups:
+        errors.append("required pilot corpus omitted")
     return errors, dict(sorted(counts.items()))
 
 def main():

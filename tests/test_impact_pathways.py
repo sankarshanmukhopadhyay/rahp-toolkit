@@ -3,6 +3,7 @@ import copy
 import json
 import unittest
 from pathlib import Path
+import yaml
 from tools.validate_impact_pathways import validate
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -71,5 +72,37 @@ class ImpactPilotTest(unittest.TestCase):
         self.assert_invalid(lambda d:d["pilot_corpora"][1]["dispositions"][0].update(
             status="qualified",
             adjudication={"reviewer":"unverified","reviewed_on":"2026-10-20","decision_evidence":"not source-grounded"}))
+
+
+    def test_third_corpus_generalizes_with_truthful_negative_dispositions(self):
+        data=copy.deepcopy(DATA)
+        corpus=yaml.safe_load((ROOT/"corpora/credential-spec.yaml").read_text())["corpus"]
+        data["pilot_corpora"].append({
+            "corpus_id": corpus["id"],
+            "adapter_version": str(corpus["adapter_version"]),
+            "baseline": {"source_commit": corpus["source_commit"]},
+            "dispositions": [
+                {
+                    "scenario_id": row["id"],
+                    "status": "not-established",
+                    "reason": "No independently qualified people-impact pathway has been established for this scenario at the pinned baseline."
+                }
+                for row in corpus["scenarios"]
+            ]
+        })
+        errors,counts=validate(data)
+        self.assertFalse(errors,errors)
+        self.assertEqual(sum(counts.values()),80)
+        self.assertEqual(counts["provisional"],2)
+        self.assertEqual(counts["not-established"],78)
+
+    def test_malicious_source_anchor_rejected(self):
+        self.assert_invalid(lambda d:d["pilot_corpora"][0]["dispositions"][1]["pathway"]["evidence"].update(source_anchor="javascript:alert(1)"))
+
+    def test_original_pilot_corpora_remain_required(self):
+        data=copy.deepcopy(DATA)
+        data["pilot_corpora"].pop(0)
+        errors,_=validate(data)
+        self.assertIn("required pilot corpus omitted",errors)
 
 if __name__=="__main__": unittest.main()

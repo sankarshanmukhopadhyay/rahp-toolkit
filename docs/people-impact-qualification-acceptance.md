@@ -37,3 +37,13 @@ Run `python3 -m unittest tests.test_impact_qualification_packet -v` and `python3
 **Independent adjudicator handoff:** Read the precise source clauses and each packet causal step; confirm or challenge the affected role, protected interest, candidate harm definition and countercases. Record an attributable acceptance/rejection decision with evidence and source revision. Do not change `independent_acceptance` to approved without a genuine reviewer record and accompanying validation changes. A human reviewer's independent judgment cannot be substituted with CI success or an assistant-generated recommendation.
 
 **Acceptance impact:** This tranche completes a *review-ready qualification proposal*, not the original issue's requirement for at least one independently accepted people-impact pathway. [#1091](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1091) and [#1077](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1077) remain open.
+
+
+## Capability qualification versus pathway qualification
+
+This packet distinguishes two acceptance questions:
+
+1. **Is the RAHP people-impact method usable and fail-closed?** This can be established through schema, validation, negative tests, source/dependency pinning, truthful zero-positive behavior, additional-corpus generality and reader-facing evidence boundaries.
+2. **Has a particular affected-role → protected-interest → harm proposition been independently accepted?** That requires attributable human adjudication and cannot be created by CI or implementation work.
+
+Accordingly, a stable method capability does not require manufacturing a `qualified` pathway. A release may accurately state that the capability is available while the current canonical pilot remains **0 qualified / 2 provisional / 48 not-established**. Any future `qualified` record still has to satisfy the existing direct-source and accountable-adjudication rules.
