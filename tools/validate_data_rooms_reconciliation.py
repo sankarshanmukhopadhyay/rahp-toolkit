@@ -43,8 +43,19 @@ def validate(doc):
                 errors.append(f"pending item improperly carries source revision: {fid}")
             if row.get("evidence_state") != "not_established" or row.get("disposition") != "triage_required":
                 errors.append(f"pending item asserted a terminal result: {fid}")
-        elif not SHA.fullmatch(str(row.get("source_revision", ""))):
-            errors.append(f"classified item lacks an attributable source SHA: {fid}")
+        elif row.get("classification") == "source_commit_attributed":
+            revision = str(row.get("source_revision", ""))
+            if not SHA.fullmatch(revision):
+                errors.append(f"attributed item lacks source SHA: {fid}")
+            expected_url = f"https://github.com/{row.get('source_repository')}/commit/{revision}"
+            if row.get("source_url") != expected_url:
+                errors.append(f"source URL mismatch: {fid}")
+            if row.get("evidence_state") != "source_review_only" or row.get("disposition") != "requires_target_retest":
+                errors.append(f"unsupported terminal assurance promotion: {fid}")
+            if not re.fullmatch(r"P-ROOM-[0-9]{3}", str(row.get("candidate_proposition", ""))):
+                errors.append(f"missing proposition candidate: {fid}")
+        else:
+            errors.append(f"unsupported classification: {fid}")
     if kinds != {"release_marker": 3, "change_description": 18}:
         errors.append(f"unexpected monitor kind counts: {kinds}")
     return errors
