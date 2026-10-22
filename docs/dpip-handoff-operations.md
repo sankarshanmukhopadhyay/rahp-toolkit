@@ -37,7 +37,9 @@ Each transported referral carries a deterministic marker derived from:
 - immutable source revision;
 - requested DPIP target/question digest.
 
-Before creation, RAHP checks existing `source:rahp` DPIP issues for that marker. Re-running the weekly workflow therefore returns the existing intake instead of creating a duplicate.
+Before creation, RAHP checks existing `source:rahp` DPIP issues for that marker. Re-running the workflow therefore returns the existing intake instead of creating a duplicate.
+
+The workflow also uses a **single non-cancelling concurrency group for all handoff triggers**. Issue-label, scheduled recovery and manual runs are serialized because marker lookup followed by cross-repository issue creation is not an atomic GitHub operation. Without global serialization, two runs can both observe "no existing intake" before either creates it and produce duplicate examination epochs. The serialized transport preserves idempotency across trigger types; it does not change proposition or examination identity.
 
 ## Completion
 
