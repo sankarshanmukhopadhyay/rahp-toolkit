@@ -1,49 +1,178 @@
-schema_version: "1.0"
+schema_version: '1.0'
 id: credential-renewal-authority
-purpose: >
-  Regression fixture for lifecycle-continuation assurance. It demonstrates that unchanged claims, successful
+purpose: 'Regression fixture for lifecycle-continuation assurance. It demonstrates that unchanged claims, successful
   reissuance, historical validity or partial cascade completion do not by themselves establish current authority.
+
+  '
 portable_assurance:
   risk_patterns:
-    - RKP-AUTH-02
-    - RKP-AUTH-05
-    - RKP-DEL-03
+  - RKP-AUTH-02
+  - RKP-AUTH-05
+  - RKP-DEL-03
+  - RKP-COMP-02
+  - RKP-PRV-06
+  - RKP-COMP-03
+  - RKP-EXC-02
   control_patterns:
-    - CTP-AUTH-02
-    - CTP-DEL-02
+  - CTP-AUTH-02
+  - CTP-DEL-02
+  - CTP-COMP-02
+  - CTP-PRV-02
+  - CTP-PRV-05
+  - CTP-EXC-01
   guardrail_patterns:
-    - GRP-AUTH-02
+  - GRP-AUTH-02
+  - GRP-COMP-02
+  - GRP-PRV-02
   assurance_patterns:
-    - ATP-AUTH-03
+  - ATP-AUTH-03
+  - ATP-COMP-02
+  - ATP-PRV-01
   evidence_patterns:
-    - EVP-AUTH-01
-    - EVP-DEL-02
+  - EVP-AUTH-01
+  - EVP-DEL-02
+  - EVP-COMP-01
+  - EVP-PRV-01
+  - EVP-INCL-01
+  harm_patterns:
+  - HRM-AUT-02
+  - HRM-AUT-03
+  - HRM-AUT-05
+  - HRM-ACC-02
+  - HRM-PRV-02
 cases:
-  - id: CRA-001
-    name: deliberate non-renewal
-    authority_evidence: denied
-    dependency_state: not_applicable
-    historical_evidence: preserved
-    expected_decision: DENY
-    rationale: A prior automation preference cannot override an explicit decision not to continue authority.
-  - id: CRA-002
-    name: successor without dependent rebinding
-    authority_evidence: established_for_successor
-    dependency_state: unresolved
-    historical_evidence: preserved
-    expected_decision: INDETERMINATE
-    rationale: Authority for the successor does not carry forward dependent consent, delegation or attestation.
-  - id: CRA-003
-    name: partial cascade
-    authority_evidence: established_for_parent
-    dependency_state: partial
-    historical_evidence: preserved
-    expected_decision: INDETERMINATE
-    rationale: Successful parent renewal cannot be reported as successful continuation of unresolved dependents.
-  - id: CRA-004
-    name: unchanged claims with current continuation authority
-    authority_evidence: established
-    dependency_state: satisfied
-    historical_evidence: preserved
-    expected_decision: ALLOW
-    rationale: Automation is eligible only because current continuation authority and all required dependencies are established.
+- id: CRA-001
+  name: deliberate non-renewal
+  authority_evidence: denied
+  dependency_state: not_applicable
+  historical_evidence: preserved
+  expected_decision: DENY
+  rationale: A prior automation preference cannot override an explicit decision not to continue authority.
+- id: CRA-002
+  name: successor without dependent rebinding
+  authority_evidence: established_for_successor
+  dependency_state: unresolved
+  historical_evidence: preserved
+  expected_decision: INDETERMINATE
+  rationale: Authority for the successor does not carry forward dependent consent, delegation or attestation.
+- id: CRA-003
+  name: partial cascade
+  authority_evidence: established_for_parent
+  dependency_state: partial
+  historical_evidence: preserved
+  expected_decision: INDETERMINATE
+  rationale: Successful parent renewal cannot be reported as successful continuation of unresolved dependents.
+- id: CRA-004
+  name: unchanged claims with current continuation authority
+  authority_evidence: established
+  dependency_state: satisfied
+  historical_evidence: preserved
+  expected_decision: ALLOW
+  rationale: Automation is eligible only because current continuation authority and all required dependencies are
+    established.
+- id: CRA-005
+  name: unexplained expiry is not closure or withdrawal
+  hypothesis: lifecycle-semantics
+  actors:
+  - holder
+  - issuer
+  - relying-party
+  protected_interests:
+  - agency
+  - continuity
+  lifecycle_event: expired
+  holder_closure: not_observed
+  issuer_withdrawal: not_observed
+  authority_evidence: unknown
+  dependency_state: unresolved
+  historical_evidence: preserved
+  expected_decision: INDETERMINATE
+  rationale: Expiry alone does not establish deliberate holder closure, issuer withdrawal, or current continuation
+    authority.
+- id: CRA-006
+  name: coerced holder closure is not evidence of free choice
+  hypothesis: coercion-or-concealed-ending
+  actors:
+  - holder
+  - coercing-party
+  - operator
+  protected_interests:
+  - autonomy
+  - exit
+  lifecycle_event: holder_closure_requested
+  holder_closure: observed
+  voluntariness_evidence: contradictory
+  authority_evidence: denied
+  dependency_state: not_applicable
+  historical_evidence: preserved
+  expected_decision: DENY
+  harm_disposition: INDETERMINATE
+  rationale: Continuation is denied because closure was requested, but the system must not represent the request
+    as meaningful free choice while coercion evidence is contradictory.
+- id: CRA-007
+  name: demand-driven renewal leaks presentation intent
+  hypothesis: renewal-intent-leakage
+  actors:
+  - holder
+  - relying-party
+  - issuer-or-status-provider
+  protected_interests:
+  - privacy
+  - contextual-integrity
+  lifecycle_event: use_triggered_renewal
+  renewal_trigger: third_party_demand
+  observer_visible:
+  - timing
+  - relationship-or-credential-status-query
+  privacy_evidence: missing
+  authority_evidence: established_for_prior_state
+  dependency_state: unresolved
+  historical_evidence: preserved
+  expected_decision: INDETERMINATE
+  rationale: A use-triggered renewal or status action can expose timing or relationship context; missing privacy
+    evidence cannot become PASS.
+- id: CRA-008
+  name: assurance uplift without proportionality evidence
+  hypothesis: disproportionate-assurance-demand
+  actors:
+  - holder
+  - relying-party
+  protected_interests:
+  - equality
+  - autonomy
+  - access
+  lifecycle_event: renewal_requested
+  renewal_trigger: third_party_assurance_uplift
+  proportionality_evidence: missing
+  alternative_path: not_established
+  authority_evidence: established_for_prior_state
+  dependency_state: unresolved
+  historical_evidence: preserved
+  expected_decision: INDETERMINATE
+  control_consequence:
+    target_benefit: higher relying-party assurance
+    shifted_burden: holder must complete stronger proofing or renewal
+    linked_method_issue: '#1089'
+  rationale: A stronger assurance demand may reduce relying-party uncertainty while shifting proofing burden or
+    exclusion risk to the holder; absent proportionality and alternative-path evidence remains non-PASS.
+- id: CRA-009
+  name: accessible supported closure under valid authority
+  hypothesis: supported-decision-boundary
+  actors:
+  - holder
+  - authorized-supporter
+  protected_interests:
+  - agency
+  - accessibility
+  lifecycle_event: holder_closure_requested
+  holder_closure: observed
+  representative_authorization: established
+  accessible_participation: established
+  voluntariness_evidence: established
+  authority_evidence: denied
+  dependency_state: not_applicable
+  historical_evidence: preserved
+  expected_decision: DENY
+  harm_disposition: NO_ADDITIONAL_HARM_SIGNAL
+  rationale: A supporter may assist only under applicable authority, and an accessible process with positive voluntariness
+    evidence is distinguishable from coerced or inaccessible closure.
