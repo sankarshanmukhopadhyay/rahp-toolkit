@@ -38,6 +38,11 @@ def validate(doc):
             kinds[kind] += 1
         if not row.get("source_repository") or not row.get("observed_change"):
             errors.append(f"missing provenance description: {fid}")
+        if row.get("observation_kind") == "release_marker" and row.get("release_tag"):
+            if not SHA.fullmatch(str(row.get("release_annotated_tag_sha", "")) or not SHA.fullmatch(str(row.get("release_target_commit_sha", "")):
+                errors.append(f"bad annotated release tag pin: {fid}")
+            if row.get("classification") != "pending_source_verification" or row.get("evidence_state") != "not_established":
+                errors.append(f"release marker over-promoted to assurance: {fid}")
         if row.get("classification") == "pending_source_verification":
             if row.get("source_revision") is not None:
                 errors.append(f"pending item improperly carries source revision: {fid}")

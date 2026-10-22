@@ -6,8 +6,8 @@
   "basis": "Existing source-pinned architectural baseline and September executable assessment documented in #481; later source attribution alone is not current target-runtime evidence.",
   "monitor": {
     "observations": 21,
-    "source_attributed": 5,
-    "unattributed": 16,
+    "source_attributed": 18,
+    "unattributed": 3,
     "terminally_dispositioned": 0
   },
   "propositions": [
@@ -164,5 +164,7 @@
     "assurance_epoch_preserved": true
   },
   "close_1074": false,
-  "close_481": false
+  "close_481": false,
+  "monitor_release_tags_verified": 3,
+  "monitor_release_tag_commit_targets_unique": 2
 }
