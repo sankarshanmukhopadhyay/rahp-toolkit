@@ -106,6 +106,17 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
+      - name: Prove clean release dependency installation
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/rahp-release-lock-venv"
+          "$RUNNER_TEMP/rahp-release-lock-venv/bin/python" -m pip install --require-hashes --only-binary=:all: -r requirements-release.lock
+          "$RUNNER_TEMP/rahp-release-lock-venv/bin/python" - <<'PY'
+          import jsonschema
+          import openpyxl
+          import yaml
+          print("release dependency lock imports: PASS")
+          PY
       - name: Validate RAHP artefacts
         run: python3 tools/validate.py
 
@@ -197,6 +208,7 @@ jobs:
           name: rahp-independent-review-reproduction
           path: ${{ runner.temp }}/rahp-review-reproduction.txt
           if-no-files-found: error
+          retention-days: 14
 
       - name: Test source-monitor resilience
         run: python3 -m unittest discover -s tests -p 'test_*.py'
@@ -211,6 +223,7 @@ jobs:
           name: rahp-sociotechnical-evidence
           path: ${{ runner.temp }}/rahp-sociotechnical-evidence
           if-no-files-found: error
+          retention-days: 14
       - name: Execute bounded human-power DPIP reconciliation
         run: >-
           python3 tools/human_power_reconciliation.py
@@ -223,6 +236,7 @@ jobs:
           name: rahp-human-power-reconciliation
           path: ${{ runner.temp }}/rahp-human-power-reconciliation.json
           if-no-files-found: error
+          retention-days: 14
       - name: Validate DTG repository review worker
         run: python3 tools/dtg_repository_review_worker.py --self-test
       - name: Validate DTG controller incident publisher
