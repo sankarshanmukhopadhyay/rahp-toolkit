@@ -83,6 +83,10 @@ reissuance, prior automation preferences and partial dependency renewal do not b
 authority. The example deliberately reuses existing portable risk patterns and adds a focused assurance proposition
 rather than creating a renewal-specific risk family.
 
+## Control consequence regression example
+
+[`control-consequence-assurance/`](./control-consequence-assurance/) pressure-tests the existing portable control-side-effect mechanism across renewal, uniqueness, contestability evidence, revocation propagation and human intent controls. It demonstrates actor redistribution and keeps an unassessed material consequence `INDETERMINATE` rather than granting control credit by omission.
+
 ## Maintainer-feedback resilience exemplar
 
 `examples/resilience/openvtc-cypress/` is maintained as a different kind of example: it demonstrates how DRARM evidence is dispositioned after a target maintainer supplies counter-evidence, sharper implementation evidence, ownership information, and remediation records.
