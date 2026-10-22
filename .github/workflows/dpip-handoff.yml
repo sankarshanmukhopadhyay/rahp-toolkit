@@ -13,7 +13,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: rahp-dpip-handoff-${{ github.event.issue.number || 'reconcile' }}
+  group: rahp-dpip-handoff
   cancel-in-progress: false
 
 jobs:
