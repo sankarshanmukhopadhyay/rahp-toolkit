@@ -110,3 +110,7 @@ python3 tools/review.py status
 ```
 
 The lower-level renderer and validator scripts remain available for automation and CI.
+
+### Deployment-local references
+
+Pressure-test validation may resolve deployment-local catalogue IDs from `instances/<id>/data/` without importing them into the bundled DTG `data/` catalogue. Rendering preserves that authority boundary: a deployment-local record with an explicit `link` uses that deployment-owned link; without one, the renderer shows the ID and title as code rather than manufacturing a deep link into the DTG catalogue.
