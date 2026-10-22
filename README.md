@@ -13,13 +13,13 @@ RAHP is deliberately evidence-conservative:
 - normative convergence does not silently become implementation conformance;
 - identity or lineage evidence does not silently become authorization.
 
-## Current release candidate — v2.9.0 Common Windmill
+## Current release — v2.9.0 Common Windmill
 
-v2.9.0 **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** is being qualified as the next additive baseline.
+v2.9.0 **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** was published and qualified on 2026-10-22.
 
 It preserves the stable v1 engine/result/evidence compatibility boundary while adding evidence-bounded people-impact pathways, stronger source-qualified corpus provenance, lifecycle/control-consequence assurance, source-pinned runtime and witness evidence, a derived assurance-registry index, reproducible release qualification, repository-native DCO enforcement and explicit licensing.
 
-See [v2.9.0 release notes](docs/releases/v2.9.0.md), [qualification contract](method/v2.9-release-qualification.yaml), [release evidence](method/v2.9-release-evidence.json), and [release tracker #1126](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1126).
+See [v2.9.0 release notes](docs/releases/v2.9.0.md), [qualification contract](method/v2.9-release-qualification.yaml), [release evidence](method/v2.9-release-evidence.json), and [GitHub Release v2.9.0](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.9.0).
 
 Independent external adoption remains **NOT_YET_TESTED**. Method qualification does not manufacture independently adjudicated causal harm claims, deployment certification or independent audit.
 

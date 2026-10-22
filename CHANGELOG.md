@@ -9,7 +9,7 @@ parent: Reference
 
 ## Unreleased
 
-No changes are recorded after the v2.9.0 release candidate.
+No changes are recorded after the v2.9.0 release.
 
 ## v2.9.0 - 2026-10-22 - Common Windmill
 
