@@ -7,11 +7,11 @@ parent: Releases
 ---
 # RAHP roadmap
 
-## Current release candidate — v2.9.0 Common Windmill
+## Current release — v2.9.0 Common Windmill
 
-v2.9.0 is the candidate **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** baseline. It packages post-v2.8 people-impact methodology, source-qualified corpus evidence, lifecycle/control-consequence assurance, source-pinned runtime and witness evidence, derived assurance-registry discovery, and release/contribution hardening.
+v2.9.0 is the published and qualified **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** baseline. It packages post-v2.8 people-impact methodology, source-qualified corpus evidence, lifecycle/control-consequence assurance, source-pinned runtime and witness evidence, derived assurance-registry discovery, and release/contribution hardening.
 
-The compatibility boundary remains `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1`. Qualification must preserve zero-positive people-impact outcomes, derived-versus-authoritative registry boundaries, and NOT VERIFIED security evidence where admin/runtime inspection remains unavailable.
+The compatibility boundary remains `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1`. Qualification preserves zero-positive people-impact outcomes, derived-versus-authoritative registry boundaries, and NOT VERIFIED security evidence where admin/runtime inspection remains unavailable.
 
 ## Completed v2.6 tranche
 
@@ -29,7 +29,7 @@ RAHP remains materiality-bounded and evidence-conservative. Broader execution is
 
 ## Current portfolio context
 
-- RAHP v2.9.0 candidate;
+- RAHP v2.9.0;
 - DPIP v0.3.0;
 - Trust Protocol Interop Lab v0.7.0.
 

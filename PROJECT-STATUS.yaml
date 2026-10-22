@@ -1,8 +1,8 @@
 project: rahp-toolkit
 stable_release: 2.9.0
 development_target: 2.9.0
-release_status: candidate
-qualification_status: candidate
+release_status: released
+qualification_status: qualified
 qualification_contract: method/v2.9-release-qualification.yaml
 release_name:
   common_name: Common Windmill
