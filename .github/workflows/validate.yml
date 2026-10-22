@@ -9,6 +9,21 @@ on:
     - cron: '17 3 * * 0'
 
 jobs:
+  dco:
+    name: DCO
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate pull-request commit sign-offs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: bash tools/dco-check.sh pr
+
   impact:
     runs-on: ubuntu-latest
     outputs:
