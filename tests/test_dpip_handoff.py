@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 
 from tools import dpip_handoff
 
@@ -76,6 +77,13 @@ dpip:
         }
         problems = dpip_handoff.validate_payload(payload)
         self.assertTrue(any("target" in problem for problem in problems))
+
+
+    def test_workflow_serializes_all_handoff_triggers(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github" / "workflows" / "dpip-handoff.yml").read_text(encoding="utf-8")
+        self.assertIn("concurrency:\n  group: rahp-dpip-handoff\n  cancel-in-progress: false", workflow)
+        self.assertNotIn("github.event.issue.number", workflow)
 
 
 if __name__ == "__main__":
