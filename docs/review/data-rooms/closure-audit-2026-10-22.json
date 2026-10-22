@@ -1,0 +1,168 @@
+{
+  "schema": "rahp-data-rooms-closure-audit/v1",
+  "created_on": "2026-10-22",
+  "source_inventory": "docs/review/data-rooms/reconciliation-2026-10-22.json",
+  "historical_catalogue": "profiles/dtg/coverage/data-rooms.yaml",
+  "basis": "Existing source-pinned architectural baseline and September executable assessment documented in #481; later source attribution alone is not current target-runtime evidence.",
+  "monitor": {
+    "observations": 21,
+    "source_attributed": 5,
+    "unattributed": 16,
+    "terminally_dispositioned": 0
+  },
+  "propositions": [
+    {
+      "proposition_id": "P-ROOM-001",
+      "judgment": "architectural_satisfied_historical",
+      "evidence_class": "architectural_baseline",
+      "owner_ref": null,
+      "owner_status": "not_applicable",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-002",
+      "judgment": "advanced_bounded_historical",
+      "evidence_class": "historical_runtime",
+      "owner_ref": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/482",
+      "owner_status": "related_owner_not_transfer_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-003",
+      "judgment": "architectural_satisfied_historical",
+      "evidence_class": "architectural_baseline",
+      "owner_ref": null,
+      "owner_status": "not_applicable",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-004",
+      "judgment": "architectural_satisfied_historical",
+      "evidence_class": "architectural_baseline",
+      "owner_ref": null,
+      "owner_status": "not_applicable",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-005",
+      "judgment": "satisfied_with_boundary_historical",
+      "evidence_class": "historical_runtime",
+      "owner_ref": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/609",
+      "owner_status": "related_owner_not_transfer_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-006",
+      "judgment": "architectural_satisfied_historical",
+      "evidence_class": "architectural_baseline",
+      "owner_ref": null,
+      "owner_status": "not_applicable",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-007",
+      "judgment": "evidence_required",
+      "evidence_class": "external_privacy_runtime",
+      "owner_ref": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/482",
+      "owner_status": "related_owner_not_transfer_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-008",
+      "judgment": "evidence_required",
+      "evidence_class": "external_privacy_runtime",
+      "owner_ref": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/482",
+      "owner_status": "related_owner_not_transfer_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-009",
+      "judgment": "evidence_required",
+      "evidence_class": "hostile_host_witness_execution",
+      "owner_ref": null,
+      "owner_status": "not_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-010",
+      "judgment": "evidence_required",
+      "evidence_class": "rollback_version_floor_execution",
+      "owner_ref": null,
+      "owner_status": "not_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-011",
+      "judgment": "evidence_required",
+      "evidence_class": "deployment_governance",
+      "owner_ref": null,
+      "owner_status": "not_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-012",
+      "judgment": "satisfied_with_boundary_historical",
+      "evidence_class": "historical_runtime",
+      "owner_ref": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/608",
+      "owner_status": "related_owner_not_transfer_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-013",
+      "judgment": "partially_satisfied_historical",
+      "evidence_class": "host_migration_execution",
+      "owner_ref": null,
+      "owner_status": "not_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-014",
+      "judgment": "evidence_required",
+      "evidence_class": "composed_agent_runtime",
+      "owner_ref": null,
+      "owner_status": "not_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-015",
+      "judgment": "evidence_required",
+      "evidence_class": "composed_agent_runtime",
+      "owner_ref": null,
+      "owner_status": "not_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    },
+    {
+      "proposition_id": "P-ROOM-016",
+      "judgment": "evidence_required",
+      "evidence_class": "human_renderer_runtime",
+      "owner_ref": null,
+      "owner_status": "not_accepted",
+      "current_target_retest": "not_established",
+      "transfer_accepted": false
+    }
+  ],
+  "closure_gates": {
+    "all_monitor_findings_terminal": false,
+    "all_propositions_adjudicated_current_target": false,
+    "all_unresolved_residuals_accepted_by_owner": false,
+    "applicable_dpip_returns_accounted_for": false,
+    "assurance_epoch_preserved": true
+  },
+  "close_1074": false,
+  "close_481": false
+}
