@@ -45,6 +45,10 @@ credential valid at presentation
   → composition-level failure despite component-level success
 ```
 
+## Control consequence assessment
+
+A mitigation is not automatically harmless. RAHP requires material control side effects to remain visible through the existing control-side-effect mechanism. Assessors should identify affected actors, reuse existing risks where possible, preserve context-dependent trade-offs as residual evidence, and keep insufficient evidence non-PASS. See [Assess control consequences](control-consequence-assessment.md) and the [worked control-consequence example](../examples/control-consequence-assurance/).
+
 ## Evidence boundary
 
 RAHP distinguishes existence from assurance:
