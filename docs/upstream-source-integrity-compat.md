@@ -15,7 +15,7 @@ python3 -m unittest tests.test_source_integrity_compat -v
 
 Inspected source revisions when drafted: upstream `448e2ff4ca7f747ca899e0e845adfe45f750f094` (includes accepted #33, excludes unmerged #22); downstream `e35de9c7633545a5e0a08bc81180c3c80566678f`.
 
-Cases: valid manifest, bad SHA-256, incorrect source URL, duplicate entry, unsafe relative path. `compatible` means only both helpers accepted or rejected **that individual fixture**; `adaptation_required` is a disagreement. Neither means a shared method contract exists. Failures loading a required checkout fail closed.
+Cases: valid manifest, bad SHA-256, incorrect source URL, duplicate entry, unsafe relative path to a missing file, and traversal to an existing outside file. `compatible` means only both helpers accepted or rejected **that individual fixture**; `adaptation_required` is a disagreement. Neither means a shared method contract exists. Failures loading a required checkout fail closed.
 
 ### Evidence and next decisions
 
@@ -25,7 +25,7 @@ AI-assisted contribution; subject to DCO, CI and independent review.
 
 ### Executed pinned comparison — GitHub Actions 2026-10-24
 
-The actual comparative probe executed successfully in [validate run 40057942238](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/40057942238), using accepted upstream revision `448e2ff4ca7f747ca899e0e845adfe45f750f094` and the downstream PR branch. The dedicated comparison step and focused unit tests passed. This is a **comparison-step result**, not by itself proof that every remaining CI job passed.
+The initial five-scenario comparative probe executed successfully in [validate run 40057942238](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/40057942238), using accepted upstream revision `448e2ff4ca7f747ca899e0e845adfe45f750f094` and the downstream PR branch. The dedicated comparison step and focused unit tests passed. This is a **comparison-step result**, not by itself proof that every remaining CI job passed.
 
 | Scenario | Upstream `verify_source` | Downstream `source_integrity` | Disposition |
 | --- | --- | --- | --- |
@@ -34,7 +34,8 @@ The actual comparative probe executed successfully in [validate run 40057942238]
 | bad_url | reject | accept | narrower downstream provenance-binding check |
 | duplicate | reject | accept | narrower downstream manifest-uniqueness check |
 | unsafe_path (missing traversal target) | reject | reject | same observed outcome, **not** proof of equal path-safety checks |
+| traversal_existing | *requires fresh CI evidence* | *requires fresh CI evidence* | expected upstream reject / downstream accept; pending execution on latest head |
 
-**Architectural disposition:** These are behavioral compatibility gaps at the helper boundary; they do **not** demonstrate a change in the upstream method or a need for shared sidecar/schema standardization. Treat downstream hardening of URL/provenance and duplicate-entry validation as a separate, bounded implementation decision. The unsafe-path fixture currently has a missing target and therefore does not prove that downstream would reject traversal to an *existing* outside file; add that adversarial case before claiming path safety equivalence.
+**Architectural disposition:** These are behavioral compatibility gaps at the helper boundary; they do **not** demonstrate a change in the upstream method or a need for shared sidecar/schema standardization. Treat downstream hardening of URL/provenance and duplicate-entry validation as a separate, bounded implementation decision. The initial unsafe-path fixture had a missing target and could not distinguish path-safety enforcement from file absence. The added `traversal_existing` fixture supplies the matching bytes outside the root, and the downstream checker accepts them; this demonstrates a path-containment gap in the narrow helper rather than in the upstream method.
 
-Results are produced by the accepted downstream `.github/workflows/validate.yml` with a pinned upstream checkout; no additional workflow was retained because repository governance caps declared workflows. The JSON result is uploaded as a short-retention CI artifact.
+Results are produced by the accepted downstream `.github/workflows/validate.yml` with a pinned upstream checkout; no additional workflow was retained because repository governance caps declared workflows. The JSON result is uploaded as a short-retention CI artifact. The six-scenario amended probe requires its own current-head execution before recording the sixth result as confirmed.
