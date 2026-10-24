@@ -1,6 +1,6 @@
 # Upstream RAHP retained-source compatibility probe
 
-Tracking: [upstream convergence #17](https://github.com/trustoverip/dtgwg-rahp-tf/issues/17), Increment 6.
+Tracking: ToIP RAHP Task Force convergence issue #17, Increment 6.
 
 This bounded probe compares the accepted upstream `review/source_integrity.py::verify_source` against downstream `examples/standalone-trqp/replay.py::source_integrity` with the **same** synthetic retained-source manifest. It is a test of observable behavior, **not** proof of full contract equivalence or target assurance.
 
@@ -9,7 +9,7 @@ This bounded probe compares the accepted upstream `review/source_integrity.py::v
 Use two **trusted**, source-pinned local checkouts (this tool imports their code; it does not fetch them):
 
 ```sh
-python3 tools/source_integrity_compat.py --upstream /path/to/dtgwg-rahp-tf --downstream /path/to/rahp-toolkit
+python3 tools/source_integrity_compat.py --upstream /path/to/upstream-rahp --downstream /path/to/rahp-toolkit
 python3 -m unittest tests.test_source_integrity_compat -v
 ```
 
