@@ -106,6 +106,29 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
+      - name: Checkout pinned upstream VRC consumer decision source
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
+        with:
+          repository: trustoverip/dtgwg-rahp-tf
+          ref: 448e2ff4ca7f747ca899e0e845adfe45f750f094
+          path: upstream-consumer-decision
+          persist-credentials: false
+      - name: Qualify review adapter consumer demand
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -p 'test_upstream_review_consumer_decision.py' -v
+          python3 tools/upstream_review_consumer_decision.py --upstream upstream-consumer-decision --downstream . --output "$RUNNER_TEMP/upstream-review-consumer-decision.json"
+      - name: Retain consumer decision evidence
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: upstream-review-consumer-decision-${{ github.run_id }}
+          path: ${{ runner.temp }}/upstream-review-consumer-decision.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Checkout pinned upstream evidence examples
         if: github.event_name == 'pull_request'
         uses: actions/checkout@v7
