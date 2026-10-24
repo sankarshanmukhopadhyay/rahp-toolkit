@@ -106,6 +106,29 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
+      - name: Checkout accepted upstream for contract ownership audit
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
+        with:
+          repository: trustoverip/dtgwg-rahp-tf
+          ref: 448e2ff4ca7f747ca899e0e845adfe45f750f094
+          path: upstream-contract-audit
+          persist-credentials: false
+      - name: Audit pinned cross-repository contract boundaries
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -p 'test_upstream_contract_ownership_audit.py' -v
+          python3 tools/upstream_contract_ownership_audit.py --upstream upstream-contract-audit --downstream . --output "$RUNNER_TEMP/contract-ownership.json"
+      - name: Retain contract ownership evidence
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: upstream-contract-ownership-${{ github.run_id }}
+          path: ${{ runner.temp }}/contract-ownership.json
+          retention-days: 14
+          if-no-files-found: warn
       - name: Checkout pinned upstream VRC consumer decision source
         if: github.event_name == 'pull_request'
         uses: actions/checkout@v7
