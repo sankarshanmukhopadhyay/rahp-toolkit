@@ -65,7 +65,7 @@ def source_integrity(root: Path) -> dict:
                     rf"[0-9a-f]{{{digits}}}", entry[field]):
                 raise ValueError(f"Malformed {field}: {name}")
         data = path.read_bytes()
-        blob = b"blob " + str(len(data)).encode() + b"\\0" + data
+        blob = b"blob " + str(len(data)).encode() + b"\0" + data
         if hashlib.sha1(blob).hexdigest() != entry["git_blob_sha"]:
             raise ValueError(f"Git blob mismatch: {name}")
         if hashlib.sha256(data).hexdigest() != entry["sha256"]:
