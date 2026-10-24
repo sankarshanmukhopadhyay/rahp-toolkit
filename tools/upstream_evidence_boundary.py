@@ -34,6 +34,9 @@ def accepted(action, root: Path) -> bool:
 
 
 def trqp_variant(root: Path, kind: str):
+    if kind not in {"original", "changed_source", "wrong_assessment",
+                    "missing_finding_evidence", "incomplete_execution"}:
+        raise ValueError(kind)
     if kind == "original":
         return
     if kind == "changed_source":
