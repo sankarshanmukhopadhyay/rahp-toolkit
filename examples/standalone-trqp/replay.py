@@ -6,24 +6,71 @@ import argparse
 import hashlib
 import json
 import re
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from jsonschema import FormatChecker, validators
 
 HERE = Path(__file__).resolve().parent
 
 
+def _retained_path(root: Path, name: str) -> Path:
+    """Resolve a retained source only inside root; reject traversal and symlinks."""
+    if not isinstance(name, str) or not name or "\\" in name:
+        raise ValueError("Unsafe retained path")
+    relative = PurePosixPath(name)
+    if relative.is_absolute() or any(part in ("", ".", "..") for part in name.split("/")):
+        raise ValueError(f"Unsafe retained path: {name}")
+    base = root.resolve(strict=True)
+    path = base
+    for part in relative.parts:
+        path = path / part
+        if path.is_symlink():
+            raise ValueError(f"Symlink retained path: {name}")
+    if not path.is_file() or not path.resolve().is_relative_to(base):
+        raise ValueError(f"Missing or unsafe retained file: {name}")
+    return path
+
+
 def source_integrity(root: Path) -> dict:
-    manifest = json.loads((root / "source-manifest.json").read_text())
+    """Fail closed on source identity, manifest uniqueness, and content digests."""
+    manifest = json.loads(_retained_path(root, "source-manifest.json").read_text())
+    if (not isinstance(manifest, dict)
+            or not isinstance(manifest.get("repository"), str)
+            or not manifest["repository"]
+            or not isinstance(manifest.get("commit"), str)
+            or not re.fullmatch(r"[0-9a-f]{40}", manifest["commit"])
+            or not isinstance(manifest.get("files"), list)
+            or not manifest["files"]):
+        raise ValueError("Manifest requires repository, immutable commit and nonempty files")
+    seen_paths, seen_upstream = set(), set()
     for entry in manifest["files"]:
-        data = (root / entry["path"]).read_bytes()
+        if not isinstance(entry, dict):
+            raise ValueError("Malformed source entry")
+        name, upstream = entry.get("path"), entry.get("upstream_path")
+        if (not isinstance(upstream, str) or not upstream or "\\" in upstream
+                or upstream.startswith("/")
+                or any(part in ("", ".", "..") for part in upstream.split("/"))):
+            raise ValueError("Unsafe upstream path")
+        path = _retained_path(root, name)
+        if name in seen_paths or upstream in seen_upstream:
+            raise ValueError(f"Duplicate source entry: {name}")
+        seen_paths.add(name)
+        seen_upstream.add(upstream)
+        expected_url = (f"https://github.com/{manifest['repository']}/blob/"
+                        f"{manifest['commit']}/{upstream}")
+        if entry.get("url") != expected_url:
+            raise ValueError(f"Source URL disagrees with identity: {name}")
+        for field, digits in (("sha256", 64), ("git_blob_sha", 40)):
+            if not isinstance(entry.get(field), str) or not re.fullmatch(
+                    rf"[0-9a-f]{{{digits}}}", entry[field]):
+                raise ValueError(f"Malformed {field}: {name}")
+        data = path.read_bytes()
         blob = b"blob " + str(len(data)).encode() + b"\0" + data
         if hashlib.sha1(blob).hexdigest() != entry["git_blob_sha"]:
-            raise ValueError(f"Git blob mismatch: {entry['path']}")
+            raise ValueError(f"Git blob mismatch: {name}")
         if hashlib.sha256(data).hexdigest() != entry["sha256"]:
-            raise ValueError(f"SHA-256 mismatch: {entry['path']}")
+            raise ValueError(f"SHA-256 mismatch: {name}")
     return manifest
-
 
 def authorization_examples(path: Path) -> tuple[dict, dict]:
     # The first two HTTP blocks are the authorization query and response.
