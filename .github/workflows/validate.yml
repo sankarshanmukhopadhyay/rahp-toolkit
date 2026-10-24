@@ -106,6 +106,43 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
+      - name: Checkout pinned upstream for post-repair comparison
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
+        with:
+          repository: trustoverip/dtgwg-rahp-tf
+          ref: 448e2ff4ca7f747ca899e0e845adfe45f750f094
+          path: upstream-rahp-compat
+          persist-credentials: false
+      - name: Verify post-repair retained-source equivalence
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -p 'test_source_integrity_compat.py' -v
+          python3 tools/source_integrity_compat.py --upstream upstream-rahp-compat --downstream . | tee "$RUNNER_TEMP/source-compat-postrepair.json"
+          python3 - "$RUNNER_TEMP/source-compat-postrepair.json" <<'PY'
+          import json, sys
+          with open(sys.argv[1], encoding='utf-8') as stream:
+              report = json.load(stream)
+          observed = {row['scenario']: row for row in report['results']}
+          expected = {'valid', 'bad_hash', 'bad_url', 'duplicate', 'unsafe_path', 'traversal_existing'}
+          if set(observed) != expected:
+              raise SystemExit('Missing or unexpected comparison cases')
+          for name, row in observed.items():
+              required = 'accepted' if name == 'valid' else 'rejected'
+              if row['upstream'] != required or row['downstream'] != required:
+                  raise SystemExit(f'{name}: expected both {required}, got {row}')
+          print('Post-repair six-scenario equivalence verified; no target assurance.')
+          PY
+      - name: Upload post-repair source comparison evidence
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-integrity-postrepair-${{ github.run_id }}
+          path: ${{ runner.temp }}/source-compat-postrepair.json
+          retention-days: 14
+          if-no-files-found: warn
       - name: Prove clean release dependency installation
         run: |
           set -euo pipefail
