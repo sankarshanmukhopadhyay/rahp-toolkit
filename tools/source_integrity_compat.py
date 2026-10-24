@@ -38,6 +38,9 @@ def fixture(root: Path, variant: str) -> None:
         entry["url"] = f"https://github.com/example/other/blob/{commit}/spec.md"
     elif variant == "unsafe_path":
         entry["path"] = "../outside.txt"
+    elif variant == "traversal_existing":
+        (root.parent / "outside.txt").write_bytes(data)
+        entry["path"] = "../outside.txt"
     records = [entry, dict(entry)] if variant == "duplicate" else [entry]
     (root / "source-manifest.json").write_text(json.dumps({
         "repository": "example/target", "commit": commit, "files": records
@@ -58,9 +61,10 @@ def compare(upstream: Path, downstream: Path) -> dict:
         "downstream": load_function(downstream / "examples/standalone-trqp/replay.py", "source_integrity"),
     }
     results = []
-    for scenario in ("valid", "bad_hash", "bad_url", "duplicate", "unsafe_path"):
+    for scenario in ("valid", "bad_hash", "bad_url", "duplicate", "unsafe_path", "traversal_existing"):
         with tempfile.TemporaryDirectory(prefix="rahp-source-compat-") as temp:
-            root = Path(temp)
+            root = Path(temp) / "fixture"
+            root.mkdir()
             fixture(root, scenario)
             verdicts = {name: outcome(fn, root) for name, fn in checks.items()}
             results.append({"scenario": scenario, **verdicts,
