@@ -22,9 +22,10 @@ class SourceIntegrityCompatibility(unittest.TestCase):
             self.assertTrue((root / data["files"][0]["path"]).is_file())
 
     def test_negative_cases_have_distinct_faults(self):
-        for variant in ("bad_hash", "bad_url", "duplicate", "unsafe_path"):
+        for variant in ("bad_hash", "bad_url", "duplicate", "unsafe_path", "traversal_existing"):
             with self.subTest(variant=variant), tempfile.TemporaryDirectory() as tmp:
-                root = Path(tmp)
+                root = Path(tmp) / "fixture"
+                root.mkdir()
                 probe.fixture(root, variant)
                 m = json.loads((root / "source-manifest.json").read_text())
                 row = m["files"][0]
@@ -36,6 +37,8 @@ class SourceIntegrityCompatibility(unittest.TestCase):
                     self.assertEqual(len(m["files"]), 2)
                 else:
                     self.assertTrue(row["path"].startswith("../"))
+                    if variant == "traversal_existing":
+                        self.assertTrue((root.parent / "outside.txt").is_file())
 
     def test_missing_checkouts_fail_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -45,6 +48,6 @@ class SourceIntegrityCompatibility(unittest.TestCase):
     def test_equivalent_outcomes_do_not_imply_assurance(self):
         with patch.object(probe, "load_function", side_effect=[lambda root: {}, lambda root: {}]):
             result = probe.compare(Path("up"), Path("down"))
-        self.assertEqual(len(result["results"]), 5)
+        self.assertEqual(len(result["results"]), 6)
         self.assertIn("target assurance", result["not_claimed"])
         self.assertTrue(all(x["classification"] == "compatible" for x in result["results"]))
