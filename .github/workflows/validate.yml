@@ -131,6 +131,7 @@ jobs:
               'bad_url': ('rejected', 'accepted'),
               'duplicate': ('rejected', 'accepted'),
               'unsafe_path': ('rejected', 'rejected'),
+              'traversal_existing': ('rejected', 'accepted'),
           }
           if set(rows) != set(expected):
               raise SystemExit('Missing or unexpected source-compatibility cases')
