@@ -4,7 +4,6 @@ Only accepted, explicitly supplied checkouts are inputs. No network or mutation.
 The audit scopes declared cross-repository interfaces, not arbitrary repository code.
 """
 import argparse
-import ast
 import hashlib
 import json
 from pathlib import Path
@@ -50,14 +49,6 @@ def assess(upstream: Path, downstream: Path) -> dict:
     schema = json.loads((upstream / UPSTREAM["review_schema"]).read_text())
     if schema.get("properties", {}).get("schema", {}).get("const") != "rahp-spec-review/v1":
         raise ValueError("Accepted upstream review authority changed")
-    for key in ("upstream_record_probe", "upstream_evidence_probe", "consumer_decision"):
-        tree = ast.parse((downstream / DOWNSTREAM[key]).read_text())
-        strings = [node.value for node in ast.walk(tree)
-                   if isinstance(node, ast.Constant) and isinstance(node.value, str)]
-        if not any(EXPECTED_UPSTREAM_SHA in value for value in strings) and key != "upstream_record_probe" and key != "upstream_evidence_probe":
-            # Consumer and boundary probes may use paths supplied by CI; check those
-            # separately at the workflow level rather than requiring embedded pins.
-            pass
     workflow = (downstream / ".github/workflows/validate.yml").read_text()
     if EXPECTED_UPSTREAM_SHA not in workflow:
         raise ValueError("Accepted upstream checkout pin missing in validation")
