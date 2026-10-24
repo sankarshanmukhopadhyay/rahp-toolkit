@@ -1,6 +1,6 @@
 # TRQP retained-source integrity hardening
 
-Tracking: [upstream convergence #17](https://github.com/trustoverip/dtgwg-rahp-tf/issues/17), Increment 6, and [downstream comparison PR #1135](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/1135).
+Tracking: ToIP RAHP Task Force convergence issue #17, Increment 6, and [downstream comparison PR #1135](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/1135).
 
 ## Bounded claim
 
