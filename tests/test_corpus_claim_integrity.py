@@ -36,6 +36,24 @@ class CorpusClaimIntegrityTest(unittest.TestCase):
         errors = claim.static_claim_errors(corpus, {"update_mode": "assisted"})
         self.assertTrue(any("mixed-grounding" in e for e in errors))
 
+    def test_source_informed_pending_review_is_rejected(self):
+        corpus = {
+            "evidence_grade": "source-informed",
+            "source_commit": "a" * 40,
+            "provenance_status": "composition-review-pending",
+        }
+        errors = claim.static_claim_errors(corpus, {"update_mode": "derived"})
+        self.assertTrue(any("pending provenance" in e for e in errors))
+
+    def test_any_corpus_grade_is_rejected_for_mixed_grounding(self):
+        corpus = {
+            "evidence_grade": "source-informed",
+            "source_commit": "a" * 40,
+            "provenance_status": "semantic-requalification-complete-mixed-grounding",
+        }
+        errors = claim.static_claim_errors(corpus, {"update_mode": "assisted"})
+        self.assertTrue(any("corpus-wide evidence grade" in e for e in errors))
+
     def test_source_informed_symbolic_baseline_is_not_promoted_or_blocked(self):
         corpus = {"evidence_grade": "source-informed", "source_commit": "interface-assumption-baseline"}
         self.assertEqual(claim.static_claim_errors(corpus, {"update_mode": "assisted"}), [])
