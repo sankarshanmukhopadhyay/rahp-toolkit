@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import argparse, sys, yaml
 from portable_catalogue import validate_block
+from corpus_claim_integrity import static_claim_errors
 ROOT=Path(__file__).resolve().parent.parent
 
 def load(path): return yaml.safe_load(path.read_text(encoding='utf-8')) or {}
@@ -51,6 +52,8 @@ def main()->int:
         source_cfg=manifest_sources.get(cid)
         if not source_cfg: errors.append(f'{path.relative_to(ROOT)}: corpus id {cid} missing from corpora/sources.yaml')
         elif source_cfg.get('corpus_file')!=str(path.relative_to(ROOT)): errors.append(f'{path.relative_to(ROOT)}: sources.yaml corpus_file mismatch for {cid}')
+        for claim_error in static_claim_errors(c, source_cfg):
+            errors.append(f'{path.relative_to(ROOT)}: {claim_error}')
         if source_cfg and source_cfg.get('update_mode')=='derived':
             if not c.get('depends_on'): errors.append(f'{path.relative_to(ROOT)}: derived corpus requires corpus.depends_on')
             dep_ids={d.get('corpus_id') for d in (c.get('depends_on') or []) if isinstance(d,dict)}
