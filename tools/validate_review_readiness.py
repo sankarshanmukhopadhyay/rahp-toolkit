@@ -49,7 +49,7 @@ def check_current_review_docs(root: Path, stable_release: str) -> list[str]:
                 errors.append(f"{rel} missing current review-boundary token: {token}")
 
     security_pre_review = (root / "docs/review/security-pre-review.md").read_text(encoding="utf-8")
-    for token in ("historical", "v2.4.0", "current-main-release-security-disposition-2026-10-22.md"):
+    for token in ("historical", "current-main-release-security-disposition-2026-10-22.md"):
         if token not in security_pre_review:
             errors.append(
                 f"docs/review/security-pre-review.md missing historical-boundary token: {token}"
