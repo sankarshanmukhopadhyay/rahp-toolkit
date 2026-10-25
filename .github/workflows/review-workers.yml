@@ -1,0 +1,110 @@
+name: Advance bounded RAHP review workers
+
+on:
+  issues:
+    types: [opened, labeled, reopened]
+  schedule:
+    - cron: '23 */6 * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/review-workers.yml'
+      - 'tools/combined_review_worker.py'
+  workflow_dispatch:
+    inputs:
+      worker:
+        description: Review worker to run
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - combined
+          - repository
+      issue_number:
+        description: Optional issue number for a single selected worker
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  invalid_dispatch:
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      inputs.worker == 'all' &&
+      inputs.issue_number != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject ambiguous targeted dispatch
+        run: |
+          echo '::error::issue_number may only be supplied when exactly one worker is selected.'
+          exit 2
+
+  combined_review:
+    if: >-
+      github.event_name == 'schedule' ||
+      github.event_name == 'push' ||
+      (github.event_name == 'issues' && contains(github.event.issue.body, 'dtg:portfolio:combined:')) ||
+      (github.event_name == 'workflow_dispatch' &&
+       (inputs.worker == 'combined' || (inputs.worker == 'all' && inputs.issue_number == '')))
+    concurrency:
+      group: rahp-combined-review-worker-${{ github.event.issue.number || inputs.issue_number || 'reconcile' }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Validate combined-review worker
+        run: python3 tools/combined_review_worker.py --self-test
+      - name: Advance routed combined review
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_ISSUE_NUMBER: ${{ inputs.issue_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          issue_number="${EVENT_ISSUE_NUMBER:-${INPUT_ISSUE_NUMBER:-}}"
+          if [ -n "$issue_number" ]; then
+            python3 tools/combined_review_worker.py --issue "$issue_number"
+          else
+            python3 tools/combined_review_worker.py
+          fi
+
+  dtg_repository_review:
+    if: >-
+      github.event_name == 'schedule' ||
+      (github.event_name == 'issues' &&
+       contains(github.event.issue.body, 'rahp-assessment-key:dtg:repository:')) ||
+      (github.event_name == 'workflow_dispatch' &&
+       (inputs.worker == 'repository' || (inputs.worker == 'all' && inputs.issue_number == '')))
+    concurrency:
+      group: rahp-dtg-repository-review-${{ github.event.issue.number || inputs.issue_number || 'reconcile' }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Validate gatherer-native worker
+        run: python3 tools/dtg_repository_review_worker.py --self-test
+      - name: Advance DTG repository review
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_ISSUE_NUMBER: ${{ inputs.issue_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          issue_number="${EVENT_ISSUE_NUMBER:-${INPUT_ISSUE_NUMBER:-}}"
+          if [ -n "$issue_number" ]; then
+            python3 tools/dtg_repository_review_worker.py --issue "$issue_number"
+          else
+            python3 tools/dtg_repository_review_worker.py
+          fi
