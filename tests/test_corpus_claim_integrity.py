@@ -90,6 +90,17 @@ class CorpusClaimIntegrityTest(unittest.TestCase):
         )
         self.assertEqual(state["state"], "declared-currentness-unchecked")
 
+    def test_zkp_authority_and_portfolio_discovery_are_separate(self):
+        import yaml
+        sources = yaml.safe_load((ROOT / "corpora" / "sources.yaml").read_text())
+        item = next(x for x in sources["sources"] if x["corpus_id"] == "CORPUS-DTG-ZKP")
+        source = item["source"]
+        corpus = yaml.safe_load((ROOT / "corpora" / "dtg-zkp.yaml").read_text())["corpus"]
+        self.assertEqual(source["repository"], "trustoverip/dtgwg-zkp-spec")
+        self.assertEqual(source["portfolio_repository"], "trustoverip/dtgwg-zkp-tf")
+        self.assertEqual(source["relationship_to_portfolio"], "specification-authority-surface")
+        self.assertEqual(source["authority_pin"], corpus["source_commit"])
+
     def test_corpus_status_marks_drift_as_reassessment_required(self):
         results = [{"corpus_id": "TEST", "status": "CORPUS_REVIEW_REQUIRED"}]
         byid = {"TEST": {"corpus_id": "TEST", "corpus_file": "corpora/test.yaml"}}
