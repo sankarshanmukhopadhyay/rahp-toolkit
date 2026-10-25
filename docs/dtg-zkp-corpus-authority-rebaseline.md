@@ -55,8 +55,8 @@ In particular it does not establish that:
   current specification repository; or
 - a newer upstream ZKP revision than the #782 baseline has been assessed.
 
-For those reasons the corpus remains without an explicit `evidence_grade` and carries
-`provenance_status: authoritative-source-pinned-scenario-review-pending`.
+Issue #1147 has now completed that scenario-by-scenario review. The corpus remains without an explicit `evidence_grade`, but now carries
+`provenance_status: semantic-requalification-complete-mixed-grounding` because eight of the 30 retained scenarios remain scenario-baseline hypotheses rather than source-grounded current ZKP claims.
 
 ## Validation invariant
 
@@ -71,12 +71,8 @@ The scenario-corpus validator now checks two relevant invariants for ordinary
 Focused regression tests cover the matching-pin case, mismatched-pin rejection and
 premature-grade rejection.
 
-## Next evidence step
+## Semantic requalification outcome
 
-A later semantic requalification should inspect each retained UC-* scenario against a
-reviewed immutable `dtgwg-zkp-spec` revision and record, for each scenario, whether it
-is retained, revised, split, retired or replaced by a specification-owned construction
-or conformance proposition.
+That next evidence step is now complete in #1147. The 30-scenario review produced 13 retained, 9 revised and 8 scenario-baseline dispositions. See [DTG ZKP legacy-scenario semantic requalification](dtg-zkp-scenario-requalification.md).
 
-Only that review should decide whether the standalone corpus can move from **Not
-declared** to an explicit evidence grade.
+The result is intentionally **mixed grounding**. The review therefore does not promote the corpus to `source-pinned`; any future corpus-wide grade would require either a grade definition compatible with mixed grounding or a corpus restructuring that separates source-grounded scenarios from historical hypotheses.
