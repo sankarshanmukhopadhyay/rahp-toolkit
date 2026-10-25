@@ -16,6 +16,7 @@ REQUIRED = [
     "docs/review/security-pre-review.md",
     "docs/review/semantic-coverage.md",
     "docs/review/software-quality-sweep.md",
+    "docs/review/repository-assurance-integrity-sweep-2026-10-25.md",
     "method/review/claim-evidence-ledger.yaml",
     "method/review/false-assurance-challenges.yaml",
 ]
