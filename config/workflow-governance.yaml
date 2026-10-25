@@ -51,6 +51,9 @@ workflows:
   execution-benchmark.yml:
     class: bounded-evidence
     responsibility: execution-cost-benchmarking
+  release-codename-policy.yml:
+    class: bounded-evidence
+    responsibility: release-codename-policy-validation
   workflow-governance.yml:
     class: governance
     responsibility: github-actions-surface-governance
