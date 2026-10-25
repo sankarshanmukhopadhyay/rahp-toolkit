@@ -27,12 +27,8 @@ def load_yaml(path: str):
         raise ValueError(f"{path}: top-level value must be a mapping")
     return value
 
-def main() -> int:
-    errors = []
-    for rel in REQUIRED:
-        if not (ROOT / rel).is_file():
-            errors.append(f"missing review surface: {rel}")
-
+def check_current_review_docs(root: Path, stable_release: str) -> list[str]:
+    errors: list[str] = []
     current_review_docs = {
         "docs/review/review-readiness-baseline.md": (stable_release,),
         "docs/review/reproduction.md": (
@@ -46,17 +42,27 @@ def main() -> int:
         ),
     }
     for rel, tokens in current_review_docs.items():
-        text = (ROOT / rel).read_text(encoding="utf-8")
+        text = (root / rel).read_text(encoding="utf-8")
         for token in tokens:
             if token not in text:
                 errors.append(f"{rel} missing current review-boundary token: {token}")
 
-    security_pre_review = (ROOT / "docs/review/security-pre-review.md").read_text(encoding="utf-8")
+    security_pre_review = (root / "docs/review/security-pre-review.md").read_text(encoding="utf-8")
     for token in ("historical", "v2.4.0", "current-main-release-security-disposition-2026-10-22.md"):
         if token not in security_pre_review:
             errors.append(
                 f"docs/review/security-pre-review.md missing historical-boundary token: {token}"
             )
+    return errors
+
+
+def main() -> int:
+    errors = []
+    for rel in REQUIRED:
+        if not (ROOT / rel).is_file():
+            errors.append(f"missing review surface: {rel}")
+
+    errors.extend(check_current_review_docs(ROOT, stable_release))
 
     if errors:
         for e in errors: print("ERROR", e)
