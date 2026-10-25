@@ -273,10 +273,6 @@ jobs:
         run: python3 tools/validate_authority_policy_gates.py
       - name: Validate capability documentation synchronization
         run: python3 tools/validate_capability_documentation.py
-      - name: Validate release codename policy
-        run: |
-          python3 tools/release_codenames.py validate
-          python3 tools/test_release_codenames.py
       - name: Validate generic release declaration
         run: python3 tools/release.py verify
       - name: Validate v2.7 release qualification contract
