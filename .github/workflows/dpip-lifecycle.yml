@@ -91,7 +91,6 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          DPIP_HANDOFF_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
           RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
           DPIP_REPOSITORY: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
           RAHP_EVIDENCE_OUTBOX: ${{ runner.temp }}/rahp-evidence-outbox
