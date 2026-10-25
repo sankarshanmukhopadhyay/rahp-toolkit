@@ -230,7 +230,7 @@ module RahpPagesProjection
       if provenance.end_with?("review-pending") || provenance == "composition-review-pending"
         "Review pending — do not infer a stronger evidence claim."
       elsif provenance == "semantic-requalification-complete-mixed-grounding"
-        "Mixed grounding — semantic review is complete, but no corpus-wide source-pinned claim is established."
+        "Mixed grounding — semantic review is complete, but no corpus-wide evidence grade is established."
       elsif grade.nil?
         "Undeclared — no corpus evidence grade is asserted."
       else
