@@ -53,6 +53,9 @@ The selected candidate must then be persisted in `config/release-codename-histor
 7. Release publication remains idempotent and cannot rewrite an existing GitHub Release.
 8. Green workflow execution is necessary but does not replace the human release judgment embodied by the reviewed release declaration/qualification state.
 
+9. Qualification evidence may be pinned to a candidate commit that precedes the final tagged release commit only when the candidate is an ancestor and every intervening path is bounded release/publication metadata. Executable implementation or test changes after the evidence SHA require a new qualified evidence baseline.
+10. The existing release workflow enforces this candidate-to-publication lineage before and immediately before write-authorized publication; it does not require a separate workflow.
+
 ## Historical alias
 
 `v1.8.0 — Common Map` remains immutable historical release metadata. The current source page labels *Cyrestis thyodamas* as `map butterfly`; the repository policy therefore records `Common Map` as a grandfathered historical alias. This preserves the published judgment trail rather than rewriting history to track later source wording.

@@ -1,5 +1,7 @@
 # DTG Credential Specification × ZKP × Trust Tasks Framework v0.5.0 pressure test
 
+> **Historical assessment boundary.** This review was completed on 2026-08-27 against the immutable component commits shown below and RAHP v1.5.0. `status: complete` means the review record itself is complete; its findings remain open. The ZKP source used by this historical assessment is the task-force repository at its recorded pin. Current maintained RAHP ZKP specification authority is `trustoverip/dtgwg-zkp-spec` as established later by #1145/#1147. The current composed-corpus provenance state is tracked separately and must not be inferred from this historical review.
+
 <!-- BEGIN GENERATED PRESSURE TEST -->
 
 ## Generated pressure-test record
@@ -15,9 +17,12 @@
 | Title | DTG Credential Specification × ZKP × Trust Tasks Framework v0.5.0 pressure test |
 | Reviewed on | 2026-08-27 |
 | Target repository | `trustoverip/dtgwg-cred-spec + trustoverip/dtgwg-zkp-tf + trustoverip/dtgwg-trust-tasks-spec` |
-| Target version | Credential Specification current main × ZKP current main × Trust Tasks Framework v0.5.0 |
+| Target version | Credential Specification + ZKP + Trust Tasks Framework at the immutable component commits recorded below |
 | Target commit | `6425a74136c1d2dfa7115889abe0b3521700e887` |
 | Target source paths | `corpora/credential-zkp-trust-tasks-composed.yaml` |
+| Target pin: credential_spec | `trustoverip/dtgwg-cred-spec@b89f389abbdae77ba60b673c0836c781c2b54169` |
+| Target pin: trust_tasks | `trustoverip/dtgwg-trust-tasks-spec@6425a74136c1d2dfa7115889abe0b3521700e887` |
+| Target pin: zkp | `trustoverip/dtgwg-zkp-tf@3b6b3f2e76005d6f579d076ee2833ef56d599b65` |
 | RAHP repository | `sankarshanmukhopadhyay/rahp-toolkit` |
 | RAHP version | `v1.5.0` |
 | Engine contract | `rahp-engine-contract-v1` |

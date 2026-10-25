@@ -20,6 +20,7 @@ No document in this directory is itself assurance evidence. The normative portab
 8. [Reproduction guide](../docs/review/reproduction.md)
 9. [Claim/evidence/falsification ledger](../method/review/claim-evidence-ledger.yaml)
 10. [False-assurance challenge matrix](../method/review/false-assurance-challenges.yaml)
+11. [Repository assurance-integrity sweep](../docs/review/repository-assurance-integrity-sweep-2026-10-25.md)
 
 ## Stable boundary under review
 
@@ -28,7 +29,7 @@ No document in this directory is itself assurance evidence. The normative portab
 - Normalized result schema: `1`
 - Evidence retention contract: `rahp-evidence-retention-v1`
 
-v2.9.0 is the qualified stable RAHP release. Independent-review readiness remains a separate claim and is not implied by release qualification. Independent-review readiness is a separate claim and is not implied by release qualification.
+v2.9.0 is the qualified stable RAHP release. Independent-review readiness remains a separate claim and is not implied by release qualification; no independent external audit or certification is asserted by this working pack.
 
 ## Reviewer operating rule
 

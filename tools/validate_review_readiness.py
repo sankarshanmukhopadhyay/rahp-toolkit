@@ -16,6 +16,7 @@ REQUIRED = [
     "docs/review/security-pre-review.md",
     "docs/review/semantic-coverage.md",
     "docs/review/software-quality-sweep.md",
+    "docs/review/repository-assurance-integrity-sweep-2026-10-25.md",
     "method/review/claim-evidence-ledger.yaml",
     "method/review/false-assurance-challenges.yaml",
 ]
@@ -26,6 +27,35 @@ def load_yaml(path: str):
     if not isinstance(value, dict):
         raise ValueError(f"{path}: top-level value must be a mapping")
     return value
+
+def check_current_review_docs(root: Path, stable_release: str) -> list[str]:
+    errors: list[str] = []
+    current_review_docs = {
+        "docs/review/review-readiness-baseline.md": (stable_release,),
+        "docs/review/reproduction.md": (
+            stable_release,
+            f"git checkout {stable_release}",
+            "requirements-release.lock",
+        ),
+        "docs/review/known-limitations.md": (
+            stable_release,
+            "requirements-release.lock",
+        ),
+    }
+    for rel, tokens in current_review_docs.items():
+        text = (root / rel).read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in text:
+                errors.append(f"{rel} missing current review-boundary token: {token}")
+
+    security_pre_review = (root / "docs/review/security-pre-review.md").read_text(encoding="utf-8")
+    for token in ("historical", "current-main-release-security-disposition-2026-10-22.md"):
+        if token not in security_pre_review:
+            errors.append(
+                f"docs/review/security-pre-review.md missing historical-boundary token: {token}"
+            )
+    return errors
+
 
 def main() -> int:
     errors = []
@@ -119,6 +149,7 @@ def main() -> int:
                     errors.append(f"{cid}: evidence_ref fragment not found: {evidence_ref}")
 
     stable_release = str(expected["toolkit_release"] or "")
+    errors.extend(check_current_review_docs(ROOT, stable_release))
     engine_revision = str(expected["engine_revision"] or "")
     result_schema = str(expected["normalized_result_schema"] or "")
 

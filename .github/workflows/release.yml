@@ -103,6 +103,11 @@ jobs:
       - name: Requalify current release state
         if: steps.publication.outputs.publish == 'true'
         run: python3 tools/release.py qualify
+      - name: Verify qualified candidate lineage
+        if: steps.publication.outputs.publish == 'true'
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: python3 tools/validate_release_candidate_lineage.py --head "$RELEASE_SHA"
       - name: Require pinned v2.7 qualification evidence and explicit GO
         if: steps.publication.outputs.publish == 'true' && steps.release.outputs.tag == 'v2.7.0'
         env:
@@ -159,6 +164,10 @@ jobs:
           set -euo pipefail
           python3 tools/release.py metadata --github-output "$GITHUB_OUTPUT"
           python3 tools/release.py qualify
+      - name: Re-verify qualified candidate lineage before write
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: python3 tools/validate_release_candidate_lineage.py --head "$RELEASE_SHA"
       - name: Check qualified-to-publish handoff
         env:
           EXPECTED_TAG: ${{ needs.qualify.outputs.tag }}

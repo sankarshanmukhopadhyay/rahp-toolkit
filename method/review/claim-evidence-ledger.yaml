@@ -81,10 +81,76 @@ claims:
     normative_evidence:
       - method/versioning.yaml
       - method/engine-contract.yaml
-      - method/v2.4-release-qualification.yaml
+      - method/v2.9-release-qualification.yaml
     executable_evidence:
       - tools/validate_engine_contract.py
       - tools/validate_review_readiness.py
     falsification: Produce contradictory current compatibility declarations that pass review-readiness validation.
     expected_if_falsified: release/documentation integrity defect
     limitations: Historical documents can intentionally describe older boundaries when clearly identified as historical.
+
+  - id: RCL-008
+    claim: Corpus evidence/provenance claims cannot silently contradict recorded review state or source authority.
+    scope: scenario-corpus provenance and evidence-grounding integrity
+    normative_evidence:
+      - docs/assurance-claim-integrity.md
+      - docs/reading-scenario-corpus.md
+    executable_evidence:
+      - tools/validate_scenario_corpora.py
+      - tools/corpus_claim_integrity.py
+      - tests/test_corpus_claim_integrity.py
+    falsification: Declare a corpus-wide evidence grade while review is pending or mixed grounding is recorded, or use an authority pin inconsistent with the canonical source registry, and still pass validation.
+    expected_if_falsified: assurance/provenance defect
+    limitations: Machine checks detect recorded contradictions; they do not decide substantive evidence sufficiency or source truth.
+  - id: RCL-009
+    claim: Independent-review guidance is synchronized to the stable release and does not present historical pre-review evidence as current qualification.
+    scope: reviewer-facing documentation and stable review boundary
+    normative_evidence:
+      - review/README.md
+      - docs/review/reproduction.md
+      - docs/review/review-readiness-baseline.md
+      - docs/review/known-limitations.md
+    executable_evidence:
+      - tools/validate_review_readiness.py
+      - tests/test_review_readiness_versioning.py
+    falsification: Advance method/versioning.yaml stable_release while reviewer entry/reproduction/baseline material still instructs reviewers to treat an older release as the current stable target.
+    expected_if_falsified: review/publication integrity defect
+    limitations: Historical release-specific review records may intentionally retain older release references when clearly labelled historical.
+  - id: RCL-010
+    claim: The GitHub Actions surface remains within the governed 20-workflow budget with an exact declared inventory.
+    scope: CI governance and workflow surface
+    normative_evidence:
+      - config/workflow-governance.yaml
+    executable_evidence:
+      - tools/validate_workflow_governance.py
+    falsification: Add a twenty-first workflow or an undeclared workflow without causing workflow-governance validation to fail.
+    expected_if_falsified: CI governance defect
+    limitations: The workflow budget constrains repository automation surface; it does not establish that every workflow is operationally necessary or sufficient.
+  - id: RCL-011
+    claim: Release dependency reproducibility is hash-locked for the governed release runner while ordinary contributor installs remain functionally, not byte-for-byte, reproducible.
+    scope: release supply-chain and independent reproduction
+    normative_evidence:
+      - requirements-release.lock
+      - docs/releases/v2.9.0.md
+      - docs/review/known-limitations.md
+    executable_evidence:
+      - tests/test_release_dependency_lock.py
+      - .github/workflows/release.yml
+      - .github/workflows/validate.yml
+    falsification: Publish a qualified release using unpinned Python release dependencies, or describe the flexible requirements.txt environment as bit-reproducible.
+    expected_if_falsified: release/reproducibility integrity defect
+    limitations: Hash locking constrains the governed Python package set; it does not make GitHub-hosted runner images, external source availability, or all platform dependencies byte-reproducible.
+
+  - id: RCL-012
+    claim: A published release cannot contain unqualified implementation changes after the evidence candidate SHA.
+    scope: candidate-to-publication release lineage
+    normative_evidence:
+      - docs/release-governance.md
+      - docs/review/repository-assurance-integrity-sweep-2026-10-25.md
+    executable_evidence:
+      - tools/validate_release_candidate_lineage.py
+      - tests/test_release_candidate_lineage.py
+      - .github/workflows/release.yml
+    falsification: Modify executable code or tests after the qualified candidate SHA and still publish the descendant commit without establishing a new evidence baseline.
+    expected_if_falsified: release/assurance defect
+    limitations: The bounded post-candidate allow-list protects repository paths; it does not independently authenticate external CI services or GitHub platform execution.

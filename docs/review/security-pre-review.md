@@ -1,10 +1,10 @@
 # RAHP hostile-input security pre-review
 
-Status: pre-review evidence for independent-review readiness. This is not a claim that RAHP is secure against every hostile input.
+Status: **historical bounded pre-review evidence**, originally executed against the v2.4.0 boundary. This is not a current-release security sign-off and not a claim that RAHP is secure against every hostile input. For the current stable release security disposition, see `docs/review/current-main-release-security-disposition-2026-10-22.md` and the v2.9.0 release evidence.
 
 ## Scope
 
-The review considered the reviewer-facing CLI, YAML/JSON parsing surfaces, subprocess invocation, file/path handling, CI execution, dependency resolution and resource-bound assumptions. The review target is the stable v2.4.0 / engine-contract revision 1.3 boundary, plus the review-readiness changes made after that release.
+The review considered the reviewer-facing CLI, YAML/JSON parsing surfaces, subprocess invocation, file/path handling, CI execution, dependency resolution and resource-bound assumptions. Its immutable historical target was v2.4.0 / engine-contract revision 1.3 plus the review-readiness changes then under development. It remains useful historical evidence but must not be represented as having examined later release deltas.
 
 ## Findings and disposition
 
@@ -26,6 +26,6 @@ These observations are bounded to the inspected surfaces; they are not a reposit
 
 ## Residual risks and limits
 
-Dependency versions in 'requirements.txt' are lower-bounded rather than cryptographically locked, so clean reproduction is not bit-for-bit dependency reproduction. Several validators intentionally load repository-controlled structured data without general resource quotas; comprehensive denial-of-service qualification for adversarially huge inputs has not been established. Source availability and authenticity outside the repository remain governed by provenance/source-pin rules rather than by this pre-review. GitHub Actions and third-party actions are supply-chain dependencies; workflow pinning and platform controls should be reviewed independently by a third party.
+At the historical v2.4.0 review boundary, dependency versions in `requirements.txt` were lower-bounded rather than cryptographically locked. Current v2.9.0 release publication uses a separate hash-locked `requirements-release.lock`; the historical observation remains true for its inspected baseline and for the flexible contributor environment, but no longer describes the governed release dependency path. Several validators intentionally load repository-controlled structured data without general resource quotas; comprehensive denial-of-service qualification for adversarially huge inputs has not been established. Source availability and authenticity outside the repository remain governed by provenance/source-pin rules rather than by this pre-review. GitHub Actions and third-party actions are supply-chain dependencies; workflow pinning and platform controls should be reviewed independently by a third party.
 
 No unresolved finding discovered in this bounded pre-review currently justifies a positive security assurance claim. Absence of another finding is not evidence of absence.

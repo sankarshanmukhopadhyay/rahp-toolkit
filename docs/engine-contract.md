@@ -33,7 +33,7 @@ source → observation → trigger → assessment → evidence → evaluation
 
 A detector signal is not automatically a finding. Evidence must be classified, relevant controls and assurance tests credited, and the residual state recorded. A result with zero findings is not equivalent to assured when unresolved assurance gaps, review-required propositions, or unassessed propositions remain.
 
-The normalized result remains schema version `1`. The normalized result remains schema version `1`; compatible additive engine evolution through revision 1.3 preserves that result compatibility boundary.
+The normalized result remains schema version `1`; compatible additive engine evolution through revision 1.3 preserves that result compatibility boundary.
 
 ## How the engine contract increments
 

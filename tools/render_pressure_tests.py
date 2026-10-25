@@ -157,6 +157,15 @@ def render_review(review: dict[str, Any]) -> str:
         f"| Target version | {md_cell(target.get('version'))} |",
         f"| Target commit | `{md_cell(target.get('commit'))}` |",
         f"| Target source paths | {code_list(target.get('source_paths'))} |",
+    ]
+    repositories = target.get("repositories") or {}
+    commits = target.get("commits") or {}
+    if isinstance(repositories, dict) and isinstance(commits, dict):
+        for key in sorted(set(repositories) & set(commits)):
+            lines.append(
+                f"| Target pin: {md_cell(key)} | `{md_cell(repositories.get(key))}@{md_cell(commits.get(key))}` |"
+            )
+    lines += [
         f"| RAHP repository | `{md_cell(against.get('repository'))}` |",
         f"| RAHP version | `{md_cell(against.get('rahp_version'))}` |",
         f"| Engine contract | `{md_cell(against.get('engine_contract'))}` |",

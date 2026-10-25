@@ -96,6 +96,36 @@ def build_context() -> ValidationContext:
     )
 
 
+def validate_target_provenance(target: dict, grade: str, prefix: str) -> list[str]:
+    errors: list[str] = []
+    repositories = target.get("repositories")
+    commits = target.get("commits")
+    if repositories is not None or commits is not None:
+        if not isinstance(repositories, dict) or not repositories:
+            errors.append(f"{prefix}: review.target.repositories must be a non-empty mapping when component pins are used")
+            repositories = {}
+        if not isinstance(commits, dict) or not commits:
+            errors.append(f"{prefix}: review.target.commits must be a non-empty mapping when component repositories are used")
+            commits = {}
+        if set(repositories) != set(commits):
+            errors.append(f"{prefix}: review.target.repositories and review.target.commits must use identical component keys")
+        for key, repository in repositories.items():
+            if not str(repository or "").strip():
+                errors.append(f"{prefix}: review.target.repositories.{key} must identify a repository")
+        for key, sha in commits.items():
+            if not re.fullmatch(r"[0-9a-fA-F]{40}", str(sha or "")):
+                errors.append(f"{prefix}: review.target.commits.{key} must be a full 40-character commit SHA")
+        aggregate = str(target.get("commit") or "")
+        if aggregate and commits and aggregate not in {str(v) for v in commits.values()}:
+            errors.append(f"{prefix}: review.target.commit must correspond to one recorded component commit")
+        version = str(target.get("version") or "")
+        if commits and "current main" in version.lower():
+            errors.append(f"{prefix}: pinned multi-repository review.target.version must not claim 'current main'")
+        if grade == "source-pinned" and not commits:
+            errors.append(f"{prefix}: source-pinned multi-repository assessment requires component commit pins")
+    return errors
+
+
 def resolve_files(values: list[pathlib.Path] | None) -> list[pathlib.Path]:
     if not values:
         return sorted(ROOT.glob("examples/**/pressure-test.yaml"))
@@ -143,6 +173,7 @@ def validate_files(
         grade = str(review.get("evidence_grade") or "source-pinned")
         if grade == "source-pinned" and not commit:
             errors.append(f"{rel}: source-pinned assessment requires review.target.commit")
+        errors.extend(validate_target_provenance(target, grade, str(rel)))
 
         against = review.get("reviewed_against") or {}
         if not against.get("rahp_version"):
