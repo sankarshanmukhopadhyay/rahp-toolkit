@@ -23,6 +23,8 @@ A **corpus** is a group of proposed situations in which an implementation or gov
 
 **Do not read a scenario row as a finding.** The scenario is a proposed test question. An **evidence grade** describes how the scenario adapter is grounded in source material, not whether a system is safe. `source-pinned` indicates declared pinned source grounding; `source-informed` draws from source semantics without a complete normative baseline; `scenario-baseline` is a working pressure-test hypothesis. **Not declared** means the canonical corpus has no grade field. Do not infer a stronger grade from descriptive provenance text.
 
+Corpus pages also show **claim integrity**. This is a metadata/lifecycle interpretation, not another evidence grade. `Review pending` means recorded provenance says review remains incomplete; `Mixed grounding` means semantic review is complete but a single corpus-wide grade would overstate the evidence; `Undeclared` means no grade is asserted. Source drift detected by the corpus monitor can additionally require reassessment without automatically downgrading historical evidence.
+
 ## Worked reading: TT-002 — five questions, one answer
 
 Open [TT-002 in the Trust Tasks corpus](../corpora/trust-tasks/). It asks whether a signed task can be accepted by a recipient other than its intended audience.

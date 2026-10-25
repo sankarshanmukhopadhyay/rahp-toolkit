@@ -29,7 +29,7 @@ flowchart LR
 
 The DTG Portfolio Monitor repository registry is used as a **discovery and portfolio-scope control plane**. It tells RAHP which repositories are part of the monitored DTG landscape and supplies useful metadata such as workstream, lifecycle, role, reporting weight and material paths.
 
-It does **not** decide which source a RAHP corpus must use. `corpora/sources.yaml` records that choice explicitly. For example, `CORPUS-DTG-ZKP` now uses `trustoverip/dtgwg-zkp-spec` directly as specification/conformance authority; `trustoverip/dtgwg-zkp-tf` is retained as requirements/discussion lineage and the historical downstream fork is not the current source of record.
+It does **not** decide which source a RAHP corpus must use. `corpora/sources.yaml` records that choice explicitly. For example, `CORPUS-DTG-ZKP` now uses `trustoverip/dtgwg-zkp-spec` directly as specification/conformance authority. Portfolio discovery remains keyed to the registered `trustoverip/dtgwg-zkp-tf` workstream; that mapping is discovery metadata, not source authority. The task-force repository is retained as requirements/discussion lineage and the historical downstream fork is not the current source of record.
 
 ## Multi-source external corpora
 
@@ -111,3 +111,10 @@ An AI agent may compare versions, classify changes, propose scenario edits, find
 ## Composed corpora
 
 A composed corpus such as `CORPUS-TT-CREDSPEC-COMPOSED` tracks **corpus dependencies**, not a synthetic Git repository. Its `depends_on` block identifies the adapter versions and source baselines from which the cross-spec scenarios were composed. Re-baselining either dependency should trigger recomposition review.
+
+
+## Claim integrity and reassessment
+
+Corpus source status and evidence grading are deliberately separate. A tracked source or dependency change can mark a corpus **reassessment-required** without mechanically changing its recorded `evidence_grade`. Conversely, an immutable pin does not by itself authorize an evidence grade.
+
+The [assurance claim integrity](assurance-claim-integrity.md) checks fail closed on contradictions that can be established from repository metadata and expose pending, mixed-grounding, undeclared and reassessment states to readers. Substantive grade promotion remains an accountable semantic review decision.

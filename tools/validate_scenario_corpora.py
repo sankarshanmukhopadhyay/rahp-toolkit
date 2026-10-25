@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import argparse, sys, yaml
 from portable_catalogue import validate_block
+from corpus_claim_integrity import static_claim_errors
 ROOT=Path(__file__).resolve().parent.parent
 
 def load(path): return yaml.safe_load(path.read_text(encoding='utf-8')) or {}
@@ -51,6 +52,8 @@ def main()->int:
         source_cfg=manifest_sources.get(cid)
         if not source_cfg: errors.append(f'{path.relative_to(ROOT)}: corpus id {cid} missing from corpora/sources.yaml')
         elif source_cfg.get('corpus_file')!=str(path.relative_to(ROOT)): errors.append(f'{path.relative_to(ROOT)}: sources.yaml corpus_file mismatch for {cid}')
+        for claim_error in static_claim_errors(c, source_cfg):
+            errors.append(f'{path.relative_to(ROOT)}: {claim_error}')
         if source_cfg and source_cfg.get('update_mode')=='derived':
             if not c.get('depends_on'): errors.append(f'{path.relative_to(ROOT)}: derived corpus requires corpus.depends_on')
             dep_ids={d.get('corpus_id') for d in (c.get('depends_on') or []) if isinstance(d,dict)}
@@ -68,8 +71,6 @@ def main()->int:
                         errors.append(f'{path.relative_to(ROOT)}: dependency {dependency.get("corpus_id")} pin differs from parent while claiming derived-from-pinned-dependencies')
                     elif not c.get('provenance_note'):
                         errors.append(f'{path.relative_to(ROOT)}: divergent dependency pin requires corpus.provenance_note')
-            if c.get('evidence_grade')=='source-pinned' and c.get('provenance_status')=='composition-review-pending':
-                errors.append(f'{path.relative_to(ROOT)}: source-pinned grade contradicts pending composition review')
         else:
             for f in ('source_repository','source_path','source_commit'):
                 if not c.get(f): errors.append(f'{path.relative_to(ROOT)}: corpus.{f} is required')
@@ -80,8 +81,6 @@ def main()->int:
                 if src.get('repository') and c.get('source_repository')!=src.get('repository'): errors.append(f'{path.relative_to(ROOT)}: source_repository differs from corpora/sources.yaml')
                 authority_pin=src.get('authority_pin')
                 if authority_pin and c.get('source_commit')!=authority_pin: errors.append(f'{path.relative_to(ROOT)}: source_commit differs from sources.yaml authority_pin')
-                if c.get('provenance_status')=='authoritative-source-pinned-scenario-review-pending' and c.get('evidence_grade'):
-                    errors.append(f'{path.relative_to(ROOT)}: evidence_grade cannot be declared while scenario requalification is pending')
         seen=set()
         for s in c.get('scenarios') or []:
             scenarios+=1; sid=str(s.get('id') or '')
