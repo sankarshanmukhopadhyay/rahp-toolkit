@@ -28,7 +28,7 @@ No document in this directory is itself assurance evidence. The normative portab
 - Normalized result schema: `1`
 - Evidence retention contract: `rahp-evidence-retention-v1`
 
-v2.9.0 is the qualified stable RAHP release. Independent-review readiness remains a separate claim and is not implied by release qualification. Independent-review readiness is a separate claim and is not implied by release qualification.
+v2.9.0 is the qualified stable RAHP release. Independent-review readiness remains a separate claim and is not implied by release qualification; no independent external audit or certification is asserted by this working pack.
 
 ## Reviewer operating rule
 
