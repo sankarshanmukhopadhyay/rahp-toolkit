@@ -5,9 +5,9 @@ Status: initial baseline for independent third-party review preparation.
 ## Repository baseline
 
 - Default branch: `main`.
-- Stable release declared by the repository: `v2.4.0` (Redbreast Jezebel).
+- Stable release declared by the repository: `v2.9.0` (Common Windmill).
 - Primary runtime exercised by CI: Python 3.11.
-- Python dependencies are declared in `requirements.txt`; the current declarations use minimum-version constraints rather than a fully locked environment.
+- Ordinary contributor/test dependencies in `requirements.txt` use minimum-version constraints. The governed release runner separately uses the hash-locked `requirements-release.lock`; these are different reproducibility boundaries.
 - The primary validation workflow is `.github/workflows/validate.yml`.
 - The workflow runs repository validation, portable assurance validation, negative-fixture validation, unit tests, security-review validation, specialist/reconciliation checks, VTI assessment checks, engine-contract checks, generated-view checks, and other bounded conformance surfaces.
 
@@ -33,11 +33,11 @@ These are claims to be independently tested, not premises the reviewer is expect
 5. **Semantic coverage:** conventional test execution does not by itself show proposition coverage across missing, stale, contradictory, non-independent and composition evidence.
 6. **Known limitations:** limitations and externally owned evidence gaps need one candid reviewer-facing register.
 
-## Baseline qualification state
+## Current review-readiness state
 
-**NOT YET QUALIFIED FOR EXTERNAL REVIEW CANDIDATE TAGGING.**
+The working pack is synchronized to the current stable release boundary, but **no independent external audit or certification is claimed**. Repository-defined review-readiness validation establishes that the reviewer surface is internally synchronized and reproducible enough to challenge; it does not establish that an independent reviewer has executed or accepted the pack.
 
-This is expected. The readiness tranche exists to establish the missing review evidence without erasing legitimate uncertainty.
+The original v2.4.0 baseline exposed several review gaps. Subsequent work added the claim/evidence ledger, false-assurance challenges, hostile-input pre-review, release dependency lock, clean-runner reproduction evidence and stable-boundary synchronization. Remaining limitations are recorded in `docs/review/known-limitations.md`.
 
 ## Baseline next actions
 
