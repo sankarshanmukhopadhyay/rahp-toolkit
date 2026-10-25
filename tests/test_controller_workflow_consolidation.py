@@ -35,6 +35,8 @@ class ControllerWorkflowConsolidationTests(unittest.TestCase):
         self.assertIn("- lifecycle", watchdog)
         self.assertIn("- handoff", watchdog)
         self.assertIn("needs.handoff.result == 'success'", watchdog)
+        self.assertIn("cache-dependency-path: requirements.txt", watchdog)
+        self.assertIn("pip install -r requirements.txt", watchdog)
 
     def test_review_workers_keep_two_explicit_jobs(self):
         text = (WORKFLOWS / "review-workers.yml").read_text()
