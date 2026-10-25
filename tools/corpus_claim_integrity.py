@@ -38,14 +38,14 @@ def static_claim_errors(corpus: dict, source_cfg: dict | None = None) -> list[st
     source_cfg = source_cfg or {}
     update_mode = source_cfg.get("update_mode")
 
+    if grade and is_pending(provenance):
+        errors.append("evidence grade contradicts pending provenance/composition review")
+
+    if grade and provenance == MIXED_GROUNDING_STATE:
+        errors.append("corpus-wide evidence grade contradicts completed mixed-grounding requalification")
+
     if grade != "source-pinned":
         return errors
-
-    if is_pending(provenance):
-        errors.append("source-pinned grade contradicts pending provenance/composition review")
-
-    if provenance == MIXED_GROUNDING_STATE:
-        errors.append("source-pinned grade contradicts completed mixed-grounding requalification")
 
     if update_mode == "derived":
         dependencies = corpus.get("depends_on") or []
