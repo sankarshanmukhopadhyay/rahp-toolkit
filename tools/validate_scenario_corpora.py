@@ -36,6 +36,11 @@ def main()->int:
     if not patterns: errors.append('method/scenario-patterns.yaml defines no patterns')
     try: wanted=selected_ids(args.registry,args.composition,manifest_sources)
     except ValueError as e: print('ERROR',e); return 1
+    corpus_docs={}
+    for corpus_path in (ROOT/'corpora').glob('*.yaml'):
+        if corpus_path.name!='sources.yaml':
+            candidate=load(corpus_path).get('corpus') or {}
+            if candidate.get('id'): corpus_docs[candidate['id']]=candidate
     for path in sorted((ROOT/'corpora').glob('*.yaml')):
         if path.name=='sources.yaml': continue
         doc=load(path); c=doc.get('corpus') or {}; cid=c.get('id')
@@ -51,6 +56,20 @@ def main()->int:
             dep_ids={d.get('corpus_id') for d in (c.get('depends_on') or []) if isinstance(d,dict)}
             for dep in source_cfg.get('dependencies') or []:
                 if dep not in dep_ids: errors.append(f'{path.relative_to(ROOT)}: missing declared dependency {dep}')
+            for dependency in c.get('depends_on') or []:
+                if not isinstance(dependency,dict):
+                    errors.append(f'{path.relative_to(ROOT)}: dependency must be a mapping'); continue
+                parent=corpus_docs.get(dependency.get('corpus_id'))
+                if not parent: continue
+                declared=dependency.get('source_commit')
+                parent_pin=parent.get('source_commit')
+                if declared and declared!=parent_pin:
+                    if c.get('source_commit')=='derived-from-pinned-dependencies':
+                        errors.append(f'{path.relative_to(ROOT)}: dependency {dependency.get("corpus_id")} pin differs from parent while claiming derived-from-pinned-dependencies')
+                    elif not c.get('provenance_note'):
+                        errors.append(f'{path.relative_to(ROOT)}: divergent dependency pin requires corpus.provenance_note')
+            if c.get('evidence_grade')=='source-pinned' and c.get('provenance_status')=='composition-review-pending':
+                errors.append(f'{path.relative_to(ROOT)}: source-pinned grade contradicts pending composition review')
         else:
             for f in ('source_repository','source_path','source_commit'):
                 if not c.get(f): errors.append(f'{path.relative_to(ROOT)}: corpus.{f} is required')
