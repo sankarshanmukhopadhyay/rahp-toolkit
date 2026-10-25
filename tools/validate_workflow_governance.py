@@ -125,6 +125,9 @@ def main() -> int:
         "dtg-cross-spec-pressure-test.yml",
         "vti-composition-wave.yml",
         "vti-semantic-completion.yml",
+        "dpip-handoff.yml",
+        "combined-review-worker.yml",
+        "dtg-repository-review-worker.yml",
     }
     resurrected = sorted(retired_workflows & set(actual))
     if resurrected:
