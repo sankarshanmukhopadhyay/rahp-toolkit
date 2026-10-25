@@ -75,7 +75,7 @@ class ComposedProvenanceTests(unittest.TestCase):
     def test_source_pinned_with_pending_review_is_rejected(self):
         code, output = self.check_case(grade="source-pinned")
         self.assertEqual(code, 1)
-        self.assertIn("contradicts pending composition review", output)
+        self.assertIn("evidence grade contradicts pending provenance/composition review", output)
 
     def test_independently_reviewed_grade_not_inherited_or_blocked(self):
         self.assertEqual(self.check_case(grade="source-pinned", pending=False)[0], 0)
