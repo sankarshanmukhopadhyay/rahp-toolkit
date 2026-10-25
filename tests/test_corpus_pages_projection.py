@@ -71,6 +71,13 @@ Dir.glob(File.join(root, "corpora", "*.yaml")).each do |file|
   else
     raise "invented evidence grade" unless page.include?("Not declared")
   end
+  raise "missing claim integrity interpretation" unless page.include?("claim_integrity")
+  provenance = corpus["provenance_status"].to_s
+  if provenance.end_with?("review-pending") || provenance == "composition-review-pending"
+    raise "missing review-pending warning" unless page.include?("Review pending")
+  elsif provenance == "semantic-requalification-complete-mixed-grounding"
+    raise "missing mixed-grounding warning" unless page.include?("Mixed grounding")
+  end
 end
 pinned = {"source_repository" => "trustoverip/dtgwg-trust-tasks-tf", "source_commit" => "4937c70df95e56ed6404b8c004106ecb121a23cf"}
 raise "missing pinned link" unless renderer.send(:source_anchor_link, pinned, "SPEC.md#482-audience-binding").include?("/blob/4937c70df95e56ed6404b8c004106ecb121a23cf/SPEC.md#482-audience-binding")
