@@ -16,14 +16,15 @@ sources:
     paths:
     - spec/**
     - conformance/**
-    portfolio_repository: trustoverip/dtgwg-zkp-spec
-    relationship_to_portfolio: direct
+    portfolio_repository: trustoverip/dtgwg-zkp-tf
+    relationship_to_portfolio: specification-authority-surface
     authority_pin: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
     requirements_and_discussion_repository: trustoverip/dtgwg-zkp-tf
     historical_adapter_repository: sankarshanmukhopadhyay/dtgwg-zkp-tf
   review_policy: >-
     The specification/conformance authority pin may advance only after semantic review.
-    The 30 legacy UC-* scenario mappings require separate requalification before any evidence_grade is declared.
+    Portfolio discovery remains keyed to the registered ZKP task-force workstream; that mapping does not make the task-force
+    repository the specification authority. Corpus-wide evidence grading remains separate from source authority and scenario review.
 - corpus_id: CORPUS-TRUST-TASKS
   corpus_file: corpora/trust-tasks.yaml
   update_mode: assisted
