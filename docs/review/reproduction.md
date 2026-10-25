@@ -6,7 +6,7 @@ Reproduce the stable RAHP validation boundary from a clean checkout without impo
 
 ## Baseline
 
-- stable toolkit: `v2.4.0`
+- stable toolkit: `v2.9.0`
 - default branch: `main`
 - CI Python: `3.11`
 - engine: `rahp-engine-contract-v1` revision `1.3`
@@ -20,7 +20,7 @@ For historical review, check out the immutable tag or commit being reviewed rath
 ```bash
 git clone https://github.com/sankarshanmukhopadhyay/rahp-toolkit.git
 cd rahp-toolkit
-git checkout v2.4.0
+git checkout v2.9.0
 python3.11 -m venv .venv
 . .venv/bin/activate
 python -m pip install --upgrade pip
@@ -32,7 +32,7 @@ python3 tools/validate_negative_fixtures.py
 python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-For the post-v2.4 review-readiness material itself, repeat against the exact review-candidate commit once one is qualified.
+For current-main review-readiness changes that post-date v2.9.0, repeat against the exact commit being reviewed. Do not silently apply current-main evidence to the immutable v2.9.0 release.
 
 ## Intentionally non-positive reproduction
 
@@ -44,7 +44,7 @@ A reproducibility report should record OS/container image, Python version, exact
 
 ## Current reproducibility bound
 
-The project does not currently claim bit-for-bit dependency reproduction because `requirements.txt` uses minimum-version constraints. This is a declared residual, not silently normalized away.
+The project does not claim bit-for-bit reproduction of every developer or hosted-runner dependency. Ordinary contributor installs use the flexible `requirements.txt` set. The governed release path separately uses hash-locked `requirements-release.lock`, and validation proves a clean locked install. This establishes a stronger release-package boundary without making runner images, external sources or the general development environment byte-for-byte reproducible.
 
 ## CI clean-runner evidence
 
