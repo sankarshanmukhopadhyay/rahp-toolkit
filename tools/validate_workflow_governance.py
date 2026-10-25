@@ -120,13 +120,15 @@ def main() -> int:
                         "preserve the event-driven primary path and use a bounded recovery cadence"
                     )
 
-    removed_wrappers = {
+    retired_workflows = {
         "cawg-cross-spec-pressure-test.yml",
         "dtg-cross-spec-pressure-test.yml",
+        "vti-composition-wave.yml",
+        "vti-semantic-completion.yml",
     }
-    resurrected = sorted(removed_wrappers & set(actual))
+    resurrected = sorted(retired_workflows & set(actual))
     if resurrected:
-        errors.append("removed cross-spec wrappers must not be reintroduced: " + ", ".join(resurrected))
+        errors.append("retired workflows must not be reintroduced without an explicit governance change: " + ", ".join(resurrected))
 
     if errors:
         print("Workflow governance: FAIL")
