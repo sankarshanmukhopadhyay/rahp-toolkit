@@ -1,6 +1,6 @@
 # RAHP Independent Review Readiness Baseline
 
-Status: initial baseline for independent third-party review preparation.
+Status: maintained baseline for independent third-party review preparation.
 
 ## Repository baseline
 
@@ -39,15 +39,15 @@ The working pack is synchronized to the current stable release boundary, but **n
 
 The original v2.4.0 baseline exposed several review gaps. Subsequent work added the claim/evidence ledger, false-assurance challenges, hostile-input pre-review, release dependency lock, clean-runner reproduction evidence and stable-boundary synchronization. Remaining limitations are recorded in `docs/review/known-limitations.md`.
 
-## Baseline next actions
+## Current continuing review tasks
 
-- publish the external review charter;
-- establish the high-materiality claim ledger;
-- document architecture/trust boundaries;
-- threat-model hostile assessment inputs;
-- expand false-GREEN challenges;
-- execute clean-environment reproduction;
-- publish semantic coverage and limitations;
-- assemble the reviewer working pack.
+The repository-side preparation items from the original v2.4.0 baseline are now present: charter, claim ledger, trust-boundary documentation, hostile-input threat model, false-assurance challenges, clean-runner reproduction evidence, semantic coverage, limitations register and reviewer entry pack.
 
-No release/tag is created at this stage.
+Remaining work is intentionally external or ongoing rather than a missing repository artefact:
+
+- execute an attributable independent review using the working pack;
+- retain reviewer disagreement, failed reproductions and novel challenge cases without overwriting maintainer evidence;
+- refresh the stable review boundary when a later release becomes current;
+- add new deterministic regressions when external review exposes a contradiction the repository can machine-detect.
+
+No independent-review tag or certification is implied by repository-side readiness.
