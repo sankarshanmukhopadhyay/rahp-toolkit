@@ -78,6 +78,10 @@ def main()->int:
                 for f in ('repository','paths'):
                     if not src.get(f): errors.append(f'{path.relative_to(ROOT)}: sources.yaml source.{f} is required')
                 if src.get('repository') and c.get('source_repository')!=src.get('repository'): errors.append(f'{path.relative_to(ROOT)}: source_repository differs from corpora/sources.yaml')
+                authority_pin=src.get('authority_pin')
+                if authority_pin and c.get('source_commit')!=authority_pin: errors.append(f'{path.relative_to(ROOT)}: source_commit differs from sources.yaml authority_pin')
+                if c.get('provenance_status')=='authoritative-source-pinned-scenario-review-pending' and c.get('evidence_grade'):
+                    errors.append(f'{path.relative_to(ROOT)}: evidence_grade cannot be declared while scenario requalification is pending')
         seen=set()
         for s in c.get('scenarios') or []:
             scenarios+=1; sid=str(s.get('id') or '')

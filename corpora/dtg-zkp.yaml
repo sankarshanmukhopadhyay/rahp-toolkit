@@ -1,12 +1,14 @@
 corpus:
   id: CORPUS-DTG-ZKP
   title: DTG ZKP pressure-test use-case corpus
-  source_repository: sankarshanmukhopadhyay/dtgwg-zkp-tf
-  source_path: docs/implementation-guide/scenarios/pressure-test-corpus-summary.md
-  source_commit: archive-snapshot
-  adapter_version: '1.0'
-  description: RAHP adapter for the DTG ZKP implementation-guide scenario corpus. Domain scenario IDs remain owned by the
-    source corpus.
+  source_repository: trustoverip/dtgwg-zkp-spec
+  source_path: spec/** + conformance/**
+  source_commit: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
+  adapter_version: '1.1'
+  description: >-
+    RAHP adapter preserving the 30 legacy UC-* pressure-test scenarios while grounding current ZKP authority in the
+    upstream DTG specification and conformance surface. The UC-* identifiers are historical adapter lineage and must
+    not be represented as normative identifiers owned by dtgwg-zkp-spec.
   scenarios:
   - id: UC-001
     title: Privacy-Preserving Account Creation
@@ -313,5 +315,11 @@ corpus:
     scenario_patterns:
     - SP-INTEROP-01
   source_branch: main
-  provenance_status: unverified-archive-snapshot
-  provenance_note: Existing adapter predates commit pinning. Review against a concrete source commit before replacing source_commit.
+  provenance_status: authoritative-source-pinned-scenario-review-pending
+  requirements_and_discussion_repository: trustoverip/dtgwg-zkp-tf
+  historical_adapter_repository: sankarshanmukhopadhyay/dtgwg-zkp-tf
+  provenance_note: >-
+    Issue #782 established trustoverip/dtgwg-zkp-spec as the current specification/conformance authority and reviewed
+    cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a as its immutable authority pin. This corrects source authority only.
+    The 30 legacy UC-* scenarios originated in the historical downstream adapter and still require scenario-by-scenario
+    semantic requalification before an evidence_grade may be declared.
