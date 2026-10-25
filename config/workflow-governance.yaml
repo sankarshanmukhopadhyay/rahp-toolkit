@@ -51,15 +51,6 @@ workflows:
   execution-benchmark.yml:
     class: bounded-evidence
     responsibility: execution-cost-benchmarking
-  release-codename-policy.yml:
-    class: bounded-evidence
-    responsibility: release-codename-policy-validation
-  vti-composition-wave.yml:
-    class: bounded-evidence
-    responsibility: vti-composition-evidence-vectors
-  vti-semantic-completion.yml:
-    class: bounded-evidence
-    responsibility: vti-semantic-completion-evidence-vectors
   workflow-governance.yml:
     class: governance
     responsibility: github-actions-surface-governance
