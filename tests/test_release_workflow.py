@@ -22,6 +22,12 @@ class GenericReleaseWorkflowTests(unittest.TestCase):
         self.assertIn("steps.release.outputs.title", text)
         self.assertIn("steps.release.outputs.notes_path", text)
 
+    def test_release_workflow_rechecks_candidate_lineage_in_both_jobs(self):
+        text = (ROOT / ".github/workflows/release.yml").read_text()
+        self.assertEqual(text.count("tools/validate_release_candidate_lineage.py"), 2)
+        self.assertIn("Verify qualified candidate lineage", text)
+        self.assertIn("Re-verify qualified candidate lineage before write", text)
+
     def test_release_specific_publisher_is_retired(self):
         self.assertFalse((ROOT / ".github/workflows/publish-qualified-release.yml").exists())
 
