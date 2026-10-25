@@ -63,8 +63,6 @@ def main() -> int:
         if not (ROOT / rel).is_file():
             errors.append(f"missing review surface: {rel}")
 
-    errors.extend(check_current_review_docs(ROOT, stable_release))
-
     if errors:
         for e in errors: print("ERROR", e)
         return 1
@@ -151,6 +149,7 @@ def main() -> int:
                     errors.append(f"{cid}: evidence_ref fragment not found: {evidence_ref}")
 
     stable_release = str(expected["toolkit_release"] or "")
+    errors.extend(check_current_review_docs(ROOT, stable_release))
     engine_revision = str(expected["engine_revision"] or "")
     result_schema = str(expected["normalized_result_schema"] or "")
 
