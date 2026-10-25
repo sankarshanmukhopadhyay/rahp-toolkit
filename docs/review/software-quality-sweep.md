@@ -13,7 +13,7 @@ The independent-review tranche adds a clean-runner reproduction workflow and hos
 ## Findings
 
 1. **Reviewer promotion path validation:** a concrete path-boundary defect was found and remediated; see 'security-pre-review.md'.
-2. **Dependency determinism:** Python dependencies are lower-bounded, not locked. This is documented as a reproducibility limitation rather than silently described as deterministic.
+2. **Dependency determinism:** ordinary contributor/test dependencies remain lower-bounded, while the governed release Python set is hash-locked in `requirements-release.lock` and exercised by clean-install validation. This is a bounded release reproducibility claim, not a claim that every development or hosted-runner dependency is byte-identical.
 3. **Warnings/skips:** the principal validator explicitly distinguishes warnings from errors unless '--strict' is used. Independent review should inspect warnings rather than treating exit code zero as semantic clearance.
 4. **Generated state:** CI fails when committed 'build/' output differs after regeneration, reducing unnoticed generated-view drift.
 5. **Public compatibility boundary:** review-readiness validation cross-checks the stable release, engine revision and normalized result schema against 'method/versioning.yaml'.
