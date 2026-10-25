@@ -1,6 +1,8 @@
 name: Reconcile RAHP-DPIP lifecycle and returns
 
 on:
+  issues:
+    types: [labeled]
   issue_comment:
     types: [created, edited]
   pull_request:
@@ -54,6 +56,34 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  handoff:
+    if: >-
+      github.event_name == 'issues' &&
+      github.event.action == 'labeled' &&
+      github.event.label.name == 'assurance:dpip-requested'
+    concurrency:
+      group: rahp-dpip-handoff-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Validate handoff transport
+        run: python3 tools/dpip_handoff.py --self-test
+      - name: Transport explicitly promoted referral
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DPIP_HANDOFF_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
+          RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
+          DPIP_REPOSITORY: sankarshanmukhopadhyay/dtg-privacy-implementation-profile
+          EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: python3 tools/dpip_handoff.py --issue-number "$EVENT_ISSUE_NUMBER"
+
   lifecycle:
     if: >-
       github.event_name == 'pull_request' ||
