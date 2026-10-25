@@ -81,7 +81,7 @@ class StandaloneAuthorityProvenanceTests(unittest.TestCase):
     def test_grade_is_rejected_while_scenario_requalification_is_pending(self):
         code, output = self.check_case(grade="source-pinned")
         self.assertEqual(code, 1)
-        self.assertIn("evidence_grade cannot be declared while scenario requalification is pending", output)
+        self.assertIn("evidence grade contradicts pending provenance/composition review", output)
 
     def test_grade_boundary_no_longer_blocks_after_requalification_status_changes(self):
         self.assertEqual(self.check_case(grade="source-pinned", pending=False)[0], 0)
