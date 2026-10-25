@@ -224,6 +224,20 @@ module RahpPagesProjection
       "#{baseurl.sub(%r{/$}, "")}#{path}"
     end
 
+    def corpus_claim_integrity(corpus)
+      provenance = corpus["provenance_status"].to_s
+      grade = corpus["evidence_grade"]
+      if provenance.end_with?("review-pending") || provenance == "composition-review-pending"
+        "Review pending — do not infer a stronger evidence claim."
+      elsif provenance == "semantic-requalification-complete-mixed-grounding"
+        "Mixed grounding — semantic review is complete, but no corpus-wide source-pinned claim is established."
+      elsif grade.nil?
+        "Undeclared — no corpus evidence grade is asserted."
+      else
+        "Declared metadata only — an evidence grade is recorded, but this page does not establish runtime assurance or substantive evidence sufficiency."
+      end
+    end
+
     def corpus_summary(site, corpus)
       scenarios = Array(corpus["scenarios"])
       out = ["## Corpus metadata", "", "| Field | Value |", "|---|---|"]
@@ -231,6 +245,7 @@ module RahpPagesProjection
         out << "| `#{key}` | #{escape_cell(format_value(corpus[key]))} |" if corpus.key?(key)
       end
       out << "| `evidence_grade` | Not declared |" unless corpus.key?("evidence_grade")
+      out << "| `claim_integrity` | #{escape_cell(corpus_claim_integrity(corpus))} |"
       if corpus.key?("depends_on")
         links = Array(corpus["depends_on"]).map do |dependency|
           id = dependency.is_a?(Hash) ? dependency["corpus_id"] : dependency
