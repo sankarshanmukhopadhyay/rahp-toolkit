@@ -6,7 +6,7 @@ The machine-readable authority for the current surface is `config/workflow-gover
 
 ## Workflow budget
 
-RAHP currently permits **at most 20 workflow files**. The governed inventory is exact: every `.github/workflows/*.yml` file must be declared in `config/workflow-governance.yaml`, every declared workflow must exist, and each must own a unique responsibility.
+RAHP currently permits **at most 20 workflow files**. The strict second-pass audit in #1153 reduces the active governed surface to **17 workflows**, leaving three slots of deliberate headroom rather than treating the budget as a target. The governed inventory is exact: every `.github/workflows/*.yml` file must be declared in `config/workflow-governance.yaml`, every declared workflow must exist, and each must own a unique responsibility.
 
 A new workflow is therefore not a free additive change. It must demonstrate a distinct execution/state responsibility and either remain within the budget by replacing/consolidating an existing surface or be accompanied by an explicit governance decision to change the budget. `tools/validate_workflow_governance.py` enforces this invariant.
 
@@ -55,11 +55,10 @@ These workflows share bootstrap mechanics but own different event contracts and 
 - `corpus-status.yml`
 - `distributed-resilience-assessment.yml`
 - `execution-benchmark.yml`
-- `vti-composition-wave.yml`
-- `vti-semantic-completion.yml`
-- `release-codename-policy.yml`
 
-These remain independently useful because they are path-scoped, scheduled, manually selectable, or produce evidence with different runtime/cost characteristics.
+These remain independently useful because they are scheduled, manually selectable, or produce evidence/artifacts with materially different runtime or reviewer-use characteristics.
+
+Deterministic repository invariants that do not own a distinct lifecycle, publication action, manual evidence product, or expensive execution profile belong in the required `validate.yml` surface rather than consuming a separate workflow file.
 
 `execution-benchmark.yml` is measurement evidence, not a routine assurance gate. Ordinary PRs do not run the full validation + cross-spec benchmark matrix. PR execution is limited to a single core benchmark when the benchmark runner, benchmark contract, or benchmark workflow itself changes; full and cross-spec benchmark profiles remain explicitly dispatchable.
 
@@ -76,6 +75,17 @@ The 31 Aug 2026 workflow rationalisation also removed two dispatch-only cross-sp
 - `dtg-cross-spec-pressure-test.yml`
 
 Both merely preset inputs to `cross-spec-pressure-test.yml`. CAWG and DTG now use the generic executor directly, reducing the workflow surface from **22 to 20** without removing an assurance capability.
+
+
+The 25 Oct 2026 strict second-pass audit (#1153) retired three more bounded validation workflows:
+
+- `release-codename-policy.yml`
+- `vti-composition-wave.yml`
+- `vti-semantic-completion.yml`
+
+Their checks remain explicit in the required `validate.yml` job. They were removed because they had no distinct write-side state transition, manual evidence product, durable artifact, recovery responsibility, or required status context. Consolidation therefore reduces Actions surface while strengthening the merge gate: codename-policy and VTI evidence-vector validation now run under the required `validate` status.
+
+This reduces the governed workflow surface from **20 to 17** without deleting an assurance invariant.
 
 ## Clean-room portability invariant
 
@@ -105,11 +115,14 @@ When auditing workflows, use this order:
 8. use event-driven controller execution as the primary path and scheduled execution only as a bounded recovery backstop;
 9. do not run expensive benchmark matrices on ordinary PRs unless the benchmark machinery itself is under test.
 
-## Follow-on candidates
+## Deferred consolidation candidates
 
-The following remain candidates for evidence-led review rather than automatic consolidation:
+The strict #1153 audit keeps the following as evidence-led candidates rather than collapsing them now:
 
-- extract common issue-worker bootstrap/setup if a reusable worker wrapper remains transparent about the invoked state machine;
-- introduce a generic path-scoped evidence-validator only if multiple existing evidence workflows demonstrate the same execution contract;
+- **DPIP handoff + DPIP lifecycle:** `dpip-lifecycle.yml` already invokes the handoff controller and has a stronger three-hour recovery cadence, but `dpip-handoff.yml` owns the immediate `assurance:dpip-requested` label transition. Consolidate only after trigger-equivalence, idempotency and issue-scoped lifecycle tests prove no semantic widening.
+- **Combined-review worker + DTG repository-review worker:** the workflow shells and six-hour recovery cadence are similar, but the state machines, issue markers and concurrency identities differ. A future shared workflow must retain two explicit controller jobs and independent routing.
+- **Corpus review + corpus status:** both are read-only corpus-maintenance surfaces, but one produces a manually selected reviewer packet while the other is a scheduled source-currentness monitor. Merge only if reviewer UX and artifact semantics remain at least as clear.
 - review whether six-hour/three-hour recovery backstops can be reduced further only after event-driven handoffs/reconciliation and watchdog evidence support the change;
 - converge action major versions opportunistically, without mixing version churn with semantic workflow changes.
+
+The existence of three free workflow-budget slots is not itself justification to create another workflow.
