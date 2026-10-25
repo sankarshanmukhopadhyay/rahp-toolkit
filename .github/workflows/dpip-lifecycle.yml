@@ -125,14 +125,6 @@ jobs:
           path: ${{ runner.temp }}/rahp-evidence-outbox/
           if-no-files-found: ignore
           retention-days: 30
-      - name: Detect stranded controller states after normal retries
-        if: github.event_name != 'pull_request'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
-          RAHP_CONTROLLER_SLA_HOURS: '6'
-        run: python3 tools/assurance_watchdog.py
-
   handoff:
     needs: lifecycle
     if: >-
@@ -177,3 +169,26 @@ jobs:
           else
             python3 tools/dpip_handoff.py
           fi
+
+  watchdog:
+    needs:
+      - lifecycle
+      - handoff
+    if: >-
+      always() &&
+      needs.lifecycle.result == 'success' &&
+      needs.handoff.result == 'success' &&
+      github.event_name != 'pull_request' &&
+      github.event_name != 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Detect stranded controller states after normal retries
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RAHP_REPOSITORY: sankarshanmukhopadhyay/rahp-toolkit
+          RAHP_CONTROLLER_SLA_HOURS: '6'
+        run: python3 tools/assurance_watchdog.py
