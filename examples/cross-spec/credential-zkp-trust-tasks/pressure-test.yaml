@@ -6,7 +6,7 @@ review:
   evidence_grade: source-pinned
   target:
     repository: trustoverip/dtgwg-cred-spec + trustoverip/dtgwg-zkp-tf + trustoverip/dtgwg-trust-tasks-spec
-    version: Credential Specification current main × ZKP current main × Trust Tasks Framework v0.5.0
+    version: Credential Specification + ZKP + Trust Tasks Framework at the immutable component commits recorded below
     source_paths:
       - corpora/credential-zkp-trust-tasks-composed.yaml
     commit: 6425a74136c1d2dfa7115889abe0b3521700e887
@@ -27,7 +27,7 @@ review:
     evidence_retention_contract: rahp-evidence-retention-v1
     normalized_result_schema: '1'
   proposition: >-
-    Does the current DTG composition preserve authority, privacy, lifecycle and execution assurances when credential evidence and privacy-preserving proofs are carried through Trust Tasks v0.5.0 into consequential execution?
+    Does the reviewed DTG composition at the recorded immutable component pins preserve authority, privacy, lifecycle and execution assurances when credential evidence and privacy-preserving proofs are carried through Trust Tasks v0.5.0 into consequential execution?
   scope:
     included:
       - authority-composition
@@ -46,11 +46,11 @@ review:
   assurance:
     residual_state: finding
     policy_gate: FAIL
-    gate_reason: The current specifications provide strong component controls but do not yet establish one reusable contract for action-time authority, one-effect execution, task-specific proof commitment and end-to-end composed privacy.
+    gate_reason: The reviewed pinned specifications provide strong component controls but do not establish one reusable contract for action-time authority, one-effect execution, task-specific proof commitment and end-to-end composed privacy.
     positive_controls:
       - Trust Tasks v0.5.0 provides pairwise-identifier guidance, fresh non-derived correlation handles, explicit lifecycle states, no inference from silence, freshness checks and retention/ingestion declarations.
       - Credential Specification requires VWC digest binding to the referenced edge evidence.
-      - ZKP current upstream requirements strengthen context binding, composed-presentation privacy and separation of proof validity from authorization.
+      - ZKP requirements at the recorded task-force pin strengthen context binding, composed-presentation privacy and separation of proof validity from authorization.
   summary:
     finding_count: 4
     open_count: 4
