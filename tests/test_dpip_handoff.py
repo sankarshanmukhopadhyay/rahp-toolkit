@@ -79,11 +79,17 @@ dpip:
         self.assertTrue(any("target" in problem for problem in problems))
 
 
-    def test_workflow_serializes_all_handoff_triggers(self) -> None:
+    def test_consolidated_workflow_globally_serializes_handoff_transport(self) -> None:
         root = Path(__file__).resolve().parents[1]
-        workflow = (root / ".github" / "workflows" / "dpip-handoff.yml").read_text(encoding="utf-8")
-        self.assertIn("concurrency:\n  group: rahp-dpip-handoff\n  cancel-in-progress: false", workflow)
-        self.assertNotIn("github.event.issue.number", workflow)
+        workflow = (root / ".github" / "workflows" / "dpip-lifecycle.yml").read_text(encoding="utf-8")
+        self.assertIn("issues:\n    types: [labeled]", workflow)
+        self.assertIn("github.event.label.name == 'assurance:dpip-requested'", workflow)
+        self.assertIn("group: rahp-dpip-handoff", workflow)
+        self.assertIn('python3 tools/dpip_handoff.py --issue-number "$EVENT_ISSUE_NUMBER"', workflow)
+        self.assertIn("needs.lifecycle.result == 'success'", workflow)
+        lifecycle_block = workflow.split("  lifecycle:", 1)[1].split("\n  handoff:", 1)[0]
+        self.assertNotIn("github.event_name == 'issues'", lifecycle_block)
+        self.assertNotIn("\n          python3 tools/dpip_handoff.py\n", lifecycle_block)
 
 
 if __name__ == "__main__":

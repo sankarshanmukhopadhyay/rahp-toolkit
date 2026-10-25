@@ -18,24 +18,18 @@ workflows:
   validate.yml:
     class: core-execution
     responsibility: repository-wide-assurance-validation
-  combined-review-worker.yml:
-    class: lifecycle-controller
-    responsibility: bounded-combined-review-advancement
-  dpip-handoff.yml:
-    class: lifecycle-controller
-    responsibility: rahp-to-dpip-referral-transport
   dpip-lifecycle.yml:
     class: lifecycle-controller
-    responsibility: rahp-dpip-lifecycle-and-return-reconciliation
+    responsibility: rahp-dpip-handoff-lifecycle-and-return-reconciliation
   dtg-assurance-reconcile.yml:
     class: lifecycle-controller
     responsibility: dtg-end-to-end-assurance-reconciliation
   dtg-portfolio-materiality-handoff.yml:
     class: lifecycle-controller
     responsibility: dtg-portfolio-materiality-routing
-  dtg-repository-review-worker.yml:
+  review-workers.yml:
     class: lifecycle-controller
-    responsibility: dtg-repository-review-advancement
+    responsibility: bounded-combined-and-dtg-repository-review-advancement
   instance-watch.yml:
     class: lifecycle-controller
     responsibility: instance-observation-publication-and-persistence

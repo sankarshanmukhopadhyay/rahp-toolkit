@@ -7,10 +7,10 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 
 class WorkflowRationalizationTests(unittest.TestCase):
-    def test_governed_surface_is_eighteen_of_twenty(self):
+    def test_governed_surface_is_sixteen_of_twenty(self):
         policy = yaml.safe_load((ROOT / "config" / "workflow-governance.yaml").read_text())
         actual = sorted(path.name for path in WORKFLOWS.glob("*.yml"))
-        self.assertEqual(len(actual), 18)
+        self.assertEqual(len(actual), 16)
         self.assertLessEqual(len(actual), int(policy["max_workflows"]))
         self.assertEqual(sorted(policy["workflows"]), actual)
 
@@ -38,17 +38,21 @@ class WorkflowRationalizationTests(unittest.TestCase):
         self.assertIn("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1", text)
         self.assertIn("actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97", text)
 
-    def test_lifecycle_controllers_remain_separate_in_this_tranche(self):
+    def test_consolidated_controllers_keep_explicit_workflow_owners(self):
         for name in (
-            "combined-review-worker.yml",
-            "dtg-repository-review-worker.yml",
+            "review-workers.yml",
             "dtg-portfolio-materiality-handoff.yml",
-            "dpip-handoff.yml",
             "dpip-lifecycle.yml",
             "dtg-assurance-reconcile.yml",
             "instance-watch.yml",
         ):
             self.assertTrue((WORKFLOWS / name).exists(), name)
+        for name in (
+            "combined-review-worker.yml",
+            "dtg-repository-review-worker.yml",
+            "dpip-handoff.yml",
+        ):
+            self.assertFalse((WORKFLOWS / name).exists(), name)
 
 
 if __name__ == "__main__":
