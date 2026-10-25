@@ -37,7 +37,7 @@ The sweep did not create a parallel assurance framework. It reused:
 
 ## Claim inventory coverage
 
-The maintained claim/evidence ledger now covers eleven high-materiality propositions spanning:
+The maintained claim/evidence ledger now covers twelve high-materiality propositions spanning:
 
 1. missing evidence and positive assurance;
 2. workflow success versus assurance outcome;
@@ -49,7 +49,8 @@ The maintained claim/evidence ledger now covers eleven high-materiality proposit
 8. corpus provenance/evidence-grounding integrity;
 9. independent-review boundary synchronization;
 10. the governed 20-workflow Actions budget; and
-11. release dependency reproducibility and its limits.
+11. release dependency reproducibility and its limits; and
+12. qualified-candidate to published-release lineage.
 
 The ledger remains a bounded reviewer entry path, not an exhaustive enumeration of every sentence in the repository.
 
