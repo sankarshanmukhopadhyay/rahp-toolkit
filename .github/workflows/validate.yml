@@ -296,7 +296,9 @@ jobs:
         run: python3 tools/validate_persona_quality.py
 
       - name: Validate scenario corpora
-        run: python3 tools/validate_scenario_corpora.py
+        run: |
+          python3 tools/validate_scenario_corpora.py
+          python3 tools/validate_zkp_scenario_requalification.py
       - name: Validate corpus source registry
         run: python3 tools/corpus_status.py --offline > /dev/null
       - name: Validate pressure-test records

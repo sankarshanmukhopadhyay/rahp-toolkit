@@ -1,0 +1,278 @@
+schema: rahp-zkp-scenario-requalification/v1
+review_id: ZKP-UC-REQUAL-2026-10-25
+source_issue: 1147
+corpus_id: CORPUS-DTG-ZKP
+reviewed_on: '2026-10-25'
+authority:
+  repository: trustoverip/dtgwg-zkp-spec
+  commit: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
+  role: specification-and-conformance
+reviewed_paths:
+  - spec/intro.md
+  - spec/implementation-guide.md
+  - spec/integration.md
+  - spec/trust-graph.md
+  - conformance/records/001.json
+  - conformance/records/002.json
+  - conformance/records/003.json
+  - conformance/records/004.json
+  - conformance/records/005.json
+  - conformance/records/006.json
+  - conformance/records/007.json
+  - conformance/records/008.json
+  - conformance/records/009.json
+  - conformance/records/010.json
+  - conformance/records/011.json
+  - conformance/records/012.json
+  - conformance/records/013.json
+  - conformance/records/020.json
+  - conformance/records/021.json
+decision_rule: >-
+  retain when the pinned specification directly supports the pressure question;
+  revise when the pressure is supported but the legacy wording exceeds the source's
+  stated inference boundary; scenario-baseline when the current specification does
+  not establish a sufficiently specific normative or construction-level basis.
+  No model knowledge is used to fill source gaps.
+summary:
+  total: 30
+  retain: 13
+  revise: 9
+  scenario-baseline: 8
+  corpus_grade_disposition: not-declared
+  rationale: >-
+    The review establishes mixed grounding. Source-backed and revised scenarios coexist
+    with useful historical hypotheses that the pinned specification does not substantiate.
+    A corpus-wide source-pinned grade would therefore overstate the evidence.
+dispositions:
+  - scenario_id: UC-001
+    disposition: revise
+    original_title: Privacy-Preserving Account Creation
+    source_evidence:
+      - conformance/records/002.json
+      - spec/implementation-guide.md
+    establishes: Context-scoped repeat-use detection is supported; global one-person uniqueness is explicitly not established.
+    canonical_action: Reframe from one-account/person to context-scoped reuse detection.
+  - scenario_id: UC-002
+    disposition: retain
+    original_title: Anonymous Community Participation
+    source_evidence:
+      - conformance/records/001.json
+      - conformance/records/010.json
+      - spec/trust-graph.md
+    establishes: Private membership and community-anchored relationship evidence are explicit construction goals.
+    canonical_action: Retain as a privacy pressure question.
+  - scenario_id: UC-003
+    disposition: scenario-baseline
+    original_title: Age Verification
+    source_evidence:
+      - spec/intro.md
+    establishes: Attribute predicates are in scope generally, but no age/range construction is specified in the reviewed record set.
+    canonical_action: Retain only as a working hypothesis; do not present as source-pinned.
+  - scenario_id: UC-004
+    disposition: revise
+    original_title: High-Value Transaction
+    source_evidence:
+      - conformance/records/003.json
+      - spec/integration.md
+      - spec/implementation-guide.md
+    establishes: Request/transcript/audience binding and replay separation are supported; transaction value and step-up policy are application concerns.
+    canonical_action: Reframe around transcript-bound consequential presentation.
+  - scenario_id: UC-005
+    disposition: scenario-baseline
+    original_title: Account Recovery
+    source_evidence: []
+    establishes: The reviewed ZKP specification does not define an account-recovery construction or recovery lifecycle.
+    canonical_action: Preserve only as a historical pressure hypothesis.
+  - scenario_id: UC-006
+    disposition: revise
+    original_title: Same Human Login
+    source_evidence:
+      - conformance/records/004.json
+      - conformance/records/002.json
+    establishes: Holder/key continuity and context-scoped reuse can be proven; same-natural-person identity is explicitly not established.
+    canonical_action: Reframe as controller continuity without a same-human claim.
+  - scenario_id: UC-007
+    disposition: revise
+    original_title: Benefit Claims
+    source_evidence:
+      - conformance/records/002.json
+      - spec/integration.md
+    establishes: Reuse detection is scoped and stateful; proof validity does not create global one-claim semantics.
+    canonical_action: Reframe as single-use policy within a declared context.
+  - scenario_id: UC-008
+    disposition: scenario-baseline
+    original_title: Anonymous Ballot
+    source_evidence:
+      - conformance/records/002.json
+    establishes: Scoped reuse detection exists, but election eligibility, ballot secrecy and one-vote governance are not specified by this ZKP baseline.
+    canonical_action: Retain only as a historical application hypothesis.
+  - scenario_id: UC-009
+    disposition: retain
+    original_title: Human Authorises Agent
+    source_evidence:
+      - conformance/records/020.json
+      - spec/implementation-guide.md
+    establishes: Delegation-chain presentation is explicitly specified, with the boundary that delegation does not prove a specific act was authorized or executed.
+    canonical_action: Retain with existing delegation pressure.
+  - scenario_id: UC-010
+    disposition: revise
+    original_title: Agent Step-up
+    source_evidence:
+      - conformance/records/003.json
+      - conformance/records/020.json
+      - spec/integration.md
+    establishes: Request binding and delegated authority evidence are supported; intent confirmation and step-up policy are not proven by the ZK proof.
+    canonical_action: Reframe as agent request binding and non-inference.
+  - scenario_id: UC-011
+    disposition: retain
+    original_title: Agent Presentation
+    source_evidence:
+      - conformance/records/020.json
+      - conformance/records/021.json
+    establishes: Delegation and attenuated-authority presentations are explicit composed-construction use cases.
+    canonical_action: Retain.
+  - scenario_id: UC-012
+    disposition: revise
+    original_title: Issuer Suspension
+    source_evidence:
+      - conformance/records/006.json
+      - spec/integration.md
+    establishes: Non-revocation and accepted status-root freshness are supported; correctness of a registry's suspension decision is not.
+    canonical_action: Reframe as credential/authority status freshness.
+  - scenario_id: UC-013
+    disposition: revise
+    original_title: Policy Version Change
+    source_evidence:
+      - spec/integration.md
+      - conformance/records/003.json
+    establishes: The profile binds accepted policy/profile revision and freshness into the authenticated request; unknown or substituted policy meaning is not inferred.
+    canonical_action: Reframe as policy/profile version binding.
+  - scenario_id: UC-014
+    disposition: retain
+    original_title: Registry Offline
+    source_evidence:
+      - conformance/records/006.json
+      - spec/trust-graph.md
+      - spec/integration.md
+    establishes: Self-carrying roots/status evidence and unavailable-registry policy are explicit profile concerns.
+    canonical_action: Retain as a resilience pressure question.
+  - scenario_id: UC-015
+    disposition: revise
+    original_title: Registry Conflict
+    source_evidence:
+      - spec/integration.md
+    establishes: Profiles must identify accepted root authority, publication/update rules, historical acceptance and maximum staleness; silent root substitution is not permitted.
+    canonical_action: Reframe as registry-root and policy disagreement.
+  - scenario_id: UC-016
+    disposition: scenario-baseline
+    original_title: Cross-border Recognition
+    source_evidence: []
+    establishes: The reviewed ZKP baseline does not define cross-border recognition or mutual-recognition governance.
+    canonical_action: Preserve only as a historical federation hypothesis.
+  - scenario_id: UC-017
+    disposition: retain
+    original_title: Low-end Devices
+    source_evidence:
+      - spec/implementation-guide.md
+      - spec/intro.md
+    establishes: Target-device feasibility and measured construction cost are explicit evidence questions; no universal device budget is established.
+    canonical_action: Retain as deployability/performance pressure.
+  - scenario_id: UC-018
+    disposition: retain
+    original_title: Offline Presentation
+    source_evidence:
+      - spec/trust-graph.md
+      - conformance/records/006.json
+      - conformance/records/010.json
+    establishes: Offline counterparty/witness constraints and self-carrying accepted status evidence are explicit.
+    canonical_action: Retain.
+  - scenario_id: UC-019
+    disposition: retain
+    original_title: Shared Device
+    source_evidence:
+      - conformance/records/004.json
+      - spec/implementation-guide.md
+    establishes: Holder binding explicitly does not establish non-transfer, absence of account sharing or arbitrary hardware-key compatibility.
+    canonical_action: Retain as a negative pressure against over-reading holder binding.
+  - scenario_id: UC-020
+    disposition: scenario-baseline
+    original_title: Accessibility
+    source_evidence: []
+    establishes: No accessibility-specific proof construction, alternative-liveness requirement or conformance rule is present in the reviewed specification baseline.
+    canonical_action: Preserve as a cross-cutting hypothesis, not a source-grounded ZKP scenario.
+  - scenario_id: UC-021
+    disposition: revise
+    original_title: Compromised Wallet
+    source_evidence:
+      - conformance/records/004.json
+      - spec/trust-graph.md
+    establishes: Holder-key control is part of proof profiles, while non-transfer and secure custody are explicit limitations; a proof cannot establish an uncompromised wallet.
+    canonical_action: Reframe as compromised holder secret / wallet and fail-safe assumption handling.
+  - scenario_id: UC-022
+    disposition: retain
+    original_title: Malicious Provider
+    source_evidence:
+      - spec/trust-graph.md
+      - spec/integration.md
+    establishes: Hosted-prover access, witness custody and external policy components are explicitly part of the adversary/trust boundary.
+    canonical_action: Retain with assurance-boundary pressure.
+  - scenario_id: UC-023
+    disposition: retain
+    original_title: Malicious Verifier
+    source_evidence:
+      - conformance/records/002.json
+      - conformance/records/010.json
+      - conformance/records/011.json
+    establishes: Verifier and colluding-verifier adversaries, context scope and disclosure limits are explicit.
+    canonical_action: Retain.
+  - scenario_id: UC-024
+    disposition: retain
+    original_title: Issuer+Verifier Collusion
+    source_evidence:
+      - conformance/records/010.json
+      - conformance/records/021.json
+    establishes: Issuer-verifier collusion is explicitly named in construction adversary models and has bounded privacy claims.
+    canonical_action: Retain.
+  - scenario_id: UC-025
+    disposition: retain
+    original_title: Composite Proofs
+    source_evidence:
+      - spec/intro.md
+      - conformance/records/010.json
+      - conformance/records/012.json
+    establishes: Composed constructions must write disclosure and negative space afresh because individually sound proofs can leak jointly.
+    canonical_action: Retain as a composition/fingerprinting pressure.
+  - scenario_id: UC-026
+    disposition: retain
+    original_title: Algorithm Upgrade
+    source_evidence:
+      - spec/integration.md
+      - spec/intro.md
+    establishes: Profiles bind construction/circuit version, proof-system parameters, hashes, encodings and accepted layouts; weaker alternatives must not be silently substituted.
+    canonical_action: Retain as migration/downgrade pressure.
+  - scenario_id: UC-027
+    disposition: scenario-baseline
+    original_title: Appeals
+    source_evidence: []
+    establishes: Appeals/redress are not defined as ZKP construction or conformance behavior in the reviewed baseline.
+    canonical_action: Preserve as governance hypothesis only.
+  - scenario_id: UC-028
+    disposition: scenario-baseline
+    original_title: Emergency Mode
+    source_evidence: []
+    establishes: No emergency-mode or degraded-operation proof profile is specified in the reviewed baseline.
+    canonical_action: Preserve as resilience hypothesis only.
+  - scenario_id: UC-029
+    disposition: scenario-baseline
+    original_title: Batch Verification
+    source_evidence: []
+    establishes: The reviewed baseline does not specify batch-verification semantics, logging obligations or throughput conformance.
+    canonical_action: Preserve as scale hypothesis only.
+  - scenario_id: UC-030
+    disposition: retain
+    original_title: Interoperability
+    source_evidence:
+      - spec/integration.md
+      - spec/implementation-guide.md
+    establishes: Concrete profiles, interoperable vectors and explicit request/presentation bindings are required before interoperability may be claimed.
+    canonical_action: Retain as a conformance/interoperability pressure.

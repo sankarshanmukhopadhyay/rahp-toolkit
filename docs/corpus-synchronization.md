@@ -29,7 +29,7 @@ flowchart LR
 
 The DTG Portfolio Monitor repository registry is used as a **discovery and portfolio-scope control plane**. It tells RAHP which repositories are part of the monitored DTG landscape and supplies useful metadata such as workstream, lifecycle, role, reporting weight and material paths.
 
-It does **not** decide which source a RAHP corpus must use. `corpora/sources.yaml` records that choice explicitly. This matters for forks: `CORPUS-DTG-ZKP` currently tracks `sankarshanmukhopadhyay/dtgwg-zkp-tf`, while mapping it to the portfolio entry `trustoverip/dtgwg-zkp-tf` as its upstream portfolio relationship.
+It does **not** decide which source a RAHP corpus must use. `corpora/sources.yaml` records that choice explicitly. For example, `CORPUS-DTG-ZKP` now uses `trustoverip/dtgwg-zkp-spec` directly as specification/conformance authority; `trustoverip/dtgwg-zkp-tf` is retained as requirements/discussion lineage and the historical downstream fork is not the current source of record.
 
 ## Multi-source external corpora
 

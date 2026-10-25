@@ -4,20 +4,22 @@ corpus:
   source_repository: trustoverip/dtgwg-zkp-spec
   source_path: spec/** + conformance/**
   source_commit: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
-  adapter_version: '1.1'
+  adapter_version: '1.2'
   description: >-
-    RAHP adapter preserving the 30 legacy UC-* pressure-test scenarios while grounding current ZKP authority in the
-    upstream DTG specification and conformance surface. The UC-* identifiers are historical adapter lineage and must
-    not be represented as normative identifiers owned by dtgwg-zkp-spec.
+    RAHP adapter preserving the 30 legacy UC-* pressure-test scenario identifiers while grounding current ZKP
+    authority in the upstream DTG specification and conformance surface. Semantic requalification at the reviewed
+    authority pin is complete, with mixed source grounding recorded in corpora/reviews/dtg-zkp-semantic-requalification-2026-10-25.yaml.
+    The UC-* identifiers remain historical adapter lineage and are not normative identifiers owned by dtgwg-zkp-spec.
   scenarios:
   - id: UC-001
-    title: Privacy-Preserving Account Creation
+    title: Context-Scoped Reuse Detection
     domain: Identity
-    primary_goal: One account/person
+    primary_goal: Detect repeat use within an explicitly declared context without claiming global one-person uniqueness
     core_predicates: L,P,U,H,F
-    primary_pressure: Sybil resistance
+    primary_pressure: Reuse-detection scope / Sybil-resistance overclaim
     dependencies: Registry, Issuer
     priority: P0
+    source_anchor: conformance/records/002.json
     scenario_patterns:
     - SP-REPLAY-01
   - id: UC-002
@@ -28,6 +30,7 @@ corpus:
     primary_pressure: Unlinkability
     dependencies: Wallet
     priority: P0
+    source_anchor: conformance/records/010.json
     scenario_patterns:
     - SP-PRIV-01
   - id: UC-003
@@ -41,13 +44,14 @@ corpus:
     scenario_patterns:
     - SP-PRIV-01
   - id: UC-004
-    title: High-Value Transaction
+    title: Transcript-Bound Consequential Presentation
     domain: Finance
-    primary_goal: Step-up auth
+    primary_goal: Bind proof to the authenticated request while keeping policy acceptance and action outcome separate
     core_predicates: L,H,F
-    primary_pressure: Replay
+    primary_pressure: Replay and semantic upgrading
     dependencies: Wallet
     priority: P0
+    source_anchor: conformance/records/003.json
     scenario_patterns:
     - SP-REPLAY-01
   - id: UC-005
@@ -61,23 +65,25 @@ corpus:
     scenario_patterns:
     - SP-RECOV-01
   - id: UC-006
-    title: Same Human Login
+    title: Controller Continuity Across Presentations
     domain: Identity
-    primary_goal: Continuity
+    primary_goal: Demonstrate holder or key continuity without claiming same-natural-person identity
     core_predicates: L,H,F
-    primary_pressure: Account takeover
+    primary_pressure: Controller continuity versus human identity
     dependencies: Wallet
     priority: P0
+    source_anchor: conformance/records/004.json
     scenario_patterns:
     - SP-AUTH-01
   - id: UC-007
-    title: Benefit Claims
+    title: Single-Use Policy Within a Declared Context
     domain: Government
-    primary_goal: One claim
+    primary_goal: Detect duplicate use within an explicit context without inferring ecosystem-wide uniqueness
     core_predicates: P,U
-    primary_pressure: Duplicate claims
+    primary_pressure: Reuse-detection scope
     dependencies: Registry
     priority: P1
+    source_anchor: conformance/records/002.json
     scenario_patterns:
     - SP-REPLAY-01
   - id: UC-008
@@ -99,16 +105,18 @@ corpus:
     primary_pressure: Delegation
     dependencies: Trust Tasks
     priority: P0
+    source_anchor: conformance/records/020.json
     scenario_patterns:
     - SP-AGENT-01
   - id: UC-010
-    title: Agent Step-up
+    title: Agent Request Binding
     domain: AI
-    primary_goal: Intent confirmation
+    primary_goal: Bind delegated proof evidence to the authenticated request while keeping intent and authority separate
     core_predicates: L,H,F
-    primary_pressure: Intent drift
+    primary_pressure: Intent and authority inference
     dependencies: Trust Tasks
     priority: P0
+    source_anchor: spec/integration.md
     scenario_patterns:
     - SP-AGENT-02
   - id: UC-011
@@ -119,26 +127,29 @@ corpus:
     primary_pressure: Delegation
     dependencies: Credentials
     priority: P1
+    source_anchor: conformance/records/020.json
     scenario_patterns:
     - SP-AGENT-01
   - id: UC-012
-    title: Issuer Suspension
+    title: Credential or Authority Status Freshness
     domain: Governance
-    primary_goal: Status semantics
+    primary_goal: Evaluate non-revocation against accepted registry state and freshness policy
     core_predicates: Status
-    primary_pressure: Lifecycle
+    primary_pressure: Stale status
     dependencies: Registry
     priority: P0
+    source_anchor: conformance/records/006.json
     scenario_patterns:
     - SP-GOV-01
   - id: UC-013
-    title: Policy Version Change
+    title: Policy and Profile Version Binding
     domain: Governance
-    primary_goal: Versioning
+    primary_goal: Bind accepted policy and profile revision into the authenticated request and transcript
     core_predicates: Policy
-    primary_pressure: Migration
+    primary_pressure: Policy or profile substitution
     dependencies: Registry
     priority: P0
+    source_anchor: spec/integration.md
     scenario_patterns:
     - SP-GOV-02
   - id: UC-014
@@ -149,16 +160,18 @@ corpus:
     primary_pressure: Resilience
     dependencies: Registry
     priority: P1
+    source_anchor: spec/integration.md
     scenario_patterns:
     - SP-OPS-01
   - id: UC-015
-    title: Registry Conflict
+    title: Registry Root and Policy Disagreement
     domain: Federation
-    primary_goal: Recognition
+    primary_goal: Surface or reject disagreement about accepted roots, state and policy rather than silently substituting
     core_predicates: Accreditation
-    primary_pressure: Governance
+    primary_pressure: Registry-state ambiguity
     dependencies: Registries
     priority: P1
+    source_anchor: spec/integration.md
     scenario_patterns:
     - SP-FED-01
   - id: UC-016
@@ -179,6 +192,7 @@ corpus:
     primary_pressure: Performance
     dependencies: Wallet
     priority: P0
+    source_anchor: spec/implementation-guide.md
     scenario_patterns:
     - SP-INCL-02
   - id: UC-018
@@ -189,6 +203,7 @@ corpus:
     primary_pressure: Replay
     dependencies: Wallet
     priority: P1
+    source_anchor: spec/trust-graph.md
     scenario_patterns:
     - SP-OPS-02
     - SP-REPLAY-01
@@ -200,6 +215,7 @@ corpus:
     primary_pressure: Leakage
     dependencies: Wallet
     priority: P1
+    source_anchor: conformance/records/004.json
     scenario_patterns:
     - SP-AUTH-01
     - SP-PRIV-01
@@ -214,13 +230,14 @@ corpus:
     scenario_patterns:
     - SP-INCL-01
   - id: UC-021
-    title: Compromised Wallet
+    title: Compromised Holder Secret or Wallet
     domain: Security
-    primary_goal: Separate key/human
+    primary_goal: Test holder-binding assumptions when credential secrets are transferable or compromised
     core_predicates: L,H
-    primary_pressure: Theft
+    primary_pressure: Key compromise / non-transfer overclaim
     dependencies: Recovery
     priority: P0
+    source_anchor: conformance/records/004.json
     scenario_patterns:
     - SP-AUTH-01
     - SP-RECOV-01
@@ -232,6 +249,7 @@ corpus:
     primary_pressure: Trust
     dependencies: Accreditation
     priority: P0
+    source_anchor: spec/integration.md
     scenario_patterns:
     - SP-GOV-01
   - id: UC-023
@@ -242,6 +260,7 @@ corpus:
     primary_pressure: Linkability
     dependencies: Wallet
     priority: P0
+    source_anchor: conformance/records/010.json
     scenario_patterns:
     - SP-PRIV-01
   - id: UC-024
@@ -252,6 +271,7 @@ corpus:
     primary_pressure: Correlation
     dependencies: Governance
     priority: P0
+    source_anchor: conformance/records/010.json
     scenario_patterns:
     - SP-PRIV-02
   - id: UC-025
@@ -262,6 +282,7 @@ corpus:
     primary_pressure: Fingerprinting
     dependencies: Trust Tasks
     priority: P0
+    source_anchor: spec/intro.md
     scenario_patterns:
     - SP-COMP-01
   - id: UC-026
@@ -272,6 +293,7 @@ corpus:
     primary_pressure: Downgrade
     dependencies: Profiles
     priority: P0
+    source_anchor: spec/integration.md
     scenario_patterns:
     - SP-CRYPTO-01
   - id: UC-027
@@ -312,14 +334,23 @@ corpus:
     primary_pressure: Spec ambiguity
     dependencies: All
     priority: P0
+    source_anchor: spec/integration.md
     scenario_patterns:
     - SP-INTEROP-01
   source_branch: main
-  provenance_status: authoritative-source-pinned-scenario-review-pending
+  provenance_status: semantic-requalification-complete-mixed-grounding
   requirements_and_discussion_repository: trustoverip/dtgwg-zkp-tf
   historical_adapter_repository: sankarshanmukhopadhyay/dtgwg-zkp-tf
+  semantic_requalification:
+    review_id: ZKP-UC-REQUAL-2026-10-25
+    record: corpora/reviews/dtg-zkp-semantic-requalification-2026-10-25.yaml
+    reviewed_commit: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a
+    disposition_counts:
+      retain: 13
+      revise: 9
+      scenario-baseline: 8
   provenance_note: >-
-    Issue #782 established trustoverip/dtgwg-zkp-spec as the current specification/conformance authority and reviewed
-    cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a as its immutable authority pin. This corrects source authority only.
-    The 30 legacy UC-* scenarios originated in the historical downstream adapter and still require scenario-by-scenario
-    semantic requalification before an evidence_grade may be declared.
+    Issue #782 established trustoverip/dtgwg-zkp-spec as specification/conformance authority. Issue #1147 then
+    requalified all 30 legacy UC-* scenarios against that immutable pin. Twenty-two scenarios have direct current-source
+    grounding (13 retained, 9 revised); eight remain useful historical pressure hypotheses only. Because grounding is
+    mixed, no corpus-wide evidence_grade is declared. Historical UC-* identifiers remain RAHP adapter lineage.
