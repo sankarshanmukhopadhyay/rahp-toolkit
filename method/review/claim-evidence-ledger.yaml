@@ -140,3 +140,17 @@ claims:
     falsification: Publish a qualified release using unpinned Python release dependencies, or describe the flexible requirements.txt environment as bit-reproducible.
     expected_if_falsified: release/reproducibility integrity defect
     limitations: Hash locking constrains the governed Python package set; it does not make GitHub-hosted runner images, external source availability, or all platform dependencies byte-reproducible.
+
+  - id: RCL-012
+    claim: A published release cannot contain unqualified implementation changes after the evidence candidate SHA.
+    scope: candidate-to-publication release lineage
+    normative_evidence:
+      - docs/release-governance.md
+      - docs/review/repository-assurance-integrity-sweep-2026-10-25.md
+    executable_evidence:
+      - tools/validate_release_candidate_lineage.py
+      - tests/test_release_candidate_lineage.py
+      - .github/workflows/release.yml
+    falsification: Modify executable code or tests after the qualified candidate SHA and still publish the descendant commit without establishing a new evidence baseline.
+    expected_if_falsified: release/assurance defect
+    limitations: The bounded post-candidate allow-list protects repository paths; it does not independently authenticate external CI services or GitHub platform execution.
