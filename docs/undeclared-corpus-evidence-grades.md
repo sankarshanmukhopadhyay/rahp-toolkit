@@ -11,7 +11,7 @@ nav_exclude: true
 
 | Corpus | Observed provenance | Grade disposition | Reason / limitation |
 |---|---|---|---|
-| [DTG ZKP](../corpora/dtg-zkp/) | `source_commit: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a`; `provenance_status: authoritative-source-pinned-scenario-review-pending` | **Not declared; retain pending scenario requalification** | #782 established the immutable upstream specification authority pin, but #1145 deliberately separates that authority correction from semantic requalification of the 30 legacy UC-* mappings. A pin alone does not authorize an evidence grade. |
+| [DTG ZKP](../corpora/dtg-zkp/) | `source_commit: cfd94063e5cfee7ba6df4dcfd28c10399a0ffd0a`; `provenance_status: authoritative-source-pinned-scenario-review-pending` | **Not declared; retain semantic requalification complete; mixed grounding** | #782 established the immutable upstream specification authority pin and #1147 requalified all 30 legacy UC-* mappings. Thirteen are retained, nine revised and eight remain scenario-baseline hypotheses. Mixed grounding does not justify a corpus-wide `source-pinned` grade. |
 | [Trust Tasks](../corpora/trust-tasks/) | 40-character SHA `4937c70df95e56ed6404b8c004106ecb121a23cf`, scenario source anchors, `provenance_status: source-pinned` and an August 23 review note | **Not declared; retain pending grade authorization** | The adapter records a reviewed immutable revision, but the current metadata does not explicitly authorize `evidence_grade: source-pinned`. The reviewer should confirm that the evidence-grade classification criteria and source-span completeness are met before adding the separate field. |
 | [Credential Specification](../corpora/credential-spec/) | SHA `b89f389abbdae77ba60b673c0836c781c2b54169`, scenario source anchors, `provenance_status: source-pinned` and August 23 review note | **Not declared; retain pending grade authorization** | A strong pin is present. Grade assignment is still a distinct reviewed classification; `provenance_status` does not automatically become an evidence grade. |
 | [CAWG/C2PA](../corpora/cawg/) | `source_commit: multi-source-snapshot-2026-08-14`; multiple specifications represented | **Not declared; retain** | The symbolic date does not identify a checked set of immutable revisions for each relevant source. No complete portfolio baseline is established by this adapter. |
@@ -19,7 +19,7 @@ nav_exclude: true
 
 ## Post-assessment authority update
 
-On 2026-10-25, #1145 corrected the DTG ZKP source authority to the upstream specification/conformance repository using the reviewed #782 pin. The grade decision remains **Not declared** because the retained legacy UC-* scenarios have not yet been semantically requalified against that authority baseline. See [DTG ZKP corpus authority rebaseline](dtg-zkp-corpus-authority-rebaseline.md).
+On 2026-10-25, #1145 corrected the DTG ZKP source authority to the upstream specification/conformance repository using the reviewed #782 pin. The subsequent #1147 semantic requalification is complete, but the grade decision remains **Not declared** because eight retained UC-* rows are still scenario-baseline hypotheses rather than source-grounded constructions or requirements. See [DTG ZKP corpus authority rebaseline](dtg-zkp-corpus-authority-rebaseline.md) and [DTG ZKP legacy-scenario semantic requalification](dtg-zkp-scenario-requalification.md).
 
 ## Reproducibility and boundaries
 
