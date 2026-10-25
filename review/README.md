@@ -21,6 +21,7 @@ No document in this directory is itself assurance evidence. The normative portab
 9. [Claim/evidence/falsification ledger](../method/review/claim-evidence-ledger.yaml)
 10. [False-assurance challenge matrix](../method/review/false-assurance-challenges.yaml)
 11. [Repository assurance-integrity sweep](../docs/review/repository-assurance-integrity-sweep-2026-10-25.md)
+12. [Material assurance claim inventory](../docs/review/material-claim-inventory-2026-10-25.md)
 
 ## Stable boundary under review
 

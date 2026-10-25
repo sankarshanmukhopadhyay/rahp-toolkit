@@ -64,6 +64,10 @@ def metadata(doc: dict) -> dict:
     }
 
 
+def missing_surface_terms(text: str, required_terms: list[str]) -> list[str]:
+    return [term for term in required_terms if term and term not in text]
+
+
 def verify(doc: dict) -> list[str]:
     r = doc["release"]
     meta = metadata(doc)
@@ -150,6 +154,7 @@ def verify(doc: dict) -> list[str]:
 
     surface_checks = {
         "README.md": [tag, meta["common_name"], meta["notes_path"]],
+        "ADOPTION.md": [tag, meta["qualification_manifest"]],
         "CHANGELOG.md": [tag, meta["common_name"]],
         "ROADMAP.md": [tag, meta["common_name"]],
     }
@@ -159,9 +164,8 @@ def verify(doc: dict) -> list[str]:
             errors.append(f"release surface missing: {rel}")
             continue
         text = path.read_text(encoding="utf-8")
-        for term in required_terms:
-            if term and term not in text:
-                errors.append(f"{rel} does not reference declared release term {term!r}")
+        for term in missing_surface_terms(text, required_terms):
+            errors.append(f"{rel} does not reference declared release term {term!r}")
 
     portable = ROOT / "examples" / "portable-instance" / "data" / "instance.yaml"
     if portable.is_file():

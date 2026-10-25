@@ -17,6 +17,7 @@ REQUIRED = [
     "docs/review/semantic-coverage.md",
     "docs/review/software-quality-sweep.md",
     "docs/review/repository-assurance-integrity-sweep-2026-10-25.md",
+    "docs/review/material-claim-inventory-2026-10-25.md",
     "method/review/claim-evidence-ledger.yaml",
     "method/review/false-assurance-challenges.yaml",
 ]
@@ -27,6 +28,15 @@ def load_yaml(path: str):
     if not isinstance(value, dict):
         raise ValueError(f"{path}: top-level value must be a mapping")
     return value
+
+def missing_claim_inventory_ids(claims: list[dict], inventory_text: str) -> list[str]:
+    missing: list[str] = []
+    for claim in claims:
+        cid = str(claim.get("id") or "")
+        if cid and cid not in inventory_text:
+            missing.append(cid)
+    return missing
+
 
 def check_current_review_docs(root: Path, stable_release: str) -> list[str]:
     errors: list[str] = []
@@ -107,6 +117,9 @@ def main() -> int:
     if not isinstance(claims, list) or not claims:
         errors.append("claim ledger must contain claims")
     else:
+        inventory_text = (ROOT / "docs/review/material-claim-inventory-2026-10-25.md").read_text(encoding="utf-8")
+        for cid in missing_claim_inventory_ids(claims, inventory_text):
+            errors.append(f"material claim inventory missing claim id: {cid}")
         seen = set()
         required = {"id","claim","scope","normative_evidence","executable_evidence","falsification","expected_if_falsified","limitations"}
         for claim in claims:

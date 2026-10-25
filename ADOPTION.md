@@ -13,7 +13,7 @@ For a completed RAHP-only assessment, try the [real specification examination](e
 
 RAHP is adopted through configuration. A Working Group, developer, standards project, assurance team, or independent reviewer can use the toolkit without inheriting a bundled deployment. DTG and CAWG/C2PA are examples of the same portable RAHP contracts, not parent environments that a new adopter must copy.
 
-The current stable product boundary is described by `PROJECT-STATUS.yaml`, the engine/result/evidence contracts, and the current v2.4 release qualification. Historical release notes remain evidence of earlier boundaries; they are not current adoption instructions.
+The current stable product boundary is described by `PROJECT-STATUS.yaml`, the engine/result/evidence contracts, and the [v2.9.0 release qualification](method/v2.9-release-qualification.yaml). Historical release notes remain evidence of earlier boundaries; they are not current adoption instructions.
 
 ## 1. Checkout and install
 
