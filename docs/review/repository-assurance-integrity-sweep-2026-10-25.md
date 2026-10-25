@@ -54,6 +54,8 @@ The maintained claim/evidence ledger now covers twelve high-materiality proposit
 
 The ledger remains a bounded reviewer entry path, not an exhaustive enumeration of every sentence in the repository.
 
+The companion `docs/review/material-claim-inventory-2026-10-25.md` classifies each of the twelve claims by authority/canonical state, evidence, validator/challenge path, publication surface, material limitation and applicability/reassessment trigger. This is a reviewer-navigation artefact rather than a new schema or status vocabulary.
+
 ## Findings and disposition
 
 ### AIS-001 — current reviewer pack contained stale stable-release metadata
@@ -112,7 +114,38 @@ This does not retroactively alter the immutable v2.9.0 tag or its qualification 
 
 **Disposition:** corrected. No semantic contract change.
 
+### AIS-005 — adoption guide referenced a superseded current release qualification
+
+**Classification:** stale evidence / publication-documentation defect  
+**Observed:** `ADOPTION.md` correctly described the portable adoption model but said the current product boundary used the **v2.4 release qualification** while the declared stable release and README were v2.9.0.
+
+**Why it matters:** this is a newcomer-facing path. A first-time adopter could reasonably treat the superseded qualification as current authority even though the canonical release declaration had advanced.
+
+**Disposition:** remediated and regression-protected.
+
+- `ADOPTION.md` now references the v2.9.0 qualification manifest.
+- generic release verification now treats `ADOPTION.md` as a current release-synchronized surface and requires both the declared tag and qualification-manifest path;
+- unit tests include a stale v2.4 adoption example and require the generic surface check to reject it.
+
 ## Cold-reader reconstruction sample
+
+### Newcomer README and adoption path
+
+**README result:** reconstructable and appropriately bounded. The current release, stable compatibility boundary, independent-adoption limitation, evidence-conservative principles, authority boundaries and adoption gateway are explicit. No deterministic overclaim was identified in the sampled README path.
+
+**ADOPTION result before remediation:** materially stale. The guide named the v2.4 qualification as the current product boundary despite v2.9.0 being the declared stable release.
+
+**ADOPTION result after remediation:** the stable qualification link is synchronized by generic release validation. New adopters still receive explicit warnings that command/workflow completion is not assurance and that deployment governance/evidence does not transfer from bundled examples.
+
+### Corpus reader and generated corpus-page path
+
+**Result:** appropriately bounded in the sampled current path.
+
+`docs/reading-scenario-corpus.md` distinguishes a scenario from a finding, evidence grade from safety/conformance, priority from severity, and source pin from executed test evidence. It also explains `claim_integrity` states and requires unknown execution state to remain unknown.
+
+Generated corpus pages expose evidence grade/provenance and the derived claim-integrity interpretation. `test_corpus_pages_projection.py` regression-protects pending/mixed/undeclared interpretation, and the post-merge Pages workflow independently observed the published documentation.
+
+No additional deterministic overclaim was identified in this sampled corpus-reader path.
 
 ### Standalone specification review — TRQP
 
