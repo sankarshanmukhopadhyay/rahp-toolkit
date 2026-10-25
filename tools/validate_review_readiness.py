@@ -33,6 +33,31 @@ def main() -> int:
         if not (ROOT / rel).is_file():
             errors.append(f"missing review surface: {rel}")
 
+    current_review_docs = {
+        "docs/review/review-readiness-baseline.md": (stable_release,),
+        "docs/review/reproduction.md": (
+            stable_release,
+            f"git checkout {stable_release}",
+            "requirements-release.lock",
+        ),
+        "docs/review/known-limitations.md": (
+            stable_release,
+            "requirements-release.lock",
+        ),
+    }
+    for rel, tokens in current_review_docs.items():
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in text:
+                errors.append(f"{rel} missing current review-boundary token: {token}")
+
+    security_pre_review = (ROOT / "docs/review/security-pre-review.md").read_text(encoding="utf-8")
+    for token in ("historical", "v2.4.0", "current-main-release-security-disposition-2026-10-22.md"):
+        if token not in security_pre_review:
+            errors.append(
+                f"docs/review/security-pre-review.md missing historical-boundary token: {token}"
+            )
+
     if errors:
         for e in errors: print("ERROR", e)
         return 1
