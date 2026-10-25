@@ -123,7 +123,6 @@ def main() -> int:
     retired_workflows = {
         "cawg-cross-spec-pressure-test.yml",
         "dtg-cross-spec-pressure-test.yml",
-        "release-codename-policy.yml",
         "vti-composition-wave.yml",
         "vti-semantic-completion.yml",
     }
