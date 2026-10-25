@@ -48,8 +48,8 @@ The executable rules are intentionally narrow. They fail only when the repositor
 | ID | Invariant | Enforcement |
 |---|---|---|
 | CI-01 | A standalone `source-pinned` grade requires an immutable 40-character source commit. | `corpus_claim_integrity.static_claim_errors` |
-| CI-02 | A `source-pinned` grade cannot coexist with a provenance/composition review-pending state. | same |
-| CI-03 | A corpus explicitly recorded as `semantic-requalification-complete-mixed-grounding` cannot claim corpus-wide `source-pinned`. | same |
+| CI-02 | No corpus-wide evidence grade can coexist with a provenance/composition review-pending state. | same |
+| CI-03 | A corpus explicitly recorded as `semantic-requalification-complete-mixed-grounding` cannot claim any corpus-wide evidence grade. | same |
 | CI-04 | A derived `source-pinned` corpus requires immutable dependency pins. | same |
 | CI-05 | A declared `authority_pin` must match the corpus `source_commit`. | scenario-corpus validator |
 | CI-06 | A corpus claiming `derived-from-pinned-dependencies` cannot silently use dependency pins that differ from the current parent baselines. | scenario-corpus validator |
