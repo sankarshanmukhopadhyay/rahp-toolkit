@@ -23,6 +23,19 @@ class ControllerWorkflowConsolidationTests(unittest.TestCase):
         self.assertIn("python3 tools/dpip_handoff.py", text)
         self.assertFalse((WORKFLOWS / "dpip-handoff.yml").exists())
 
+    def test_dpip_order_and_secret_scope_are_preserved(self):
+        text = (WORKFLOWS / "dpip-lifecycle.yml").read_text()
+        lifecycle = text.split("  lifecycle:", 1)[1].split("\n  handoff:", 1)[0]
+        handoff = text.split("\n  handoff:", 1)[1].split("\n  watchdog:", 1)[0]
+        watchdog = text.split("\n  watchdog:", 1)[1]
+        self.assertNotIn("DPIP_HANDOFF_TOKEN", lifecycle)
+        self.assertEqual(handoff.count("DPIP_HANDOFF_TOKEN"), 1)
+        self.assertIn("needs: lifecycle", handoff)
+        self.assertIn("needs.lifecycle.result == 'success'", handoff)
+        self.assertIn("- lifecycle", watchdog)
+        self.assertIn("- handoff", watchdog)
+        self.assertIn("needs.handoff.result == 'success'", watchdog)
+
     def test_review_workers_keep_two_explicit_jobs(self):
         text = (WORKFLOWS / "review-workers.yml").read_text()
         self.assertIn("\n  combined_review:\n", text)
