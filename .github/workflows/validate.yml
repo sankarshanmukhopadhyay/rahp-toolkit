@@ -273,6 +273,10 @@ jobs:
         run: python3 tools/validate_authority_policy_gates.py
       - name: Validate capability documentation synchronization
         run: python3 tools/validate_capability_documentation.py
+      - name: Validate release codename policy
+        run: |
+          python3 tools/release_codenames.py validate
+          python3 tools/test_release_codenames.py
       - name: Validate generic release declaration
         run: python3 tools/release.py verify
       - name: Validate v2.7 release qualification contract
@@ -403,6 +407,17 @@ jobs:
 
       - name: Validate VTI privacy composition evidence
         run: python3 tools/validate_vti_privacy_composition.py
+
+      - name: Validate VTI composition evidence wave
+        run: python3 tools/validate_vti_composition_wave.py
+
+      - name: Validate VTI semantic completion evidence
+        run: python3 tools/validate_vti_semantic_completion.py
+
+      - name: Preserve VTI evidence boundary
+        run: |
+          echo 'VTI fixture validation proves the declared evidence vectors are evaluated consistently.'
+          echo 'It is not, by itself, a VTI assurance PASS or future normative VTI text.'
 
       - name: Validate VTI component-substitution evidence gate
         run: python3 tools/validate_vti_component_substitution_gate.py
