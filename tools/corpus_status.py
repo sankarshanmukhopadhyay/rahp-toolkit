@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse, fnmatch, json, os, re, sys, urllib.error, urllib.request
 from pathlib import Path
 import yaml
+from corpus_claim_integrity import derive_claim_state
 
 ROOT=Path(__file__).resolve().parent.parent
 SOURCES=ROOT/'corpora'/'sources.yaml'
@@ -70,6 +71,15 @@ def entries():
 def corpus_record(item):
     doc=load_yaml(ROOT/item['corpus_file'])
     return doc.get('corpus') or {}
+
+def annotate_claim_integrity(results, byid):
+    for result in results:
+        item=byid.get(result.get('corpus_id')) or {}
+        if not item:
+            continue
+        corpus=corpus_record(item)
+        result['claim_integrity']=derive_claim_state(corpus,result.get('status'))
+    return results
 
 
 def evaluate(item, network=True, portfolio=None):
@@ -143,12 +153,14 @@ def main():
             if deps and all(status_by.get(d) in {'UP_TO_DATE','SOURCE_CHANGED_NO_CORPUS_IMPACT','PINNED_NOT_CHECKED'} for d in deps):
                 r['status']='DERIVED_BASELINES_STABLE' if args.offline else 'RECOMPOSITION_NOT_TRIGGERED'
                 r['reason']='Declared dependency baselines do not currently require semantic review.'
+    annotate_claim_integrity(results,byid)
     report={'version':1,'portfolio_registry':manifest.get('portfolio_registry',{}),'portfolio_registry_status':('not-checked' if args.offline else ('ok' if portfolio is not None else 'check-failed')),'portfolio_registry_error':portfolio_error,'results':results}
     if args.json_path:
         p=Path(args.json_path); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(report,indent=2)+'\n')
-    lines=['# RAHP corpus source status','', '| Corpus | Status | Pinned source | Observed head |','|---|---|---|---|']
+    lines=['# RAHP corpus source status','', '| Corpus | Status | Claim state | Pinned source | Observed head |','|---|---|---|---|---|']
     for r in results:
-        lines.append(f"| `{r['corpus_id']}` | **{r['status']}** | `{str(r.get('pinned_commit','—'))[:12]}` | `{str(r.get('observed_head','—'))[:12]}` |")
+        claim=(r.get('claim_integrity') or {}).get('state','unknown')
+        lines.append(f"| `{r['corpus_id']}` | **{r['status']}** | **{claim}** | `{str(r.get('pinned_commit','—'))[:12]}` | `{str(r.get('observed_head','—'))[:12]}` |")
     lines+=['','## Detail','']
     for r in results:
         lines += [f"### {r['corpus_id']}", '', r.get('reason',''), '']
