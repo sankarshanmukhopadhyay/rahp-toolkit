@@ -35,6 +35,27 @@ class GenericReleaseContractTests(unittest.TestCase):
         self.assertEqual(parsed["qualification_validator"], meta["qualification_validator"])
         self.assertEqual(parsed["notes_path"], meta["notes_path"])
 
+    def test_release_surface_helper_detects_stale_adoption_terms(self):
+        required = ["v2.9.0", "method/v2.9-release-qualification.yaml"]
+        current = "Current v2.9.0 boundary: method/v2.9-release-qualification.yaml"
+        stale = "Current v2.4.0 boundary: method/v2.4-release-qualification.yaml"
+        self.assertEqual(release.missing_surface_terms(current, required), [])
+        self.assertEqual(
+            release.missing_surface_terms(stale, required),
+            required,
+        )
+
+    def test_adoption_guide_is_part_of_generic_release_synchronization(self):
+        doc = release.declaration()
+        meta = release.metadata(doc)
+        adoption = (ROOT / "ADOPTION.md").read_text(encoding="utf-8")
+        self.assertEqual(
+            release.missing_surface_terms(
+                adoption, [meta["tag"], meta["qualification_manifest"]]
+            ),
+            [],
+        )
+
     def test_repository_path_escape_is_rejected(self):
         with self.assertRaises(ValueError):
             release.resolve_repo_path("../outside", "test path")
