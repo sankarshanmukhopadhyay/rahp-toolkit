@@ -29,7 +29,7 @@ class ControllerWorkflowConsolidationTests(unittest.TestCase):
         handoff = text.split("\n  handoff:", 1)[1].split("\n  watchdog:", 1)[0]
         watchdog = text.split("\n  watchdog:", 1)[1]
         self.assertNotIn("DPIP_HANDOFF_TOKEN", lifecycle)
-        self.assertEqual(handoff.count("DPIP_HANDOFF_TOKEN"), 1)
+        self.assertEqual(handoff.count("DPIP_HANDOFF_TOKEN:"), 1)
         self.assertIn("needs: lifecycle", handoff)
         self.assertIn("needs.lifecycle.result == 'success'", handoff)
         self.assertIn("- lifecycle", watchdog)
