@@ -55,3 +55,10 @@ challenges:
     prohibited: [PASS, GREEN]
     expected: evidence-required-or-indeterminate
     evidence_ref: fixtures/negative/composition-rule.yaml
+
+  - id: FAC-010
+    condition: post-candidate-implementation-drift
+    attack: Change executable implementation or tests after the qualified release evidence SHA but before the published release tag.
+    prohibited: [PASS, GREEN]
+    expected: publication-rejected-unless-requalified
+    evidence_ref: tests/test_release_candidate_lineage.py
