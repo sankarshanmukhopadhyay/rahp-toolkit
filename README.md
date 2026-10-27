@@ -83,7 +83,7 @@ Use the [Adoption gateway](docs/adoption-guide.md) to choose the smallest useful
 
 For a maintained executable first exercise, use [Hello RAHP](examples/hello-rahp/README.md).
 
-For a short reproducible screen demonstration using a source-pinned real specification, see the [TRQP specification demo](examples/standalone-trqp/DEMO.md).
+For a short reproducible screen demonstration using a source-pinned real specification, [watch the RAHP introduction on YouTube](https://youtu.be/0EAKFZDZeIY) and follow the [TRQP specification demo](examples/standalone-trqp/DEMO.md) to reproduce it.
 
 For consumer-facing interaction evidence, see [Consumer-interaction assurance](docs/consumer-interaction-assurance.md).
 
