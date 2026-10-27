@@ -9,7 +9,7 @@ parent: Adopt RAHP
 
 > New to the toolkit? Start with the [Adoption gateway](docs/adoption-guide.md) and the maintained [Hello RAHP](examples/hello-rahp/README.md) exercise before using this detailed configuration guide.
 
-For a completed RAHP-only assessment, try the [real specification examination](examples/standalone-trqp/README.md) after Hello RAHP.
+For a first visual walkthrough, [watch the introductory RAHP specification examination](https://youtu.be/0EAKFZDZeIY), then reproduce it using the [TRQP demonstration guide](examples/standalone-trqp/DEMO.md). For a completed RAHP-only assessment, try the [real specification examination](examples/standalone-trqp/README.md) after Hello RAHP.
 
 RAHP is adopted through configuration. A Working Group, developer, standards project, assurance team, or independent reviewer can use the toolkit without inheriting a bundled deployment. DTG and CAWG/C2PA are examples of the same portable RAHP contracts, not parent environments that a new adopter must copy.
 

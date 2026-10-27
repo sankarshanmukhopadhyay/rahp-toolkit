@@ -2,6 +2,10 @@
 
 This is a condensed presentation of the existing [TRQP specification examination](README.md), not a new assessment or a live service test. The source-pinned review, evidence, findings and dispositions remain in their existing authoritative files.
 
+## Watch
+
+[Watch the introductory RAHP specification examination on YouTube](https://youtu.be/0EAKFZDZeIY). The recording demonstrates this retained, source-pinned examination and its review boundaries. The video is explanatory material, not a fresh assessment or independent assurance evidence.
+
 ## Run
 
 From the repository root, after `pip install -r requirements.txt`:

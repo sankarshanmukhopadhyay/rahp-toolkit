@@ -17,7 +17,7 @@ Start with [Hello RAHP](hello-rahp/README.md), then complete the
 bounded, source-pinned teaching assessment with an offline replay and open findings.
 It is not part of the canonical maintained portfolio baseline registry below.
 
-For the condensed four-minute screen walkthrough of this same examination, see the [TRQP specification demo](standalone-trqp/DEMO.md).
+For a short recorded introduction, [watch the RAHP TRQP specification examination](https://youtu.be/0EAKFZDZeIY). To run the same source-pinned checks yourself, follow the [TRQP specification demo](standalone-trqp/DEMO.md).
 
 ## Canonical maintained-example policy
 
