@@ -92,7 +92,19 @@
     "runtime_verification": "not-executed",
     "full_rahp_security_combined_engine_runs": "not-executed",
     "historical_signature_validation": "not-executed",
-    "note": "Do not present source-level or decision-model checks as KERI, ACDC, COSE, C2PA or X.509 conformance."
+    "note": "Do not present source-level or decision-model checks as KERI, ACDC, COSE, C2PA or X.509 conformance.",
+    "external_verifier_core_probe": {
+      "status": "passed",
+      "run": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/40686760758",
+      "implementation_repo": "GLEIF-IT/vlei-verifier",
+      "implementation_sha": "5850051b52dce24ed59eae486af76e7c73f6012c",
+      "test_command": "python -m pytest -q tests/core/test_verifying.py",
+      "tests_passed": 5,
+      "tests_failed": 0,
+      "artifact_name": "cawg-vlei-verifier-probe-40686760758",
+      "artifact_id": 12815805659,
+      "scope": "native external verifier core tests only; not CAWG/C2PA assertion and not historical KEL/TEL evidence"
+    }
   },
   "issue_1163_closure_eligible": false
 }

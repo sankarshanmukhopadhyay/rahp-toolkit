@@ -7,10 +7,10 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 
 class WorkflowRationalizationTests(unittest.TestCase):
-    def test_governed_surface_is_sixteen_of_twenty(self):
+    def test_governed_surface_is_seventeen_of_twenty(self):
         policy = yaml.safe_load((ROOT / "config" / "workflow-governance.yaml").read_text())
         actual = sorted(path.name for path in WORKFLOWS.glob("*.yml"))
-        self.assertEqual(len(actual), 16)
+        self.assertEqual(len(actual), 17)
         self.assertLessEqual(len(actual), int(policy["max_workflows"]))
         self.assertEqual(sorted(policy["workflows"]), actual)
 
