@@ -33,6 +33,9 @@ workflows:
   instance-watch.yml:
     class: lifecycle-controller
     responsibility: instance-observation-publication-and-persistence
+  cawg-vlei-verifier-probe.yml:
+    class: bounded-evidence
+    responsibility: pinned-external-vlei-verifier-core-probe
   corpus-review.yml:
     class: bounded-evidence
     responsibility: corpus-review-packet-production
