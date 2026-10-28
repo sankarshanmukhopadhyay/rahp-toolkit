@@ -8,7 +8,7 @@ import re
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-RECORD = ROOT / "instances/cawg/reviews/2026-10-identity-vlei-reassessment.result.json"
+RECORD = ROOT / "instances/cawg/reviews/2026-10-identity-vlei-reassessment.assessment.json"
 
 
 class CawgVleiSuccessorEvidenceTests(unittest.TestCase):
