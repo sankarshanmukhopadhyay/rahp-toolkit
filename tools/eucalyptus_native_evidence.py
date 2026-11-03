@@ -262,7 +262,10 @@ def main() -> int:
     try:
         suites = args.suite
         if args.diagnostics_965 and suites is None:
-            suites = ['openvtc-vetting-focus', 'registry-didcomm-integration']
+            diagnostics = diagnostic_suites(args.sources.resolve(), args.vti_partition)
+            suites = ([s['id'] for s in diagnostics if s['id'].startswith('vti-part-')]
+                      if args.vti_partition else
+                      ['openvtc-vetting-focus', 'registry-didcomm-integration'])
         summary = collect(args.sources.resolve(), args.output.resolve(), suites, args.timeout_seconds,
                           diagnostics=args.diagnostics_965, vti_partition=args.vti_partition)
     except (ValueError, OSError, subprocess.SubprocessError) as exc:
