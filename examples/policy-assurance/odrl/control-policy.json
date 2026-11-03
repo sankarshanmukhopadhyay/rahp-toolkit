@@ -1,0 +1,27 @@
+{
+  "@context": "http://www.w3.org/ns/odrl.jsonld",
+  "@type": "Set",
+  "uid": "https://example.org/policies/rahp-odrl-control-1",
+  "permission": [
+    {
+      "target": "https://example.org/assets/report-1",
+      "action": "read",
+      "assigner": "https://example.org/parties/operator",
+      "assignee": "https://example.org/parties/reviewer"
+    }
+  ],
+  "prohibition": [
+    {
+      "target": "https://example.org/assets/report-1",
+      "action": "distribute",
+      "assignee": "https://example.org/parties/reviewer"
+    }
+  ],
+  "obligation": [
+    {
+      "target": "https://example.org/assets/report-1",
+      "action": "delete",
+      "assignee": "https://example.org/parties/reviewer"
+    }
+  ]
+}
