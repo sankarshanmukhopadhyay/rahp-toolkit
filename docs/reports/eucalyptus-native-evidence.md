@@ -56,6 +56,61 @@ The tagged credentials library does not track a root `Cargo.lock`. Its supplemen
 
 The native plan separately exercises the tagged VTC sender-binding, self-edit and approval tests; VTA freshness and refresh tests; room lifecycle/host tests; hidden vetting; and native E2E fixtures. Source-compatible native fixture execution is useful evidence, but fixture identities do not demonstrate independent real people, and fixture mediators do not establish every deployed transport/observer surface.
 
+## Issue #965: reproducible diagnostic retests
+
+The historical Eucalyptus native packet remains unchanged. [Issue #965](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/965) owns three precise native-execution gaps: an OpenVTC vetting assertion, nine trust-registry DIDComm integration tests that lacked a configured client, and the full VTI workspace timeout. The following diagnostics add *new* evidence and never rewrite the original failures. The exact pinned revisions are in `profiles/dtg/eucalyptus/campaign.json`.
+
+### Focused OpenVTC reproduction
+
+Use an isolated source workspace with the pinned campaign checkouts. Rust 1.95.0 and the existing native workflow prerequisites are required.
+
+```bash
+python3 tools/eucalyptus_native_evidence.py \
+  --sources /tmp/eucalyptus-fresh-960/sources \
+  --output /tmp/eucalyptus-965-focus \
+  --diagnostics-965 \
+  --suite openvtc-vetting-focus \
+  --timeout-seconds 900
+python3 tools/eucalyptus_campaign.py --verify-package /tmp/eucalyptus-965-focus
+```
+
+This executes the **unchanged** target test `no_ticket_is_issued_for_requests_that_cannot_be_attested` under the release's `openvtc` crate. Interpret a failed assertion as a bounded target test failure, not by itself as a production exploit. A passing rerun establishes only this focused test at the recorded pin, environment and run. Repeat independently if distinguishing deterministic, order-dependent and resource-dependent outcomes.
+
+### Trust-registry integration prerequisites
+
+The test requires actual operator-controlled DIDComm integration infrastructure. Supply `CLIENT_DID`, `CLIENT_SECRETS` (nonempty JSON array), `MEDIATOR_DID` and `TRUST_REGISTRY_DID` via the runtime environment; do **not** commit `.env.test` credentials or fabricate a DID or mediator to make the checks run.
+
+```bash
+python3 tools/eucalyptus_native_evidence.py \
+  --sources /tmp/eucalyptus-fresh-960/sources \
+  --output /tmp/eucalyptus-965-registry \
+  --diagnostics-965 \
+  --suite registry-didcomm-integration
+```
+
+If prerequisites are missing or invalid, the sealed packet records `ATTEMPTED_UNAVAILABLE` and the **names** of missing variables. It does not execute the tests and does not retain their values. Present but unreachable or unauthorized external services may still yield a nonzero test execution, which requires diagnosis, not an automatic implementation FAIL. **The live test runtime may itself emit sensitive information**: only run with nonproduction controlled test accounts, restrict access to logs/artifacts and review their contents and retention before external publication. The PR-triggered probe deliberately supplies no credentials.
+
+### Complete VTI workspace-member partition
+
+To avoid interpreting a 900-second full-workspace timeout as a software failure, this tool can derive a **non-overlapping package selection** from the exact pinned VTI `Cargo.toml` workspace members and each member's package name. It rejects missing, wildcard or duplicate member manifests. Partition coverage means every *declared package* is selected once; it does **not** prove all feature combinations, cross-package behavior or that a package's tests executed.
+
+```bash
+python3 tools/eucalyptus_native_evidence.py \
+  --sources /tmp/eucalyptus-fresh-960/sources \
+  --output /tmp/eucalyptus-965-vti-partition \
+  --diagnostics-965 --vti-partition \
+  --timeout-seconds 900
+python3 tools/eucalyptus_campaign.py --verify-package /tmp/eucalyptus-965-vti-partition
+```
+
+This optional partition is resource-intensive. Budget runner time and storage before invoking it; each package is tested independently using `cargo test --locked -p <package>`. The generated run contract preserves the exact selected member, command, source and resolved build inputs; attempts retain stdout, stderr, timeout/nonzero counts and reason. Evaluate unavailable or zero-test packages individually and do not aggregate partial package PASS into a full-workspace PASS.
+
+### Qualification and closure
+
+Review `run-contract.json`, `attempts.json`, `summary.json`, `report.md` and the verified evidence seal. Preserve the original #960/#964 immutable records. A successful packet-verification check proves local integrity against the generated manifest, **not** independent attestation or the absence of production defects.
+
+Close #965 only when the focused OpenVTC failure, registry integrations and VTI workspace have each received a reproduced PASS, reproduced FAIL or explicit unavailable classification with a retest condition; all conclusions must be source-pinned and correctly distinguish target test execution from deployed composition. Unavailable infrastructure does not discharge the related EUC assurance obligations. Source-compatible Lab consuming-path evidence belongs separately to [#966](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/966).
+
 ## Completion boundary
 
 Go and Dart component evidence can resolve their previously unavailable native-execution sub-obligations. Rust results must be read at their actual execution boundary: a compiler, linker, dependency or system-prerequisite failure before tests is not a demonstrated target-control defect. Original diagnostics are retained when prerequisites or build settings are changed for retest.

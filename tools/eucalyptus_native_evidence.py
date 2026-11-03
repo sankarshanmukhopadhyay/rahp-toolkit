@@ -10,6 +10,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tomllib
 from datetime import datetime, timezone
 
 import eucalyptus_campaign as campaign
@@ -95,11 +96,85 @@ def plan(config: dict) -> list[dict]:
     return items
 
 
-def collect(sources: Path, output: Path, selected: list[str] | None = None, timeout_seconds: int = 900) -> dict:
+def diagnostic_suites(sources: Path, include_partition: bool = False) -> list[dict]:
+    """Exact-source retests; no synthetic identities, credentials or upstream changes."""
+    suites = [
+        {'id': 'openvtc-vetting-focus', 'source': 'openvtc',
+         'command': ['cargo', 'test', '--locked', '-p', 'openvtc',
+                     'no_ticket_is_issued_for_requests_that_cannot_be_attested'],
+         'purpose': 'Reproduce the exact Eucalyptus vetting test without altering target assertions.'},
+        {'id': 'registry-didcomm-integration', 'source': 'affinidi-trust-registry-rs',
+         'command': ['cargo', 'test', '--locked', '-p', 'trust-registry',
+                     '--test', 'didcomm_integration_test', '--', '--test-threads=1'],
+         'required_environment': ['CLIENT_DID', 'CLIENT_SECRETS', 'MEDIATOR_DID', 'TRUST_REGISTRY_DID'],
+         'purpose': 'Retest the nine previously unexercised DIDComm integration paths only with operator-supplied live prerequisites.'},
+    ]
+    if include_partition:
+        root = sources / 'verifiable-trust-infrastructure'
+        manifest = tomllib.loads((root / 'Cargo.toml').read_text(encoding='utf-8'))
+        members = manifest['workspace']['members']
+        if not members or len(set(members)) != len(members):
+            raise ValueError('VTI workspace member list empty or duplicated')
+        names = set()
+        for member in members:
+            if not isinstance(member, str) or any(x in member for x in '*?['):
+                raise ValueError('unresolved VTI workspace member')
+            crate = campaign.within(root, member) / 'Cargo.toml'
+            if not crate.is_file():
+                raise ValueError(f'VTI workspace manifest missing: {member}')
+            name = tomllib.loads(crate.read_text(encoding='utf-8'))['package']['name']
+            if name in names:
+                raise ValueError(f'duplicate VTI crate name: {name}')
+            names.add(name)
+            suites.append({
+                'id': 'vti-part-' + name.replace('_', '-'),
+                'source': 'verifiable-trust-infrastructure',
+                'command': ['cargo', 'test', '--locked', '-p', name],
+                'workspace_member': member,
+                'purpose': 'One exact Eucalyptus workspace member; cross-member tests and full workspace behavior are not established.',
+            })
+        if len({s['id'] for s in suites}) != len(suites):
+            raise ValueError('duplicate VTI partition identifier')
+    return suites
+
+
+def missing_prerequisites(suite: dict, environment: dict[str, str]) -> list[str]:
+    """Return variable names only. Never persist credentials or their values."""
+    missing = [key for key in suite.get('required_environment', []) if not environment.get(key)]
+    if suite['id'] == 'registry-didcomm-integration' and 'CLIENT_SECRETS' not in missing:
+        try:
+            secrets = json.loads(environment['CLIENT_SECRETS'])
+            if not isinstance(secrets, list) or not secrets:
+                missing.append('CLIENT_SECRETS (nonempty JSON array required)')
+        except (ValueError, TypeError):
+            missing.append('CLIENT_SECRETS (invalid JSON)')
+    return missing
+
+
+def unavailable_prerequisite(suite: dict, output: Path, missing: list[str]) -> dict:
+    """Record NOT_EXECUTED as unavailable without implying a target test failure."""
+    result = {**suite, 'class': 'runtime-observation', 'state': 'ATTEMPTED_UNAVAILABLE',
+              'reason': 'external DIDComm prerequisites unavailable or invalid: ' + ', '.join(missing),
+              'returncode': None, 'duration_seconds': 0, 'started_at': datetime.now(timezone.utc).isoformat()}
+    for stream in ('stdout', 'stderr'):
+        relative = f'logs/{suite["id"]}.{stream}.txt'
+        dest = output / relative
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text('', encoding='utf-8')
+        result[stream] = {'path': relative, 'sha256': campaign.digest(b'')}
+    return result
+
+
+def collect(sources: Path, output: Path, selected: list[str] | None = None, timeout_seconds: int = 900,
+            diagnostics: bool = False, vti_partition: bool = False) -> dict:
     config_path = ROOT / 'profiles/dtg/eucalyptus/campaign.json'
     config = json.loads(config_path.read_text()); campaign.validate(config)
     if not 30 <= timeout_seconds <= 3600: raise ValueError('native timeout must be between 30 and 3600 seconds')
+    if vti_partition and not diagnostics:
+        raise ValueError('VTI partition requires diagnostics mode')
     suites = plan(config)
+    if diagnostics:
+        suites += diagnostic_suites(sources, vti_partition)
     if selected:
         unknown = set(selected) - {s['id'] for s in suites}
         if unknown: raise ValueError(f'unknown suite identifiers: {sorted(unknown)}')
@@ -138,7 +213,11 @@ def collect(sources: Path, output: Path, selected: list[str] | None = None, time
         release_lock = campaign.git(root, 'ls-files', '--', 'Cargo.lock') == 'Cargo.lock'
         if item['command'][0] == 'cargo' and not release_lock:
             item['command'] = [x for x in item['command'] if x != '--locked']
-        result = qualify(campaign.execute_suite(item, cwd, output), output)
+        absent = missing_prerequisites(item, os.environ)
+        if absent:
+            result = unavailable_prerequisite(item, output, absent)
+        else:
+            result = qualify(campaign.execute_suite(item, cwd, output), output)
         result.update(repository=indexed[suite['source']]['repository'], revision=indexed[suite['source']]['revision'])
         lock_name = {'cargo': 'Cargo.lock', 'go': 'go.sum', 'dart': 'pubspec.lock'}.get(item['command'][0])
         tracked_lock = bool(lock_name and campaign.git(root, 'ls-files', '--', lock_name) == lock_name)
@@ -174,10 +253,21 @@ def main() -> int:
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--suite', action='append')
     parser.add_argument('--timeout-seconds', type=int, default=900)
+    parser.add_argument('--diagnostics-965', action='store_true',
+                        help='Enable bounded source-pinned Eucalyptus #965 diagnostics')
+    parser.add_argument('--vti-partition', action='store_true',
+                        help='Expand diagnostic suites to all exact VTI workspace members (costly)')
     args = parser.parse_args()
     output_existed = args.output.exists()
     try:
-        summary = collect(args.sources.resolve(), args.output.resolve(), args.suite, args.timeout_seconds)
+        suites = args.suite
+        if args.diagnostics_965 and suites is None:
+            diagnostics = diagnostic_suites(args.sources.resolve(), args.vti_partition)
+            suites = ([s['id'] for s in diagnostics if s['id'].startswith('vti-part-')]
+                      if args.vti_partition else
+                      ['openvtc-vetting-focus', 'registry-didcomm-integration'])
+        summary = collect(args.sources.resolve(), args.output.resolve(), suites, args.timeout_seconds,
+                          diagnostics=args.diagnostics_965, vti_partition=args.vti_partition)
     except (ValueError, OSError, subprocess.SubprocessError) as exc:
         if not output_existed and args.output.exists():
             campaign.write(args.output / 'execution-failure.json', {'process_state': 'failed', 'error': str(exc), 'type': type(exc).__name__})
