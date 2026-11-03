@@ -33,6 +33,16 @@ The regression suite also imports the evaluator directly.
 
 Exact error semantics can be part of adverse-decision reconstruction, but an error message is not itself redress. RAHP #610 retains the cross-boundary contestability proposition. This fixture only ensures that a consuming system is not deprived of a distinction the governing task specification actually declared.
 
-## External dependency
+## Source and implementation evidence (reconciled 2026-11-03)
 
-Upstream Trust Tasks TF #575 is still an external implementation dependency. If it changes or does not merge, the assurance proposition remains valid while the particular binding mechanism may change. A downstream PASS must come from observed semantic fidelity, not from the existence of generated constants.
+- [Trust Tasks TF PR #575](https://github.com/trustoverip/dtgwg-trust-tasks-tf/pull/575) **merged on 2026-09-22** (`dc99f54b766df3264db8ed7489fc40d70ef12102`). Rust code generation can expose each specification's declared error codes; generated vocabulary alone is not observed semantic conformance.
+- [OpenVTC/VTI #1600](https://github.com/OpenVTC/verifiable-trust-infrastructure/issues/1600) **closed on 2026-10-18**. Current VTI source contains derived error-code census modules at `vtc-service/src/trust_tasks/error_code_census.rs` and `vta-service/src/trust_tasks/error_code_census.rs`. These require witnessing tests for declared errors or an explicit, bounded *unwitnessed* baseline. A census with nonzero unwitnessed coverage is not proof that every error has an executable witness.
+- **The RAHP fixture here remains synthetic and deliberately bounded.** Its positive example is illustrative, not an independently executed VTI response; the source/implementation changes above do not upgrade it to a runtime or composition PASS.
+
+## What still needs independent assurance
+
+For one assurance-relevant task and its **exact normative revision**, capture a real target-native rejected response and its structured extended code and retryability, tied to the target source/command/test. Compare this observation against the governing declaration, then mutate the observed code to `taskFailed` or reverse retryability and prove the qualification changes to `SEMANTIC_LOSS`. Preserve the source of the observation separately from the synthetic mutation.
+
+If the native census already witnesses the precise case and the consumer contract is unambiguous, cite that test rather than introduce a redundant runtime harness. For cross-component fidelity, test the *actual consumer* instead; a producer witness does not prove that a relying component retains the distinction.
+
+No additional code or expanded vocabulary is warranted until that case identifies a falsifiable coverage gap. Upstream source authority, downstream RAHP qualification and independent execution remain distinct.
