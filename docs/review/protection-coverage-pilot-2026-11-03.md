@@ -89,3 +89,6 @@ The existing RAHP records already carry source target, finding, severity, eviden
 The next necessary observation is a cold-reader examination: can another reviewer independently reconstruct the three conclusions, distinguish the differing source epochs, and identify the missing action-time authority evidence without explanatory assistance? If not, repair the existing evidence/navigation first. Only consider a generator if the manual projection demonstrates repeatable reader value and evidence integrity.
 
 **Release and compatibility impact:** none. This is a research projection; there are no changes to canonical assessments, RAHP schema, method or runtime evaluation.
+
+
+**Independent reader handoff:** use [the bounded cold-reader qualification protocol](independent-cold-reader-qualification-2026-11-03.md) to record attributable source reconstruction and first-adopter interpretation. The protocol's publication is preparation, **not** evidence that an independent reviewer participated. Until actual review, this pilot remains an unaccepted analyst candidate.
