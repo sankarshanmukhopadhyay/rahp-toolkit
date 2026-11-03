@@ -189,8 +189,6 @@ jobs:
               --sources "$RUNNER_TEMP/eucalyptus-native/sources" \
               --output "$RUNNER_TEMP/native-evidence" \
               --diagnostics-965 \
-              --suite openvtc-vetting-focus \
-              --suite registry-didcomm-integration \
               --timeout-seconds 900
           else
             python tools/eucalyptus_native_evidence.py \
