@@ -12,10 +12,12 @@ evidence:
     - trustoverip/dtgwg-trust-tasks-tf#575
     - OpenVTC/verifiable-trust-infrastructure#1600
   boundary: >-
-    These vectors establish the assurance rule and regression shape. They do not
-    claim that upstream PR #575 is merged or that every language binding carries
-    the generated constants. Bindings are implementation support; observed
-    protocol outcomes are the assurance evidence.
+    Synthetic fixture vectors establish the classification rule and falsification
+    shape, not independently observed VTI protocol outcomes. Trust Tasks TF
+    PR #575 merged on 2026-09-22 and VTI #1600 closed on 2026-10-18 with
+    derived producer-side error-code census coverage. Neither generated
+    constants nor source-level census witnesses establish complete deployed
+    consumer fidelity. This fixture is not a runtime or composition PASS.
   vectors:
     - id: declared-not-found-preserved
       description: Known withdraw task emits its declared notFound error with declared retryability.
