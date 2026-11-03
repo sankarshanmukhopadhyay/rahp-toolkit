@@ -14,6 +14,8 @@ from __future__ import annotations
 import argparse, datetime as dt, pathlib, re, shutil, subprocess, sys
 from typing import Any
 
+from rahp_version import stable_release
+
 try:
     import yaml
 except ImportError:
@@ -192,7 +194,7 @@ def main():
     ip.add_argument("--source-path",action="append",default=[])
     ip.add_argument("--reviewed-on",default=dt.date.today().isoformat())
     ip.add_argument("--rahp-repository",default="sankarshanmukhopadhyay/rahp-toolkit")
-    ip.add_argument("--rahp-version",default="v0.9.0")
+    ip.add_argument("--rahp-version", default=stable_release(), help="RAHP method release recorded in reviewed_against (default: declared stable release)")
     ip.add_argument("--rahp-id"); ip.add_argument("--security-id"); ip.add_argument("--combined-id")
     ip.add_argument("--storage",choices=["working","exemplar"],default="working",help="working keeps run artefacts under ignored .rahp/; exemplar writes to examples/")
     ip.add_argument("--force",action="store_true"); ip.set_defaults(func=cmd_init)
