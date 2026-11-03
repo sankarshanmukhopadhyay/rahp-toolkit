@@ -54,7 +54,11 @@ python3 tools/rahp.py review \
   --offline
 ~~~
 
-This creates working review state under the ignored RAHP workspace. Command completion does not manufacture an assurance finding. Inspect the subject and substantiate any findings with the evidence required by the proposition.
+This creates working review state under `.rahp/reviews/hello-spec/pressure-test.yaml` and a companion `README.md`, both in the ignored RAHP workspace. Inspect the YAML before drawing conclusions: the initial state is `in-progress` with no findings, an immutable target commit, and a declared method release. **A successful scaffold is not an assurance PASS.**
+
+Running the same command again without `--force` must refuse to overwrite the working record. Treat the working YAML as review material and preserve your interpretation before deliberately using `--force`.
+
+Command completion does not manufacture an assurance finding. Inspect the subject and substantiate any findings with the evidence required by the proposition.
 
 ## What you have learned
 
