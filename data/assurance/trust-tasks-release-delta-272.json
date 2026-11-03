@@ -13,10 +13,12 @@
     {
       "family": "framework_metadata",
       "path_prefix": "specs/spec.meta.schema.json",
-      "classification": "new",
-      "disposition": "source-only-normative-change",
-      "issue_numbers": [],
-      "limits": "Adds per-task maxDocumentBytes / per-variant size obligation; reviewed RAHP framework is historical, no current consumer conformance evaluated."
+      "classification": "transferred",
+      "disposition": "transferred",
+      "issue_numbers": [
+        1174
+      ],
+      "limits": "Per-task maxDocumentBytes acceptance and negative admission controls are explicitly owned by #1174, not established as actual consumer behavior or a blanket compatibility PASS."
     },
     {
       "family": "acl",
