@@ -111,6 +111,41 @@ Review `run-contract.json`, `attempts.json`, `summary.json`, `report.md` and the
 
 Close #965 only when the focused OpenVTC failure, registry integrations and VTI workspace have each received a reproduced PASS, reproduced FAIL or explicit unavailable classification with a retest condition; all conclusions must be source-pinned and correctly distinguish target test execution from deployed composition. Unavailable infrastructure does not discharge the related EUC assurance obligations. Source-compatible Lab consuming-path evidence belongs separately to [#966](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/966).
 
+
+## November 3 source-pinned diagnostic disposition (#965)
+
+The first focused retest produced [workflow run 41566442929](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/41566442929) and [artifact 13198987565](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/41566442929/artifacts/13198987565) (`eucalyptus-native-evidence-41566442929`). The downloaded ZIP digest was independently checked against the uploaded artifact digest, `sha256:cc383775a85af7c84165caace5d569f97538f6c81458c5d4f8bcfac830b643cf`. The inner OpenVTC stdout and stderr match the machine-recorded SHA-256 digests, respectively `5909271bf63df3884dd8d852353032e29e1743686e2012061d8e54625b065f40` and `800d613de59285f837304a49c1bfb9642092949ad5addac84443971bd0281fd5`. No credentials are included here.
+
+### Observed test failure and cause classification
+
+The exact Eucalyptus source `OpenVTC/openvtc@2a4fa2b3c8e831dbe3184a1119c4c87b6f197220` executed:
+
+```text
+cargo test --locked -p openvtc no_ticket_is_issued_for_requests_that_cannot_be_attested
+```
+
+Its native output reports **one failed test, zero passing tests and 957 filtered-out tests**, with exit code 101. The failed assertion is at [`openvtc/src/state_handler/vetting_actions.rs:7280–7283`](https://github.com/OpenVTC/openvtc/blob/2a4fa2b3c8e831dbe3184a1119c4c87b6f197220/openvtc/src/state_handler/vetting_actions.rs#L7280-L7283). It expects the token-drawing explanation, but the refusal says the community has **no token label to draw under yet**. The underlying refusal remains a *denial*; this particular failure does **not** demonstrate issuance of an unauthorized vetting ticket.
+
+The frozen fixture defines October 2026 token labels in [`hidden_vetter_book`](https://github.com/OpenVTC/openvtc/blob/2a4fa2b3c8e831dbe3184a1119c4c87b6f197220/openvtc/src/state_handler/vetting_actions.rs#L6723-L6769), while the failing test uses wall-clock `Utc::now()`. The expected token-window wording depends on that clock. The evidence supports a **time-dependent test expectation/fixture defect** at the frozen revision, not a demonstrated target-control failure. It was observed in the initial October native packet and again under the focused November 3 command.
+
+An independently inspected *later upstream source commit*, [`OpenVTC/openvtc@f8bc18d`](https://github.com/OpenVTC/openvtc/commit/f8bc18d632e3f48af64b7fe226dc34ef87172c9b) (October 14, 2026), changes this test to a fixed October 5 time and explicitly documents why the wall clock was inappropriate. That is **source-observed correction in a later revision**, not an executed regression PASS for that revision and not permission to change the Eucalyptus tag. The original artifact remains a valid historical observation.
+
+### Other two execution boundaries
+
+The trust-registry integration was **not executed** in the November 3 job. `CLIENT_DID`, `CLIENT_SECRETS`, `MEDIATOR_DID` and `TRUST_REGISTRY_DID` were absent, and the collector correctly retained `ATTEMPTED_UNAVAILABLE`, return code null and empty logs. No actual registry or mediator test outcome is established. This work needs controlled test identities and external runtime access; do not use placeholder credentials to turn unavailability into success.
+
+The full VTI `cargo test --locked --workspace` remains unqualified after its historical 900-second timeout. PR #1168 introduced manifest-driven package partitions, but **this retest packet did not execute the complete partition**. The retained timeout is a resource/execution boundary, not evidence of defective VTI behavior. Partition coverage and runtime test results remain to be produced independently.
+
+### Current assessment and retest gates
+
+| Boundary | Established | Not established | Next qualification |
+|---|---|---|---|
+| Frozen OpenVTC test | Repeat observed FAIL, attributable clock-dependent expectation; later upstream source correction | Later-source executable PASS or deployed defect | Optional targeted execution against *explicitly separately pinned* corrected upstream revision, preserving release/tag separation |
+| Registry DIDComm suite | External prerequisites absent; no tests executed | PASS, FAIL, or interoperability | Controlled nonproduction mediator + registry execution, private logs and attributable result |
+| Full VTI workspace | Historical timeout; optional package-partition tool exists | Complete partition execution or workspace PASS | Bounded partition with per-member status, verified source manifest and sealed logs |
+
+**Result:** the diagnostic analysis has materially narrowed the first #965 uncertainty. **#965 remains open** for the unexecuted integration and partition boundaries. The twenty consequential Eucalyptus propositions remain evidence-required. No finding is automatically elevated from a component-level test, later-source inspection, or workflow success to composition assurance. The first test finding should not be escalated to an upstream implementation-defect report without contrary target-runtime evidence.
+
 ## Completion boundary
 
 Go and Dart component evidence can resolve their previously unavailable native-execution sub-obligations. Rust results must be read at their actual execution boundary: a compiler, linker, dependency or system-prerequisite failure before tests is not a demonstrated target-control defect. Original diagnostics are retained when prerequisites or build settings are changed for retest.
