@@ -1,0 +1,2723 @@
+{
+  "schema": "rahp-trust-tasks-dependency-delta/v1",
+  "review": "RAHP #272",
+  "frozen_utc_date": "2026-11-03",
+  "authority": "trustoverip/dtgwg-trust-tasks-tf: four immutable Rust release tags; git blob identity, not semantic proof",
+  "scope": "Changed specs/**/spec.md and specs/**/*.schema.json paths only, checked via complete untruncated Git trees; generated bindings and other files excluded from this normative-path inventory.",
+  "baseline_boundary": "RAHP is a downstream reviewer and corpus, not a direct Rust trust-tasks-rs dependency importer. Historical review records have their own source pins. New task family appearance does not equal current runtime consumer adoption.",
+  "conclusion": "NEW_NORMATIVE_SURFACE_WITH_NARROW_PARTIAL_TRANSFERS_AND_EXPLICIT_UNASSESSED_SCOPE",
+  "assurance": "INDETERMINATE_FOR_NEW_CONSUMER_CONFORMANCE",
+  "runtime_pass": false,
+  "composition_pass": false,
+  "rules": [
+    {
+      "family": "framework_metadata",
+      "path_prefix": "specs/spec.meta.schema.json",
+      "classification": "new",
+      "disposition": "source-only-normative-change",
+      "issue_numbers": [],
+      "limits": "Adds per-task maxDocumentBytes / per-variant size obligation; reviewed RAHP framework is historical, no current consumer conformance evaluated."
+    },
+    {
+      "family": "acl",
+      "path_prefix": "specs/acl/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        837,
+        908
+      ],
+      "limits": "ACL 0.2 authorization surface; #837 expiry/current authority and #908 mandatory waiver audit cover narrow propositions only."
+    },
+    {
+      "family": "signing_key",
+      "path_prefix": "specs/auth/signing-key/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        899
+      ],
+      "limits": "Enrollment authorization and atomic replacement scope of #899; other auth signing-key task versions not thereby proven."
+    },
+    {
+      "family": "step_up",
+      "path_prefix": "specs/auth/step-up/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        826,
+        837
+      ],
+      "limits": "Response version/proof-purpose and redemption authority/TTL are separate; 0.6 and approver onboarding not blanket covered."
+    },
+    {
+      "family": "out_of_band_auth",
+      "path_prefix": "specs/auth/oob/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        994
+      ],
+      "limits": "Trigger-link/wallet sign-in overlaps #994 Scope A; new OOB task family as a whole not certified."
+    },
+    {
+      "family": "other_auth",
+      "path_prefix": "specs/auth/",
+      "classification": "new",
+      "disposition": "not-assessed",
+      "issue_numbers": [],
+      "limits": "Authentication/session variants not present in historical scoped RAHP review; no versioned consuming assertion."
+    },
+    {
+      "family": "device_binding",
+      "path_prefix": "specs/device/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        994
+      ],
+      "limits": "v0.1/v0.2 capability enums add sign-sshsig, sign-jws, sign-csr, external-accounts-manage, external-auth-use; only protocol signing subset overlaps #994 C."
+    },
+    {
+      "family": "external_accounts",
+      "path_prefix": "specs/external/",
+      "classification": "new",
+      "disposition": "not-assessed",
+      "issue_numbers": [],
+      "limits": "New external account, credential issuance and signing task family; no pre-existing RAHP consumer claim shown."
+    },
+    {
+      "family": "git_namespace",
+      "path_prefix": "specs/git-ns/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        797,
+        908
+      ],
+      "limits": "Forge/bridge projection #797 and audit waiver #908 are narrow; task-level rights compatibility requires separate consumer trace."
+    },
+    {
+      "family": "sign_jws",
+      "path_prefix": "specs/keys/sign-jws/",
+      "classification": "new",
+      "disposition": "transferred",
+      "issue_numbers": [
+        994
+      ],
+      "limits": "Existing #994 Scope C explicitly assesses VTA-held-key JWS signing."
+    },
+    {
+      "family": "sign_csr",
+      "path_prefix": "specs/keys/sign-csr/",
+      "classification": "new",
+      "disposition": "transferred",
+      "issue_numbers": [
+        994
+      ],
+      "limits": "Existing #994 Scope C explicitly assesses VTA-held-key CSR signing."
+    },
+    {
+      "family": "sign_sshsig",
+      "path_prefix": "specs/keys/sign-sshsig/",
+      "classification": "new",
+      "disposition": "not-assessed",
+      "issue_numbers": [],
+      "limits": "New SSHSIG signature task, outside #994's JWS/CSR cases; no independent RAHP assertion."
+    },
+    {
+      "family": "rooms",
+      "path_prefix": "specs/rooms/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        481
+      ],
+      "limits": "Room schema, blob, record, epoch and ownership changes allocated to #481 coordination, not assumed to pass."
+    },
+    {
+      "family": "vtc_vetting",
+      "path_prefix": "specs/vtc/vetting/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        889,
+        642
+      ],
+      "limits": "Hidden admission and vetter-profile privacy overlap existing narrow residuals only."
+    },
+    {
+      "family": "vtc_join",
+      "path_prefix": "specs/vtc/join-requests/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        898,
+        689,
+        691
+      ],
+      "limits": "Redelivery #898, discovery policy #689 and error fidelity #691 cover distinct subsets; wallet sessions new."
+    },
+    {
+      "family": "vtc_members",
+      "path_prefix": "specs/vtc/members/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        610
+      ],
+      "limits": "Membership/authority reduction notices and lifecycle may bear on contestability #610, without blanket VTC conformance."
+    },
+    {
+      "family": "vtc_admin",
+      "path_prefix": "specs/vtc/admin/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        908,
+        610
+      ],
+      "limits": "Cooling-off, action events and offline/audit outcome cross governance boundaries; #908/#610 limited."
+    },
+    {
+      "family": "vtc_storage",
+      "path_prefix": "specs/vtc/storage/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        481
+      ],
+      "limits": "Room host storage configuration related to #481, unexecuted at consumer boundary."
+    },
+    {
+      "family": "vtc_rooms",
+      "path_prefix": "specs/vtc/rooms/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        481
+      ],
+      "limits": "Room admin and storage tasks #481 coordination; current runtime assurance not inferred."
+    },
+    {
+      "family": "vtc_other",
+      "path_prefix": "specs/vtc/",
+      "classification": "new",
+      "disposition": "not-assessed",
+      "issue_numbers": [],
+      "limits": "Additional VTC admin/community/website/operator, etc. task contracts beyond historical bounded RAHP review."
+    },
+    {
+      "family": "vta",
+      "path_prefix": "specs/vta/",
+      "classification": "new",
+      "disposition": "not-assessed",
+      "issue_numbers": [],
+      "limits": "New VTA metrics, attestation, context/DID and webvh task variants outside baseline review's versioned consumption."
+    },
+    {
+      "family": "vetting_common",
+      "path_prefix": "specs/vetting/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        889
+      ],
+      "limits": "Shared vetting shapes may interact with admission privacy, but no claim all semantics are proved by #889."
+    },
+    {
+      "family": "witness",
+      "path_prefix": "specs/witness/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        1051,
+        1082
+      ],
+      "limits": "Witness verification and temporal lifecycle separated into existing issues; no blanket assurance."
+    },
+    {
+      "family": "webvh_witness",
+      "path_prefix": "specs/webvh/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        1051,
+        1082
+      ],
+      "limits": "Witness signing/deactivation semantics related to witness authority/lifecycle; actual implementation still external."
+    },
+    {
+      "family": "vault_credentials",
+      "path_prefix": "specs/vault/",
+      "classification": "uncertain",
+      "disposition": "not-assessed",
+      "issue_numbers": [],
+      "limits": "Changed credential task text; no preserved-semantics or new consumer conformance asserted without text-level review."
+    },
+    {
+      "family": "task_consent",
+      "path_prefix": "specs/task-consent/",
+      "classification": "new",
+      "disposition": "partial-owner",
+      "issue_numbers": [
+        610
+      ],
+      "limits": "Task-consent decision semantics relate to contestability #610; no implementation result inferred."
+    },
+    {
+      "family": "other_spec",
+      "path_prefix": "specs/",
+      "classification": "uncertain",
+      "disposition": "not-assessed",
+      "issue_numbers": [],
+      "limits": "Fail-safe catchall for future/other changed normative spec paths. Ledger disallows any unmatched changed path."
+    }
+  ],
+  "release_refs": [
+    {
+      "ref": "trust-tasks-rs-v0.24.4",
+      "git_tree_sha": "9e65cdc32754e64be82db66db7605401668931d3",
+      "truncated": false
+    },
+    {
+      "ref": "trust-tasks-rs-v0.26.3",
+      "git_tree_sha": "b0da6bcda5a54eda479c53e861ec2e4d4ad5d05d",
+      "truncated": false
+    },
+    {
+      "ref": "trust-tasks-rs-v0.27.1",
+      "git_tree_sha": "2b50e6ef165777c348525a676c66b56dea1c2387",
+      "truncated": false
+    },
+    {
+      "ref": "trust-tasks-rs-v0.29.0",
+      "git_tree_sha": "a8d5959fd9e5a585b05f3c7722f111d89f8ad84b",
+      "truncated": false
+    }
+  ],
+  "intervals": [
+    {
+      "from": "trust-tasks-rs-v0.24.4",
+      "to": "trust-tasks-rs-v0.26.3",
+      "from_tree": "9e65cdc32754e64be82db66db7605401668931d3",
+      "to_tree": "b0da6bcda5a54eda479c53e861ec2e4d4ad5d05d",
+      "changed_normative_paths": 226,
+      "counts_by_family": {
+        "acl": 13,
+        "other_auth": 6,
+        "signing_key": 10,
+        "step_up": 19,
+        "git_namespace": 13,
+        "framework_metadata": 1,
+        "task_consent": 2,
+        "vault_credentials": 3,
+        "vetting_common": 6,
+        "vta": 8,
+        "vtc_other": 87,
+        "vtc_admin": 9,
+        "vtc_join": 14,
+        "vtc_members": 14,
+        "vtc_rooms": 2,
+        "vtc_vetting": 15,
+        "webvh_witness": 1,
+        "witness": 3
+      },
+      "changes": [
+        {
+          "path": "specs/acl/_shared/0.2/acl-entry.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "bdb8707c84db2e7ce8b1cb25a03aca870b24fa45",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/change-role/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "adb70dda3731e2dc632bc34bf869e740ceb35917",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/change-role/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "ee024febcfbf681e2168a591a649197d3042f3d0",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/grant/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f89ccb80ab4492fccbf61da08efb4e873507d96f",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/grant/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "b57e80d9dbbc2e093b1c52253b51b2596d6fd9ae",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/list/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "0f6a71599d25ded0cb90fea5d5ba81569552ec38",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/list/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "a6d91030e0db831fe7aadc3f6ceee4bc18d259cd",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/revoke/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "653248ade563ccb490f5abf3a0e4bb21ccc2f96e",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/revoke/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "e636b655b477f6231e077f88f1ae14ca9df5c8d4",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/show/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "2029970f851f00992f30dd1fcbaaaef1c0cfdf27",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/show/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "1220ce00d39def412456668ece4806affc9c065f",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/update/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "4206a35e270dbc6f8e38d88e6ebe9aa4e6bd0347",
+          "family": "acl"
+        },
+        {
+          "path": "specs/acl/update/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "9fd9b8fa9a49966e94b3c0638a83b711faf36eee",
+          "family": "acl"
+        },
+        {
+          "path": "specs/auth/_shared/0.1/signing-key.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5df7aa0dbf07a8d2010da195a64f968e5a2c6f80",
+          "family": "other_auth"
+        },
+        {
+          "path": "specs/auth/_shared/0.3/session.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "086d134c0e95ca049eda5851807b7a870f0acbe1",
+          "family": "other_auth"
+        },
+        {
+          "path": "specs/auth/authenticate/0.3/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "c82d69abd960b614b8a5eee85a843cb960408a7b",
+          "family": "other_auth"
+        },
+        {
+          "path": "specs/auth/authenticate/0.3/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "ac75fa9fdda17cf6f4c8ec6db6af0698bc5b2f40",
+          "family": "other_auth"
+        },
+        {
+          "path": "specs/auth/refresh/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5c713cc5afc2bfc3576ed89292cdfef87841acce",
+          "family": "other_auth"
+        },
+        {
+          "path": "specs/auth/refresh/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "9825857775239d46c9861f3a3126851cf67b71a7",
+          "family": "other_auth"
+        },
+        {
+          "path": "specs/auth/signing-key/authorize/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5b399b2a6fa15106ddf15e572626e3fcb1e42f53",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/authorize/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "3ec88e577126dadf4be5aeeae49683869c0bc700",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/enroll/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f7b3d67e3c6a3aba04946bd54b148470592acb76",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/enroll/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "4997e58122a3f6541bd5fa47e3d1812e4e596546",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/enroll/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "19b245d48a935fca58ab3a16b61e31341c21fd58",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/enroll/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6423c4dddfa684b13ce9778705dcb59d223b646d",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "628359d3605024fbac9552d1a7bf823a37b8d27f",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "d26e121a41f6d2d815314c0791c714ee815a2b63",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/revoke/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "a7ddc1fcf48a33a78c6bae3cc05756d585dfbbc2",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/signing-key/revoke/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "f531e4a06436ed10994abfde6449ef8c67ecf728",
+          "family": "signing_key"
+        },
+        {
+          "path": "specs/auth/step-up/approve-request/0.4/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "879423296e052987f8187a2a7aae052ab10e9ceb",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approve-request/0.4/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6aecab14449229e8594d5be8a6d4c51fd416c4f2",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approve-response/0.6/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "ad9d4b0a13160898d46c749b2e577cd7974f3954",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approve-response/0.6/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "cee7115d077fcd75ce99f71bf073b01882032baf",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/_shared/0.1/approver.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "1dd66b9db07d4150a586cbcbe6576f04f681ea6b",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/attest/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "b1cc2b669b8c37e9b2ba4a66717d0bfae79a8303",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/attest/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6adf54803dcad1540de7fe064e1c63ac88bd0194",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/enroll/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "fc6542bffe772bcae85f7c7b4d5a3bd1c3b491d6",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/enroll/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0b5e5419b71566e55022c617faeb1105cada3f2a",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/invite/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "7268a1c09c76b9aa120c0991a3acf49acaedaafc",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/invite/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "4d939533a5ac954be95e26ebc2afbd076bc10a24",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "dfdc04ee31009e45ca6b59009edb86069e631708",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "50cddf5b90cc39f1300bd2b7bf4a9c8a9f701b4e",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/redeem/finish/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5af33c6fdc14cbdf1acac79619367a0ec4a37784",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/redeem/finish/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "85a54b6e5a53f96bb166e0f195e769a2ea3a95b8",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/redeem/start/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "2ef3d6e4c22a13d3a6e21d64d6486c90389303ee",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/redeem/start/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "b592a756d3805ace65b3132debc0a0b8f7f455bf",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/revoke/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "b4e45eec0d44c0abd8f341c40309f795f32947bd",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/auth/step-up/approver/revoke/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "8107ce06a3f457c560c2d9a34661db4dc5216aaa",
+          "family": "step_up"
+        },
+        {
+          "path": "specs/git-ns/_shared/0.5/git-ns.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "8eda2f1a90560778cdddd7f0b0a119026ab346b3",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/account/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f0d783cebd8e7a766b72e6fec2408edf14809993",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/account/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "7940629b650c672e92ff33640ec7774edcd8a678",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/activity/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "1ee5defc1942d4b39617eb01ee10d75590af5c1f",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/activity/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "ddd43107e155701aa873975c8b9a27f891ac1142",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/bridge/job/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "b8d07acc04005c99412f65056d7ac81f6380dbf2",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/bridge/job/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "160e533055971247e0c20e245e906f968a59bbb2",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/projection/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "368a9b7e4ff752e07b4c2a491b2c56233c740d7d",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/projection/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6bc512c756b995be2f68de0ea107d5da264409ca",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/right/issued-by-departed/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "fe6c9121f68351f14caff58766cc51589646f0c4",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/right/issued-by-departed/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0b2e935120d42f86c4c48a95bd20e208dac4cfe4",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/right/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "b1bd22ee2be4ab582c9761549c501bb807fba64b",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/right/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "b855308252bf30d881fb9478def9719ae1a4ea51",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/spec.meta.schema.json",
+          "git_blob_before": "0249a9d8bfcd2670575954fd8c994c893a3de9bb",
+          "git_blob_after": "cf18109b8b5fe488f20d0c7e22faa505c2ae9e70",
+          "family": "framework_metadata"
+        },
+        {
+          "path": "specs/task-consent/decision/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "3e027146ee92101282ee980774f185deff1164f3",
+          "family": "task_consent"
+        },
+        {
+          "path": "specs/task-consent/decision/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "214b8f76a0d5c53e9a13ed057cb755dcc0aa136c",
+          "family": "task_consent"
+        },
+        {
+          "path": "specs/vault/credentials/get/0.1/spec.md",
+          "git_blob_before": "b53e57406b808aeeef723e13d0e80d303ed38adb",
+          "git_blob_after": "f659453c8e5af0e8f00f1c507d1625c6d53e5e9e",
+          "family": "vault_credentials"
+        },
+        {
+          "path": "specs/vault/credentials/query/0.1/spec.md",
+          "git_blob_before": "1dd0da99c408931cdaddcb03bb837fe169cd1c0b",
+          "git_blob_after": "b0193f4f7e5fc8acb1db24b5ea0a6f11c1b64d05",
+          "family": "vault_credentials"
+        },
+        {
+          "path": "specs/vault/credentials/receive/0.1/spec.md",
+          "git_blob_before": "68bbfe4583ed4430fd1435e59789bd84a1408c47",
+          "git_blob_after": "ac6af60a7655e275c020cb880879d805b291d251",
+          "family": "vault_credentials"
+        },
+        {
+          "path": "specs/vetting/_shared/0.1/identity-vetting.schema.json",
+          "git_blob_before": "313584c9cb911a91bbfbf344de4cc3d6430cd168",
+          "git_blob_after": "75a4b297cffec31099816dc29803fb5d33a8f03e",
+          "family": "vetting_common"
+        },
+        {
+          "path": "specs/vetting/_shared/0.1/vetting-card.schema.json",
+          "git_blob_before": "dfb9e9e00cbcecec5a233829e16e85ba5e494b2f",
+          "git_blob_after": "e72df02d7791c8272a59dbf848b19393861ff0f9",
+          "family": "vetting_common"
+        },
+        {
+          "path": "specs/vetting/_shared/0.1/vetting.schema.json",
+          "git_blob_before": "63a76d98543b4b9901c12eba8840dedacf3b8911",
+          "git_blob_after": "4a9a049e4e45617ac0c0b3b9c2a48fff8ea9a717",
+          "family": "vetting_common"
+        },
+        {
+          "path": "specs/vetting/request/0.1/payload.schema.json",
+          "git_blob_before": "58712ec9d0ddc00dff1a422ac19dd63ec164890e",
+          "git_blob_after": "bd84846f617a4d93db71ddee5ff711ee9ef6971c",
+          "family": "vetting_common"
+        },
+        {
+          "path": "specs/vetting/request/0.1/spec.md",
+          "git_blob_before": "27fa06894e1c2999c3193aa75d5961bf042346e4",
+          "git_blob_after": "a4851015bfaf271572cedd1f908b50eab08c906a",
+          "family": "vetting_common"
+        },
+        {
+          "path": "specs/vetting/session/0.1/spec.md",
+          "git_blob_before": "ed9f40b70651ff024b1de397ab67a9266098f41c",
+          "git_blob_after": "4b52ee6f19173afdac669fd115b2ed58c4381855",
+          "family": "vetting_common"
+        },
+        {
+          "path": "specs/vta/attestation/mnemonic-status/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "fc1f14accda897e14f465ef961984dd13ecad941",
+          "family": "vta"
+        },
+        {
+          "path": "specs/vta/attestation/mnemonic-status/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0a1df562740593080c9c3a02421fd6e599c34f21",
+          "family": "vta"
+        },
+        {
+          "path": "specs/vta/contexts/update-did/1.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "6ea23393d4b4d08100d4b83131da2f26f9e3b01c",
+          "family": "vta"
+        },
+        {
+          "path": "specs/vta/contexts/update-did/1.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "95952ab7da7dd1b44ea29f6be4f841ba629fed60",
+          "family": "vta"
+        },
+        {
+          "path": "specs/vta/metrics/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "580d6d80ed0a9def264f7bc824ca07d971281782",
+          "family": "vta"
+        },
+        {
+          "path": "specs/vta/metrics/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "aa9be416714cf2aeaa89557512df0d8c95d7ec99",
+          "family": "vta"
+        },
+        {
+          "path": "specs/vta/webvh/dids/create/1.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "bc393a8b5d7bc2afedb73d7ae77a23541935ba86",
+          "family": "vta"
+        },
+        {
+          "path": "specs/vta/webvh/dids/create/1.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "065bd125f6b0f44d336f02f583d4142015ee095a",
+          "family": "vta"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/community-presentation.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "79680c608dfa342a255edd0ffdbc7bea1a3fb5ec",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/community.schema.json",
+          "git_blob_before": "2b5007d42ed39fed2c6493fba9b7e8461d365d8e",
+          "git_blob_after": "19c07a6603a09df67b1f2935a1e632db4b239d75",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/endorsement-type.schema.json",
+          "git_blob_before": "e9c7686b74cfeac7ef193bbbbd863db696b89fc5",
+          "git_blob_after": "de669ed309262e1bc5fed39f236ae2dac680d1a5",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/endorsement.schema.json",
+          "git_blob_before": "bc03e12cb050933d10817b2f9d5f875abce80f6b",
+          "git_blob_after": "8320cd0df054ff15cb4ebd55d0e1f4ff630af4b2",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/member.schema.json",
+          "git_blob_before": "2d9770cd79290dd496222e59be3b4c3ba76a5346",
+          "git_blob_after": "73d821a38fa27c4a09a643c0e0403a740287047f",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/relationship-lifecycle.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "ab7296ed557ffd3c62502a5b50bf3e549ebaf6b6",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/schema-registry.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "29c169cc808550a008194b2a4f5f303869a776fc",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/vetting-auto-grant.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "4195ae07b6ea9dec3f763555d50e3463e1b5c729",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/website-transfer.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "db4eeac017f37a8c999aa025562e3dd0a34b9d68",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/_shared/0.2/schema-registry.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "6b4260917000bce59a15cb2e7d8ffe6b26ad18f5",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/admin/actions/_shared/0.1/action.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5b85507525ef846bd6baa2ee210fa49a28031890",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/acknowledge/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "b6101ac0579b1b54195d05aa04ad50d879e5ab21",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/acknowledge/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "f20825c1a6a31fa5257f25ee1426cd6523dc9b0e",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/cancel/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "c3469aea7bdc0334c2601550fb3a0bb0bc99a0ab",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/cancel/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "7c56366912b0debb6afb013103f1a109203907e4",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5dd0e8a874cf2b72b4fa037c67303df18227dbba",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "eab00f57b0d8874675a6f7a21dfc2affd99d18cc",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "6973946725e98237a4f20958c58eb6327101df5a",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "120e80af1da84121600549ec4cb5f340cf68a973",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/auth/recognise/0.2/payload.schema.json",
+          "git_blob_before": "18083e04a69f501cc1431c087834ffea13a6ccef",
+          "git_blob_after": "1ef2dd3258ba5dc85541ec464c4d01175cdb4d54",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/auth/recognise/0.2/spec.md",
+          "git_blob_before": "b7e15ac9fbfed2c5999c1d3096e57e4e3ba086de",
+          "git_blob_after": "c84b01f1e93ee1808370603c7bb6f8fb771d6cad",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/branding/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "0d594999245123a7978495b3e917e4e66f07f649",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/branding/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0da1bc65eba22f6f479aeab0ec97e51e12a43d0d",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/branding/update/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "7e46091465a54159b5df10e2bad4f916f515f195",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/branding/update/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "4498296e8b207a34aad3eacb895b1fecadf983cd",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/join-discovery/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "02e2c3f9b89203697cdbe1b3b1ecbe6d1099a14c",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/join-discovery/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "887801c28b47a9d1ee9d1036d1c567f7771d7fa0",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/join-discovery/update/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f297ed5d3c0339df9282c0c167d90296421763ab",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/join-discovery/update/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "cfcae9c839c84ee9c5038a5a22a67f2b9ade3da2",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/requested-attributes/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "185dd7e6ea957f5770ce9256b732c4558dbeefa3",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/requested-attributes/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "019c67e73708bc97bd9a08984605056ecd303500",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/requested-attributes/update/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "dc9df1c21801eeb098fa7719209a8eb192251817",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/community/requested-attributes/update/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "d366d75db2a71a2f4bf157edddb2455dd9a80364",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsement-types/list/0.1/spec.md",
+          "git_blob_before": "c65c66f25c71da04d337d5de25972a4bcb4d8914",
+          "git_blob_after": "25b8b259d19466b70ccc97e7a482819b79e9c5f0",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsement-types/register/0.1/payload.schema.json",
+          "git_blob_before": "ff6dc61d7d85d25264ae09f5d77987f85de560c5",
+          "git_blob_after": "28f5dec2f7ff091d0c6474b711cd1f87c9678a99",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsement-types/register/0.1/spec.md",
+          "git_blob_before": "2264058a2ce75cb89c134047f56692bdf474def7",
+          "git_blob_after": "86f02963985cec1608765f1db7233bf40a7d0a96",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsements/issue/0.1/payload.schema.json",
+          "git_blob_before": "7c684be55439ec405a6f3815fd3024e7689648b7",
+          "git_blob_after": "442c84d0a034c25112791e609444b137bdbb7820",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsements/issue/0.1/spec.md",
+          "git_blob_before": "716f710a39d7978a75830e0f8e416496e48060a9",
+          "git_blob_after": "482c83b47fcc57a2cb53e722024ae98cdc18c66a",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsements/list/0.1/payload.schema.json",
+          "git_blob_before": "0aa3208c31f33ec7e3c9287048c63352035e3be1",
+          "git_blob_after": "92124349e25024e07e149a6313830108fb476ff4",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsements/list/0.1/spec.md",
+          "git_blob_before": "7775cd72a144c96fa417b95d45b1184391095edd",
+          "git_blob_after": "22ddd524847418d5cf37385e9a81630ec2490e21",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsements/revoke/0.1/payload.schema.json",
+          "git_blob_before": "6bbbf352a907eedd4e407a1777991c36e0dcf9de",
+          "git_blob_after": "c612faf8a8fa86278b06a3172edbc0116ec729a3",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsements/revoke/0.1/spec.md",
+          "git_blob_before": "e8c0ae3a2876c701ce0f6523e2c44903f9eb23b1",
+          "git_blob_after": "4d31ba4f24487f0e8d619405d09c5bd5e1804909",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/endorsements/show/0.1/spec.md",
+          "git_blob_before": "6ea5dc760bf0f3467a7c4a1a727569c2e3de7958",
+          "git_blob_after": "0e00d717c0a18c01766cf00c2bf648677942ed1b",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/install/claim/finish/0.3/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "0f9f691fc6e27336999ae055481d98cbdd3d1066",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/install/claim/finish/0.3/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "7ef4136248c3a2a1c0b1b8e7c85380305561c80d",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/install/claim/start/0.3/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "449052165b789c95ab1831c1ca75bdd611e76308",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/install/claim/start/0.3/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "375c2a714991d2b5eddfd8fcb27075d670d0bd40",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/join-requests/decide/0.1/payload.schema.json",
+          "git_blob_before": "47ee0c4ad0772c75be67da13ad710ed73be87f87",
+          "git_blob_after": "dad0486fecbef4e2241e8f31fd600c0183ac3c4f",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/decide/0.1/spec.md",
+          "git_blob_before": "4e062a93797e2e1c3e8c511246617f5a1aae0262",
+          "git_blob_after": "703db1deb2033aff5e1df57b1f5da75aa8260831",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/manifest/0.2/payload.schema.json",
+          "git_blob_before": "a53c7b9ecfcb3b6034915c4292ad67bc547abb54",
+          "git_blob_after": "756639ac700048ea54077be54626979ac9e20e43",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/manifest/0.2/spec.md",
+          "git_blob_before": "59228575b0b0e40f68faaaac8fc2f61f7e2d1062",
+          "git_blob_after": "31fc16e42429982eff08650a713f876ea57674f6",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/manifest/0.3/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "76e90bddb4a85fc9694187df4e3b4724e4f55e71",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/manifest/0.3/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "2d3a480d0ff6173b8ddf352f7ad56f2497308ba7",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/query/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "0321834bad41e0f1d339daf52581a8079d7763c9",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/query/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "d2e3d9e72c5090a425317bdd836107df453e8c7a",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/status/0.1/payload.schema.json",
+          "git_blob_before": "929f1cdf3573836b779357cb0695992b7caf2474",
+          "git_blob_after": "4c1e13a433cab2b918477cd1b67e636327a1cbed",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/status/0.1/spec.md",
+          "git_blob_before": "5b3934533b0a6eb45fcb3b820bc8ba137ddd5998",
+          "git_blob_after": "71cea5987b095077078462e155e3a77f17087128",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/submit/0.3/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "23a7f3338736eaa3534e597ffc9b2587f73d02ac",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "215ff0cd6cbd1aa4c7758f98b171c49e323ef4a8",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/vetting/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "dbecb84d324ec9f1fea49b45d9055586ab0deff3",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/vetting/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0b2d94cd092b3d56375f64aead6f7fc7b380a501",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/members/authority-reduced-notice/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "967a7519c2e135741e2cc9067ff59797d4f2c071",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/authority-reduced-notice/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "b17a3bba1ee59031f0c921bbdf4c633014192dd7",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/credentials/0.1/payload.schema.json",
+          "git_blob_before": "649ee77e0b32138a125261a163c013827e94b254",
+          "git_blob_after": "edbb4855ae07c02bbe4fe04f6bf563b04cfad3ce",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/credentials/0.1/spec.md",
+          "git_blob_before": "85daf9ea12ec8e10c7f7a02d2c07e658967d2770",
+          "git_blob_after": "7fec60e4ca8b7c2367eccb274d8fe1dec6b78904",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/personhood/assert/0.1/payload.schema.json",
+          "git_blob_before": "c42b62ce245ae779fa682d8c53b9d333c7c98fa6",
+          "git_blob_after": "a088d5a75f9de1afbafd497288724b21149597d4",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/personhood/assert/0.1/spec.md",
+          "git_blob_before": "2edcbcb380241159e03b9cf668dedbf05f3fa2e0",
+          "git_blob_after": "09cefba190ec387f7156806e897cca55f3b0e204",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/personhood/revoke/0.1/payload.schema.json",
+          "git_blob_before": "2759e10097f2722e9180a1d999d36c7c967357ef",
+          "git_blob_after": "55d425773fd6bd623d0d8ca15e940626847bcae7",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/personhood/revoke/0.1/spec.md",
+          "git_blob_before": "0610209e8abebecb447fd664fdf0431eec3f6c78",
+          "git_blob_after": "99a7b078330f9ac00e3255b1f1439cec744d4c17",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/renew/0.1/payload.schema.json",
+          "git_blob_before": "0978e32ede3dfff943199f69c165ea36cc64df13",
+          "git_blob_after": "135f0bad60d5c37336ad8ccb48c2651fe3997adc",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/renew/0.1/spec.md",
+          "git_blob_before": "2aeb49c2066e7333b702e469c80122cb59b872bc",
+          "git_blob_after": "59961b2285e4dee64a576db9463b9b559c2b0259",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/rotate/0.1/payload.schema.json",
+          "git_blob_before": "9c84dff2ab3356866f6c243c5a06fd7715cf2d8a",
+          "git_blob_after": "179b6de7dcd289f6edd17984f12149358727c667",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/rotate/0.1/spec.md",
+          "git_blob_before": "08b558719b0dadfd0afbaca89482f3f422ebb449",
+          "git_blob_after": "6b32871c06d09c038fc3c742d7926e15e58c2393",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/step-up-passkey-notice/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "dfc2f6dd26c4fe0f2b12e38d2d98934cc2ee9816",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/step-up-passkey-notice/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "870f1540b98f379fadef84c99e48a88acd168a0e",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/relationships/restore/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "53e2e9d9d81c4d41519191d0a438da3e3f0e4f95",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/relationships/restore/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "55df7ff828d42bf74c33f06f52eec957be6ba526",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/relationships/revoke/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "de5ab806fcf02ceea51093b8a24ac3d3689ddb07",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/relationships/revoke/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "a97d0116a71ed00cec777112749240ddf8a8aec8",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/relationships/suspend/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "60efdc07d0cda82ee5b5c24a86e52657ed583fe3",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/relationships/suspend/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "2415f38b3394e173a2376e77bfb583a2abf41816",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/_shared/0.1/role.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "859b7c6e840a0d9cf94d5275290dce7191647945",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/define/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "4238f50e65f73513bba19286101a2580afe29307",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/define/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0dcfdc95fbb66f8482d98528891b967165224bf1",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/delete/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "77fd85e870db349ca667b94ad442312b63d64f0e",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/delete/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "684d93017cd73864bad6d43426885b406aa69093",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "9217fd23ad0cec0e623f140ede85cb130b3a09ab",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "58c23c44f1337ca0ae2957a4da66a1223da95d47",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "90029f49441d42248288c15a909d9c6acc5faa7e",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/roles/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "9df231b88862c79b88d4ee2a04d23e3d3ba01990",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/rooms/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "a37db1a90221f01d5fae0aad7713862bc14e16cd",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "938cee7bcbd4886db22c59a43f878a80be11e89f",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/delete/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "a86371e76da293c7604209365a3abe62a3a8f86c",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/delete/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "83db5d7e96630d54259641c579dccf9a3f6e027f",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "e79a2b36eb57b17fdd749f5be762aba0e1c5730e",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "8ca0b24778bd11225874f41ede84e517191a6790",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/list/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "fbf627c392fc278f2b3c85d72f034e7e96556dc1",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/list/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "71a8934fe56fcc61de43897f34776223645faea9",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/register/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "7330adb2f4e659e6dd3eca7e7a387049108d915d",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/register/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "633464bf7bcc2395f078db3a1b65e231d4735554",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/register/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f50215a743b57b80ff8b49277d021a0197ea470d",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/register/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "55b0a1658b1780a436bf73230b7bba9b3fc7c3c9",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "3907e782af2cd54743f19662eb6dfc67e64e218d",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "7ee12ddca87d021376eb62e5d403656864eccec7",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/show/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "367b654a9d9a8a1f281d72f04cea74b5889ad307",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/accepts/show/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "4c2a3af661cdac612a977c5efc00768af244bcd4",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/delete/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "4db0d0c631374a9b7602d25a050683cf207b7fbd",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/delete/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6690791fcf5720cd0d4a11e2274cf58950ec2942",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "70c962afbf26c8e2ffad2736cd5b77e0593963c7",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "9224d63f48446cd742e915c5bcaec1ac4262f0f0",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/register/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5d4dabce5957b4894c92701abeb978134276e4c5",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/register/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "ce6813e72a128bcc54911a21e22bddc68c8238cf",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "6fc51df45bcf41b2ea1d216399240425526a5422",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/schemas/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "102da3e674409bb6302fda7f5513dbd9e2c9cb51",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/vetting/auto-grant/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "d1c0c572edfebd8ff1a7228b2cb879e240633857",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/auto-grant/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "40ed6deb7e9f3662e3f7bcaff65d6caa243f7fbd",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/auto-grant/update/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "03ab3c206922eee9cc8830ef91e8579ce014db46",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/auto-grant/update/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "69161020c686dafb2aa60e8678cf1c78e1c4f458",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/hidden/publish/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "1cc1ba503ab3d96c7365fe813040d94ca4e655f6",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/hidden/publish/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "fdde6e2b22198f5120e727b256b6d6a963e07146",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/revocations/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "32758afe1586d43590e813a4de0db670616a4cc2",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/revocations/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "471cb14f974b57f7be85bf730f5780c81da04445",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/revoke-statement/0.1/spec.md",
+          "git_blob_before": "dd1e45ab4e02cca9c5ce980f71852bda17ba51bc",
+          "git_blob_after": "540d1656d30ad19949bf70a967b0c990243dedba",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/vetters/grant/0.1/payload.schema.json",
+          "git_blob_before": "b4c3ae47a76a6304d7d9affc5b2d6d553164e8ed",
+          "git_blob_after": "bbeddc802a905ed8cbd76854e68ab7334e0d3a81",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/vetters/grant/0.1/spec.md",
+          "git_blob_before": "4f9a5181900821a3d530ee818e9faa7f0023b7d9",
+          "git_blob_after": "1669cfcde64b2a4b4e428794de77679febe1c7d5",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/vetters/grants/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "512c5bd1755fd2db4981faee5c1676cdbf9bfa60",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/vetters/grants/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "b04f575242592f698b26ae8fd328a0eed3953435",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/vetters/resend/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "c80d6b9b0d72d038dd30efcc946183eabfe860f0",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/vetters/resend/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0ee336624ea9faa08b29804901666bcabf64d07f",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/website/deploy/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5f17307e3c9a5c0e923b2685b058607401123026",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/deploy/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "f49d713f531eb7bb302332da02fb10c04772dbf9",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/files/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "d437765cbd7dba0ed461a6cee03a1a85b30decc5",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/files/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6012cd338ccb22672186cc3478f4d6efdc32ac25",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/upload/abort/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "3c83e4a2a7a7392af8492d57b0f568f3bd943664",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/upload/abort/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "7d0ed21f049650285889dbbee9d02ee33a27282a",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/upload/begin/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "b761d7e545b137065cc7fe802b797eb5588ab9ba",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/upload/begin/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "b53839fa2bab021837d38f337b593b5e50a2668c",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/upload/chunk/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "436a8aa81f22b30481a9cca0cc19d3ba6041919b",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/upload/chunk/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "d60c1ce0b1c0b93781574731b74d794fdd3e5ae0",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/upload/commit/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "0e1a0bfeab0cc8bee13d83b34122ae437e74a3d7",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/website/upload/commit/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "58b38aa18f64d2f3d8e75831a970b5bd247e7961",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/webvh/witness/sign/0.1/spec.md",
+          "git_blob_before": "2b68a64cec8c7f3fefd7c551a085559cffb8f8f9",
+          "git_blob_after": "853c906a34d0da2d1276c60a51d91bc3abb01cf2",
+          "family": "webvh_witness"
+        },
+        {
+          "path": "specs/witness/session/0.1/spec.md",
+          "git_blob_before": "3884bafa38e6925a3e6727dfb5045e0239f5558e",
+          "git_blob_after": "aab43d89a4c320557bf81b68895d38075eac647e",
+          "family": "witness"
+        },
+        {
+          "path": "specs/witness/session/submit/0.1/payload.schema.json",
+          "git_blob_before": "f2fd87ad4c7931746206e8d8fbecdc4739b7aee1",
+          "git_blob_after": "94bc2784e1580d8ab76933be5d87c0f884fad741",
+          "family": "witness"
+        },
+        {
+          "path": "specs/witness/session/submit/0.1/spec.md",
+          "git_blob_before": "620b40638bc2d16a782261ffa13eb41e13085129",
+          "git_blob_after": "4255ec802b4422bbb40628c57955d12b7bfa04a9",
+          "family": "witness"
+        }
+      ]
+    },
+    {
+      "from": "trust-tasks-rs-v0.26.3",
+      "to": "trust-tasks-rs-v0.27.1",
+      "from_tree": "b0da6bcda5a54eda479c53e861ec2e4d4ad5d05d",
+      "to_tree": "2b50e6ef165777c348525a676c66b56dea1c2387",
+      "changed_normative_paths": 14,
+      "counts_by_family": {
+        "git_namespace": 1,
+        "vtc_admin": 9,
+        "vtc_members": 2,
+        "vtc_other": 2
+      },
+      "changes": [
+        {
+          "path": "specs/git-ns/activity/list/0.1/payload.schema.json",
+          "git_blob_before": "1ee5defc1942d4b39617eb01ee10d75590af5c1f",
+          "git_blob_after": "cca7f66caa9b4e9b5ca756555e84140dcda98dea",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/vtc/admin/actions/_shared/0.2/action.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "ae838cc8706625dc093c82977dc109533fe18de6",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/acknowledge/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "1da74fa6b5e24be83f1eefd67cda16e3a6963ef3",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/acknowledge/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "c7912ffa36a84ea634b612d3791cf090289b7405",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/cancel/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "56de2fdcbb3a47240a12d13f2efb37dd21c94c45",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/cancel/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "9d01e0372ec197e3a9c25999a7bec517584854cf",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/list/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "df1ffb5322360887c891f7fc9c3115f217fca120",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/list/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "e1eabac7861933697c3f3c34c4c4153febef9daf",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/show/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "e447a63ecc02e6aa9e82b9abfa437ba934e15bd7",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/actions/show/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "1e911fa5a8feb6eb9a9824ffd1b5530f2ee41ea4",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/members/authority-reduction-pending-notice/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "50b64c2fdaa3192f9985cbb28f49adee38683c27",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/members/authority-reduction-pending-notice/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "e3547ff0d0a083a5f9417d83412ded6b5f6e62a1",
+          "family": "vtc_members"
+        },
+        {
+          "path": "specs/vtc/operator/offline-write/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "d8375865674ae4700881c73f0003cd3c4e53f430",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/operator/offline-write/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "179fc89dc4ca682162489793222bf60a485502b5",
+          "family": "vtc_other"
+        }
+      ]
+    },
+    {
+      "from": "trust-tasks-rs-v0.27.1",
+      "to": "trust-tasks-rs-v0.29.0",
+      "from_tree": "2b50e6ef165777c348525a676c66b56dea1c2387",
+      "to_tree": "a8d5959fd9e5a585b05f3c7722f111d89f8ad84b",
+      "changed_normative_paths": 152,
+      "counts_by_family": {
+        "out_of_band_auth": 17,
+        "device_binding": 2,
+        "external_accounts": 35,
+        "git_namespace": 10,
+        "sign_csr": 2,
+        "sign_jws": 2,
+        "sign_sshsig": 2,
+        "rooms": 40,
+        "vtc_other": 1,
+        "vtc_admin": 5,
+        "vtc_join": 4,
+        "vtc_rooms": 10,
+        "vtc_storage": 14,
+        "vtc_vetting": 8
+      },
+      "changes": [
+        {
+          "path": "specs/auth/oob/_shared/0.1/oob.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "eba98055c2777f7086b4970423c7489521554dc7",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/cancel/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "940ef71ad32f173d1f1c071efa3e2687ae4cfe58",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/cancel/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "d75bcd167a19694809de0ced28df7945a94add6f",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/claim/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "d6c1d51877797cc2aa03efa98c7b4cb8fc9b762a",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/claim/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "10b2bed75ec9e2704b159b164226a001843ef9fc",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/grant/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5eed579c6c9cbbae781b4bdcdcee71a1abc5b6b7",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/grant/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "12bc276aac2357bb638f3d2b27fb2191d327dcfe",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/identify/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "145b61bc3d9fd3747806f553d8b4c87e2567b96b",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/identify/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6784af0bef856eed5a1a9754e4c4953da5e9144d",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/prove/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "3d2167b1d74a00a5e240229278a12f67eb5590bf",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/prove/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "32db5ccb88c6dbbf9178feb6f5f1185841388ea2",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/redeem/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "256a75edc47dda49f019c2e610cd5dd2fa84b362",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/redeem/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "e55866914335fd4cf941912cdb7be77b1adfa809",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/request/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "acca0677126485de679af31f603230a32c550400",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/request/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "009d39c8a2b96754c08dd5b1bc15c407c9cc1716",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/respond/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "2aae6829f289dbd3f8133891c0f103e427b09d7b",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/auth/oob/respond/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "56253834ddd9f4993fcd68ba07064c19d797aa4c",
+          "family": "out_of_band_auth"
+        },
+        {
+          "path": "specs/device/_shared/0.1/device-binding.schema.json",
+          "git_blob_before": "5209fd73de6b3e65e64786d0336a7cfa47674586",
+          "git_blob_after": "87a27807af3c2b29595b07ce29ec37884c45ba36",
+          "family": "device_binding"
+        },
+        {
+          "path": "specs/device/_shared/0.2/device-binding.schema.json",
+          "git_blob_before": "dadb6de74f1b63d9eacc3d0e3499fc16018c551a",
+          "git_blob_after": "9435e06a92f0b0931f0a5107de2fe5657d0d6f33",
+          "family": "device_binding"
+        },
+        {
+          "path": "specs/external/_shared/0.1/accounts.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "1c93d6e257ea80aec14760bcf5159521bc430c44",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/archive/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "8abf61a239911668f5df63bcfc02c2fc181e88e7",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/archive/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "c041eaa8835ea608f5b52936065797e963511b0d",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/bindings/grant/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "a6e2a1b438d269da1c6eedc332b99d1d6840ac1f",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/bindings/grant/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "86bbff3b4781a101b8a4dda3e7ec92ebd96703b1",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/bindings/revoke/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "49b9b166f5fe503a4138b6776f1ad2cbfddd7afa",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/bindings/revoke/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6151b361f1d9b3b877ac87a9b79874d5f964a873",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/create/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "464e2f4a2dc08413628f334b018c24eeb4eb8666",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/create/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "765a0a4adbe8cf4bd5a9b9ca9545450355140ac8",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/delete/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "8d59401b521eb5fe3fe6582073b6d7dc0d66b7ff",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/delete/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "d626c7ae0edcda9fbc6d08251be297bdb1a5a74e",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/get/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "8a7ee6cc9e17a284b602ad98d06f30e2647b9871",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/get/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "1d90896b4cbdc3a8dd6a8fb2b446c39a43ea923e",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/keys/rotate/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "30d30545b508a1187c6d067e3548835d55fc6ae7",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/keys/rotate/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "917a8adc858d71f10f457d21339fb12d3be6feda",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "721c5863135d5105bc4b495a773c0a1429afb63f",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "f2c3fc9173c5f5ed6a63494bbf5b8cca2e626027",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/probe/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "198c5a99e3423fc0e207e4039e8d86a8df39dcdc",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/probe/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "fc756c3482c5bec310833d289dcab875e7f3b555",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/restore/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "a3f9e3b5dcc23e767a4d46454d2e5a3258e770d2",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/restore/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "72a4629ad9310709b5d0316c133e0b65c9febe18",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/resume/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "a3031be6ffa7794637a283e746dcc51e391cc165",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/resume/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "5a6e1ab117b613aa9e0f7f582074a3f9c3d2a04f",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/secret/set/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "8d69c0528fb9b19f77981bba26ab137604b547c9",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/secret/set/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "f81f1f105c5c9d231387f28de0c40a46ddfb8d5e",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/setup/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "cda9370aa02a5c0450a59c5ea934e8cc9088ef66",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/setup/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "ef1991ffffff8f416d759eb8434fcb345a8ca9bf",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/suspend/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "d9a3c91d1d9fc0bdaa4056220f31ebb1b914c9ad",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/suspend/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "4957ce8c52df2fd799fd7287f140f54a13aaa5fd",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/update/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "50a278cf5f523dc5d5c9221b9c30ae05237f6f2a",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/accounts/update/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "058efabaaf9af1145bd45c7646c37660b34a4963",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/credentials/issue/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "3f2a051478fe1507069bd4aa531d1de2cc4aff13",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/credentials/issue/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "38d8369250476ab751509a9817f3cea725648cc1",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/sign/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "a5c8ddef53d4b3fcde3381a85a314f4bf672ddb7",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/external/sign/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "18bb43761200edcd4a5899188eb0dc4667aa1ed1",
+          "family": "external_accounts"
+        },
+        {
+          "path": "specs/git-ns/bridge/event/0.4/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "93757dcde86dc1a69840a9d2d00a58ffebc5ef88",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/bridge/event/0.4/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0eeaf51579bc60a64e353a54c23ea076acb81642",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/bridge/job/0.5/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "fe7a1ea08319945a23a49943bd226cb97440112b",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/bridge/job/0.5/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "8bed9df696a9a5ea1a02d379a827921c3a4ec68c",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/bridge/job/list/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "0e9416b1fba96f07cce86b66db55f68aca85a174",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/bridge/job/list/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "5a6caa573737a628ddd1b25092901acaee899cff",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/drift/resolve/0.3/spec.md",
+          "git_blob_before": "e9a0e68386389f5c3ac42cab6b02e3939604f6fe",
+          "git_blob_after": "fed030925f63fb73dd5624bd43a41851a6570b88",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/namespace/reseat/0.3/spec.md",
+          "git_blob_before": "e6335b1820d27a2156c01f6b5e56942775435cbc",
+          "git_blob_after": "63d444197443acd26fac5058263d5d5aff672142",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/repo/create/0.3/spec.md",
+          "git_blob_before": "c175e4d241ff07043141279935a3924cc20fab6c",
+          "git_blob_after": "d69401132356430654b6ce04a4f388825425ab9a",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/git-ns/right/grant/0.3/spec.md",
+          "git_blob_before": "6ced6d7edcd17c9105fe7a311cd960cfb7aa5930",
+          "git_blob_after": "7ae61a3b90f5e21bd4d0b6d31f8a8f5b34bf89f5",
+          "family": "git_namespace"
+        },
+        {
+          "path": "specs/keys/sign-csr/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "0f8ddf0cee4ef6cf05137962e4194369cd0e1f60",
+          "family": "sign_csr"
+        },
+        {
+          "path": "specs/keys/sign-csr/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "d29a0db717e25e004b5741ade450be69bfbed479",
+          "family": "sign_csr"
+        },
+        {
+          "path": "specs/keys/sign-jws/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "b5a11f1897501ac4eb13e4614aad4fa02461230e",
+          "family": "sign_jws"
+        },
+        {
+          "path": "specs/keys/sign-jws/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "134f3a5cb3141dcb10963a6ab1252bc88fa17c8d",
+          "family": "sign_jws"
+        },
+        {
+          "path": "specs/keys/sign-sshsig/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "666957ba59cd55a44993716f7562dac206c08057",
+          "family": "sign_sshsig"
+        },
+        {
+          "path": "specs/keys/sign-sshsig/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "a4ed1b52f626c4378f142bbfd93129b9c1a02517",
+          "family": "sign_sshsig"
+        },
+        {
+          "path": "specs/rooms/_shared/0.1/blobs.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "d3c8715abfb545e8c380df3686b643998d9b4112",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/_shared/0.1/room.schema.json",
+          "git_blob_before": "cd81ef5c0aef26e06e2f1646bbfa6250d1a834e6",
+          "git_blob_after": "60c21d6201c86dfe02a5b3768baaabf5d0d6b228",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/chunk/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "898d1f5727c60770c88afc1c2b63b5e8aee55713",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/chunk/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "36298098cf1b232f6b3fc21590e8d169aeaa741f",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/get/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "858da1208745e354d0c4aa694e06aa4a689af5c7",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/get/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "f5daea0e6a8b37f25ae8a4065cfdcb8cce8a62a3",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/upload/abort/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "1449d6233f08664d1c75c64d675b79a6dfe28284",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/upload/abort/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "488feb641f3b7310b2df3f292b3447c22ddecea7",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/upload/begin/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "d69fe68b40a06ec8e31246438604db1338eaf2c2",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/upload/begin/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "e3015d2f71bf8a9c6512c96c5bae0055fb60d115",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/upload/chunk/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "db64d23b3a5522fee230c0da5a30e36d30fa31f5",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/upload/chunk/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "0307c13966b635aafc4f2ac5327d8fd4880bc6f1",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/upload/commit/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "ca00dbd8e574ac1df49457ce80048ee8e8a5d000",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/blobs/upload/commit/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "30e624739187a223724f70eca61af677931fe399",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/create/0.1/spec.md",
+          "git_blob_before": "b0b518845038fc6caa1bb5587bdc153b85d420b9",
+          "git_blob_after": "160cf9c9ab3fcb192512051fffe4c38181c943ea",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/epoch/commits/0.1/spec.md",
+          "git_blob_before": "eb885e160595b9e4026fae51c7e8f27553a5c985",
+          "git_blob_after": "e8128bc2bebfb54db098d0118399227691b74d42",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/epoch/mint/0.1/spec.md",
+          "git_blob_before": "0c4ab52fe3c18ea549ee111d67299ae1480aabf2",
+          "git_blob_after": "554aa7328ecd7072d6288cc936548d0de33a16ec",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/epoch/prune/0.1/spec.md",
+          "git_blob_before": "4e87c83d8b397629647fd853c40e7c06cbb0fe21",
+          "git_blob_after": "b52f9f8774e01573bc915766352da809e2d5f54f",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/info/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "78de5943e2a9747c14dd79f424a13820d4c27495",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/info/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "1a57d9cdbe42b28b1169bc280f578106bcb920e5",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/keys/file-key/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "44bd85baeec8b2ec70879d33b9d1753e4ae45e11",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/keys/file-key/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "653222eb610d111a0be40150c360d5971d51d03c",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/keys/open/0.1/spec.md",
+          "git_blob_before": "32f1efe35ca61bc57815c745df46061a6e822da4",
+          "git_blob_after": "cc21dd7c619838089a8a9e5e4a5bc2d6a3e877c4",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/keys/present/0.1/spec.md",
+          "git_blob_before": "eba5b3c6278664cf8449fe8ef942aef4337ba31c",
+          "git_blob_after": "e9d933d36a5eae8c1f2ca21e469d7d4464f9175b",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/keys/present/0.2/spec.md",
+          "git_blob_before": "af7f89af51d13d7198349dd7035a97093af06cf7",
+          "git_blob_after": "3722919fe1a7bc0f28972f45167b07cba71e882a",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/keys/seal/0.1/spec.md",
+          "git_blob_before": "ac27df328728f0e277c8d8b0b39de310fde8fdd9",
+          "git_blob_after": "5f4443ac47b608609a4ead13a5adf79368ca9d3b",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/owner/claim/0.1/spec.md",
+          "git_blob_before": "d3ae6e1e6b7811cdee00a9a97f1dbd7c8264c3bf",
+          "git_blob_after": "a114c4e7fd0502eae19f5447b8077320644339d6",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/owner/transfer/0.1/spec.md",
+          "git_blob_before": "81fa715382aaa05a7abb448396812c335cdc7a4f",
+          "git_blob_after": "63bf6b3bd21642fa0619042c7820996dccc88cea",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/curate/0.1/spec.md",
+          "git_blob_before": "9dd7d5de05235552babacc353ba97fe89edd0653",
+          "git_blob_after": "f4e8cfe0ac7cf63fdfb473adb6d2acd54c9bcb7c",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/get/0.1/spec.md",
+          "git_blob_before": "4282ef11434a9ca21dbe41cfe3aac353c72ed204",
+          "git_blob_after": "73d812a8a9b60dfdba55b3dc21062ce9098e3b3c",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/get/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "4f96c40fbf07842601dbf72a890a3f680bc31a67",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/get/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "78eae3f9555db45a34edca14c8a4c0d89f7dccb4",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/list/0.1/spec.md",
+          "git_blob_before": "b582d7792da4af2890b12e829a7297963f6be757",
+          "git_blob_after": "568a1fb4a41453c273346d5ebd445cd00b80de73",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/list/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f691476cf759b460b0fbd5a253364ab227c6b9be",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/list/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6b182adabc1862b3396782e089499665bc58c65d",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/put/0.1/spec.md",
+          "git_blob_before": "47e7a2aabf4de745f56a0e1b187608bca8883856",
+          "git_blob_after": "0fe6cf3968403feab36bacf0dbaf37ffea3107ef",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/put/0.2/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "d23d619336a72f252c5de20d9cec4bd9b7555e0f",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/records/put/0.2/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "a51992df9e989b8d35ae2b139303da95f999e6f8",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/usage/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "a4a1f968de931d710981f7f727db81213909251c",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/rooms/usage/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "c45bbd9aeaea83c25c5073460ad7b040043e5e24",
+          "family": "rooms"
+        },
+        {
+          "path": "specs/vtc/_shared/0.1/room-storage.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "90f628bfdc69c260f17ea6206fd4680c2fd6318e",
+          "family": "vtc_other"
+        },
+        {
+          "path": "specs/vtc/admin/events/_shared/0.1/topic.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "9353d549d132ab1ef04cf1b7e60b3adc3421565f",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/events/event/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "3d7396dd1ab13ed5fe1aa1050621cc6180741db7",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/events/event/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "a4f36987a2625b78562bbfef3c5d19bf9635dda4",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/events/subscribe/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "82c7daddeba4a415e507a77562a52d7147471f3a",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/admin/events/subscribe/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "25db20e656a24a4ab93ca696bff828002d0b5485",
+          "family": "vtc_admin"
+        },
+        {
+          "path": "specs/vtc/join-requests/wallet-session/start/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "405925eb9a7596d4413ffbe35596e0e76fb810e5",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/wallet-session/start/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "5f9843d437f1a1aefbb795a90bfac912a9909722",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/wallet-session/status/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "318bca2df3a1624459b8e9f0a628696f0afd6919",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/join-requests/wallet-session/status/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "c550a136c12d7e89f20bd0ab1469139165dbe8b4",
+          "family": "vtc_join"
+        },
+        {
+          "path": "specs/vtc/rooms/get/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5b9cb94668f441c6a9ee8936779a890249d14d8c",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/get/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "49998e685fd5a2ffa31849f918130585cd0e6ab6",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/limits/set/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f1633b735af06a82e2e97159b0e5a37867792616",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/limits/set/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "c55fe4204ffad2a04b1e43a4088043a35de1ba7e",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/storage/assign/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "99504262c2e87787b3bcb693cbd7274db36755c7",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/storage/assign/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "bdf869b156d687624674bc03911cd8967e890d49",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/storage/migrate/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "48cb266f87c3d47931884cfbb120fe90b61f7f21",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/storage/migrate/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "eae550ce87ef1458259ff74c3f822055918d5280",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/usage/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "9bae6afc29ff0cc7278ad28b424002bf1b242d24",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/rooms/usage/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "67239168386d8d9c93ca1cc8ab4a9a22df3c12fb",
+          "family": "vtc_rooms"
+        },
+        {
+          "path": "specs/vtc/storage/configs/create/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "790e2c5bb4f8c1ac92a3661fe036f56cc913ee8e",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/create/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "b72419908b98a746f2e186a8287b8b6fffb61fff",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/get/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "152a5ae6e50814f9e9061b3f8c670386e4e7a386",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/get/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "235b15bbba524b3c41ac3aac281782965ebac40e",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/list/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "69e0d2d67d88785e2f7f27d2d37c2b56368fd7a2",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/list/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "4f34d10ff909d3532aca541a2c25ab925f811402",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/probe/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f63e9fae2f07dc13dfc4bc7e77fb02710ad3b6a0",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/probe/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "53d8dea17e70fa315ae776231bfa9f39b51fc2dc",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/retire/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "6fae12757b5f4ae0219b37982f5538f79a167622",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/retire/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "6ec55a55a1b4e6698eb9963c49639a249b26eca0",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/update/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "36df2af948a12228d052a90ecaa29989af6a7bf3",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/configs/update/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "7c7fe308caf4b620a1344830c12d7cc240bd9c61",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/credentials/set/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "f364574c8a66a5423a96e1172db878a9ea3a86f8",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/storage/credentials/set/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "ec3b12f82ca2837f31d1ecf9f096ac039c5019c5",
+          "family": "vtc_storage"
+        },
+        {
+          "path": "specs/vtc/vetting/hidden/publish/0.1/payload.schema.json",
+          "git_blob_before": "1cc1ba503ab3d96c7365fe813040d94ca4e655f6",
+          "git_blob_after": "d6cb6ba4b3088ad38f5f93e82d89581c805c91d8",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/hidden/publish/0.1/spec.md",
+          "git_blob_before": "fdde6e2b22198f5120e727b256b6d6a963e07146",
+          "git_blob_after": "9cb7579b9fada776bd07cbf48c0faaa15bdfb3aa",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/hidden/show/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "202b500923bda73ccddcad6a3e1606b14401aed1",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/hidden/show/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "32fd7122fd4287c89c827650507ed9bd07119741",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/hidden/withdraw/0.1/payload.schema.json",
+          "git_blob_before": null,
+          "git_blob_after": "5a3caf78b967c476034fd214a969bb333b9915ed",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/hidden/withdraw/0.1/spec.md",
+          "git_blob_before": null,
+          "git_blob_after": "d7e16f3aa9b69c60a7dedf464369ba7acf40c0fc",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/vetters/pcs-tokens/0.1/payload.schema.json",
+          "git_blob_before": "9203c569bc6acf7d68b587c4b750fde480c8bfd5",
+          "git_blob_after": "98f7d64e58f451f44931bcd2633cbd092690df44",
+          "family": "vtc_vetting"
+        },
+        {
+          "path": "specs/vtc/vetting/vetters/pcs-tokens/0.1/spec.md",
+          "git_blob_before": "831af12298f9f6015851f76683576617119e133e",
+          "git_blob_after": "79cd9efbe0ec22fb3f935d80400758a463041df1",
+          "family": "vtc_vetting"
+        }
+      ]
+    }
+  ],
+  "closure_principle": "Historical #282/#826/#837 remain separate. Existing owner issues are not blanket coverage; not-assessed groups are not downstream assurance residuals until a concrete RAHP consumer/claim is identified. Future material release findings require new reassessment."
+}
