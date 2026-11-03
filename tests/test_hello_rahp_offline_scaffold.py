@@ -17,7 +17,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def checked(*command: str, cwd: Path) -> subprocess.CompletedProcess:
-    return subprocess.run(command, cwd=cwd, text=True, capture_output=True, check=True)
+    proc = subprocess.run(command, cwd=cwd, text=True, capture_output=True, check=False)
+    if proc.returncode:
+        raise AssertionError(
+            f"offline command failed ({proc.returncode}): {command!r}\n"
+            f"stdout: {proc.stdout[-2000:]}\nstderr: {proc.stderr[-2000:]}"
+        )
+    return proc
 
 
 class HelloRahpOfflineScaffoldTests(unittest.TestCase):
