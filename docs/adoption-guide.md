@@ -157,6 +157,15 @@ A new adopter does not need to understand the bundled DTG deployment, VTI progra
 
 Those become relevant only when your subject, proposition or evidence obligation reaches those surfaces.
 
+## Offline first-run verification
+
+The runnable `Hello RAHP` path has two distinct engineering checks:
+
+- `python3 tools/validate_adoption_path.py` verifies entry-point navigation, configuration and the source-pinned **dry-run** command.
+- `python3 -m unittest tests.test_hello_rahp_offline_scaffold -v` performs a **real scaffold** in a disposable local-only Git checkout. It checks the generated YAML and README, immutable target and method provenance, empty initial findings, and refusal to overwrite a working review without explicit permission.
+
+These are maintainer-executed reproducibility tests, **not** independent user adoption or a completed assurance assessment. A separate cold-reader exercise with a genuinely unfamiliar subject is still required to establish external usability.
+
 ## Review provenance for new adopters
 
 A review scaffold records `reviewed_against.rahp_version` as its **RAHP method baseline**, independently of the target repository commit recorded in `target.commit`. For a new review, both the configuration-driven `tools/rahp.py review` and direct `tools/review.py init` default to the stable method release declared by [`method/versioning.yaml`](../method/versioning.yaml). An explicit `assessment.rahp_version` in your configuration (or `--rahp-version` for the direct CLI) is retained when deliberately reviewing against a historical method version.
