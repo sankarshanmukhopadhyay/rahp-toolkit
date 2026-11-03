@@ -75,7 +75,7 @@ jobs:
 
       - name: Preserve evidence even on failure
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cawg-vlei-verifier-probe-${{ github.run_id }}
           path: evidence/
