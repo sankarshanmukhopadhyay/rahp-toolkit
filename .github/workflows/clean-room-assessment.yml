@@ -13,6 +13,7 @@ on:
       - 'tools/eucalyptus_native_evidence.py'
       - 'tests/test_eucalyptus_campaign.py'
       - 'tests/test_eucalyptus_native_evidence.py'
+      - 'tests/test_eucalyptus_native_retest_965.py'
       - 'profiles/dtg/eucalyptus/**'
       - 'tools/evidence_probe_orchestrator.py'
       - 'tools/autonomous_assurance_controller.py'
@@ -178,9 +179,24 @@ jobs:
           cd "$RUNNER_TEMP/eucalyptus-native/sources/affinidi-tsp-dart"
           timeout 180 dart pub get > "$RUNNER_TEMP/native-prerequisites/dart-pub-get.log" 2>&1
       - name: Collect supplemental native and consuming-path evidence
+        shell: bash
         env:
           CARGO_TARGET_DIR: ${{ runner.temp }}/native-target
-        run: python tools/eucalyptus_native_evidence.py --sources "$RUNNER_TEMP/eucalyptus-native/sources" --output "$RUNNER_TEMP/native-evidence" --timeout-seconds 900
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" && "${GITHUB_HEAD_REF}" == assessment/eucalyptus-evidence-965* ]]; then
+            python tools/eucalyptus_native_evidence.py \
+              --sources "$RUNNER_TEMP/eucalyptus-native/sources" \
+              --output "$RUNNER_TEMP/native-evidence" \
+              --diagnostics-965 \
+              --suite openvtc-vetting-focus \
+              --suite registry-didcomm-integration \
+              --timeout-seconds 900
+          else
+            python tools/eucalyptus_native_evidence.py \
+              --sources "$RUNNER_TEMP/eucalyptus-native/sources" \
+              --output "$RUNNER_TEMP/native-evidence" --timeout-seconds 900
+          fi
       - name: Verify supplemental seal
         run: python tools/eucalyptus_campaign.py --verify-package "$RUNNER_TEMP/native-evidence"
       - name: Preserve native attempts including prerequisite failures
