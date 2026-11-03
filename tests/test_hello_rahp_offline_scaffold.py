@@ -35,11 +35,15 @@ class HelloRahpOfflineScaffoldTests(unittest.TestCase):
             # A local-only Git fetch tests the *committed* repository, not a
             # maintainer's uncommitted working files. No GitHub/network access.
             checked("git", "init", "-q", str(checkout), cwd=workspace)
+            source_sha = checked("git", "rev-parse", "HEAD", cwd=ROOT).stdout.strip()
             checked("git", "-C", str(checkout), "fetch", "--quiet", "--no-tags",
                     str(ROOT), "HEAD", cwd=workspace)
+            # Use the explicit source commit, not FETCH_HEAD as a checkout
+            # argument: newer Git can interpret the latter as a pathspec.
             checked("git", "-C", str(checkout), "checkout", "--detach", "-q",
-                    "FETCH_HEAD", cwd=workspace)
+                    source_sha, cwd=workspace)
             target_sha = checked("git", "rev-parse", "HEAD", cwd=checkout).stdout.strip()
+            self.assertEqual(source_sha, target_sha)
             self.assertEqual(40, len(target_sha))
             declared = yaml.safe_load((checkout / "method/versioning.yaml").read_text())
             method_release = declared["stable_release"]
