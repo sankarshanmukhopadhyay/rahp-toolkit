@@ -40,6 +40,8 @@ python3 tools/rahp.py review \
 
 The dry run should resolve the current checkout commit and show the review scaffold command RAHP would execute.
 
+The dry-run command should include a `--rahp-version` matching [`method/versioning.yaml`](../../method/versioning.yaml), presently `v2.9.0`, and an immutable `--commit` for this checkout. These identify different things: the method baseline and the reviewed source commit. The command does not perform an independent assurance review.
+
 ## 4. Run the scaffold when you want to continue
 
 Remove **--dry-run**:

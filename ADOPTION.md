@@ -45,6 +45,12 @@ repositories:
     reviews: [rahp, security, combined]
 ```
 
+### Method version recorded in new reviews
+
+By default the review scaffold records the current stable RAHP **method** release from [`method/versioning.yaml`](method/versioning.yaml) in `reviewed_against.rahp_version`. This avoids silently labelling new assessments with an obsolete historic release. The source repository's exact commit is recorded separately as `target.commit`; the stable method version is not proof that a development checkout equals that tag.
+
+For a deliberate historical method baseline, set `assessment.rahp_version` explicitly (for example, `v2.8.0`) and retain the corresponding review evidence. If the canonical version declaration is unreadable or malformed, scaffolding fails rather than inventing a method version.
+
 ## 3. Validate and inspect targets
 
 ```bash

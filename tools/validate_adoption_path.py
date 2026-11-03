@@ -11,6 +11,8 @@ import pathlib
 import subprocess
 import sys
 
+from rahp_version import stable_release
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 REQUIRED = [
@@ -26,7 +28,7 @@ REQUIRED = [
 ]
 
 
-def run(*args: str) -> None:
+def run(*args: str) -> str:
     proc = subprocess.run(
         [sys.executable, *args],
         cwd=ROOT,
@@ -37,6 +39,7 @@ def run(*args: str) -> None:
         sys.stderr.write(proc.stdout)
         sys.stderr.write(proc.stderr)
         raise SystemExit(proc.returncode)
+    return proc.stdout
 
 
 def main() -> int:
@@ -70,7 +73,7 @@ def main() -> int:
     cfg = "examples/hello-rahp/rahp.yaml"
     run("tools/rahp.py", "config-validate", "--config", cfg)
     run("tools/rahp.py", "targets", "--config", cfg)
-    run(
+    dry_run = run(
         "tools/rahp.py",
         "review",
         "--config",
@@ -82,6 +85,10 @@ def main() -> int:
         "--offline",
         "--dry-run",
     )
+    expected = "--rahp-version " + stable_release()
+    if expected not in dry_run:
+        print(f"ERROR adoption provenance: expected {expected!r} in review scaffold")
+        return 1
 
     print("PASS adoption path: gateway present; RAHP-only configuration and dry-run are executable")
     return 0

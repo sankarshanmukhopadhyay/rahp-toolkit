@@ -130,7 +130,7 @@ A specialist PASS is not automatically a RAHP PASS. A successful evidence-produc
 
 As of the current stable coordinated portfolio boundary:
 
-- **RAHP v2.5.0** owns the assurance lifecycle and orchestration.
+- **RAHP v2.9.0** owns the assurance lifecycle and orchestration.
 - **DPIP v0.3.0** owns composed privacy examination and returns compatible **rahp-assessor-result/v1** results.
 - **Trust Protocol Interop Lab v0.7.0** owns bounded executable interoperability/implementation evidence.
 
@@ -156,6 +156,12 @@ Current external implementation documentation:
 A new adopter does not need to understand the bundled DTG deployment, VTI programme, DTG Portfolio Monitor, CAWG deployment, historical release lineage, DPIP internals or Interop Lab case catalogue before starting.
 
 Those become relevant only when your subject, proposition or evidence obligation reaches those surfaces.
+
+## Review provenance for new adopters
+
+A review scaffold records `reviewed_against.rahp_version` as its **RAHP method baseline**, independently of the target repository commit recorded in `target.commit`. For a new review, both the configuration-driven `tools/rahp.py review` and direct `tools/review.py init` default to the stable method release declared by [`method/versioning.yaml`](../method/versioning.yaml). An explicit `assessment.rahp_version` in your configuration (or `--rahp-version` for the direct CLI) is retained when deliberately reviewing against a historical method version.
+
+**Do not treat the stable method release as the exact commit identity of an unreleased checkout or as evidence of independent review.** If method changes after an assessment, do not silently rewrite its provenance; perform a bounded reassessment and declare its new baseline. Check the generated working YAML before treating it as a citable assessment.
 
 ## First success criterion
 
