@@ -80,6 +80,12 @@ Relevant artifacts:
 
 The graduation study uses real public policy/governance surfaces from more than one publisher family, including GitHub policy material, Kubernetes community governance and Apache community conduct material. Source identity, provenance and licensing basis are recorded in `corpus.yaml` and the bounded fixtures under `examples/policy-assurance/real/`.
 
+## Documentary eligibility for independent review metrics
+
+`tools/policy_graduation_metrics.py` requires two **distinct** reviewer identities, a matching pinned candidate revision, a shared reviewed proposition and explicit independence/no-other-review/no-AI-attestation declarations before emitting a documentary human-review gate. Blank, duplicate or contradictory records remain ineligible. The supplied `reviewer-template.json` now declares `reviewer_class`; do not submit a template with its `REPLACE` placeholders intact.
+
+This only checks the **internal consistency of supplied records**. Anyone can type `human-independent`, so the metric must not be presented as authenticated independence or reviewer acceptance. The maintainer must separately verify reviewer participation, provenance and independence, preserve immutable original records, record reconciliation and actual measured runtime/delta cases, and explicitly disposition the five graduation gates. `human_identity_and_independence_verified: false` remains a deliberate non-claim in the metrics output. The measured extractor candidate stays fixed at `0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce`; these changes alter only post-baseline qualification tooling.
+
 ## Current decision state
 
 The current disposition is **`continue-research` with the branch ready for socialisation and independent reviewer evidence collection**.
