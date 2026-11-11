@@ -12,6 +12,8 @@ parent: Implement RAHP
 
 RAHP contributions are easiest to review when the contributor first identifies **which authority boundary is changing** and then follows the workflow for that contribution type. This section is intentionally procedural: each path tells you what to change, in what order, what evidence to produce, and what must pass before a pull request is ready.
 
+For triage, assurance residual ownership and issue closure decisions, see [Issue queue disposition](docs/issue-queue-disposition.md). This is a human review contract; it does not add a GitHub Actions workflow.
+
 ## Choose the contribution path
 
 | I want to… | Start here | Primary authority |
