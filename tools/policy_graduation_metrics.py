@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA = "rahp-policy-graduation-review/v1"
+FROZEN_GRADUATION_CANDIDATE = "0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce"
+STUDY_ID = "rahp-policy-graduation-668"
 USEFUL = {"accept", "amend", "split", "merge"}
 
 
@@ -80,12 +82,11 @@ def eligible_independent_record(review: dict[str, Any]) -> bool:
     items = review.get("proposition_reviews")
     if (
         review.get("reviewer_class") != "human-independent"
+        or review.get("study") != STUDY_ID
         or not isinstance(reviewer_id, str)
         or not reviewer_id.strip()
         or reviewer_id == "REPLACE"
-        or not isinstance(candidate, str)
-        or len(candidate) != 40
-        or any(c not in "0123456789abcdef" for c in candidate.lower())
+        or candidate != FROZEN_GRADUATION_CANDIDATE
         or not isinstance(attestation, dict)
         or attestation.get("independent_of_other_reviewer") is not True
         or attestation.get("saw_other_review_before_completion") is not False
@@ -102,6 +103,10 @@ def eligible_independent_record(review: dict[str, Any]) -> bool:
         if not isinstance(proposition_id, str) or not proposition_id.strip() or proposition_id == "REPLACE" or proposition_id in seen:
             return False
         seen.add(proposition_id)
+        digest = item.get("source_span_sha256")
+        if (not isinstance(digest, str) or len(digest) != 64
+                or any(c not in "0123456789abcdef" for c in digest.lower())):
+            return False
         if item.get("disposition") not in {
             "accept", "amend", "reject", "split", "merge",
             "judgment-required", "specialist-route",
