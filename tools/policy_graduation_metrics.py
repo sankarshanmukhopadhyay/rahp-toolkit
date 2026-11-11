@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA = "rahp-policy-graduation-review/v1"
+FROZEN_GRADUATION_CANDIDATE = "0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce"
+STUDY_ID = "rahp-policy-graduation-668"
 USEFUL = {"accept", "amend", "split", "merge"}
 
 
@@ -72,29 +74,94 @@ def compare_pair(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def eligible_independent_record(review: dict[str, Any]) -> bool:
+    """Check documentary eligibility, not actual reviewer identity or independence."""
+    attestation = review.get("attestation")
+    reviewer_id = review.get("reviewer_id")
+    candidate = review.get("candidate_implementation_sha")
+    items = review.get("proposition_reviews")
+    if (
+        review.get("reviewer_class") != "human-independent"
+        or review.get("study") != STUDY_ID
+        or not isinstance(reviewer_id, str)
+        or not reviewer_id.strip()
+        or reviewer_id == "REPLACE"
+        or candidate != FROZEN_GRADUATION_CANDIDATE
+        or not isinstance(attestation, dict)
+        or attestation.get("independent_of_other_reviewer") is not True
+        or attestation.get("saw_other_review_before_completion") is not False
+        or attestation.get("ai_assistance_used") is not False
+        or not isinstance(items, list)
+        or not items
+    ):
+        return False
+    seen = set()
+    for item in items:
+        if not isinstance(item, dict):
+            return False
+        proposition_id = item.get("proposition_id")
+        if not isinstance(proposition_id, str) or not proposition_id.strip() or proposition_id == "REPLACE" or proposition_id in seen:
+            return False
+        seen.add(proposition_id)
+        digest = item.get("source_span_sha256")
+        if (not isinstance(digest, str) or len(digest) != 64
+                or any(c not in "0123456789abcdef" for c in digest.lower())):
+            return False
+        if item.get("disposition") not in {
+            "accept", "amend", "reject", "split", "merge",
+            "judgment-required", "specialist-route",
+        }:
+            return False
+    return True
+
+
 def study_metrics(reviews: list[dict[str, Any]]) -> dict[str, Any]:
     summaries = [summarize_review(item) for item in reviews]
     by_corpus: dict[str, list[dict[str, Any]]] = {}
     for review in reviews:
         by_corpus.setdefault(review["corpus_item_id"], []).append(review)
 
+    # Documentary eligibility guards against accidental false success. It is
+    # not authentication: an attributable human review must still be verified.
     pairs = []
+    eligible = [item for item in reviews if eligible_independent_record(item)]
     for corpus_id, items in sorted(by_corpus.items()):
-        human = [item for item in items if item.get("reviewer_class") == "human-independent"]
-        if len(human) >= 2:
-            pairs.append(compare_pair(human[0], human[1]))
+        humans = [item for item in items if eligible_independent_record(item)]
+        for i, first in enumerate(humans):
+            second = next((
+                candidate for candidate in humans[i + 1:]
+                if candidate["reviewer_id"] != first["reviewer_id"]
+                and candidate["candidate_implementation_sha"] == first["candidate_implementation_sha"]
+            ), None)
+            if second is not None:
+                pair = compare_pair(first, second)
+                # An empty/nonoverlapping set cannot establish agreement.
+                if pair["common_propositions"] > 0:
+                    pairs.append(pair)
+                break
 
-    human_reviewers = {item["reviewer_id"] for item in reviews if item.get("reviewer_class") == "human-independent"}
-    ai_rehearsal = {item["reviewer_id"] for item in reviews if item.get("reviewer_class") == "ai-assisted-rehearsal"}
+    declared_human_ids = {item.get("reviewer_id") for item in reviews
+                          if item.get("reviewer_class") == "human-independent"}
+    eligible_human_ids = {item["reviewer_id"] for item in eligible}
+    ai_rehearsal = {item["reviewer_id"] for item in reviews
+                    if item.get("reviewer_class") == "ai-assisted-rehearsal"}
     return {
         "schema": "rahp-policy-graduation-metrics/v1",
         "review_count": len(reviews),
         "corpus_item_count": len(by_corpus),
-        "independent_human_reviewer_count": len(human_reviewers),
+        "independent_human_reviewer_count": len(declared_human_ids),
+        "documentarily_eligible_human_reviewer_count": len(eligible_human_ids),
+        "ineligible_declared_human_review_count": sum(
+            item.get("reviewer_class") == "human-independent"
+            and not eligible_independent_record(item) for item in reviews
+        ),
         "ai_rehearsal_reviewer_count": len(ai_rehearsal),
         "human_pair_comparisons": pairs,
         "reviews": summaries,
-        "graduation_human_review_gate_satisfied": len(human_reviewers) >= 2 and len(pairs) >= 1,
+        # This is a documentary gate only, not authentication, human approval,
+        # or authorization to graduate/merge the research capability.
+        "graduation_human_review_gate_satisfied": len(pairs) >= 1,
+        "human_identity_and_independence_verified": False,
     }
 
 
