@@ -15,6 +15,10 @@ class PolicyGraduationMetricsTests(unittest.TestCase):
             "schema": "rahp-policy-graduation-review/v1",
             "reviewer_id": reviewer_id,
             "reviewer_class": reviewer_class,
+            "candidate_implementation_sha": "0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce",
+            "attestation": {"independent_of_other_reviewer": True,
+                            "saw_other_review_before_completion": False,
+                            "ai_assistance_used": False},
             "corpus_item_id": "fixture",
             "effort_minutes": 15,
             "proposition_reviews": [
@@ -54,6 +58,52 @@ class PolicyGraduationMetricsTests(unittest.TestCase):
         result = study_metrics([self._review("human-a"), self._review("human-b")])
         self.assertTrue(result["graduation_human_review_gate_satisfied"])
         self.assertEqual(1, len(result["human_pair_comparisons"]))
+
+    def test_duplicate_reviewer_cannot_count_as_independent_pair(self):
+        r = study_metrics([self._review("a"), self._review("a")])
+        self.assertFalse(r["graduation_human_review_gate_satisfied"])
+        self.assertEqual([], r["human_pair_comparisons"])
+
+    def test_no_review_attestation_must_not_claim_human_gate(self):
+        a, b = self._review("a"), self._review("b")
+        del b["attestation"]
+        r = study_metrics([a, b])
+        self.assertFalse(r["graduation_human_review_gate_satisfied"])
+        self.assertEqual(1, r["ineligible_declared_human_review_count"])
+
+    def test_ai_assisted_or_previously_exposed_record_fails_gate(self):
+        for field, value in (("ai_assistance_used", True),
+                             ("saw_other_review_before_completion", True),
+                             ("independent_of_other_reviewer", False)):
+            with self.subTest(field=field):
+                a, b = self._review("a"), self._review("b")
+                b["attestation"][field] = value
+                self.assertFalse(study_metrics([a, b])["graduation_human_review_gate_satisfied"])
+
+    def test_different_frozen_candidate_cannot_count_as_pair(self):
+        a, b = self._review("a"), self._review("b")
+        b["candidate_implementation_sha"] = "a" * 40
+        self.assertFalse(study_metrics([a, b])["graduation_human_review_gate_satisfied"])
+
+    def test_no_shared_proposition_cannot_establish_agreement(self):
+        a, b = self._review("a"), self._review("b", dispositions=[("other", "accept", "high")])
+        self.assertFalse(study_metrics([a, b])["graduation_human_review_gate_satisfied"])
+
+    def test_placeholder_or_empty_records_do_not_graduate(self):
+        a, b = self._review("a"), self._review("b")
+        for change in (lambda r: r.update(reviewer_id="REPLACE"),
+                       lambda r: r.update(proposition_reviews=[]),
+                       lambda r: r["proposition_reviews"].append(r["proposition_reviews"][0].copy())):
+            with self.subTest(change=str(change)):
+                v = dict(b)
+                v["proposition_reviews"] = [dict(x) for x in b["proposition_reviews"]]
+                change(v)
+                self.assertFalse(study_metrics([a, v])["graduation_human_review_gate_satisfied"])
+
+    def test_documentary_gate_is_not_authenticated_independence(self):
+        result = study_metrics([self._review("a"), self._review("b")])
+        self.assertTrue(result["graduation_human_review_gate_satisfied"])
+        self.assertFalse(result["human_identity_and_independence_verified"])
 
 
 if __name__ == "__main__":
