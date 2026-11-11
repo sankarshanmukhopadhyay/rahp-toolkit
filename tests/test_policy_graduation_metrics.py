@@ -13,6 +13,7 @@ class PolicyGraduationMetricsTests(unittest.TestCase):
         dispositions = dispositions or [("p1", "accept", "high"), ("p2", "amend", "medium"), ("p3", "reject", "low")]
         return {
             "schema": "rahp-policy-graduation-review/v1",
+            "study": "rahp-policy-graduation-668",
             "reviewer_id": reviewer_id,
             "reviewer_class": reviewer_class,
             "candidate_implementation_sha": "0c29f9226a44bc3c0efbd0213a46d2c4b6fb66ce",
@@ -22,7 +23,7 @@ class PolicyGraduationMetricsTests(unittest.TestCase):
             "corpus_item_id": "fixture",
             "effort_minutes": 15,
             "proposition_reviews": [
-                {"proposition_id": pid, "disposition": disposition, "materiality": materiality}
+                {"proposition_id": pid, "source_span_sha256": "b" * 64, "disposition": disposition, "materiality": materiality}
                 for pid, disposition, materiality in dispositions
             ],
             "hypothesis_reviews": [],
@@ -99,6 +100,20 @@ class PolicyGraduationMetricsTests(unittest.TestCase):
                 v["proposition_reviews"] = [dict(x) for x in b["proposition_reviews"]]
                 change(v)
                 self.assertFalse(study_metrics([a, v])["graduation_human_review_gate_satisfied"])
+
+    def test_unpinned_source_span_or_wrong_study_is_not_accepted(self):
+        a, b = self._review("a"), self._review("b")
+        b["proposition_reviews"][0]["source_span_sha256"] = "REPLACE"
+        self.assertFalse(study_metrics([a, b])["graduation_human_review_gate_satisfied"])
+        b = self._review("b")
+        b["study"] = "another-study"
+        self.assertFalse(study_metrics([a, b])["graduation_human_review_gate_satisfied"])
+
+    def test_two_wrong_but_matching_candidate_pins_do_not_pass(self):
+        a, b = self._review("a"), self._review("b")
+        a["candidate_implementation_sha"] = "a" * 40
+        b["candidate_implementation_sha"] = "a" * 40
+        self.assertFalse(study_metrics([a, b])["graduation_human_review_gate_satisfied"])
 
     def test_documentary_gate_is_not_authenticated_independence(self):
         result = study_metrics([self._review("a"), self._review("b")])
