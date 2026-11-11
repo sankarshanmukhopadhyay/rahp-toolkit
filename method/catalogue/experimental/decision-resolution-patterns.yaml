@@ -1,0 +1,176 @@
+version: 1
+profile: rahp-decision-resolution-risk-overlay-experimental
+status: experimental
+branch_constraint: research/decision-resolution-assurance
+stable_catalogue_boundary: false
+
+failure_patterns:
+  - id: EXP-DR-AUTH-LAUNDERING
+    name: Authority laundering
+    classification: composite-failure-pattern
+    description: >-
+      Non-authoritative inputs such as peer influence, repetition, consensus,
+      reputation, capability, discovery, endorsement, projection, aggregation,
+      or unrelated authority are transformed or combined so that a consequential
+      decision treats them as authority that the originating sources did not possess.
+    existing_risk_patterns:
+      - RKP-AUTH-01
+      - RKP-AUTH-04
+      - RKP-AUTH-06
+      - RKP-DEL-01
+      - RKP-COMP-04
+    harm_patterns:
+      - HRM-AUT-04
+      - HRM-SEC-02
+      - HRM-INF-01
+      - HRM-GOV-01
+    control_patterns:
+      - CTP-AUTH-01
+      - CTP-AUTH-02
+      - CTP-AUTH-03
+      - CTP-DEL-01
+    guardrail_patterns:
+      - GRP-AUTH-01
+      - GRP-AUTH-02
+      - GRP-COMP-01
+    evidence_patterns:
+      - EVP-AUTH-01
+      - EVP-AUTH-02
+      - EVP-DEL-01
+    invariants:
+      - repeated-non-authority-does-not-become-authority
+      - consensus-does-not-create-authority
+      - reputation-or-capability-does-not-create-authority
+      - unrelated-authority-does-not-expand-scope
+      - projection-or-discovery-does-not-amplify-authority
+
+  - id: EXP-DR-DECISION-BASIS-CONFLATION
+    name: Decision-basis conflation
+    classification: candidate-risk-pattern
+    provisional_catalogue_id: RKP-DR-X1
+    description: >-
+      A material decision transition is attributed to authority when the actual
+      causal basis was evidence, policy, lifecycle, correction, or evaluation-context
+      change, obscuring what changed and potentially creating an authority claim
+      that never occurred.
+    related_existing_risk_patterns:
+      - RKP-AUTH-06
+      - RKP-AUTH-07
+      - RKP-COMP-04
+    harm_patterns:
+      - HRM-INF-01
+      - HRM-GOV-01
+      - HRM-GOV-02
+      - HRM-SEC-02
+    guardrail_candidates:
+      - EXP-GRP-DR-01
+    evidence_candidates:
+      - EXP-EVP-DR-01
+
+  - id: EXP-DR-SILENT-RESOLUTION
+    name: Silent unresolved-condition clearance
+    classification: candidate-risk-pattern
+    provisional_catalogue_id: RKP-DR-X2
+    description: >-
+      A material unresolved condition is treated as resolved without evidence of
+      an admissible material change because workflow progressed, actors agreed,
+      confidence increased, repetition occurred, or another non-resolution event
+      took place.
+    related_existing_risk_patterns:
+      - RKP-AUTH-07
+      - RKP-COMP-04
+    harm_patterns:
+      - HRM-GOV-01
+      - HRM-GOV-02
+      - HRM-SEC-02
+    guardrail_candidates:
+      - EXP-GRP-DR-01
+    evidence_candidates:
+      - EXP-EVP-DR-02
+
+  - id: EXP-DR-FALSE-PERSISTENCE
+    name: False persistence
+    classification: candidate-risk-pattern
+    provisional_catalogue_id: RKP-DR-X3
+    description: >-
+      A material unresolved condition remains blocking after current admissible
+      evidence establishes that the condition has been legitimately resolved.
+    harm_patterns:
+      - HRM-ACC-01
+      - HRM-GOV-01
+      - HRM-GOV-02
+    guardrail_candidates:
+      - EXP-GRP-DR-02
+    evidence_candidates:
+      - EXP-EVP-DR-02
+
+guardrail_candidates:
+  - id: EXP-GRP-DR-01
+    provisional_catalogue_id: GRP-DR-X1
+    name: No consequential transition through unresolved material state
+    protected_interest: accountable and authorized decision-making
+    prohibited_state: >-
+      A consequential decision or effect proceeds while a material condition remains
+      unresolved and no admissible resolution event has been evidenced.
+    fail_behavior: defer-or-block
+    override_permitted: false
+    evidence_required: true
+
+  - id: EXP-GRP-DR-02
+    provisional_catalogue_id: GRP-DR-X2
+    name: No indefinite blocking after admissible resolution
+    protected_interest: legitimate access and due process
+    prohibited_state: >-
+      A material unresolved condition continues to block a consequential decision
+      after current admissible evidence establishes resolution under the governing
+      policy and authority context.
+    fail_behavior: require-reassessment
+    override_permitted: false
+    evidence_required: true
+
+evidence_candidates:
+  - id: EXP-EVP-DR-01
+    provisional_catalogue_id: EVP-DR-X1
+    name: Decision transition basis trace
+    claim_supported: >-
+      Shows the previous and current decision, the material input that changed,
+      the causal transition category, whether authority changed, and the evidence
+      supporting that classification.
+    minimum_fields:
+      - prior-decision-reference
+      - current-decision-reference
+      - transition-category
+      - authority-changed
+      - supporting-evidence-references
+      - evaluation-time
+      - governing-policy-reference
+
+  - id: EXP-EVP-DR-02
+    provisional_catalogue_id: EVP-DR-X2
+    name: Resolution and reopening trace
+    claim_supported: >-
+      Shows when a material condition was established, remained unresolved,
+      resolved, or reopened and binds each transition to admissible evidence.
+    minimum_fields:
+      - condition-identifier
+      - establishment-time
+      - establishment-evidence
+      - resolution-or-reopening-event
+      - resolution-category
+      - supporting-evidence-references
+      - evaluation-time
+      - freshness-and-status-evidence
+
+qualification_rules:
+  - Experimental records MUST NOT be treated as stable catalogue entries.
+  - Existing stable catalogue patterns MUST be reused where they already express the risk, harm, control, guardrail, or evidence obligation.
+  - A candidate pattern may graduate only if branch evidence demonstrates a material assurance gap not adequately represented by existing stable patterns.
+  - False permissiveness and false persistence MUST both be tested.
+  - Missing or contradictory causal or resolution evidence MUST NOT become PASS.
+
+research_provenance:
+  normative_dependency: false
+  sources:
+    - https://github.com/JessHines360/protocol-of-care-for-agents
+    - https://github.com/JessHines360/protocol-of-care-for-agents/blob/main/BRIEF.md
+    - https://github.com/JessHines360/protocol-of-care-for-agents/blob/main/experiments/SIMULATION_01_RUNBOOK.md
