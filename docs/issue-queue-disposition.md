@@ -53,6 +53,17 @@ A material source revision, authoritative disposition, attributable new consumin
 
 For DPIP referrals, keep canonical privacy obligations distinct by proposition and evidence contract. External producer fixtures and synthetic composition traces cannot silently become observations of the original deployment. For cross-repository work, use typed references and make non-implications explicit. The coordinator's closure must not close a specialist residual.
 
+## Manually invoked advisory audit
+
+The optional, read-only audit accepts a **manually exported** GitHub REST issue JSON array. It performs a small set of label/state consistency checks and emits a derived JSON report; it does **not** fetch external sources, examine issue bodies, decide readiness, or mutate GitHub. It does not run on a schedule or through a new Actions workflow.
+
+```bash
+python3 tools/audit_issue_queue.py --input issues.json --report issue-audit.json
+python3 -m unittest tests.test_issue_queue_audit
+```
+
+A typical export may use the GitHub REST issues endpoint with `state=all&per_page=100`, but a paginated export must be combined before running the audit. A partial snapshot is an incomplete audit, not an empty queue. Review every warning against the authoritative issue history before changing labels or issue state.
+
 ## Review output
 
 A bounded queue pass should report: date and repository baseline; items inspected; issues closed with state reason and evidence; issues retained with authority/dependency and next trigger; implementation/PR status; missing evidence; and release impact. Absence of a justified closure is a valid outcome. Do not create an issue, PR, workflow, new schema, or release merely to document a completed sweep.
