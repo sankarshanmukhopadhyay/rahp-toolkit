@@ -59,7 +59,7 @@ The optional, read-only audit accepts a **manually exported** GitHub REST issue 
 
 ```bash
 python3 tools/audit_issue_queue.py --input issues.json --report issue-audit.json
-python3 -m unittest tests.test_issue_queue_audit
+python3 -m unittest discover -s tests -p 'test_issue_queue_audit.py'
 ```
 
 A typical export may use the GitHub REST issues endpoint with `state=all&per_page=100`, but a paginated export must be combined before running the audit. A partial snapshot is an incomplete audit, not an empty queue. Review every warning against the authoritative issue history before changing labels or issue state.
