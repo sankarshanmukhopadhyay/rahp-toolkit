@@ -103,6 +103,15 @@ def cmd_retention(a):
         validate_result(a.result); raise SystemExit(1)
     print(json.dumps(retention_plan(load_result(a.result)),indent=2))
 
+def cmd_explain(a):
+    from explain_result import explain_file, render_markdown
+    try:
+        explanation = explain_file(a.result, a.freshness, a.run_id)
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f"explanation rejected: {exc}")
+    print(json.dumps(explanation, indent=2, sort_keys=True) if a.format == "json" else render_markdown(explanation))
+
+
 def cmd_hash(a):
     h=hashlib.sha256()
     with a.file.open('rb') as f:
@@ -115,5 +124,11 @@ def main():
     p=sub.add_parser('validate-result'); p.add_argument('result',type=pathlib.Path); p.set_defaults(func=cmd_validate)
     p=sub.add_parser('retention-plan'); p.add_argument('result',type=pathlib.Path); p.set_defaults(func=cmd_retention)
     p=sub.add_parser('sha256'); p.add_argument('file',type=pathlib.Path); p.set_defaults(func=cmd_hash)
+    p=sub.add_parser('explain',help='read-only normalized-result explanation')
+    p.add_argument('result',type=pathlib.Path)
+    p.add_argument('--format',choices=('json','markdown'),default='json')
+    p.add_argument('--freshness',type=pathlib.Path)
+    p.add_argument('--run-id')
+    p.set_defaults(func=cmd_explain)
     a=ap.parse_args(); a.func(a)
 if __name__=='__main__': main()
