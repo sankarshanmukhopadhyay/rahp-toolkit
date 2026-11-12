@@ -1,0 +1,14 @@
+# Synthetic instructional freshness only; not an observed production run.
+version: 1
+assessment_id: TEST-V12-001
+assessment_run_id: RUN-EXPLAIN-001
+status: retest-required
+evaluated_at: "2026-11-12T00:00:00Z"
+basis:
+  - kind: evidence-change
+    id: EV-1
+    effect: requires-retest
+    reason: Synthetic example of an evidence revision requiring reassessment.
+evidence_ids:
+  - EV-1
+retest_required: true

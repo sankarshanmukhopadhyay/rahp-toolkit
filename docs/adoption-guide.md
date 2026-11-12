@@ -72,6 +72,9 @@ subject
 
 Read [How RAHP works](how-rahp-works.md), [Evidence classification](evidence-classification.md), [Assurance evaluation](assurance-evaluation.md) and [Interpreting results](interpreting-results.md).
 
+After a normalized result has been retained, follow [Explain a retained RAHP result](result-explanation.md) for a **read-only** inspection of its source revision, disposition, recorded evidence and unresolved obligations. This does not execute a new assessment or substitute for a controller terminal assurance record.
+
+
 If your evidence comes from a wallet, VTA, browser, agent interface or other consumer-facing interaction, see [Consumer-interaction assurance](consumer-interaction-assurance.md) for the framework-neutral producer boundary and worked mapping.
 
 ### Track C — composed assurance
