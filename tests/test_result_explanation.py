@@ -60,6 +60,15 @@ class ExplanationTests(unittest.TestCase):
             path.write_text(json.dumps(fixture), encoding="utf-8")
             self.assertNotEqual(self.cli(VALID, "--freshness", path, "--run-id", "RUN-1").returncode, 0)
 
+    def test_documented_synthetic_freshness_walkthrough(self):
+        fixture = ROOT / "examples/assurance-lineage/explanation-freshness-example.yaml"
+        result = self.cli(VALID, "--freshness", fixture, "--run-id", "RUN-EXPLAIN-001")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        view = json.loads(result.stdout)
+        self.assertEqual(view["freshness"]["state"], "retest-required")
+        self.assertEqual(view["freshness"]["verification"].split(";")[0], "caller-declared")
+        self.assertEqual(view["evaluation"]["unresolved_count"], 1)
+
     def test_untrusted_markdown_escaped_and_inputs_unchanged(self):
         data = json.loads(MINIMAL.read_text(encoding="utf-8"))
         data["assessment"]["key"] = "<script>evil</script> **bold**"

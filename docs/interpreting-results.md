@@ -33,6 +33,8 @@ For autonomous controller flows, execution success must be read together with th
 
 `INDETERMINATE` is the explicit conservative outcome when the proposition cannot be safely resolved from available evidence or the current model. It must not be silently converted to PASS merely because execution succeeded or no adverse detector fired.
 
+For one validated normalized-result v1 document, the [assurance explanation interface](result-explanation.md) displays declared findings, evaluation residuals, evidence references, freshness limitations and retest triggers as a read-only projection. Its own execution success must never be interpreted as a controller PASS.
+
 ## Keep posture separate too
 
 A portfolio or deployment may project current evidence into presentation states such as GREEN/AMBER/RED or into retained conditions such as controlled risk, evidence gap or remediation obligation. Those presentation states are useful summaries, but the citable terminal record and underlying evidence remain authoritative for what was actually assessed.

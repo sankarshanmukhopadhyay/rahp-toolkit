@@ -87,6 +87,9 @@ For a short reproducible screen demonstration using a source-pinned real specifi
 
 For consumer-facing interaction evidence, see [Consumer-interaction assurance](docs/consumer-interaction-assurance.md).
 
+To inspect a **retained normalized RAHP result** without running a new assessment, use the [read-only assurance explanation interface](docs/result-explanation.md). It exposes recorded scope, evidence, unresolved residuals and freshness limitations as JSON or Markdown. A successful explanation is not an assurance PASS.
+
+
 ## Current capability boundary
 
 Current portable capabilities include:
