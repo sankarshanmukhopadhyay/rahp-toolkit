@@ -55,6 +55,8 @@ otherwise       → current
 
 `indeterminate` preserves uncertainty rather than silently converting missing knowledge into a pass.
 
+The CLI and reference helper reject a missing, empty, or unsupported freshness-effect basis rather than returning `current`. A valid explicit `none` effect represents a checked basis with no freshness-changing effect. This input-contract rejection is not a new assurance status; it prevents malformed inputs from being interpreted as verified currency.
+
 ## Assurance delta
 
 `method/schema/assurance-delta.schema.json` records the difference between two assessment runs. It separates:

@@ -47,7 +47,14 @@ def conclusion_transition(previous: str, current: str) -> str:
 
 
 def freshness_from_basis(basis: list[dict[str, Any]]) -> tuple[str, bool]:
-    effects = {str(item.get("effect")) for item in basis}
+    # The freshness record schema requires a nonempty basis. Do not let a
+    # missing or unrecognized effect become a claim of current evidence.
+    allowed = {"none", "potential", "invalidating", "requires-retest", "supersedes", "unknown"}
+    if not isinstance(basis, list) or not basis:
+        raise ValueError("freshness basis must be a nonempty list")
+    if any(not isinstance(item, dict) or item.get("effect") not in allowed for item in basis):
+        raise ValueError("freshness basis contains an unsupported or missing effect")
+    effects = {item["effect"] for item in basis}
     if "supersedes" in effects:
         return "superseded", False
     if "requires-retest" in effects:
@@ -75,7 +82,10 @@ def main() -> int:
     args = parser.parse_args()
     if args.cmd == "freshness":
         doc = load(args.record)
-        status, retest = freshness_from_basis(doc.get("basis") or [])
+        try:
+            status, retest = freshness_from_basis(doc.get("basis"))
+        except ValueError as exc:
+            parser.error(str(exc))
         print(json.dumps({"status": status, "retest_required": retest}, sort_keys=True))
         return 0
 
