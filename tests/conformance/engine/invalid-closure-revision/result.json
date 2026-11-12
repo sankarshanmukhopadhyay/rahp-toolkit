@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "assessment": {
+    "id": "TEST-AR-001",
+    "key": "test:repository:example/spec",
+    "triggers": [
+      "repository-change"
+    ]
+  },
+  "target": {
+    "repository": "example/spec",
+    "baseline_revision": "aaaaaaaa",
+    "reviewed_revision": "bbbbbbbb"
+  },
+  "mode": "combined",
+  "status": "dispositioned",
+  "findings": [],
+  "disposition": {
+    "outcome": "no-material-assurance-impact",
+    "summary": "No material assurance change."
+  },
+  "evidence": [
+    {
+      "id": "EV-1",
+      "class": "durable",
+      "description": "Normalized disposition record."
+    }
+  ],
+  "retest_triggers": [
+    "material repository change"
+  ],
+  "closure": {
+    "eligible_issues": [
+      42
+    ],
+    "reviewed_revision": "different-revision"
+  }
+}
