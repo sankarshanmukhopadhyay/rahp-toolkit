@@ -454,6 +454,8 @@ jobs:
 
       - name: Validate stable engine and retention contract
         run: python3 tools/validate_engine_contract.py
+      - name: Test normalized-result explanation and negative paths
+        run: python3 -m unittest tests.test_result_explanation -v
 
       - name: Validate CAWG mandate-readiness rendering
         run: python3 tools/render_cawg_readiness.py --check
