@@ -454,6 +454,8 @@ jobs:
 
       - name: Validate stable engine and retention contract
         run: python3 tools/validate_engine_contract.py
+      - name: Validate external adapter conformance and false-success boundaries
+        run: python3 -m unittest tests.test_external_conformance -v
       - name: Test normalized-result explanation and negative paths
         run: python3 -m unittest tests.test_result_explanation -v
 

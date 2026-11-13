@@ -144,6 +144,7 @@ Useful starting points:
 
 - [How RAHP works](docs/how-rahp-works.md)
 - [RAHP data model](docs/data-model.md)
+- [External implementation conformance kit](docs/external-conformance.md) — fixture-based, bounded interoperability checks against a trusted consumer adapter
 - [Assurance registry](docs/assurance-registry.md) — derived machine-discovery index over the portable assurance catalogue
 - [Getting started](docs/getting-started.md)
 - [Continuous assurance](docs/continuous-assurance.md)
