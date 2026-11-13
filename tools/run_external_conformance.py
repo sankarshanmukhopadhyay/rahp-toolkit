@@ -125,6 +125,7 @@ def run(adapter: Path, implementation: str, implementation_version: str,
             "Running an adapter executes user-selected local code; only run trusted executables.",
         ],
     }
+    report["summary"]["NOT_TESTED"] = len(report["untested_operations"])
     reasons = []
     if not implementation.strip() or not implementation_version.strip():
         reasons.append("implementation identifier and version must be nonempty")
