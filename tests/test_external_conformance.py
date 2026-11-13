@@ -34,6 +34,7 @@ class ExternalConformanceTests(unittest.TestCase):
         self.assertEqual(result["summary"]["FAIL"], 0)
         self.assertEqual(result["summary"]["ERROR"], 0)
         self.assertIn("observe-source", result["untested_operations"])
+        self.assertEqual(result["summary"]["NOT_TESTED"], len(result["untested_operations"]))
         self.assertNotIn("validate-result", result["untested_operations"])
         self.assertTrue(all(x["status"] == "PASS" for x in result["results"]))
 
