@@ -43,7 +43,8 @@ class ExternalConformanceTests(unittest.TestCase):
             p, result = self.run_kit(fake)
             self.assertNotEqual(p.returncode, 0)
             self.assertGreater(result["summary"]["FAIL"], 0)
-            self.assertGreater(result["summary"]["ERROR"], 0)
+            self.assertEqual(result["summary"]["ERROR"], 0)
+            self.assertTrue(any(item["operation"] == "validate-result" and item["status"] == "FAIL" for item in result["results"]))
 
     def test_missing_adapter_explicit(self):
         p, result = self.run_kit("/nonexistent/rahp-fixture-adapter")
