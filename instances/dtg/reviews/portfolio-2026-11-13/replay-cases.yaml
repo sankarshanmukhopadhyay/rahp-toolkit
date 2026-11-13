@@ -1,0 +1,230 @@
+# Deployment-local, source-pinned obligations from RAHP controller #1191.
+# INDETERMINATE is the recorded outcome until actual consumer execution supplies evidence.
+metadata:
+  controller: 1191
+  snapshot_date: '2026-11-13'
+  snapshot_sha256: "6b8f4bb2327b7319e6a0ff65708e50a7ae69ac04f07c6132d565a743e2a61da5"
+  review_stage: source-assessed-runtime-pending
+  assurance_state: INDETERMINATE
+  qualification: source-pinned-case-contract-not-an-execution-report
+  note: >-
+    Source/contract review is complete; no Rust consumer traces or independently
+    executed cross-repository conformance evidence are asserted by this file.
+owners:
+  - issue: 1194
+    scope: "purpose-of-use"
+    source_refs:
+      - repository: "OpenVTC/verifiable-trust-infrastructure"
+        ref: "393388fc1675ddf39954852c5a93e64877a071ff"
+        url: "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/393388fc1675ddf39954852c5a93e64877a071ff"
+      - repository: "OpenVTC/dtg-credentials"
+        ref: "6b1ac692517fc99268186737c6d0c3f31cf7b1ef"
+        url: "https://github.com/OpenVTC/dtg-credentials/commit/6b1ac692517fc99268186737c6d0c3f31cf7b1ef"
+      - repository: "trustoverip/dtgwg-cred-spec"
+        ref: "1bec9c3402c22cdc4a53302dadcfac2bbfeca311"
+        url: "https://github.com/trustoverip/dtgwg-cred-spec/commit/1bec9c3402c22cdc4a53302dadcfac2bbfeca311"
+    cases:
+      - id: PU-01
+        proposition: "A VAC with a listed purpose must reject a wider child and a context-v1 purpose-bearing credential"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "credential library chain verification and context resolution"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: PU-02
+        proposition: "ACL writer with only listed purposes cannot delegate `any` or `modelTraining` without explicit authority"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA acl/grant and update 0.3"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: PU-03
+        proposition: "Old room get and memory read versions cannot disclose multi-purpose protected content without a named allowed purpose"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA memory get, room-host records/get old/new versions"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: PU-04
+        proposition: "Allowed room retrieval is bounded by BOTH principal ACL purpose and effective VAC chain purpose"
+        expected_behavior: "PASS"
+        consumer_path: "VTA rooms/keys/read 0.3 to room-host rooms/records/get 0.4"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: PU-05
+        proposition: "Denied content return leaves purpose-attributed audit evidence without disclosing the memory/room content"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA memory conflict and room-host audit path"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+  - issue: 1195
+    scope: "collector-notifications"
+    source_refs:
+      - repository: "OpenVTC/verifiable-trust-infrastructure"
+        ref: "393388fc1675ddf39954852c5a93e64877a071ff"
+        url: "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/393388fc1675ddf39954852c5a93e64877a071ff"
+      - repository: "OpenVTC/openvtc"
+        ref: "cd7551e2cf52e1c63092123e663612e2f4b7fec8"
+        url: "https://github.com/OpenVTC/openvtc/commit/cd7551e2cf52e1c63092123e663612e2f4b7fec8"
+      - repository: "trustoverip/dtgwg-vti-spec"
+        ref: "188768942d1460ae123a8d47c8f0092e253dfd65"
+        url: "https://github.com/trustoverip/dtgwg-vti-spec/commit/188768942d1460ae123a8d47c8f0092e253dfd65"
+    cases:
+      - id: CN-01
+        proposition: "Client claim closes VTA's mediator socket before grant; a second active collector cannot obtain the DID"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "client ↔ VTA collection claim and actual mediator"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: CN-02
+        proposition: "After claim expiry, loss of standing or release, stale client cannot continue collection or trigger duplicate effect"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "client renewal/release and VTA collector reconcile"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: CN-03
+        proposition: "Upgrade with retired default-off setting does not silently start a competing collector against a legacy non-claiming client"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "migrated VTA and pre-claim OpenVTC client"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: CN-04
+        proposition: "Only an authorized context administrator can alter a stored default; suspension only disables and cannot override context denial"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA collection/settings set/show and restart"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: CN-05
+        proposition: "Invalid or replayed notification deposit cannot produce a false held-delivery indication; relay respects consent and recipient exclusion"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "OpenVTC deposit → VTA receive → VTC relay"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+  - issue: 1197
+    scope: "versioned-memory-audit"
+    source_refs:
+      - repository: "OpenVTC/verifiable-trust-infrastructure"
+        ref: "393388fc1675ddf39954852c5a93e64877a071ff"
+        url: "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/393388fc1675ddf39954852c5a93e64877a071ff"
+      - repository: "trustoverip/dtgwg-vti-spec"
+        ref: "f4b757b58012306b140072ed083a76f7837287c8"
+        url: "https://github.com/trustoverip/dtgwg-vti-spec/commit/f4b757b58012306b140072ed083a76f7837287c8"
+    cases:
+      - id: MA-01
+        proposition: "Migration from legacy memory preserves versions/tombstones and value on partial failure; no stale conflict discloses currentValue to write-only actor"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA memory put/delete/list/get 0.1/0.2/0.3"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: MA-02
+        proposition: "Memory audit commitment is keyed, deterministic in one context, distinct across contexts and never raw memory-key text"
+        expected_behavior: "PASS"
+        consumer_path: "VTA audit sink and over-wire memory read"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: MA-03
+        proposition: "Missing audit key does not become positive evidence of no memory access; pre-change cleartext records persist until actual retention sweep"
+        expected_behavior: "INDETERMINATE"
+        consumer_path: "VTA audit chain and retention sweeper"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: MA-04
+        proposition: "Audit-history readers are authorized and audit trail reads are themselves governed; retained commitments do not escape their intended correlation scope"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA audit/list → pnm memory history"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+  - issue: 1196
+    scope: "did-lifecycle"
+    source_refs:
+      - repository: "OpenVTC/verifiable-trust-infrastructure"
+        ref: "393388fc1675ddf39954852c5a93e64877a071ff"
+        url: "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/393388fc1675ddf39954852c5a93e64877a071ff"
+      - repository: "trustoverip/dtgwg-trust-tasks-tf"
+        ref: "2497f7563fa8bb669b163453ae00c3afbc9efe2f"
+        url: "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/2497f7563fa8bb669b163453ae00c3afbc9efe2f"
+    cases:
+      - id: DL-01
+        proposition: "Stale expectedVersionId and wrong principal cannot update/rotate/delete or act as unrelated DID"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA webs/dids update/rotate/delete/act"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: DL-02
+        proposition: "Crash after staged rotation or slot deletion is resumable without contradictory current key authority; deactivation retains historical stream"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA webs host publication and recovered local state"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: DL-03
+        proposition: "Classed create refuses service persona conflicts including previously provisioned service contexts, or records a bounded source implementation gap"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA webs/dids/create 0.2 with service contexts"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: DL-04
+        proposition: "Peer with did:webs can communicate without resolvedMethods declaration, but peer DID control alone conveys no operation authority"
+        expected_behavior: "PASS"
+        consumer_path: "VTA or VTC outbound and DID resolver"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: DL-05
+        proposition: "Removing a did:scid alias does not erase historical observation or convert alias absence to invalid past proof"
+        expected_behavior: "INDETERMINATE"
+        consumer_path: "VTA WebVH update 1.1 and historical verifier"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+  - issue: 827
+    scope: "did-key-roles"
+    source_refs:
+      - repository: "trustoverip/dtgwg-trust-tasks-tf"
+        ref: "339ba58e272adcf725d48a16b40260d3bf6a4527"
+        url: "https://github.com/trustoverip/dtgwg-trust-tasks-tf/commit/339ba58e272adcf725d48a16b40260d3bf6a4527"
+      - repository: "OpenVTC/verifiable-trust-infrastructure"
+        ref: "393388fc1675ddf39954852c5a93e64877a071ff"
+        url: "https://github.com/OpenVTC/verifiable-trust-infrastructure/commit/393388fc1675ddf39954852c5a93e64877a071ff"
+    cases:
+      - id: KR-01
+        proposition: "An implementation consuming method-neutral vta/dids key-role tasks exists and pins their published schemas"
+        expected_behavior: "INDETERMINATE"
+        consumer_path: "VTA vta/dids/keys/list/add/rotate/retire/revoke/recover"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: KR-02
+        proposition: "Wrong-role, reused-key, stale preview, replay, concurrent rotation and recovery without external authority fail closed"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "VTA key-role operations through actual task dispatcher"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: KR-03
+        proposition: "Level-1 did:webs and legacy WebVH rotation must never be reported as level-3 external-recovery or role-separated proof"
+        expected_behavior: "FAIL_CLOSED"
+        consumer_path: "verifier keyAssurance policy and DID history"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
+      - id: KR-04
+        proposition: "Compromised attestation key triggers required status/credential reissue and preserves historical decision chronology"
+        expected_behavior: "INDETERMINATE"
+        consumer_path: "issuer and verifier across role recovery"
+        execution_state: not-run
+        result: INDETERMINATE
+        evidence_refs: []
