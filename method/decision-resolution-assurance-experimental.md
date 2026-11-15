@@ -34,6 +34,59 @@ Workflow progression, peer pressure, repetition, confidence, or reputation are n
 
 A previously resolved condition MUST be reassessed when material authority or evidence becomes revoked, stale, conflicting, unsupported, or otherwise invalidated before the consequential transition.
 
+## Experimental risk, harm, guardrail, and evidence overlay
+
+The assurance propositions are not evaluated in isolation. This branch adds an experimental RAHP-native overlay at `method/catalogue/experimental/decision-resolution-patterns.yaml` so the work can be exercised as a complete assurance chain:
+
+```text
+failure pattern
+    ↓
+risk relationship
+    ↓
+harm
+    ↓
+control / guardrail
+    ↓
+required evidence
+    ↓
+assurance disposition
+```
+
+### Authority laundering
+
+**Authority laundering** is treated as an experimental composite failure pattern rather than a new stable catalogue record. It describes non-authoritative inputs such as peer influence, repetition, consensus, reputation, capability, discovery, endorsement, projection, aggregation, or unrelated authority being transformed or combined until a consequential decision treats them as authority the source did not possess.
+
+The branch deliberately reuses stable RAHP patterns where they already cover the assurance surface:
+
+- risks: `RKP-AUTH-01`, `RKP-AUTH-04`, `RKP-AUTH-06`, `RKP-DEL-01`, `RKP-COMP-04`;
+- harms: `HRM-AUT-04`, `HRM-SEC-02`, `HRM-INF-01`, and where applicable `HRM-GOV-01`;
+- controls: `CTP-AUTH-01`, `CTP-AUTH-02`, `CTP-AUTH-03`, `CTP-DEL-01`;
+- guardrails: `GRP-AUTH-01`, `GRP-AUTH-02`, `GRP-COMP-01`;
+- evidence: `EVP-AUTH-01`, `EVP-AUTH-02`, `EVP-DEL-01`.
+
+This means the experiment tests a stronger composition claim without prematurely duplicating the stable catalogue.
+
+### Candidate decision-resolution risks
+
+Three additional candidate risks are kept provisional on this branch:
+
+- `RKP-DR-X1` — **Decision-basis conflation**: an evidence, policy, lifecycle, correction, or evaluation-context change is misrepresented as an authority change.
+- `RKP-DR-X2` — **Silent unresolved-condition clearance**: a material unresolved condition is treated as resolved without evidence of an admissible resolution event.
+- `RKP-DR-X3` — **False persistence**: a condition remains blocking after current admissible evidence establishes legitimate resolution.
+
+The first two guard against false permissiveness. The third prevents the assurance model from treating indefinite conservatism as correctness.
+
+### Candidate guardrails and evidence
+
+The branch also carries provisional guardrail and evidence patterns:
+
+- `GRP-DR-X1` — no consequential transition through unresolved material state;
+- `GRP-DR-X2` — no indefinite blocking after admissible resolution;
+- `EVP-DR-X1` — decision-transition basis trace;
+- `EVP-DR-X2` — resolution and reopening trace.
+
+These identifiers are experimental placeholders only. They MUST NOT be treated as stable catalogue identifiers unless a later qualification tranche demonstrates a material assurance gap and explicitly promotes them.
+
 ## Minimum evidence
 
 An assessment should seek:
@@ -55,6 +108,9 @@ An assessment should seek:
 - Agreement among several non-authoritative actors is not authority evidence.
 - Evidence that changes a factual predicate is not authority evidence unless an independent authority event also occurred.
 - False persistence is also a defect: if admissible current evidence resolves the condition, an implementation that remains blocked should not be described as correct merely because it is conservative.
+- Authority laundering is a failed assurance condition when non-authoritative signals are combined, repeated, projected, endorsed, or aggregated into effective authority without competent provenance.
+- Decision-basis conflation is a failed assurance condition when a non-authority change is recorded or relied upon as an authority grant.
+- Silent clearance and false persistence are dual failures: an assurance system must neither erase unresolved material state without admissible evidence nor preserve it after admissible resolution evidence is current and sufficient.
 
 ## Portfolio authority boundary
 
@@ -70,6 +126,8 @@ This branch-only experiment is informed by the TSMM/TIS/ARPA/ARA workstream and 
 
 RAHP does not adopt `CareSignal`, `DeliberativeHold`, or the upstream normative vocabulary. No upstream writes were made.
 
-## Branch constraint
+## Qualification and merge boundary
 
-This work intentionally remains on `research/decision-resolution-assurance`. It MUST NOT be treated as part of the stable RAHP release boundary unless a later, separately approved qualification tranche promotes it.
+This work intentionally remains experimental on `research/decision-resolution-assurance`. The branch is designed to remain additive and merge-compatible with `main`: the experimental overlay is namespaced under `method/catalogue/experimental/` and does not modify stable catalogue records.
+
+Merging the branch into `main` would therefore publish experimental research artifacts, not promote them into the stable RAHP capability boundary. Promotion of any provisional `RKP-DR-X*`, `GRP-DR-X*`, or `EVP-DR-X*` identifier into the stable catalogue requires a later, separately approved qualification tranche.
