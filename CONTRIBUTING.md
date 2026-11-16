@@ -14,6 +14,14 @@ RAHP contributions are easiest to review when the contributor first identifies *
 
 For triage, assurance residual ownership and issue closure decisions, see [Issue queue disposition](docs/issue-queue-disposition.md). This is a human review contract; it does not add a GitHub Actions workflow.
 
+## New issue admission and routing
+
+Open an issue here only when the requested acceptance changes the **Toolkit**: portable RAHP behavior, interfaces, tests, documentation, security, method qualification, operational development workflows or release governance. An upstream implementation's missing evidence or project-specific risk, even when found by running RAHP, is not a Toolkit defect.
+
+For external assessment cases, DTG/CAWG monitoring, downstream remediation and pending evidence, use the [RAHP Assessment Registry](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues). Where privacy or executable interoperability requires a specialist, retain DPIP and Interop Lab as the authoritative producer and return owner; the Registry indexes coordination and provenance. If a case demonstrates a reproducible defect in RAHP itself, open a **separate narrowly scoped Toolkit development issue** citing the case and falsifying test.
+
+**Transitional restriction:** the existing source-monitor → Toolkit issue publisher and RAHP → DPIP issue-driven return workflow are not yet cut over. Do not manually retarget tokens, transfer active controller issues or disable their return handlers based on this policy alone. See [registry cutover gate](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/2). The stated boundary is the target ownership policy, not a claim of currently enforced automation.
+
 ## Choose the contribution path
 
 | I want to… | Start here | Primary authority |

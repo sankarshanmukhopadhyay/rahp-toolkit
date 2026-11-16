@@ -8,6 +8,12 @@ nav_order: 12
 
 This guide governs human triage of RAHP Toolkit issues. It introduces no scheduled automation, new GitHub Actions workflow, external authority, or new assurance terminal state. GitHub issues and pull requests remain the authoritative work records; source repositories remain authoritative for their own normative and implementation claims. Derived queue views must not override either.
 
+## Development-only Toolkit issue boundary
+
+This queue is for **RAHP development and method/implementation qualification**, not the operational backlog created by applying RAHP to DTG or other systems. External assessment cases, runtime evidence acquisition, upstream changes/remediation and recurring portfolio watch records should be coordinated through the [RAHP Assessment Registry](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry); downstream DPIP/Lab results remain under their own specialist or producer authority. A true RAHP defect revealed during an assessment becomes a separate bounded Toolkit issue with reproducible acceptance criteria.
+
+For historical external issues, decide whether to close as transferred, consolidate with a durable Registry owner, or split out a genuine RAHP development component. Preserve source history and all unresolved assurance obligations. **Do not close an active RAHP controller or specialist-return anchor while it is needed for DPIP/Lab routing.** The current automatic DTG assessment publisher still creates Toolkit issues; this is a documented migration gap requiring a compatible routing cutover, not permission to declare the issue queue clean. [Registry pilot/cutover gate](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/2).
+
 ## Classify the obligation before deciding disposition
 
 A queue item may be one of the following. These are **planning classes**, not new engine states or obligatory labels:
