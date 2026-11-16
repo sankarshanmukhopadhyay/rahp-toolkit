@@ -307,6 +307,7 @@ jobs:
             build/dtg-routing/combined-result.json
             build/dtg-routing/dpip-events.json
             build/dtg-routing/dpip-result.json
+            build/dtg-routing/registry-readiness.json
           if-no-files-found: error
 
       - name: Publish routing summary
