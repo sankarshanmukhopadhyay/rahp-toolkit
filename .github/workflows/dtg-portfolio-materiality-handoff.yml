@@ -209,6 +209,16 @@ jobs:
           pathlib.Path('build/dtg-routing/controller-events.json').write_text(json.dumps([event], indent=2) + '\n')
           PY
 
+      - name: Audit registry cutover readiness (read-only)
+        shell: bash
+        run: |
+          python3 -m unittest discover -s tests -p 'test_registry_route_gate.py'
+          python3 tools/registry_route_gate.py \
+            --controller build/dtg-routing/controller-events.json \
+            --combined build/dtg-routing/combined-events.json \
+            --dpip build/dtg-routing/dpip-events.json \
+            --out build/dtg-routing/registry-readiness.json
+
       - name: Publish or coalesce portfolio controller
         env:
           GITHUB_TOKEN: ${{ github.token }}
