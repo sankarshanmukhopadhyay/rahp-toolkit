@@ -13,6 +13,12 @@ RAHP is deliberately evidence-conservative:
 - normative convergence does not silently become implementation conformance;
 - identity or lineage evidence does not silently become authorization.
 
+## Issue ownership
+
+This repository's issue queue is for **RAHP Toolkit development and qualification**: portable method, schemas, engine, validators, reusable tests, tooling, documentation, security, maintainer governance and release acceptance. Project-specific risk, evidence acquisition, external remediation, periodic monitoring and individual DTG/CAWG/other assessment cases belong in the [RAHP Assessment Registry](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry), with DPIP and Interop Lab retaining their own specialist and evidence-producer authority.
+
+**Migration state (2026-11-16):** Pilot external case [#1203](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1203) was transferred to [registry #4](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/4). Remaining historical external issues are still being reconciled. The existing DTG issue publisher and DPIP-return workflows still use Toolkit issue identifiers; **automated enforcement of the development-only boundary is not yet complete**. Do not migrate controller-anchored cases or treat this policy as a functioning routing adapter until the [registry pilot/cutover gate](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/2) is satisfied.
+
 ## Current release — v2.9.0 Common Windmill
 
 v2.9.0 **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** was published and qualified on 2026-10-22.
