@@ -36,6 +36,49 @@ CANONICAL_RAHP_ISSUE_REPOSITORY = "sankarshanmukhopadhyay/rahp-toolkit"
 CANONICAL_RAHP_ASSIGNEES = ["sankarshanmukhopadhyay"]
 
 
+TRANSFER_LEDGER = Path(__file__).resolve().parents[1] / "instances/dtg/registry-transfers.json"
+REGISTRY_ISSUE_PREFIX = "https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/"
+TOOLKIT_ISSUE_PREFIX = "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/"
+
+
+def load_transfer_keys(path: Path) -> set[str]:
+    """Fail closed on malformed transfer declarations; empty means no cutover."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or set(data) != {"schema", "transfers"} or data["schema"] != "rahp-registry-transfers/v1":
+        raise ValueError("invalid registry transfer ledger schema")
+    if not isinstance(data["transfers"], list):
+        raise ValueError("registry transfers must be an array")
+    keys: set[str] = set()
+    for item in data["transfers"]:
+        if not isinstance(item, dict) or set(item) != {"assessment_key", "toolkit_issue_url", "registry_issue_url", "state"}:
+            raise ValueError("invalid registry transfer entry")
+        key = item["assessment_key"]
+        if not isinstance(key, str) or not re.fullmatch(r"[a-z0-9][a-z0-9:._/-]{7,180}", key) or key in keys:
+            raise ValueError("invalid or duplicate registry transfer assessment key")
+        if item["state"] != "accepted":
+            raise ValueError("unaccepted registry transfer is not a publication exclusion")
+        for field, prefix in (("toolkit_issue_url", TOOLKIT_ISSUE_PREFIX), ("registry_issue_url", REGISTRY_ISSUE_PREFIX)):
+            url = item[field]
+            if not isinstance(url, str) or not re.fullmatch(re.escape(prefix) + r"[1-9][0-9]*", url):
+                raise ValueError("invalid registry transfer issue URL")
+        keys.add(key)
+    return keys
+
+
+def enforce_registry_transfer_boundary(events: list[dict[str, Any]], keys: set[str]) -> None:
+    """No legacy Toolkit mutation of a transferred proposition, including coalescing.
+
+    A live transfer requires a separate coordinated consumer/Registry publication
+    transaction. Refusing the whole batch retains its source for controlled replay
+    rather than silently dropping a routed assessment event.
+    """
+    for item in events:
+        if not isinstance(item, dict):
+            raise ValueError("assessment event must be an object")
+        if item.get("assessment_key") in keys or item.get("related_assessment_key") in keys:
+            raise ValueError("Registry-owned assessment encountered by Toolkit publisher; coordinated replay required")
+
+
 def enforce_publication_repository(repository: str) -> str:
     """Reject any attempt to publish RAHP work items outside the RAHP repository."""
     repo = (repository or "").strip()
@@ -359,6 +402,11 @@ def main() -> int:
             args.result_json.write_text(json.dumps({"issues": []}, indent=2) + "\n", encoding="utf-8")
         print("no assessment issues to publish")
         return 0
+
+    try:
+        enforce_registry_transfer_boundary(events, load_transfer_keys(TRANSFER_LEDGER))
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f"Toolkit publication refused: {exc}") from exc
 
     issues = existing_issues(args.repository, token)
     owner_index = issues_by_key(issues)

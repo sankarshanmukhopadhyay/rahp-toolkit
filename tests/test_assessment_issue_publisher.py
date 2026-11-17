@@ -31,6 +31,40 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
             },
         ]
 
+    def test_registry_transfer_guard_defaults_to_no_transfer(self) -> None:
+        keys = publisher.load_transfer_keys(publisher.TRANSFER_LEDGER)
+        self.assertEqual(keys, set())
+        publisher.enforce_registry_transfer_boundary([{"assessment_key": self.key}], keys)
+
+    def test_registry_transfer_rejects_exact_and_related_key_before_writes(self) -> None:
+        for event in ({"assessment_key": self.key},
+                      {"assessment_key": "dtg:other-case", "related_assessment_key": self.key}):
+            with self.subTest(event=event), self.assertRaisesRegex(ValueError, "Registry-owned"):
+                publisher.enforce_registry_transfer_boundary([event], {self.key})
+
+    def test_registry_transfer_rejects_malformed_and_duplicate_ledger(self) -> None:
+        import json
+        import tempfile
+        good = {"assessment_key": self.key,
+                "toolkit_issue_url": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1203",
+                "registry_issue_url": "https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/4",
+                "state": "accepted"}
+        bad = [
+            {"schema": "rahp-registry-transfers/v1", "transfers": [good, good]},
+            {"schema": "rahp-registry-transfers/v1", "transfers": [{**good, "state": "proposed"}]},
+            {"schema": "rahp-registry-transfers/v1", "transfers": [{**good, "registry_issue_url": "https://github.com/evil/issues/1"}]},
+            {"schema": "rahp-registry-transfers/v1", "transfers": [{**good, "extra": True}]},
+            {"schema": "different", "transfers": []},
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "transfers.json"
+            path.write_text(json.dumps({"schema": "rahp-registry-transfers/v1", "transfers": [good]}))
+            self.assertEqual(publisher.load_transfer_keys(path), {self.key})
+            for payload in bad:
+                with self.subTest(payload=payload), self.assertRaises(ValueError):
+                    path.write_text(json.dumps(payload))
+                    publisher.load_transfer_keys(path)
+
     def test_api_errors_never_expose_response_body(self) -> None:
         secret_body = b'{"message":"private request detail"}'
         error = urllib.error.HTTPError(
