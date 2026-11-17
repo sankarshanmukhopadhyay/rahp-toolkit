@@ -52,7 +52,7 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER):
                 retained.append(item)
             else:
                 transfer = by_key[next(iter(names))]
-                if transfer["state"] == "reserved_group":
+                if transfer["state"] in ("reserved_group", "accepted_group"):
                     if item.get("assessment_key") != transfer["assessment_key"]:
                         raise ValueError("group reservation must match the primary event key")
                     if item.get("observed_at") != transfer["snapshot_date"]:
