@@ -16,6 +16,8 @@ on:
       - '.github/workflows/dtg-portfolio-materiality-handoff.yml'
       - 'tools/fetch_dtg_portfolio_snapshot.py'
       - 'tools/dtg_portfolio_routing.py'
+      - 'tools/prepare_registry_partition_publication.py'
+      - 'instances/dtg/registry-transfers.json'
       - 'tools/dtg_portfolio_baseline.py'
       - 'tools/materiality_journal_gate.py'
       - 'instances/dtg/baselines/current.yaml'
@@ -112,7 +114,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/materiality_journal_gate.py
-          --events build/dtg-routing/combined-events.json
+          --events ${{ steps.registry-selection.outputs.combined }}
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
       - name: Journal DPIP materiality and gate reassessment
@@ -120,7 +122,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/materiality_journal_gate.py
-          --events build/dtg-routing/dpip-events.json
+          --events ${{ steps.registry-selection.outputs.dpip }}
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
       - name: Build portfolio controller event
@@ -228,20 +230,34 @@ jobs:
           build/dtg-routing/dpip-events.json
           --out-dir build/dtg-routing/registry-partition
 
+      - name: Qualify Registry observation and select exact publication inputs
+        id: registry-selection
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/prepare_registry_partition_publication.py
+          --batches
+          build/dtg-routing/controller-events.json
+          build/dtg-routing/combined-events.json
+          build/dtg-routing/dpip-events.json
+          --stage-dir build/dtg-routing/registry-partition
+          --receipt build/dtg-routing/registry-publish-selection.json
+          --github-output "$GITHUB_OUTPUT"
+
       - name: Preflight all DTG publication batches against Registry transfer ledger
         run: >-
           python3 tools/publish_assessment_issues.py
           --check-transfers
-          build/dtg-routing/controller-events.json
-          build/dtg-routing/combined-events.json
-          build/dtg-routing/dpip-events.json
+          ${{ steps.registry-selection.outputs.controller }}
+          ${{ steps.registry-selection.outputs.combined }}
+          ${{ steps.registry-selection.outputs.dpip }}
 
       - name: Publish or coalesce portfolio controller
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/publish_assessment_issues.py
-          --events build/dtg-routing/controller-events.json
+          --events ${{ steps.registry-selection.outputs.controller }}
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/controller-result.json
 
@@ -326,6 +342,7 @@ jobs:
             build/dtg-routing/dpip-result.json
             build/dtg-routing/registry-readiness.json
             build/dtg-routing/registry-partition/
+            build/dtg-routing/registry-publish-selection.json
           if-no-files-found: error
 
       - name: Publish routing summary
