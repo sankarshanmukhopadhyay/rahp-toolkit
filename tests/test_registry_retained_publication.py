@@ -97,6 +97,43 @@ class RetainedSelectionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             publisher.preflight_transfer_files(self.paths, self.ledger)
 
+    def test_journal_enrichment_preserves_approved_raw_source_digest(self):
+        raw = self.root / "raw-combined.json"
+        raw.write_text(json.dumps([self.group]))
+        enriched = {**self.group, "evidence_impact": "uncertain",
+                    "journal_findings": [{"finding_id": fid} for fid in self.observations],
+                    "theme": "materiality-journal impact=uncertain"}
+        self.paths[1].write_text(json.dumps([enriched]))
+        self.assertNotEqual(partition.sha(partition.canonical(enriched)),
+                            self.record["group_sha256"])
+        receipt = guard.plan(self.paths, self.root / "partition", self.ledger,
+                             token="token", get=self.get, context=self.context,
+                             source_combined=raw)
+        self.assertEqual(receipt["mode"], "registry_acknowledged_retained")
+        held = json.loads((self.root / "partition/combined-events.json.held.json").read_text())[0]
+        self.assertEqual(held["event"], enriched)
+        self.assertEqual(held["source_event_sha256"], self.record["group_sha256"])
+        self.assertNotEqual(held["event_sha256"], held["source_event_sha256"])
+        enriched["body"] = "tampered journal data"
+        self.paths[1].write_text(json.dumps([enriched]))
+        with self.assertRaisesRegex(ValueError, "journal-enriched"):
+            guard.plan(self.paths, self.root / "tampered", self.ledger,
+                       token="token", get=self.get, context=self.context,
+                       source_combined=raw)
+
+    def test_workflow_preserves_original_before_materiality_enrichment(self):
+        wf = (ROOT / ".github/workflows/dtg-portfolio-materiality-handoff.yml").read_text()
+        raw = wf.index("Preserve original canonical combined source")
+        journal = wf.index("Journal combined-review materiality")
+        staged = wf.index("Stage lossless Registry source partitions")
+        selected = wf.index("Qualify Registry observation and select exact publication inputs")
+        publisher = wf.index("Publish or coalesce portfolio controller")
+        self.assertLess(raw, journal)
+        self.assertLess(journal, staged)
+        self.assertLess(staged, selected)
+        self.assertLess(selected, publisher)
+        self.assertIn("--source-combined build/dtg-routing/source-combined-events.json", wf)
+
     def test_reserved_or_legacy_accepted_never_selects_retained(self):
         records = [
             {"assessment_key": self.key, "state": "reserved_group",
