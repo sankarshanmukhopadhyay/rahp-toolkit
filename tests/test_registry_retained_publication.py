@@ -119,6 +119,61 @@ class RetainedSelectionTests(unittest.TestCase):
                 self.assertEqual(json.loads(Path(selected["paths"][2]).read_text()),
                                  [self.dpip])
 
+    def test_new_source_epoch_is_held_without_inheriting_old_ack(self):
+        # The exact November reservation may remain active when the next
+        # independently pinned monitor snapshot reports a changed group.
+        raw = self.root / "later-original-combined.json"
+        later = {**self.group, "observed_at": "2026-11-17",
+                 "body": "New monitored source requiring separate qualification"}
+        raw.write_text(json.dumps([later]))
+        enriched = {**later, "evidence_impact": "uncertain"}
+        self.paths[1].write_text(json.dumps([enriched]))
+        for state in ("accepted_group", "reserved_group"):
+            with self.subTest(state=state):
+                record = dict(self.record)
+                if state == "reserved_group":
+                    record["state"] = state
+                    record["registry_intent_path"] = (
+                        "outbox/pending/spec-dependency-2026-11-16.json")
+                    record.pop("registry_issue_url")
+                    record.pop("maintainer_scope_sha256")
+                self.write_ledger([record])
+                chosen = guard.plan(
+                    self.paths, self.root / ("changed-" + state), self.ledger,
+                    token="token", get=self.get, context=self.context,
+                    source_combined=raw)
+                self.assertEqual(chosen["mode"], "changed_group_unqualified_retained")
+                self.assertEqual((chosen["retained_count"], chosen["held_count"]), (2, 1))
+                self.assertFalse(chosen["registry_observation_acknowledged"])
+                self.assertFalse(chosen["cutover_authorized"])
+                held = json.loads((self.root / ("changed-" + state) /
+                                   "combined-events.json.held.json").read_text())[0]
+                self.assertEqual(held["reason"], "unqualified_current_group_observation")
+                self.assertEqual(held["event"], enriched)
+                self.assertNotEqual(held["source_event_sha256"],
+                                    record["group_sha256"])
+                self.assertEqual(json.loads(Path(chosen["paths"][0]).read_text()),
+                                 [self.controller])
+                self.assertEqual(json.loads(Path(chosen["paths"][2]).read_text()),
+                                 [self.dpip])
+                # Without preserved original source, the new epoch is not
+                # qualified to proceed even as a held event.
+                with self.assertRaisesRegex(ValueError, "snapshot date"):
+                    guard.plan(self.paths, self.root / ("unproven-" + state),
+                               self.ledger, token="token", get=self.get,
+                               context=self.context)
+
+    def test_tampered_journal_source_still_blocks_all_publication(self):
+        raw = self.root / "later-original-combined.json"
+        later = {**self.group, "observed_at": "2026-11-17"}
+        raw.write_text(json.dumps([later]))
+        tampered = {**later, "body": "different journal body"}
+        self.paths[1].write_text(json.dumps([tampered]))
+        with self.assertRaisesRegex(ValueError, "journal-enriched"):
+            guard.plan(self.paths, self.root / "tampered-journal", self.ledger,
+                       token="token", get=self.get, context=self.context,
+                       source_combined=raw)
+
     def test_journal_enrichment_preserves_approved_raw_source_digest(self):
         raw = self.root / "raw-combined.json"
         raw.write_text(json.dumps([self.group]))
