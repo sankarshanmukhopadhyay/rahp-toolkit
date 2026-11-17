@@ -23,3 +23,24 @@ exclusive authority or RAHP assurance PASS.
 The empty ledger changes no production routing. Use existing Toolkit tests,
 the Registry outbox/consumer tests, and manual dispatch for the cutover
 evidence. No new scheduled workflow is required.
+
+## DTG materiality batch preflight
+
+The DTG materiality handoff performs an **all-batch read-only preflight**
+after materiality enrichment and controller-event generation, before its first
+GitHub issue publication. Run the equivalent check manually with:
+
+```sh
+python3 tools/publish_assessment_issues.py --check-transfers \
+  build/dtg-routing/controller-events.json \
+  build/dtg-routing/combined-events.json \
+  build/dtg-routing/dpip-events.json
+```
+
+This validates the exact key and related-key boundaries across the three
+publication batches. Invalid, missing or non-array input fails before any
+Toolkit issue is mutated by those publication steps. This does **not** make
+the multi-repository cutover atomic or cover other Toolkit workflows and
+independent controller-incident publishers. An accepted transfer must not be
+activated until those remaining producers and first-party consumers are
+addressed.

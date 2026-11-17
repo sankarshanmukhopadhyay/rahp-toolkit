@@ -65,6 +65,55 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                     path.write_text(json.dumps(payload))
                     publisher.load_transfer_keys(path)
 
+    def test_preflight_blocks_later_batch_without_network_or_publishing(self) -> None:
+        import json
+        import tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            ledger = root / "transfers.json"
+            key = "dtg:portfolio:combined:transferred-example"
+            ledger.write_text(json.dumps({
+                "schema": "rahp-registry-transfers/v1",
+                "transfers": [{
+                    "assessment_key": key,
+                    "toolkit_issue_url": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1203",
+                    "registry_issue_url": "https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/4",
+                    "state": "accepted",
+                }],
+            }))
+            early = root / "controller.json"
+            later = root / "combined.json"
+            early.write_text(json.dumps([{"assessment_key": "dtg:portfolio:controller:sample"}]))
+            later.write_text(json.dumps([{"assessment_key": "dtg:other-case", "related_assessment_key": key}]))
+            with patch.object(publisher, "request", side_effect=AssertionError("no GitHub calls")):
+                with self.assertRaisesRegex(ValueError, "Registry-owned"):
+                    publisher.preflight_transfer_files([early, later], ledger)
+                later.write_text("[]")
+                self.assertEqual(publisher.preflight_transfer_files([early, later], ledger), 1)
+
+    def test_preflight_rejects_missing_malformed_and_non_array_batches(self) -> None:
+        import tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "events.json"
+            ledger = publisher.TRANSFER_LEDGER
+            with self.assertRaises(FileNotFoundError):
+                publisher.preflight_transfer_files([path], ledger)
+            for content in ('{"assessment_key":"x"}', 'not-json', '[null]'):
+                path.write_text(content)
+                with self.subTest(content=content), self.assertRaises((ValueError, TypeError)):
+                    publisher.preflight_transfer_files([path], ledger)
+
+    def test_workflow_preflights_all_dtg_batches_before_first_issue_write(self) -> None:
+        path = ROOT / ".github/workflows/dtg-portfolio-materiality-handoff.yml"
+        text = path.read_text(encoding="utf-8")
+        preflight = text.index("name: Preflight all DTG publication batches against Registry transfer ledger")
+        first_write = text.index("name: Publish or coalesce portfolio controller")
+        self.assertLess(preflight, first_write)
+        block = text[preflight:first_write]
+        for file in ("controller-events.json", "combined-events.json", "dpip-events.json"):
+            self.assertIn(file, block)
+        self.assertIn("--check-transfers", block)
+
     def test_api_errors_never_expose_response_body(self) -> None:
         secret_body = b'{"message":"private request detail"}'
         error = urllib.error.HTTPError(
