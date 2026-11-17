@@ -219,6 +219,15 @@ jobs:
             --dpip build/dtg-routing/dpip-events.json \
             --out build/dtg-routing/registry-readiness.json
 
+      - name: Stage lossless Registry source partitions (no publication authority)
+        run: >-
+          python3 tools/stage_registry_source_partition.py
+          --batches
+          build/dtg-routing/controller-events.json
+          build/dtg-routing/combined-events.json
+          build/dtg-routing/dpip-events.json
+          --out-dir build/dtg-routing/registry-partition
+
       - name: Preflight all DTG publication batches against Registry transfer ledger
         run: >-
           python3 tools/publish_assessment_issues.py
@@ -316,6 +325,7 @@ jobs:
             build/dtg-routing/dpip-events.json
             build/dtg-routing/dpip-result.json
             build/dtg-routing/registry-readiness.json
+            build/dtg-routing/registry-partition/
           if-no-files-found: error
 
       - name: Publish routing summary
