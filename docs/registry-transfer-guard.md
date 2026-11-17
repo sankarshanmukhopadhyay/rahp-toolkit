@@ -65,3 +65,32 @@ retained. The next phase replaces reservation with an `accepted` entry naming
 the actual Registry issue. Do not remove a reservation merely because a POST
 timed out. Existing history remains unchanged; empty ledger is the production
 default until an authorized case qualifies.
+
+## Source-scoped reservation and stale-run protection
+
+The guarded DTG selector now permits publication of **unrelated retained
+events** while an exact source-qualified `reserved_group` transfer is held.
+The held group remains in the source partition with both its original and
+journal-enriched event identities. This selection does **not** establish
+Registry ownership or current observation acknowledgment.
+
+The canonical Toolkit publisher also re-reads the live Toolkit main transfer
+ledger before each issue mutation and refuses an event whose exact or related
+assessment key has become transferred. It fails closed on unavailable or
+changing branch authority. This narrows stale-checkout exposure without
+providing an atomic condition on the eventual GitHub issue POST/PATCH.
+
+**Operator requirement before activating the reservation:** stop/drain all
+affected in-flight Toolkit issue writers, ensure no older unchecked publisher
+can resume, and maintain exclusive control of effectful delivery while the
+Registry owner and observation are established. The other Toolkit writer
+entry points and first-party consumer issue-number references must be checked
+before any live cutover. GitHub Actions concurrency is repository-scoped and
+the separate Registry concurrency group does not establish cross-repository
+mutual exclusion.
+
+Rollback of an accepted transfer cannot consist of deleting its ledger
+entry. The Registry writer must first be durably fenced and its accepted
+observations preserved, followed by an explicitly authorized reverse
+ownership transition and current-source requalification. No live rollback,
+owner creation or production transfer is implemented by this increment.
