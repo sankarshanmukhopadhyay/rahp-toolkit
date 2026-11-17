@@ -70,7 +70,7 @@ def load_transfer_keys(path: Path) -> set[str]:
                 raise ValueError("invalid Registry successor issue URL")
         else:
             if not isinstance(item["registry_intent_path"], str) or not re.fullmatch(
-                r"outbox/pending/[a-z0-9][a-z0-9-]*\\.json", item["registry_intent_path"]
+                r"outbox/pending/[a-z0-9][a-z0-9-]*\.json", item["registry_intent_path"]
             ):
                 raise ValueError("invalid reserved Registry intake path")
             if not isinstance(item["source_revision"], str) or not re.fullmatch(r"[0-9a-f]{40}", item["source_revision"]):
