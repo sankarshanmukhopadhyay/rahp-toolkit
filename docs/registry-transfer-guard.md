@@ -44,3 +44,24 @@ the multi-repository cutover atomic or cover other Toolkit workflows and
 independent controller-incident publishers. An accepted transfer must not be
 activated until those remaining producers and first-party consumers are
 addressed.
+
+## Reservation before new-case publication
+
+A **reserved** entry has an exact assessment key, original Toolkit issue URL,
+source commit, finding ID and committed Registry `outbox/pending/*.json` intent.
+It intentionally has no Registry issue URL. The Toolkit publisher rejects that
+key and any related key just as it rejects an accepted transfer; it does not
+silently drop or coalesce the observation. This permits source-specific
+suppression to precede Registry's first new-case POST without fabricating a
+successor identity.
+
+The `reserved` entry is **not** Registry publication authority by itself.
+Before activating one, the Registry must verify the live Toolkit default-branch
+ledger, exact committed pending intent, current source/consumer correlation,
+all affected Toolkit writers and rollback. A failure after reservation leaves
+Toolkit publication blocked for that proposition until the Registry owner is
+verified or the reservation is deliberately withdrawn, with the outbox intent
+retained. The next phase replaces reservation with an `accepted` entry naming
+the actual Registry issue. Do not remove a reservation merely because a POST
+timed out. Existing history remains unchanged; empty ledger is the production
+default until an authorized case qualifies.
