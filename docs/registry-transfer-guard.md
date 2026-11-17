@@ -94,3 +94,19 @@ entry. The Registry writer must first be durably fenced and its accepted
 observations preserved, followed by an explicitly authorized reverse
 ownership transition and current-source requalification. No live rollback,
 owner creation or production transfer is implemented by this increment.
+
+## Accepted-transfer rollback non-removal
+
+The Toolkit PR validation now compares the candidate transfer ledger with the
+current `main` ledger. Once `accepted` or `accepted_group` is present on
+`main`, the candidate must preserve that exact record. Deletion, replacement
+of the Registry owner, or mutation of the accepted evidence fails validation.
+This is a **branch-protected PR safety check**, not a complete reverse-transfer
+protocol or a tamper-proof historical log. It depends on required CI and
+protected-main enforcement; bypasses or direct unvalidated pushes remain
+outside what this test can prevent.
+
+A future reverse transfer must introduce a separately specified Registry
+publication fence, durable authority epoch and authenticated return receipt.
+It must be reviewed as a semantic authorization change. The current ledger
+remains empty and this validation does not initiate rollback.
