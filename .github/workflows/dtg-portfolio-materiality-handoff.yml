@@ -271,7 +271,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/publish_assessment_issues.py
-          --events build/dtg-routing/combined-events.json
+          --events ${{ steps.registry-selection.outputs.combined }}
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/combined-result.json
 
@@ -280,7 +280,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/publish_assessment_issues.py
-          --events build/dtg-routing/dpip-events.json
+          --events ${{ steps.registry-selection.outputs.dpip }}
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
           --result-json build/dtg-routing/dpip-result.json
 
