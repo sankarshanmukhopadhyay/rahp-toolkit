@@ -158,6 +158,51 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                           name + " }}", text[first_write:])
         self.assertIn("--check-transfers", preflight_block)
 
+    def test_live_fence_rejects_stale_writer_after_reservation(self) -> None:
+        import base64
+        import json
+        key = "dtg:portfolio:combined:spec-dependency-alignment"
+        ledger = {"schema": "rahp-registry-transfers/v1", "transfers": [{
+            "state": "reserved_group", "assessment_key": key,
+            "toolkit_issue_url": publisher.TOOLKIT_ISSUE_PREFIX + "272",
+            "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
+            "monitor_revision": "a"*40, "snapshot_date": "2026-11-16",
+            "finding_ids": ["a"*20], "group_sha256": "b"*64
+        }]}
+        def fake(method, url, token, payload=None):
+            if url.endswith("/branches/main"):
+                return {"commit": {"sha": "a"*40}}
+            if "/contents/instances/dtg/registry-transfers.json?" in url:
+                return {"encoding": "base64", "content": base64.b64encode(
+                    json.dumps(ledger).encode()).decode()}
+            raise AssertionError("unexpected API " + url)
+        with patch.object(publisher, "request", side_effect=fake):
+            with self.assertRaisesRegex(ValueError, "Registry-owned"):
+                publisher.enforce_live_transfer_boundary({"assessment_key": key}, "token")
+            publisher.enforce_live_transfer_boundary(
+                {"assessment_key": "dtg:portfolio:controller:unrelated"}, "token")
+
+    def test_live_fence_rejects_main_head_drift(self) -> None:
+        import base64
+        import json
+        heads = iter(["a"*40, "b"*40])
+        def fake(method, url, token, payload=None):
+            if url.endswith("/branches/main"):
+                return {"commit": {"sha": next(heads)}}
+            return {"encoding": "base64", "content": base64.b64encode(
+                json.dumps({"schema": "rahp-registry-transfers/v1",
+                            "transfers": []}).encode()).decode()}
+        with patch.object(publisher, "request", side_effect=fake):
+            with self.assertRaisesRegex(ValueError, "main changed"):
+                publisher.enforce_live_transfer_boundary(
+                    {"assessment_key": "dtg:portfolio:controller:other"}, "token")
+
+    def test_live_fence_rejects_unavailable_authority(self) -> None:
+        with patch.object(publisher, "request", return_value={}):
+            with self.assertRaisesRegex(ValueError, "authority unavailable"):
+                publisher.enforce_live_transfer_boundary(
+                    {"assessment_key": "dtg:portfolio:controller:other"}, "token")
+
     def test_api_errors_never_expose_response_body(self) -> None:
         secret_body = b'{"message":"private request detail"}'
         error = urllib.error.HTTPError(
