@@ -97,6 +97,28 @@ class RetainedSelectionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             publisher.preflight_transfer_files(self.paths, self.ledger)
 
+    def test_transferred_group_absent_does_not_block_unrelated_snapshot(self):
+        # Later snapshots may not contain the original group at all.
+        self.paths[1].write_text("[]")
+        for state in ("accepted_group", "reserved_group"):
+            with self.subTest(state=state):
+                record = dict(self.record)
+                if state == "reserved_group":
+                    record["state"] = state
+                    record["registry_intent_path"] = (
+                        "outbox/pending/spec-dependency-2026-11-16.json")
+                    record.pop("registry_issue_url")
+                    record.pop("maintainer_scope_sha256")
+                self.write_ledger([record])
+                selected = self.plan()
+                self.assertEqual(selected["mode"], "no_current_transfer_event_retained")
+                self.assertEqual((selected["held_count"], selected["retained_count"]), (0, 2))
+                self.assertFalse(selected["registry_observation_acknowledged"])
+                self.assertEqual(json.loads(Path(selected["paths"][0]).read_text()),
+                                 [self.controller])
+                self.assertEqual(json.loads(Path(selected["paths"][2]).read_text()),
+                                 [self.dpip])
+
     def test_journal_enrichment_preserves_approved_raw_source_digest(self):
         raw = self.root / "raw-combined.json"
         raw.write_text(json.dumps([self.group]))
