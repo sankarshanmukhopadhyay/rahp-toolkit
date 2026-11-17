@@ -50,7 +50,7 @@ def load_transfer_keys(path: Path) -> set[str]:
         raise ValueError("registry transfers must be an array")
     keys: set[str] = set()
     for item in data["transfers"]:
-        if not isinstance(item, dict) or item.get("state") not in ("reserved", "accepted", "reserved_group"):
+        if not isinstance(item, dict) or item.get("state") not in ("reserved", "accepted", "reserved_group", "accepted_group"):
             raise ValueError("invalid registry transfer state")
         required = ({"assessment_key", "toolkit_issue_url", "registry_issue_url", "state"}
                     if item["state"] == "accepted" else
@@ -58,7 +58,10 @@ def load_transfer_keys(path: Path) -> set[str]:
                      "source_revision", "finding_id", "state"} if item["state"] == "reserved" else
                     {"assessment_key", "toolkit_issue_url", "registry_intent_path",
                      "monitor_revision", "snapshot_date", "finding_ids",
-                     "group_sha256", "state"})
+                     "group_sha256", "state"} if item["state"] == "reserved_group" else
+                    {"assessment_key", "toolkit_issue_url", "registry_issue_url",
+                     "monitor_revision", "snapshot_date", "finding_ids",
+                     "group_sha256", "maintainer_scope_sha256", "state"})
         if set(item) != required:
             raise ValueError("invalid registry transfer entry")
         key = item["assessment_key"]
@@ -72,10 +75,21 @@ def load_transfer_keys(path: Path) -> set[str]:
             if not isinstance(url, str) or not re.fullmatch(re.escape(REGISTRY_ISSUE_PREFIX) + r"[1-9][0-9]*", url):
                 raise ValueError("invalid Registry successor issue URL")
         else:
-            if not isinstance(item["registry_intent_path"], str) or not re.fullmatch(
-                r"outbox/pending/[a-z0-9][a-z0-9-]*\.json", item["registry_intent_path"]
-            ):
-                raise ValueError("invalid reserved Registry intake path")
+            if item["state"] != "accepted_group":
+                if not isinstance(item["registry_intent_path"], str) or not re.fullmatch(
+                    r"outbox/pending/[a-z0-9][a-z0-9-]*\.json", item["registry_intent_path"]
+                ):
+                    raise ValueError("invalid reserved Registry intake path")
+            else:
+                if not isinstance(item["registry_issue_url"], str) or not re.fullmatch(
+                    re.escape(REGISTRY_ISSUE_PREFIX) + r"[1-9][0-9]*",
+                    item["registry_issue_url"]
+                ):
+                    raise ValueError("accepted group requires exact Registry owner URL")
+                if not isinstance(item["maintainer_scope_sha256"], str) or not re.fullmatch(
+                    r"[0-9a-f]{64}", item["maintainer_scope_sha256"]
+                ):
+                    raise ValueError("accepted group requires current maintainer scope SHA-256")
             if item["state"] == "reserved":
                 if not isinstance(item["source_revision"], str) or not re.fullmatch(
                     r"[0-9a-f]{40}", item["source_revision"]

@@ -23,7 +23,7 @@ def canonical(event):
                       ensure_ascii=False).encode("utf-8")
 
 
-def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER):
+def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER, *, source_combined: Path | None = None):
     keys = load_transfer_keys(ledger)
     records = json.loads(ledger.read_text(encoding="utf-8"))["transfers"]
     by_key = {item["assessment_key"]: item for item in records}
@@ -31,6 +31,12 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER):
         raise ValueError("transfer record identity mismatch")
     if not batches or len({p.name for p in batches}) != len(batches):
         raise ValueError("nonempty uniquely named publication batches required")
+    raw_combined = None
+    if source_combined is not None:
+        source_data = json.loads(source_combined.read_text(encoding="utf-8"))
+        if not isinstance(source_data, list):
+            raise ValueError("original combined source snapshot must be a JSON array")
+        raw_combined = source_data
     staged, outputs = [], []
     for path in batches:
         data = path.read_bytes()
@@ -52,12 +58,21 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER):
                 retained.append(item)
             else:
                 transfer = by_key[next(iter(names))]
-                if transfer["state"] == "reserved_group":
+                if transfer["state"] in ("reserved_group", "accepted_group"):
                     if item.get("assessment_key") != transfer["assessment_key"]:
                         raise ValueError("group reservation must match the primary event key")
-                    if item.get("observed_at") != transfer["snapshot_date"]:
+                    if raw_combined is not None:
+                        matches = [row for row in raw_combined if isinstance(row, dict)
+                                   and row.get("assessment_key") == transfer["assessment_key"]]
+                        if len(matches) != 1:
+                            raise ValueError("one original combined source event required")
+                        source_event = matches[0]
+                    else:
+                        source_event = item
+                    if (item.get("observed_at") != transfer["snapshot_date"] or
+                            source_event.get("observed_at") != transfer["snapshot_date"]):
                         raise ValueError("group reservation snapshot date differs")
-                    observations = item.get("source_observations")
+                    observations = source_event.get("source_observations")
                     if not isinstance(observations, list):
                         raise ValueError("group reservation requires original source observations")
                     finding_ids = [
@@ -65,11 +80,18 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER):
                     if (len(finding_ids) != len(observations)
                             or sorted(finding_ids) != transfer["finding_ids"]):
                         raise ValueError("group reservation finding membership differs")
-                    if sha(canonical(item)) != transfer["group_sha256"]:
+                    if (item.get("source_observations") != observations or
+                            item.get("body") != source_event.get("body")):
+                        raise ValueError("journal-enriched group differs from original source evidence")
+                    if sha(canonical(source_event)) != transfer["group_sha256"]:
                         raise ValueError("group reservation source event digest differs")
                 held.append({
                     "event": item,
                     "event_sha256": sha(canonical(item)),
+                    "source_event_sha256": (
+                        sha(canonical(source_event))
+                        if transfer["state"] in ("reserved_group", "accepted_group")
+                        else sha(canonical(item))),
                     "transfer": transfer,
                     "delivery_acknowledged": False,
                     "publication_suppression_authorized": False,
@@ -113,9 +135,12 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--batches", nargs="+", required=True, type=Path)
     ap.add_argument("--out-dir", type=Path, required=True)
+    ap.add_argument("--source-combined", type=Path,
+                    help="pinned pre-journal combined source event batch")
     args = ap.parse_args()
     try:
-        result = stage(args.batches, args.out_dir)
+        result = stage(args.batches, args.out_dir,
+                       source_combined=args.source_combined)
     except (OSError, ValueError, UnicodeError) as exc:
         ap.exit(1, f"Registry transfer stage refused: {exc}\n")
     print(f"STAGED {result['retained_count']} retained, {result['held_count']} held; "

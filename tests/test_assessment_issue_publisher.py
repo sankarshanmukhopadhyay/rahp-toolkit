@@ -140,13 +140,23 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
     def test_workflow_preflights_all_dtg_batches_before_first_issue_write(self) -> None:
         path = ROOT / ".github/workflows/dtg-portfolio-materiality-handoff.yml"
         text = path.read_text(encoding="utf-8")
+        selector = text.index("name: Qualify Registry observation and select exact publication inputs")
         preflight = text.index("name: Preflight all DTG publication batches against Registry transfer ledger")
         first_write = text.index("name: Publish or coalesce portfolio controller")
+        self.assertLess(selector, preflight)
         self.assertLess(preflight, first_write)
-        block = text[preflight:first_write]
+        selector_block = text[selector:preflight]
+        preflight_block = text[preflight:first_write]
+        # All three original batches are source-qualified by the selection
+        # step; preflight and effectful publishers consume precisely its
+        # selected paths, not an unguarded original batch.
         for file in ("controller-events.json", "combined-events.json", "dpip-events.json"):
-            self.assertIn(file, block)
-        self.assertIn("--check-transfers", block)
+            self.assertIn(file, selector_block)
+        for name in ("controller", "combined", "dpip"):
+            self.assertIn("steps.registry-selection.outputs." + name, preflight_block)
+            self.assertIn("--events " + "${{ steps.registry-selection.outputs." +
+                          name + " }}", text[first_write:])
+        self.assertIn("--check-transfers", preflight_block)
 
     def test_api_errors_never_expose_response_body(self) -> None:
         secret_body = b'{"message":"private request detail"}'
