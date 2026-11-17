@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 from publish_assessment_issues import TRANSFER_LEDGER, load_transfer_keys
@@ -58,6 +59,7 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER, *,
                 retained.append(item)
             else:
                 transfer = by_key[next(iter(names))]
+                source_matches_transfer = True
                 if transfer["state"] in ("reserved_group", "accepted_group"):
                     if item.get("assessment_key") != transfer["assessment_key"]:
                         raise ValueError("group reservation must match the primary event key")
@@ -69,21 +71,32 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER, *,
                         source_event = matches[0]
                     else:
                         source_event = item
-                    if (item.get("observed_at") != transfer["snapshot_date"] or
-                            source_event.get("observed_at") != transfer["snapshot_date"]):
-                        raise ValueError("group reservation snapshot date differs")
                     observations = source_event.get("source_observations")
-                    if not isinstance(observations, list):
+                    if not isinstance(observations, list) or not observations:
                         raise ValueError("group reservation requires original source observations")
                     finding_ids = [
                         obs.get("finding_id") for obs in observations if isinstance(obs, dict)]
                     if (len(finding_ids) != len(observations)
-                            or sorted(finding_ids) != transfer["finding_ids"]):
-                        raise ValueError("group reservation finding membership differs")
+                            or any(not isinstance(fid, str) or
+                                   not re.fullmatch(r"[0-9a-f]{20}", fid)
+                                   for fid in finding_ids)
+                            or len(finding_ids) != len(set(finding_ids))):
+                        raise ValueError("invalid original group finding membership")
                     if (item.get("source_observations") != observations or
-                            item.get("body") != source_event.get("body")):
+                            item.get("body") != source_event.get("body") or
+                            item.get("observed_at") != source_event.get("observed_at")):
                         raise ValueError("journal-enriched group differs from original source evidence")
-                    if sha(canonical(source_event)) != transfer["group_sha256"]:
+                    source_matches_transfer = (
+                        source_event.get("observed_at") == transfer["snapshot_date"]
+                        and sorted(finding_ids) == transfer["finding_ids"]
+                        and sha(canonical(source_event)) == transfer["group_sha256"])
+                    if not source_matches_transfer and raw_combined is None:
+                        # Never treat the journal-enriched event as an independent
+                        # original when the exact approved source has changed.
+                        if source_event.get("observed_at") != transfer["snapshot_date"]:
+                            raise ValueError("group reservation snapshot date differs")
+                        if sorted(finding_ids) != transfer["finding_ids"]:
+                            raise ValueError("group reservation finding membership differs")
                         raise ValueError("group reservation source event digest differs")
                 held.append({
                     "event": item,
@@ -95,7 +108,9 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER, *,
                     "transfer": transfer,
                     "delivery_acknowledged": False,
                     "publication_suppression_authorized": False,
-                    "reason": ("reserved_without_successor" if transfer["state"] in
+                    "reason": ("unqualified_current_group_observation"
+                               if not source_matches_transfer else
+                               "reserved_without_successor" if transfer["state"] in
                                ("reserved", "reserved_group") else
                                "accepted_owner_lacks_current_event_receipt"),
                 })
