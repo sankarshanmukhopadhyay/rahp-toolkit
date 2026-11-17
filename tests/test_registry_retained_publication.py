@@ -134,23 +134,41 @@ class RetainedSelectionTests(unittest.TestCase):
         self.assertLess(selected, publisher)
         self.assertIn("--source-combined build/dtg-routing/source-combined-events.json", wf)
 
-    def test_reserved_or_legacy_accepted_never_selects_retained(self):
-        records = [
-            {"assessment_key": self.key, "state": "reserved_group",
-             "toolkit_issue_url": self.record["toolkit_issue_url"],
-             "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
-             "monitor_revision": self.record["monitor_revision"],
-             "snapshot_date": self.record["snapshot_date"],
-             "finding_ids": self.observations,
-             "group_sha256": self.record["group_sha256"]}]
-        for items in (records, [{
-                "assessment_key": self.key, "state": "accepted",
-                "toolkit_issue_url": self.record["toolkit_issue_url"],
-                "registry_issue_url": self.record["registry_issue_url"]}]):
-            with self.subTest(state=items[0]["state"]):
-                self.write_ledger(items)
-                with self.assertRaisesRegex(guard.PartitionError, "blocks"):
-                    self.plan()
+    def test_reserved_group_publishes_only_unrelated_retained_events(self):
+        records = [{
+            "assessment_key": self.key, "state": "reserved_group",
+            "toolkit_issue_url": self.record["toolkit_issue_url"],
+            "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
+            "monitor_revision": self.record["monitor_revision"],
+            "snapshot_date": self.record["snapshot_date"],
+            "finding_ids": self.observations,
+            "group_sha256": self.record["group_sha256"]}]
+        self.write_ledger(records)
+        selection = self.plan()
+        self.assertEqual(selection["mode"], "reserved_group_retained")
+        self.assertFalse(selection["registry_observation_acknowledged"])
+        self.assertFalse(selection["cutover_authorized"])
+        self.assertEqual((selection["held_count"], selection["retained_count"]), (1, 2))
+        for index, expected in enumerate(([self.controller], [], [self.dpip])):
+            self.assertEqual(json.loads(Path(selection["paths"][index]).read_text()), expected)
+        with self.assertRaises(ValueError):
+            publisher.preflight_transfer_files(self.paths, self.ledger)
+        self.context["GITHUB_SHA"] = "c"*40
+        with self.assertRaisesRegex(guard.PartitionError, "branch moved"):
+            self.plan()
+        self.context["GITHUB_SHA"] = "b"*40
+        self.group["body"] = "unaccepted source mutation"
+        self.paths[1].write_text(json.dumps([self.group]))
+        with self.assertRaisesRegex(ValueError, "digest"):
+            self.plan()
+
+    def test_legacy_accepted_without_group_contract_is_not_selected(self):
+        self.write_ledger([{
+            "assessment_key": self.key, "state": "accepted",
+            "toolkit_issue_url": self.record["toolkit_issue_url"],
+            "registry_issue_url": self.record["registry_issue_url"]}])
+        with self.assertRaisesRegex(guard.PartitionError, "blocks"):
+            self.plan()
 
     def test_missing_or_spoofed_current_ack_refuses_publication(self):
         self.ack["body"] = "no current observation"
