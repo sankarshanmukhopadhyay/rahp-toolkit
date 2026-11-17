@@ -77,9 +77,13 @@ class RegistrySourcePartitionTests(unittest.TestCase):
             def write(item):
                 ledger.write_text(json.dumps({"schema": "rahp-registry-transfers/v1",
                                               "transfers": [item]}))
-            write(record)
             event = root / "combined.json"
-            event.write_text(json.dumps([{"assessment_key": key, "body": "full group"}]))
+            source_group = {"assessment_key": key, "observed_at": record["snapshot_date"],
+                            "source_observations": [{"finding_id": fid}
+                                for fid in record["finding_ids"]], "body": "full group"}
+            record["group_sha256"] = partition.sha(partition.canonical(source_group))
+            write(record)
+            event.write_text(json.dumps([source_group]))
             self.assertEqual(publisher.load_transfer_keys(ledger), {key})
             receipt = partition.stage([event], root / "stage", ledger)
             self.assertEqual((receipt["held_count"], receipt["retained_count"]), (1, 0))
@@ -99,6 +103,20 @@ class RegistrySourcePartitionTests(unittest.TestCase):
                     write({**record, **mutation})
                     with self.assertRaises(ValueError):
                         publisher.load_transfer_keys(ledger)
+            write(record)
+            for mutated, expected in (
+                ({**source_group, "observed_at": "2026-11-15"}, "snapshot date"),
+                ({**source_group, "source_observations": source_group[
+                    "source_observations"][:-1]}, "finding membership"),
+                ({**source_group, "body": "altered observation"}, "digest"),
+                ({**source_group, "related_assessment_key": key,
+                  "assessment_key": "other:combined:scope"}, "primary event key")):
+                with self.subTest(expected=expected):
+                    event.write_text(json.dumps([mutated]))
+                    with self.assertRaisesRegex(ValueError, expected):
+                        partition.stage([event], root / "failed", ledger)
+                    self.assertFalse((root / "failed").exists())
+            event.write_text(json.dumps([source_group]))
             write({**record, "state": "accepted"})
             with self.assertRaises(ValueError):
                 publisher.load_transfer_keys(ledger)
