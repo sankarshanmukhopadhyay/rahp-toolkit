@@ -110,14 +110,16 @@ def verify_registry_ack(get, transfer, event_sha):
         raise PartitionError("Registry source authority changed during acknowledgment")
     return issue_url
 
-def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None):
+def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
+         source_combined=None):
     if not isinstance(paths, list) or len(paths) != 3:
         raise PartitionError("exactly three Toolkit event batches required")
     if [p.name for p in paths] != [
             "controller-events.json", "combined-events.json", "dpip-events.json"]:
         raise PartitionError("unknown or reordered canonical publication batches")
     records = json.loads(ledger.read_text(encoding="utf-8"))["transfers"]
-    receipt = partition.stage(paths, stage_dir, ledger)
+    receipt = partition.stage(paths, stage_dir, ledger,
+                              source_combined=source_combined)
     if not records:
         if receipt["held_count"] != 0:
             raise PartitionError("empty ledger unexpectedly held source events")
@@ -138,7 +140,7 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None):
         held.extend(json.loads((stage_dir / (path.name + ".held.json")).read_text()))
         selected.append(stage_dir / (path.name + ".retained.json"))
     if (len(held) != 1 or held[0]["transfer"] != transfer
-            or held[0]["event_sha256"] != transfer["group_sha256"]):
+            or held[0]["source_event_sha256"] != transfer["group_sha256"]):
         raise PartitionError("staged group differs from approved source event")
     context = context or os.environ
     if (context.get("GITHUB_ACTIONS") != "true" or
@@ -151,7 +153,7 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None):
     get = get or (lambda url: publisher.request("GET", url, token))
     if branch(get, TK) != context["GITHUB_SHA"]:
         raise PartitionError("Toolkit branch moved after the event runner started")
-    registry_owner = verify_registry_ack(get, transfer, held[0]["event_sha256"])
+    registry_owner = verify_registry_ack(get, transfer, held[0]["source_event_sha256"])
     if branch(get, TK) != context["GITHUB_SHA"]:
         raise PartitionError("Toolkit main changed during acceptance check")
     for path in selected:
@@ -169,13 +171,16 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--batches", nargs=3, required=True, type=Path)
     p.add_argument("--stage-dir", required=True, type=Path)
+    p.add_argument("--source-combined", type=Path,
+                   help="original pre-journal combined group source")
     p.add_argument("--ledger", default=publisher.TRANSFER_LEDGER, type=Path)
     p.add_argument("--receipt", required=True, type=Path)
     p.add_argument("--github-output", type=Path)
     args = p.parse_args()
     try:
         result = plan(args.batches, args.stage_dir, args.ledger,
-                      token=os.getenv("GITHUB_TOKEN"))
+                      token=os.getenv("GITHUB_TOKEN"),
+                      source_combined=args.source_combined)
     except (OSError, ValueError, KeyError, TypeError, publisher.GitHubAPIError) as exc:
         print("BLOCKED Toolkit guarded retained publication:", exc, file=sys.stderr)
         return 1
