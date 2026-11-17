@@ -17,6 +17,7 @@ Operational contract:
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import os
 import re
@@ -43,7 +44,10 @@ TOOLKIT_ISSUE_PREFIX = "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/i
 
 def load_transfer_keys(path: Path) -> set[str]:
     """Fail closed on malformed transfer declarations; empty means no cutover."""
-    data = json.loads(path.read_text(encoding="utf-8"))
+    return load_transfer_keys_data(json.loads(path.read_text(encoding="utf-8")))
+
+
+def load_transfer_keys_data(data: Any) -> set[str]:
     if not isinstance(data, dict) or set(data) != {"schema", "transfers"} or data["schema"] != "rahp-registry-transfers/v1":
         raise ValueError("invalid registry transfer ledger schema")
     if not isinstance(data["transfers"], list):
@@ -147,6 +151,35 @@ def preflight_transfer_files(paths: list[Path], ledger: Path = TRANSFER_LEDGER) 
         enforce_registry_transfer_boundary(events, keys)
         count += len(events)
     return count
+
+
+def enforce_live_transfer_boundary(event: dict[str, Any], token: str) -> None:
+    """Reject stale-run mutations using the current Toolkit main ledger.
+
+    This is an additional mutation-boundary guard, not an atomic GitHub
+    conditional write. A live ownership transfer still requires draining
+    in-flight writers and coordinating publisher activation.
+    """
+    api = "https://api.github.com/repos/" + CANONICAL_RAHP_ISSUE_REPOSITORY
+
+    def head() -> str:
+        result = request("GET", api + "/branches/main", token)
+        sha = ((result or {}).get("commit") or {}).get("sha")
+        if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+            raise ValueError("live Toolkit main authority unavailable")
+        return sha
+
+    current = head()
+    record = request("GET", api + "/contents/instances/dtg/registry-transfers.json?ref=" + current, token)
+    if not isinstance(record, dict) or record.get("encoding") != "base64":
+        raise ValueError("live Toolkit transfer ledger unavailable")
+    try:
+        data = json.loads(base64.b64decode(record["content"]).decode("utf-8"))
+    except (KeyError, ValueError, UnicodeError, TypeError) as exc:
+        raise ValueError("invalid live Toolkit transfer ledger") from exc
+    enforce_registry_transfer_boundary([event], load_transfer_keys_data(data))
+    if head() != current:
+        raise ValueError("Toolkit main changed during live publication fence")
 
 
 def enforce_publication_repository(repository: str) -> str:
@@ -496,11 +529,13 @@ def main() -> int:
     published: list[dict[str, Any]] = []
 
     for event in events:
+        enforce_live_transfer_boundary(event, token)
         key = event.get("assessment_key")
         related = event.get("related_assessment_key")
         target, owner_state = resolve_owner(owner_index, key, related)
         if target and owner_state:
             reopen = owner_state == "closed" and should_reopen_closed_owner(event)
+            enforce_live_transfer_boundary(event, token)
             changed = coalesce_issue(
                 args.repository,
                 target,
@@ -538,11 +573,13 @@ def main() -> int:
             continue
         labels = event.get("labels") or ["assessment-required"]
         for label in labels:
+            enforce_live_transfer_boundary(event, token)
             ensure_label(args.repository, label, token)
         body = event["body"]
         if key and f"rahp-assessment-key:{key}" not in body:
             body = f"<!-- rahp-assessment-key:{key} -->\n\n" + body
         assignees = event.get("assignees") or CANONICAL_RAHP_ASSIGNEES
+        enforce_live_transfer_boundary(event, token)
         issue = request(
             "POST",
             f"https://api.github.com/repos/{args.repository}/issues",
