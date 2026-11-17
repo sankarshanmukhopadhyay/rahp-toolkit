@@ -127,7 +127,7 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
                 "mode": "legacy_no_transfer", "paths": [str(p) for p in paths],
                 "retained_count": receipt["retained_count"], "held_count": 0,
                 "registry_observation_acknowledged": False, "cutover_authorized": False}
-    if len(records) != 1 or records[0]["state"] != "accepted_group":
+    if len(records) != 1 or records[0]["state"] not in ("reserved_group", "accepted_group"):
         raise PartitionError("unaccepted/legacy mixed transfer blocks source-specific publication")
     transfer = records[0]
     if transfer["assessment_key"] != KEY:
@@ -153,6 +153,17 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
     get = get or (lambda url: publisher.request("GET", url, token))
     if branch(get, TK) != context["GITHUB_SHA"]:
         raise PartitionError("Toolkit branch moved after the event runner started")
+    if transfer["state"] == "reserved_group":
+        # Hold only the approved group. Registry has not yet acknowledged an owner.
+        for path in selected:
+            publisher.preflight_transfer_files([path], ledger)
+        return {"schema": "rahp-toolkit-guarded-publication-selection/v1",
+                "mode": "reserved_group_retained",
+                "paths": [str(p) for p in selected],
+                "retained_count": receipt["retained_count"],
+                "held_count": receipt["held_count"],
+                "registry_observation_acknowledged": False,
+                "cutover_authorized": False}
     registry_owner = verify_registry_ack(get, transfer, held[0]["source_event_sha256"])
     if branch(get, TK) != context["GITHUB_SHA"]:
         raise PartitionError("Toolkit main changed during acceptance check")
