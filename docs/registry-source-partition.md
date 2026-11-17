@@ -28,3 +28,7 @@ not cutover authority. No live transfer or Toolkit suppression is enabled.
 To use it operationally, require a source-specific durable Registry receipt,
 a compatible execution/return adapter and fleet-wide in-flight writer fencing
 before a retained partition may be published independently.
+
+## Multi-finding reservation (unactivated)
+
+A monitored grouped proposition is not one source finding. The validated `reserved_group` ledger entry records the existing Toolkit issue, a Registry pending-intent path, an immutable Monitor commit, a snapshot date, sorted unique original 20-hex finding IDs and the SHA-256 of the exact combined event. It is held by the same fail-closed publication preflight as a single-finding reservation and is never accepted or acknowledged by staging. The existing `reserved` and `accepted` entries retain their semantics. No live ledger entry or publisher destination changes in this increment. Group acceptance and source-specific publishing remain gated by a real Registry group acknowledgment, issue-number consumer compatibility and all-writer exclusion.

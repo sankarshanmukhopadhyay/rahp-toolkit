@@ -58,8 +58,9 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER):
                     "transfer": transfer,
                     "delivery_acknowledged": False,
                     "publication_suppression_authorized": False,
-                    "reason": ("reserved_without_successor" if transfer["state"] == "reserved"
-                               else "accepted_owner_lacks_current_event_receipt"),
+                    "reason": ("reserved_without_successor" if transfer["state"] in
+                               ("reserved", "reserved_group") else
+                               "accepted_owner_lacks_current_event_receipt"),
                 })
         if len(source) != len(held) + len(retained):
             raise ValueError("source event conservation violated")
