@@ -109,12 +109,15 @@ jobs:
       - name: Validate materiality journal gate
         run: python3 tools/materiality_journal_gate.py --self-test
 
+      - name: Preserve original canonical combined source before journal enrichment
+        run: cp build/dtg-routing/combined-events.json build/dtg-routing/source-combined-events.json
+
       - name: Journal combined-review materiality and gate reassessment
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/materiality_journal_gate.py
-          --events ${{ steps.registry-selection.outputs.combined }}
+          --events build/dtg-routing/combined-events.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
       - name: Journal DPIP materiality and gate reassessment
@@ -122,7 +125,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/materiality_journal_gate.py
-          --events ${{ steps.registry-selection.outputs.dpip }}
+          --events build/dtg-routing/dpip-events.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
       - name: Build portfolio controller event
@@ -228,6 +231,7 @@ jobs:
           build/dtg-routing/controller-events.json
           build/dtg-routing/combined-events.json
           build/dtg-routing/dpip-events.json
+          --source-combined build/dtg-routing/source-combined-events.json
           --out-dir build/dtg-routing/registry-partition
 
       - name: Qualify Registry observation and select exact publication inputs
@@ -241,6 +245,7 @@ jobs:
           build/dtg-routing/combined-events.json
           build/dtg-routing/dpip-events.json
           --stage-dir build/dtg-routing/registry-partition
+          --source-combined build/dtg-routing/source-combined-events.json
           --receipt build/dtg-routing/registry-publish-selection.json
           --github-output "$GITHUB_OUTPUT"
 
@@ -337,6 +342,7 @@ jobs:
             build/dtg-routing/controller-events.json
             build/dtg-routing/controller-result.json
             build/dtg-routing/combined-events.json
+            build/dtg-routing/source-combined-events.json
             build/dtg-routing/combined-result.json
             build/dtg-routing/dpip-events.json
             build/dtg-routing/dpip-result.json
