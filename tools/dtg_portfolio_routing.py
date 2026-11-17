@@ -122,6 +122,52 @@ def lineage_marker(lineage: str | None) -> str:
     return f"<!-- rahp-clean-room-lineage:{clean} -->\n" if clean else ""
 
 
+def combined_source_evidence(items: list[dict[str, Any]]) -> dict[str, Any]:
+    """Preserve per-finding source pins without treating a release tag as a commit.
+
+    A grouped assessment key and narrative table cannot authorize transfer of
+    its constituent findings. Report unpinned findings explicitly rather than
+    inferring a commit SHA from arbitrary URLs or normalized source metadata.
+    """
+    observations = []
+    pins = set()
+    seen_ids = set()
+    commit_url = re.compile(
+        r"https://github[.]com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/commit/([0-9a-f]{40})"
+    )
+    for item in items:
+        finding = item["finding"]
+        fid, repository = finding.get("finding_id"), finding.get("repository")
+        if (not isinstance(fid, str) or not fid or fid in seen_ids
+                or not isinstance(repository, str) or not repository):
+            raise ValueError("invalid or duplicate finding in combined source group")
+        seen_ids.add(fid)
+        evidence = finding.get("evidence_urls") or []
+        if not isinstance(evidence, list):
+            raise ValueError("source evidence URLs must be an array")
+        revisions = set()
+        for url in evidence:
+            if not isinstance(url, str):
+                raise ValueError("source evidence URL must be a string")
+            match = commit_url.fullmatch(url)
+            if match and match.group(1) == repository:
+                revisions.add(match.group(2))
+                pins.add((repository, match.group(2)))
+        observations.append({
+            "finding_id": fid,
+            "repository": repository,
+            "revisions": sorted(revisions),
+            "source_pin_status": "commit-evidence" if revisions else "unresolved",
+        })
+    observations.sort(key=lambda x: x["finding_id"])
+    return {
+        "source_observations": observations,
+        "source_pins": [{"repository": repo, "revision": rev} for repo, rev in sorted(pins)],
+        "unanchored_finding_ids": [item["finding_id"] for item in observations
+                                   if item["source_pin_status"] == "unresolved"],
+    }
+
+
 def combined_event(rule_id: str, items: list[dict[str, Any]], day: str, lineage: str | None = None) -> dict[str, Any]:
     digest = cluster_digest(items)
     body = (
@@ -146,6 +192,7 @@ def combined_event(rule_id: str, items: list[dict[str, Any]], day: str, lineage:
         "title": f"[DTG portfolio] Bounded combined RAHP + security review — {rule_id}",
         "labels": ["assessment-required", "dtg-instance"],
         "affected_reviews": ["rahp", "security", "combined"],
+        **combined_source_evidence(items),
         "body": body,
     }
 
