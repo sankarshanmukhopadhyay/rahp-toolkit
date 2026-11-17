@@ -50,17 +50,33 @@ def load_transfer_keys(path: Path) -> set[str]:
         raise ValueError("registry transfers must be an array")
     keys: set[str] = set()
     for item in data["transfers"]:
-        if not isinstance(item, dict) or set(item) != {"assessment_key", "toolkit_issue_url", "registry_issue_url", "state"}:
+        if not isinstance(item, dict) or item.get("state") not in ("reserved", "accepted"):
+            raise ValueError("invalid registry transfer state")
+        required = ({"assessment_key", "toolkit_issue_url", "registry_issue_url", "state"}
+                    if item["state"] == "accepted" else
+                    {"assessment_key", "toolkit_issue_url", "registry_intent_path",
+                     "source_revision", "finding_id", "state"})
+        if set(item) != required:
             raise ValueError("invalid registry transfer entry")
         key = item["assessment_key"]
         if not isinstance(key, str) or not re.fullmatch(r"[a-z0-9][a-z0-9:._/-]{7,180}", key) or key in keys:
             raise ValueError("invalid or duplicate registry transfer assessment key")
-        if item["state"] != "accepted":
-            raise ValueError("unaccepted registry transfer is not a publication exclusion")
-        for field, prefix in (("toolkit_issue_url", TOOLKIT_ISSUE_PREFIX), ("registry_issue_url", REGISTRY_ISSUE_PREFIX)):
-            url = item[field]
-            if not isinstance(url, str) or not re.fullmatch(re.escape(prefix) + r"[1-9][0-9]*", url):
-                raise ValueError("invalid registry transfer issue URL")
+        source = item["toolkit_issue_url"]
+        if not isinstance(source, str) or not re.fullmatch(re.escape(TOOLKIT_ISSUE_PREFIX) + r"[1-9][0-9]*", source):
+            raise ValueError("invalid registry transfer Toolkit issue URL")
+        if item["state"] == "accepted":
+            url = item["registry_issue_url"]
+            if not isinstance(url, str) or not re.fullmatch(re.escape(REGISTRY_ISSUE_PREFIX) + r"[1-9][0-9]*", url):
+                raise ValueError("invalid Registry successor issue URL")
+        else:
+            if not isinstance(item["registry_intent_path"], str) or not re.fullmatch(
+                r"outbox/pending/[a-z0-9][a-z0-9-]*\\.json", item["registry_intent_path"]
+            ):
+                raise ValueError("invalid reserved Registry intake path")
+            if not isinstance(item["source_revision"], str) or not re.fullmatch(r"[0-9a-f]{40}", item["source_revision"]):
+                raise ValueError("reserved transfer requires immutable source revision")
+            if not isinstance(item["finding_id"], str) or not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9:._/-]{5,180}", item["finding_id"]):
+                raise ValueError("invalid reserved finding ID")
         keys.add(key)
     return keys
 

@@ -36,6 +36,35 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
         self.assertEqual(keys, set())
         publisher.enforce_registry_transfer_boundary([{"assessment_key": self.key}], keys)
 
+    def test_reserved_transfer_blocks_toolkit_before_successor_exists(self) -> None:
+        import json
+        import tempfile
+        key = "dtg:portfolio:combined:reserved-example"
+        reservation = {
+            "assessment_key": key,
+            "toolkit_issue_url": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1194",
+            "registry_intent_path": "outbox/pending/transfer-example.json",
+            "source_revision": "a" * 40,
+            "finding_id": "finding-12345",
+            "state": "reserved",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "transfers.json"
+            path.write_text(json.dumps({"schema": "rahp-registry-transfers/v1", "transfers": [reservation]}))
+            self.assertEqual(publisher.load_transfer_keys(path), {key})
+            with self.assertRaisesRegex(ValueError, "Registry-owned"):
+                publisher.enforce_registry_transfer_boundary([{"assessment_key": key}], {key})
+            invalid = (
+                {**reservation, "registry_intent_path": "../unexpected.json"},
+                {**reservation, "source_revision": "main"},
+                {**reservation, "finding_id": ""},
+                {**reservation, "registry_issue_url": "https://github.com/example/issues/1"},
+            )
+            for changed in invalid:
+                with self.subTest(changed=changed), self.assertRaises(ValueError):
+                    path.write_text(json.dumps({"schema": "rahp-registry-transfers/v1", "transfers": [changed]}))
+                    publisher.load_transfer_keys(path)
+
     def test_registry_transfer_rejects_exact_and_related_key_before_writes(self) -> None:
         for event in ({"assessment_key": self.key},
                       {"assessment_key": "dtg:other-case", "related_assessment_key": self.key}):
