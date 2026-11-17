@@ -139,10 +139,9 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
     for path in paths:
         held.extend(json.loads((stage_dir / (path.name + ".held.json")).read_text()))
         selected.append(stage_dir / (path.name + ".retained.json"))
-    if (len(held) != receipt["held_count"] or
-            (held and (held[0]["transfer"] != transfer or
-                       held[0]["source_event_sha256"] != transfer["group_sha256"]))):
-        raise PartitionError("staged group differs from approved source event")
+    if len(held) != receipt["held_count"] or any(
+            record["transfer"] != transfer for record in held):
+        raise PartitionError("staged group differs from approved transfer entry")
     context = context or os.environ
     if (context.get("GITHUB_ACTIONS") != "true" or
             context.get("GITHUB_REPOSITORY") != TK or
@@ -163,6 +162,19 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
                 "mode": "no_current_transfer_event_retained",
                 "paths": [str(p) for p in selected],
                 "retained_count": receipt["retained_count"], "held_count": 0,
+                "registry_observation_acknowledged": False,
+                "cutover_authorized": False}
+    if held and held[0]["source_event_sha256"] != transfer["group_sha256"]:
+        if held[0].get("reason") != "unqualified_current_group_observation":
+            raise PartitionError("changed group lacks preserved source evidence")
+        # Changed source never inherits the earlier Registry observation receipt.
+        for path in selected:
+            publisher.preflight_transfer_files([path], ledger)
+        return {"schema": "rahp-toolkit-guarded-publication-selection/v1",
+                "mode": "changed_group_unqualified_retained",
+                "paths": [str(p) for p in selected],
+                "retained_count": receipt["retained_count"],
+                "held_count": receipt["held_count"],
                 "registry_observation_acknowledged": False,
                 "cutover_authorized": False}
     if transfer["state"] == "reserved_group":
