@@ -52,6 +52,21 @@ def stage(batches: list[Path], out_dir: Path, ledger: Path = TRANSFER_LEDGER):
                 retained.append(item)
             else:
                 transfer = by_key[next(iter(names))]
+                if transfer["state"] == "reserved_group":
+                    if item.get("assessment_key") != transfer["assessment_key"]:
+                        raise ValueError("group reservation must match the primary event key")
+                    if item.get("observed_at") != transfer["snapshot_date"]:
+                        raise ValueError("group reservation snapshot date differs")
+                    observations = item.get("source_observations")
+                    if not isinstance(observations, list):
+                        raise ValueError("group reservation requires original source observations")
+                    finding_ids = [
+                        obs.get("finding_id") for obs in observations if isinstance(obs, dict)]
+                    if (len(finding_ids) != len(observations)
+                            or sorted(finding_ids) != transfer["finding_ids"]):
+                        raise ValueError("group reservation finding membership differs")
+                    if sha(canonical(item)) != transfer["group_sha256"]:
+                        raise ValueError("group reservation source event digest differs")
                 held.append({
                     "event": item,
                     "event_sha256": sha(canonical(item)),
