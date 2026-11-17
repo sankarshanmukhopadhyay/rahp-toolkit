@@ -203,6 +203,33 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                 publisher.enforce_live_transfer_boundary(
                     {"assessment_key": "dtg:portfolio:controller:other"}, "token")
 
+    def test_accepted_transfer_cannot_be_deleted_or_replaced(self) -> None:
+        key = "dtg:portfolio:combined:spec-dependency-alignment"
+        original = {"schema": "rahp-registry-transfers/v1", "transfers": [{
+            "state": "accepted_group", "assessment_key": key,
+            "toolkit_issue_url": publisher.TOOLKIT_ISSUE_PREFIX + "272",
+            "registry_issue_url": publisher.REGISTRY_ISSUE_PREFIX + "88",
+            "monitor_revision": "a"*40, "snapshot_date": "2026-11-16",
+            "finding_ids": ["a"*20], "group_sha256": "b"*64,
+            "maintainer_scope_sha256": "c"*64
+        }]}
+        publisher.enforce_accepted_transfer_monotonicity(original, original)
+        with self.assertRaisesRegex(ValueError, "cannot be removed"):
+            publisher.enforce_accepted_transfer_monotonicity(
+                original, {"schema": "rahp-registry-transfers/v1", "transfers": []})
+        with self.assertRaisesRegex(ValueError, "invalid registry transfer ledger schema"):
+            publisher.enforce_accepted_transfer_monotonicity(
+                original, {"**": "not a valid ledger"})
+        changed = {"schema": "rahp-registry-transfers/v1", "transfers": [
+            {**original["transfers"][0], "registry_issue_url":
+             publisher.REGISTRY_ISSUE_PREFIX + "89"}]}
+        with self.assertRaisesRegex(ValueError, "cannot be removed"):
+            publisher.enforce_accepted_transfer_monotonicity(original, changed)
+
+    def test_nonaccepted_ledger_retains_legacy_compatibility(self) -> None:
+        baseline = {"schema": "rahp-registry-transfers/v1", "transfers": []}
+        publisher.enforce_accepted_transfer_monotonicity(baseline, baseline)
+
     def test_api_errors_never_expose_response_body(self) -> None:
         secret_body = b'{"message":"private request detail"}'
         error = urllib.error.HTTPError(
