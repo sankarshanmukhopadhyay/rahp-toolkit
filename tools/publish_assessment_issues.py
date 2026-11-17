@@ -17,6 +17,7 @@ Operational contract:
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import os
 import re
@@ -43,7 +44,10 @@ TOOLKIT_ISSUE_PREFIX = "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/i
 
 def load_transfer_keys(path: Path) -> set[str]:
     """Fail closed on malformed transfer declarations; empty means no cutover."""
-    data = json.loads(path.read_text(encoding="utf-8"))
+    return load_transfer_keys_data(json.loads(path.read_text(encoding="utf-8")))
+
+
+def load_transfer_keys_data(data: Any) -> set[str]:
     if not isinstance(data, dict) or set(data) != {"schema", "transfers"} or data["schema"] != "rahp-registry-transfers/v1":
         raise ValueError("invalid registry transfer ledger schema")
     if not isinstance(data["transfers"], list):
@@ -147,6 +151,80 @@ def preflight_transfer_files(paths: list[Path], ledger: Path = TRANSFER_LEDGER) 
         enforce_registry_transfer_boundary(events, keys)
         count += len(events)
     return count
+
+
+def enforce_live_transfer_boundary(event: dict[str, Any], token: str) -> None:
+    """Reject stale-run mutations using the current Toolkit main ledger.
+
+    This is an additional mutation-boundary guard, not an atomic GitHub
+    conditional write. A live ownership transfer still requires draining
+    in-flight writers and coordinating publisher activation.
+    """
+    api = "https://api.github.com/repos/" + CANONICAL_RAHP_ISSUE_REPOSITORY
+
+    def head() -> str:
+        result = request("GET", api + "/branches/main", token)
+        sha = ((result or {}).get("commit") or {}).get("sha")
+        if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+            raise ValueError("live Toolkit main authority unavailable")
+        return sha
+
+    current = head()
+    record = request("GET", api + "/contents/instances/dtg/registry-transfers.json?ref=" + current, token)
+    if not isinstance(record, dict) or record.get("encoding") != "base64":
+        raise ValueError("live Toolkit transfer ledger unavailable")
+    try:
+        data = json.loads(base64.b64decode(record["content"]).decode("utf-8"))
+    except (KeyError, ValueError, UnicodeError, TypeError) as exc:
+        raise ValueError("invalid live Toolkit transfer ledger") from exc
+    enforce_registry_transfer_boundary([event], load_transfer_keys_data(data))
+    if head() != current:
+        raise ValueError("Toolkit main changed during live publication fence")
+
+
+def enforce_accepted_transfer_monotonicity(baseline: Any, candidate: Any) -> None:
+    """Prevent a reservation or accepted transfer silently reactivating Toolkit.
+
+    A reservation may only progress to its matching accepted state. This is a
+    repository PR guard, not a claim that Registry has acknowledged a successor.
+    Removing an entry requires a separately governed reverse-transfer protocol.
+    """
+    load_transfer_keys_data(baseline)
+    load_transfer_keys_data(candidate)
+    candidate_by_key = {row["assessment_key"]: row for row in candidate["transfers"]}
+    for previous in baseline["transfers"]:
+        successor = candidate_by_key.get(previous["assessment_key"])
+        state = previous["state"]
+        if successor == previous:
+            continue
+        if state == "reserved_group" and successor is not None:
+            retained = ("assessment_key", "toolkit_issue_url",
+                        "monitor_revision", "snapshot_date",
+                        "finding_ids", "group_sha256")
+            if (successor["state"] == "accepted_group"
+                    and all(successor[name] == previous[name] for name in retained)):
+                continue
+        if state == "reserved" and successor is not None:
+            if (successor["state"] == "accepted"
+                    and successor["toolkit_issue_url"] == previous["toolkit_issue_url"]):
+                continue
+        raise ValueError("Registry transfer reservation or accepted owner cannot "
+                         "be removed, replaced or regressed without governed return")
+
+
+def verify_transfer_rollback_base(token: str, candidate_path: Path = TRANSFER_LEDGER) -> None:
+    api = ("https://api.github.com/repos/" +
+           CANONICAL_RAHP_ISSUE_REPOSITORY +
+           "/contents/instances/dtg/registry-transfers.json?ref=main")
+    response = request("GET", api, token)
+    if not isinstance(response, dict) or response.get("encoding") != "base64":
+        raise ValueError("current Toolkit main transfer baseline unavailable")
+    try:
+        baseline = json.loads(base64.b64decode(response["content"]).decode("utf-8"))
+        candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
+    except (KeyError, ValueError, UnicodeError, TypeError) as exc:
+        raise ValueError("invalid Registry transfer baseline or candidate") from exc
+    enforce_accepted_transfer_monotonicity(baseline, candidate)
 
 
 def enforce_publication_repository(repository: str) -> str:
@@ -452,11 +530,25 @@ def main() -> int:
     )
     parser.add_argument("--result-json", type=Path, help="write created/coalesced issue references")
     parser.add_argument("--self-test", action="store_true", help="run publisher regression tests and exit")
+    parser.add_argument("--verify-transfer-rollback", action="store_true",
+                        help="refuse silent removal or mutation of an accepted main-branch transfer")
     parser.add_argument("--check-transfers", nargs="+", type=Path, metavar="EVENTS_JSON",
                         help="validate every publication batch against accepted transfers without GitHub writes")
     args = parser.parse_args()
     if args.self_test:
         self_test()
+        return 0
+    if args.verify_transfer_rollback:
+        if args.events is not None or args.check_transfers or args.result_json is not None:
+            raise SystemExit("--verify-transfer-rollback cannot be combined with publication")
+        token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
+        if not token:
+            raise SystemExit("Toolkit main transfer baseline token unavailable")
+        try:
+            verify_transfer_rollback_base(token)
+        except (OSError, ValueError, GitHubAPIError) as exc:
+            raise SystemExit(f"Toolkit accepted-transfer rollback check refused: {exc}") from exc
+        print("Accepted Registry transfer non-removal: verified against Toolkit main")
         return 0
     if args.check_transfers:
         if args.events is not None or args.result_json is not None:
@@ -496,11 +588,13 @@ def main() -> int:
     published: list[dict[str, Any]] = []
 
     for event in events:
+        enforce_live_transfer_boundary(event, token)
         key = event.get("assessment_key")
         related = event.get("related_assessment_key")
         target, owner_state = resolve_owner(owner_index, key, related)
         if target and owner_state:
             reopen = owner_state == "closed" and should_reopen_closed_owner(event)
+            enforce_live_transfer_boundary(event, token)
             changed = coalesce_issue(
                 args.repository,
                 target,
@@ -538,11 +632,13 @@ def main() -> int:
             continue
         labels = event.get("labels") or ["assessment-required"]
         for label in labels:
+            enforce_live_transfer_boundary(event, token)
             ensure_label(args.repository, label, token)
         body = event["body"]
         if key and f"rahp-assessment-key:{key}" not in body:
             body = f"<!-- rahp-assessment-key:{key} -->\n\n" + body
         assignees = event.get("assignees") or CANONICAL_RAHP_ASSIGNEES
+        enforce_live_transfer_boundary(event, token)
         issue = request(
             "POST",
             f"https://api.github.com/repos/{args.repository}/issues",

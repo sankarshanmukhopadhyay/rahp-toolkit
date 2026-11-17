@@ -134,7 +134,7 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
 
     def test_policy_validator_only_exempts_standalone_transfer_preflight(self) -> None:
         policy = (ROOT / "tools/validate_issue_publication_policy.py").read_text(encoding="utf-8")
-        self.assertIn('re.match(r"^--check-transfers(?:\\s|$)", fragment.lstrip())', policy)
+        self.assertIn('re.match(r"^--(?:check-transfers|verify-transfer-rollback)(?:\\s|$)", fragment.lstrip())', policy)
         self.assertIn('if f\'--repository "{CANONICAL}"\' not in fragment:', policy)
 
     def test_workflow_preflights_all_dtg_batches_before_first_issue_write(self) -> None:
@@ -157,6 +157,105 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
             self.assertIn("--events " + "${{ steps.registry-selection.outputs." +
                           name + " }}", text[first_write:])
         self.assertIn("--check-transfers", preflight_block)
+
+    def test_live_fence_rejects_stale_writer_after_reservation(self) -> None:
+        import base64
+        import json
+        key = "dtg:portfolio:combined:spec-dependency-alignment"
+        ledger = {"schema": "rahp-registry-transfers/v1", "transfers": [{
+            "state": "reserved_group", "assessment_key": key,
+            "toolkit_issue_url": publisher.TOOLKIT_ISSUE_PREFIX + "272",
+            "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
+            "monitor_revision": "a"*40, "snapshot_date": "2026-11-16",
+            "finding_ids": ["a"*20], "group_sha256": "b"*64
+        }]}
+        def fake(method, url, token, payload=None):
+            if url.endswith("/branches/main"):
+                return {"commit": {"sha": "a"*40}}
+            if "/contents/instances/dtg/registry-transfers.json?" in url:
+                return {"encoding": "base64", "content": base64.b64encode(
+                    json.dumps(ledger).encode()).decode()}
+            raise AssertionError("unexpected API " + url)
+        with patch.object(publisher, "request", side_effect=fake):
+            with self.assertRaisesRegex(ValueError, "Registry-owned"):
+                publisher.enforce_live_transfer_boundary({"assessment_key": key}, "token")
+            publisher.enforce_live_transfer_boundary(
+                {"assessment_key": "dtg:portfolio:controller:unrelated"}, "token")
+
+    def test_live_fence_rejects_main_head_drift(self) -> None:
+        import base64
+        import json
+        heads = iter(["a"*40, "b"*40])
+        def fake(method, url, token, payload=None):
+            if url.endswith("/branches/main"):
+                return {"commit": {"sha": next(heads)}}
+            return {"encoding": "base64", "content": base64.b64encode(
+                json.dumps({"schema": "rahp-registry-transfers/v1",
+                            "transfers": []}).encode()).decode()}
+        with patch.object(publisher, "request", side_effect=fake):
+            with self.assertRaisesRegex(ValueError, "main changed"):
+                publisher.enforce_live_transfer_boundary(
+                    {"assessment_key": "dtg:portfolio:controller:other"}, "token")
+
+    def test_live_fence_rejects_unavailable_authority(self) -> None:
+        with patch.object(publisher, "request", return_value={}):
+            with self.assertRaisesRegex(ValueError, "authority unavailable"):
+                publisher.enforce_live_transfer_boundary(
+                    {"assessment_key": "dtg:portfolio:controller:other"}, "token")
+
+    def test_accepted_transfer_cannot_be_deleted_or_replaced(self) -> None:
+        key = "dtg:portfolio:combined:spec-dependency-alignment"
+        original = {"schema": "rahp-registry-transfers/v1", "transfers": [{
+            "state": "accepted_group", "assessment_key": key,
+            "toolkit_issue_url": publisher.TOOLKIT_ISSUE_PREFIX + "272",
+            "registry_issue_url": publisher.REGISTRY_ISSUE_PREFIX + "88",
+            "monitor_revision": "a"*40, "snapshot_date": "2026-11-16",
+            "finding_ids": ["a"*20], "group_sha256": "b"*64,
+            "maintainer_scope_sha256": "c"*64
+        }]}
+        publisher.enforce_accepted_transfer_monotonicity(original, original)
+        with self.assertRaisesRegex(ValueError, "cannot be removed"):
+            publisher.enforce_accepted_transfer_monotonicity(
+                original, {"schema": "rahp-registry-transfers/v1", "transfers": []})
+        with self.assertRaisesRegex(ValueError, "invalid registry transfer ledger schema"):
+            publisher.enforce_accepted_transfer_monotonicity(
+                original, {"**": "not a valid ledger"})
+        changed = {"schema": "rahp-registry-transfers/v1", "transfers": [
+            {**original["transfers"][0], "registry_issue_url":
+             publisher.REGISTRY_ISSUE_PREFIX + "89"}]}
+        with self.assertRaisesRegex(ValueError, "cannot be removed"):
+            publisher.enforce_accepted_transfer_monotonicity(original, changed)
+
+    def test_reserved_group_cannot_be_removed_after_unobserved_registry_post(self) -> None:
+        reservation = {"assessment_key": "dtg:portfolio:combined:spec-dependency-alignment",
+                       "state": "reserved_group",
+                       "toolkit_issue_url": publisher.TOOLKIT_ISSUE_PREFIX + "272",
+                       "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
+                       "monitor_revision": "a"*40, "snapshot_date": "2026-11-16",
+                       "finding_ids": ["a"*20], "group_sha256": "b"*64}
+        baseline = {"schema": "rahp-registry-transfers/v1", "transfers": [reservation]}
+        empty = {"schema": "rahp-registry-transfers/v1", "transfers": []}
+        with self.assertRaisesRegex(ValueError, "cannot be removed"):
+            publisher.enforce_accepted_transfer_monotonicity(baseline, empty)
+        accepted = {name: value for name, value in reservation.items()
+                    if name != "registry_intent_path"}
+        accepted["state"] = "accepted_group"
+        accepted["registry_issue_url"] = publisher.REGISTRY_ISSUE_PREFIX + "88"
+        accepted["maintainer_scope_sha256"] = "c"*64
+        publisher.enforce_accepted_transfer_monotonicity(
+            baseline, {"schema": "rahp-registry-transfers/v1", "transfers": [accepted]})
+        for field, value in (("monitor_revision", "f"*40),
+                             ("group_sha256", "f"*64),
+                             ("toolkit_issue_url", publisher.TOOLKIT_ISSUE_PREFIX + "273")):
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(ValueError, "cannot be removed"):
+                    publisher.enforce_accepted_transfer_monotonicity(
+                        baseline, {"schema": "rahp-registry-transfers/v1",
+                                   "transfers": [{**accepted, field: value}]})
+
+    def test_nonaccepted_ledger_retains_legacy_compatibility(self) -> None:
+        baseline = {"schema": "rahp-registry-transfers/v1", "transfers": []}
+        publisher.enforce_accepted_transfer_monotonicity(baseline, baseline)
 
     def test_api_errors_never_expose_response_body(self) -> None:
         secret_body = b'{"message":"private request detail"}'

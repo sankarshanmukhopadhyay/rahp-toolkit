@@ -65,3 +65,69 @@ retained. The next phase replaces reservation with an `accepted` entry naming
 the actual Registry issue. Do not remove a reservation merely because a POST
 timed out. Existing history remains unchanged; empty ledger is the production
 default until an authorized case qualifies.
+
+## Source-scoped reservation and stale-run protection
+
+The guarded DTG selector now permits publication of **unrelated retained
+events** while an exact source-qualified `reserved_group` transfer is held.
+The held group remains in the source partition with both its original and
+journal-enriched event identities. This selection does **not** establish
+Registry ownership or current observation acknowledgment.
+
+The canonical Toolkit publisher also re-reads the live Toolkit main transfer
+ledger before each issue mutation and refuses an event whose exact or related
+assessment key has become transferred. It fails closed on unavailable or
+changing branch authority. This narrows stale-checkout exposure without
+providing an atomic condition on the eventual GitHub issue POST/PATCH.
+
+**Operator requirement before activating the reservation:** stop/drain all
+affected in-flight Toolkit issue writers, ensure no older unchecked publisher
+can resume, and maintain exclusive control of effectful delivery while the
+Registry owner and observation are established. The other Toolkit writer
+entry points and first-party consumer issue-number references must be checked
+before any live cutover. GitHub Actions concurrency is repository-scoped and
+the separate Registry concurrency group does not establish cross-repository
+mutual exclusion.
+
+Rollback of an accepted transfer cannot consist of deleting its ledger
+entry. The Registry writer must first be durably fenced and its accepted
+observations preserved, followed by an explicitly authorized reverse
+ownership transition and current-source requalification. No live rollback,
+owner creation or production transfer is implemented by this increment.
+
+## Accepted-transfer rollback non-removal
+
+The Toolkit PR validation now compares the candidate transfer ledger with the
+current `main` ledger. Once `accepted` or `accepted_group` is present on
+`main`, the candidate must preserve that exact record. Deletion, replacement
+of the Registry owner, or mutation of the accepted evidence fails validation.
+This is a **branch-protected PR safety check**, not a complete reverse-transfer
+protocol or a tamper-proof historical log. It depends on required CI and
+protected-main enforcement; bypasses or direct unvalidated pushes remain
+outside what this test can prevent.
+
+A future reverse transfer must introduce a separately specified Registry
+publication fence, durable authority epoch and authenticated return receipt.
+It must be reviewed as a semantic authorization change. The current ledger
+remains empty and this validation does not initiate rollback.
+
+## Changed source observations during an existing group reservation
+
+An exact transfer reservation is bound to a particular original source event.
+A later Portfolio Monitor snapshot can report a different event under the
+same assessment key. The source-specific partition now holds that new event
+under `unqualified_current_group_observation` while permitting unrelated
+events to publish, provided the **original pre-journal event** is retained
+and its identity, date, unique finding membership and unmodified body are
+validated. A changed source does not inherit the earlier Registry owner's
+observation acknowledgment or an assurance outcome. If original source
+evidence is unavailable, journal enrichment is inconsistent, or source
+membership is malformed, the input still fails closed.
+
+The PR rollback validator now also forbids silently removing a committed
+`reserved` or `reserved_group` entry. It permits a source-preserving
+`reserved_group` to `accepted_group` progression, but the runtime publication
+selector still requires authenticated Registry owner/observation evidence
+before holding the accepted group's publication authority. Deleting an
+interrupted reservation merely because a Registry POST timed out is prohibited.
+Explicit withdrawal and reverse-transfer semantics remain unimplemented.

@@ -127,21 +127,21 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
                 "mode": "legacy_no_transfer", "paths": [str(p) for p in paths],
                 "retained_count": receipt["retained_count"], "held_count": 0,
                 "registry_observation_acknowledged": False, "cutover_authorized": False}
-    if len(records) != 1 or records[0]["state"] != "accepted_group":
+    if len(records) != 1 or records[0]["state"] not in ("reserved_group", "accepted_group"):
         raise PartitionError("unaccepted/legacy mixed transfer blocks source-specific publication")
     transfer = records[0]
     if transfer["assessment_key"] != KEY:
         raise PartitionError("only reviewed pilot group has a source-specific route")
-    if receipt["held_count"] != 1:
-        raise PartitionError("accepted group must hold exactly one current observation")
+    if receipt["held_count"] not in (0, 1):
+        raise PartitionError("source group must hold at most one current observation")
     held = []
     selected = []
     for path in paths:
         held.extend(json.loads((stage_dir / (path.name + ".held.json")).read_text()))
         selected.append(stage_dir / (path.name + ".retained.json"))
-    if (len(held) != 1 or held[0]["transfer"] != transfer
-            or held[0]["source_event_sha256"] != transfer["group_sha256"]):
-        raise PartitionError("staged group differs from approved source event")
+    if len(held) != receipt["held_count"] or any(
+            record["transfer"] != transfer for record in held):
+        raise PartitionError("staged group differs from approved transfer entry")
     context = context or os.environ
     if (context.get("GITHUB_ACTIONS") != "true" or
             context.get("GITHUB_REPOSITORY") != TK or
@@ -153,6 +153,41 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
     get = get or (lambda url: publisher.request("GET", url, token))
     if branch(get, TK) != context["GITHUB_SHA"]:
         raise PartitionError("Toolkit branch moved after the event runner started")
+    if receipt["held_count"] == 0:
+        # A transferred proposition need not be present in every future
+        # monitored snapshot. No matched source event may be suppressed.
+        for path in selected:
+            publisher.preflight_transfer_files([path], ledger)
+        return {"schema": "rahp-toolkit-guarded-publication-selection/v1",
+                "mode": "no_current_transfer_event_retained",
+                "paths": [str(p) for p in selected],
+                "retained_count": receipt["retained_count"], "held_count": 0,
+                "registry_observation_acknowledged": False,
+                "cutover_authorized": False}
+    if held and held[0]["source_event_sha256"] != transfer["group_sha256"]:
+        if held[0].get("reason") != "unqualified_current_group_observation":
+            raise PartitionError("changed group lacks preserved source evidence")
+        # Changed source never inherits the earlier Registry observation receipt.
+        for path in selected:
+            publisher.preflight_transfer_files([path], ledger)
+        return {"schema": "rahp-toolkit-guarded-publication-selection/v1",
+                "mode": "changed_group_unqualified_retained",
+                "paths": [str(p) for p in selected],
+                "retained_count": receipt["retained_count"],
+                "held_count": receipt["held_count"],
+                "registry_observation_acknowledged": False,
+                "cutover_authorized": False}
+    if transfer["state"] == "reserved_group":
+        # Hold only the approved group. Registry has not yet acknowledged an owner.
+        for path in selected:
+            publisher.preflight_transfer_files([path], ledger)
+        return {"schema": "rahp-toolkit-guarded-publication-selection/v1",
+                "mode": "reserved_group_retained",
+                "paths": [str(p) for p in selected],
+                "retained_count": receipt["retained_count"],
+                "held_count": receipt["held_count"],
+                "registry_observation_acknowledged": False,
+                "cutover_authorized": False}
     registry_owner = verify_registry_ack(get, transfer, held[0]["source_event_sha256"])
     if branch(get, TK) != context["GITHUB_SHA"]:
         raise PartitionError("Toolkit main changed during acceptance check")
