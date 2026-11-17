@@ -182,6 +182,38 @@ def enforce_live_transfer_boundary(event: dict[str, Any], token: str) -> None:
         raise ValueError("Toolkit main changed during live publication fence")
 
 
+def enforce_accepted_transfer_monotonicity(baseline: Any, candidate: Any) -> None:
+    """An accepted Registry owner cannot be reactivated in Toolkit by deletion.
+
+    This PR-time safety rule is deliberately stricter than a reverse-transfer
+    protocol: replacement/removal requires a separately implemented, verified
+    Registry-fenced return transition, not a permissive ledger edit.
+    """
+    load_transfer_keys_data(baseline)
+    load_transfer_keys_data(candidate)
+    candidate_by_key = {row["assessment_key"]: row for row in candidate["transfers"]}
+    for previous in baseline["transfers"]:
+        if previous["state"] not in ("accepted", "accepted_group"):
+            continue
+        if candidate_by_key.get(previous["assessment_key"]) != previous:
+            raise ValueError("accepted Registry transfer cannot be removed or mutated without a governed reverse transfer")
+
+
+def verify_transfer_rollback_base(token: str, candidate_path: Path = TRANSFER_LEDGER) -> None:
+    api = ("https://api.github.com/repos/" +
+           CANONICAL_RAHP_ISSUE_REPOSITORY +
+           "/contents/instances/dtg/registry-transfers.json?ref=main")
+    response = request("GET", api, token)
+    if not isinstance(response, dict) or response.get("encoding") != "base64":
+        raise ValueError("current Toolkit main transfer baseline unavailable")
+    try:
+        baseline = json.loads(base64.b64decode(response["content"]).decode("utf-8"))
+        candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
+    except (KeyError, ValueError, UnicodeError, TypeError) as exc:
+        raise ValueError("invalid Registry transfer baseline or candidate") from exc
+    enforce_accepted_transfer_monotonicity(baseline, candidate)
+
+
 def enforce_publication_repository(repository: str) -> str:
     """Reject any attempt to publish RAHP work items outside the RAHP repository."""
     repo = (repository or "").strip()
@@ -485,11 +517,25 @@ def main() -> int:
     )
     parser.add_argument("--result-json", type=Path, help="write created/coalesced issue references")
     parser.add_argument("--self-test", action="store_true", help="run publisher regression tests and exit")
+    parser.add_argument("--verify-transfer-rollback", action="store_true",
+                        help="refuse silent removal or mutation of an accepted main-branch transfer")
     parser.add_argument("--check-transfers", nargs="+", type=Path, metavar="EVENTS_JSON",
                         help="validate every publication batch against accepted transfers without GitHub writes")
     args = parser.parse_args()
     if args.self_test:
         self_test()
+        return 0
+    if args.verify_transfer_rollback:
+        if args.events is not None or args.check_transfers or args.result_json is not None:
+            raise SystemExit("--verify-transfer-rollback cannot be combined with publication")
+        token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
+        if not token:
+            raise SystemExit("Toolkit main transfer baseline token unavailable")
+        try:
+            verify_transfer_rollback_base(token)
+        except (OSError, ValueError, GitHubAPIError) as exc:
+            raise SystemExit(f"Toolkit accepted-transfer rollback check refused: {exc}") from exc
+        print("Accepted Registry transfer non-removal: verified against Toolkit main")
         return 0
     if args.check_transfers:
         if args.events is not None or args.result_json is not None:
