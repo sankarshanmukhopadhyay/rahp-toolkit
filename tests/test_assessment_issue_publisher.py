@@ -226,6 +226,33 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "cannot be removed"):
             publisher.enforce_accepted_transfer_monotonicity(original, changed)
 
+    def test_reserved_group_cannot_be_removed_after_unobserved_registry_post(self) -> None:
+        reservation = {"assessment_key": "dtg:portfolio:combined:spec-dependency-alignment",
+                       "state": "reserved_group",
+                       "toolkit_issue_url": publisher.TOOLKIT_ISSUE_PREFIX + "272",
+                       "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
+                       "monitor_revision": "a"*40, "snapshot_date": "2026-11-16",
+                       "finding_ids": ["a"*20], "group_sha256": "b"*64}
+        baseline = {"schema": "rahp-registry-transfers/v1", "transfers": [reservation]}
+        empty = {"schema": "rahp-registry-transfers/v1", "transfers": []}
+        with self.assertRaisesRegex(ValueError, "cannot be removed"):
+            publisher.enforce_accepted_transfer_monotonicity(baseline, empty)
+        accepted = {name: value for name, value in reservation.items()
+                    if name != "registry_intent_path"}
+        accepted["state"] = "accepted_group"
+        accepted["registry_issue_url"] = publisher.REGISTRY_ISSUE_PREFIX + "88"
+        accepted["maintainer_scope_sha256"] = "c"*64
+        publisher.enforce_accepted_transfer_monotonicity(
+            baseline, {"schema": "rahp-registry-transfers/v1", "transfers": [accepted]})
+        for field, value in (("monitor_revision", "f"*40),
+                             ("group_sha256", "f"*64),
+                             ("toolkit_issue_url", publisher.TOOLKIT_ISSUE_PREFIX + "273")):
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(ValueError, "cannot be removed"):
+                    publisher.enforce_accepted_transfer_monotonicity(
+                        baseline, {"schema": "rahp-registry-transfers/v1",
+                                   "transfers": [{**accepted, field: value}]})
+
     def test_nonaccepted_ledger_retains_legacy_compatibility(self) -> None:
         baseline = {"schema": "rahp-registry-transfers/v1", "transfers": []}
         publisher.enforce_accepted_transfer_monotonicity(baseline, baseline)
