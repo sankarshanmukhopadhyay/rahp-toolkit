@@ -132,8 +132,8 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
     transfer = records[0]
     if transfer["assessment_key"] != KEY:
         raise PartitionError("only reviewed pilot group has a source-specific route")
-    if receipt["held_count"] != 1:
-        raise PartitionError("accepted group must hold exactly one current observation")
+    if receipt["held_count"] not in (0, 1):
+        raise PartitionError("source group must hold at most one current observation")
     held = []
     selected = []
     for path in paths:
@@ -153,6 +153,17 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
     get = get or (lambda url: publisher.request("GET", url, token))
     if branch(get, TK) != context["GITHUB_SHA"]:
         raise PartitionError("Toolkit branch moved after the event runner started")
+    if receipt["held_count"] == 0:
+        # A transferred proposition need not be present in every future
+        # monitored snapshot. No matched source event may be suppressed.
+        for path in selected:
+            publisher.preflight_transfer_files([path], ledger)
+        return {"schema": "rahp-toolkit-guarded-publication-selection/v1",
+                "mode": "no_current_transfer_event_retained",
+                "paths": [str(p) for p in selected],
+                "retained_count": receipt["retained_count"], "held_count": 0,
+                "registry_observation_acknowledged": False,
+                "cutover_authorized": False}
     if transfer["state"] == "reserved_group":
         # Hold only the approved group. Registry has not yet acknowledged an owner.
         for path in selected:
