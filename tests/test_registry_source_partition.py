@@ -58,6 +58,51 @@ class RegistrySourcePartitionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Registry-owned"):
                 publisher.preflight_transfer_files(paths, ledger)
 
+    def test_group_reservation_is_not_a_single_finding_or_acceptance(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ledger = root / "transfers.json"
+            key = "dtg:portfolio:combined:spec-dependency-alignment"
+            record = {
+                "assessment_key": key,
+                "toolkit_issue_url": publisher.TOOLKIT_ISSUE_PREFIX + "272",
+                "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
+                "monitor_revision": "7e2813c8daf867a21e4064513cc83612726aeb44",
+                "snapshot_date": "2026-11-16",
+                "finding_ids": ["0add1f4cc0f048ce6bfc", "29e39a0329123d8839a6",
+                                "a60eaffaf3cbc1394553", "acc9772126b1a3820240"],
+                "group_sha256": "a"*64,
+                "state": "reserved_group",
+            }
+            def write(item):
+                ledger.write_text(json.dumps({"schema": "rahp-registry-transfers/v1",
+                                              "transfers": [item]}))
+            write(record)
+            event = root / "combined.json"
+            event.write_text(json.dumps([{"assessment_key": key, "body": "full group"}]))
+            self.assertEqual(publisher.load_transfer_keys(ledger), {key})
+            receipt = partition.stage([event], root / "stage", ledger)
+            self.assertEqual((receipt["held_count"], receipt["retained_count"]), (1, 0))
+            held = json.loads((root / "stage/combined.json.held.json").read_text())[0]
+            self.assertEqual(held["transfer"], record)
+            self.assertEqual(held["reason"], "reserved_without_successor")
+            self.assertFalse(held["publication_suppression_authorized"])
+            with self.assertRaisesRegex(ValueError, "Registry-owned"):
+                publisher.preflight_transfer_files([event], ledger)
+            for mutation in ({"finding_ids": list(reversed(record["finding_ids"]))},
+                             {"finding_ids": [record["finding_ids"][0]]*2},
+                             {"finding_ids": []}, {"group_sha256": "invalid"},
+                             {"monitor_revision": "not-a-commit"},
+                             {"registry_intent_path": "../other"},
+                             {"source_revision": "f"*40}):
+                with self.subTest(mutation=mutation):
+                    write({**record, **mutation})
+                    with self.assertRaises(ValueError):
+                        publisher.load_transfer_keys(ledger)
+            write({**record, "state": "accepted"})
+            with self.assertRaises(ValueError):
+                publisher.load_transfer_keys(ledger)
+
     def test_empty_transfer_ledger_keeps_all_events_and_allows_normal_preflight(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

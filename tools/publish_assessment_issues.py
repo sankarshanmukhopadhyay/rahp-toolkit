@@ -50,12 +50,15 @@ def load_transfer_keys(path: Path) -> set[str]:
         raise ValueError("registry transfers must be an array")
     keys: set[str] = set()
     for item in data["transfers"]:
-        if not isinstance(item, dict) or item.get("state") not in ("reserved", "accepted"):
+        if not isinstance(item, dict) or item.get("state") not in ("reserved", "accepted", "reserved_group"):
             raise ValueError("invalid registry transfer state")
         required = ({"assessment_key", "toolkit_issue_url", "registry_issue_url", "state"}
                     if item["state"] == "accepted" else
                     {"assessment_key", "toolkit_issue_url", "registry_intent_path",
-                     "source_revision", "finding_id", "state"})
+                     "source_revision", "finding_id", "state"} if item["state"] == "reserved" else
+                    {"assessment_key", "toolkit_issue_url", "registry_intent_path",
+                     "monitor_revision", "snapshot_date", "finding_ids",
+                     "group_sha256", "state"})
         if set(item) != required:
             raise ValueError("invalid registry transfer entry")
         key = item["assessment_key"]
@@ -73,10 +76,34 @@ def load_transfer_keys(path: Path) -> set[str]:
                 r"outbox/pending/[a-z0-9][a-z0-9-]*\.json", item["registry_intent_path"]
             ):
                 raise ValueError("invalid reserved Registry intake path")
-            if not isinstance(item["source_revision"], str) or not re.fullmatch(r"[0-9a-f]{40}", item["source_revision"]):
-                raise ValueError("reserved transfer requires immutable source revision")
-            if not isinstance(item["finding_id"], str) or not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9:._/-]{5,180}", item["finding_id"]):
-                raise ValueError("invalid reserved finding ID")
+            if item["state"] == "reserved":
+                if not isinstance(item["source_revision"], str) or not re.fullmatch(
+                    r"[0-9a-f]{40}", item["source_revision"]
+                ):
+                    raise ValueError("reserved transfer requires immutable source revision")
+                if not isinstance(item["finding_id"], str) or not re.fullmatch(
+                    r"[a-zA-Z0-9][a-zA-Z0-9:._/-]{5,180}", item["finding_id"]
+                ):
+                    raise ValueError("invalid reserved finding ID")
+            else:
+                if not isinstance(item["monitor_revision"], str) or not re.fullmatch(
+                    r"[0-9a-f]{40}", item["monitor_revision"]
+                ):
+                    raise ValueError("group reservation requires immutable Monitor commit")
+                if not isinstance(item["snapshot_date"], str) or not re.fullmatch(
+                    r"[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])", item["snapshot_date"]
+                ):
+                    raise ValueError("group reservation requires snapshot date")
+                ids = item["finding_ids"]
+                if (not isinstance(ids, list) or not ids
+                        or not all(isinstance(fid, str) and
+                                   re.fullmatch(r"[0-9a-f]{20}", fid) for fid in ids)
+                        or ids != sorted(set(ids))):
+                    raise ValueError("group reservation finding IDs must be unique and sorted")
+                if not isinstance(item["group_sha256"], str) or not re.fullmatch(
+                    r"[0-9a-f]{64}", item["group_sha256"]
+                ):
+                    raise ValueError("group reservation requires exact source-group SHA-256")
         keys.add(key)
     return keys
 
