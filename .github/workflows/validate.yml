@@ -94,6 +94,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - name: Refuse silent rollback of accepted Registry transfers
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m unittest discover -s tests -p 'test_assessment_issue_publisher.py' -v
+          python3 tools/publish_assessment_issues.py --verify-transfer-rollback
       - name: Validate GitHub Actions workflow syntax
         uses: raven-actions/actionlint@v2
         with:
