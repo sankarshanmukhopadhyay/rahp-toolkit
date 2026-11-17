@@ -183,20 +183,33 @@ def enforce_live_transfer_boundary(event: dict[str, Any], token: str) -> None:
 
 
 def enforce_accepted_transfer_monotonicity(baseline: Any, candidate: Any) -> None:
-    """An accepted Registry owner cannot be reactivated in Toolkit by deletion.
+    """Prevent a reservation or accepted transfer silently reactivating Toolkit.
 
-    This PR-time safety rule is deliberately stricter than a reverse-transfer
-    protocol: replacement/removal requires a separately implemented, verified
-    Registry-fenced return transition, not a permissive ledger edit.
+    A reservation may only progress to its matching accepted state. This is a
+    repository PR guard, not a claim that Registry has acknowledged a successor.
+    Removing an entry requires a separately governed reverse-transfer protocol.
     """
     load_transfer_keys_data(baseline)
     load_transfer_keys_data(candidate)
     candidate_by_key = {row["assessment_key"]: row for row in candidate["transfers"]}
     for previous in baseline["transfers"]:
-        if previous["state"] not in ("accepted", "accepted_group"):
+        successor = candidate_by_key.get(previous["assessment_key"])
+        state = previous["state"]
+        if successor == previous:
             continue
-        if candidate_by_key.get(previous["assessment_key"]) != previous:
-            raise ValueError("accepted Registry transfer cannot be removed or mutated without a governed reverse transfer")
+        if state == "reserved_group" and successor is not None:
+            retained = ("assessment_key", "toolkit_issue_url",
+                        "monitor_revision", "snapshot_date",
+                        "finding_ids", "group_sha256")
+            if (successor["state"] == "accepted_group"
+                    and all(successor[name] == previous[name] for name in retained)):
+                continue
+        if state == "reserved" and successor is not None:
+            if (successor["state"] == "accepted"
+                    and successor["toolkit_issue_url"] == previous["toolkit_issue_url"]):
+                continue
+        raise ValueError("Registry transfer reservation or accepted owner cannot "
+                         "be removed, replaced or regressed without governed return")
 
 
 def verify_transfer_rollback_base(token: str, candidate_path: Path = TRANSFER_LEDGER) -> None:
