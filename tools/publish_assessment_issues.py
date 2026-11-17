@@ -79,6 +79,19 @@ def enforce_registry_transfer_boundary(events: list[dict[str, Any]], keys: set[s
             raise ValueError("Registry-owned assessment encountered by Toolkit publisher; coordinated replay required")
 
 
+def preflight_transfer_files(paths: list[Path], ledger: Path = TRANSFER_LEDGER) -> int:
+    """Validate all routed publication batches before the first GitHub issue mutation."""
+    keys = load_transfer_keys(ledger)
+    count = 0
+    for path in paths:
+        events = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(events, list):
+            raise ValueError(f"{path}: publication events must be a JSON array")
+        enforce_registry_transfer_boundary(events, keys)
+        count += len(events)
+    return count
+
+
 def enforce_publication_repository(repository: str) -> str:
     """Reject any attempt to publish RAHP work items outside the RAHP repository."""
     repo = (repository or "").strip()
@@ -382,9 +395,20 @@ def main() -> int:
     )
     parser.add_argument("--result-json", type=Path, help="write created/coalesced issue references")
     parser.add_argument("--self-test", action="store_true", help="run publisher regression tests and exit")
+    parser.add_argument("--check-transfers", nargs="+", type=Path, metavar="EVENTS_JSON",
+                        help="validate every publication batch against accepted transfers without GitHub writes")
     args = parser.parse_args()
     if args.self_test:
         self_test()
+        return 0
+    if args.check_transfers:
+        if args.events is not None or args.result_json is not None:
+            raise SystemExit("--check-transfers cannot be combined with publication arguments")
+        try:
+            count = preflight_transfer_files(args.check_transfers)
+        except (OSError, ValueError) as exc:
+            raise SystemExit(f"Toolkit transfer preflight refused: {exc}") from exc
+        print(f"Toolkit transfer preflight: {count} event(s) checked across {len(args.check_transfers)} batch(es)")
         return 0
     if args.events is None:
         raise SystemExit("--events is required unless --self-test is used")

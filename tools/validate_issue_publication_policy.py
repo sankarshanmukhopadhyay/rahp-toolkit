@@ -29,6 +29,10 @@ for path in sorted(workflow_dir.glob("*.y*ml")):
         calls = text.split("publish_assessment_issues.py")[1:]
         for idx, tail in enumerate(calls, 1):
             fragment = tail[:600]
+            # A standalone preflight reads event files and cannot issue GitHub writes.
+            # Actual publication invocations must retain the canonical destination.
+            if re.match(r"^--check-transfers(?:\s|$)", fragment.lstrip()):
+                continue
             if f'--repository "{CANONICAL}"' not in fragment:
                 errors.append(f"{path.relative_to(ROOT)} publisher call {idx}: canonical --repository is required")
     # Guard against direct gh issue creation or direct GitHub issue API POSTs in workflows.

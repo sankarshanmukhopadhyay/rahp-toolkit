@@ -219,6 +219,14 @@ jobs:
             --dpip build/dtg-routing/dpip-events.json \
             --out build/dtg-routing/registry-readiness.json
 
+      - name: Preflight all DTG publication batches against Registry transfer ledger
+        run: >-
+          python3 tools/publish_assessment_issues.py
+          --check-transfers
+          build/dtg-routing/controller-events.json
+          build/dtg-routing/combined-events.json
+          build/dtg-routing/dpip-events.json
+
       - name: Publish or coalesce portfolio controller
         env:
           GITHUB_TOKEN: ${{ github.token }}
