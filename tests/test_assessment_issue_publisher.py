@@ -103,6 +103,11 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                 with self.subTest(content=content), self.assertRaises((ValueError, TypeError)):
                     publisher.preflight_transfer_files([path], ledger)
 
+    def test_policy_validator_only_exempts_standalone_transfer_preflight(self) -> None:
+        policy = (ROOT / "tools/validate_issue_publication_policy.py").read_text(encoding="utf-8")
+        self.assertIn('re.match(r"^--check-transfers(?:\\s|$)", fragment.lstrip())', policy)
+        self.assertIn('if f\'--repository "{CANONICAL}"\' not in fragment:', policy)
+
     def test_workflow_preflights_all_dtg_batches_before_first_issue_write(self) -> None:
         path = ROOT / ".github/workflows/dtg-portfolio-materiality-handoff.yml"
         text = path.read_text(encoding="utf-8")
