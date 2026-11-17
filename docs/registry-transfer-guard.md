@@ -110,3 +110,24 @@ A future reverse transfer must introduce a separately specified Registry
 publication fence, durable authority epoch and authenticated return receipt.
 It must be reviewed as a semantic authorization change. The current ledger
 remains empty and this validation does not initiate rollback.
+
+## Changed source observations during an existing group reservation
+
+An exact transfer reservation is bound to a particular original source event.
+A later Portfolio Monitor snapshot can report a different event under the
+same assessment key. The source-specific partition now holds that new event
+under `unqualified_current_group_observation` while permitting unrelated
+events to publish, provided the **original pre-journal event** is retained
+and its identity, date, unique finding membership and unmodified body are
+validated. A changed source does not inherit the earlier Registry owner's
+observation acknowledgment or an assurance outcome. If original source
+evidence is unavailable, journal enrichment is inconsistent, or source
+membership is malformed, the input still fails closed.
+
+The PR rollback validator now also forbids silently removing a committed
+`reserved` or `reserved_group` entry. It permits a source-preserving
+`reserved_group` to `accepted_group` progression, but the runtime publication
+selector still requires authenticated Registry owner/observation evidence
+before holding the accepted group's publication authority. Deleting an
+interrupted reservation merely because a Registry POST timed out is prohibited.
+Explicit withdrawal and reverse-transfer semantics remain unimplemented.
