@@ -139,8 +139,9 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
     for path in paths:
         held.extend(json.loads((stage_dir / (path.name + ".held.json")).read_text()))
         selected.append(stage_dir / (path.name + ".retained.json"))
-    if (len(held) != 1 or held[0]["transfer"] != transfer
-            or held[0]["source_event_sha256"] != transfer["group_sha256"]):
+    if (len(held) != receipt["held_count"] or
+            (held and (held[0]["transfer"] != transfer or
+                       held[0]["source_event_sha256"] != transfer["group_sha256"]))):
         raise PartitionError("staged group differs from approved source event")
     context = context or os.environ
     if (context.get("GITHUB_ACTIONS") != "true" or
