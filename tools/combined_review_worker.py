@@ -18,7 +18,7 @@ JUDGMENT = "judgment-required"
 EXECUTED = "assessment-evidence-complete"
 MARKER = "<!-- rahp-combined-execution:v1 -->"
 PACKET_MARKER = "<!-- rahp-combined-judgment-packet:v1 -->"
-FINDING_RE = re.compile(r"([0-9a-f]{20})")
+FINDING_RE = re.compile(r"(?<![A-Za-z0-9])([0-9a-f]{20})(?![A-Za-z0-9])")
 SNAPSHOT_RE = re.compile(r"Portfolio(?: Monitor)? snapshot:\s*`(\d{4}-\d{2}-\d{2})`")
 MONITOR_RAW = "https://raw.githubusercontent.com/sankarshanmukhopadhyay/dtg-portfolio-monitor/main/data/findings/{year}/{month}/{day}.json"
 
@@ -129,7 +129,7 @@ def render_judgment_packet(issue: dict[str, Any], catalog: dict[str, dict[str, A
         "### Cross-item synthesis",
         "",
         "After the per-item decisions, answer three portfolio questions:",
-        "1. Do any of the nine changes jointly create a security proposition that is not visible when each change is considered alone?",
+        f"1. Do any of the {len(ids)} changes jointly create a security proposition that is not visible when each change is considered alone?",
         "2. Does any item reverse a provisional no-additional-assurance-action disposition from the parent controller?",
         "3. Can the change set be closed as assurance-preserving/strengthening, or must a new RAHP finding/composition remain open?",
         "",
@@ -222,6 +222,8 @@ def self_test() -> int:
              "body": "<!-- rahp-assessment-key:dtg:portfolio:combined:test -->\nPortfolio Monitor snapshot: `2026-08-27`\n- 307e953d00cf9fb48ba7\n- 0bb1b102763cd38950c0\n"}
     assert is_combined(issue)
     assert finding_ids(issue["body"]) == ["307e953d00cf9fb48ba7", "0bb1b102763cd38950c0"]
+    assert finding_ids("commit `" + "a"*40 + "` and digest `" + "b"*64 + "`") == []
+    assert finding_ids("prefix" + "307e953d00cf9fb48ba7" + "suffix") == []
     assert snapshot_date(issue["body"]) == "2026-08-27"
     assert snapshot_date("Portfolio snapshot: `2026-08-30`") == "2026-08-30"
     try:
@@ -241,6 +243,8 @@ def self_test() -> int:
     assert "input structure / protocol validation" in packet
     assert "conformance / response semantics" in packet
     assert "Reviewer disposition" in packet
+    assert "Do any of the 2 changes jointly" in packet
+    assert "nine changes" not in packet
     print("PASS combined_review_worker self-test")
     return 0
 
