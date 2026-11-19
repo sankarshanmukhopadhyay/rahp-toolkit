@@ -31,6 +31,30 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
             },
         ]
 
+    def test_actions_issue_publisher_rejects_off_main_and_foreign_refs(self) -> None:
+        base = {
+            "GITHUB_ACTIONS": "true",
+            "GITHUB_REPOSITORY": publisher.CANONICAL_RAHP_ISSUE_REPOSITORY,
+            "GITHUB_REF": "refs/heads/main",
+            "GITHUB_SHA": "a" * 40,
+        }
+        publisher.enforce_actions_main_publication_context(base)
+        # Local CLI remains a separate operator permission question.
+        publisher.enforce_actions_main_publication_context({})
+        cases = [
+            {**base, "GITHUB_REF": "refs/heads/assurance/stale-2026"},
+            {**base, "GITHUB_REF": "refs/tags/v1.0.0"},
+            {**base, "GITHUB_REF": "refs/pull/1/merge"},
+            {**base, "GITHUB_REPOSITORY": "attacker/fork"},
+            {**base, "GITHUB_SHA": "main"},
+            {**base, "GITHUB_SHA": ""},
+            {**base, "GITHUB_REF": ""},
+        ]
+        for context in cases:
+            with self.subTest(context=context), self.assertRaisesRegex(
+                    ValueError, "canonical Toolkit main"):
+                publisher.enforce_actions_main_publication_context(context)
+
     def test_registry_transfer_guard_honors_committed_source_reservation(self) -> None:
         # The authoritative ledger is now deliberately source-scoped, rather
         # than empty. Unrelated RAHP publication must continue, but the
