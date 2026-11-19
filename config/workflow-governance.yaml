@@ -24,13 +24,13 @@ workflows:
   dtg-assurance-reconcile.yml:
     class: lifecycle-controller
     responsibility: dtg-end-to-end-assurance-reconciliation
-  dtg-portfolio-materiality-handoff.yml:
+  dtg-materiality-main.yml:
     class: lifecycle-controller
     responsibility: dtg-portfolio-materiality-routing
   review-workers.yml:
     class: lifecycle-controller
     responsibility: bounded-combined-and-dtg-repository-review-advancement
-  instance-watch.yml:
+  instance-monitor-main.yml:
     class: lifecycle-controller
     responsibility: instance-observation-publication-and-persistence
   cawg-vlei-verifier-probe.yml:
