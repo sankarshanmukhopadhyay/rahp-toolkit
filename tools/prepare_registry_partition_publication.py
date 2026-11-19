@@ -73,6 +73,37 @@ def verify_scope(get, scope):
         raise PartitionError("maintainer approval absent or withdrawn")
     return True
 
+EPOCH_SCOPE_MARK = "<!-- rahp-registry-epoch-scope:v1:"
+EPOCH_SCOPE_TRACKER = 77
+
+
+def verify_epoch_scope(get, source_digest):
+    """A new group digest requires its own current maintainer acceptance."""
+    if not isinstance(source_digest, str) or not re.fullmatch(r"[0-9a-f]{64}", source_digest):
+        raise PartitionError("invalid new source epoch digest")
+    history = all_pages(get, REG, "/issues/" + str(EPOCH_SCOPE_TRACKER) + "/comments?")
+    decision = []
+    seen = set()
+    for item in history:
+        body = item.get("body") or ""
+        for action, digest in re.findall(
+                re.escape(EPOCH_SCOPE_MARK) + r"(accept|withdraw):([0-9a-f]{64}) -->",
+                body):
+            if digest != source_digest:
+                continue
+            number = item.get("id")
+            actor = item.get("user") or {}
+            if (type(number) is not int or number < 1 or number in seen or
+                    not isinstance(actor, dict) or actor.get("login") != USER or
+                    item.get("author_association") != "OWNER"):
+                raise PartitionError("unauthorized or ambiguous new epoch maintainer decision")
+            seen.add(number)
+            decision.append((number, action))
+    if not decision or sorted(decision)[-1][1] != "accept":
+        raise PartitionError("new epoch scope absent or withdrawn")
+    return True
+
+
 def verify_registry_ack(get, transfer, event_sha):
     issue_url = transfer["registry_issue_url"]
     expected = publisher.REGISTRY_ISSUE_PREFIX
@@ -132,6 +163,8 @@ def verify_registry_ack(get, transfer, event_sha):
             not in (historical.get("body") or "")):
         raise PartitionError("historical Toolkit owner missing or substituted")
     verify_scope(get, transfer["maintainer_scope_sha256"])
+    if event_sha != transfer["group_sha256"]:
+        verify_epoch_scope(get, event_sha)
     if branch(get, REG) != registry_head:
         raise PartitionError("Registry source authority changed during acknowledgment")
     return issue_url
