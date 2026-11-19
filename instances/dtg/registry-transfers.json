@@ -1,4 +1,20 @@
 {
   "schema": "rahp-registry-transfers/v1",
-  "transfers": []
+  "transfers": [
+    {
+      "assessment_key": "dtg:portfolio:combined:spec-dependency-alignment",
+      "toolkit_issue_url": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/272",
+      "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
+      "monitor_revision": "7e2813c8daf867a21e4064513cc83612726aeb44",
+      "snapshot_date": "2026-11-16",
+      "finding_ids": [
+        "0add1f4cc0f048ce6bfc",
+        "29e39a0329123d8839a6",
+        "a60eaffaf3cbc1394553",
+        "acc9772126b1a3820240"
+      ],
+      "group_sha256": "3fc843eeaf48f0023582951a2f67a15638bd6c21e929e92765b1394f83718d4c",
+      "state": "reserved_group"
+    }
+  ]
 }
