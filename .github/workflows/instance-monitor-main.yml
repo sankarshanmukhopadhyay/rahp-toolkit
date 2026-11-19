@@ -224,8 +224,11 @@ jobs:
     needs: publish_external
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    outputs:
+      disposition: ${{ steps.persist.outputs.disposition }}
     permissions:
       contents: write
+      pull-requests: write
       issues: read
       actions: write
     steps:
@@ -254,10 +257,13 @@ jobs:
             echo "::error::Toolkit main moved between observation and publication/persistence"
             exit 1
           fi
-      - name: Persist observed revisions and non-empty DTG gatherer runs
+      - name: Stage monitored state under protected-main review
         id: persist
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
@@ -274,35 +280,37 @@ jobs:
             git add instances/dtg/generated/gatherer-runs
           fi
           if git diff --cached --quiet; then
-            echo "No instance state changes to persist."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No new instance state: reconciliation can use existing main."
+            echo "disposition=unchanged" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "chore(assurance): advance monitored instance revisions"
-            git push
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            # Never mark observation as persisted before a protected-main PR
+            # actually merges. New observations must not race a pending state PR.
+            pending="$(gh pr list --state open --json headRefName,url --jq '[.[] | select(.headRefName | startswith("automation/instance-monitor-"))] | length')"
+            if [ "$pending" != "0" ]; then
+              echo "::error::Unmerged monitored-state PR exists; no new branch or issue-effect claim authorized"
+              exit 1
+            fi
+            branch="automation/instance-monitor-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            git switch -c "$branch"
+            git commit -s -m "chore(assurance): stage monitored instance revisions"
+            git push -u origin "$branch"
+            pr_url="$(gh pr create --base main --head "$branch" \
+              --title "chore(assurance): review monitored instance state from run #${GITHUB_RUN_ID}" \
+              --body "Source observation and external issue publication completed in Toolkit Actions run #${GITHUB_RUN_ID}, attempt ${GITHUB_RUN_ATTEMPT}. This PR stages the exact observed state; it has NOT been accepted or persisted into main. Review DCO and required checks before merge. Source and result evidence remain in that Actions run. No assurance PASS, Registry ownership cutover, or controller-incident conclusion is inferred.")"
+            echo "Pending protected-main state PR: $pr_url"
+            echo "disposition=staged_pending_review" >> "$GITHUB_OUTPUT"
+            echo "state_pr_url=$pr_url" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Regenerate current-head assurance evidence
-        if: steps.persist.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          EXPECTED_HEAD_SHA: ${{ steps.persist.outputs.head_sha }}
+      - name: Explain protected-main state review boundary
         shell: bash
         run: |
-          current_head="$(git ls-remote origin refs/heads/main | cut -f1)"
-          if [ "$current_head" != "$EXPECTED_HEAD_SHA" ]; then
-            echo "::error::Default-branch HEAD moved before assurance dispatch: expected $EXPECTED_HEAD_SHA, observed $current_head"
-            exit 1
+          if [ "${{ steps.persist.outputs.disposition }}" = "staged_pending_review" ]; then
+            echo 'State is staged in a protected-main PR; do not reconcile unmerged findings or publish incidents.'
           fi
 
-          gh workflow run validate.yml --ref main
-          gh workflow run pages.yml --ref main
-
-          echo "Dispatched toolkit validation and publication-integrity evidence for $EXPECTED_HEAD_SHA"
-
-
       - name: Reconcile DTG end-to-end assurance explicitly
+        if: steps.persist.outputs.disposition == 'unchanged'
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
@@ -310,12 +318,14 @@ jobs:
           --incident-output /tmp/dtg-controller-incidents.json
 
       - name: Retain state reconciliation incident result
+        if: steps.persist.outputs.disposition == 'unchanged'
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/instance-monitor
           cp /tmp/dtg-controller-incidents.json build/instance-monitor/controller-incidents.json
-      - uses: actions/upload-artifact@v7
+      - if: steps.persist.outputs.disposition == 'unchanged'
+        uses: actions/upload-artifact@v7
         with:
           name: instance-monitor-incidents-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/instance-monitor/controller-incidents.json
@@ -324,7 +334,7 @@ jobs:
 
   local_incidents:
     needs: persist
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.persist.outputs.disposition == 'unchanged'
     runs-on: ubuntu-latest
     permissions:
       contents: read
