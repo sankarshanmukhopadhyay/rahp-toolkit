@@ -65,6 +65,21 @@ class InstanceWatchContractTests(unittest.TestCase):
         self.assertIn("Retain exact monitored source", source)
         self.assertIn("needs: publish_external", source)
 
+    def test_protected_main_requires_state_pr_not_bot_direct_push(self):
+        source = (ROOT / ".github/workflows/instance-monitor-main.yml").read_text()
+        self.assertIn("pull-requests: write", source)
+        self.assertIn("gh pr create --base main", source)
+        self.assertIn("git commit -s", source)
+        self.assertIn('git push -u origin "$branch"', source)
+        self.assertNotIn("git push\n", source)
+        self.assertIn("automation/instance-monitor-", source)
+        self.assertIn("Unmerged monitored-state PR exists", source)
+        self.assertIn("disposition=staged_pending_review", source)
+        self.assertIn("if: steps.persist.outputs.disposition == 'unchanged'", source)
+        self.assertIn("needs.persist.outputs.disposition == 'unchanged'", source)
+        self.assertIn("Do not reconcile unmerged findings", source)
+        self.assertNotIn("git push origin main", source)
+
     def test_current_head_assurance_dispatch_contract(self) -> None:
         result = subprocess.run(
             [sys.executable, str(VALIDATOR)],
