@@ -43,7 +43,11 @@ class RetainedSelectionTests(unittest.TestCase):
             "body": guard.CASE_MARK + "\n" +
                 guard.GROUP_MARK + self.record["group_sha256"] + " -->\n" +
                 self.record["toolkit_issue_url"] + "\n" + "\n".join(self.observations)}
-        self.ack = {"id": 123, "body": guard.ACK_MARK + self.record["group_sha256"] + " -->",
+        self.ack = {"id": 123,
+                    "html_url": self.record["registry_issue_url"] + "#issuecomment-123",
+                    "body": (guard.ACK_MARK + self.record["group_sha256"] + " -->\\n\\n" +
+                             "Registry monitored source observation received for administrative case " +
+                             self.record["registry_issue_url"]),
                     "user": {"login": "github-actions[bot]", "type": "Bot"}}
         self.accept = {"id": 234, "author_association": "OWNER",
                        "body": guard.SCOPE_MARK + "accept:" + self.scope + " -->",
@@ -64,6 +68,10 @@ class RetainedSelectionTests(unittest.TestCase):
             return {"commit": {"sha": "a"*40}}
         if url == guard.API + guard.REG + "/issues/88":
             return self.issue
+        if url == guard.API + guard.TK + "/issues/272":
+            return {"number": 272, "state": "open",
+                    "html_url": self.record["toolkit_issue_url"],
+                    "body": "<!-- rahp-assessment-key:" + self.key + " -->"}
         if url.startswith(guard.API + guard.REG + "/issues?state=all"):
             return [self.issue]
         if url.startswith(guard.API + guard.REG + "/issues/88/comments?"):
@@ -251,10 +259,61 @@ class RetainedSelectionTests(unittest.TestCase):
         self.ack["body"] = "no current observation"
         with self.assertRaisesRegex(guard.PartitionError, "acknowledgment"):
             self.plan()
-        self.ack["body"] = guard.ACK_MARK + self.record["group_sha256"] + " -->"
+        self.ack["body"] = (guard.ACK_MARK + self.record["group_sha256"] + " -->\\n\\n" +
+                             "Registry monitored source observation received for administrative case " +
+                             self.record["registry_issue_url"])
         self.ack["user"] = {"login": "untrusted", "type": "User"}
         with self.assertRaisesRegex(guard.PartitionError, "acknowledgment"):
             self.plan()
+
+    def test_duplicate_or_noncanonical_ack_never_authorizes_group_suppression(self):
+        acknowledged = dict(self.ack)
+        for modified in (
+            {**acknowledged, "id": True},
+            {**acknowledged, "id": 0},
+            {**acknowledged, "html_url": self.record["registry_issue_url"] + "#issuecomment-999"},
+            {**acknowledged, "html_url": publisher.TOOLKIT_ISSUE_PREFIX + "272#issuecomment-123"},
+            {**acknowledged, "body": guard.ACK_MARK + self.record["group_sha256"] + " -->"},
+        ):
+            with self.subTest(modified=modified):
+                previous = self.ack
+                self.ack = modified
+                with self.assertRaises(guard.PartitionError):
+                    self.plan()
+                self.ack = previous
+
+        original = self.get
+        def duplicate(url):
+            if url.startswith(guard.API + guard.REG + "/issues/88/comments?"):
+                return [self.ack, {**self.ack, "id": 124,
+                                   "html_url": self.record["registry_issue_url"] + "#issuecomment-124"}]
+            return original(url)
+        with self.assertRaisesRegex(guard.PartitionError, "unique authenticated"):
+            guard.plan(self.paths, self.root / "dupe", self.ledger,
+                       token="token", get=duplicate, context=self.context)
+
+    def test_historical_toolkit_issue_namespace_and_exact_marker_must_resolve(self):
+        original = self.get
+        for substituted in (
+            {"number": 88, "state": "open",
+             "html_url": publisher.REGISTRY_ISSUE_PREFIX + "88",
+             "body": "<!-- rahp-assessment-key:" + self.key + " -->"},
+            {"number": 272, "state": "open",
+             "html_url": publisher.TOOLKIT_ISSUE_PREFIX + "272",
+             "body": "<!-- rahp-assessment-key:dtg:wrong-owner -->"},
+            {"number": 272, "state": "open",
+             "html_url": publisher.TOOLKIT_ISSUE_PREFIX + "999",
+             "body": "<!-- rahp-assessment-key:" + self.key + " -->"},
+        ):
+            with self.subTest(substituted=substituted):
+                def wrong(url):
+                    if url == guard.API + guard.TK + "/issues/272":
+                        return substituted
+                    return original(url)
+                with self.assertRaisesRegex(guard.PartitionError, "historical Toolkit"):
+                    guard.plan(self.paths, self.root / "wrong-owner",
+                               self.ledger, token="token", get=wrong,
+                               context=self.context)
 
     def test_withdrawal_and_duplicate_owner_refuse_publication(self):
         self.accept["body"] = guard.SCOPE_MARK + "withdraw:" + self.scope + " -->"
