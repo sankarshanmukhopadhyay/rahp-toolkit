@@ -173,7 +173,7 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
         self.assertIn('if f\'--repository "{CANONICAL}"\' not in fragment:', policy)
 
     def test_workflow_preflights_all_dtg_batches_before_first_issue_write(self) -> None:
-        path = ROOT / ".github/workflows/dtg-portfolio-materiality-handoff.yml"
+        path = ROOT / ".github/workflows/dtg-materiality-main.yml"
         text = path.read_text(encoding="utf-8")
         selector = text.index("name: Qualify Registry observation and select exact publication inputs")
         preflight = text.index("name: Preflight all DTG publication batches against Registry transfer ledger")
