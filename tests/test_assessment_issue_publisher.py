@@ -193,7 +193,7 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                           name + " }}", text[first_write:])
         self.assertIn("--check-transfers", preflight_block)
         self.assertIn("publish_external:", text)
-        self.assertIn("permissions:\\n      contents: read\\n      issues: write", text)
+        self.assertIn("permissions:\n      contents: read\n      issues: write", text)
         self.assertIn("issues: read", text[:text.index("  publish_external:")])
         self.assertIn("actions/download-artifact@v7", text)
         self.assertIn("Refuse source drift before any issue mutation", text)
