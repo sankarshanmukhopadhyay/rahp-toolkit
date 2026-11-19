@@ -77,7 +77,7 @@ class InstanceWatchContractTests(unittest.TestCase):
         self.assertIn("disposition=staged_pending_review", source)
         self.assertIn("if: steps.persist.outputs.disposition == 'unchanged'", source)
         self.assertIn("needs.persist.outputs.disposition == 'unchanged'", source)
-        self.assertIn("Do not reconcile unmerged findings", source)
+        self.assertIn("do not reconcile unmerged findings", source)
         self.assertNotIn("git push origin main", source)
 
     def test_current_head_assurance_dispatch_contract(self) -> None:
