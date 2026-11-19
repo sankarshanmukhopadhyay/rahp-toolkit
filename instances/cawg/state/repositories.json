@@ -31,9 +31,9 @@
       "observed_at": "2026-08-14T00:00:00Z"
     },
     "c2pa-org/specifications@main": {
-      "sha": "9c58c8c27044e44e8601f6ab13f1bcac1376eb1f",
+      "sha": "05dbf10bbd362c0f5ec1d2108f6745dfe9cb8669",
       "status": "active",
-      "observed_at": "2026-08-21T04:19:49.686966+00:00"
+      "observed_at": "2026-11-19T12:53:46.775404+00:00"
     },
     "decentralized-identity/cawg-identity-assertion@governance": {
       "sha": "5a2795bd752da9e60ef04536ec6eb44167c929eb",
@@ -46,9 +46,9 @@
       "observed_at": "2026-08-14T04:58:45.381819+00:00"
     },
     "decentralized-identity/cawg-identity-assertion@vlei": {
-      "sha": "1fbff9683fb692667a81206274d4b24d17078c0b",
+      "sha": "464ee8a937f467ec42be4587e425bd56e7350f9f",
       "status": "active",
-      "observed_at": "2026-08-14T04:58:45.600153+00:00"
+      "observed_at": "2026-11-19T12:53:43.611588+00:00"
     },
     "decentralized-identity/cawg-organizational-identity-profile@1.1-update": {
       "sha": "ad951176b1d428e027c3c20c48506b2b780a8f77",
