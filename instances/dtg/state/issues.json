@@ -2,15 +2,15 @@
   "observed": {
     "trustoverip/dtgwg-cred-spec#11": {
       "comments": 1,
-      "state": "open",
+      "state": "closed",
       "title": "Remove or resolve the normative dependency on the unpublished Trust Task model",
-      "updated_at": "2026-08-24T00:45:53Z"
+      "updated_at": "2026-09-22T14:31:43Z"
     },
     "trustoverip/dtgwg-cred-spec#17": {
-      "comments": 2,
-      "state": "open",
+      "comments": 3,
+      "state": "closed",
       "title": "W3C alignment: DataIntegrityProof, digestMultibase, and the CID 1.0 multibase headers",
-      "updated_at": "2026-08-29T12:40:20Z"
+      "updated_at": "2026-09-07T10:47:49Z"
     },
     "trustoverip/dtgwg-cred-spec#8": {
       "comments": 1,
@@ -19,16 +19,16 @@
       "updated_at": "2026-08-28T06:43:24Z"
     },
     "trustoverip/dtgwg-cred-spec#9": {
-      "comments": 2,
-      "state": "open",
+      "comments": 10,
+      "state": "closed",
       "title": "Define the identity linkages required by the ZKP constructions",
-      "updated_at": "2026-08-25T11:48:30Z"
+      "updated_at": "2026-09-30T17:07:44Z"
     },
     "trustoverip/dtgwg-trust-tasks-tf#173": {
-      "comments": 14,
-      "state": "open",
+      "comments": 15,
+      "state": "closed",
       "title": "DTG Core Credentials now cites this framework normatively for its taskContext binding (pinned to existing mechanisms; one small optional ask)",
-      "updated_at": "2026-08-17T19:17:27Z"
+      "updated_at": "2026-09-05T15:45:35Z"
     },
     "trustoverip/dtgwg-trust-tasks-tf#202": {
       "comments": 0,

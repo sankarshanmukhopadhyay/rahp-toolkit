@@ -2,33 +2,33 @@
   "version": 1,
   "repositories": {
     "trustoverip/dtgwg-trust-tasks-tf": {
-      "sha": "134733ff934775db522522dc26cb79836da29256",
+      "sha": "49b160b88fa922699330e7547a9d6ce91836b07c",
       "status": "active",
-      "observed_at": "2026-08-31T00:45:49.261644+00:00"
+      "observed_at": "2026-11-19T12:53:08.322253+00:00"
     },
     "trustoverip/dtgwg-htx-tf": {
-      "sha": "0718ff3ba2b0333571f1637e229c313d3545e162",
+      "sha": "1dfdff348720babec3aa39ade0571e85961bf998",
       "status": "active",
-      "observed_at": "2026-08-20T04:18:24.273852+00:00"
+      "observed_at": "2026-11-19T12:53:10.268692+00:00"
     },
     "trustoverip/dtgwg-ux-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-31T10:03:33.223039+00:00"
+      "observed_at": "2026-11-19T12:53:10.525803+00:00"
     },
     "trustoverip/dtgwg-general": {
-      "sha": "fa15044225ff447ad6564983a5ce0732b80cbdc1",
+      "sha": "610df666e0a237b109c3ed6656181f9d3479a45f",
       "status": "active",
-      "observed_at": "2026-08-14T04:58:40.334658+00:00"
+      "observed_at": "2026-11-19T12:53:11.329480+00:00"
     },
     "trustoverip/dtgwg-cred-spec": {
-      "sha": "2b403b607aaec9d84f78189a55337c677f3cd2ed",
+      "sha": "634e0b0495abef9ca376901026074e4f20e5636e",
       "status": "active",
-      "observed_at": "2026-08-28T15:38:13.875304+00:00"
+      "observed_at": "2026-11-19T12:53:12.600613+00:00"
     },
     "trustoverip/dtgwg-zkp-tf": {
-      "sha": "3b6b3f2e76005d6f579d076ee2833ef56d599b65",
+      "sha": "a4a18db0a65cb956a44de0464ee7d73bd1b1e557",
       "status": "active",
-      "observed_at": "2026-08-25T04:19:41.617503+00:00"
+      "observed_at": "2026-11-19T12:53:13.530577+00:00"
     },
     "trustoverip/dtgwg-cred-tf": {
       "sha": "d8e317ee6ec13c327f2bc96022be6190500432ae",
@@ -36,13 +36,13 @@
       "observed_at": "2026-08-19T04:18:44.528668+00:00"
     },
     "trustoverip/dtgwg-rahp-tf": {
-      "sha": "ce954decb4394c6de98282dee6c7c8c18392de63",
+      "sha": "cfecfeb053eb0bde2a4397ce02c6d194b0cf8ae1",
       "status": "active",
-      "observed_at": "2026-08-14T04:58:42.034557+00:00"
+      "observed_at": "2026-11-19T12:53:15.271751+00:00"
     },
     "trustoverip/dtgwg-rcards-tf": {
       "status": "no-commits",
-      "observed_at": "2026-08-31T10:03:35.891163+00:00"
+      "observed_at": "2026-11-19T12:53:15.540534+00:00"
     },
     "trustoverip/dtgwg-vds-tf": {
       "sha": "99eacacedd1729d20528a2ec65ff5288d103ec5e",
@@ -55,19 +55,19 @@
       "observed_at": "2026-08-14T04:58:43.075603+00:00"
     },
     "OpenVTC/dtg-credentials": {
-      "sha": "392d7c63eb1c0a7c004e9e11eb823769b5ce5459",
+      "sha": "b23624acb94453d9bd3a6b268547e8820597a840",
       "status": "active",
-      "observed_at": "2026-08-31T00:45:54.028577+00:00"
+      "observed_at": "2026-11-19T12:53:17.055744+00:00"
     },
     "OpenVTC/openvtc": {
-      "sha": "f93bc7e58f2766f3064e2b23ef877563069609ac",
+      "sha": "093443a86f621f7cf06ee212765035c254c74c29",
       "status": "active",
-      "observed_at": "2026-08-31T10:03:37.503330+00:00"
+      "observed_at": "2026-11-19T12:53:18.582510+00:00"
     },
     "OpenVTC/verifiable-trust-infrastructure": {
-      "sha": "554408c439e96a7517de736e522b8321bbb0cc56",
+      "sha": "66a7c2aa362e82cdbbb3b384850d73fa64d97848",
       "status": "active",
-      "observed_at": "2026-08-31T10:03:38.232203+00:00"
+      "observed_at": "2026-11-19T12:53:20.078246+00:00"
     },
     "sankarshanmukhopadhyay/dtgwg-cred-tf": {
       "sha": "200acbaa47a422b173652ed2c3dc961c4fbc9e7a",
@@ -75,14 +75,14 @@
       "observed_at": "2026-08-14T04:58:44.346523+00:00"
     },
     "sankarshanmukhopadhyay/dtgwg-zkp-tf": {
-      "sha": "e49d0b4cda23fe5f113f4075668730ca4218488b",
+      "sha": "93d5be3d8c5b5076d57c6b0b93e86302abed6734",
       "status": "active",
-      "observed_at": "2026-08-27T02:07:56.899588+00:00"
+      "observed_at": "2026-11-19T12:53:21.449941+00:00"
     },
     "trustoverip/dtgwg-trust-tasks-spec": {
-      "sha": "6425a74136c1d2dfa7115889abe0b3521700e887",
+      "sha": "bdf2cdd9256f9d7b98fe8b40c776124fc27a6084",
       "status": "active",
-      "observed_at": "2026-08-27T02:07:49.859541+00:00"
+      "observed_at": "2026-11-19T12:53:09.310559+00:00"
     }
   }
 }

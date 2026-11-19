@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": "gha-44527955312-1",
+  "fingerprint": "5710c1b3612d0bae8a4c7ec4",
+  "qualifying_events": [
+    "3a7e53956076e7164852",
+    "06248358aafb94d251d3",
+    "3edadd6e0e34d1f42ee6",
+    "f39432941835f89e7480",
+    "2f00ed3be06c80cef37a",
+    "ceab40110a650099285b",
+    "54bb8862a648d6cd5ff4",
+    "7657c8f24e7825279a58",
+    "c968e62731b6f5376b95",
+    "ec40dcf700003a455e10",
+    "8c5f598df6e0760b2e49"
+  ],
+  "event_count": 11,
+  "recorded_at": "2026-11-19T12:53:41.738642+00:00",
+  "source": "rahp-dtg-gatherer"
+}
