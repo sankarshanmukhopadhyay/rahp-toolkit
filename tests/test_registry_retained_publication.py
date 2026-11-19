@@ -171,6 +171,60 @@ class RetainedSelectionTests(unittest.TestCase):
                                self.ledger, token="token", get=self.get,
                                context=self.context)
 
+    def test_changed_epoch_requires_new_authenticated_registry_ack(self):
+        raw = self.root / "changed-original-combined.json"
+        changed = {**self.group, "observed_at": "2026-11-18",
+                   "body": "New source event requiring a new Registry observation"}
+        raw.write_text(json.dumps([changed]))
+        self.paths[1].write_text(json.dumps([{**changed, "evidence_impact": "uncertain"}]))
+        event_sha = partition.sha(partition.canonical(changed))
+        self.assertNotEqual(event_sha, self.record["group_sha256"])
+        # The first group's old accepted ACK must not authorize this epoch.
+        unacknowledged = guard.plan(
+            self.paths, self.root / "unacknowledged-epoch", self.ledger,
+            token="token", get=self.get, context=self.context,
+            source_combined=raw)
+        self.assertEqual(unacknowledged["mode"], "changed_group_unqualified_retained")
+        self.assertFalse(unacknowledged["registry_observation_acknowledged"])
+        self.ack["body"] = (
+            guard.ACK_MARK + event_sha + " -->\\n\\n" +
+            "Registry monitored source observation received for administrative case " +
+            self.record["registry_issue_url"] +
+            ". Reviewed as a separate source-group reassessment epoch.")
+        accepted = guard.plan(
+            self.paths, self.root / "accepted-new-epoch", self.ledger,
+            token="token", get=self.get, context=self.context, source_combined=raw)
+        self.assertEqual(accepted["mode"], "changed_group_acknowledged_retained")
+        self.assertEqual(accepted["source_event_sha256"], event_sha)
+        self.assertTrue(accepted["registry_observation_acknowledged"])
+        self.assertFalse(accepted["cutover_authorized"])
+        self.assertEqual((accepted["held_count"], accepted["retained_count"]), (1, 2))
+        self.assertEqual(json.loads(Path(accepted["paths"][1]).read_text()), [])
+        self.assertEqual(json.loads(Path(accepted["paths"][2]).read_text()), [self.dpip])
+
+    def test_new_epoch_cannot_inherit_wrong_or_spoofed_receipt(self):
+        raw = self.root / "another-epoch-combined.json"
+        changed = {**self.group, "observed_at": "2026-11-18"}
+        raw.write_text(json.dumps([changed]))
+        self.paths[1].write_text(json.dumps([changed]))
+        digest = partition.sha(partition.canonical(changed))
+        self.ack["body"] = (
+            guard.ACK_MARK + digest + " -->\\n" +
+            "Registry monitored source observation received for administrative case " +
+            self.record["registry_issue_url"])
+        self.ack["user"] = {"login": "attacker", "type": "User"}
+        selected = guard.plan(
+            self.paths, self.root / "spoofed-epoch", self.ledger,
+            token="token", get=self.get, context=self.context, source_combined=raw)
+        self.assertFalse(selected["registry_observation_acknowledged"])
+        self.assertEqual(selected["mode"], "changed_group_unqualified_retained")
+        self.ack["user"] = {"login": "github-actions[bot]", "type": "Bot"}
+        self.ack["html_url"] = self.record["registry_issue_url"] + "#issuecomment-999"
+        with self.assertRaisesRegex(guard.PartitionError, "canonical GitHub"):
+            guard.plan(self.paths, self.root / "wrong-comment-id", self.ledger,
+                       token="token", get=self.get, context=self.context,
+                       source_combined=raw)
+
     def test_tampered_journal_source_still_blocks_all_publication(self):
         raw = self.root / "later-original-combined.json"
         later = {**self.group, "observed_at": "2026-11-17"}
