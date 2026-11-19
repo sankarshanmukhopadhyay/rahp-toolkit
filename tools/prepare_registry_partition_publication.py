@@ -115,7 +115,7 @@ def verify_registry_ack(get, transfer, event_sha):
             acknowledgment.get("html_url") != expected_comment_url):
         raise PartitionError("source acknowledgment has invalid canonical GitHub identity")
     ack_body = acknowledgment.get("body") or ""
-    if (not ack_body.startswith(marker + "\\n") or
+    if (not ack_body.startswith(marker) or
             "Registry monitored source observation received for administrative case " +
             issue_url not in ack_body):
         raise PartitionError("source acknowledgment lacks exact owner and source context")
