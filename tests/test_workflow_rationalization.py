@@ -41,10 +41,10 @@ class WorkflowRationalizationTests(unittest.TestCase):
     def test_consolidated_controllers_keep_explicit_workflow_owners(self):
         for name in (
             "review-workers.yml",
-            "dtg-portfolio-materiality-handoff.yml",
+            "dtg-materiality-main.yml",
             "dpip-lifecycle.yml",
             "dtg-assurance-reconcile.yml",
-            "instance-watch.yml",
+            "instance-monitor-main.yml",
         ):
             self.assertTrue((WORKFLOWS / name).exists(), name)
         for name in (
