@@ -59,3 +59,47 @@ jobs:
           print('Registry owner:', owner)
           print('Historical Toolkit issue:', record['toolkit_issue_url'])
           PY
+      - name: Refuse ungoverned reverse transfer using actual accepted-group ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import copy
+          import json
+          import pathlib
+          import sys
+
+          sys.path.insert(0, str(pathlib.Path('tools').resolve()))
+          from publish_assessment_issues import enforce_accepted_transfer_monotonicity
+
+          baseline = json.loads(pathlib.Path(
+              'instances/dtg/registry-transfers.json').read_text())
+          row = baseline['transfers'][0]
+          assert len(baseline['transfers']) == 1
+          assert row['state'] == 'accepted_group'
+          assert row['registry_issue_url'] == (
+              'https://github.com/sankarshanmukhopadhyay/'
+              'rahp-assessment-registry/issues/88')
+          enforce_accepted_transfer_monotonicity(baseline, copy.deepcopy(baseline))
+
+          def denied(change):
+              candidate = copy.deepcopy(baseline)
+              change(candidate)
+              try:
+                  enforce_accepted_transfer_monotonicity(baseline, candidate)
+              except ValueError as exc:
+                  if 'cannot be removed' not in str(exc):
+                      raise
+              else:
+                  raise AssertionError('unapproved reverse transfer was accepted')
+
+          denied(lambda c: c['transfers'].clear())
+          denied(lambda c: c['transfers'][0].update(state='reserved_group',
+                 registry_intent_path='outbox/pending/spec-dependency-2026-11-16.json'))
+          denied(lambda c: c['transfers'][0].update(
+              registry_issue_url='https://github.com/sankarshanmukhopadhyay/'
+                                 'rahp-assessment-registry/issues/89'))
+          denied(lambda c: c['transfers'][0].update(group_sha256='f'*64))
+          print('PASS actual accepted #88 ledger rejects deletion, regression, '
+                'owner substitution and source digest rewriting; no writes')
+          PY
