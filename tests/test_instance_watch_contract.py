@@ -24,7 +24,7 @@ class InstanceWatchContractTests(unittest.TestCase):
         expected = {
             "monitor": (None, {"contents": "read", "issues": "read"}),
             "publish_external": ("monitor", {
-                "contents": "read", "issues": "write", "actions": "read",
+                "contents": "read", "issues": "write", "actions": "read", "pull-requests": "read",
             }),
             "persist": ("publish_external", {
                 "contents": "write", "issues": "read", "actions": "write",
@@ -74,6 +74,7 @@ class InstanceWatchContractTests(unittest.TestCase):
         self.assertNotIn("git push\n", source)
         self.assertIn("automation/instance-monitor-", source)
         self.assertIn("Unmerged monitored-state PR exists", source)
+        self.assertIn("Pending protected-main instance state PR blocks re-publication", source)
         self.assertIn("disposition=staged_pending_review", source)
         self.assertIn("if: steps.persist.outputs.disposition == 'unchanged'", source)
         self.assertIn("needs.persist.outputs.disposition == 'unchanged'", source)
