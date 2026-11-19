@@ -140,7 +140,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          (cd build/instance-monitor && sha256sum --check source.sha256)
+          sha256sum --check build/instance-monitor/source.sha256
           tar -xzf build/instance-monitor/source.tar.gz -C .
       - name: Require unchanged Toolkit main before effect
         shell: bash
@@ -243,7 +243,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          (cd build/instance-monitor && sha256sum --check source.sha256)
+          sha256sum --check build/instance-monitor/source.sha256
           tar -xzf build/instance-monitor/source.tar.gz -C .
       - name: Require unchanged Toolkit main before effect
         shell: bash
