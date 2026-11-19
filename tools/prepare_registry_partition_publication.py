@@ -236,8 +236,9 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
                 owner = verify_registry_ack(
                     get, transfer, held[0]["source_event_sha256"])
             except PartitionError as exc:
-                if str(exc) != (
-                        "current observation lacks unique authenticated Registry acknowledgment"):
+                if str(exc) not in (
+                        "current observation lacks unique authenticated Registry acknowledgment",
+                        "new epoch scope absent or withdrawn"):
                     raise
             else:
                 if branch(get, TK) != context["GITHUB_SHA"]:
