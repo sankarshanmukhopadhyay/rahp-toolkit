@@ -221,10 +221,12 @@ class RetainedSelectionTests(unittest.TestCase):
                             "Registry monitored source observation received for administrative case " +
                             self.record["registry_issue_url"])
         self.epoch_scope = []
-        with self.assertRaisesRegex(guard.PartitionError, "scope absent"):
-            guard.plan(self.paths, self.root / "no-scope", self.ledger,
-                       token="token", get=self.get, context=self.context,
-                       source_combined=raw)
+        pending = guard.plan(self.paths, self.root / "no-scope", self.ledger,
+                             token="token", get=self.get, context=self.context,
+                             source_combined=raw)
+        self.assertEqual(pending["mode"], "changed_group_unqualified_retained")
+        self.assertFalse(pending["registry_observation_acknowledged"])
+        self.assertEqual(pending["retained_count"], 2)
         self.epoch_scope = [{
             "id": 10, "author_association": "OWNER",
             "user": {"login": guard.USER, "type": "User"},
@@ -232,10 +234,11 @@ class RetainedSelectionTests(unittest.TestCase):
             {"id": 11, "author_association": "OWNER",
              "user": {"login": guard.USER, "type": "User"},
              "body": guard.EPOCH_SCOPE_MARK + "withdraw:" + digest + " -->"}]
-        with self.assertRaisesRegex(guard.PartitionError, "withdrawn"):
-            guard.plan(self.paths, self.root / "withdrawn-scope", self.ledger,
-                       token="token", get=self.get, context=self.context,
-                       source_combined=raw)
+        withdrawn = guard.plan(self.paths, self.root / "withdrawn-scope",
+                               self.ledger, token="token", get=self.get,
+                               context=self.context, source_combined=raw)
+        self.assertEqual(withdrawn["mode"], "changed_group_unqualified_retained")
+        self.assertFalse(withdrawn["registry_observation_acknowledged"])
         self.epoch_scope[-1]["user"]["login"] = "attacker"
         with self.assertRaisesRegex(guard.PartitionError, "unauthorized"):
             guard.plan(self.paths, self.root / "spoofed-scope", self.ledger,
