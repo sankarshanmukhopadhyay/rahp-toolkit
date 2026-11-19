@@ -284,12 +284,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: dtg-source-qualified-queue-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            build/dtg-routing/controller-events.json
-            build/dtg-routing/combined-events.json
-            build/dtg-routing/dpip-events.json
-            build/dtg-routing/registry-partition/
-            build/dtg-routing/registry-publish-selection.json
+          # Retain the full relative tree; selector outputs reference
+          # build/dtg-routing paths in the separate publication job.
+          path: build/dtg-routing/
           if-no-files-found: error
 
       - name: Retain portfolio routing evidence
@@ -355,7 +352,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: dtg-source-qualified-queue-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .
+          path: build/dtg-routing/
       - name: Refuse source drift before any issue mutation
         shell: bash
         run: |
