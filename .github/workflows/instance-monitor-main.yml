@@ -25,9 +25,11 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  issues: write
-  actions: write
+  contents: read
+  issues: read
+concurrency:
+  group: rahp-instance-monitor
+  cancel-in-progress: false
 
 jobs:
   monitor:
@@ -93,6 +95,58 @@ jobs:
           --state instances/dtg/state/issues.json
           --events instances/dtg/state/issue-events.json
 
+      - name: Bundle exact observed event and state snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/instance-monitor
+          tar -czf build/instance-monitor/source.tar.gz \
+            instances/dtg/state instances/dtg/generated \
+            instances/cawg/state instances/cawg/generated \
+            profiles/dtg/rahp.yaml
+          sha256sum build/instance-monitor/source.tar.gz > build/instance-monitor/source.sha256
+      - name: Retain exact monitored source for the ordered publication and persistence jobs
+        uses: actions/upload-artifact@v7
+        with:
+          name: instance-monitor-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/instance-monitor/
+          if-no-files-found: error
+
+
+  publish_external:
+    needs: monitor
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Restore exact monitored source
+        uses: actions/download-artifact@v7
+        with:
+          name: instance-monitor-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/instance-monitor/
+      - name: Verify and restore pinned observation snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build/instance-monitor && sha256sum --check source.sha256)
+          tar -xzf build/instance-monitor/source.tar.gz -C .
+      - name: Require unchanged Toolkit main before effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$remote" != "$GITHUB_SHA" ]; then
+            echo "::error::Toolkit main moved between observation and publication/persistence"
+            exit 1
+          fi
       - name: Publish DTG assessment issues
         id: publish_dtg_assessments
         env:
@@ -160,6 +214,42 @@ jobs:
           --events instances/cawg/state/issue-events.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
 
+
+
+  persist:
+    needs: publish_external
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Restore exact monitored source
+        uses: actions/download-artifact@v7
+        with:
+          name: instance-monitor-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/instance-monitor/
+      - name: Verify and restore pinned observation snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build/instance-monitor && sha256sum --check source.sha256)
+          tar -xzf build/instance-monitor/source.tar.gz -C .
+      - name: Require unchanged Toolkit main before effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$remote" != "$GITHUB_SHA" ]; then
+            echo "::error::Toolkit main moved between observation and publication/persistence"
+            exit 1
+          fi
       - name: Persist observed revisions and non-empty DTG gatherer runs
         id: persist
         shell: bash
@@ -215,10 +305,40 @@ jobs:
           python3 tools/dtg_assurance_reconcile.py
           --incident-output /tmp/dtg-controller-incidents.json
 
-      - name: Persist unowned DTG broken-pipeline incidents
+      - name: Retain state reconciliation incident result
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/instance-monitor
+          cp /tmp/dtg-controller-incidents.json build/instance-monitor/controller-incidents.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: instance-monitor-incidents-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/instance-monitor/controller-incidents.json
+          if-no-files-found: error
+
+
+  local_incidents:
+    needs: persist
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v7
+        with:
+          name: instance-monitor-incidents-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/instance-monitor/
+      - name: Publish only unowned Toolkit-local controller incidents
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/publish_dtg_controller_incidents.py
-          /tmp/dtg-controller-incidents.json
+          build/instance-monitor/controller-incidents.json
           --repository "sankarshanmukhopadhyay/rahp-toolkit"
