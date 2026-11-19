@@ -138,6 +138,9 @@ When auditing workflows, use this order:
 The existence of four free workflow-budget slots is not itself justification to create another workflow.
 
 
+
+The current-main DTG materiality entry point now has separate jobs: the `handoff` job consumes and source-qualifies immutable Monitor findings under **read-only GitHub Issues permission**, retaining exact selected controller/combined/DPIP event batches as a run artifact; the `publish_external` job obtains `issues: write` only after this qualification, re-reads the current Toolkit main revision before the first mutation and performs the existing publication/DPIP transport. This is privilege separation, **not** a Registry ownership migration: until a generic durable Registry admission path replaces its three writers, the controlled Toolkit publisher still owns those unswitched external routes. A failed publication cannot be inferred to have succeeded because the source job passed.
+
 ## Default-branch entry-point rotation (Registry cutover WP1)
 
 The DTG materiality and incremental instance-monitor workflow registrations were rotated to new filenames in a coordinated change while retaining their original scheduled and manually invoked operational functions. The former filenames are no longer on `main`; the replacement jobs refuse non-main refs. This is defense-in-depth against executing old workflow paths and does **not** establish a server-enforced GitHub Issues credential fence, prove denial of numeric-ID dispatch against historical refs, or transfer the remaining seven external-case publisher routes to Registry. See the governing [Registry #77](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/77). Do not mark G3/G6 accepted without a real historical-ref rejection trace and corresponding publication conservation evidence.
