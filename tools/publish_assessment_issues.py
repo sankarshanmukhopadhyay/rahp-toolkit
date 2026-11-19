@@ -227,6 +227,25 @@ def verify_transfer_rollback_base(token: str, candidate_path: Path = TRANSFER_LE
     enforce_accepted_transfer_monotonicity(baseline, candidate)
 
 
+
+def enforce_actions_main_publication_context(context: dict[str, str]) -> None:
+    """Prevent updated publisher code from writing through non-main Actions refs.
+
+    Local explicit CLI operations retain their existing operator contract.
+    This check cannot constrain historical refs whose scripts predate it or
+    independently obtained GitHub credentials.
+    """
+    if context.get("GITHUB_ACTIONS") != "true":
+        return
+    if (context.get("GITHUB_REPOSITORY") != CANONICAL_RAHP_ISSUE_REPOSITORY
+            or context.get("GITHUB_REF") != "refs/heads/main"
+            or not re.fullmatch(r"[0-9a-f]{40}", context.get("GITHUB_SHA", ""))):
+        raise ValueError(
+            "issue mutation from GitHub Actions requires canonical Toolkit main "
+            "with a pinned runner commit; stale/foreign refs denied"
+        )
+
+
 def enforce_publication_repository(repository: str) -> str:
     """Reject any attempt to publish RAHP work items outside the RAHP repository."""
     repo = (repository or "").strip()
@@ -569,6 +588,11 @@ def main() -> int:
     if not token:
         raise SystemExit("GITHUB_TOKEN or GH_TOKEN is required")
     events = json.loads(args.events.read_text()) if args.events.exists() else []
+    if events:
+        try:
+            enforce_actions_main_publication_context(os.environ)
+        except ValueError as exc:
+            raise SystemExit(f"Toolkit publisher refused execution context: {exc}") from exc
     if not events:
         if args.result_json:
             args.result_json.parent.mkdir(parents=True, exist_ok=True)
