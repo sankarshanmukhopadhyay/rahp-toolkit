@@ -4,7 +4,7 @@
     {
       "assessment_key": "dtg:portfolio:combined:spec-dependency-alignment",
       "toolkit_issue_url": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/272",
-      "registry_intent_path": "outbox/pending/spec-dependency-2026-11-16.json",
+      "registry_issue_url": "https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/88",
       "monitor_revision": "7e2813c8daf867a21e4064513cc83612726aeb44",
       "snapshot_date": "2026-11-16",
       "finding_ids": [
@@ -14,7 +14,8 @@
         "acc9772126b1a3820240"
       ],
       "group_sha256": "3fc843eeaf48f0023582951a2f67a15638bd6c21e929e92765b1394f83718d4c",
-      "state": "reserved_group"
+      "maintainer_scope_sha256": "c60fec82a9671c8080738b5df6afa872dfba7cf08a9e801177322cafeada1c20",
+      "state": "accepted_group"
     }
   ]
 }
