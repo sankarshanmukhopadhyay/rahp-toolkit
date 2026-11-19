@@ -94,8 +94,14 @@ jobs:
                   raise AssertionError('unapproved reverse transfer was accepted')
 
           denied(lambda c: c['transfers'].clear())
-          denied(lambda c: c['transfers'][0].update(state='reserved_group',
-                 registry_intent_path='outbox/pending/spec-dependency-2026-11-16.json'))
+          def downgrade_to_valid_reservation(c):
+              row = c['transfers'][0]
+              for key in ('registry_issue_url', 'maintainer_scope_sha256'):
+                  row.pop(key)
+              row['registry_intent_path'] = (
+                  'outbox/pending/spec-dependency-2026-11-16.json')
+              row['state'] = 'reserved_group'
+          denied(downgrade_to_valid_reservation)
           denied(lambda c: c['transfers'][0].update(
               registry_issue_url='https://github.com/sankarshanmukhopadhyay/'
                                  'rahp-assessment-registry/issues/89'))
