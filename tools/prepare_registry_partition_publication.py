@@ -193,7 +193,33 @@ def plan(paths, stage_dir, ledger, *, token=None, get=None, context=None,
     if held and held[0]["source_event_sha256"] != transfer["group_sha256"]:
         if held[0].get("reason") != "unqualified_current_group_observation":
             raise PartitionError("changed group lacks preserved source evidence")
-        # Changed source never inherits the earlier Registry observation receipt.
+        # A later source epoch does not inherit the first accepted digest.
+        # It may be routed exclusively to Registry only after a *separate*
+        # authenticated Registry observation acknowledging its exact source
+        # event digest. An absent new ACK leaves the event held, not lost or
+        # silently republished in Toolkit.
+        if transfer["state"] == "accepted_group":
+            try:
+                owner = verify_registry_ack(
+                    get, transfer, held[0]["source_event_sha256"])
+            except PartitionError as exc:
+                if str(exc) != (
+                        "current observation lacks unique authenticated Registry acknowledgment"):
+                    raise
+            else:
+                if branch(get, TK) != context["GITHUB_SHA"]:
+                    raise PartitionError("Toolkit main changed during new epoch acceptance")
+                for path in selected:
+                    publisher.preflight_transfer_files([path], ledger)
+                return {"schema": "rahp-toolkit-guarded-publication-selection/v1",
+                        "mode": "changed_group_acknowledged_retained",
+                        "paths": [str(p) for p in selected],
+                        "retained_count": receipt["retained_count"],
+                        "held_count": receipt["held_count"],
+                        "registry_owner": owner,
+                        "source_event_sha256": held[0]["source_event_sha256"],
+                        "registry_observation_acknowledged": True,
+                        "cutover_authorized": False}
         for path in selected:
             publisher.preflight_transfer_files([path], ledger)
         return {"schema": "rahp-toolkit-guarded-publication-selection/v1",
