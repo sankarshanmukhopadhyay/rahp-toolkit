@@ -1,0 +1,61 @@
+name: Verify live Registry accepted group ownership
+on:
+  pull_request:
+    paths:
+      - 'instances/dtg/registry-transfers.json'
+      - '.github/workflows/registry-accepted-owner-live.yml'
+      - 'tools/prepare_registry_partition_publication.py'
+  push:
+    branches: [main]
+    paths:
+      - 'instances/dtg/registry-transfers.json'
+      - '.github/workflows/registry-accepted-owner-live.yml'
+      - 'tools/prepare_registry_partition_publication.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  accepted-owner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Independently verify exact Registry owner, source ACK, and maintainer scope
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib, sys
+          sys.path.insert(0, str(pathlib.Path('tools').resolve()))
+          import publish_assessment_issues as pub
+          import prepare_registry_partition_publication as guard
+
+          data = json.loads(pathlib.Path(
+              'instances/dtg/registry-transfers.json').read_text())
+          pub.load_transfer_keys_data(data)
+          records = data['transfers']
+          if len(records) != 1:
+              raise SystemExit('expected exactly one reviewed Registry group record')
+          record = records[0]
+          if record['assessment_key'] != guard.KEY:
+              raise SystemExit('unexpected source group key')
+          if record['state'] == 'reserved_group':
+              print('Source reservation is pending; no Registry acceptance inferred')
+              raise SystemExit(0)
+          if record['state'] != 'accepted_group':
+              raise SystemExit('unrecognized source owner state')
+          token = os.environ['GITHUB_TOKEN']
+          get = lambda url: pub.request('GET', url, token)
+          owner = guard.verify_registry_ack(get, record, record['group_sha256'])
+          if owner != record['registry_issue_url']:
+              raise SystemExit('accepted owner mismatch')
+          print('PASS independent live Registry accepted group owner and ACK')
+          print('Source SHA256:', record['group_sha256'])
+          print('Registry owner:', owner)
+          print('Historical Toolkit issue:', record['toolkit_issue_url'])
+          PY
