@@ -80,6 +80,19 @@ class InstanceWatchContractTests(unittest.TestCase):
         self.assertIn("do not reconcile unmerged findings", source)
         self.assertNotIn("git push origin main", source)
 
+    def test_accepted_state_reconciliation_reuses_canonical_controller(self):
+        source = (ROOT / ".github/workflows/dtg-assurance-reconcile.yml").read_text()
+        self.assertIn("github.event_name == 'push'", source)
+        self.assertIn("'instances/dtg/state/**'", source)
+        self.assertIn("'instances/cawg/state/**'", source)
+        self.assertIn("Retain accepted-state incident decision", source)
+        self.assertIn("needs: reconcile", source)
+        self.assertIn("issues: write", source)
+        self.assertIn("issues: read", source)
+        self.assertIn("publish_dtg_controller_incidents.py", source)
+        self.assertIn("github.ref == 'refs/heads/main'", source)
+        self.assertNotIn("instance-state-reconcile-main.yml", source)
+
     def test_current_head_assurance_dispatch_contract(self) -> None:
         result = subprocess.run(
             [sys.executable, str(VALIDATOR)],
