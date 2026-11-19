@@ -103,8 +103,34 @@ def verify_registry_ack(get, transfer, event_sha):
     marker = ACK_MARK + event_sha + " -->"
     acknowledgments = [x for x in acks if isinstance(x, dict)
                        and marker in (x.get("body") or "")]
-    if not acknowledgments or any(not trusted(x) for x in acknowledgments):
-        raise PartitionError("current observation lacks authenticated Registry acknowledgment")
+    # The Registry writer's contract requires exactly one durable, canonical
+    # comment. A substring match alone could select a duplicated, malformed or
+    # unrelated comment and falsely authorize the Toolkit publication split.
+    if len(acknowledgments) != 1 or not trusted(acknowledgments[0]):
+        raise PartitionError("current observation lacks unique authenticated Registry acknowledgment")
+    acknowledgment = acknowledgments[0]
+    comment_id = acknowledgment.get("id")
+    expected_comment_url = issue_url + "#issuecomment-" + str(comment_id)
+    if (type(comment_id) is not int or comment_id < 1 or
+            acknowledgment.get("html_url") != expected_comment_url):
+        raise PartitionError("source acknowledgment has invalid canonical GitHub identity")
+    ack_body = acknowledgment.get("body") or ""
+    if (not ack_body.startswith(marker) or
+            "Registry monitored source observation received for administrative case " +
+            issue_url not in ack_body):
+        raise PartitionError("source acknowledgment lacks exact owner and source context")
+    # Recheck Toolkit's canonical historical owner identity. A Registry issue
+    # number is never a replacement Toolkit execution or review worker number.
+    source_url = transfer["toolkit_issue_url"]
+    owner_number = source_url.removeprefix(publisher.TOOLKIT_ISSUE_PREFIX)
+    historical = get(API + TK + "/issues/" + owner_number)
+    if (not isinstance(historical, dict) or
+            historical.get("html_url") != source_url or
+            historical.get("number") != int(owner_number) or
+            historical.get("state") not in ("open", "closed") or
+            "<!-- rahp-assessment-key:" + transfer["assessment_key"] + " -->"
+            not in (historical.get("body") or "")):
+        raise PartitionError("historical Toolkit owner missing or substituted")
     verify_scope(get, transfer["maintainer_scope_sha256"])
     if branch(get, REG) != registry_head:
         raise PartitionError("Registry source authority changed during acknowledgment")
