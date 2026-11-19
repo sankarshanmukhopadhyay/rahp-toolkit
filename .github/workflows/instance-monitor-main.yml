@@ -23,6 +23,10 @@ on:
   schedule:
     - cron: '37 3 * * 1-5'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/instance-monitor-main.yml'
 
 permissions:
   contents: read
