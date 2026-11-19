@@ -52,6 +52,8 @@ class RetainedSelectionTests(unittest.TestCase):
         self.accept = {"id": 234, "author_association": "OWNER",
                        "body": guard.SCOPE_MARK + "accept:" + self.scope + " -->",
                        "user": {"login": guard.USER, "type": "User"}}
+        self.epoch_scope = []
+
         self.context = {"GITHUB_ACTIONS": "true",
                         "GITHUB_REF": "refs/heads/main",
                         "GITHUB_REPOSITORY": guard.TK, "GITHUB_SHA": "b"*40}
@@ -78,6 +80,8 @@ class RetainedSelectionTests(unittest.TestCase):
             return [self.ack]
         if url.startswith(guard.API + guard.REG + "/issues/11/comments?"):
             return [self.accept]
+        if url.startswith(guard.API + guard.REG + "/issues/77/comments?"):
+            return self.epoch_scope
         raise AssertionError("unreviewed GitHub API: " + url)
 
     def plan(self):
@@ -186,6 +190,10 @@ class RetainedSelectionTests(unittest.TestCase):
             source_combined=raw)
         self.assertEqual(unacknowledged["mode"], "changed_group_unqualified_retained")
         self.assertFalse(unacknowledged["registry_observation_acknowledged"])
+        self.epoch_scope = [{
+            "id": 301, "author_association": "OWNER",
+            "user": {"login": guard.USER, "type": "User"},
+            "body": guard.EPOCH_SCOPE_MARK + "accept:" + event_sha + " -->"}]
         self.ack["body"] = (
             guard.ACK_MARK + event_sha + " -->\\n\\n" +
             "Registry monitored source observation received for administrative case " +
@@ -201,6 +209,38 @@ class RetainedSelectionTests(unittest.TestCase):
         self.assertEqual((accepted["held_count"], accepted["retained_count"]), (1, 2))
         self.assertEqual(json.loads(Path(accepted["paths"][1]).read_text()), [])
         self.assertEqual(json.loads(Path(accepted["paths"][2]).read_text()), [self.dpip])
+
+    def test_subsequent_epoch_requires_fresh_current_maintainer_scope(self):
+        raw = self.root / "newer-original-group.json"
+        later = {**self.group, "observed_at": "2026-11-18",
+                 "body": "A materially changed source requires renewed owner consent"}
+        raw.write_text(json.dumps([later]))
+        self.paths[1].write_text(json.dumps([later]))
+        digest = partition.sha(partition.canonical(later))
+        self.ack["body"] = (guard.ACK_MARK + digest + " -->\\n" +
+                            "Registry monitored source observation received for administrative case " +
+                            self.record["registry_issue_url"])
+        self.epoch_scope = []
+        with self.assertRaisesRegex(guard.PartitionError, "scope absent"):
+            guard.plan(self.paths, self.root / "no-scope", self.ledger,
+                       token="token", get=self.get, context=self.context,
+                       source_combined=raw)
+        self.epoch_scope = [{
+            "id": 10, "author_association": "OWNER",
+            "user": {"login": guard.USER, "type": "User"},
+            "body": guard.EPOCH_SCOPE_MARK + "accept:" + digest + " -->"},
+            {"id": 11, "author_association": "OWNER",
+             "user": {"login": guard.USER, "type": "User"},
+             "body": guard.EPOCH_SCOPE_MARK + "withdraw:" + digest + " -->"}]
+        with self.assertRaisesRegex(guard.PartitionError, "withdrawn"):
+            guard.plan(self.paths, self.root / "withdrawn-scope", self.ledger,
+                       token="token", get=self.get, context=self.context,
+                       source_combined=raw)
+        self.epoch_scope[-1]["user"]["login"] = "attacker"
+        with self.assertRaisesRegex(guard.PartitionError, "unauthorized"):
+            guard.plan(self.paths, self.root / "spoofed-scope", self.ledger,
+                       token="token", get=self.get, context=self.context,
+                       source_combined=raw)
 
     def test_new_epoch_cannot_inherit_wrong_or_spoofed_receipt(self):
         raw = self.root / "another-epoch-combined.json"
