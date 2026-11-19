@@ -513,7 +513,7 @@ jobs:
           }
           out = pathlib.Path("build/cutover/legacy-registration-retirement.json")
           out.parent.mkdir(parents=True, exist_ok=True)
-          out.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\\n")
+          out.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
           print("PASS exact legacy registration states no longer active;")
           print("historical dispatch denial and global cutover still require independent proof")
           PY
