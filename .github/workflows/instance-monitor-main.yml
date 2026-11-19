@@ -124,6 +124,7 @@ jobs:
     permissions:
       contents: read
       issues: write
+      pull-requests: read
       actions: read
     steps:
       - uses: actions/checkout@v7
@@ -149,6 +150,17 @@ jobs:
           remote="$(git ls-remote origin refs/heads/main | cut -f1)"
           if [ "$remote" != "$GITHUB_SHA" ]; then
             echo "::error::Toolkit main moved between observation and publication/persistence"
+            exit 1
+          fi
+      - name: Refuse additional external publication while state acceptance is pending
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pending="$(gh pr list --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("automation/instance-monitor-"))] | length')"
+          if [ "$pending" != "0" ]; then
+            echo "::error::Pending protected-main instance state PR blocks re-publication; preserve the new observed source artifact"
             exit 1
           fi
       - name: Publish DTG assessment issues
