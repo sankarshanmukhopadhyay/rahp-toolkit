@@ -31,10 +31,21 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
             },
         ]
 
-    def test_registry_transfer_guard_defaults_to_no_transfer(self) -> None:
+    def test_registry_transfer_guard_honors_committed_source_reservation(self) -> None:
+        # The authoritative ledger is now deliberately source-scoped, rather
+        # than empty. Unrelated RAHP publication must continue, but the
+        # reserved combined group must never be published or coalesced here.
         keys = publisher.load_transfer_keys(publisher.TRANSFER_LEDGER)
-        self.assertEqual(keys, set())
+        self.assertEqual(keys, {"dtg:portfolio:combined:spec-dependency-alignment"})
         publisher.enforce_registry_transfer_boundary([{"assessment_key": self.key}], keys)
+        with self.assertRaisesRegex(ValueError, "Registry-owned"):
+            publisher.enforce_registry_transfer_boundary(
+                [{"assessment_key": "dtg:portfolio:combined:spec-dependency-alignment"}], keys)
+        with self.assertRaisesRegex(ValueError, "Registry-owned"):
+            publisher.enforce_registry_transfer_boundary(
+                [{"assessment_key": self.key,
+                  "related_assessment_key": "dtg:portfolio:combined:spec-dependency-alignment"}],
+                keys)
 
     def test_reserved_transfer_blocks_toolkit_before_successor_exists(self) -> None:
         import json
