@@ -6,6 +6,13 @@ on:
   schedule:
     - cron: '41 */6 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'instances/dtg/state/**'
+      - 'instances/dtg/generated/gatherer-runs/**'
+      - 'instances/cawg/state/**'
+      - 'profiles/dtg/rahp.yaml'
 
 permissions:
   contents: read
@@ -20,7 +27,8 @@ jobs:
     if: >-
       github.event_name == 'workflow_dispatch' ||
       github.event_name == 'schedule' ||
-      (github.event_name == 'issues' && contains(github.event.issue.body, 'rahp-dtg-gatherer'))
+      (github.event_name == 'issues' && contains(github.event.issue.body, 'rahp-dtg-gatherer')) ||
+      github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -43,3 +51,43 @@ jobs:
             --result-output /tmp/dtg-assurance-result.yaml \
             | tee /tmp/dtg-assurance-summary.md
           cat /tmp/dtg-assurance-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Render accepted-state unowned controller incidents
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/dtg_assurance_reconcile.py
+          --incident-output build/accepted-state-incidents.json
+      - name: Retain accepted-state incident decision
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v7
+        with:
+          name: accepted-instance-state-incidents-${{ github.run_id }}
+          path: build/accepted-state-incidents.json
+          if-no-files-found: error
+
+  local_incidents:
+    needs: reconcile
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v7
+        with:
+          name: accepted-instance-state-incidents-${{ github.run_id }}
+          path: build/
+      - name: Publish only unowned Toolkit-local controller incidents from accepted state
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/publish_dtg_controller_incidents.py
+          build/accepted-state-incidents.json
+          --repository "sankarshanmukhopadhyay/rahp-toolkit"

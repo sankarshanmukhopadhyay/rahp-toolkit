@@ -24,10 +24,10 @@ class InstanceWatchContractTests(unittest.TestCase):
         expected = {
             "monitor": (None, {"contents": "read", "issues": "read"}),
             "publish_external": ("monitor", {
-                "contents": "read", "issues": "write", "actions": "read",
+                "contents": "read", "issues": "write", "actions": "read", "pull-requests": "read",
             }),
             "persist": ("publish_external", {
-                "contents": "write", "issues": "read", "actions": "write",
+                "contents": "write", "issues": "read", "actions": "write", "pull-requests": "write",
             }),
             "local_incidents": ("persist", {
                 "contents": "read", "issues": "write",
@@ -65,6 +65,35 @@ class InstanceWatchContractTests(unittest.TestCase):
         self.assertIn("Retain exact monitored source", source)
         self.assertIn("needs: publish_external", source)
 
+    def test_protected_main_requires_state_pr_not_bot_direct_push(self):
+        source = (ROOT / ".github/workflows/instance-monitor-main.yml").read_text()
+        self.assertIn("pull-requests: write", source)
+        self.assertIn("gh pr create --base main", source)
+        self.assertIn("git commit -s", source)
+        self.assertIn('git push -u origin "$branch"', source)
+        self.assertNotIn("git push\n", source)
+        self.assertIn("automation/instance-monitor-", source)
+        self.assertIn("Unmerged monitored-state PR exists", source)
+        self.assertIn("Pending protected-main instance state PR blocks re-publication", source)
+        self.assertIn("disposition=staged_pending_review", source)
+        self.assertIn("if: steps.persist.outputs.disposition == 'unchanged'", source)
+        self.assertIn("needs.persist.outputs.disposition == 'unchanged'", source)
+        self.assertIn("do not reconcile unmerged findings", source)
+        self.assertNotIn("git push origin main", source)
+
+    def test_accepted_state_reconciliation_reuses_canonical_controller(self):
+        source = (ROOT / ".github/workflows/dtg-assurance-reconcile.yml").read_text()
+        self.assertIn("github.event_name == 'push'", source)
+        self.assertIn("'instances/dtg/state/**'", source)
+        self.assertIn("'instances/cawg/state/**'", source)
+        self.assertIn("Retain accepted-state incident decision", source)
+        self.assertIn("needs: reconcile", source)
+        self.assertIn("issues: write", source)
+        self.assertIn("issues: read", source)
+        self.assertIn("publish_dtg_controller_incidents.py", source)
+        self.assertIn("github.ref == 'refs/heads/main'", source)
+        self.assertNotIn("instance-state-reconcile-main.yml", source)
+
     def test_current_head_assurance_dispatch_contract(self) -> None:
         result = subprocess.run(
             [sys.executable, str(VALIDATOR)],
@@ -74,7 +103,7 @@ class InstanceWatchContractTests(unittest.TestCase):
             stderr=subprocess.STDOUT,
         )
         self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("PASS instance-watch current-head assurance dispatch contract", result.stdout)
+        self.assertIn("PASS instance-watch protected-main state acceptance and assurance dispatch contract", result.stdout)
 
 
 if __name__ == "__main__":
