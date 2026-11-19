@@ -27,7 +27,7 @@ class InstanceWatchContractTests(unittest.TestCase):
                 "contents": "read", "issues": "write", "actions": "read", "pull-requests": "read",
             }),
             "persist": ("publish_external", {
-                "contents": "write", "issues": "read", "actions": "write",
+                "contents": "write", "issues": "read", "actions": "write", "pull-requests": "write",
             }),
             "local_incidents": ("persist", {
                 "contents": "read", "issues": "write",
@@ -103,7 +103,7 @@ class InstanceWatchContractTests(unittest.TestCase):
             stderr=subprocess.STDOUT,
         )
         self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("PASS instance-watch current-head assurance dispatch contract", result.stdout)
+        self.assertIn("PASS instance-watch protected-main state acceptance and assurance dispatch contract", result.stdout)
 
 
 if __name__ == "__main__":
