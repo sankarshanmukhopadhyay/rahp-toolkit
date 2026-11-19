@@ -51,6 +51,9 @@ workflows:
   release-codename-policy.yml:
     class: bounded-evidence
     responsibility: release-codename-policy-validation
+  registry-accepted-owner-live.yml:
+    class: bounded-evidence
+    responsibility: registry-accepted-group-live-owner-ack-validation
   workflow-governance.yml:
     class: governance
     responsibility: github-actions-surface-governance
