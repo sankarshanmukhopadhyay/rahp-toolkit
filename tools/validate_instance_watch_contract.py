@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-WATCH = ROOT / ".github" / "workflows" / "instance-watch.yml"
+WATCH = ROOT / ".github" / "workflows" / "instance-monitor-main.yml"
 WORKFLOWS = ROOT / ".github" / "workflows"
 
 
