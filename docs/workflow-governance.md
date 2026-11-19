@@ -43,10 +43,10 @@ Mechanical similarity is not sufficient reason to merge workflows when doing so 
   - `combined_review` owns bounded combined-review advancement for `dtg:portfolio:combined:` work;
   - `dtg_repository_review` owns gatherer-native repository-review advancement for `rahp-assessment-key:dtg:repository:` work.
   Issue routing, manual selection and concurrency groups remain separate. One six-hour schedule provides recovery for both jobs.
-- `dtg-portfolio-materiality-handoff.yml` — portfolio materiality/routing handoff; it dispatches the generic cross-spec executor directly.
+- `dtg-materiality-main.yml` — portfolio materiality/routing handoff; it dispatches the generic cross-spec executor directly.
 - `dpip-lifecycle.yml` — owns both explicit RAHP→DPIP referral transport and RAHP/DPIP lifecycle/return reconciliation. The `assurance:dpip-requested` label routes only to a globally serialized handoff job; it does **not** invoke lifecycle reconciliation. Scheduled/manual lifecycle execution hands off only after successful lifecycle processing.
 - `dtg-assurance-reconcile.yml` — DTG gatherer assurance reconciliation.
-- `instance-watch.yml` — scheduled instance observation, publication and persistence controller.
+- `instance-monitor-main.yml` — scheduled instance observation, publication and persistence controller.
 
 Consolidation at the workflow-file level does not merge the underlying state machines. Independent job conditions, concurrency identities and controller commands remain visible where state ownership differs.
 
@@ -136,3 +136,11 @@ When auditing workflows, use this order:
 - converge action major versions opportunistically, without mixing version churn with semantic workflow changes.
 
 The existence of four free workflow-budget slots is not itself justification to create another workflow.
+
+
+
+The current-main DTG materiality entry point now has separate jobs: the `handoff` job consumes and source-qualifies immutable Monitor findings under **read-only GitHub Issues permission**, retaining exact selected controller/combined/DPIP event batches as a run artifact; the `publish_external` job obtains `issues: write` only after this qualification, re-reads the current Toolkit main revision before the first mutation and performs the existing publication/DPIP transport. This is privilege separation, **not** a Registry ownership migration: until a generic durable Registry admission path replaces its three writers, the controlled Toolkit publisher still owns those unswitched external routes. A failed publication cannot be inferred to have succeeded because the source job passed.
+
+## Default-branch entry-point rotation (Registry cutover WP1)
+
+The DTG materiality and incremental instance-monitor workflow registrations were rotated to new filenames in a coordinated change while retaining their original scheduled and manually invoked operational functions. The former filenames are no longer on `main`; the replacement jobs refuse non-main refs. This is defense-in-depth against executing old workflow paths and does **not** establish a server-enforced GitHub Issues credential fence, prove denial of numeric-ID dispatch against historical refs, or transfer the remaining seven external-case publisher routes to Registry. See the governing [Registry #77](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/77). Do not mark G3/G6 accepted without a real historical-ref rejection trace and corresponding publication conservation evidence.

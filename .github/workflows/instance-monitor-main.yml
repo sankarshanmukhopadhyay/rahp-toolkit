@@ -31,6 +31,9 @@ permissions:
 
 jobs:
   monitor:
+    # Only the current default-branch entry point may mutate Toolkit state.
+    # Historical source revisions remain available for review, not dispatch.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

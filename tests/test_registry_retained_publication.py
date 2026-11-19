@@ -304,7 +304,7 @@ class RetainedSelectionTests(unittest.TestCase):
                        source_combined=raw)
 
     def test_workflow_preserves_original_before_materiality_enrichment(self):
-        wf = (ROOT / ".github/workflows/dtg-portfolio-materiality-handoff.yml").read_text()
+        wf = (ROOT / ".github/workflows/dtg-materiality-main.yml").read_text()
         raw = wf.index("Preserve original canonical combined source")
         journal = wf.index("Journal combined-review materiality")
         staged = wf.index("Stage lossless Registry source partitions")

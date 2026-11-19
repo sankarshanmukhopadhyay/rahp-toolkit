@@ -150,7 +150,7 @@ class RegistrySourcePartitionTests(unittest.TestCase):
             self.assertFalse((root / "out").exists())
 
     def test_workflow_stages_after_enrichment_before_existing_preflight(self):
-        text = (ROOT / ".github/workflows/dtg-portfolio-materiality-handoff.yml").read_text()
+        text = (ROOT / ".github/workflows/dtg-materiality-main.yml").read_text()
         journal = text.index("name: Journal DPIP materiality and gate reassessment")
         stage = text.index("name: Stage lossless Registry source partitions")
         preflight = text.index("name: Preflight all DTG publication batches")
