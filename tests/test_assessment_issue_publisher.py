@@ -188,10 +188,17 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
         for file in ("controller-events.json", "combined-events.json", "dpip-events.json"):
             self.assertIn(file, selector_block)
         for name in ("controller", "combined", "dpip"):
-            self.assertIn("steps.registry-selection.outputs." + name, preflight_block)
-            self.assertIn("--events " + "${{ steps.registry-selection.outputs." +
+            self.assertIn("needs.handoff.outputs." + name, preflight_block)
+            self.assertIn("--events " + "${{ needs.handoff.outputs." +
                           name + " }}", text[first_write:])
         self.assertIn("--check-transfers", preflight_block)
+        self.assertIn("publish_external:", text)
+        self.assertIn("permissions:\\n      contents: read\\n      issues: write", text)
+        self.assertIn("issues: read", text[:text.index("  publish_external:")])
+        self.assertIn("actions/download-artifact@v7", text)
+        self.assertIn("Refuse source drift before any issue mutation", text)
+        self.assertLess(text.index("Retain exact source-qualified publication inputs"), first_write)
+
 
     def test_live_fence_rejects_stale_writer_after_reservation(self) -> None:
         import base64
