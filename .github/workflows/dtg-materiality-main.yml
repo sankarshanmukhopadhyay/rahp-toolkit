@@ -17,6 +17,7 @@ on:
       - 'tools/fetch_dtg_portfolio_snapshot.py'
       - 'tools/dtg_portfolio_routing.py'
       - 'tools/prepare_registry_partition_publication.py'
+      - 'tools/retire_legacy_writer_workflows.py'
       - 'instances/dtg/registry-transfers.json'
       - 'tools/dtg_portfolio_baseline.py'
       - 'tools/materiality_journal_gate.py'
@@ -441,82 +442,14 @@ jobs:
       contents: read
       actions: write
     steps:
+      - name: Check retirement authorization and adversarial failure semantics
+        run: python3 -m unittest discover -s tests -p 'test_retire_legacy_writer_workflows.py' -v
       - name: Verify replacement registrations and retire only exact legacy workflow IDs
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json
-          import os
-          import pathlib
-          import subprocess
-
-          repository = os.environ["GITHUB_REPOSITORY"]
-          expected = "sankarshanmukhopadhyay/rahp-toolkit"
-          if repository != expected or os.environ.get("GITHUB_REF") != "refs/heads/main":
-              raise SystemExit("wrong repository/ref for retired-writer administration")
-
-          def api(*args):
-              result = subprocess.run(
-                  ["gh", "api", *args], capture_output=True, text=True, check=True
-              )
-              return json.loads(result.stdout) if result.stdout.strip() else None
-
-          registered = api("repos/" + repository + "/actions/workflows?per_page=100")
-          rows = registered.get("workflows") if isinstance(registered, dict) else None
-          if not isinstance(rows, list):
-              raise SystemExit("workflow registration inventory unavailable")
-          replacement_names = {
-              ".github/workflows/dtg-materiality-main.yml",
-              ".github/workflows/instance-monitor-main.yml",
-          }
-          for path in replacement_names:
-              matches = [row for row in rows if row.get("path") == path]
-              if len(matches) != 1 or matches[0].get("state") != "active":
-                  raise SystemExit("replacement workflow not registered and active: " + path)
-
-          retired = [
-              (343470013, ".github/workflows/dtg-portfolio-materiality-handoff.yml"),
-              (334033746, ".github/workflows/instance-watch.yml"),
-          ]
-          result = []
-          for workflow_id, original_path in retired:
-              entry = api(f"repos/{repository}/actions/workflows/{workflow_id}")
-              if not isinstance(entry, dict) or entry.get("path") != original_path:
-                  raise SystemExit("legacy workflow ID/path mismatch; refusing disable")
-              previous = entry.get("state")
-              if previous == "active":
-                  subprocess.run(
-                      ["gh", "api", "--method", "PUT",
-                       f"repos/{repository}/actions/workflows/{workflow_id}/disable"],
-                      check=True, capture_output=True, text=True
-                  )
-              elif previous not in ("disabled_manually", "deleted", "disabled_inactivity"):
-                  raise SystemExit("unknown legacy workflow state: " + str(previous))
-              current = api(f"repos/{repository}/actions/workflows/{workflow_id}")
-              if current.get("path") != original_path or current.get("state") == "active":
-                  raise SystemExit("old workflow still executable after retirement attempt")
-              result.append({
-                  "id": workflow_id, "path": original_path,
-                  "state_before": previous, "state_after": current["state"],
-              })
-          receipt = {
-              "schema": "rahp-legacy-workflow-registration-retirement/v1",
-              "toolkit_commit": os.environ["GITHUB_SHA"],
-              "replacements_active": sorted(replacement_names),
-              "legacy_registrations": result,
-              "historical_ref_dispatch_denial_tested": False,
-              "global_issues_api_exclusivity_verified": False,
-              "registry_cutover_authorized": False,
-          }
-          out = pathlib.Path("build/cutover/legacy-registration-retirement.json")
-          out.parent.mkdir(parents=True, exist_ok=True)
-          out.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-          print("PASS exact legacy registration states no longer active;")
-          print("historical dispatch denial and global cutover still require independent proof")
-          PY
+        run: >-
+          python3 tools/retire_legacy_writer_workflows.py
+          --out build/cutover/legacy-registration-retirement.json
       - name: Retain legacy workflow retirement evidence
         if: always()
         uses: actions/upload-artifact@v7
