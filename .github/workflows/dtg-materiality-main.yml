@@ -442,6 +442,7 @@ jobs:
       contents: read
       actions: write
     steps:
+      - uses: actions/checkout@v7
       - name: Check retirement authorization and adversarial failure semantics
         run: python3 -m unittest discover -s tests -p 'test_retire_legacy_writer_workflows.py' -v
       - name: Verify replacement registrations and retire only exact legacy workflow IDs
