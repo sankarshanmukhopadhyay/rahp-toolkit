@@ -5,23 +5,50 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      state_pr_number:
+        description: 'Exact open monitor-state PR to validate at this dispatch ref'
+        required: false
+        type: string
+        default: ''
   schedule:
     - cron: '17 3 * * 0'
 
 jobs:
   dco:
     name: DCO
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.state_pr_number != '')
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
     steps:
       - uses: actions/checkout@v7
+      - name: Qualify exact PR scope for automated state validation
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.state_pr_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]] || { echo 'Invalid state PR number' >&2; exit 1; }
+          [[ "$GITHUB_REF" == refs/heads/automation/instance-monitor-* ]] || {
+            echo 'State PR dispatch must execute on its automation branch' >&2
+            exit 1
+          }
+          subject="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq \
+            '[.state, .base.ref, .head.repo.full_name, .head.ref, .head.sha] | @tsv')"
+          IFS=$'\t' read -r state base owner branch head_sha <<< "$subject"
+          [[ "$state" == open && "$base" == main && "$owner" == "$GITHUB_REPOSITORY" &&
+             "$branch" == automation/instance-monitor-* && "$head_sha" == "$GITHUB_SHA" ]] || {
+            echo 'State PR head and dispatch revision do not match' >&2
+            exit 1
+          }
       - name: Validate pull-request commit sign-offs
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.state_pr_number }}
         run: bash tools/dco-check.sh pr
 
   impact:

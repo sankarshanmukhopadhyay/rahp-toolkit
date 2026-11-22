@@ -5,6 +5,12 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      state_pr_number:
+        description: 'Optional automated state PR validation (never publish Pages)'
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -82,13 +88,13 @@ jobs:
         run: python3 tools/validate_jtd_site.py _site
 
       - name: Upload Pages artifact
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || inputs.state_pr_number == '')
         uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || inputs.state_pr_number == '')
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -104,7 +110,7 @@ jobs:
         uses: actions/deploy-pages@v5
 
   observe_published:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || inputs.state_pr_number == '')
     needs: deploy
     runs-on: ubuntu-latest
     permissions:
