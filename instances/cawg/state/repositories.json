@@ -2,9 +2,9 @@
   "version": 1,
   "targets": {
     "decentralized-identity/cawg-identity-assertion@main": {
-      "sha": "8851770a46221729b4e0d92cbfcad484b245cc71",
+      "sha": "5903cdd26c313746ee28eddaebe751a5cbfcf87a",
       "status": "active",
-      "observed_at": "2026-08-18T04:18:03.349391+00:00"
+      "observed_at": "2026-11-22T23:32:47.440524+00:00"
     },
     "decentralized-identity/cawg-metadata-assertion@main": {
       "sha": "64069e062b6dfa1105844a773fdfd80a69356b72",
