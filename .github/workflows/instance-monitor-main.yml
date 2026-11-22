@@ -152,6 +152,10 @@ jobs:
             echo "::error::Toolkit main moved between observation and publication/persistence"
             exit 1
           fi
+      - name: Reject unresolved state branches before issue publication or persistence
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/check_monitor_state_branches.py
       - name: Refuse additional external publication while state acceptance is pending
         env:
           GH_TOKEN: ${{ github.token }}
@@ -269,6 +273,10 @@ jobs:
             echo "::error::Toolkit main moved between observation and publication/persistence"
             exit 1
           fi
+      - name: Reject unresolved state branches before issue publication or persistence
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/check_monitor_state_branches.py
       - name: Stage monitored state under protected-main review
         id: persist
         shell: bash
