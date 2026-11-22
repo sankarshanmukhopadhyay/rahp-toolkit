@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "id": "gha-45083755074-1",
+  "fingerprint": "c92dfbbb0ae3f82335c31930",
+  "qualifying_events": [
+    "0eef1d464207dd00d24a"
+  ],
+  "event_count": 1,
+  "recorded_at": "2026-11-22T23:32:46.710732+00:00",
+  "source": "rahp-dtg-gatherer"
+}
