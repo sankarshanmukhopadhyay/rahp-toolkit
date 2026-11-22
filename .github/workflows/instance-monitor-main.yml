@@ -317,7 +317,18 @@ jobs:
             pr_url="$(gh pr create --base main --head "$branch" \
               --title "chore(assurance): review monitored instance state from run #${GITHUB_RUN_ID}" \
               --body "Source observation and external issue publication completed in Toolkit Actions run #${GITHUB_RUN_ID}, attempt ${GITHUB_RUN_ATTEMPT}. This PR stages the exact observed state; it has NOT been accepted or persisted into main. Review DCO and required checks before merge. Source and result evidence remain in that Actions run. No assurance PASS, Registry ownership cutover, or controller-incident conclusion is inferred.")"
-            echo "Pending protected-main state PR: $pr_url"
+            # A PR created by GITHUB_TOKEN does not emit follow-on pull_request
+            # workflow runs. Dispatch the existing required checks against the
+            # exact signed state branch, leaving protected-main review intact.
+            pr_number="$(gh pr view "$pr_url" --json number --jq '.number')"
+            pr_head="$(gh pr view "$pr_url" --json headRefOid --jq '.headRefOid')"
+            if [ "$pr_head" != "$(git rev-parse HEAD)" ]; then
+              echo "::error::Created state PR head differs from the staged commit"
+              exit 1
+            fi
+            gh workflow run validate.yml --ref "$branch" -f state_pr_number="$pr_number"
+            gh workflow run pages.yml --ref "$branch" -f state_pr_number="$pr_number"
+            echo "Pending protected-main state PR with required CI dispatch: $pr_url"
             echo "disposition=staged_pending_review" >> "$GITHUB_OUTPUT"
             echo "state_pr_url=$pr_url" >> "$GITHUB_OUTPUT"
           fi
