@@ -1,0 +1,68 @@
+# Monitor-state GitHub App credential boundary
+
+The incremental instance monitor **observes** DTG/CAWG sources using the
+existing read-only authority and **publishes** eligible assessment events using
+its separately scoped `publish_external` job. The dedicated GitHub App is
+used **only** by the `persist` job to push a signed observation-state branch
+and create its protected-main pull request. It does not own RAHP assessment
+cases, authorize Registry transfers, execute specialist reviews, or bypass
+GitHub rulesets.
+
+## Repository administrator setup
+
+Install a dedicated GitHub App **only** on
+`sankarshanmukhopadhyay/rahp-toolkit` with repository permissions:
+**Contents: Read and write** and **Pull requests: Read and write**.
+It does not need Issues, Actions, Checks, Administration, or permission to
+merge protected `main`. In Toolkit's Actions settings, configure:
+
+- Repository variable `RAHP_STATE_APP_ID`: numeric App ID.
+- Repository secret `RAHP_STATE_APP_PRIVATE_KEY`: complete PEM private key.
+
+Never print or commit the private key. Rotate it through GitHub App settings
+and update the Actions secret if compromised. Remove the App installation to
+revoke future state-writing authority. Keep a scope review on any App
+permission or installation change.
+
+## Runtime and credentials
+
+The job uses SHA-pinned `actions/create-github-app-token` to request a
+short-lived, installation-scoped token limited to this repository and the two
+write permissions. `actions/checkout` does not retain the default workflow
+token in Git configuration. Git resolves the authenticated App bot identity
+for the author and its matching DCO Signed-off-by trailer. A temporary Git
+credential helper supplies the App token for the **one branch push**; `gh`
+uses it to create the state PR. Token values are not written to repository
+files or printed in logs.
+
+The native `pull_request` event from the App-created PR must execute required
+checks on the PR merge candidate. Previously implemented `workflow_dispatch`
+head checks remain available for targeted diagnostics, but **do not**
+substitute for required merge-candidate checks. No automatic merge is granted.
+Only merged, protected-main state is eligible for canonical reconciliation
+and Toolkit-local incident publication.
+
+## Qualification checklist
+
+1. Review the PR that changes the workflow; require DCO, actionlint,
+   governance, validation, build, impact and TypeScript checks.
+2. Observe a genuine subsequent `instance-monitor-main.yml` run. Verify
+   `monitor`, `publish_external` and `persist` succeed and one branch
+   `automation/instance-monitor-<run>-<attempt>` is created by the App.
+3. Inspect the **PR actor**, signed state commit and native PR-triggered
+   required checks. Confirm that the synthetic PR merge candidate has the
+   required successful checks, not merely its branch head.
+4. Accept the PR through normal protected-main merge only after all checks
+   pass. Verify `dtg-assurance-reconcile.yml` runs `reconcile` and
+   `local_incidents` after acceptance, not before.
+5. Re-run monitoring with the accepted baseline. Confirm there are no
+   duplicate issue effects or orphan branches and that Registry transfer
+   fences still reject Toolkit publication for Registry-owned keys.
+
+If the App ID, private key, installation, bot identity or permission
+qualification is unavailable, the persistence job must **fail closed**.
+Do not fall back to the default `GITHUB_TOKEN` for PR creation, disable
+branch protection or make a fake status check green. Preserve the monitored
+source artifact for controlled replay. This credential does **not** complete
+the independent Toolkit-to-Registry producer migration tracked in Registry
+issue #77.
