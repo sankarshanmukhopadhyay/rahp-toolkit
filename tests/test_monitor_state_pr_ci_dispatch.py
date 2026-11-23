@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1] / ".github" / "workflows"
 class MonitorStatePRCIDispatchTests(unittest.TestCase):
     def test_app_settings_preflight_precedes_monitor_observation_and_all_issue_writes(self):
         text = (ROOT / "instance-monitor-main.yml").read_text()
-        monitor = text.split("\\n  monitor:", 1)[1].split("\\n  publish_external:", 1)[0]
-        publisher = text.split("\\n  publish_external:", 1)[1].split("\\n  persist:", 1)[0]
+        monitor = text.split("\n  monitor:", 1)[1].split("\n  publish_external:", 1)[0]
+        publisher = text.split("\n  publish_external:", 1)[1].split("\n  persist:", 1)[0]
         for required in (
             "Require state-PR GitHub App configuration before observation and publication",
             "STATE_APP_ID: ${{ vars.RAHP_STATE_APP_ID }}",
@@ -21,7 +21,7 @@ class MonitorStatePRCIDispatchTests(unittest.TestCase):
             self.assertIn(required, monitor)
         self.assertLess(monitor.index("Require state-PR GitHub App configuration"),
                         monitor.index("Check DTG instance"))
-        self.assertIn("needs: monitor", text.split("\\n  publish_external:", 1)[1])
+        self.assertIn("needs: monitor", text.split("\n  publish_external:", 1)[1])
         self.assertIn("Publish DTG assessment issues", publisher)
 
     def test_native_pr_checks_use_scoped_app_token(self):
