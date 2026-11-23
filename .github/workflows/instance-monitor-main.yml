@@ -119,6 +119,14 @@ jobs:
           --state instances/dtg/state/issues.json
           --events instances/dtg/state/issue-events.json
 
+      - name: Validate and index immutable review-event provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/index_monitored_review_events.py \
+            --dtg instances/dtg/generated/review-events.json \
+            --cawg instances/cawg/generated/review-events.json \
+            --out build/instance-monitor/registry-review-event-index.json
       - name: Bundle exact observed event and state snapshot
         shell: bash
         run: |
@@ -356,11 +364,13 @@ jobs:
           git add \
             instances/dtg/state/repositories.json \
             instances/dtg/generated/repositories.yaml \
+            instances/dtg/generated/review-events.json \
             profiles/dtg/rahp.yaml \
             instances/dtg/state/issues.json \
             instances/dtg/state/issue-events.json \
             instances/cawg/state/repositories.json \
             instances/cawg/generated/repositories.yaml \
+            instances/cawg/generated/review-events.json \
             instances/cawg/state/issues.json \
             instances/cawg/state/issue-events.json
           if [ -d instances/dtg/generated/gatherer-runs ]; then
