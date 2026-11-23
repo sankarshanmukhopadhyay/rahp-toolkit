@@ -27,7 +27,7 @@ class InstanceWatchContractTests(unittest.TestCase):
                 "contents": "read", "issues": "write", "actions": "read", "pull-requests": "read",
             }),
             "persist": ("publish_external", {
-                "contents": "write", "issues": "read", "actions": "write", "pull-requests": "write",
+                "contents": "read", "issues": "read", "pull-requests": "read",
             }),
             "local_incidents": ("persist", {
                 "contents": "read", "issues": "write",
@@ -50,7 +50,8 @@ class InstanceWatchContractTests(unittest.TestCase):
         self.assertIn("dtg_repository_review_worker.py", publisher)
         self.assertNotIn("publish_assessment_issues.py", persisted)
         self.assertNotIn("publish_dtg_controller_incidents.py", persisted)
-        self.assertIn("git push", persisted)
+        self.assertIn('push -u origin "$branch"', persisted)
+        self.assertIn("credential.helper=", persisted)
         self.assertIn("dtg_assurance_reconcile.py", persisted)
         self.assertIn("publish_dtg_controller_incidents.py", local)
         self.assertNotIn("publish_assessment_issues.py", local)
@@ -67,10 +68,13 @@ class InstanceWatchContractTests(unittest.TestCase):
 
     def test_protected_main_requires_state_pr_not_bot_direct_push(self):
         source = (ROOT / ".github/workflows/instance-monitor-main.yml").read_text()
-        self.assertIn("pull-requests: write", source)
+        self.assertIn("permission-pull-requests: write", source)
+        self.assertIn("permission-contents: write", source)
+        self.assertIn("persist-credentials: false", source)
         self.assertIn("gh pr create --base main", source)
         self.assertIn("git commit -s", source)
-        self.assertIn('git push -u origin "$branch"', source)
+        self.assertIn('push -u origin "$branch"', source)
+        self.assertIn("credential.helper=", source)
         self.assertNotIn("git push\n", source)
         self.assertIn("automation/instance-monitor-", source)
         self.assertIn("Unmerged monitored-state PR exists", source)
