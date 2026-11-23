@@ -214,6 +214,10 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
         def fake(method, url, token, payload=None):
             if url.endswith("/branches/main"):
                 return {"commit": {"sha": "a"*40}}
+            if "/contents/instances/dtg/external-case-publication.json?" in url:
+                return {"encoding": "base64", "content": base64.b64encode(
+                    json.dumps({"schema": "rahp-external-case-publication/v1",
+                                "owner": "toolkit"}).encode()).decode()}
             if "/contents/instances/dtg/registry-transfers.json?" in url:
                 return {"encoding": "base64", "content": base64.b64encode(
                     json.dumps(ledger).encode()).decode()}
@@ -241,6 +245,10 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
             calls.append(url)
             if url.endswith("/branches/main"):
                 return {"commit": {"sha": actual_main}}
+            if "/contents/instances/dtg/external-case-publication.json?" in url:
+                return {"encoding": "base64", "content": base64.b64encode(
+                    json.dumps({"schema": "rahp-external-case-publication/v1",
+                                "owner": "toolkit"}).encode()).decode()}
             if "/contents/instances/dtg/registry-transfers.json?" in url:
                 return {"encoding": "base64", "content": base64.b64encode(
                     json.dumps(ledger).encode()).decode()}
@@ -282,9 +290,12 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
         def fake(method, url, token, payload=None):
             if url.endswith("/branches/main"):
                 return {"commit": {"sha": next(heads)}}
+            content = ({"schema": "rahp-external-case-publication/v1",
+                        "owner": "toolkit"}
+                       if "/external-case-publication.json?" in url else
+                       {"schema": "rahp-registry-transfers/v1", "transfers": []})
             return {"encoding": "base64", "content": base64.b64encode(
-                json.dumps({"schema": "rahp-registry-transfers/v1",
-                            "transfers": []}).encode()).decode()}
+                json.dumps(content).encode()).decode()}
         with patch.object(publisher, "request", side_effect=fake):
             with patch.dict(publisher.os.environ, {
                 "GITHUB_ACTIONS": "true", "GITHUB_SHA": "a" * 40,
@@ -294,6 +305,79 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "main changed"):
                     publisher.enforce_live_transfer_boundary(
                         {"assessment_key": "dtg:portfolio:controller:other"}, "token")
+
+    def test_explicit_policy_defaults_and_fail_closed_validation(self) -> None:
+        self.assertEqual(publisher.checked_in_publication_authority(), "toolkit")
+        self.assertEqual(publisher.parse_publication_authority({
+            "schema": "rahp-external-case-publication/v1", "owner": "registry"
+        }), "registry")
+        for data in ({}, [], {"schema": "rahp-external-case-publication/v1",
+                              "owner": "toolkit", "allow_writes": True},
+                     {"schema": "rahp-external-case-publication/v1", "owner": "unknown"}):
+            with self.subTest(data=data), self.assertRaises(ValueError):
+                publisher.parse_publication_authority(data)
+
+    def test_live_registry_owner_denies_untransferred_external_issue_mutation(self) -> None:
+        import base64
+        import json
+        event = {"assessment_key": "dtg:portfolio:controller:untransferred"}
+        seen = []
+        def fake(method, url, token, payload=None):
+            seen.append(url)
+            if url.endswith("/branches/main"):
+                return {"commit": {"sha": "c" * 40}}
+            if "/external-case-publication.json?" in url:
+                return {"encoding": "base64", "content": base64.b64encode(
+                    json.dumps({"schema": "rahp-external-case-publication/v1",
+                                "owner": "registry"}).encode()).decode()}
+            self.fail("must not read transfer ledger or mutate issues " + url)
+        with patch.object(publisher, "request", side_effect=fake):
+            with patch.dict(publisher.os.environ, {
+                "GITHUB_ACTIONS": "true", "GITHUB_SHA": "c" * 40,
+                "GITHUB_REF": "refs/heads/main",
+                "GITHUB_REPOSITORY": publisher.CANONICAL_RAHP_ISSUE_REPOSITORY,
+            }):
+                with self.assertRaisesRegex(ValueError, "Registry owns external"):
+                    publisher.enforce_live_transfer_boundary(event, "token")
+        self.assertEqual(len(seen), 2)
+
+    def test_missing_live_policy_denies_external_issue_mutation(self) -> None:
+        def fake(method, url, token, payload=None):
+            if url.endswith("/branches/main"):
+                return {"commit": {"sha": "c" * 40}}
+            return {}
+        with patch.object(publisher, "request", side_effect=fake):
+            with patch.dict(publisher.os.environ, {
+                "GITHUB_ACTIONS": "true", "GITHUB_SHA": "c" * 40,
+            }):
+                with self.assertRaisesRegex(ValueError, "policy unavailable"):
+                    publisher.enforce_live_transfer_boundary(
+                        {"assessment_key": "dtg:portfolio:controller:other"}, "token")
+
+    def test_workflow_routes_only_external_case_effects(self) -> None:
+        for relative, names in (
+            (".github/workflows/instance-monitor-main.yml", (
+                "Publish DTG assessment issues",
+                "Publish CAWG/C2PA assessment issues",
+                "Advance published DTG repository assessments by exact issue",
+                "Publish DTG architecture-issue assessment triggers",
+                "Publish CAWG architecture-issue assessment triggers",
+            )),
+            (".github/workflows/dtg-materiality-main.yml", (
+                "Publish or coalesce portfolio controller",
+                "Publish or coalesce bounded combined RAHP reviews",
+                "Publish or coalesce canonical RAHP privacy referrals",
+                "Transport qualified privacy referrals to DPIP",
+            )),
+        ):
+            with self.subTest(workflow=relative):
+                source = (ROOT / relative).read_text(encoding="utf-8")
+                pub = source.split("\n  publish_external:", 1)[1]
+                for name in names:
+                    self.assertIn("name: " + name + "\n"
+                                  "        if: steps.external-owner.outputs.toolkit == 'true'", pub)
+                self.assertIn("--publication-owner", pub)
+                self.assertIn("steps.external-owner.outputs.toolkit == 'false'", pub)
 
     def test_live_fence_rejects_unavailable_authority(self) -> None:
         with patch.object(publisher, "request", return_value={}):
