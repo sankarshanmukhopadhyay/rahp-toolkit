@@ -38,6 +38,22 @@ CANONICAL_RAHP_ASSIGNEES = ["sankarshanmukhopadhyay"]
 
 
 TRANSFER_LEDGER = Path(__file__).resolve().parents[1] / "instances/dtg/registry-transfers.json"
+PUBLICATION_AUTHORITY = Path(__file__).resolve().parents[1] / "instances/dtg/external-case-publication.json"
+
+
+def parse_publication_authority(data: Any) -> str:
+    """Only an exact protected-main policy can change external case ownership."""
+    if (not isinstance(data, dict)
+            or set(data) != {"schema", "owner"}
+            or data.get("schema") != "rahp-external-case-publication/v1"
+            or data.get("owner") not in ("toolkit", "registry")):
+        raise ValueError("invalid external-case publication authority")
+    return data["owner"]
+
+
+def checked_in_publication_authority(path: Path = PUBLICATION_AUTHORITY) -> str:
+    return parse_publication_authority(json.loads(path.read_text(encoding="utf-8")))
+
 REGISTRY_ISSUE_PREFIX = "https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/"
 TOOLKIT_ISSUE_PREFIX = "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/"
 
@@ -177,6 +193,19 @@ def enforce_live_transfer_boundary(event: dict[str, Any], token: str) -> None:
         run_sha = os.environ.get("GITHUB_SHA", "")
         if not re.fullmatch(r"[0-9a-f]{40}", run_sha) or run_sha != current:
             raise ValueError("stale Actions publisher commit differs from current Toolkit main")
+    authority_record = request(
+        "GET", api + "/contents/instances/dtg/external-case-publication.json?ref=" + current, token
+    )
+    if not isinstance(authority_record, dict) or authority_record.get("encoding") != "base64":
+        raise ValueError("live external-case authority policy unavailable")
+    try:
+        authority = parse_publication_authority(
+            json.loads(base64.b64decode(authority_record["content"]).decode("utf-8"))
+        )
+    except (KeyError, ValueError, UnicodeError, TypeError) as exc:
+        raise ValueError("invalid live external-case publication authority") from exc
+    if authority != "toolkit":
+        raise ValueError("Registry owns external assessment publication; Toolkit mutation denied")
     record = request("GET", api + "/contents/instances/dtg/registry-transfers.json?ref=" + current, token)
     if not isinstance(record, dict) or record.get("encoding") != "base64":
         raise ValueError("live Toolkit transfer ledger unavailable")
@@ -555,12 +584,23 @@ def main() -> int:
         help="RAHP issue repository; non-canonical destinations are rejected",
     )
     parser.add_argument("--result-json", type=Path, help="write created/coalesced issue references")
+    parser.add_argument("--publication-owner", action="store_true",
+                        help="print exact protected-main external-case route mode; no issue writes")
     parser.add_argument("--self-test", action="store_true", help="run publisher regression tests and exit")
     parser.add_argument("--verify-transfer-rollback", action="store_true",
                         help="refuse silent removal or mutation of an accepted main-branch transfer")
     parser.add_argument("--check-transfers", nargs="+", type=Path, metavar="EVENTS_JSON",
                         help="validate every publication batch against accepted transfers without GitHub writes")
     args = parser.parse_args()
+    if args.publication_owner:
+        if (args.events is not None or args.check_transfers or args.result_json is not None
+                or args.verify_transfer_rollback or args.self_test):
+            raise SystemExit("--publication-owner cannot be combined with other operations")
+        try:
+            print(checked_in_publication_authority())
+        except (OSError, ValueError) as exc:
+            raise SystemExit(f"invalid external-case publication policy: {exc}") from exc
+        return 0
     if args.self_test:
         self_test()
         return 0
