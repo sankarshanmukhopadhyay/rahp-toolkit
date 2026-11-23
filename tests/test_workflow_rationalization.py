@@ -7,12 +7,18 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 
 class WorkflowRationalizationTests(unittest.TestCase):
-    def test_governed_surface_is_eighteen_of_twenty(self):
+    def test_governed_surface_is_twenty_of_twenty(self):
         policy = yaml.safe_load((ROOT / "config" / "workflow-governance.yaml").read_text())
         actual = sorted(path.name for path in WORKFLOWS.glob("*.yml"))
-        self.assertEqual(len(actual), 18)
-        self.assertLessEqual(len(actual), int(policy["max_workflows"]))
+        # Two distinct source-only registrations are required to retire the
+        # mixed old writer registrations without losing accepted observations.
+        # Do not enlarge the governed workflow budget.
+        self.assertEqual(len(actual), 20)
+        self.assertEqual(int(policy["max_workflows"]), 20)
         self.assertEqual(sorted(policy["workflows"]), actual)
+        for successor in ("registry-observe-instance.yml",
+                          "registry-observe-materiality.yml"):
+            self.assertIn(successor, actual)
 
     def test_retired_validation_workflows_do_not_exist(self):
         for name in (
