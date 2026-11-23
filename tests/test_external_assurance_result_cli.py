@@ -73,7 +73,7 @@ class ExternalAssuranceCliTests(unittest.TestCase):
     def test_wrong_proposition_revision_and_requirements_rejected(self):
         for mutation in ("proposition", "revision", "requirement"):
             with self.subTest(mutation=mutation):
-                data = valid_result()
+                data = copy.deepcopy(valid_result())
                 if mutation == "proposition":
                     data["obligation"]["proposition_key"] = "rahp-obligation:" + "f" * 20
                 elif mutation == "revision":
