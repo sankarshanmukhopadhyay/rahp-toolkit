@@ -24,6 +24,8 @@ concurrency:
 
 jobs:
   reconcile:
+    outputs:
+      registry_mode: ${{ steps.external-owner.outputs.registry_mode }}
     if: >-
       github.event_name == 'workflow_dispatch' ||
       github.event_name == 'schedule' ||
@@ -32,6 +34,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - name: Qualify scheduled local incident route
+        id: external-owner
+        shell: bash
+        run: |
+          set -euo pipefail
+          owner="$(python3 tools/publish_assessment_issues.py --publication-owner)"
+          case "$owner" in
+            registry) echo "registry_mode=true" >> "$GITHUB_OUTPUT" ;;
+            toolkit) echo "registry_mode=false" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::Invalid local incident route"; exit 1 ;;
+          esac
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
@@ -53,14 +66,14 @@ jobs:
           cat /tmp/dtg-assurance-summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Render accepted-state unowned controller incidents
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || (github.event_name == 'schedule' && steps.external-owner.outputs.registry_mode == 'true')
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tools/dtg_assurance_reconcile.py
           --incident-output build/accepted-state-incidents.json
       - name: Retain accepted-state incident decision
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || (github.event_name == 'schedule' && steps.external-owner.outputs.registry_mode == 'true')
         uses: actions/upload-artifact@v7
         with:
           name: accepted-instance-state-incidents-${{ github.run_id }}
@@ -69,7 +82,10 @@ jobs:
 
   local_incidents:
     needs: reconcile
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' ||
+       (github.event_name == 'schedule' && needs.reconcile.outputs.registry_mode == 'true'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -84,6 +100,15 @@ jobs:
         with:
           name: accepted-instance-state-incidents-${{ github.run_id }}
           path: build/
+      - name: Reject stale main before local incident mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$remote" != "$GITHUB_SHA" ]; then
+            echo "::error::Toolkit main advanced during accepted-state incident reconciliation"
+            exit 1
+          fi
       - name: Publish only unowned Toolkit-local controller incidents from accepted state
         env:
           GITHUB_TOKEN: ${{ github.token }}
