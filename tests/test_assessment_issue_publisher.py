@@ -198,7 +198,7 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
         self.assertIn("publish_external:", text)
         self.assertIn("permissions:\n      contents: read\n      issues: write", text)
         self.assertIn("issues: read", text[:text.index("  publish_external:")])
-        self.assertIn("actions/download-artifact@v7", text)
+        self.assertIn("actions/download-artifact@v8", text)
         self.assertIn("Refuse source drift before any issue mutation", text)
         self.assertLess(text.index("Retain exact source-qualified publication inputs"), first_write)
 

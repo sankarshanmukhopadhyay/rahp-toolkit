@@ -362,7 +362,7 @@ jobs:
           esac
           echo "External assessment case writer: $owner"
       - name: Recover exact source-qualified event batch
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: dtg-source-qualified-queue-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/dtg-routing/
