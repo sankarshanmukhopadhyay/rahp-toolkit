@@ -243,12 +243,13 @@ jobs:
     outputs:
       disposition: ${{ steps.persist.outputs.disposition }}
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      pull-requests: read
       issues: read
-      actions: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
@@ -277,15 +278,36 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 tools/check_monitor_state_branches.py
+      - name: Generate repository-scoped state PR credential
+        id: state-app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ vars.RAHP_STATE_APP_ID }}
+          private-key: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: rahp-toolkit
+          permission-contents: write
+          permission-pull-requests: write
       - name: Stage monitored state under protected-main review
         id: persist
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.state-app.outputs.token }}
+          APP_SLUG: ${{ steps.state-app.outputs.app-slug }}
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -z "${GH_TOKEN:-}" ] || [ -z "${APP_SLUG:-}" ]; then
+            echo "::error::Repository-scoped state App credentials unavailable"
+            exit 1
+          fi
+          bot_login="${APP_SLUG}[bot]"
+          bot_id="$(gh api "/users/${bot_login}" --jq '.id')"
+          if ! [[ "$bot_id" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::App bot identity could not be resolved"
+            exit 1
+          fi
+          git config user.name "$bot_login"
+          git config user.email "${bot_id}+${bot_login}@users.noreply.github.com"
           git add \
             instances/dtg/state/repositories.json \
             instances/dtg/generated/repositories.yaml \
@@ -313,22 +335,21 @@ jobs:
             branch="automation/instance-monitor-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
             git switch -c "$branch"
             git commit -s -m "chore(assurance): stage monitored instance revisions"
-            git push -u origin "$branch"
+            # Checkout does not persist GITHUB_TOKEN. Supply the scoped App
+            # installation token to this push without writing it into git config.
+            git -c credential.helper='!f() { printf "username=x-access-token\\npassword=%s\\n" "$GH_TOKEN"; }; f' push -u origin "$branch"
             pr_url="$(gh pr create --base main --head "$branch" \
               --title "chore(assurance): review monitored instance state from run #${GITHUB_RUN_ID}" \
               --body "Source observation and external issue publication completed in Toolkit Actions run #${GITHUB_RUN_ID}, attempt ${GITHUB_RUN_ATTEMPT}. This PR stages the exact observed state; it has NOT been accepted or persisted into main. Review DCO and required checks before merge. Source and result evidence remain in that Actions run. No assurance PASS, Registry ownership cutover, or controller-incident conclusion is inferred.")"
-            # A PR created by GITHUB_TOKEN does not emit follow-on pull_request
-            # workflow runs. Dispatch the existing required checks against the
-            # exact signed state branch, leaving protected-main review intact.
-            pr_number="$(gh pr view "$pr_url" --json number --jq '.number')"
+            # A GitHub App-authored PR triggers native pull_request checks on
+            # the merge candidate. Branch-only workflow_dispatch checks cannot
+            # qualify the repository's protected-main required contexts.
             pr_head="$(gh pr view "$pr_url" --json headRefOid --jq '.headRefOid')"
             if [ "$pr_head" != "$(git rev-parse HEAD)" ]; then
               echo "::error::Created state PR head differs from the staged commit"
               exit 1
             fi
-            gh workflow run validate.yml --ref "$branch" -f state_pr_number="$pr_number"
-            gh workflow run pages.yml --ref "$branch" -f state_pr_number="$pr_number"
-            echo "Pending protected-main state PR with required CI dispatch: $pr_url"
+            echo "Pending protected-main App-authored state PR; native PR checks required: $pr_url"
             echo "disposition=staged_pending_review" >> "$GITHUB_OUTPUT"
             echo "state_pr_url=$pr_url" >> "$GITHUB_OUTPUT"
           fi
