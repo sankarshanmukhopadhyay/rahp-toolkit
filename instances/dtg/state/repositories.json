@@ -13,7 +13,7 @@
     },
     "trustoverip/dtgwg-ux-tf": {
       "status": "no-commits",
-      "observed_at": "2026-11-23T01:53:37.214338+00:00"
+      "observed_at": "2026-11-23T03:20:41.501712+00:00"
     },
     "trustoverip/dtgwg-general": {
       "sha": "610df666e0a237b109c3ed6656181f9d3479a45f",
@@ -42,7 +42,7 @@
     },
     "trustoverip/dtgwg-rcards-tf": {
       "status": "no-commits",
-      "observed_at": "2026-11-23T01:53:38.507604+00:00"
+      "observed_at": "2026-11-23T03:20:43.611153+00:00"
     },
     "trustoverip/dtgwg-vds-tf": {
       "sha": "99eacacedd1729d20528a2ec65ff5288d103ec5e",
