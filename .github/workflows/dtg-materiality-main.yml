@@ -349,6 +349,18 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
+      - name: Select protected-main external case publication owner
+        id: external-owner
+        shell: bash
+        run: |
+          set -euo pipefail
+          owner="$(python3 tools/publish_assessment_issues.py --publication-owner)"
+          case "$owner" in
+            toolkit) echo "toolkit=true" >> "$GITHUB_OUTPUT" ;;
+            registry) echo "toolkit=false" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::Invalid publisher authority"; exit 1 ;;
+          esac
+          echo "External assessment case writer: $owner"
       - name: Recover exact source-qualified event batch
         uses: actions/download-artifact@v7
         with:
@@ -372,6 +384,7 @@ jobs:
           ${{ needs.handoff.outputs.dpip }}
 
       - name: Publish or coalesce portfolio controller
+        if: steps.external-owner.outputs.toolkit == 'true'
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
@@ -381,6 +394,7 @@ jobs:
           --result-json build/dtg-routing/controller-result.json
 
       - name: Publish or coalesce bounded combined RAHP reviews
+        if: steps.external-owner.outputs.toolkit == 'true'
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
@@ -390,6 +404,7 @@ jobs:
           --result-json build/dtg-routing/combined-result.json
 
       - name: Publish or coalesce canonical RAHP privacy referrals
+        if: steps.external-owner.outputs.toolkit == 'true'
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
@@ -399,6 +414,7 @@ jobs:
           --result-json build/dtg-routing/dpip-result.json
 
       - name: Transport qualified privacy referrals to DPIP
+        if: steps.external-owner.outputs.toolkit == 'true'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           DPIP_HANDOFF_TOKEN: ${{ secrets.DPIP_HANDOFF_TOKEN }}
@@ -429,6 +445,14 @@ jobs:
             build/dtg-routing/combined-result.json
             build/dtg-routing/dpip-result.json
           if-no-files-found: warn
+      - name: Record Registry route without creating Toolkit case issues
+        if: steps.external-owner.outputs.toolkit == 'false'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Registry-owned external case mode; all source-qualified event artifacts retained."
+          echo "No Toolkit external issues or issue-number-based DPIP handoffs executed." >> "$GITHUB_STEP_SUMMARY"
+
 
   retire_legacy_registrations:
     needs: [handoff, publish_external]
