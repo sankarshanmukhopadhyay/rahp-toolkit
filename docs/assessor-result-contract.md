@@ -39,3 +39,47 @@ A schema-valid specialist result proves contract compatibility only. In particul
 External producers should validate against the authoritative schema before delivery. Producer and consumer CI should share representative fixtures for positive, negative, incomplete and bounded results so contract drift becomes visible before cross-repository execution.
 
 The DPIP privacy-observability return proven through Interop Lab #193 is a current reference producer for this contract.
+
+## Read-only external-return diagnostics
+
+A third-party consumer may check an external result against its *actual
+addressed obligation* without running a RAHP controller:
+
+```bash
+python3 tools/validate_external_assurance_result.py --kind producer \
+  --result /path/to/producer-result.json --obligation /path/to/obligation.json
+python3 tools/validate_external_assurance_result.py --kind assessor \
+  --result /path/to/assessor-result.json --obligation /path/to/obligation.json \
+  --expected-assessment-id 'controller-supplied-assessment-id'
+```
+
+The command invokes the canonical v1 validators and checks available
+proposition/evidence-contract keys, requirement IDs and exact declared source
+pins. The assessor contract does **not** declare a proposition key or
+independently authenticate its assessment ID, so the caller must provide
+the controller-issued assessment ID; absent context returns `NOT_ESTABLISHED`.
+Use `--previous-result` to reject an identical or conflicting return under
+the same producer execution ID or assessor assessment ID. Without a previous
+return, the command cannot prove a delivery is the first or that a remote
+service has not replayed it.
+
+Machine JSON output distinguishes `VALID_BOUND_CONTRACT`,
+`INVALID_CONTRACT`, `REJECTED_BINDING`, `NOT_ESTABLISHED` and
+`INVALID_INPUT`. Only `VALID_BOUND_CONTRACT` exits zero. Even that status
+is limited to **structural/declared-context consistency**:
+`authenticated: false` and `assurance_determination: null` are always
+returned. An executable producer's `succeeded` status does not prove
+sufficient evidence; a specialist's portable `PASS` cannot authorize
+terminalization. The command performs no network requests, evidence admission,
+controller mutations, specialist dispatch or registry publication.
+
+Run the public-interface regression tests with:
+
+```bash
+python3 -m unittest tests.test_external_assurance_result_cli -v
+```
+
+Obligation provenance, freshness beyond the declared source pins, caller
+authentication, source signature verification and live transport retries
+remain the responsibility of their existing authoritative producers and
+controllers. Do not infer them from this validator.
