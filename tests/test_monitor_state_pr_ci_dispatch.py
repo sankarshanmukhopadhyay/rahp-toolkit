@@ -23,7 +23,7 @@ class MonitorStatePRCIDispatchTests(unittest.TestCase):
                         monitor.index("Authenticate scoped App installation"))
         self.assertLess(monitor.index("Authenticate scoped App installation"),
                         monitor.index("Check DTG instance"))
-        self.assertEqual(monitor.count("actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510"), 1)
+        self.assertEqual(monitor.count("actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc"), 1)
         self.assertIn("permission-contents: write", monitor)
         self.assertIn("permission-pull-requests: write", monitor)
         self.assertIn("repositories: rahp-toolkit", monitor)
@@ -35,7 +35,7 @@ class MonitorStatePRCIDispatchTests(unittest.TestCase):
         persist = text.split("\n  persist:", 1)[1].split("\n  local_incidents:", 1)[0]
         for required in (
             "persist-credentials: false",
-            "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510",
+            "actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc",
             "app-id: ${{ vars.RAHP_STATE_APP_ID }}",
             "private-key: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}",
             "repositories: rahp-toolkit",
