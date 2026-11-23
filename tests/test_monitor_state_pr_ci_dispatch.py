@@ -6,17 +6,50 @@ ROOT = Path(__file__).resolve().parents[1] / ".github" / "workflows"
 
 
 class MonitorStatePRCIDispatchTests(unittest.TestCase):
-    def test_monitor_dispatches_existing_required_check_workflows_after_pr_creation(self):
+    def test_native_pr_checks_use_scoped_app_token(self):
         text = (ROOT / "instance-monitor-main.yml").read_text()
         persist = text.split("\n  persist:", 1)[1].split("\n  local_incidents:", 1)[0]
-        self.assertIn('pr_head" != "$(git rev-parse HEAD)"', persist)
-        self.assertIn('gh workflow run validate.yml --ref "$branch" -f state_pr_number="$pr_number"', persist)
-        self.assertIn('gh workflow run pages.yml --ref "$branch" -f state_pr_number="$pr_number"', persist)
-        self.assertLess(persist.index('gh pr create --base main'),
-                        persist.index('gh workflow run validate.yml'))
-        self.assertLess(persist.index('gh workflow run validate.yml'),
-                        persist.index('echo "disposition=staged_pending_review"'))
-        self.assertNotIn("pull-requests: write\n      issues: write", persist)
+        for required in (
+            "persist-credentials: false",
+            "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510",
+            "app-id: ${{ vars.RAHP_STATE_APP_ID }}",
+            "private-key: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}",
+            "repositories: rahp-toolkit",
+            "permission-contents: write",
+            "permission-pull-requests: write",
+            "GH_TOKEN: ${{ steps.state-app.outputs.token }}",
+            "APP_SLUG: ${{ steps.state-app.outputs.app-slug }}",
+            'bot_login="${APP_SLUG}[bot]"',
+            'git config user.name "$bot_login"',
+            'git commit -s -m "chore(assurance): stage monitored instance revisions"',
+            "credential.helper=",
+            'gh pr create --base main',
+            'pr_head" != "$(git rev-parse HEAD)"',
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, persist)
+        self.assertNotIn("GH_TOKEN: ${{ github.token }}", persist)
+        self.assertNotIn("actions: write", persist)
+        self.assertNotIn("gh workflow run validate.yml", persist)
+        self.assertNotIn("gh workflow run pages.yml", persist)
+        self.assertLess(persist.index("persist-credentials: false"),
+                        persist.index("Generate repository-scoped state PR credential"))
+        self.assertLess(persist.index("Verify and restore pinned observation snapshot"),
+                        persist.index("Generate repository-scoped state PR credential"))
+        self.assertLess(persist.index('git commit -s -m'),
+                        persist.index("credential.helper="))
+        self.assertLess(persist.index("credential.helper="),
+                        persist.index("gh pr create --base main"))
+
+    def test_app_identity_is_required_and_no_secret_is_logged_or_stored(self):
+        text = (ROOT / "instance-monitor-main.yml").read_text()
+        persist = text.split("\n  persist:", 1)[1].split("\n  local_incidents:", 1)[0]
+        self.assertIn('if [ -z "${GH_TOKEN:-}" ] || [ -z "${APP_SLUG:-}" ]; then', persist)
+        self.assertIn('bot_id="$(gh api "/users/${bot_login}" --jq \'.id\')"', persist)
+        self.assertIn('git config user.email "${bot_id}+${bot_login}@users.noreply.github.com"', persist)
+        self.assertNotIn("git remote set-url", persist)
+        self.assertNotIn("echo \"$GH_TOKEN\"", persist)
+        self.assertNotIn("git -c http.", persist)
 
     def test_dco_dispatch_is_pinned_to_one_open_main_pr_and_exact_head(self):
         text = (ROOT / "validate.yml").read_text()
