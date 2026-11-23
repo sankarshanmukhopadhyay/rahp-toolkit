@@ -101,6 +101,20 @@ class ExternalAssuranceCliTests(unittest.TestCase):
         data["claim_boundary"]["supports"] = []
         return data
 
+    def test_execution_failure_and_unavailable_evidence_have_distinct_diagnostics(self):
+        failed = copy.deepcopy(valid_result())
+        failed["execution"]["status"] = "failed"
+        failed["evidence"]["status"] = "failed"
+        code, report = self.cli(result=failed)
+        self.assertNotEqual(code, 0)
+        self.assertEqual(report["status"], "NOT_ESTABLISHED")
+        self.assertIn("producer execution failed", report["not_established"])
+        self.assertIn("producer evidence failed", report["not_established"])
+        code, report = self.cli(result=self.unavailable())
+        self.assertNotEqual(code, 0)
+        self.assertIn("producer execution unavailable", report["not_established"])
+        self.assertIn("producer evidence evidence-incomplete", report["not_established"])
+
     def test_duplicate_and_conflicting_retries_fail_closed(self):
         old = valid_result()
         duplicated = copy.deepcopy(old)

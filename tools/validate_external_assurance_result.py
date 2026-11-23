@@ -129,10 +129,12 @@ def diagnose(kind, result, obligation=None, previous=None, expected_assessment_i
                 unknown.append("previous return is a distinct identity; no general replay registry")
 
     if kind == "producer":
-        if result["execution"]["status"] != "succeeded":
-            unknown.append("producer execution unavailable or failed")
-        if result["evidence"]["status"] != "observed":
-            unknown.append("producer evidence not observed")
+        execution_state = result["execution"]["status"]
+        evidence_state = result["evidence"]["status"]
+        if execution_state != "succeeded":
+            unknown.append("producer execution " + execution_state)
+        if evidence_state != "observed":
+            unknown.append("producer evidence " + evidence_state)
     # Never promote specialist PASS into controller assurance PASS.
     status = "REJECTED_BINDING" if errors else ("NOT_ESTABLISHED" if unknown else "VALID_BOUND_CONTRACT")
     return {"status": status, "contract": expected_schema, "errors": errors,
