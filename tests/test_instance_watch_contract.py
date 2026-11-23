@@ -46,7 +46,10 @@ class InstanceWatchContractTests(unittest.TestCase):
         local = steps("local_incidents")
         self.assertNotIn("publish_assessment_issues.py", observation)
         self.assertNotIn("publish_dtg_controller_incidents.py", observation)
-        self.assertEqual(publisher.count("publish_assessment_issues.py"), 4)
+        # The read-only authority selector is not an effectful issue publisher.
+        self.assertEqual(publisher.count("publish_assessment_issues.py"), 5)
+        self.assertEqual(publisher.count("--publication-owner"), 1)
+        self.assertEqual(publisher.count("--events instances/"), 4)
         self.assertIn("dtg_repository_review_worker.py", publisher)
         self.assertNotIn("publish_assessment_issues.py", persisted)
         self.assertNotIn("publish_dtg_controller_incidents.py", persisted)
