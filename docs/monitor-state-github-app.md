@@ -1,12 +1,34 @@
 # Monitor-state GitHub App credential boundary
 
-The incremental instance monitor **observes** DTG/CAWG sources using the
-existing read-only authority and **publishes** eligible assessment events using
-its separately scoped `publish_external` job. The dedicated GitHub App is
-used **only** by the `persist` job to push a signed observation-state branch
-and create its protected-main pull request. It does not own RAHP assessment
+The incremental instance monitor **observes** DTG/CAWG sources using its
+read-only authority and **publishes** eligible assessment events using its
+separately scoped `publish_external` job. A GitHub App installation-token
+preflight runs **before observation or issue publication**; the short-lived
+preflight token is not passed to assessment scripts. The `persist` job mints
+a separate short-lived installation token for the signed observation-state
+branch push and protected-main PR creation. It does not own RAHP assessment
 cases, authorize Registry transfers, execute specialist reviews, or bypass
 GitHub rulesets.
+
+## Operational qualification
+
+The live [monitor run #45089579389, attempt 2](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/45089579389)
+authenticated the installed repository-scoped App, observed DTG/CAWG source
+state, completed external publication and staged a signed state branch.
+[App-authored PR #1248](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/1248)
+passed native DCO, validation, impact, build and TypeScript conformance checks,
+then merged through normal protected-main rules as
+`5ffdf6e0b1df17b61160ed725ffc3188def028d4`. Canonical reconciliation
+and Toolkit-local incident processing subsequently passed. This qualifies
+the **state-PR authentication and persistence path** without claiming
+external Registry case-owner or publisher cutover.
+
+An earlier attempt to retry only a failed persistence job exposed a separate
+recovery limitation: per-attempt artifact names do not carry forward to a
+failed-job-only retry when observation was successful in the preceding
+attempt. Do not substitute a previous attempt's artifact implicitly. Use
+a fresh, fully observed current-main run (or a separately evidence-qualified
+replay mechanism) rather than claim a persistence-only retry succeeded.
 
 ## Repository administrator setup
 
