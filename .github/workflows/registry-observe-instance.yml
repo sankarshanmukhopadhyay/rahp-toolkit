@@ -1,0 +1,301 @@
+# Read-only successor for the incremental DTG/CAWG external-case writer.
+# The original instance-monitor-main.yml registration must be disabled as
+# a separate operator action before asserting exclusive Registry authority.
+# State is still accepted only through signed App-authored protected-main PRs.
+name: Registry-mode DTG/CAWG source observation
+run-name: Registry-mode instance observation · ${{ github.event_name }} · #${{ github.run_number }}
+on:
+  schedule:
+    - cron: '37 3 * * 1-5'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/registry-observe-instance.yml'
+      - 'instances/dtg/external-case-publication.json'
+permissions:
+  contents: read
+  issues: read
+concurrency:
+  group: rahp-instance-monitor
+  cancel-in-progress: false
+jobs:
+  route:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      registry_mode: ${{ steps.route.outputs.registry_mode }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Require exact Registry publication policy
+        id: route
+        shell: bash
+        run: |
+          set -euo pipefail
+          owner="$(python3 tools/publish_assessment_issues.py --publication-owner)"
+          case "$owner" in
+            toolkit) echo "registry_mode=false" >> "$GITHUB_OUTPUT" ;;
+            registry) echo "registry_mode=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::Unknown external case authority"; exit 1 ;;
+          esac
+          echo "Observation route: $owner"
+
+  monitor:
+    needs: route
+    # Only the current default-branch entry point may mutate Toolkit state.
+    # Historical source revisions remain available for review, not dispatch.
+    if: needs.route.outputs.registry_mode == 'true' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Require state-PR GitHub App configuration before observation and publication
+        env:
+          STATE_APP_ID: ${{ vars.RAHP_STATE_APP_ID }}
+          STATE_APP_KEY: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! [[ "${STATE_APP_ID:-}" =~ ^[1-9][0-9]*$ ]] || [ -z "${STATE_APP_KEY:-}" ]; then
+            echo "::error::Repository-scoped state App ID variable or private-key secret is missing; abort before external issue publication"
+            exit 1
+          fi
+      - name: Authenticate scoped App installation before any monitor-side effects
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ vars.RAHP_STATE_APP_ID }}
+          private-key: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: rahp-toolkit
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Declare incremental monitor semantics
+        shell: bash
+        run: |
+          {
+            echo "## RAHP incremental instance monitor"
+            echo
+            echo "This run is **stateful and delta-driven**. It detects changes since the persisted instance baseline."
+            echo "A successful run with zero material events is **not** a fresh or clean-room assessment of the portfolio."
+            echo "Clean-room assessment is a separate assurance operation with a new immutable evaluation lineage."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Operating mode: incremental/stateful monitor (not clean-room assessment)"
+
+      - name: Check DTG instance
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/dtg_portfolio.py check --config instances/dtg/instance.yaml
+
+      - name: Synchronize checked-in DTG profile
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/sync_dtg_profile.py --write
+
+      - name: Stamp DTG gatherer lineage
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: python3 tools/dtg_gatherer_lineage.py
+
+      - name: Check CAWG/C2PA instance
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/instance_monitor.py check --config instances/cawg/instance.yaml
+
+      - name: Watch selected CAWG architecture issues
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/issue_watch.py
+          --registry instances/cawg/watch/issues.yaml
+          --state instances/cawg/state/issues.json
+          --events instances/cawg/state/issue-events.json
+
+      - name: Watch selected DTG architecture issues
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/issue_watch.py
+          --registry instances/dtg/watch/issues.yaml
+          --state instances/dtg/state/issues.json
+          --events instances/dtg/state/issue-events.json
+
+      - name: Validate and index immutable review-event provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/index_monitored_review_events.py \
+            --dtg instances/dtg/generated/review-events.json \
+            --cawg instances/cawg/generated/review-events.json \
+            --out build/instance-monitor/registry-review-event-index.json
+      - name: Bundle exact observed event and state snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/instance-monitor
+          tar -czf build/instance-monitor/source.tar.gz \
+            instances/dtg/state instances/dtg/generated \
+            instances/cawg/state instances/cawg/generated \
+            profiles/dtg/rahp.yaml
+          sha256sum build/instance-monitor/source.tar.gz > build/instance-monitor/source.sha256
+      - name: Retain exact monitored source for the ordered publication and persistence jobs
+        uses: actions/upload-artifact@v7
+        with:
+          name: instance-monitor-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/instance-monitor/
+          if-no-files-found: error
+
+
+  persist:
+    needs: monitor
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      disposition: ${{ steps.persist.outputs.disposition }}
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Restore exact monitored source
+        uses: actions/download-artifact@v7
+        with:
+          name: instance-monitor-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/instance-monitor/
+      - name: Verify and restore pinned observation snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum --check build/instance-monitor/source.sha256
+          tar -xzf build/instance-monitor/source.tar.gz -C .
+      - name: Require unchanged Toolkit main before effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$remote" != "$GITHUB_SHA" ]; then
+            echo "::error::Toolkit main moved between observation and publication/persistence"
+            exit 1
+          fi
+      - name: Reject unresolved state branches before issue publication or persistence
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/check_monitor_state_branches.py
+      - name: Generate repository-scoped state PR credential
+        id: state-app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ vars.RAHP_STATE_APP_ID }}
+          private-key: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: rahp-toolkit
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Stage monitored state under protected-main review
+        id: persist
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.state-app.outputs.token }}
+          APP_SLUG: ${{ steps.state-app.outputs.app-slug }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ] || [ -z "${APP_SLUG:-}" ]; then
+            echo "::error::Repository-scoped state App credentials unavailable"
+            exit 1
+          fi
+          bot_login="${APP_SLUG}[bot]"
+          bot_id="$(gh api "/users/${bot_login}" --jq '.id')"
+          if ! [[ "$bot_id" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::App bot identity could not be resolved"
+            exit 1
+          fi
+          git config user.name "$bot_login"
+          git config user.email "${bot_id}+${bot_login}@users.noreply.github.com"
+          git add \
+            instances/dtg/state/repositories.json \
+            instances/dtg/generated/repositories.yaml \
+            instances/dtg/generated/review-events.json \
+            profiles/dtg/rahp.yaml \
+            instances/dtg/state/issues.json \
+            instances/dtg/state/issue-events.json \
+            instances/cawg/state/repositories.json \
+            instances/cawg/generated/repositories.yaml \
+            instances/cawg/generated/review-events.json \
+            instances/cawg/state/issues.json \
+            instances/cawg/state/issue-events.json
+          if [ -d instances/dtg/generated/gatherer-runs ]; then
+            git add instances/dtg/generated/gatherer-runs
+          fi
+          if git diff --cached --quiet; then
+            echo "No new instance state: reconciliation can use existing main."
+            echo "disposition=unchanged" >> "$GITHUB_OUTPUT"
+          else
+            # Never mark observation as persisted before a protected-main PR
+            # actually merges. New observations must not race a pending state PR.
+            pending="$(gh pr list --state open --json headRefName,url --jq '[.[] | select(.headRefName | startswith("automation/instance-monitor-"))] | length')"
+            if [ "$pending" != "0" ]; then
+              echo "::error::Unmerged monitored-state PR exists; no new branch or issue-effect claim authorized"
+              exit 1
+            fi
+            branch="automation/instance-monitor-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            git switch -c "$branch"
+            git commit -s -m "chore(assurance): stage monitored instance revisions"
+            # Checkout does not persist GITHUB_TOKEN. Supply the scoped App
+            # installation token to this push without writing it into git config.
+            git -c credential.helper='!f() { printf "username=x-access-token\\npassword=%s\\n" "$GH_TOKEN"; }; f' push -u origin "$branch"
+            pr_url="$(gh pr create --base main --head "$branch" \
+              --title "chore(assurance): review monitored instance state from run #${GITHUB_RUN_ID}" \
+              --body "Read-only source observation completed in Toolkit Actions run #${GITHUB_RUN_ID}, attempt ${GITHUB_RUN_ATTEMPT}. This PR stages the exact observed state; it has NOT been accepted or persisted into main. Review DCO and required checks before merge. Source and result evidence remain in that Actions run. No assurance PASS, Registry ownership cutover, or controller-incident conclusion is inferred.")"
+            # A GitHub App-authored PR triggers native pull_request checks on
+            # the merge candidate. Branch-only workflow_dispatch checks cannot
+            # qualify the repository's protected-main required contexts.
+            pr_head="$(gh pr view "$pr_url" --json headRefOid --jq '.headRefOid')"
+            if [ "$pr_head" != "$(git rev-parse HEAD)" ]; then
+              echo "::error::Created state PR head differs from the staged commit"
+              exit 1
+            fi
+            echo "Pending protected-main App-authored state PR; native PR checks required: $pr_url"
+            echo "disposition=staged_pending_review" >> "$GITHUB_OUTPUT"
+            echo "state_pr_url=$pr_url" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Explain protected-main state review boundary
+        shell: bash
+        run: |
+          if [ "${{ steps.persist.outputs.disposition }}" = "staged_pending_review" ]; then
+            echo 'State is staged in a protected-main PR; do not reconcile unmerged findings or publish incidents.'
+          fi
+
+      - name: Reconcile DTG end-to-end assurance explicitly
+        if: steps.persist.outputs.disposition == 'unchanged'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tools/dtg_assurance_reconcile.py
+          --incident-output /tmp/dtg-controller-incidents.json
+
+      - name: Retain state reconciliation incident result
+        if: steps.persist.outputs.disposition == 'unchanged'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/instance-monitor
+          cp /tmp/dtg-controller-incidents.json build/instance-monitor/controller-incidents.json
+      - if: steps.persist.outputs.disposition == 'unchanged'
+        uses: actions/upload-artifact@v7
+        with:
+          name: instance-monitor-incidents-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/instance-monitor/controller-incidents.json
+          if-no-files-found: error
+
