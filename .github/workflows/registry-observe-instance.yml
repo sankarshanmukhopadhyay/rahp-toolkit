@@ -64,7 +64,7 @@ jobs:
             exit 1
           fi
       - name: Authenticate scoped App installation before any monitor-side effects
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
         with:
           app-id: ${{ vars.RAHP_STATE_APP_ID }}
           private-key: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}
@@ -169,7 +169,7 @@ jobs:
           python-version: '3.11'
       - run: pip install -r requirements.txt
       - name: Restore exact monitored source
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: instance-monitor-source-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/instance-monitor/
@@ -194,7 +194,7 @@ jobs:
         run: python3 tools/check_monitor_state_branches.py
       - name: Generate repository-scoped state PR credential
         id: state-app
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
         with:
           app-id: ${{ vars.RAHP_STATE_APP_ID }}
           private-key: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}
