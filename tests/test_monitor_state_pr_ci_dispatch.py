@@ -20,7 +20,13 @@ class MonitorStatePRCIDispatchTests(unittest.TestCase):
         ):
             self.assertIn(required, monitor)
         self.assertLess(monitor.index("Require state-PR GitHub App configuration"),
+                        monitor.index("Authenticate scoped App installation"))
+        self.assertLess(monitor.index("Authenticate scoped App installation"),
                         monitor.index("Check DTG instance"))
+        self.assertEqual(monitor.count("actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510"), 1)
+        self.assertIn("permission-contents: write", monitor)
+        self.assertIn("permission-pull-requests: write", monitor)
+        self.assertIn("repositories: rahp-toolkit", monitor)
         self.assertIn("needs: monitor", text.split("\n  publish_external:", 1)[1])
         self.assertIn("Publish DTG assessment issues", publisher)
 
