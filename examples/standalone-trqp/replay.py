@@ -118,10 +118,12 @@ def replay(root: Path = HERE) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="compare with the retained expected replay")
+    parser.add_argument("--root", type=Path, default=HERE,
+                        help="local retained TRQP example directory; no network or arbitrary commands")
     args = parser.parse_args()
-    result = replay()
+    result = replay(args.root)
     if args.check:
-        expected = json.loads((HERE / "expected-replay.json").read_text())
+        expected = json.loads(_retained_path(args.root, "expected-replay.json").read_text())
         if result != expected:
             raise ValueError("Replay differs from retained expected result")
     print(json.dumps(result, indent=2))
