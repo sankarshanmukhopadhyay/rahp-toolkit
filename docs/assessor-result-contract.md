@@ -83,3 +83,38 @@ Obligation provenance, freshness beyond the declared source pins, caller
 authentication, source signature verification and live transport retries
 remain the responsibility of their existing authoritative producers and
 controllers. Do not infer them from this validator.
+
+## Fault-containment coverage inventory (#1190)
+
+This inventory distinguishes checks on the **actual supported consumer entry point**
+from tests of internal helpers. The public return command is
+`tools/validate_external_assurance_result.py`; the underlying v1 validators
+remain the contract authorities. Tests in
+`tests/test_external_assurance_result_cli.py` execute the CLI as a subprocess.
+
+| Fault | Consumer-facing evidence | Boundary |
+| --- | --- | --- |
+| Wrong proposition/contract key/requirement | `test_wrong_proposition_revision_and_requirements_rejected` | Rejected against a supplied valid obligation; no source-owner authentication |
+| Wrong target source revision | Same test and `tests/test_evidence_producer_result.py` | Checks declared pins; cannot prove current authoritative revision |
+| Duplicate return under same execution identity | `test_duplicate_and_conflicting_retries_fail_closed` | Requires prior return provided by caller; not an integrated replay store |
+| Contradictory return under same identity | Same test | Rejects conflicting payload; does not adjudicate substantive disagreement across distinct runs |
+| Unsupported v1 contract version/malformed return | `test_unknown_version_and_malformed_return_rejected` | Contract-invalid, no terminal outcome |
+| Missing obligation/context | `test_missing_context_and_unavailable_evidence_are_not_success` | `NOT_ESTABLISHED`, not fabricated binding |
+| Incomplete evidence / failed execution | `test_execution_failure_and_unavailable_evidence_have_distinct_diagnostics` | Retains distinct producer execution and evidence states; neither is assurance success |
+| Wrong assessor assessment ID or evidence relationship | `test_assessor_context_misbinding_and_non_authorization` and `test_assessor_unrelated_evidence_and_positive_claim_do_not_authorize` | Caller-supplied controller identity; portable assessor contract lacks intrinsic proposition-key binding |
+| Network timeout, delivery retry, concurrency, out-of-order receipt | **Not exercised through this offline CLI** | Requires an independently qualified transport/consumer environment; do not claim production fault containment |
+| Materially stale evidence, revoked authority or historical applicability | **Not established** from declared pin equality alone | Requires authoritative freshness, revocation and effective-time inputs |
+
+The **two bounded additional diagnostic gaps** addressed in the tranche were
+wrong addressed-obligation binding and duplicate/conflicting return identity.
+Other negative tests exercise existing contract boundaries without creating
+new assurance-state or transport semantics. Tests show that rejected or
+unavailable inputs cannot become a *successful validation receipt*. They do
+not independently prove what a remote controller would do with those inputs.
+
+The interface returns `VALID_BOUND_CONTRACT` only for consistency with the
+supplied context, never independent authenticity or a controller decision.
+The distinction between an evaluated specialist residual and an authoritative
+RAHP outcome remains explicit: portable assessor `outcome` and `residual_risk`
+are **input claims**, and `assurance_determination` is always `null`.
+Simulation or local contract validation is not operational transport assurance.
