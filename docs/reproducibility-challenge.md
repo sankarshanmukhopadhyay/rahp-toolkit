@@ -72,3 +72,38 @@ For a runnable cross-profile scenario, see the [R1–R3 worked reasoning example
 This is an optional **structural comparison profile**, not a challenge tribunal, provenance verifier, execution replay facility, controller, or authorization mechanism. A `DECLARED_MATCH` can occur even when both declared outcomes are wrong. It is not an RAHP terminal PASS. No changes are made to existing assessor-result v1, R1, R2, reasoning trace, or assurance FSM.
 
 Related: [R1 evidence adequacy](evidence-adequacy.md), [R2 temporal provenance](temporal-provenance.md), [reasoning architecture](reasoning-architecture.md).
+
+## Executable retained-input replay (bounded #1187 qualification)
+
+R3 remains a **declared-record comparison**. The maintained standalone TRQP
+example is a separate, already implemented **local execution replay**, not an
+R3 claim or a production assurance determination. From a clean checkout with
+`pip install -r requirements.txt`, run:
+
+```bash
+python3 examples/standalone-trqp/replay.py --check
+python3 examples/standalone-trqp/replay.py --root examples/standalone-trqp --check
+python3 -m unittest tests.test_standalone_trqp -v
+```
+
+The source manifest pins upstream commit
+`6863733878f3657e05f70764bb474a9fb918de9a` and retained exemplar
+source files. The evaluator verifies declared SHA-256 and Git blob identities,
+reruns the schema/counterexample checks and compares the bounded output to
+`expected-replay.json`. The `--root` option allows a reviewer to make a
+temporary local copy and challenge source, manifest or expected output without
+editing the committed exemplar. No manifest-selected executable is run and
+no remote input is fetched. The tests exercise missing or tampered retained
+files, symlink escapes, manifest revision substitution and expected-output
+substitution through the supported CLI.
+
+The original source authenticity is **not** established merely by matching
+retained hashes: an independent reviewer must verify the upstream commit and
+manifest against authoritative provenance. The Python interpreter,
+`jsonschema` version and platform are environment inputs; the existing replay
+does not cryptographically attest their identity. Retained fixtures are curated
+exemplars under `method/evidence-retention.yaml`, not authorization to
+bundle private source evidence or execution exhaust. No test here proves
+runtime authorization, current effective authority, deployment conformance or
+independent third-party adoption. A replay mismatch does not edit the
+historical RAHP disposition or close an issue.
