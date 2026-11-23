@@ -219,10 +219,61 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                     json.dumps(ledger).encode()).decode()}
             raise AssertionError("unexpected API " + url)
         with patch.object(publisher, "request", side_effect=fake):
-            with self.assertRaisesRegex(ValueError, "Registry-owned"):
-                publisher.enforce_live_transfer_boundary({"assessment_key": key}, "token")
-            publisher.enforce_live_transfer_boundary(
-                {"assessment_key": "dtg:portfolio:controller:unrelated"}, "token")
+            with patch.dict(publisher.os.environ, {
+                "GITHUB_ACTIONS": "true", "GITHUB_SHA": "a" * 40,
+                "GITHUB_REF": "refs/heads/main",
+                "GITHUB_REPOSITORY": publisher.CANONICAL_RAHP_ISSUE_REPOSITORY,
+            }):
+                with self.assertRaisesRegex(ValueError, "Registry-owned"):
+                    publisher.enforce_live_transfer_boundary({"assessment_key": key}, "token")
+                publisher.enforce_live_transfer_boundary(
+                    {"assessment_key": "dtg:portfolio:controller:unrelated"}, "token")
+
+    def test_live_fence_rejects_queued_stale_actions_main_revision(self) -> None:
+        import base64
+        import json
+        from unittest.mock import patch
+
+        actual_main = "b" * 40
+        ledger = {"schema": "rahp-registry-transfers/v1", "transfers": []}
+        calls = []
+        def fake(method, url, token, payload=None):
+            calls.append(url)
+            if url.endswith("/branches/main"):
+                return {"commit": {"sha": actual_main}}
+            if "/contents/instances/dtg/registry-transfers.json?" in url:
+                return {"encoding": "base64", "content": base64.b64encode(
+                    json.dumps(ledger).encode()).decode()}
+            raise AssertionError("unexpected API " + url)
+
+        with patch.object(publisher, "request", side_effect=fake):
+            with patch.dict(publisher.os.environ, {
+                "GITHUB_ACTIONS": "true", "GITHUB_SHA": "a" * 40,
+                "GITHUB_REF": "refs/heads/main",
+                "GITHUB_REPOSITORY": publisher.CANONICAL_RAHP_ISSUE_REPOSITORY,
+            }):
+                with self.assertRaisesRegex(ValueError, "stale Actions publisher"):
+                    publisher.enforce_live_transfer_boundary(
+                        {"assessment_key": "dtg:portfolio:controller:unrelated"}, "token")
+                self.assertEqual(len(calls), 1, "stale run must stop before ledger fetch")
+            with patch.dict(publisher.os.environ, {
+                "GITHUB_ACTIONS": "true", "GITHUB_SHA": actual_main,
+                "GITHUB_REF": "refs/heads/main",
+                "GITHUB_REPOSITORY": publisher.CANONICAL_RAHP_ISSUE_REPOSITORY,
+            }):
+                publisher.enforce_live_transfer_boundary(
+                    {"assessment_key": "dtg:portfolio:controller:unrelated"}, "token")
+            with patch.dict(publisher.os.environ, {
+                "GITHUB_ACTIONS": "true", "GITHUB_SHA": "main",
+            }):
+                with self.assertRaisesRegex(ValueError, "stale Actions publisher"):
+                    publisher.enforce_live_transfer_boundary(
+                        {"assessment_key": "dtg:portfolio:controller:unrelated"}, "token")
+        # A local explicit operator run continues under its separate contract.
+        with patch.object(publisher, "request", side_effect=fake):
+            with patch.dict(publisher.os.environ, {"GITHUB_ACTIONS": "false"}):
+                publisher.enforce_live_transfer_boundary(
+                    {"assessment_key": "dtg:portfolio:controller:unrelated"}, "token")
 
     def test_live_fence_rejects_main_head_drift(self) -> None:
         import base64
@@ -235,9 +286,14 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                 json.dumps({"schema": "rahp-registry-transfers/v1",
                             "transfers": []}).encode()).decode()}
         with patch.object(publisher, "request", side_effect=fake):
-            with self.assertRaisesRegex(ValueError, "main changed"):
-                publisher.enforce_live_transfer_boundary(
-                    {"assessment_key": "dtg:portfolio:controller:other"}, "token")
+            with patch.dict(publisher.os.environ, {
+                "GITHUB_ACTIONS": "true", "GITHUB_SHA": "a" * 40,
+                "GITHUB_REF": "refs/heads/main",
+                "GITHUB_REPOSITORY": publisher.CANONICAL_RAHP_ISSUE_REPOSITORY,
+            }):
+                with self.assertRaisesRegex(ValueError, "main changed"):
+                    publisher.enforce_live_transfer_boundary(
+                        {"assessment_key": "dtg:portfolio:controller:other"}, "token")
 
     def test_live_fence_rejects_unavailable_authority(self) -> None:
         with patch.object(publisher, "request", return_value={}):
