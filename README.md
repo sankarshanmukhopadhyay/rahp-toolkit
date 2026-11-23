@@ -13,11 +13,24 @@ RAHP is deliberately evidence-conservative:
 - normative convergence does not silently become implementation conformance;
 - identity or lineage evidence does not silently become authorization.
 
-## Issue ownership
+## Repository and case ownership
 
-This repository's issue queue is for **RAHP Toolkit development and qualification**: portable method, schemas, engine, validators, reusable tests, tooling, documentation, security, maintainer governance and release acceptance. The [RAHP Assessment Registry](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry) is the **intended long-term coordination surface** for externally owned assessment cases, source observations, evidence references, residual obligations and reassessment lifecycle. It consumes canonical Toolkit execution contracts rather than redefining assurance semantics. DPIP and Interop Lab retain independent specialist and evidence-producer authority. For case admission and current migration status, see the [Registry README](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry#readme).
+This repository maintains the **portable RAHP method and execution contracts**:
+the assurance engine, schemas, validators, developer tooling, conformance
+tests, security, documentation and release governance. Its issue queue tracks
+Toolkit defects, development, qualification and legitimate controller-local
+incidents.
 
-**Migration state (19 November 2026):** The pilot external case Toolkit [#1203](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1203) → Registry [#4](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/4) remains historical evidence coordination. A distinct, **accepted source-scoped administrative transfer** now exists for the exact four-finding DTG Monitor group: historical Toolkit [#272](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/272) → active Registry [#88](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/88) (`RAHP-AR-DTG-0002`). Toolkit's canonical `instances/dtg/registry-transfers.json` records `accepted_group`; original and subsequent source-epoch receipts were authenticated. The actual [handoff run #44462670290, attempt 2](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/44462670290) held the Registry-owned event, retained two unrelated events, and created no duplicate Toolkit issue. **This is not a universal external-publisher switch.** Old workflow refs may still bypass the current publisher's live transfer guard, the #88 case remains `not_assessed`, and eligible cross-repository controller/reviewer/DPIP execution plus governed reverse transfer remain unqualified. Toolkit continues to own portable method, engine, canonical execution and its legitimate local controller/development issues; Registry owns accepted external case administration, evidence coordination and reassessment. Do not reopen historical #272 or fabricate a specialist referral. The active cutover tracker is [Registry #77](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/77) and its [G1–G6 evidence ledger](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/blob/main/docs/migration-gate-status.md); closed [Registry #11](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/issues/11) preserves original gate requirements, not gate acceptance.
+The [RAHP Assessment Registry](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry)
+is the case-management surface for admitted external assessments, attributable
+source observations, evidence references, residual obligations and reassessment
+lifecycle. It consumes canonical Toolkit results without redefining RAHP
+determinations. See the Registry's [case lifecycle](https://github.com/sankarshanmukhopadhyay/rahp-assessment-registry/blob/main/docs/case-lifecycle.md)
+to understand admission, evidence state and administrative disposition.
+
+Privacy specialists such as DPIP and evidence producers such as the Trust
+Protocol Interop Lab retain independent authority for their respective work.
+An administrative case state or successful workflow does not imply RAHP PASS.
 
 ## Current release — v2.9.0 Common Windmill
 
