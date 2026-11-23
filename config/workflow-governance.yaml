@@ -33,6 +33,12 @@ workflows:
   instance-monitor-main.yml:
     class: lifecycle-controller
     responsibility: instance-observation-publication-and-persistence
+  registry-observe-instance.yml:
+    class: lifecycle-controller
+    responsibility: registry-mode-dtg-cawg-observation-and-protected-state-persistence
+  registry-observe-materiality.yml:
+    class: lifecycle-controller
+    responsibility: registry-mode-dtg-materiality-source-qualification
   cawg-vlei-verifier-probe.yml:
     class: bounded-evidence
     responsibility: pinned-external-vlei-verifier-core-probe
