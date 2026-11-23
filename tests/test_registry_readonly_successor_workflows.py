@@ -16,7 +16,10 @@ class RegistryObservationSuccessorTests(unittest.TestCase):
                 self.assertNotIn("issues: write", body)
                 self.assertNotIn("actions: write", body)
                 self.assertNotIn("gh workflow run", body)
-                self.assertNotIn("--events instances/", body)
+                # The issue-watch observation tool legitimately writes a local
+                # event *file* with --events; reject only external issue POST
+                # invocations, not that read-only observation contract.
+                self.assertNotIn("tools/publish_assessment_issues.py\\n          --events", body)
                 self.assertNotIn("dpip_handoff.py", body)
                 self.assertNotIn("dtg_repository_review_worker.py", body)
                 self.assertIn("cancel-in-progress: false", body)
