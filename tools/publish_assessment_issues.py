@@ -170,6 +170,13 @@ def enforce_live_transfer_boundary(event: dict[str, Any], token: str) -> None:
         return sha
 
     current = head()
+    # A queued Actions run may have started on an older main commit. Its
+    # checked-out ledger is insufficient authority for any present issue write.
+    # Recheck before each mutation, not only at workflow entry.
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        run_sha = os.environ.get("GITHUB_SHA", "")
+        if not re.fullmatch(r"[0-9a-f]{40}", run_sha) or run_sha != current:
+            raise ValueError("stale Actions publisher commit differs from current Toolkit main")
     record = request("GET", api + "/contents/instances/dtg/registry-transfers.json?ref=" + current, token)
     if not isinstance(record, dict) or record.get("encoding") != "base64":
         raise ValueError("live Toolkit transfer ledger unavailable")
