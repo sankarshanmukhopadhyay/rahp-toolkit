@@ -31,7 +31,8 @@ for path in sorted(workflow_dir.glob("*.y*ml")):
             fragment = tail[:600]
             # A standalone preflight reads event files and cannot issue GitHub writes.
             # Actual publication invocations must retain the canonical destination.
-            if re.match(r"^--(?:check-transfers|verify-transfer-rollback|publication-owner)(?:\s|$)", fragment.lstrip()):
+            if (re.match(r"^--(?:check-transfers|verify-transfer-rollback)(?:\s|$)", fragment.lstrip())
+                    or re.match(r'^--publication-owner\)"(?:\s|$)', fragment.lstrip())):
                 continue
             if f'--repository "{CANONICAL}"' not in fragment:
                 errors.append(f"{path.relative_to(ROOT)} publisher call {idx}: canonical --repository is required")
