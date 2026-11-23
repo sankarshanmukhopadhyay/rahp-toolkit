@@ -47,6 +47,17 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
+      - name: Require state-PR GitHub App configuration before observation and publication
+        env:
+          STATE_APP_ID: ${{ vars.RAHP_STATE_APP_ID }}
+          STATE_APP_KEY: ${{ secrets.RAHP_STATE_APP_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! [[ "${STATE_APP_ID:-}" =~ ^[1-9][0-9]*$ ]] || [ -z "${STATE_APP_KEY:-}" ]; then
+            echo "::error::Repository-scoped state App ID variable or private-key secret is missing; abort before external issue publication"
+            exit 1
+          fi
 
       - name: Declare incremental monitor semantics
         shell: bash
