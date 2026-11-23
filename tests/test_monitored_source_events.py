@@ -45,7 +45,7 @@ class MonitoredSourceEventTests(unittest.TestCase):
 
     def test_nonassessment_and_no_change_never_promote(self):
         report = index.qualify([event(
-            event_class="change-triage", labels=["change-triage", "dtg-instance"
+            event_class="change-triage", labels=["change-triage", "dtg-instance"]
         )], "dtg")
         self.assertEqual(report["candidate_count"], 0)
         self.assertEqual(report["events"][0]["classification"], "triage_only")
