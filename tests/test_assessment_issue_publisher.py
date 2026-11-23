@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 import importlib.util
 from io import BytesIO
 from pathlib import Path
@@ -307,8 +309,15 @@ class AssessmentIssuePublisherTests(unittest.TestCase):
                     publisher.enforce_live_transfer_boundary(
                         {"assessment_key": "dtg:portfolio:controller:other"}, "token")
 
-    def test_explicit_policy_defaults_and_fail_closed_validation(self) -> None:
-        self.assertEqual(publisher.checked_in_publication_authority(), "toolkit")
+    def test_explicit_policy_owner_and_fail_closed_validation(self) -> None:
+        # Both protected-main modes are valid. Locking the test to "toolkit"
+        # would forbid the very authority switch this contract implements.
+        self.assertEqual(
+            publisher.checked_in_publication_authority(),
+            publisher.parse_publication_authority(
+                json.loads(publisher.PUBLICATION_AUTHORITY.read_text(encoding="utf-8"))
+            ),
+        )
         self.assertEqual(publisher.parse_publication_authority({
             "schema": "rahp-external-case-publication/v1", "owner": "registry"
         }), "registry")
