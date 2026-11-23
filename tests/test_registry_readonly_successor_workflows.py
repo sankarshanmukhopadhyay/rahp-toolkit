@@ -55,6 +55,14 @@ class RegistryObservationSuccessorTests(unittest.TestCase):
         self.assertIn("  local_incidents:", local)
         self.assertIn("Publish only unowned Toolkit-local controller incidents", local)
         self.assertIn("issues: write", local)
+        # During Registry-owned monitoring a no-change observation does not
+        # create a new main push. Scheduled accepted-state reconciliation must
+        # still publish genuinely unowned Toolkit-local incidents.
+        self.assertIn("github.event_name == 'schedule'", local)
+        self.assertIn("needs.reconcile.outputs.registry_mode == 'true'", local)
+        self.assertIn("steps.external-owner.outputs.registry_mode == 'true'", local)
+        self.assertIn("Reject stale main before local incident mutation", local)
+        self.assertIn('remote="$(git ls-remote origin refs/heads/main | cut -f1)"', local)
 
 
 if __name__ == "__main__":
