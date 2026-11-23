@@ -1,5 +1,6 @@
-from __future__ import json
-import annotations
+from __future__ import annotations
+
+import json
 
 import importlib.util
 from io import BytesIO
