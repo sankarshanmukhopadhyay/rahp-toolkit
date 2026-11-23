@@ -43,6 +43,7 @@ def qualify(events, instance):
             raise ValueError("invalid or duplicate monitored assessment key")
         seen.add(key)
         if (not isinstance(repo, str) or not REPOSITORY.fullmatch(repo)
+                or any(segment in (".", "..") for segment in repo.split("/"))
                 or not isinstance(revision, str) or not HEX40.fullmatch(revision)):
             raise ValueError("missing immutable repository source pin")
         if not isinstance(event.get("title"), str) or not event["title"].strip():
