@@ -38,8 +38,14 @@ def main() -> int:
     required_monitor = (
         "git ls-remote origin refs/heads/main",
         "git commit -s",
-        'git push -u origin "$branch"',
+        'push -u origin "$branch"',
+        "credential.helper=",
         "gh pr create --base main",
+        "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510",
+        "persist-credentials: false",
+        "permission-contents: write",
+        "permission-pull-requests: write",
+        "GH_TOKEN: ${{ steps.state-app.outputs.token }}",
         "disposition=staged_pending_review",
         "Unmerged monitored-state PR exists",
         "Pending protected-main instance state PR blocks re-publication",
@@ -49,8 +55,15 @@ def main() -> int:
         require(marker in monitor, "missing protected-main marker: " + marker)
     require("git push\n" not in monitor and "git push origin main" not in monitor,
             "instance monitor still has direct protected-main push")
-    require("pull-requests: write" in monitor,
-            "persist cannot stage reviewable state PR")
+    persist = jobs["persist"]
+    require(persist.get("permissions") == {
+                "contents": "read", "pull-requests": "read", "issues": "read",
+            },
+            "persist must not authorize state writes with the default workflow token")
+    require(any(step.get("id") == "state-app"
+                and "create-github-app-token@" in step.get("uses", "")
+                for step in persist.get("steps", [])),
+            "persist has no bounded GitHub App installation token creator")
     for name in ("validate.yml", "pages.yml"):
         target = (WORKFLOWS / name).read_text(encoding="utf-8")
         require("push:" in target and "branches: [main]" in target,
@@ -65,6 +78,7 @@ def main() -> int:
             "accepted-state local incidents lack bounded reconciliation dependency")
     print("PASS instance-watch protected-main state acceptance and assurance dispatch contract")
     print("  source observation and publication are separate")
+    print("  scoped GitHub App writes the signed state branch and native-check PR")
     print("  changed state requires signed PR and accepted main before reconciliation")
     print("  validate/pages and canonical DTG assurance run on accepted main")
     return 0
