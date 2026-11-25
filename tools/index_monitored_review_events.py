@@ -15,7 +15,7 @@ from pathlib import Path
 
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
-KEY = re.compile(r"^(?:dtg|cawg):[a-z0-9][a-z0-9:._/-]{7,170}$")
+BRANCH = re.compile(r"^[A-Za-z0-9_.@/+-]+$")
 SCHEMA = "rahp-monitored-source-review-index/v1"
 
 
@@ -38,10 +38,6 @@ def qualify(events, instance):
         repo = event.get("repository")
         revision = event.get("new")
         kind = event.get("event_class")
-        if (not isinstance(key, str) or not KEY.fullmatch(key)
-                or not key.startswith(instance + ":") or key in seen):
-            raise ValueError("invalid or duplicate monitored assessment key")
-        seen.add(key)
         if (not isinstance(repo, str) or not REPOSITORY.fullmatch(repo)
                 or any(segment in (".", "..") for segment in repo.split("/"))
                 or not isinstance(revision, str) or not HEX40.fullmatch(revision)):
@@ -55,6 +51,22 @@ def qualify(events, instance):
             raise ValueError("monitored event labels invalid")
         if kind not in (None, "assessment-required", "change-triage"):
             raise ValueError("unknown monitored event classification")
+        branch = event.get("branch", "main")
+        if (not isinstance(branch, str) or not BRANCH.fullmatch(branch)
+                or ".." in branch or "@{" in branch or branch == "@"
+                or branch.startswith("-") or branch.endswith(".")
+                or any(not part or part.startswith(".") or part.endswith(".lock")
+                       for part in branch.split("/"))):
+            raise ValueError("invalid monitored source branch")
+        if event.get("instance", instance) != instance:
+            raise ValueError("foreign monitored source instance")
+        namespace = "classification" if kind == "change-triage" else "repository"
+        expected = f"{instance}:{namespace}:{repo}"
+        if branch != "main":
+            expected += f"@{branch}"
+        if key != expected or key in seen:
+            raise ValueError("invalid or duplicate monitored assessment key")
+        seen.add(key)
         encoded = canonical(event)
         full = hashlib.sha256(encoded).hexdigest()
         items.append({
