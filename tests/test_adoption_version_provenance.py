@@ -8,6 +8,7 @@ import argparse
 import sys
 import tempfile
 import unittest
+import yaml
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,7 +20,12 @@ from rahp_version import stable_release
 
 class AdoptionProvenanceTests(unittest.TestCase):
     def test_release_comes_from_declared_versioning_authority(self):
-        self.assertEqual("v2.9.0", stable_release())
+        declared = yaml.safe_load((ROOT / "method/versioning.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(declared["stable_release"], stable_release())
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "versioning.yaml"
+            path.write_text("id: rahp-versioning-v1\nstable_release: v99.4.7\n", encoding="utf-8")
+            self.assertEqual("v99.4.7", stable_release(path))
         self.assertNotEqual("v0.9.0", stable_release())
 
     def test_invalid_release_metadata_fails_closed(self):
@@ -46,7 +52,7 @@ class AdoptionProvenanceTests(unittest.TestCase):
             with redirect_stdout(buf):
                 rahp.scaffold_one(cfg, item, "rahp", args)
         output = buf.getvalue()
-        self.assertIn("--rahp-version v2.9.0", output)
+        self.assertIn("--rahp-version " + stable_release() + " ", output)
         self.assertNotIn("--rahp-version v0.9.0", output)
         self.assertIn("--commit " + "a" * 40, output)
         self.assertIn("--storage working", output)
@@ -62,7 +68,8 @@ class AdoptionProvenanceTests(unittest.TestCase):
             with redirect_stdout(buf):
                 rahp.scaffold_one(cfg, item, "rahp", args)
         self.assertIn("--rahp-version v2.8.0", buf.getvalue())
-        self.assertNotIn("--rahp-version v2.9.0", buf.getvalue())
+        if stable_release() != "v2.8.0":
+            self.assertNotIn("--rahp-version " + stable_release() + " ", buf.getvalue())
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ The current stable engine state is:
 
 | Surface | Current value | Meaning |
 |---|---|---|
-| Toolkit release | `v2.9.0` | Packaged RAHP release |
+| Toolkit release | `v2.9.0` (published); `v2.10.0` (candidate) | Published review baseline and proposed packaged RAHP release |
 | Engine contract family | `rahp-engine-contract-v1` | Stable interoperability/semantic boundary |
 | Engine contract revision | `1.3` | Current additive capability level inside the v1 family |
 | Normalized result schema | `1` | Portable result-document compatibility boundary |

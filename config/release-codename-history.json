@@ -75,6 +75,11 @@
       "version": "v2.9.0",
       "codename": "Common Windmill",
       "status": "published"
+    },
+    {
+      "version": "v2.10.0",
+      "codename": "Common Banded Peacock",
+      "status": "candidate"
     }
   ]
 }

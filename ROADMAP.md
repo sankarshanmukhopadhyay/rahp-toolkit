@@ -7,9 +7,9 @@ parent: Releases
 ---
 # RAHP roadmap
 
-## Current release — v2.9.0 Common Windmill
+## Release candidate: v2.10.0 Common Banded Peacock
 
-v2.9.0 is the published and qualified **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** baseline. It packages post-v2.8 people-impact methodology, source-qualified corpus evidence, lifecycle/control-consequence assurance, source-pinned runtime and witness evidence, derived assurance-registry discovery, and release/contribution hardening.
+The unpublished v2.10.0 candidate consolidates **Operational Integrity, Reproducibility and Governed Assurance Interoperability**. The latest published release remains v2.9.0. Qualification must establish the new release boundary before publication.
 
 The compatibility boundary remains `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1`. Qualification preserves zero-positive people-impact outcomes, derived-versus-authoritative registry boundaries, and NOT VERIFIED security evidence where admin/runtime inspection remains unavailable.
 
@@ -29,7 +29,7 @@ RAHP remains materiality-bounded and evidence-conservative. Broader execution is
 
 ## Current portfolio context
 
-- RAHP v2.9.0;
+- RAHP v2.10.0 candidate (published v2.9.0);
 - DPIP v0.3.0;
 - Trust Protocol Interop Lab v0.7.0.
 
@@ -49,7 +49,7 @@ The v2.6 operating model is additive and retains the previously qualified capabi
 
 These capability names are retained because they remain registered stable capabilities; v2.6 extends rather than replaces them.
 
-## Post-v2.9 priorities
+## Post-v2.10 priorities
 
 Continue trigger-driven security/privacy hardening and evidence follow-up, including runtime evidence tracked in [#994](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/994), without turning external evidence gaps into release-driven work. Future assurance work should remain trigger-driven rather than release-driven: reassess waiting-external/evidence-required owners when their evidence trigger fires; deepen non-DTG adoption and higher-level resilience evidence; continue measured performance work only where semantic equivalence is preserved; and keep experimental research behind explicit graduation gates.
 

@@ -9,7 +9,17 @@ parent: Reference
 
 ## Unreleased
 
-No changes are recorded after the v2.9.0 release.
+## v2.10.0 (candidate) - Common Banded Peacock
+
+- Hardened source identity, corpus provenance, freshness, claim integrity and reassessment boundaries.
+- Added read-only validated result explanation, offline first-run scaffolding and source-pinned TRQP adoption material.
+- Extended shared consumer conformance and external return validation, distinguishing unavailable from failed evidence.
+- Separated external case administration from canonical Toolkit execution; retained guarded transfer, observation persistence, exact source indexing and publisher fencing.
+- Consolidated workflow surfaces and strengthened operational recovery and source-qualified review advancement.
+- Intended stable engine revision 1.3, result schema 1 and evidence-retention v1 remain unchanged, subject to qualification.
+- Independent adoption and security residuals remain explicit. Registry live interoperability is not fully qualified.
+
+See [candidate release notes](docs/releases/v2.10.0.md).
 
 ## v2.9.0 - 2026-10-22 - Common Windmill
 
