@@ -93,6 +93,8 @@ def evidence_links(finding: dict[str, Any]) -> str:
 
 def render_judgment_packet(issue: dict[str, Any], catalog: dict[str, dict[str, Any]]) -> str:
     ids = finding_ids(issue.get("body") or "")
+    if not ids:
+        raise ValueError("combined review contains no reconstructable Portfolio Monitor finding IDs")
     missing = [fid for fid in ids if fid not in catalog]
     if missing:
         raise ValueError("Portfolio Monitor snapshot is missing routed finding IDs: " + ", ".join(missing))
@@ -189,6 +191,10 @@ def has_marker(existing: list[dict[str, Any]], marker: str) -> bool:
 def advance(issue: dict[str, Any], token: str) -> None:
     existing = comments(issue["number"], token)
     labels = label_names(issue)
+    # Resolve the actual source before any evidence-complete transition.
+    day = snapshot_date(issue.get("body") or "")
+    catalog = fetch_monitor_findings(day)
+    packet = render_judgment_packet(issue, catalog)
     if ASSESSMENT in labels:
         if not has_marker(existing, MARKER):
             api("POST", f"issues/{issue['number']}/comments", token, {"body": render_record(issue)})
@@ -196,9 +202,7 @@ def advance(issue: dict[str, Any], token: str) -> None:
         api("POST", f"issues/{issue['number']}/labels", token, {"labels": [JUDGMENT, EXECUTED]})
         remove_label(issue["number"], ASSESSMENT, token)
     if not has_marker(existing, PACKET_MARKER):
-        day = snapshot_date(issue.get("body") or "")
-        catalog = fetch_monitor_findings(day)
-        api("POST", f"issues/{issue['number']}/comments", token, {"body": render_judgment_packet(issue, catalog)})
+        api("POST", f"issues/{issue['number']}/comments", token, {"body": packet})
     print(f"JUDGMENT_READY #{issue['number']}")
 
 

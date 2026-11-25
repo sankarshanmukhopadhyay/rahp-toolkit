@@ -1,6 +1,7 @@
 """Canonical combined worker must not invent findings from evidence digests."""
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,6 +52,30 @@ class CombinedReviewSourceTests(unittest.TestCase):
         self.assertEqual(worker.finding_ids("digest:" + "f"*64), [])
         self.assertEqual(worker.finding_ids("prefix" + IDS[0] + "suffix"), [])
         self.assertEqual(worker.finding_ids("id=`" + IDS[0] + "`"), [IDS[0]])
+
+    def test_missing_or_incomplete_source_never_mutates_issue(self):
+        issue = self.issue()
+        issue["labels"] = [{"name": worker.ASSESSMENT}]
+        for body, catalog in (
+            ("No qualified snapshot", self.catalog()),
+            (issue["body"], {}),
+        ):
+            with self.subTest(body=body), patch.object(worker, "comments", return_value=[]), \
+                    patch.object(worker, "fetch_monitor_findings", return_value=catalog), \
+                    patch.object(worker, "api") as api:
+                with self.assertRaises(ValueError):
+                    worker.advance(dict(issue, body=body), "test")
+                api.assert_not_called()
+
+    def test_complete_source_allows_existing_transition(self):
+        issue = self.issue()
+        issue["labels"] = [{"name": worker.ASSESSMENT}]
+        with patch.object(worker, "comments", return_value=[]), \
+                patch.object(worker, "fetch_monitor_findings", return_value=self.catalog()), \
+                patch.object(worker, "api") as api, \
+                patch.object(worker, "ensure_label"), patch.object(worker, "remove_label"):
+            worker.advance(issue, "test")
+        self.assertEqual(api.call_count, 3)
 
     def test_forged_or_missing_source_member_fails_before_judgment(self):
         issue = self.issue()
