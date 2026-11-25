@@ -24,6 +24,29 @@ class ReleaseCandidateLineageTests(unittest.TestCase):
         ]
         self.assertEqual(lineage.classify_changed_paths(changed, allowed), [])
 
+    def test_review_and_adoption_publication_paths_are_exact(self):
+        expected = {
+            "ADOPTION.md",
+            "docs/adoption-guide.md",
+            "docs/releases/index.md",
+            "docs/review/review-readiness-baseline.md",
+            "docs/review/reproduction.md",
+            "docs/review/known-limitations.md",
+            "method/review/claim-evidence-ledger.yaml",
+        }
+        allowed = lineage.allowed_paths({}, {})
+        self.assertTrue(expected <= allowed)
+        self.assertEqual(lineage.classify_changed_paths(sorted(expected), allowed), [])
+        unexpected = [
+            "docs/review/threat-model.md",
+            "docs/review/security-pre-review.md",
+            "method/review/false-assurance-challenges.yaml",
+            "docs/how-rahp-works.md",
+            "tests/test_release_candidate_lineage.py",
+            "tools/validate_release_candidate_lineage.py",
+        ]
+        self.assertEqual(lineage.classify_changed_paths(unexpected, allowed), sorted(unexpected))
+
     def test_post_candidate_code_change_is_rejected(self):
         allowed = {"README.md", "method/release.yaml"}
         changed = ["README.md", "tools/assurance.py"]

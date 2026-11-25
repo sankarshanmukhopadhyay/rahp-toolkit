@@ -22,6 +22,14 @@ ROOT = Path(__file__).resolve().parents[1]
 SHA = re.compile(r"^[0-9a-f]{40}$")
 
 BASE_ALLOWED = {
+    # Exact reader-facing release identity surfaces; never allow a directory wildcard.
+    "ADOPTION.md",
+    "docs/adoption-guide.md",
+    "docs/releases/index.md",
+    "docs/review/review-readiness-baseline.md",
+    "docs/review/reproduction.md",
+    "docs/review/known-limitations.md",
+    "method/review/claim-evidence-ledger.yaml",
     "CHANGELOG.md",
     "PROJECT-STATUS.yaml",
     "README.md",
