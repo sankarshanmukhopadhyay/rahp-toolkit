@@ -1,8 +1,8 @@
 project: rahp-toolkit
 stable_release: 2.10.0
 development_target: 2.10.0
-release_status: candidate
-qualification_status: candidate
+release_status: released
+qualification_status: qualified
 qualification_contract: method/v2.10-release-qualification.yaml
 release_name:
   common_name: Common Banded Peacock
@@ -26,7 +26,7 @@ release_naming:
   source: https://en.wikipedia.org/wiki/List_of_butterflies_of_West_Bengal
   selection: random-at-release-time
 release_intent: >-
-  v2.10.0 candidate consolidates evidence integrity, reproducible adoption, consumer
+  v2.10.0 consolidates evidence integrity, reproducible adoption, consumer
   interoperability and governed external-case ownership separation while retaining
   the stable v1 engine/result/evidence contracts.
 development_posture: >-

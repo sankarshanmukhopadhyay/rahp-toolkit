@@ -6,7 +6,7 @@ Reproduce the stable RAHP validation boundary from a clean checkout without impo
 
 ## Baseline
 
-- stable toolkit: `v2.9.0`
+- stable toolkit: `v2.10.0`
 - default branch: `main`
 - CI Python: `3.11`
 - engine: `rahp-engine-contract-v1` revision `1.3`
@@ -20,7 +20,7 @@ For historical review, check out the immutable tag or commit being reviewed rath
 ```bash
 git clone https://github.com/sankarshanmukhopadhyay/rahp-toolkit.git
 cd rahp-toolkit
-git checkout v2.9.0
+git checkout v2.10.0
 python3.11 -m venv .venv
 . .venv/bin/activate
 python -m pip install --upgrade pip
@@ -32,7 +32,7 @@ python3 tools/validate_negative_fixtures.py
 python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-For current-main review-readiness changes that post-date v2.9.0, repeat against the exact commit being reviewed. Do not silently apply current-main evidence to the immutable v2.9.0 release.
+For current-main review-readiness changes that post-date v2.10.0, repeat against the exact commit being reviewed. Do not silently apply current-main evidence to the immutable v2.10.0 release.
 
 ## Intentionally non-positive reproduction
 

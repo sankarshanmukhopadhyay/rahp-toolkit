@@ -1,48 +1,52 @@
 {
   "contract": "rahp-release-evidence/v1",
   "candidate_version": "v2.10.0",
-  "candidate_sha": null,
-  "publication_authorized": false,
+  "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+  "publication_authorized": true,
   "gates": {
     "full_regression": {
-      "result": "PENDING",
-      "candidate_sha": null,
-      "source": null
+      "result": "PASS",
+      "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/45635229243/job/139278763056"
     },
     "typescript_conformance": {
-      "result": "PENDING",
-      "candidate_sha": null,
-      "source": null
+      "result": "PASS",
+      "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/45635229243/job/139278855265"
     },
     "stable_compatibility": {
-      "result": "PENDING",
-      "candidate_sha": null,
-      "source": null
+      "result": "PASS",
+      "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/45635229243/job/139278763056"
     },
     "docs_rendering": {
-      "result": "PENDING",
-      "candidate_sha": null,
-      "source": null
+      "result": "PASS",
+      "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/45635229389"
     },
     "publication_metadata": {
-      "result": "PENDING",
-      "candidate_sha": null,
-      "source": null
+      "result": "PASS",
+      "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/45635229243/job/139278763056"
     },
     "release_publication_preflight": {
-      "result": "PENDING",
-      "candidate_sha": null,
-      "source": null
+      "result": "PASS",
+      "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/pull/1269",
+      "scope": "Candidate lineage correction qualified; final notes and lineage must pass mandatory publication workflow before write."
     },
     "security_review": {
-      "result": "PENDING",
-      "candidate_sha": null,
-      "source": null
+      "result": "PASS",
+      "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/actions/runs/45635229243/job/139278763056",
+      "scope": "Bounded source/configuration and CI review; protected main observed; exact squash DCO verified; locked install and security/workflow checks passed; independent and admin evidence remains NOT_VERIFIED."
     },
     "owner_approval": {
-      "result": "PENDING",
-      "candidate_sha": null,
-      "source": null
+      "result": "PASS",
+      "candidate_sha": "16a2fdca4d2856083d44a11ad18cc6c008aaa5dc",
+      "source": "https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1179#issuecomment-7165163149",
+      "decision": "GO",
+      "historical_dco_disposition": "ACCEPT_DISCLOSED_EXCEPTION"
     }
   }
 }

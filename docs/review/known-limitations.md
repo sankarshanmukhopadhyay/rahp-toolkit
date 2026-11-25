@@ -11,7 +11,7 @@ This document is intentionally part of the independent-review surface. It record
 5. **Specialist coverage is bounded.** A specialist boundary can preserve uncertainty correctly without providing the missing specialist evidence. Privacy composition can therefore remain indeterminate.
 6. **Synthetic fixtures are not realization evidence.** Conformance and negative fixtures exercise semantics but cannot substitute for genuine implementation-pair, runtime or operational evidence where the proposition requires those classes.
 7. **Resource-exhaustion resistance is not claimed as comprehensively qualified.** The review threat model calls for hostile-scale testing; current qualification primarily establishes semantic and functional invariants.
-8. **Release qualification is not independent review.** v2.9.0 qualification demonstrates the repository-defined release contract. It does not prove absence of defects or substitute for external scrutiny.
+8. **Release qualification is not independent review.** v2.10.0 qualification demonstrates the repository-defined release contract. It does not prove absence of defects or substitute for external scrutiny.
 9. **AI assistance is not assurance evidence.** AI can assist analysis and drafting, but a model output does not satisfy an evidence obligation merely by being plausible.
 
 ## Residual-risk handling
