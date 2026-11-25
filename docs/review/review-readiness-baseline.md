@@ -5,7 +5,7 @@ Status: maintained baseline for independent third-party review preparation.
 ## Repository baseline
 
 - Default branch: `main`.
-- Stable release declared by the repository: `v2.9.0` (Common Windmill).
+- Stable release declared by the repository: `v2.10.0` (Common Banded Peacock).
 - Primary runtime exercised by CI: Python 3.11.
 - Ordinary contributor/test dependencies in `requirements.txt` use minimum-version constraints. The governed release runner separately uses the hash-locked `requirements-release.lock`; these are different reproducibility boundaries.
 - The primary validation workflow is `.github/workflows/validate.yml`.
