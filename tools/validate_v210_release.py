@@ -17,6 +17,8 @@ def validate(root: Path=ROOT)->list[str]:
         e=json.loads((root/"method/v2.10-release-evidence.json").read_text(encoding="utf-8"))
         c=yaml.safe_load((root/"method/v2.10-release-candidate.yaml").read_text(encoding="utf-8")) or {}
     except (OSError,yaml.YAMLError,json.JSONDecodeError) as exc: return [f"cannot read v2.10 qualification artifacts: {exc}"]
+    if not all(isinstance(x,dict) for x in (q,e,c)): return ["qualification artifacts must be mappings"]
+    if not all(isinstance(q.get(k),dict) for k in ("release_gates","qualified_capabilities","evidence","release_cut","bounded_or_residual")): return ["qualification mappings missing or malformed"]
     if q.get("release")!="v2.10.0": errors.append("release must be v2.10.0")
     if q.get("qualification")!="operational-integrity-reproducibility-governed-assurance-interoperability": errors.append("qualification theme mismatch")
     if q.get("stable_compatibility")!=EXPECTED: errors.append("stable compatibility differs from the declared v2.10 boundary")
@@ -26,6 +28,8 @@ def validate(root: Path=ROOT)->list[str]:
         if s not in {"PENDING","PASS","FAIL","INDETERMINATE"}: errors.append(f"invalid capability state {n}: {s}")
     for n,s in (q.get("release_gates") or {}).items():
         if s not in {"PENDING","PASS","FAIL","INDETERMINATE"}: errors.append(f"invalid gate state {n}: {s}")
+    expected_evidence={"candidate_manifest":"method/v2.10-release-candidate.yaml","release_evidence":"method/v2.10-release-evidence.json","release_notes":"docs/releases/v2.10.0.md","security_disposition":"docs/review/current-main-release-security-disposition-2026-11-25.md","tracking_issue":"https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1179"}
+    if q["evidence"]!=expected_evidence: errors.append("qualification evidence inventory or identity mismatch")
     for name,path in (q.get("evidence") or {}).items():
         if name=="tracking_issue":
             if path!="https://github.com/sankarshanmukhopadhyay/rahp-toolkit/issues/1179": errors.append("unexpected tracking issue")
@@ -45,6 +49,7 @@ def validate(root: Path=ROOT)->list[str]:
     if (c.get("adoption") or {}).get("independent_participant")!="NOT_YET_TESTED" or (c.get("adoption") or {}).get("terminal_assurance_claim") is not False: errors.append("candidate adoption boundary mismatch")
     residual=q.get("bounded_or_residual") or {}
     if residual.get("independent_adoption")!="NOT_YET_TESTED" or residual.get("issue_958_admin_and_human_review_evidence")!="NOT_VERIFIED" or residual.get("registry_live_interoperability")!="PARTIALLY_QUALIFIED" or residual.get("monitored_event_canonical_accounting")!="WORK_OPEN": errors.append("residual boundary cannot be promoted")
+    if residual.get("people_impact_causal_pathways")!="ZERO_QUALIFIED_PATHWAYS" or residual.get("deployment_runtime_evidence")!="SOURCE_PINNED_BOUNDED": errors.append("people-impact or deployment residual cannot be promoted")
     state=q.get("state")
     if state=="PREQUALIFICATION":
         if any(x!="PENDING" for x in q["release_gates"].values()) or any(x!="PENDING" for x in q["qualified_capabilities"].values()): errors.append("prequalification cannot claim passed gates or capabilities")

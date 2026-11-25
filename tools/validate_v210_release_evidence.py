@@ -8,6 +8,7 @@ SHA=re.compile(r"^[0-9a-f]{40}$")
 REPO_PREFIX="https://github.com/sankarshanmukhopadhyay/rahp-toolkit/"
 def assess(record: dict, *, require_pass: bool=True)->list[str]:
     errors=[]
+    if not isinstance(record,dict): return ["release evidence must be a mapping"]
     if record.get("contract")!="rahp-release-evidence/v1": errors.append("unsupported release evidence contract")
     if record.get("candidate_version")!="v2.10.0": errors.append("candidate version mismatch")
     sha=record.get("candidate_sha")
