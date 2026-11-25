@@ -4,6 +4,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import tempfile
+import sys
 import unittest
 from pathlib import Path
 
@@ -12,6 +13,8 @@ MODULE = ROOT / "tools/index_monitored_review_events.py"
 SPEC = importlib.util.spec_from_file_location("index_monitored_review_events", MODULE)
 index = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(index)
+sys.path.insert(0, str(ROOT / "tools"))
+import instance_monitor as monitor
 
 
 def event(instance="dtg", **updates):
@@ -45,11 +48,42 @@ class MonitoredSourceEventTests(unittest.TestCase):
 
     def test_nonassessment_and_no_change_never_promote(self):
         report = index.qualify([event(
-            event_class="change-triage", labels=["change-triage", "dtg-instance"]
+            event_class="change-triage", labels=["change-triage", "dtg-instance"],
+            assessment_key="dtg:classification:trustoverip/dtgwg-trust-tasks-tf"
         )], "dtg")
         self.assertEqual(report["candidate_count"], 0)
         self.assertEqual(report["events"][0]["classification"], "triage_only")
         self.assertEqual(index.qualify([], "cawg")["events"], [])
+
+    def test_producer_identity_case_branch_and_triage(self):
+        repo = "OpenVTC/dtg-credentials"
+        main = {"repository": repo}
+        other = {"repository": repo, "branch": "release/V2"}
+        main_event = event(repository=repo, assessment_key=monitor.assessment_key("dtg", main))
+        branch_event = event(repository=repo, branch=other["branch"],
+                             assessment_key=monitor.assessment_key("dtg", other))
+        triage = event(repository=repo, branch=other["branch"],
+                       assessment_key=monitor.assessment_key("dtg", other).replace(
+                           ":repository:", ":classification:", 1),
+                       event_class="change-triage", labels=["change-triage"])
+        report = index.qualify([main_event, branch_event, triage], "dtg")
+        self.assertEqual(report["candidate_count"], 2)
+        self.assertEqual([x["assessment_key"] for x in report["events"]],
+                         [x["assessment_key"] for x in (main_event, branch_event, triage)])
+        self.assertFalse(report["admission_authorized"])
+        self.assertIsNone(report["assurance_determination"])
+        for bad in (
+            dict(branch_event, branch="main"),
+            dict(branch_event, repository=repo.lower()),
+            dict(branch_event, event_class="change-triage"),
+            dict(branch_event, instance="cawg"),
+            dict(branch_event, branch="bad/../name",
+                 assessment_key=f"dtg:repository:{repo}@bad/../name"),
+        ):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                index.qualify([bad], "dtg")
+        with self.assertRaisesRegex(ValueError, "duplicate"):
+            index.qualify([branch_event, branch_event], "dtg")
 
     def test_corrupt_or_foreign_event_fails_before_state_review(self):
         for bad in (
@@ -91,7 +125,9 @@ class MonitoredSourceEventTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             a, b, result = (root / n for n in ("dtg.json", "cawg.json", "index.json"))
-            a.write_text(json.dumps([event()]))
+            a.write_text(json.dumps([event(repository="OpenVTC/dtg-credentials", branch="release/V2",
+                assessment_key=monitor.assessment_key("dtg", {"repository": "OpenVTC/dtg-credentials",
+                                                               "branch": "release/V2"}))]))
             b.write_text(json.dumps([event(
                 instance="cawg", assessment_key="cawg:repository:decentralized-identity/cawg-identity-assertion",
                 repository="decentralized-identity/cawg-identity-assertion",
