@@ -7,7 +7,7 @@ has_toc: false
 ---
 # Releases
 
-- [v2.10.0 candidate](v2.10.0.md) - Operational Integrity, Reproducibility and Governed Assurance Interoperability.
+- [v2.10.0](v2.10.0.md) - Operational Integrity, Reproducibility and Governed Assurance Interoperability.
 - [v2.9.0](v2.9.0.md) - Evidence-Qualified Impact, Source Authority and Reproducible Assurance.
 - [v2.8.0](v2.8.0.md) - Comparative, Adversarial and Consumer Interaction Assurance.
 - [v2.7.0](v2.7.0.md) - Maintenance, Adoption and Optional Reasoning Profiles.
@@ -23,4 +23,4 @@ has_toc: false
 - [v1.2.0](v1.2.0.md) — evidence-driven assurance, control credit, residual states, governed remediation and retesting.
 - [v1.1.0](v1.1.0.md) — portable assurance knowledge model and catalogue-aware examples.
 
-Release notes record changes to the portable method, engine contract, implementations, deployments and evidence lifecycle. The current published stable release is [v2.9.0](v2.9.0.md); v2.10.0 remains unpublished pending qualification. Historical notes remain available for provenance.
+Release notes record changes to the portable method, engine contract, implementations, deployments and evidence lifecycle. The current qualified release is [v2.10.0](v2.10.0.md); verify actual publication at the [latest release](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/latest). Historical notes remain available for provenance.

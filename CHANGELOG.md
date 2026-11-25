@@ -9,7 +9,7 @@ parent: Reference
 
 ## Unreleased
 
-## v2.10.0 (candidate) - Common Banded Peacock
+## v2.10.0 - 2026-11-25 - Common Banded Peacock
 
 - Hardened source identity, corpus provenance, freshness, claim integrity and reassessment boundaries.
 - Added read-only validated result explanation, offline first-run scaffolding and source-pinned TRQP adoption material.
@@ -19,7 +19,7 @@ parent: Reference
 - Intended stable engine revision 1.3, result schema 1 and evidence-retention v1 remain unchanged, subject to qualification.
 - Independent adoption and security residuals remain explicit. Registry live interoperability is not fully qualified.
 
-See [candidate release notes](docs/releases/v2.10.0.md).
+See [release notes](docs/releases/v2.10.0.md).
 
 ## v2.9.0 - 2026-10-22 - Common Windmill
 

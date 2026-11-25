@@ -7,9 +7,9 @@ parent: Releases
 ---
 # RAHP roadmap
 
-## Release candidate: v2.10.0 Common Banded Peacock
+## Current release: v2.10.0 Common Banded Peacock
 
-The unpublished v2.10.0 candidate consolidates **Operational Integrity, Reproducibility and Governed Assurance Interoperability**. The latest published release remains v2.9.0. Qualification must establish the new release boundary before publication.
+The qualified v2.10.0 release consolidates **Operational Integrity, Reproducibility and Governed Assurance Interoperability**. The release evidence records the qualified candidate and bounded residuals.
 
 The compatibility boundary remains `rahp-engine-contract-v1` revision 1.3, normalized result schema 1 and `rahp-evidence-retention-v1`. Qualification preserves zero-positive people-impact outcomes, derived-versus-authoritative registry boundaries, and NOT VERIFIED security evidence where admin/runtime inspection remains unavailable.
 
@@ -29,7 +29,7 @@ RAHP remains materiality-bounded and evidence-conservative. Broader execution is
 
 ## Current portfolio context
 
-- RAHP v2.10.0 candidate (published v2.9.0);
+- RAHP v2.10.0;
 - DPIP v0.3.0;
 - Trust Protocol Interop Lab v0.7.0.
 
