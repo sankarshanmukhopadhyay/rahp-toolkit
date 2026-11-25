@@ -1,7 +1,7 @@
 # RAHP Toolkit
 
 **Risk Assessment & Harms Prevention**  
-Release v2.9.0 · Common Windmill · Documentation: CC BY 4.0 · Code: Apache 2.0
+Candidate v2.10.0 · Common Banded Peacock · Documentation: CC BY 4.0 · Code: Apache 2.0
 
 RAHP Toolkit is a reusable assurance method and execution plane for determining whether a trust system actually deserves confidence. It pressure-tests specifications, implementations, deployments, compositions and changes against explicit propositions, scenarios, harms, controls and evidence.
 
@@ -32,19 +32,17 @@ Privacy specialists such as DPIP and evidence producers such as the Trust
 Protocol Interop Lab retain independent authority for their respective work.
 An administrative case state or successful workflow does not imply RAHP PASS.
 
-## Current release — v2.9.0 Common Windmill
+## Release candidate: v2.10.0 Common Banded Peacock
 
-v2.9.0 **Evidence-Qualified Impact, Source Authority and Reproducible Assurance** was published and qualified on 2026-10-22.
+v2.10.0 **Operational Integrity, Reproducibility and Governed Assurance Interoperability** is an unpublished candidate. The latest published release remains [v2.9.0](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/latest) until qualification and publication succeed.
 
-It preserves the stable v1 engine/result/evidence compatibility boundary while adding evidence-bounded people-impact pathways, stronger source-qualified corpus provenance, lifecycle/control-consequence assurance, source-pinned runtime and witness evidence, a derived assurance-registry index, reproducible release qualification, repository-native DCO enforcement and explicit licensing.
+The candidate consolidates source and evidence integrity, read-only result explanation, offline adoption, external conformance and governed Registry ownership separation. See [candidate notes](docs/releases/v2.10.0.md). Release qualification and publication evidence are pending.
 
-See [v2.9.0 release notes](docs/releases/v2.9.0.md), [qualification contract](method/v2.9-release-qualification.yaml), [release evidence](method/v2.9-release-evidence.json), and [GitHub Release v2.9.0](https://github.com/sankarshanmukhopadhyay/rahp-toolkit/releases/tag/v2.9.0).
-
-Independent external adoption remains **NOT_YET_TESTED**. Method qualification does not manufacture independently adjudicated causal harm claims, deployment certification or independent audit.
+Independent external adoption remains **NOT_YET_TESTED**. A release does not establish deployment certification or independent audit.
 
 ## Stable compatibility boundary
 
-The compatibility authority for v2.9.0 remains:
+The intended compatibility authority for v2.10.0 remains:
 
 ```text
 rahp-engine-contract-v1 revision 1.3
@@ -52,7 +50,7 @@ normalized result schema version 1
 rahp-evidence-retention-v1
 ```
 
-Existing conforming v2.8 consumers do not require a schema migration solely to consume v2.9.
+Existing conforming v2.9 consumers are expected to retain schema compatibility; final candidate qualification must verify this. Configured instance operators should consult the candidate release notes for the Registry ownership transition.
 
 ## How RAHP works
 
@@ -174,6 +172,7 @@ Useful starting points:
 
 | Version | Codename | Release boundary |
 |---|---|---|
+| v2.10.0 (candidate) | **Common Banded Peacock** | Operational Integrity, Reproducibility and Governed Assurance Interoperability |
 | v2.9.0 | **Common Windmill** | Evidence-Qualified Impact, Source Authority and Reproducible Assurance |
 | v2.8.0 | **Common Birdwing** | Comparative, Adversarial and Consumer Interaction Assurance |
 | v2.7.0 | **Common Rose** | Maintenance, Adoption and Optional Reasoning Profiles |
