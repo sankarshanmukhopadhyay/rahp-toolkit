@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "instance": "cawg",
+    "target_id": "c2pa-specifications",
+    "assessment_key": "cawg:repository:c2pa-org/specifications",
+    "source": "repository-change",
+    "repository": "c2pa-org/specifications",
+    "branch": "main",
+    "old": "05dbf10bbd362c0f5ec1d2108f6745dfe9cb8669",
+    "new": "df910d4001f8a40167ce069f8791e43613b03bc9",
+    "title": "[RAHP review required] c2pa-specifications: 05dbf10 \u2192 df910d4",
+    "body": "## RAHP assessment trigger\n\nThe **CAWG/C2PA RAHP assessment instance** change monitor detected a material change requiring review.\n\n| Field | Value |\n|---|---|\n| Target | `c2pa-specifications` |\n| Repository | `c2pa-org/specifications` |\n| Branch | `main` |\n| Previous observed revision | `05dbf10bbd362c0f5ec1d2108f6745dfe9cb8669` |\n| Current observed revision | `df910d4001f8a40167ce069f8791e43613b03bc9` |\n| Commit count in comparison | 1 |\n\n### Material files changed\n\n- `supplemental-ui/softbinding-alg-list/softbinding-algorithm-list.json`\n\n### Review action\n\n1. Inspect the upstream diff and determine whether semantics, assurance assumptions, security properties, governance dependencies, or interoperability behaviour changed.\n2. Re-run the target RAHP/security/combined review as appropriate.\n3. Update the relevant assessment artefact and close this issue only when the new revision has been dispositioned.\n\n### Governance boundary\n\nThis issue records work for this RAHP deployment. It does **not** imply that RAHP owns, governs, or can change the upstream specification. Proposed remediation must be routed to the appropriate upstream specification, companion specification, governance body, implementation guidance, runtime control, or operational policy.\n",
+    "labels": [
+      "assessment-required",
+      "cawg-instance"
+    ]
+  }
+]
