@@ -173,7 +173,7 @@ jobs:
           esac
           echo "External assessment case writer: $owner"
       - name: Restore exact monitored source
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: instance-monitor-source-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/instance-monitor/
@@ -308,7 +308,7 @@ jobs:
           python-version: '3.11'
       - run: pip install -r requirements.txt
       - name: Restore exact monitored source
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: instance-monitor-source-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/instance-monitor/
@@ -452,7 +452,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: instance-monitor-incidents-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/instance-monitor/
