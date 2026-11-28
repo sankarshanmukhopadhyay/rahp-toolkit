@@ -31,9 +31,9 @@
       "observed_at": "2026-08-14T00:00:00Z"
     },
     "c2pa-org/specifications@main": {
-      "sha": "05dbf10bbd362c0f5ec1d2108f6745dfe9cb8669",
+      "sha": "df910d4001f8a40167ce069f8791e43613b03bc9",
       "status": "active",
-      "observed_at": "2026-11-19T12:53:46.775404+00:00"
+      "observed_at": "2026-11-26T13:06:27.745101+00:00"
     },
     "decentralized-identity/cawg-identity-assertion@governance": {
       "sha": "5a2795bd752da9e60ef04536ec6eb44167c929eb",
