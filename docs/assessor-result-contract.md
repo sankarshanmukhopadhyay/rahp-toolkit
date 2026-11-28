@@ -84,6 +84,42 @@ authentication, source signature verification and live transport retries
 remain the responsibility of their existing authoritative producers and
 controllers. Do not infer them from this validator.
 
+## Terminal clean-room reconciliation
+
+The terminal consumer (`tools/autonomous_assurance_controller.py`) checks declared
+context before accepting a portable assessor judgment. If the ledger declares a
+target, its repository and revision must match the configured target. Any
+declared assessor source pins must correspond to configured target or resource
+pins, including a declared artifact when present. Assessor-local identifiers and
+omitted optional v1 source pins remain compatible; this is not an assessment-ID
+authentication or complete source-provenance check.
+
+For PASS with required or cited evidence, the ledger must identify the target,
+each required evidence ID must be cited, and each cited ID must resolve to an
+executed ledger entry with a recognized observation result (`SATISFIED` or
+`ABSENT`). Duplicate ledger identities and explicitly incomplete orchestration
+prevent positive reconciliation. Missing or unrecognized required observations
+remain `INDETERMINATE / evidence-required`; incompatible return or context
+relationships become `INDETERMINATE / contract-incompatible`. The terminal
+record and Markdown report remain the existing output formats.
+
+An `ABSENT` observation is not universally a failed assurance proposition. A
+specialist may establish the absence of a prohibited surface; a configured
+positive-predicate assessor may instead conclude FAIL from that observation.
+The controller does not authenticate a caller-supplied ledger or assessor,
+verify every evidence artifact, or independently establish the substantive
+adequacy of a specialist judgment. The clean-room executor and configured
+assessor retain responsibility for those respective boundaries. Evidence-free
+historical qualification fixtures and specialist applicability fixtures retain
+their existing behavior; they do not prove operational assurance.
+
+Reproduce the bounded positive, incompatible-context, missing-evidence and
+compatibility cases through the actual terminal CLI:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_terminal_evidence_reconciliation.py' -v
+```
+
 ## Fault-containment coverage inventory (#1190)
 
 This inventory distinguishes checks on the **actual supported consumer entry point**

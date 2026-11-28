@@ -37,15 +37,20 @@ def validate_assessor(result: dict[str, Any]) -> list[str]:
     if result.get("schema") != ASSESSOR_SCHEMA: errors.append(f"schema must be {ASSESSOR_SCHEMA}")
     if not str(result.get("assessor") or "").strip(): errors.append("assessor is required")
     if not str(result.get("assessment_id") or "").strip(): errors.append("assessment_id is required")
-    if result.get("outcome") not in PORTABLE_OUTCOMES: errors.append("outcome must be portable")
+    if not isinstance(result.get("outcome"),str) or result["outcome"] not in PORTABLE_OUTCOMES: errors.append("outcome must be portable")
     for key in ("reason_code","residual_risk","action_required"):
         if not str(result.get(key) or "").strip(): errors.append(f"{key} is required")
-    if not isinstance(result.get("evidence_used"),list): errors.append("evidence_used must be a list")
+    refs=result.get("evidence_used")
+    if not isinstance(refs,list) or any(not isinstance(ref,str) or not ref.strip() for ref in refs):
+        errors.append("evidence_used must be a list of nonempty strings")
+    elif len(set(refs)) != len(refs):
+        errors.append("evidence_used must not contain duplicate references")
     return errors
 
 
 def evidence_index(ledger: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    return {str(item.get("requirement_id")):item for item in ledger.get("requirements",[]) or [] if isinstance(item,dict) and item.get("requirement_id")}
+    return {item["requirement_id"]:item for item in ledger.get("requirements",[]) or []
+            if isinstance(item,dict) and isinstance(item.get("requirement_id"),str) and item["requirement_id"].strip()}
 
 
 def evidence_records(ledger: dict[str, Any]) -> list[dict[str, Any]]:
@@ -74,8 +79,53 @@ def missing_required_evidence(contract: dict[str, Any], ledger: dict[str, Any]) 
     indexed=evidence_index(ledger); missing=[]
     for rid in contract.get("required_evidence",[]) or []:
         item=indexed.get(str(rid))
-        if not item or item.get("attempt_state") != "EXECUTED" or item.get("result") == "NOT_EVIDENCED": missing.append(str(rid))
+        if not item or item.get("attempt_state") != "EXECUTED" or item.get("result") not in ("SATISFIED", "ABSENT"): missing.append(str(rid))
     return missing
+
+
+def reconciliation_problems(spec: dict[str, Any], ledger: dict[str, Any],
+                            assessor: dict[str, Any], pins: list[dict[str, Any]]) -> list[str]:
+    """Check declared context, without interpreting specialist observation semantics.
+
+    The clean-room executor owns checkout/producer authenticity. Optional v1
+    source pins and assessor-local IDs remain supported; an asserted pin must
+    nevertheless agree with the execution context. This is not authentication.
+    """
+    errors=[]
+    target=ledger.get("target")
+    if "target" in ledger:
+        if not isinstance(target,dict) or any(target.get(key) != spec["target"].get(key)
+                                                for key in ("repository", "revision")):
+            errors.append("evidence ledger target differs from configured target")
+    if "source_pins" in assessor:
+        declared=assessor["source_pins"]
+        if not isinstance(declared,list) or not declared or any(
+            not isinstance(pin,dict) or not any(
+                all(pin.get(key) == expected.get(key) for key in ("repository", "revision"))
+                and ("artifact" not in pin or pin["artifact"] == expected.get("artifact"))
+                for expected in pins)
+            for pin in declared):
+            errors.append("assessor source pins differ from configured source context")
+    required=set((spec.get("assurance_contract") or {}).get("required_evidence",[]) or [])
+    if "complete" in ledger and ledger["complete"] is not True:
+        errors.append("evidence ledger has unresolved orchestration defects")
+    if assessor["outcome"] == "PASS" and (required or assessor["evidence_used"]):
+        if not isinstance(target,dict):
+            errors.append("positive evidence ledger lacks target binding")
+        indexed=evidence_index(ledger)
+        ids=[item.get("requirement_id") for item in ledger.get("requirements",[]) or []
+             if isinstance(item,dict) and isinstance(item.get("requirement_id"),str)]
+        if len(ids) != len(set(ids)):
+            errors.append("evidence ledger has duplicate requirement identities")
+        refs=set(assessor["evidence_used"])
+        if not required.issubset(refs):
+            errors.append("positive assessor result does not reference all required evidence")
+        if not refs.issubset(indexed):
+            errors.append("positive assessor result references unaddressed evidence")
+        elif any(indexed[ref].get("attempt_state") != "EXECUTED" or
+                 indexed[ref].get("result") not in ("SATISFIED", "ABSENT") for ref in refs):
+            errors.append("positive assessor result references unavailable evidence")
+    return errors
 
 
 def default_trace(contract: dict[str, Any], outcome: str, evidence_label: str) -> list[dict[str, Any]]:
@@ -125,6 +175,8 @@ def build_terminal(spec: dict[str, Any], ledger: dict[str, Any], assessor: dict[
         result=model_gap_result(run["assessment_id"],contract,"model-gap")
     else:
         problems=validate_assessor(assessor)
+        if not problems:
+            problems=reconciliation_problems(spec,ledger,assessor,pins)
         if problems:
             result=model_gap_result(run["assessment_id"],contract,"contract-incompatible")
             result["residual_risk"]="; ".join(problems)

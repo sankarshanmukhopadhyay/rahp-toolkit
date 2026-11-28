@@ -9,6 +9,8 @@ parent: Reference
 
 ## Unreleased
 
+- Harden terminal clean-room reconciliation against inconsistent declared source context, incomplete orchestration and unsupported positive evidence references; preserve existing assessor-local identifiers and observation semantics. No stable schema change.
+
 ## v2.10.0 - 2026-11-25 - Common Banded Peacock
 
 - Hardened source identity, corpus provenance, freshness, claim integrity and reassessment boundaries.
